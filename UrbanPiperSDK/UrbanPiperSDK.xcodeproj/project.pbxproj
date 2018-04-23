@@ -8,12 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		46E4F723208DAB810045ED21 /* UrbanPiperSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 46E4F721208DAB810045ED21 /* UrbanPiperSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		46E4F730208DABA90045ED21 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E4F72F208DABA90045ED21 /* AppDelegate.swift */; };
-		46E4F732208DABA90045ED21 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E4F731208DABA90045ED21 /* ViewController.swift */; };
-		46E4F735208DABA90045ED21 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46E4F733208DABA90045ED21 /* Main.storyboard */; };
-		46E4F737208DABAA0045ED21 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46E4F736208DABAA0045ED21 /* Assets.xcassets */; };
-		46E4F73A208DABAA0045ED21 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46E4F738208DABAA0045ED21 /* LaunchScreen.storyboard */; };
-		5E60B4D599202C33139E7E07 /* Pods_UrbanPiperSDK_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EBE98529FC1D16F6F64BE5 /* Pods_UrbanPiperSDK_Example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,13 +16,6 @@
 		46E4F71E208DAB810045ED21 /* UrbanPiperSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UrbanPiperSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		46E4F721208DAB810045ED21 /* UrbanPiperSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UrbanPiperSDK.h; sourceTree = "<group>"; };
 		46E4F722208DAB810045ED21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		46E4F72D208DABA90045ED21 /* UrbanPiperSDK-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UrbanPiperSDK-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		46E4F72F208DABA90045ED21 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		46E4F731208DABA90045ED21 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		46E4F734208DABA90045ED21 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		46E4F736208DABAA0045ED21 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		46E4F739208DABAA0045ED21 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		46E4F73B208DABAA0045ED21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4889556F6AF7F82FCA829B44 /* Pods-UrbanPiperSDK-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UrbanPiperSDK-Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -40,14 +27,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		46E4F72A208DABA90045ED21 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5E60B4D599202C33139E7E07 /* Pods_UrbanPiperSDK_Example.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -55,7 +34,6 @@
 			isa = PBXGroup;
 			children = (
 				46E4F720208DAB810045ED21 /* UrbanPiperSDK */,
-				46E4F72E208DABA90045ED21 /* UrbanPiperSDK-Example */,
 				46E4F71F208DAB810045ED21 /* Products */,
 				F5798D865481EF05EB5FDE62 /* Pods */,
 				90904D89CCF63EE17F5DB723 /* Frameworks */,
@@ -66,7 +44,6 @@
 			isa = PBXGroup;
 			children = (
 				46E4F71E208DAB810045ED21 /* UrbanPiperSDK.framework */,
-				46E4F72D208DABA90045ED21 /* UrbanPiperSDK-Example.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -78,19 +55,6 @@
 				46E4F722208DAB810045ED21 /* Info.plist */,
 			);
 			path = UrbanPiperSDK;
-			sourceTree = "<group>";
-		};
-		46E4F72E208DABA90045ED21 /* UrbanPiperSDK-Example */ = {
-			isa = PBXGroup;
-			children = (
-				46E4F72F208DABA90045ED21 /* AppDelegate.swift */,
-				46E4F731208DABA90045ED21 /* ViewController.swift */,
-				46E4F733208DABA90045ED21 /* Main.storyboard */,
-				46E4F736208DABAA0045ED21 /* Assets.xcassets */,
-				46E4F738208DABAA0045ED21 /* LaunchScreen.storyboard */,
-				46E4F73B208DABAA0045ED21 /* Info.plist */,
-			);
-			path = "UrbanPiperSDK-Example";
 			sourceTree = "<group>";
 		};
 		90904D89CCF63EE17F5DB723 /* Frameworks */ = {
@@ -142,26 +106,6 @@
 			productReference = 46E4F71E208DAB810045ED21 /* UrbanPiperSDK.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		46E4F72C208DABA90045ED21 /* UrbanPiperSDK-Example */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 46E4F73C208DABAA0045ED21 /* Build configuration list for PBXNativeTarget "UrbanPiperSDK-Example" */;
-			buildPhases = (
-				BE9C26E396BE985BF2B99EE2 /* [CP] Check Pods Manifest.lock */,
-				46E4F729208DABA90045ED21 /* Sources */,
-				46E4F72A208DABA90045ED21 /* Frameworks */,
-				46E4F72B208DABA90045ED21 /* Resources */,
-				BAE391A7FC9172AD763B5D67 /* [CP] Embed Pods Frameworks */,
-				359A2938F6B66396841E3A6B /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "UrbanPiperSDK-Example";
-			productName = "UrbanPiperSDK-Example";
-			productReference = 46E4F72D208DABA90045ED21 /* UrbanPiperSDK-Example.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -173,9 +117,6 @@
 				ORGANIZATIONNAME = UrbanPiper;
 				TargetAttributes = {
 					46E4F71D208DAB810045ED21 = {
-						CreatedOnToolsVersion = 9.3;
-					};
-					46E4F72C208DABA90045ED21 = {
 						CreatedOnToolsVersion = 9.3;
 					};
 				};
@@ -194,7 +135,6 @@
 			projectRoot = "";
 			targets = (
 				46E4F71D208DAB810045ED21 /* UrbanPiperSDK */,
-				46E4F72C208DABA90045ED21 /* UrbanPiperSDK-Example */,
 			);
 		};
 /* End PBXProject section */
@@ -207,96 +147,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		46E4F72B208DABA90045ED21 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				46E4F73A208DABAA0045ED21 /* LaunchScreen.storyboard in Resources */,
-				46E4F737208DABAA0045ED21 /* Assets.xcassets in Resources */,
-				46E4F735208DABA90045ED21 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		359A2938F6B66396841E3A6B /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-resources.sh",
-				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
-				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BAE391A7FC9172AD763B5D67 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
-				"${BUILT_PRODUCTS_DIR}/ParallaxHeader/ParallaxHeader.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
-				"${BUILT_PRODUCTS_DIR}/R.swift.Library/Rswift.framework",
-				"${BUILT_PRODUCTS_DIR}/SkyFloatingLabelTextField/SkyFloatingLabelTextField.framework",
-				"${BUILT_PRODUCTS_DIR}/Spring/Spring.framework",
-				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
-				"${PODS_ROOT}/razorpay-pod/Pod/Razorpay.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ParallaxHeader.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Rswift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SkyFloatingLabelTextField.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Spring.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Razorpay.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BE9C26E396BE985BF2B99EE2 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-UrbanPiperSDK-Example-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		46E4F719208DAB810045ED21 /* Sources */ = {
@@ -306,35 +157,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		46E4F729208DABA90045ED21 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				46E4F732208DABA90045ED21 /* ViewController.swift in Sources */,
-				46E4F730208DABA90045ED21 /* AppDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		46E4F733208DABA90045ED21 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				46E4F734208DABA90045ED21 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		46E4F738208DABAA0045ED21 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				46E4F739208DABAA0045ED21 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		46E4F724208DAB810045ED21 /* Debug */ = {
@@ -509,46 +332,6 @@
 			};
 			name = Release;
 		};
-		46E4F73D208DABAA0045ED21 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4889556F6AF7F82FCA829B44 /* Pods-UrbanPiperSDK-Example.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = LX9U6JG87H;
-				INFOPLIST_FILE = "UrbanPiperSDK-Example/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.urbanpiper.UrbanPiperSDK-Example";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		46E4F73E208DABAA0045ED21 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 127C4EE1002C729165F846BC /* Pods-UrbanPiperSDK-Example.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = LX9U6JG87H;
-				INFOPLIST_FILE = "UrbanPiperSDK-Example/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.urbanpiper.UrbanPiperSDK-Example";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -566,15 +349,6 @@
 			buildConfigurations = (
 				46E4F727208DAB810045ED21 /* Debug */,
 				46E4F728208DAB810045ED21 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		46E4F73C208DABAA0045ED21 /* Build configuration list for PBXNativeTarget "UrbanPiperSDK-Example" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				46E4F73D208DABAA0045ED21 /* Debug */,
-				46E4F73E208DABAA0045ED21 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
