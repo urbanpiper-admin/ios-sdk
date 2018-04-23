@@ -1,0 +1,42 @@
+platform :ios, '9.0'
+
+use_frameworks!
+inhibit_all_warnings!
+
+def common_pods
+
+    pod 'GoogleAnalytics'
+
+    pod 'Firebase/Core'
+    pod 'FirebaseMessaging'
+    pod 'Firebase/RemoteConfig'
+    pod 'Firebase/Auth'
+    
+    pod 'GoogleSignIn'
+    pod 'GooglePlaces'
+    pod 'GoogleMaps'
+
+    pod 'GetSimpl-iOS'
+    
+    pod 'razorpay-pod', '1.0.12'
+
+    pod 'R.swift'
+    pod 'ParallaxHeader', '~> 2.0.0'
+    pod 'Spring', :git => 'https://github.com/MengTo/Spring.git'
+    pod 'SkyFloatingLabelTextField', '~> 3.0'
+end
+
+target 'UrbanPiperSDK-Example' do
+    common_pods
+end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            if config.name == 'Debug'
+                config.build_settings['OTHER_SWIFT_FLAGS'] = ['$(inherited)', '-Onone']
+                config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
+            end
+        end
+    end
+end
