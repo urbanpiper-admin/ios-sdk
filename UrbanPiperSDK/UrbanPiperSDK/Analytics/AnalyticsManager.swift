@@ -9,6 +9,7 @@
 import UIKit
 import AppsFlyerTracker
 import Mixpanel
+import GoogleAnalytics
 
 public class AnalyticsManager: NSObject {
     

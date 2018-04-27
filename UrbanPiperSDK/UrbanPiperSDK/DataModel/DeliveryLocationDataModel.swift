@@ -88,18 +88,18 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
             if let store = OrderingStoreDataModel.nearestStoreResponse?.store {
                 if store.closingDay || store.isStoreClosed {
                     if let coordinate = DeliveryLocationDataModel.deliveryLocation?.coordinate {
-//                        AnalyticsManager.shared.nearestStoreClosed(lat: coordinate.latitude,
-//                                                                   lng: coordinate.longitude,
-//                                                                   deliveryAddress: address.fullAddress ?? "",
-//                                                                   storeName: store.name)
+                        AnalyticsManager.shared.nearestStoreClosed(lat: coordinate.latitude,
+                                                                   lng: coordinate.longitude,
+                                                                   deliveryAddress: address.fullAddress ?? "",
+                                                                   storeName: store.name)
                     }
                     
                 } else if store.temporarilyClosed {
                     if let coordinate = DeliveryLocationDataModel.deliveryLocation?.coordinate {
-//                        AnalyticsManager.shared.nearestStoreTemporarilyClosed(lat: coordinate.latitude,
-//                                                                              lng: coordinate.longitude,
-//                                                                              deliveryAddress: address.fullAddress ?? "",
-//                                                                              storeName: store.name)
+                        AnalyticsManager.shared.nearestStoreTemporarilyClosed(lat: coordinate.latitude,
+                                                                              lng: coordinate.longitude,
+                                                                              deliveryAddress: address.fullAddress ?? "",
+                                                                              storeName: store.name)
                     }
                 }
             }

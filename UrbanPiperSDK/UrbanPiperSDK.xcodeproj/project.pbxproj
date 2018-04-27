@@ -6,6 +6,20 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		46ACCABE20933B88001BD979 /* GoogleAnalyticsModuleMap */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 46ACCABF20933B89001BD979 /* Build configuration list for PBXAggregateTarget "GoogleAnalyticsModuleMap" */;
+			buildPhases = (
+				46ACCAC220933BA7001BD979 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = GoogleAnalyticsModuleMap;
+			productName = GoogleAnalyticsModuleMap;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		4607A993208F1E2700128010 /* WeakRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A91E208F1E2600128010 /* WeakRef.swift */; };
 		4607A99D208F1E2700128010 /* APIManager+Banners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A92A208F1E2600128010 /* APIManager+Banners.swift */; };
@@ -119,6 +133,16 @@
 		46E4F723208DAB810045ED21 /* UrbanPiperSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 46E4F721208DAB810045ED21 /* UrbanPiperSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		46E4F800208DB86E0045ED21 /* UPKeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E4F7FF208DB86D0045ED21 /* UPKeychainWrapper.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		46ACCAC320933C33001BD979 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 46E4F715208DAB810045ED21 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 46ACCABE20933B88001BD979;
+			remoteInfo = GoogleAnalyticsModuleMap;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		4607A91E208F1E2600128010 /* WeakRef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakRef.swift; sourceTree = "<group>"; };
@@ -483,6 +507,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				46ACCAC420933C33001BD979 /* PBXTargetDependency */,
 			);
 			name = UrbanPiperSDK;
 			productName = UrbanPiperSDK;
@@ -499,6 +524,9 @@
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = UrbanPiper;
 				TargetAttributes = {
+					46ACCABE20933B88001BD979 = {
+						CreatedOnToolsVersion = 9.3;
+					};
 					46E4F71D208DAB810045ED21 = {
 						CreatedOnToolsVersion = 9.3;
 					};
@@ -518,6 +546,7 @@
 			projectRoot = "";
 			targets = (
 				46E4F71D208DAB810045ED21 /* UrbanPiperSDK */,
+				46ACCABE20933B88001BD979 /* GoogleAnalyticsModuleMap */,
 			);
 		};
 /* End PBXProject section */
@@ -531,6 +560,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		46ACCAC220933BA7001BD979 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This if-statement means we'll only run the main script if the GoogleAnalyticsModuleMap directory doesn't exist\n# Because otherwise the rest of the script causes a full recompile for anything where GoogleAnalytics is a dependency\n# Do a \"Clean Build Folder\" to remove this directory and trigger the rest of the script to run\nif [ -d \"${BUILT_PRODUCTS_DIR}/GoogleAnalyticsModuleMap\" ]; then\necho \"${BUILT_PRODUCTS_DIR}/GoogleAnalyticsModuleMap directory already exists, so skipping the rest of the script.\"\nexit 0\nfi\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/GoogleAnalyticsModuleMap\"\necho \"$SRCROOT\"\ncat <<EOF > \"${BUILT_PRODUCTS_DIR}/GoogleAnalyticsModuleMap/module.modulemap\"\nmodule GoogleAnalytics {\n    header \"$SRCROOT/../../Pods/GoogleAnalytics/Sources/GAI.h\"\n    header \"$SRCROOT/../../Pods/GoogleAnalytics/Sources/GAIFields.h\"\n    header \"$SRCROOT/../../Pods/GoogleAnalytics/Sources/GAIEcommerceFields.h\"\n    header \"$SRCROOT/../../Pods/GoogleAnalytics/Sources/GAIDictionaryBuilder.h\"\n    export *\n}\nEOF";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		46E4F719208DAB810045ED21 /* Sources */ = {
@@ -652,7 +697,33 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		46ACCAC420933C33001BD979 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 46ACCABE20933B88001BD979 /* GoogleAnalyticsModuleMap */;
+			targetProxy = 46ACCAC320933C33001BD979 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		46ACCAC020933B89001BD979 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LX9U6JG87H;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		46ACCAC120933B89001BD979 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LX9U6JG87H;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		46E4F724208DAB810045ED21 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -662,7 +733,6 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
@@ -690,6 +760,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -727,7 +798,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../Pods/GoogleAnalytics";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
@@ -786,13 +856,9 @@
 					"-framework",
 					"\"GooglePlaces\"",
 					"-framework",
-					"\"GoogleToolboxForMac\"",
-					"-framework",
 					"\"ImageIO\"",
 					"-framework",
 					"\"OpenGLES\"",
-					"-framework",
-					"\"Protobuf\"",
 					"-framework",
 					"\"QuartzCore\"",
 					"-framework",
@@ -801,6 +867,10 @@
 					"\"SystemConfiguration\"",
 					"-framework",
 					"\"UIKit\"",
+					"-framework",
+					"\"GoogleToolboxForMac\"",
+					"-framework",
+					"\"Protobuf\"",
 					"-framework",
 					"\"nanopb\"",
 				);
@@ -822,7 +892,6 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
@@ -850,6 +919,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -884,7 +954,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../Pods/GoogleAnalytics";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"@executable_path/Frameworks",
@@ -942,13 +1011,9 @@
 					"-framework",
 					"\"GooglePlaces\"",
 					"-framework",
-					"\"GoogleToolboxForMac\"",
-					"-framework",
 					"\"ImageIO\"",
 					"-framework",
 					"\"OpenGLES\"",
-					"-framework",
-					"\"Protobuf\"",
 					"-framework",
 					"\"QuartzCore\"",
 					"-framework",
@@ -957,6 +1022,10 @@
 					"\"SystemConfiguration\"",
 					"-framework",
 					"\"UIKit\"",
+					"-framework",
+					"\"GoogleToolboxForMac\"",
+					"-framework",
+					"\"Protobuf\"",
 					"-framework",
 					"\"nanopb\"",
 				);
@@ -990,6 +1059,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.urbanpiper.UrbanPiperSDK;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "${BUILT_PRODUCTS_DIR}/GoogleAnalyticsModuleMap";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1015,6 +1085,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.urbanpiper.UrbanPiperSDK;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "${BUILT_PRODUCTS_DIR}/GoogleAnalyticsModuleMap";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1023,6 +1094,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		46ACCABF20933B89001BD979 /* Build configuration list for PBXAggregateTarget "GoogleAnalyticsModuleMap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				46ACCAC020933B89001BD979 /* Debug */,
+				46ACCAC120933B89001BD979 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		46E4F718208DAB810045ED21 /* Build configuration list for PBXProject "UrbanPiperSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

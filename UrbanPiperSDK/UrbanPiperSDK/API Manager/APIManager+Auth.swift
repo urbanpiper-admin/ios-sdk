@@ -179,7 +179,7 @@ extension APIManager {
             urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
             
             if let link = params["code_link"] as? String, let val = params["channel"] as? String {
-//                AnalyticsManager.shared.referralSentDetails(link: link, channel: val)
+                AnalyticsManager.shared.referralSentDetails(link: link, channel: val)
             }
         }
 

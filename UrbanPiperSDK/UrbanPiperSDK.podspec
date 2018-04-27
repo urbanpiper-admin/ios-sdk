@@ -14,4 +14,6 @@ Pod::Spec.new do |s|
     s.dependency 'GooglePlaces'
     s.dependency 'GoogleMaps'
     s.dependency 'GoogleAnalytics'
+    s.dependency 'Mixpanel'
+    s.dependency 'AppsFlyerFramework'
 end

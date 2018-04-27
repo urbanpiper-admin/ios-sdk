@@ -31,7 +31,7 @@ extension APIManager {
                     
                     DispatchQueue.main.async {
                         AppUserDataModel.shared.bizInfo = bizInfo
-//                        AnalyticsManager.shared.setMixpanelPeople()
+                        AnalyticsManager.shared.setMixpanelPeople()
                         completion?(bizInfo)
                     }
                     return

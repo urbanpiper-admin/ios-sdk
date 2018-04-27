@@ -55,24 +55,24 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
                     if let deliverAddress = DeliveryLocationDataModel.deliveryAddress?.fullAddress {
                         if store.closingDay || store.isStoreClosed {
                             if let coordinate = DeliveryLocationDataModel.deliveryLocation?.coordinate {
-//                                AnalyticsManager.shared.nearestStoreClosed(lat: coordinate.latitude,
-//                                                                           lng: coordinate.longitude,
-//                                                                           deliveryAddress: deliverAddress,
-//                                                                           storeName: store.name)
+                                AnalyticsManager.shared.nearestStoreClosed(lat: coordinate.latitude,
+                                                                           lng: coordinate.longitude,
+                                                                           deliveryAddress: deliverAddress,
+                                                                           storeName: store.name)
                             }
                             
                         } else if store.temporarilyClosed {
                             if let coordinate = DeliveryLocationDataModel.deliveryLocation?.coordinate {
-//                                AnalyticsManager.shared.nearestStoreTemporarilyClosed(lat: coordinate.latitude,
-//                                                                                      lng: coordinate.longitude,
-//                                                                                      deliveryAddress: deliverAddress,
-//                                                                                      storeName: store.name)
+                                AnalyticsManager.shared.nearestStoreTemporarilyClosed(lat: coordinate.latitude,
+                                                                                      lng: coordinate.longitude,
+                                                                                      deliveryAddress: deliverAddress,
+                                                                                      storeName: store.name)
                             }
                         }
                     }
                 } else {
                     if let coordinate = DeliveryLocationDataModel.deliveryLocation?.coordinate {
-//                        AnalyticsManager.shared.noStoresNearBy(lat: coordinate.latitude, lng: coordinate.longitude)
+                        AnalyticsManager.shared.noStoresNearBy(lat: coordinate.latitude, lng: coordinate.longitude)
                     }
                 }
                 CartManager.shared.clearCart()

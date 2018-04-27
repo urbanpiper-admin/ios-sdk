@@ -506,7 +506,7 @@ extension OrderPaymentDataModel {
                                             self?.dataModelDelegate?.showOrderConfirmationAlert(orderId: orderIdString)
                                         }
             }, failure: { [weak self] (error) in
-//                AnalyticsManager.shared.orderPlacementFailure(amount: self!.itemsTotalPrice)
+                AnalyticsManager.shared.orderPlacementFailure(amount: self!.itemsTotalPrice)
                 self?.dataModelDelegate?.placingOrder(isProcessing: false)
                 self?.dataModelDelegate?.handleOrderPayment(error: error)
                 
@@ -544,7 +544,7 @@ extension OrderPaymentDataModel {
     
 
     public func orderPlacedTracking(orderId: String, phone: String) {
-//        AnalyticsManager.shared.orderPlaced(orderId: orderId, phone: phone, orderPaymentDataModel: self)
+        AnalyticsManager.shared.orderPlaced(orderId: orderId, phone: phone, orderPaymentDataModel: self)
     }
 
 }

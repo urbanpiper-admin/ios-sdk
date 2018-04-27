@@ -79,7 +79,7 @@ extension CartManager {
 extension CartManager {
 
     @objc public func add(itemObject: ItemObject) {
-//        AnalyticsManager.shared.itemAddedToCart(itemObject: itemObject)
+        AnalyticsManager.shared.itemAddedToCart(itemObject: itemObject)
         
         if let item = cartItems.filter({ $0 == itemObject }).last {
             if item.isItemQuantityAvailable(quantity: itemObject.selectedQuantity) {
