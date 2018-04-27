@@ -15,5 +15,7 @@ FOUNDATION_EXPORT double UrbanPiperSDKVersionNumber;
 FOUNDATION_EXPORT const unsigned char UrbanPiperSDKVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <UrbanPiperSDK/PublicHeader.h>
-
-
+//#import <GoogleAnalytics/GAI.h>
+//#import <GoogleAnalytics/GAIFields.h>
+//#import <GoogleAnalytics/GAIEcommerceFields.h>
+//#import <GoogleAnalytics/GAIDictionaryBuilder.h>
