@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import AppsFlyerTracker
+import AppsFlyerLib
 import Mixpanel
 import GoogleAnalytics
 
