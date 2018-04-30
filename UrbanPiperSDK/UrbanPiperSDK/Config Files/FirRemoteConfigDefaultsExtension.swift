@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import FirebaseRemoteConfig
 
 extension FirRemoteConfigDefaults {
 
@@ -122,4 +123,20 @@ extension FirRemoteConfigDefaults {
         return stringArray
     }
 
+    public func setupRemoteConfigDefaultsValues() {
+        #if DEBUG
+        let remoteConfigSettings = RemoteConfigSettings(developerModeEnabled: true)
+        remoteConfig.configSettings = remoteConfigSettings!
+        #endif
+        
+        remoteConfig.setDefaults(fromPlist: "RemoteConfigDefaults")
+    }
+    
+    public func fetchRemoteConfigValues(_ completion: @escaping (_ status: RemoteConfigFetchStatus) -> Void) {
+        remoteConfig.fetch(withExpirationDuration: 0, completionHandler: { [weak self] (_ status: RemoteConfigFetchStatus, _ error: Error?) -> Void in
+            self?.refreshValues()
+            completion(status)
+        })
+    }
+    
 }

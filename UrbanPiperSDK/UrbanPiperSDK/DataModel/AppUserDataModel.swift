@@ -151,6 +151,17 @@ public class AppUserDataModel: UrbanPiperDataModel {
         observers.remove(at: index)
     }
     
+    @objc func reset() {
+        DeliveryLocationDataModel.deliveryLocation = nil
+        DeliveryLocationDataModel.deliveryAddress = nil
+        OrderingStoreDataModel.nearestStoreResponse = nil
+        UserDefaults.standard.removeObject(forKey: "defaultAddress")
+        appUserData = nil
+        bizInfo = nil
+        AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
+        AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.BizInfoKey)
+    }
+    
 }
 
 //  MARK: API Calls
