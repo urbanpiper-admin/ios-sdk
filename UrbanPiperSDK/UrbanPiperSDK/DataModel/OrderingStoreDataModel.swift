@@ -31,7 +31,10 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
 
     @objc public static var nearestStoreResponse: StoreResponse? = {
         guard let storeResponseData = UserDefaults.standard.object(forKey: OrderingStoreUserDefaultKeys.nearestStoreResponseKey) as? Data else { return nil }
+        Biz.registerClassName()
         Biz.registerClassNameWhiteLabel()
+        
+        Store.registerClassName()
         Store.registerClassNameWhiteLabel()
         
         FeedbackConfig.registerClassNameWhiteLabel()

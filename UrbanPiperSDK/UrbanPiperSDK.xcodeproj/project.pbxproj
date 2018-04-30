@@ -119,6 +119,8 @@
 		4607A9FF208F1E2800128010 /* UPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A991208F1E2700128010 /* UPError.swift */; };
 		4607AA00208F1E2800128010 /* UPAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A992208F1E2700128010 /* UPAPIError.swift */; };
 		4623DB1D208F8D3200BD7537 /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623DB1B208F854A00BD7537 /* AnalyticsManager.swift */; };
+		46A3447520977AEB004C0B67 /* APIManager+VersionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A3447420977AEA004C0B67 /* APIManager+VersionCheck.swift */; };
+		46A3447720977E8F004C0B67 /* VersionCheckResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A3447620977E8E004C0B67 /* VersionCheckResponse.swift */; };
 		46CE3FC4208F655A0022475F /* Decimal+Rounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CE3FBC208F655A0022475F /* Decimal+Rounded.swift */; };
 		46CE3FC5208F655A0022475F /* UITapGestureRecognizer+LabelInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CE3FBD208F655A0022475F /* UITapGestureRecognizer+LabelInteraction.swift */; };
 		46CE3FC6208F655A0022475F /* Date+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CE3FBE208F655A0022475F /* Date+String.swift */; };
@@ -244,6 +246,8 @@
 		4607A992208F1E2700128010 /* UPAPIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UPAPIError.swift; sourceTree = "<group>"; };
 		4623DB1B208F854A00BD7537 /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
 		4623DB1E20901BB300BD7537 /* UrbanPiperSDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = UrbanPiperSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		46A3447420977AEA004C0B67 /* APIManager+VersionCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+VersionCheck.swift"; sourceTree = "<group>"; };
+		46A3447620977E8E004C0B67 /* VersionCheckResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionCheckResponse.swift; sourceTree = "<group>"; };
 		46CE3FBC208F655A0022475F /* Decimal+Rounded.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Decimal+Rounded.swift"; sourceTree = "<group>"; };
 		46CE3FBD208F655A0022475F /* UITapGestureRecognizer+LabelInteraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITapGestureRecognizer+LabelInteraction.swift"; sourceTree = "<group>"; };
 		46CE3FBE208F655A0022475F /* Date+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+String.swift"; sourceTree = "<group>"; };
@@ -283,6 +287,7 @@
 		4607A929208F1E2600128010 /* API Manager */ = {
 			isa = PBXGroup;
 			children = (
+				46A3447420977AEA004C0B67 /* APIManager+VersionCheck.swift */,
 				4607A92A208F1E2600128010 /* APIManager+Banners.swift */,
 				4607A92B208F1E2600128010 /* APIManager+Ordering.swift */,
 				4607A92C208F1E2600128010 /* APIManager+Likes.swift */,
@@ -339,6 +344,7 @@
 		4607A953208F1E2700128010 /* APIModels */ = {
 			isa = PBXGroup;
 			children = (
+				46A3447620977E8E004C0B67 /* VersionCheckResponse.swift */,
 				4607A954208F1E2700128010 /* GooglePlacesResponse.swift */,
 				4607A955208F1E2700128010 /* Geometry.swift */,
 				4607A956208F1E2700128010 /* Location.swift */,
@@ -638,7 +644,9 @@
 				4607A9EE208F1E2800128010 /* Store.swift in Sources */,
 				4607A9C1208F1E2700128010 /* NotificationsDataModel.swift in Sources */,
 				4607A9A7208F1E2700128010 /* APIManager+User.swift in Sources */,
+				46A3447720977E8F004C0B67 /* VersionCheckResponse.swift in Sources */,
 				46CE3FC6208F655A0022475F /* Date+String.swift in Sources */,
+				46A3447520977AEB004C0B67 /* APIManager+VersionCheck.swift in Sources */,
 				4607A9FA208F1E2800128010 /* StructuredFormatting.swift in Sources */,
 				4607A9DB208F1E2700128010 /* Image.swift in Sources */,
 				4607A9B6208F1E2700128010 /* ItemOptionGroupsDataModel.swift in Sources */,
