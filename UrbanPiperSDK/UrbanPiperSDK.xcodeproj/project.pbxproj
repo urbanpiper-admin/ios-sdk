@@ -119,6 +119,7 @@
 		4607A9FF208F1E2800128010 /* UPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A991208F1E2700128010 /* UPError.swift */; };
 		4607AA00208F1E2800128010 /* UPAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A992208F1E2700128010 /* UPAPIError.swift */; };
 		4623DB1D208F8D3200BD7537 /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623DB1B208F854A00BD7537 /* AnalyticsManager.swift */; };
+		4640C766209847AF00573F7B /* WLDetailOptionData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4640C765209847AF00573F7B /* WLDetailOptionData.plist */; };
 		46A3447520977AEB004C0B67 /* APIManager+VersionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A3447420977AEA004C0B67 /* APIManager+VersionCheck.swift */; };
 		46A3447720977E8F004C0B67 /* VersionCheckResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A3447620977E8E004C0B67 /* VersionCheckResponse.swift */; };
 		46CE3FC4208F655A0022475F /* Decimal+Rounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CE3FBC208F655A0022475F /* Decimal+Rounded.swift */; };
@@ -246,6 +247,7 @@
 		4607A992208F1E2700128010 /* UPAPIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UPAPIError.swift; sourceTree = "<group>"; };
 		4623DB1B208F854A00BD7537 /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
 		4623DB1E20901BB300BD7537 /* UrbanPiperSDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = UrbanPiperSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		4640C765209847AF00573F7B /* WLDetailOptionData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WLDetailOptionData.plist; sourceTree = "<group>"; };
 		46A3447420977AEA004C0B67 /* APIManager+VersionCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+VersionCheck.swift"; sourceTree = "<group>"; };
 		46A3447620977E8E004C0B67 /* VersionCheckResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionCheckResponse.swift; sourceTree = "<group>"; };
 		46CE3FBC208F655A0022475F /* Decimal+Rounded.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Decimal+Rounded.swift"; sourceTree = "<group>"; };
@@ -469,6 +471,7 @@
 			isa = PBXGroup;
 			children = (
 				46E4F721208DAB810045ED21 /* UrbanPiperSDK.h */,
+				4640C765209847AF00573F7B /* WLDetailOptionData.plist */,
 				46E3AD43208DC0D600DC43A2 /* UrbanPiper.swift */,
 				46E4F7FF208DB86D0045ED21 /* UPKeychainWrapper.swift */,
 				46E3ACFC208DBF0700DC43A2 /* UPKeychainItemAccessibility.swift */,
@@ -562,6 +565,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4640C766209847AF00573F7B /* WLDetailOptionData.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -883,7 +887,7 @@
 					"\"nanopb\"",
 				);
 				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1038,6 +1042,7 @@
 					"\"nanopb\"",
 				);
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";

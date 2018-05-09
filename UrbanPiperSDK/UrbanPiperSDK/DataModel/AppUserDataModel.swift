@@ -135,7 +135,9 @@ public class AppUserDataModel: UrbanPiperDataModel {
     public override init() {
         super.init()
         
-        registerForFCMMessaging()
+        DispatchQueue.main.async { [weak self] in
+            self?.registerForFCMMessaging()
+        }
         
         updateUserData()
     }
@@ -151,7 +153,8 @@ public class AppUserDataModel: UrbanPiperDataModel {
         observers.remove(at: index)
     }
     
-    @objc func reset() {
+    @objc public func reset() {
+        CartManager.shared.clearCart()
         DeliveryLocationDataModel.deliveryLocation = nil
         DeliveryLocationDataModel.deliveryAddress = nil
         OrderingStoreDataModel.nearestStoreResponse = nil
@@ -160,6 +163,21 @@ public class AppUserDataModel: UrbanPiperDataModel {
         bizInfo = nil
         AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
         AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.BizInfoKey)
+        APIManager.shared.updateHeaders()
+        APIManager.shared.lastRegisteredFCMToken = nil
+        
+        UserDefaults.standard.removeObject(forKey: "deliverySlots")
+        UserDefaults.standard.removeObject(forKey: "deliverySlotsEnabled")
+        UserDefaults.standard.removeObject(forKey: "feedback_config")
+        UserDefaults.standard.removeObject(forKey: "referral_share_lbl")
+        UserDefaults.standard.removeObject(forKey: "referral_ui_lbl")
+        UserDefaults.standard.removeObject(forKey: "use_point_of_delivery")
+        UserDefaults.standard.removeObject(forKey: "payment_options")
+
+        UserDefaults.standard.removeObject(forKey: "NextLocationUpdateDate")
+        UserDefaults.standard.removeObject(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey)
+        UserDefaults.standard.removeObject(forKey: OrderPaymentDataModel.defaultAddressDefaultsKey)
+
     }
     
 }
@@ -341,9 +359,11 @@ extension AppUserDataModel {
                                                           completion: { [weak self] (appUser) in
                                                             if let status = appUser?.userStatus, status == .registrationRequired {
                                                                 self?.registerNewSocialAuthUser(user: user, completion: completion)
-                                                            } else {
-                                                                completion(appUser, nil)
+                                                                return
+                                                            } else if let userVal = appUser, userVal.isValid {
+                                                                AppUserDataModel.shared.appUserData = userVal
                                                             }
+                                                            completion(appUser, nil)
         }, failure: { (error) in
             completion(nil, error)
         })

@@ -39,15 +39,7 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
         #endif
     }()
     
-    @objc static var nextLocationUpdateDate: Date?/* = UserDefaults.standard.object(forKey: LocationUserDefaultKeys.nextLocationUpdateDate) as? Date {
-        didSet {
-            guard let date = nextLocationUpdateDate else {
-                UserDefaults.standard.removeObject(forKey: LocationUserDefaultKeys.nextLocationUpdateDate)
-                return
-            }
-            UserDefaults.standard.set(date, forKey: LocationUserDefaultKeys.nextLocationUpdateDate)
-        }
-    }*/
+    @objc static var nextLocationUpdateDate: Date?
 
     @objc static var userSelectedDeliveryLocation: Bool = false
 

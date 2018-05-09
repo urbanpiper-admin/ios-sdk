@@ -38,6 +38,8 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
         Store.registerClassNameWhiteLabel()
         
         FeedbackConfig.registerClassNameWhiteLabel()
+        Choice.registerClassNameWhiteLabel()
+        
         TimeSlot.registerClassNameWhiteLabel()
 
         StoreResponse.registerClassName()

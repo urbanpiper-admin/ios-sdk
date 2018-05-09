@@ -19,11 +19,11 @@ import UIKit
     func configureCell(_ placeObject: Prediction?)
 }
 
+public struct PlacesSearchUserDefaultKeys {
+    static let selectedPlacesDataKey = "SelectedPlacesDataKey"
+}
+
 public class PlacesSearchDataModel: UrbanPiperDataModel {
-    
-    private struct PlacesSearchUserDefaultKeys {
-        static let selectedPlacesDataKey = "SelectedPlacesDataKey"
-    }
     
     public typealias CoordinatesFetchCompletionBlock = (PlaceDetailsResponse? ,UPError?) -> Void
 
