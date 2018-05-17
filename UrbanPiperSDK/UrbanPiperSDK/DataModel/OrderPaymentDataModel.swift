@@ -279,9 +279,13 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
 
         if let paymentOptionString = AppConfigManager.shared.firRemoteConfigDefaults.dfltPymntOpt,
             let option = PaymentOption(rawValue: paymentOptionString) {
+            let defaultOptionPresent = paymentArray.filter { $0 == option }.count > 1
+            
             paymentArray = paymentArray.filter { $0 != option }
             
-            paymentArray.insert(option, at: 0)
+            if defaultOptionPresent {
+                paymentArray.insert(option, at: 0)
+            }
         }
 
         return paymentArray
