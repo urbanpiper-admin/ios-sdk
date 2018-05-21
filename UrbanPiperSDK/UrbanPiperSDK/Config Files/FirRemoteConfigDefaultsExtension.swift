@@ -126,7 +126,7 @@ extension FirRemoteConfigDefaults {
     public func setupRemoteConfigDefaultsValues() {
         #if DEBUG
         let remoteConfigSettings = RemoteConfigSettings(developerModeEnabled: true)
-        remoteConfig.configSettings = remoteConfigSettings!
+        remoteConfig.configSettings = remoteConfigSettings
         #endif
         
         remoteConfig.setDefaults(fromPlist: "RemoteConfigDefaults")

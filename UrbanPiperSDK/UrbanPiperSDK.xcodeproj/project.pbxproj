@@ -779,6 +779,8 @@
 					"${BUILT_PRODUCTS_DIR}/Protobuf",
 					"${BUILT_PRODUCTS_DIR}/nanopb",
 					"${BUILT_PRODUCTS_DIR}/Mixpanel-swift",
+					"${BUILT_PRODUCTS_DIR}/FirebaseCore",
+					"${BUILT_PRODUCTS_DIR}/FirebaseMessaging",
 					"$(SRCROOT)/../../Pods/GoogleMaps/Maps/Frameworks",
 					"$(SRCROOT)/../../Pods/GoogleMaps/Base/Frameworks",
 					"$(SRCROOT)/../../Pods/GooglePlaces/Frameworks",
@@ -786,8 +788,6 @@
 					"$(SRCROOT)/../../Pods/FirebaseRemoteConfig/Frameworks",
 					"$(SRCROOT)/../../Pods/FirebaseABTesting/Frameworks",
 					"$(SRCROOT)/../../Pods/FirebaseAnalytics/Frameworks",
-					"$(SRCROOT)/../../Pods/FirebaseCore/Frameworks",
-					"$(SRCROOT)/../../Pods/FirebaseMessaging/Frameworks",
 					"$(SRCROOT)/../../Pods/AppsFlyerFramework",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -938,6 +938,8 @@
 					"${BUILT_PRODUCTS_DIR}/Protobuf",
 					"${BUILT_PRODUCTS_DIR}/nanopb",
 					"${BUILT_PRODUCTS_DIR}/Mixpanel-swift",
+					"${BUILT_PRODUCTS_DIR}/FirebaseCore",
+					"${BUILT_PRODUCTS_DIR}/FirebaseMessaging",
 					"$(SRCROOT)/../../Pods/GoogleMaps/Maps/Frameworks",
 					"$(SRCROOT)/../../Pods/GoogleMaps/Base/Frameworks",
 					"$(SRCROOT)/../../Pods/GooglePlaces/Frameworks",
@@ -945,8 +947,6 @@
 					"$(SRCROOT)/../../Pods/FirebaseRemoteConfig/Frameworks",
 					"$(SRCROOT)/../../Pods/FirebaseABTesting/Frameworks",
 					"$(SRCROOT)/../../Pods/FirebaseAnalytics/Frameworks",
-					"$(SRCROOT)/../../Pods/FirebaseCore/Frameworks",
-					"$(SRCROOT)/../../Pods/FirebaseMessaging/Frameworks",
 					"$(SRCROOT)/../../Pods/AppsFlyerFramework",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
