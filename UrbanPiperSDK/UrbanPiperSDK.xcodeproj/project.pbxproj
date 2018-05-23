@@ -44,7 +44,7 @@
 		4607A9B1208F1E2700128010 /* DeliveryLocationDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A940208F1E2600128010 /* DeliveryLocationDataModel.swift */; };
 		4607A9B2208F1E2700128010 /* CategoryItemsDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A941208F1E2600128010 /* CategoryItemsDataModel.swift */; };
 		4607A9B3208F1E2700128010 /* ItemDetailsDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A942208F1E2600128010 /* ItemDetailsDataModel.swift */; };
-		4607A9B4208F1E2700128010 /* CheckoutDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A943208F1E2600128010 /* CheckoutDataModel.swift */; };
+		4607A9B4208F1E2700128010 /* CartDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A943208F1E2600128010 /* CartDataModel.swift */; };
 		4607A9B5208F1E2700128010 /* PlacesSearchDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A944208F1E2600128010 /* PlacesSearchDataModel.swift */; };
 		4607A9B6208F1E2700128010 /* ItemOptionGroupsDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A945208F1E2600128010 /* ItemOptionGroupsDataModel.swift */; };
 		4607A9B7208F1E2700128010 /* OrderPaymentDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A946208F1E2600128010 /* OrderPaymentDataModel.swift */; };
@@ -171,7 +171,7 @@
 		4607A940208F1E2600128010 /* DeliveryLocationDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeliveryLocationDataModel.swift; sourceTree = "<group>"; };
 		4607A941208F1E2600128010 /* CategoryItemsDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryItemsDataModel.swift; sourceTree = "<group>"; };
 		4607A942208F1E2600128010 /* ItemDetailsDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDetailsDataModel.swift; sourceTree = "<group>"; };
-		4607A943208F1E2600128010 /* CheckoutDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckoutDataModel.swift; sourceTree = "<group>"; };
+		4607A943208F1E2600128010 /* CartDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartDataModel.swift; sourceTree = "<group>"; };
 		4607A944208F1E2600128010 /* PlacesSearchDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesSearchDataModel.swift; sourceTree = "<group>"; };
 		4607A945208F1E2600128010 /* ItemOptionGroupsDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemOptionGroupsDataModel.swift; sourceTree = "<group>"; };
 		4607A946208F1E2600128010 /* OrderPaymentDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderPaymentDataModel.swift; sourceTree = "<group>"; };
@@ -326,7 +326,7 @@
 				4607A940208F1E2600128010 /* DeliveryLocationDataModel.swift */,
 				4607A941208F1E2600128010 /* CategoryItemsDataModel.swift */,
 				4607A942208F1E2600128010 /* ItemDetailsDataModel.swift */,
-				4607A943208F1E2600128010 /* CheckoutDataModel.swift */,
+				4607A943208F1E2600128010 /* CartDataModel.swift */,
 				4607A944208F1E2600128010 /* PlacesSearchDataModel.swift */,
 				4607A945208F1E2600128010 /* ItemOptionGroupsDataModel.swift */,
 				4607A946208F1E2600128010 /* OrderPaymentDataModel.swift */,
@@ -640,7 +640,7 @@
 				4607A9DA208F1E2700128010 /* Meta.swift in Sources */,
 				4607A9AC208F1E2700128010 /* FirRemoteConfigDefaultsExtension.swift in Sources */,
 				4607A9EA208F1E2700128010 /* Term.swift in Sources */,
-				4607A9B4208F1E2700128010 /* CheckoutDataModel.swift in Sources */,
+				4607A9B4208F1E2700128010 /* CartDataModel.swift in Sources */,
 				4607A993208F1E2700128010 /* WeakRef.swift in Sources */,
 				4607A9F9208F1E2800128010 /* TimeSlot+Additions.swift in Sources */,
 				4607A9AF208F1E2700128010 /* AppConfigManager.swift in Sources */,

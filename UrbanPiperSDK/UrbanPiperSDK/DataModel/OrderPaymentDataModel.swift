@@ -88,7 +88,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     public var orderPreProcessingResponse: OrderPreProcessingResponse? {
         didSet {
             guard orderPreProcessingResponse != nil else { return }
-            applyWalletCredit = orderPreProcessingResponse?.order.walletCreditApplicable ?? false
+            applyWalletCredits = orderPreProcessingResponse?.order.walletCreditApplicable ?? false
             
             if oldValue == nil {
                 selectedPaymentOption = defaultPaymentOption
@@ -154,7 +154,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     public var couponCode: String?
     public var applyCouponResponse: Order?
     
-    public var applyWalletCredit: Bool = AppConfigManager.shared.firRemoteConfigDefaults.applyWalletCredit
+    public var applyWalletCredits: Bool = AppConfigManager.shared.firRemoteConfigDefaults.applyWalletCredits
 
     weak public var dataModelDelegate: OrderPaymentDataModelDelegate?
     
@@ -350,7 +350,7 @@ extension OrderPaymentDataModel {
         dataModelDelegate?.refreshPreProcessingUI(true)
                 
         let dataTask = APIManager.shared.preProcessOrder(bizLocationId: OrderingStoreDataModel.nearestStoreResponse!.store!.bizLocationId,
-                                                         applyWalletCredit: applyWalletCredit,
+                                                         applyWalletCredit: applyWalletCredits,
                                                          deliveryOption: selectedDeliveryOption.rawValue,
                                                          items: CartManager.shared.cartItems,
                                                          orderTotal: itemsTotalPrice,
@@ -400,12 +400,13 @@ extension OrderPaymentDataModel {
         addOrCancelDataTask(dataTask: dataTask)
     }
     
-    fileprivate func applyCoupon(code: String) {
+    public func applyCoupon(code: String) {
+        guard code.count > 0 else { return }
         let orderDict = ["biz_location_id": OrderingStoreDataModel.nearestStoreResponse!.store!.bizLocationId,
                          "order_type": selectedDeliveryOption.rawValue,
                          "channel": APIManager.channel,
                          "items": CartManager.shared.cartItems.map { $0.discountCouponApiItemDictionary },
-                         "apply_wallet_credit": applyWalletCredit] as [String : Any]
+                         "apply_wallet_credit": applyWalletCredits] as [String : Any]
         
         dataModelDelegate?.refreshCouponUI?(true)
         let dataTask = APIManager.shared.applyCoupon(code: code,
@@ -480,7 +481,7 @@ extension OrderPaymentDataModel {
                                      packagingCharge: packagingCharge ?? 0,
                                      orderSubTotal: itemsPrice,
                                      orderTotal: itemsTotalPrice,
-                                     applyWalletCredit: applyWalletCredit,
+                                     applyWalletCredit: applyWalletCredits,
                                      walletCreditApplied: orderPreProcessingResponse?.order.walletCreditApplied ?? Decimal(0).rounded,
                                      payableAmount: itemsTotalPrice,
                                      onlinePaymentInitResponse: onlinePaymentInitResponse,

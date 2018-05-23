@@ -77,7 +77,7 @@ extension APIManager {
                            completion: APICompletion<Order>?,
                            failure: APIFailure?) -> URLSessionTask {
         
-        let urlString = "\(APIManager.baseUrl)/api/v1/coupons/\(code)/"
+        let urlString = "\(APIManager.baseUrl)/api/v1/coupons/\(code)/".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
         let url = URL(string: urlString)!
         

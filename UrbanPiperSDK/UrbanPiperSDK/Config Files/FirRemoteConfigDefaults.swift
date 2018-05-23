@@ -20,7 +20,7 @@ import FirebaseRemoteConfig
 	public var apiUsername : String!
 	public var appsFlyerDevAppid : String!
 	public var appsFlyerDevKey : String!
-    public var applyWalletCredit: Bool!
+    public var applyWalletCredits: Bool!
 	public var badRatingThreshold : Int!
 	public var bizAppId : String!
 	public var bizAppName : String!
@@ -150,7 +150,7 @@ import FirebaseRemoteConfig
         #endif
 		appsFlyerDevAppid = remoteConfig["apps_flyer_dev_appid"].stringValue
 		appsFlyerDevKey = remoteConfig["apps_flyer_dev_key"].stringValue
-        applyWalletCredit = remoteConfig["apply_wallet_credit"].boolValue
+        applyWalletCredits = remoteConfig["apply_wallet_credits"].boolValue
 		badRatingThreshold = remoteConfig["bad_rating_threshold"].numberValue as? Int
 		bizAppId = remoteConfig["biz_app_id"].stringValue
 		bizAppName = remoteConfig["biz_app_name"].stringValue
