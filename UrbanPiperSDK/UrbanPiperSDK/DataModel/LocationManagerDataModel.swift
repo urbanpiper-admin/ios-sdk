@@ -28,7 +28,8 @@ public class LocationManagerDataModel: UrbanPiperDataModel {
     lazy var locationManager: CLLocationManager = {
         let manager = CLLocationManager()
         manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        manager.pausesLocationUpdatesAutomatically = false
+        manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.requestWhenInUseAuthorization()
         return manager
     }()

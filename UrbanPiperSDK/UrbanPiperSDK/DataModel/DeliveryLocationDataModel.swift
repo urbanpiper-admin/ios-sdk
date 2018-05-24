@@ -105,14 +105,16 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
 
     weak public var dataModelDelegate: DeliveryLocationDataModelDelegate?
 
-    override init() {
+    private override init() {
         super.init()
         LocationManagerDataModel.addObserver(delegate: self)
     }
-
-    public convenience init(delegate: DeliveryLocationDataModelDelegate) {
+    
+    convenience init(delegate: DeliveryLocationDataModelDelegate) {
         self.init()
         dataModelDelegate = delegate
+        guard let location = DeliveryLocationDataModel.deliveryLocation, DeliveryLocationDataModel.deliveryAddress == nil else { return }
+        resolveAddress(from: location)
     }
 
     deinit {
