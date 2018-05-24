@@ -18,7 +18,7 @@ public class SideMenuPanelDataModel: UrbanPiperDataModel {
         if AppUserDataModel.shared.validAppUserData != nil {
             return AppConfigManager.shared.loggedInUserSidePanelTabs.filter { $0.tag != Module.login }
         } else {
-            return AppConfigManager.shared.guestUserSidePanelTabs.filter { $0.tag != Module.login }
+            return AppConfigManager.shared.guestUserSidePanelTabs
         }
     }
 

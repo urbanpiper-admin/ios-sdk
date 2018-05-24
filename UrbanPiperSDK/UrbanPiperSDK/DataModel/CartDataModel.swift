@@ -9,8 +9,8 @@
 import UIKit
 
 @objc public protocol CartDataModelDelegate {
-    func refreshCheckoutUI()
-    func handleCheckout(error: UPError?)
+    func refreshCartUI()
+    func handleCart(error: UPError?)
 }
 
 @objc public protocol CartItemCellDelegate {
@@ -21,7 +21,7 @@ open class CartDataModel: UrbanPiperDataModel {
 
     weak open var dataModelDelegate: CartDataModelDelegate?
 
-    open var checkoutItemsListArray: [[ItemObject]] = CartManager.shared.groupedCartItems
+    open var cartItemsListArray: [[ItemObject]] = CartManager.shared.groupedCartItems
 
     public override init() {
         super.init()
@@ -30,8 +30,8 @@ open class CartDataModel: UrbanPiperDataModel {
     }
 
     open func refreshData() {
-        checkoutItemsListArray = CartManager.shared.groupedCartItems
-        dataModelDelegate?.refreshCheckoutUI()
+        cartItemsListArray = CartManager.shared.groupedCartItems
+        dataModelDelegate?.refreshCartUI()
         tableView?.reloadData()
         collectionView?.reloadData()
     }
@@ -42,20 +42,20 @@ open class CartDataModel: UrbanPiperDataModel {
 extension CartDataModel {
 
     open func numberOfSections(in tableView: UITableView) -> Int {
-        return checkoutItemsListArray.count
+        return cartItemsListArray.count
     }
 
     open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return checkoutItemsListArray[section].count
+        return cartItemsListArray[section].count
     }
 
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
 
-        if let checkoutItemCell = cell as? CartItemCellDelegate {
-            checkoutItemCell.configureCell(checkoutItemsListArray[indexPath.section][indexPath.row])
+        if let cartItemCell = cell as? CartItemCellDelegate {
+            cartItemCell.configureCell(cartItemsListArray[indexPath.section][indexPath.row])
         } else {
-            assert(false, "Cell does not conform to CheckoutItemCellDelegate protocol")
+            assert(false, "Cell does not conform to CartItemCellDelegate protocol")
         }
 
         return cell
@@ -67,16 +67,16 @@ extension CartDataModel {
 extension CartDataModel {
 
     open override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return checkoutItemsListArray.count
+        return cartItemsListArray.count
     }
 
     open override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
 
-        if let checkoutItemCell = cell as? CartItemCellDelegate {
-            checkoutItemCell.configureCell(checkoutItemsListArray[indexPath.section][indexPath.row])
+        if let cartItemCell = cell as? CartItemCellDelegate {
+            cartItemCell.configureCell(cartItemsListArray[indexPath.section][indexPath.row])
         } else {
-            assert(false, "Cell does not conform to CheckoutItemCellDelegate protocol")
+            assert(false, "Cell does not conform to CartItemCellDelegate protocol")
         }
 
         return cell
@@ -87,7 +87,7 @@ extension CartDataModel {
 extension CartDataModel: CartManagerDelegate {
 
     open func handleCart(error: UPError?) {
-        dataModelDelegate?.handleCheckout(error: error)
+        dataModelDelegate?.handleCart(error: error)
     }
 
     open func refreshCartUI() {
@@ -101,7 +101,7 @@ extension CartDataModel: CartManagerDelegate {
 extension CartDataModel {
 
     open override func appWillEnterForeground() {
-        guard checkoutItemsListArray.count == 0 else { return }
+        guard cartItemsListArray.count == 0 else { return }
         refreshData()
     }
 
@@ -116,7 +116,7 @@ extension CartDataModel {
 extension CartDataModel {
 
     open override func networkIsAvailable() {
-        guard checkoutItemsListArray.count == 0 else { return }
+        guard cartItemsListArray.count == 0 else { return }
         refreshData()
     }
 
