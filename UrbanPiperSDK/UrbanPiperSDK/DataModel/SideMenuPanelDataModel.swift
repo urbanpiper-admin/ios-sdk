@@ -13,12 +13,18 @@ import UIKit
 }
 
 public class SideMenuPanelDataModel: UrbanPiperDataModel {
+    
+    public var hideLoginTab: Bool = false
 
     public var panelDetailArray: [SideMenuPanelTabDetail] {
         if AppUserDataModel.shared.validAppUserData != nil {
             return AppConfigManager.shared.loggedInUserSidePanelTabs.filter { $0.tag != Module.login }
         } else {
-            return AppConfigManager.shared.guestUserSidePanelTabs
+            if hideLoginTab {
+                return AppConfigManager.shared.guestUserSidePanelTabs.filter { $0.tag != Module.login }
+            } else {
+                return AppConfigManager.shared.guestUserSidePanelTabs
+            }
         }
     }
 

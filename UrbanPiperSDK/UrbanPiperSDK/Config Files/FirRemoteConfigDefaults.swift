@@ -81,12 +81,14 @@ import FirebaseRemoteConfig
 	public var moduleFeedbackOld : Bool!
 	public var moduleHelp : Bool!
 	public var moduleHistory : Bool!
+    public var moduleHome : Bool!
 	public var moduleNotifications : Bool!
 	public var moduleOffers : Bool!
 	public var moduleOrdering : Bool!
 	public var moduleReferral : Bool!
 	public var moduleRewards : Bool!
 	public var moduleRewardsOld : Bool!
+    public var moduleSchedule : Bool!
 	public var moduleSettings : Bool!
 	public var moduleStoreLoc : Bool!
 	public var moduleStoreLocOld : Bool!
@@ -212,12 +214,14 @@ import FirebaseRemoteConfig
 		moduleFeedbackOld = remoteConfig["module_feedback_old"].boolValue
 		moduleHelp = remoteConfig["module_help"].boolValue
 		moduleHistory = remoteConfig["module_history"].boolValue
+        moduleHome = remoteConfig["module_home"].boolValue
 		moduleNotifications = remoteConfig["module_notifications"].boolValue
 		moduleOffers = remoteConfig["module_offers"].boolValue
 		moduleOrdering = remoteConfig["module_ordering"].boolValue
 		moduleReferral = remoteConfig["module_referral"].boolValue
 		moduleRewards = remoteConfig["module_rewards"].boolValue
 		moduleRewardsOld = remoteConfig["module_rewards_old"].boolValue
+        moduleSchedule = remoteConfig["module_schedule"].boolValue
 		moduleSettings = remoteConfig["module_settings"].boolValue
 		moduleStoreLoc = remoteConfig["module_store_loc"].boolValue
 		moduleStoreLocOld = remoteConfig["module_store_loc_old"].boolValue

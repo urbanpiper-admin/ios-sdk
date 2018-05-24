@@ -26,12 +26,9 @@ extension FirRemoteConfigDefaults {
             stringArray.append(Module.history.rawValue)
         }
 
-//        if "Home_Enabled" {
-        #if PLATINUM
+        if moduleHome {
             stringArray.append(Module.home.rawValue)
-        #endif
-
-//        } else
+        }
 
         if moduleWallet {
             stringArray.append(Module.wallet.rawValue)
@@ -72,9 +69,9 @@ extension FirRemoteConfigDefaults {
 //        if "custom offer enabled" {
 //        }
 
-        #if PLATINUM
+        if moduleSchedule {
             stringArray.append(Module.schedule.rawValue)
-        #endif
+        }
 
         if !moduleOrdering, moduleHistory {
             stringArray.append(Module.historyWeb.rawValue)
