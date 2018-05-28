@@ -96,7 +96,7 @@ extension LocationManagerDataModel: CLLocationManagerDelegate {
 //            manager.startUpdatingLocation()
         case .restricted, .denied:
             currentUserLocation = nil
-            manager.requestWhenInUseAuthorization()
+            manager.stopUpdatingLocation()
         }
 
         locationUpdateObservers = locationUpdateObservers.filter { $0.value != nil }
