@@ -24,7 +24,7 @@ extension APIManager {
                                 "items": items,
                                 "apply_wallet_credit": applyWalletCredit]] as [String : Any]
         
-        let urlString = "\(APIManager.baseUrl)/api/v1/coupons/\(coupon)/".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let urlString = "\(APIManager.baseUrl)/api/v1/coupons/\(coupon)/".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
         let url = URL(string: urlString)!
         
