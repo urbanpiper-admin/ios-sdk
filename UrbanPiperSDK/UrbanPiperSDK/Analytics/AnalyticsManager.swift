@@ -8,7 +8,7 @@
 
 import UIKit
 import AppsFlyerLib
-import Mixpanel
+//import Mixpanel
 import GoogleAnalytics
 
 public class AnalyticsManager: NSObject {
@@ -501,7 +501,7 @@ public class AnalyticsManager: NSObject {
             if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
                 var properties = ["query" : query]
 
-                if let storeId = OrderingStoreDataModel.nearestStoreResponse?.store?.bizLocationId {
+                if let storeId = OrderingStoreDataModel.shared.nearestStoreResponse?.store?.bizLocationId {
                     properties["store_id"] = "\(storeId)"
                 }
 
@@ -836,7 +836,7 @@ public class AnalyticsManager: NSObject {
                 var properties: [String : MixpanelType] = ["order_total" : NSDecimalNumber(decimal: orderPaymentDataModel.itemsTotalPrice).doubleValue,
                                                            "num_items": orderPaymentDataModel.orderResponse!.items.count,
                                                            "payment_option" : orderPaymentDataModel.selectedPaymentOption.rawValue,
-                                                           "store" : OrderingStoreDataModel.nearestStoreResponse!.store!.name,
+                                                           "store" : OrderingStoreDataModel.shared.nearestStoreResponse!.store!.name,
                                                            "order_phone" : phone,
                                                            "channel" : orderPaymentDataModel.orderResponse!.channel,
                                                            "order_id" : orderId,

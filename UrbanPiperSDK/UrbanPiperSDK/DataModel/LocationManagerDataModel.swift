@@ -36,20 +36,20 @@ public class LocationManagerDataModel: UrbanPiperDataModel {
 
     private var locationUpdateObservers = [WeakRefDataModelDelegate]()
     
-    public override init() {
+    private override init() {
         super.init()
         updateUserLocation()
     }
 
-    static func addObserver(delegate: LocationManagerDataModelDelegate) {
+    func addObserver(delegate: LocationManagerDataModelDelegate) {
         let weakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
-        shared.locationUpdateObservers.append(weakRefDataModelDelegate)
+        locationUpdateObservers.append(weakRefDataModelDelegate)
     }
 
 
-    static func removeObserver(delegate: LocationManagerDataModelDelegate) {
-        guard let index = (shared.locationUpdateObservers.index { $0.value === delegate }) else { return }
-        shared.locationUpdateObservers.remove(at: index)
+    func removeObserver(delegate: LocationManagerDataModelDelegate) {
+        guard let index = (locationUpdateObservers.index { $0.value === delegate }) else { return }
+        locationUpdateObservers.remove(at: index)
     }
 
     @objc public func updateUserLocation() {

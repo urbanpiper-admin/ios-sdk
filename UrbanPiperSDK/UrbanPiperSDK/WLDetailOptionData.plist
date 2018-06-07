@@ -22,7 +22,7 @@
 		<key>tabSelectedIcon</key>
 		<string>nav_order</string>
 		<key>url</key>
-		<string>https://www.urbanpiper.com/biz/%@/order/</string>
+		<string>https://api.urbanpiper.com/biz/%@/order/</string>
 		<key>tabImage</key>
 		<string>nav_order</string>
 		<key>title</key>
@@ -50,7 +50,7 @@
 		<key>tabSelectedIcon</key>
 		<string>nav_account</string>
 		<key>url</key>
-		<string>https://www.urbanpiper.com/biz/%@/pay/</string>
+		<string>https://api.urbanpiper.com/biz/%@/pay/</string>
 		<key>tabImage</key>
 		<string>nav_account</string>
 		<key>title</key>
@@ -134,7 +134,7 @@
 		<key>tabSelectedIcon</key>
 		<string>nav_reward</string>
 		<key>url</key>
-		<string>https://www.urbanpiper.com/biz/%@/rewards/</string>
+		<string>https://api.urbanpiper.com/biz/%@/rewards/</string>
 		<key>tabImage</key>
 		<string>nav_reward</string>
 		<key>title</key>
@@ -148,7 +148,7 @@
 		<key>tabSelectedIcon</key>
 		<string>nav_promo</string>
 		<key>url</key>
-		<string>https://www.urbanpiper.com/biz/%@/promos/</string>
+		<string>https://api.urbanpiper.com/biz/%@/promos/</string>
 		<key>tabImage</key>
 		<string>nav_promo</string>
 		<key>title</key>
@@ -176,7 +176,7 @@
 		<key>tabSelectedIcon</key>
 		<string>nav_history</string>
 		<key>url</key>
-		<string>https://www.urbanpiper.com/biz/%@/messages/</string>
+		<string>https://api.urbanpiper.com/biz/%@/messages/</string>
 		<key>tabImage</key>
 		<string>nav_history</string>
 		<key>title</key>
@@ -218,7 +218,7 @@
 		<key>tabSelectedIcon</key>
 		<string>nav_feedback</string>
 		<key>url</key>
-		<string>https://www.urbanpiper.com/biz/%@/review/</string>
+		<string>https://api.urbanpiper.com/biz/%@/review/</string>
 		<key>tabImage</key>
 		<string>nav_feedback</string>
 		<key>title</key>
@@ -246,7 +246,7 @@
 		<key>tabSelectedIcon</key>
 		<string>nav_location</string>
 		<key>url</key>
-		<string>https://www.urbanpiper.com/biz/%@/location/</string>
+		<string>https://api.urbanpiper.com/biz/%@/location/</string>
 		<key>tabImage</key>
 		<string>nav_location</string>
 		<key>title</key>
@@ -274,7 +274,7 @@
 		<key>tabSelectedIcon</key>
 		<string>nav_faq</string>
 		<key>url</key>
-		<string>https://www.urbanpiper.com/biz/%@/faq/?no-decoration=true</string>
+		<string>https://api.urbanpiper.com/biz/%@/faq/?no-decoration=true</string>
 		<key>tabImage</key>
 		<string>nav_faq</string>
 		<key>title</key>

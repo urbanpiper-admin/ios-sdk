@@ -7,19 +7,30 @@
 
 import Foundation
 
+public enum AddressTag: String {
+    case home = "home"
+    case office = "work"
+    case other = "other"
+}
 
-public class Address : NSObject, NSCoding{
+
+public class Address : NSObject, NSCoding {
 
 	public var address1 : String!
 	public var address2 : String!
 	public var city : String!
 	public var id : Int!
-	public var lat : AnyObject!
-	public var lng : AnyObject!
+	public var lat : Double!
+	public var lng : Double!
 	public var pin : String!
-	public var podId : AnyObject!
+	public var podId : Int!
 	public var subLocality : String!
 	public var tag : String!
+    
+    public var addressTag: AddressTag {
+        guard let tagString = tag?.lowercased(), let addressTagVal = AddressTag(rawValue: tagString) else { return .other }
+        return addressTagVal
+    }
     
     public var fullAddress: String? {
         var fullAddress = ""
@@ -42,7 +53,6 @@ public class Address : NSObject, NSCoding{
         return fullAddress
     }
 
-
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
@@ -51,10 +61,10 @@ public class Address : NSObject, NSCoding{
 		address2 = dictionary["address_2"] as? String
 		city = dictionary["city"] as? String
 		id = dictionary["id"] as? Int
-		lat = dictionary["lat"] as AnyObject
-		lng = dictionary["lng"] as AnyObject
+		lat = dictionary["lat"] as? Double ?? Double(0)
+		lng = dictionary["lng"] as? Double ?? Double(0)
 		pin = dictionary["pin"] as? String
-		podId = dictionary["pod_id"] as AnyObject
+		podId = dictionary["pod_id"] as? Int
 		subLocality = dictionary["sub_locality"] as? String
 		tag = dictionary["tag"] as? String
 	}
@@ -108,10 +118,10 @@ public class Address : NSObject, NSCoding{
          address2 = aDecoder.decodeObject(forKey: "address_2") as? String
          city = aDecoder.decodeObject(forKey: "city") as? String
          id = aDecoder.decodeObject(forKey: "id") as? Int
-         lat = aDecoder.decodeObject(forKey: "lat") as AnyObject
-         lng = aDecoder.decodeObject(forKey: "lng") as AnyObject
+         lat = aDecoder.decodeObject(forKey: "lat") as? Double ?? Double(0)
+         lng = aDecoder.decodeObject(forKey: "lng") as? Double ?? Double(0)
          pin = aDecoder.decodeObject(forKey: "pin") as? String
-         podId = aDecoder.decodeObject(forKey: "pod_id") as AnyObject
+         podId = aDecoder.decodeObject(forKey: "pod_id") as? Int
          subLocality = aDecoder.decodeObject(forKey: "sub_locality") as? String
          tag = aDecoder.decodeObject(forKey: "tag") as? String
 

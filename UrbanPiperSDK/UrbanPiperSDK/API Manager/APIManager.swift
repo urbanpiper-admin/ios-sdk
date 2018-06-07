@@ -16,6 +16,7 @@ import UIKit
     public static let baseUrl = "https://api.urbanpiper.com"
     #endif
 
+    public typealias APISuccess = () -> Void
     public typealias APICompletion<T> = (T?) -> Void
     public typealias APIFailure = (UPError?) -> Void
 

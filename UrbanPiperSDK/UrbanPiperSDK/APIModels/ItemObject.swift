@@ -72,7 +72,7 @@ public class ItemObject : NSObject, NSCoding{
         }
 
 		itemTitle = dictionary["item_title"] as? String
-		likes = dictionary["likes"] as? Int
+		likes = dictionary["likes"] as? Int ?? 0
 		optionGroups = [ItemOptionGroup]()
 		if let optionGroupsArray = dictionary["option_groups"] as? [[String:Any]]{
 			for dic in optionGroupsArray{

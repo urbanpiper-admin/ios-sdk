@@ -166,7 +166,7 @@ extension CategoryItemsDataModel {
         dataModelDelegate?.refreshCategoryItemsUI(true)
         isFetchingCategoryItems = true
         let dataTask = APIManager.shared.fetchCategoryItems(categoryId: categoryObject.id,
-                                                            locationID: OrderingStoreDataModel.nearestStoreResponse?.store?.bizLocationId,
+                                                            locationID: OrderingStoreDataModel.shared.nearestStoreResponse?.store?.bizLocationId,
                                                             isForcedRefresh: isForcedRefresh,
                                                             next: next,
                                                             completion: { [weak self] (data) in

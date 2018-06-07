@@ -59,7 +59,6 @@ public enum DeliveryOption: String {
 @objc public protocol OrderPaymentDataModelDelegate {
     
     func refreshPreProcessingUI(_ isRefreshing: Bool)
-    func refreshAddressUI(_ isRefreshing: Bool)
     func refreshWalletUI(_ isRefreshing: Bool)
     
     @objc optional func refreshCouponUI(_ isRefreshing: Bool)
@@ -82,9 +81,7 @@ public enum DeliveryOption: String {
 }
 
 public class OrderPaymentDataModel: UrbanPiperDataModel {
-    
-    static let defaultAddressDefaultsKey = "DefaultAddressDefaultsKey"
-    
+        
     public var orderPreProcessingResponse: OrderPreProcessingResponse? {
         didSet {
             guard orderPreProcessingResponse != nil else { return }
@@ -112,43 +109,11 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
         }
     }
     
-    public var defaultAddress: Address? {
-        get {
-            if let defaultAddressData = UserDefaults.standard.object(forKey: OrderPaymentDataModel.defaultAddressDefaultsKey) as? Data {
-                Address.registerClassName()
-                guard let address = NSKeyedUnarchiver.unarchiveObject(with: defaultAddressData) as? Address else { return nil }
-                return address
-            } else {
-                guard let address = self.userAddressesResponse?.addresses.first else { return nil }
-                Address.registerClassName()
-                let defaultAddressData = NSKeyedArchiver.archivedData(withRootObject: address)
-                
-                UserDefaults.standard.set(defaultAddressData, forKey: OrderPaymentDataModel.defaultAddressDefaultsKey)
-                return address
-            }
-        }
-        set {
-            if let val = newValue {
-                Address.registerClassName()
-                let defaultAddressData = NSKeyedArchiver.archivedData(withRootObject: val)
-                
-                UserDefaults.standard.set(defaultAddressData, forKey: OrderPaymentDataModel.defaultAddressDefaultsKey)
-            } else {
-                UserDefaults.standard.removeObject(forKey: OrderPaymentDataModel.defaultAddressDefaultsKey)
-            }
-            
-            dataModelDelegate?.refreshAddressUI(false)
-        }
-    }
-    
-    public var userAddressesResponse: UserAddressesResponse? {
-        didSet {
-            guard let response = userAddressesResponse, let address = defaultAddress else { return }
-            
-            if response.addresses.filter ({ $0.id == address.id }).last == nil {
-                defaultAddress = nil
-            }
-        }
+    public var deliveryAddress: Address? {
+        guard let defaultAddressData = UserDefaults.standard.object(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey) as? Data else { return nil }
+            Address.registerClassName()
+        guard let address = NSKeyedUnarchiver.unarchiveObject(with: defaultAddressData) as? Address else { return nil }
+        return address
     }
 
     public var couponCode: String?
@@ -167,15 +132,15 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
     
     public var deliveryCharge: Decimal {
-        return orderResponse?.deliveryCharge ?? OrderingStoreDataModel.nearestStoreResponse?.store?.deliveryCharge ?? Decimal(0).rounded
+        return orderResponse?.deliveryCharge ?? OrderingStoreDataModel.shared.nearestStoreResponse?.store?.deliveryCharge ?? Decimal(0).rounded
     }
     
     public var packagingCharge: Decimal? {
-        return orderResponse?.packagingCharge ?? OrderingStoreDataModel.nearestStoreResponse?.store?.packagingCharge
+        return orderResponse?.packagingCharge ?? OrderingStoreDataModel.shared.nearestStoreResponse?.store?.packagingCharge
     }
     
     public var discountPrice: Decimal? {
-        return applyCouponResponse?.discount.value ?? orderPreProcessingResponse?.discount ?? OrderingStoreDataModel.nearestStoreResponse?.store?.discount
+        return applyCouponResponse?.discount.value ?? orderPreProcessingResponse?.discount ?? OrderingStoreDataModel.shared.nearestStoreResponse?.store?.discount
     }
 
     public var itemsTotalPrice: Decimal {
@@ -183,11 +148,11 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
     
     public var itemTaxes: Decimal? {
-        return orderResponse?.itemTaxes ?? OrderingStoreDataModel.nearestStoreResponse?.store?.itemTaxes
+        return orderResponse?.itemTaxes ?? OrderingStoreDataModel.shared.nearestStoreResponse?.store?.itemTaxes
     }
     
     public var taxRate: Float {
-        return orderResponse?.taxRate ?? OrderingStoreDataModel.nearestStoreResponse?.store?.taxRate ?? 0
+        return orderResponse?.taxRate ?? OrderingStoreDataModel.shared.nearestStoreResponse?.store?.taxRate ?? 0
     }
 
     lazy public var selectedPaymentOption: PaymentOption = {
@@ -242,7 +207,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
 
     public var deliveryOptions: [DeliveryOption]? {
-        guard let bizDetails = OrderingStoreDataModel.nearestStoreResponse?.biz else { return nil }
+        guard let bizDetails = OrderingStoreDataModel.shared.nearestStoreResponse?.biz else { return nil }
         var array = [DeliveryOption]()
         
         array.append(.delivery)
@@ -254,6 +219,8 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
     
     public var simpl: Simpl?
+
+    public var phoneNumber: String?
     
     public var paymentOptions: [PaymentOption]? {
         guard let paymentsStringArray = orderPreProcessingResponse?.order.paymentModes else { return nil }
@@ -325,12 +292,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
             bizInfo = nil
             updateUserBizInfo()
         }
-        
-        if isForcedRefresh || userAddressesResponse == nil || userAddressesResponse?.addresses.count == 0 {
-            userAddressesResponse = nil
-            updateUserSavedAddresses()
-        }
-        
+
         if isForcedRefresh || orderPreProcessingResponse == nil
             || (selectedDeliveryOption == .pickUp && deliveryCharge > Decimal(0).rounded)
             || (selectedDeliveryOption != .pickUp && deliveryCharge == Decimal(0).rounded) {
@@ -349,7 +311,7 @@ extension OrderPaymentDataModel {
     public func preProcessOrder() {
         dataModelDelegate?.refreshPreProcessingUI(true)
                 
-        let dataTask = APIManager.shared.preProcessOrder(bizLocationId: OrderingStoreDataModel.nearestStoreResponse!.store!.bizLocationId,
+        let dataTask = APIManager.shared.preProcessOrder(bizLocationId: OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
                                                          applyWalletCredit: applyWalletCredits,
                                                          deliveryOption: selectedDeliveryOption.rawValue,
                                                          items: CartManager.shared.cartItems,
@@ -384,25 +346,9 @@ extension OrderPaymentDataModel {
         addOrCancelDataTask(dataTask: dataTask)
     }
     
-    public func updateUserSavedAddresses() {
-        dataModelDelegate?.refreshAddressUI(true)
-        let dataTask = APIManager.shared.userSavedAddresses(completion: { [weak self] (userAddressesResponse) in
-            defer {
-                self?.dataModelDelegate?.refreshAddressUI(false)
-            }
-            self?.userAddressesResponse = userAddressesResponse
-            }, failure: { [weak self] (upError) in
-            defer {
-                self?.dataModelDelegate?.refreshAddressUI(false)
-                self?.dataModelDelegate?.handleOrderPayment(error: upError)
-            }
-        })
-        addOrCancelDataTask(dataTask: dataTask)
-    }
-    
     public func applyCoupon(code: String) {
         guard code.count > 0 else { return }
-        let orderDict = ["biz_location_id": OrderingStoreDataModel.nearestStoreResponse!.store!.bizLocationId,
+        let orderDict = ["biz_location_id": OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
                          "order_type": selectedDeliveryOption.rawValue,
                          "channel": APIManager.channel,
                          "items": CartManager.shared.cartItems.map { $0.discountCouponApiItemDictionary },
@@ -433,7 +379,7 @@ extension OrderPaymentDataModel {
         let dataTask = APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption.rawValue,
                                                                purpose: OnlinePaymentPurpose.ordering.rawValue,
                                                                totalAmount: itemsTotalPrice,
-                                                               bizLocationId: OrderingStoreDataModel.nearestStoreResponse!.store!.bizLocationId,
+                                                               bizLocationId: OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
                                                                completion: { [weak self] (onlinePaymentInitResponse) in
                                                                 self?.dataModelDelegate?.initiatingPayment(isProcessing: false)
                                                                 if paymentOption == .paymentGateway || paymentOption == .paytm || paymentOption == .simpl {
@@ -465,13 +411,13 @@ extension OrderPaymentDataModel {
         let timeSlotDelivery = AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots!
         
         let paymentOption = selectedPaymentOption
-        let dataTask = APIManager.shared.placeOrder(address: selectedDeliveryOption != .pickUp ? defaultAddress : nil,
+        let dataTask = APIManager.shared.placeOrder(address: selectedDeliveryOption != .pickUp ? deliveryAddress : nil,
                                      items: CartManager.shared.cartItems,
                                      deliveryDate: deliveryDate,
                                      timeSlot: timeSlotDelivery ? selectedDeliveryTimeSlotOption : nil,
                                      deliveryOption: selectedDeliveryOption.rawValue,
                                      phone: phone,
-                                     bizLocationId: OrderingStoreDataModel.nearestStoreResponse!.store!.bizLocationId,
+                                     bizLocationId: OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
                                      paymentOption: paymentOption.rawValue,
                                      taxRate: taxRate,
                                      couponCode: couponCode,

@@ -23,11 +23,12 @@ import GooglePlaces
 public class DeliveryLocationDataModel: UrbanPiperDataModel {
 
     private struct LocationUserDefaultKeys {
-        static let nextLocationUpdateDate = "NextLocationUpdateDate"
         static let deliveryLocationLatitude = "DeliveryLocationLatitude"
         static let deliveryLocationLongitude = "DeliveryLocationLongitude"
         static let deliveryAddress = "DeliveryAddress"
     }
+    
+    @objc public static private(set) var shared = DeliveryLocationDataModel()
 
     static let maxDistanceBetweenLocations = CLLocationDistance(200)
 
@@ -39,11 +40,11 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
         #endif
     }()
     
-    @objc static var nextLocationUpdateDate: Date?
+    @objc var nextLocationUpdateDate: Date?
 
-    @objc static var userSelectedDeliveryLocation: Bool = false
+    @objc var userSelectedDeliveryLocation: Bool = false
 
-    @objc public static var deliveryLocation: CLLocation? = {
+    @objc public var deliveryLocation: CLLocation? = {
         guard let lat = UserDefaults.standard.object(forKey: LocationUserDefaultKeys.deliveryLocationLatitude) as? CLLocationDegrees else { return nil }
         guard let lon = UserDefaults.standard.object(forKey: LocationUserDefaultKeys.deliveryLocationLongitude) as? CLLocationDegrees else { return nil }
 
@@ -64,7 +65,7 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
         }
     }
 
-    @objc public static var deliveryAddress: OrderDeliveryAddress? = {
+    @objc public var deliveryAddress: OrderDeliveryAddress? = {
         guard let addressData = UserDefaults.standard.object(forKey: LocationUserDefaultKeys.deliveryAddress) as? Data else { return nil }
         OrderDeliveryAddress.registerClassName()
         guard let orderDeliveryAddress = NSKeyedUnarchiver.unarchiveObject(with: addressData) as? OrderDeliveryAddress else { return nil }
@@ -77,9 +78,9 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
                 return
             }
             
-            if let store = OrderingStoreDataModel.nearestStoreResponse?.store {
+            if let store = OrderingStoreDataModel.shared.nearestStoreResponse?.store {
                 if store.closingDay || store.isStoreClosed {
-                    if let coordinate = DeliveryLocationDataModel.deliveryLocation?.coordinate {
+                    if let coordinate = deliveryLocation?.coordinate {
                         AnalyticsManager.shared.nearestStoreClosed(lat: coordinate.latitude,
                                                                    lng: coordinate.longitude,
                                                                    deliveryAddress: address.fullAddress ?? "",
@@ -87,7 +88,7 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
                     }
                     
                 } else if store.temporarilyClosed {
-                    if let coordinate = DeliveryLocationDataModel.deliveryLocation?.coordinate {
+                    if let coordinate = deliveryLocation?.coordinate {
                         AnalyticsManager.shared.nearestStoreTemporarilyClosed(lat: coordinate.latitude,
                                                                               lng: coordinate.longitude,
                                                                               deliveryAddress: address.fullAddress ?? "",
@@ -104,26 +105,22 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
     }
 
     weak public var dataModelDelegate: DeliveryLocationDataModelDelegate?
-
+    
     private override init() {
         super.init()
-        LocationManagerDataModel.addObserver(delegate: self)
-    }
-    
-    convenience init(delegate: DeliveryLocationDataModelDelegate) {
-        self.init()
-        dataModelDelegate = delegate
-        guard let location = DeliveryLocationDataModel.deliveryLocation, DeliveryLocationDataModel.deliveryAddress == nil else { return }
+        
+        LocationManagerDataModel.shared.addObserver(delegate: self)
+        guard let location = deliveryLocation, deliveryAddress == nil else { return }
         resolveAddress(from: location)
     }
 
     deinit {
-        LocationManagerDataModel.removeObserver(delegate: self)
+        LocationManagerDataModel.shared.removeObserver(delegate: self)
     }
 
     public func updateCurrentUserLocation() {
         if CLLocationManager.locationServicesEnabled() {
-            DeliveryLocationDataModel.nextLocationUpdateDate = nil
+            nextLocationUpdateDate = nil
         }
         
         LocationManagerDataModel.shared.updateUserLocation()
@@ -131,9 +128,7 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
 
     public func setCustomDelivery(location: CLLocation, address: GMSAddress?) {
         if let addressObject = address {
-            let deliveryAddress = OrderDeliveryAddress(gmsAddress: addressObject)
-            DeliveryLocationDataModel.deliveryAddress = deliveryAddress
-
+            deliveryAddress = OrderDeliveryAddress(gmsAddress: addressObject)
             dataModelDelegate?.update(location, deliveryAddress, nil)
         } else {
             resolveAddress(from: location)
@@ -147,21 +142,20 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
 extension DeliveryLocationDataModel {
 
     public func resolveAddress(from location: CLLocation) {
-        DeliveryLocationDataModel.nextLocationUpdateDate = Calendar.current.date(byAdding: .minute,
+        nextLocationUpdateDate = Calendar.current.date(byAdding: .minute,
                                                                                  value: Int(DeliveryLocationDataModel.locationUpdateTimeInterval),
                                                                                  to: Date())
         
-        DeliveryLocationDataModel.deliveryLocation = location
+        deliveryLocation = location
         
         dataModelDelegate?.update(location, nil, nil)
 
         let modelDelegate = dataModelDelegate
-        GMSGeocoder().reverseGeocodeCoordinate(location.coordinate, completionHandler: { (response, error) -> Void in
+        GMSGeocoder().reverseGeocodeCoordinate(location.coordinate, completionHandler: { [weak self] (response, error) -> Void in
             if let address = response?.firstResult() {
-                let address = OrderDeliveryAddress(gmsAddress: address)
-                DeliveryLocationDataModel.deliveryAddress = address
-
-                modelDelegate?.update(location, address, nil)
+                let deliveryAddress = OrderDeliveryAddress(gmsAddress: address)
+                self?.deliveryAddress = deliveryAddress
+                modelDelegate?.update(location, deliveryAddress, nil)
             } else {
                 let apiError = UPAPIError(error: error, data: nil)
 
@@ -182,23 +176,22 @@ extension DeliveryLocationDataModel: LocationManagerDataModelDelegate {
             return
         }
 
-        let nextLocationUpdateDate = DeliveryLocationDataModel.nextLocationUpdateDate
         let now = Date()
         let hasPassedRefreshWindow = (nextLocationUpdateDate == nil || nextLocationUpdateDate! <= now)
 
-        guard DeliveryLocationDataModel.deliveryLocation == nil || hasPassedRefreshWindow else {
-            dataModelDelegate?.update(DeliveryLocationDataModel.deliveryLocation, DeliveryLocationDataModel.deliveryAddress, nil)
+        guard deliveryLocation == nil || hasPassedRefreshWindow else {
+            dataModelDelegate?.update(deliveryLocation, deliveryAddress, nil)
             return
         }
 
-        if let currentDeliveryLocation = DeliveryLocationDataModel.deliveryLocation {
+        if let currentDeliveryLocation = deliveryLocation {
             let distanceInMeters = newLocation.distance(from: currentDeliveryLocation)
             if distanceInMeters <= DeliveryLocationDataModel.maxDistanceBetweenLocations {
-                guard let deliveryAddress = DeliveryLocationDataModel.deliveryAddress else {
+                guard let deliveryAddress = deliveryAddress else {
                     resolveAddress(from: currentDeliveryLocation)
                     return
                 }
-                dataModelDelegate?.update(DeliveryLocationDataModel.deliveryLocation, deliveryAddress, nil)
+                dataModelDelegate?.update(deliveryLocation, deliveryAddress, nil)
                 return
             }
         }
@@ -222,8 +215,8 @@ extension DeliveryLocationDataModel: LocationManagerDataModelDelegate {
 extension DeliveryLocationDataModel {
 
     @objc open override func appWillEnterForeground() {
-        if let location = DeliveryLocationDataModel.deliveryLocation {
-            guard DeliveryLocationDataModel.deliveryAddress == nil else { return }
+        if let location = deliveryLocation {
+            guard deliveryAddress == nil else { return }
             resolveAddress(from: location)
         } else {
             updateCurrentUserLocation()
@@ -240,8 +233,8 @@ extension DeliveryLocationDataModel {
 extension DeliveryLocationDataModel {
 
     @objc open override func networkIsAvailable() {
-        if let location = DeliveryLocationDataModel.deliveryLocation {
-            guard DeliveryLocationDataModel.deliveryAddress == nil else { return }
+        if let location = deliveryLocation {
+            guard deliveryAddress == nil else { return }
             resolveAddress(from: location)
         } else {
             updateCurrentUserLocation()

@@ -12,7 +12,17 @@ import FirebaseRemoteConfig
 
     public static let shared = FirRemoteConfigDefaults()
 
-    let remoteConfig = RemoteConfig.remoteConfig()
+    let remoteConfig: RemoteConfig = {
+        let remoteConfig = RemoteConfig.remoteConfig()
+
+        #if DEBUG
+        let remoteConfigSettings = RemoteConfigSettings(developerModeEnabled: true)
+        remoteConfig.configSettings = remoteConfigSettings
+        #endif
+
+        remoteConfig.setDefaults(fromPlist: "RemoteConfigDefaults")
+        return remoteConfig
+    }()
 
 	public var allowCashForOrderCheckout : Bool!
 	public var altDeliveryTimeText : String!

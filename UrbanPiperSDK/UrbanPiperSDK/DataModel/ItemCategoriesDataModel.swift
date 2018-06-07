@@ -24,8 +24,6 @@ open class ItemCategoriesDataModel: UrbanPiperDataModel {
 
     weak open var dataModelDelegate: ItemCategoriesDataModelDelegate?
     
-    private var orderingStoreDataModel: OrderingStoreDataModel?
-
     open var categoriesResponse: CategoriesResponse? {
         didSet {
             tableView?.reloadData()
@@ -39,7 +37,8 @@ open class ItemCategoriesDataModel: UrbanPiperDataModel {
 
     public override init() {
         super.init()
-        orderingStoreDataModel = OrderingStoreDataModel(delegate: self)
+        OrderingStoreDataModel.shared.addObserver(delegate: self)
+
         refreshData(true)
     }
 
@@ -123,8 +122,9 @@ extension ItemCategoriesDataModel {
 extension ItemCategoriesDataModel: OrderingStoreDataModelDelegate {
     
     open func update(_ storeResponse: StoreResponse?, _ deliveryLocation: CLLocation?, _ error: UPError?, _ storeUpdated: Bool) {
-        guard let _ = storeResponse, categoriesResponse == nil else { return }
-        
+        guard storeUpdated else { return }
+
+        categoriesResponse = nil
         refreshData(true)
     }
     

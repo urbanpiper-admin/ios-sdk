@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 @objc public protocol BannersDataModelDelegate {
 
     func refreshBannersUI()

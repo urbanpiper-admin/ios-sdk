@@ -29,16 +29,16 @@ public class ItemDetailsDataModel: UrbanPiperDataModel {
     public var item: ItemObject?
     public var userLikesResponse: UserLikesResponse?
 
-    public override init() {
+    private override init() {
         super.init()
-
-        refreshData()
     }
 
     public convenience init(delegate: ItemDetailsDataModelDelegate) {
         self.init()
 
         dataModelDelegate = delegate
+        
+        refreshData()
     }
 
     public func refreshData(_ isForcedRefresh: Bool = false) {
@@ -102,7 +102,7 @@ extension ItemDetailsDataModel {
     fileprivate func fetchItemDetails(itemId: Int)  {
 
         let dataTask = APIManager.shared.fetchItemDetails(itemId: itemId,
-                                                          locationID: OrderingStoreDataModel.nearestStoreResponse?.store?.bizLocationId,
+                                                          locationID: OrderingStoreDataModel.shared.nearestStoreResponse?.store?.bizLocationId,
                                                           completion: { [weak self] (data) in
             defer {
                 self?.dataModelDelegate?.refreshItemDetailsUI()

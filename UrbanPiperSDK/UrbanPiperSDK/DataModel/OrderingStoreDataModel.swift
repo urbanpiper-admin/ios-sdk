@@ -25,11 +25,13 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
         static let nearestStoreResponseKey = "NearestStoreResponse"
     }
 
+    @objc public static private(set) var shared = OrderingStoreDataModel(deliveryLocationDataModel: DeliveryLocationDataModel.shared)
+
     private typealias WeakRefDataModelDelegate = WeakRef<OrderingStoreDataModelDelegate>
 
-    static private var observers = [WeakRefDataModelDelegate]()
+    private var observers = [WeakRefDataModelDelegate]()
 
-    @objc public static var nearestStoreResponse: StoreResponse? = {
+    @objc public var nearestStoreResponse: StoreResponse? = {
         guard let storeResponseData = UserDefaults.standard.object(forKey: OrderingStoreUserDefaultKeys.nearestStoreResponseKey) as? Data else { return nil }
         Biz.registerClassName()
         Biz.registerClassNameWhiteLabel()
@@ -54,12 +56,12 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
                 return
             }
 
-            if let previousStoreId = oldValue?.store?.bizLocationId, let currentStoreId = storeResponse.store?.bizLocationId, previousStoreId != currentStoreId {
+            if let previousStoreId = previousStoreResponse?.store?.bizLocationId, let currentStoreId = storeResponse.store?.bizLocationId, previousStoreId != currentStoreId {
                 
                 if let store = storeResponse.store {
-                    if let deliverAddress = DeliveryLocationDataModel.deliveryAddress?.fullAddress {
+                    if let deliverAddress = DeliveryLocationDataModel.shared.deliveryAddress?.fullAddress {
                         if store.closingDay || store.isStoreClosed {
-                            if let coordinate = DeliveryLocationDataModel.deliveryLocation?.coordinate {
+                            if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
                                 AnalyticsManager.shared.nearestStoreClosed(lat: coordinate.latitude,
                                                                            lng: coordinate.longitude,
                                                                            deliveryAddress: deliverAddress,
@@ -67,7 +69,7 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
                             }
                             
                         } else if store.temporarilyClosed {
-                            if let coordinate = DeliveryLocationDataModel.deliveryLocation?.coordinate {
+                            if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
                                 AnalyticsManager.shared.nearestStoreTemporarilyClosed(lat: coordinate.latitude,
                                                                                       lng: coordinate.longitude,
                                                                                       deliveryAddress: deliverAddress,
@@ -76,10 +78,12 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
                         }
                     }
                 } else {
-                    if let coordinate = DeliveryLocationDataModel.deliveryLocation?.coordinate {
+                    if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
                         AnalyticsManager.shared.noStoresNearBy(lat: coordinate.latitude, lng: coordinate.longitude)
                     }
                 }
+                CartManager.shared.clearCart()
+            } else if storeResponse.store == nil {
                 CartManager.shared.clearCart()
             }
 
@@ -90,37 +94,35 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
         }
     }
 
-
-    weak public var dataModelDelegate: OrderingStoreDataModelDelegate?
+    var previousStoreResponse: StoreResponse?
 
     public typealias UpdateCompletionBlock = (StoreResponse?, UPError?) -> Void
     var updateCompletionBlock: UpdateCompletionBlock?
 
-    var deliveryLocationDataModel: DeliveryLocationDataModel!
-
     var isFetchingNearestStoreForLocation: CLLocation?
-
-    public override init() {
+    
+    public init(deliveryLocationDataModel: DeliveryLocationDataModel) {
         super.init()
 
-        deliveryLocationDataModel = DeliveryLocationDataModel(delegate: self)
+        deliveryLocationDataModel.dataModelDelegate = self
     }
 
-    @objc public convenience init(delegate: OrderingStoreDataModelDelegate) {
-        self.init()
-        dataModelDelegate = delegate
-
+    public func addObserver(delegate: OrderingStoreDataModelDelegate) {
         let weakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
-        OrderingStoreDataModel.observers.append(weakRefDataModelDelegate)
+        observers.append(weakRefDataModelDelegate)
+        observers = observers.filter { $0.value != nil }
+    }
+    
+    
+    public func removeObserver(delegate: OrderingStoreDataModelDelegate) {
+        guard let index = (observers.index { $0.value === delegate }) else { return }
+        observers.remove(at: index)
     }
 
-    deinit {
-        OrderingStoreDataModel.observers = OrderingStoreDataModel.observers.filter { $0.value != nil && $0 !== dataModelDelegate }
-    }
 
     @objc public func updateLocationAndNearestStore(completion: @escaping UpdateCompletionBlock) {
         updateCompletionBlock = completion
-        deliveryLocationDataModel.updateCurrentUserLocation()
+        DeliveryLocationDataModel.shared.updateCurrentUserLocation()
     }
 
 }
@@ -132,33 +134,34 @@ extension OrderingStoreDataModel {
     fileprivate func fetchNearestStore(location: CLLocation) {
 
         guard isFetchingNearestStoreForLocation == nil || isFetchingNearestStoreForLocation! != location else {
-            _ = OrderingStoreDataModel.observers.map { $0.value?.update(nil, location, nil, false) }
+            _ = observers.map { $0.value?.update(nil, location, nil, false) }
             return
         }
 
         isFetchingNearestStoreForLocation = location
 
-        OrderingStoreDataModel.nearestStoreResponse = nil
+        previousStoreResponse = OrderingStoreDataModel.shared.nearestStoreResponse
+        OrderingStoreDataModel.shared.nearestStoreResponse = nil
         
-        _ = OrderingStoreDataModel.observers.map { $0.value?.update(nil, location, nil, false) }
+        _ = observers.map { $0.value?.update(nil, location, nil, false) }
         
         let dataTask = APIManager.shared.fetchNearestStore(location.coordinate, completion: { [weak self] (data) in
             defer {
-                _ = OrderingStoreDataModel.observers.map { $0.value?.update(OrderingStoreDataModel.nearestStoreResponse, location, nil, true) }
-                self?.updateCompletionBlock?(OrderingStoreDataModel.nearestStoreResponse, nil)
+                _ = self?.observers.map { $0.value?.update(OrderingStoreDataModel.shared.nearestStoreResponse, location, nil, true) }
+                self?.updateCompletionBlock?(OrderingStoreDataModel.shared.nearestStoreResponse, nil)
                 self?.updateCompletionBlock = nil
             }
 
             self?.isFetchingNearestStoreForLocation = nil
 
             guard let response = data else { return }
-            OrderingStoreDataModel.nearestStoreResponse = response
+            OrderingStoreDataModel.shared.nearestStoreResponse = response
             
             }, failure: { [weak self] (upError) in
                 self?.isFetchingNearestStoreForLocation = nil
 
                 defer {
-                    _ = OrderingStoreDataModel.observers.map { $0.value?.update(nil, nil, upError, false) }
+                    _ = self?.observers.map { $0.value?.update(nil, nil, upError, false) }
                     self?.updateCompletionBlock?(nil, upError)
                     self?.updateCompletionBlock = nil
                 }
@@ -174,13 +177,13 @@ extension OrderingStoreDataModel {
 
     @objc public func updateNearestStore(for location: CLLocation?, address: GMSAddress? = nil, completion: UpdateCompletionBlock?) {
         guard let loc = location else {
-            _ = OrderingStoreDataModel.observers.map { $0.value?.update(nil, nil, nil, false) }
+            _ = observers.map { $0.value?.update(nil, nil, nil, false) }
             completion?(nil, nil)
             return
         }
 
         updateCompletionBlock = completion
-        deliveryLocationDataModel.setCustomDelivery(location: loc, address: address)
+        DeliveryLocationDataModel.shared.setCustomDelivery(location: loc, address: address)
     }
 }
 
@@ -188,30 +191,30 @@ extension OrderingStoreDataModel: DeliveryLocationDataModelDelegate {
 
     public func update(_ deliveryLocation: CLLocation?, _ deliveryAddress: OrderDeliveryAddress?, _ upError: UPError?) {
         if let error = upError {
-            _ = OrderingStoreDataModel.observers.map { $0.value?.update(nil, nil, error, false) }
+            _ = observers.map { $0.value?.update(nil, nil, error, false) }
             updateCompletionBlock?(nil, error)
             updateCompletionBlock = nil
-        } else if deliveryLocation != nil && (deliveryAddress == nil || OrderingStoreDataModel.nearestStoreResponse == nil) {
+        } else if deliveryLocation != nil && (deliveryAddress == nil || OrderingStoreDataModel.shared.nearestStoreResponse == nil) {
             fetchNearestStore(location: deliveryLocation!)
-            _ = OrderingStoreDataModel.observers.map { $0.value?.update(OrderingStoreDataModel.nearestStoreResponse, deliveryLocation, nil, false) }
+            _ = observers.map { $0.value?.update(OrderingStoreDataModel.shared.nearestStoreResponse, deliveryLocation, nil, false) }
         } else if deliveryLocation != nil, deliveryAddress != nil, upError == nil {
-            _ = OrderingStoreDataModel.observers.map { $0.value?.update(OrderingStoreDataModel.nearestStoreResponse, deliveryLocation, nil, false) }
+            _ = observers.map { $0.value?.update(OrderingStoreDataModel.shared.nearestStoreResponse, deliveryLocation, nil, false) }
             
-            updateCompletionBlock?(OrderingStoreDataModel.nearestStoreResponse, nil)
+            updateCompletionBlock?(OrderingStoreDataModel.shared.nearestStoreResponse, nil)
             updateCompletionBlock = nil
-        } else if DeliveryLocationDataModel.deliveryLocation == nil, DeliveryLocationDataModel.deliveryAddress == nil {
-            _ = OrderingStoreDataModel.observers.map { $0.value?.update(nil, nil, nil, false) }
+        } else if DeliveryLocationDataModel.shared.deliveryLocation == nil, DeliveryLocationDataModel.shared.deliveryAddress == nil {
+            _ = observers.map { $0.value?.update(nil, nil, nil, false) }
             updateCompletionBlock?(nil, nil)
             updateCompletionBlock = nil
         }
     }
 
     public func handleLocationManagerFailure(error: Error?) {
-        _ = OrderingStoreDataModel.observers.map { $0.value?.handleLocationManagerFailure(error: error) }
+        _ = observers.map { $0.value?.handleLocationManagerFailure(error: error) }
     }
 
     public func didChangeAuthorization(status: CLAuthorizationStatus) {
-        _ = OrderingStoreDataModel.observers.map { $0.value?.didChangeAuthorization(status: status) }
+        _ = observers.map { $0.value?.didChangeAuthorization(status: status) }
     }
 
 }
@@ -222,9 +225,9 @@ extension OrderingStoreDataModel: DeliveryLocationDataModelDelegate {
 extension OrderingStoreDataModel {
 
     @objc open override func appWillEnterForeground() {
-        guard let deliveryLocation = DeliveryLocationDataModel.deliveryLocation,
-            let deliveryAddress = DeliveryLocationDataModel.deliveryAddress,
-            OrderingStoreDataModel.nearestStoreResponse == nil else { return }
+        guard let deliveryLocation = DeliveryLocationDataModel.shared.deliveryLocation,
+            let deliveryAddress = DeliveryLocationDataModel.shared.deliveryAddress,
+            OrderingStoreDataModel.shared.nearestStoreResponse == nil else { return }
         update(deliveryLocation, deliveryAddress, nil)
     }
 
@@ -238,9 +241,9 @@ extension OrderingStoreDataModel {
 extension OrderingStoreDataModel {
 
     @objc open override func networkIsAvailable() {
-        guard let deliveryLocation = DeliveryLocationDataModel.deliveryLocation,
-            let deliveryAddress = DeliveryLocationDataModel.deliveryAddress,
-            OrderingStoreDataModel.nearestStoreResponse == nil else { return }
+        guard let deliveryLocation = DeliveryLocationDataModel.shared.deliveryLocation,
+            let deliveryAddress = DeliveryLocationDataModel.shared.deliveryAddress,
+            OrderingStoreDataModel.shared.nearestStoreResponse == nil else { return }
         update(deliveryLocation, deliveryAddress, nil)
     }
 
