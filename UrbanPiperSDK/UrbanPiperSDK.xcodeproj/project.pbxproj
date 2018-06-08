@@ -134,7 +134,6 @@
 		46CE3FCB208F655A0022475F /* String+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CE3FC3208F655A0022475F /* String+Dictionary.swift */; };
 		46E3ACFB208DBA3E00DC43A2 /* UPReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E3ACFA208DBA3D00DC43A2 /* UPReachability.swift */; };
 		46E3ACFD208DBF0700DC43A2 /* UPKeychainItemAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E3ACFC208DBF0700DC43A2 /* UPKeychainItemAccessibility.swift */; };
-		46E3AD44208DC0D600DC43A2 /* UrbanPiper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E3AD43208DC0D600DC43A2 /* UrbanPiper.swift */; };
 		46E4F723208DAB810045ED21 /* UrbanPiperSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 46E4F721208DAB810045ED21 /* UrbanPiperSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		46E4F800208DB86E0045ED21 /* UPKeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E4F7FF208DB86D0045ED21 /* UPKeychainWrapper.swift */; };
 /* End PBXBuildFile section */
@@ -264,7 +263,6 @@
 		46CE3FC3208F655A0022475F /* String+Dictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Dictionary.swift"; sourceTree = "<group>"; };
 		46E3ACFA208DBA3D00DC43A2 /* UPReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UPReachability.swift; sourceTree = "<group>"; };
 		46E3ACFC208DBF0700DC43A2 /* UPKeychainItemAccessibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UPKeychainItemAccessibility.swift; sourceTree = "<group>"; };
-		46E3AD43208DC0D600DC43A2 /* UrbanPiper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrbanPiper.swift; sourceTree = "<group>"; };
 		46E4F71E208DAB810045ED21 /* UrbanPiperSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UrbanPiperSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		46E4F721208DAB810045ED21 /* UrbanPiperSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UrbanPiperSDK.h; sourceTree = "<group>"; };
 		46E4F722208DAB810045ED21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -478,7 +476,6 @@
 			children = (
 				46E4F721208DAB810045ED21 /* UrbanPiperSDK.h */,
 				4640C765209847AF00573F7B /* WLDetailOptionData.plist */,
-				46E3AD43208DC0D600DC43A2 /* UrbanPiper.swift */,
 				46E4F7FF208DB86D0045ED21 /* UPKeychainWrapper.swift */,
 				46E3ACFC208DBF0700DC43A2 /* UPKeychainItemAccessibility.swift */,
 				46E3ACFA208DBA3D00DC43A2 /* UPReachability.swift */,
@@ -641,7 +638,6 @@
 				4607A9CB208F1E2700128010 /* ItemOptionGroup.swift in Sources */,
 				4607A9D0208F1E2700128010 /* ItemObject+Additions.swift in Sources */,
 				46CE3FC8208F655A0022475F /* String+Validation.swift in Sources */,
-				46E3AD44208DC0D600DC43A2 /* UrbanPiper.swift in Sources */,
 				4607A9E2208F1E2700128010 /* OnlinePaymentData.swift in Sources */,
 				4607A9D5208F1E2700128010 /* AddressComponent.swift in Sources */,
 				4607A9F1208F1E2800128010 /* Biz.swift in Sources */,

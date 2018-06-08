@@ -16,7 +16,6 @@ public class AppConfigManager: NSObject {
 
     lazy var sideMenuPanelTabDetails: [SideMenuPanelTabDetail]! = {
         let plistPath = Bundle(for: AppConfigManager.self).path(forResource: "WLDetailOptionData", ofType: "plist")!
-//        let plistPath = Bundle.main.path(forResource: "WLDetailOptionData", ofType: "plist")!
         var plistArray = NSArray(contentsOfFile: plistPath) as! [[String: Any]]
         let unFilteredTabsArray = plistArray.map { SideMenuPanelTabDetail(fromDictionary: $0) }
         let sideMenuTabKeyArray = firRemoteConfigDefaults.sideMenuTabKeyArray
