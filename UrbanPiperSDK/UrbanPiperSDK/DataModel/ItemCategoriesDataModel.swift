@@ -97,10 +97,7 @@ extension ItemCategoriesDataModel {
     fileprivate func fetchCategoriesList(isForcedRefresh: Bool) {
         guard CLLocationManager.authorizationStatus() != .notDetermined else { return }
         
-        guard categoriesListArray == nil || categoriesListArray!.count == 0 || isForcedRefresh else {
-            dataModelDelegate?.refreshItemCategoriesUI(false)
-            return
-        }
+        guard categoriesListArray == nil || categoriesListArray!.count == 0 || isForcedRefresh else { return }
 
         dataModelDelegate?.refreshItemCategoriesUI(true)
         let dataTask = APIManager.shared.fetchCategoriesList(isForcedRefresh, completion: { [weak self] (data) in
