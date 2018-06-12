@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreLocation
-import GoogleMaps
 
 @objc public protocol OrderingStoreDataModelDelegate {
 
@@ -53,6 +52,7 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
         didSet {
             guard let storeResponse = nearestStoreResponse else {
                 UserDefaults.standard.removeObject(forKey: OrderingStoreUserDefaultKeys.nearestStoreResponseKey)
+                CartManager.shared.clearCart()
                 return
             }
 
@@ -107,7 +107,7 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
         deliveryLocationDataModel.dataModelDelegate = self
     }
 
-    public func addObserver(delegate: OrderingStoreDataModelDelegate) {
+    @objc public func addObserver(delegate: OrderingStoreDataModelDelegate) {
         let weakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
         observers.append(weakRefDataModelDelegate)
         observers = observers.filter { $0.value != nil }
@@ -175,7 +175,7 @@ extension OrderingStoreDataModel {
 
 extension OrderingStoreDataModel {
 
-    @objc public func updateNearestStore(for location: CLLocation?, address: GMSAddress? = nil, completion: UpdateCompletionBlock?) {
+    @objc public func updateNearestStore(for location: CLLocation?, address: OrderDeliveryAddress? = nil, completion: UpdateCompletionBlock?) {
         guard let loc = location else {
             _ = observers.map { $0.value?.update(nil, nil, nil, false) }
             completion?(nil, nil)

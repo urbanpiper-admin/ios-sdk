@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreLocation
-import GoogleMaps
 
 public class OrderDeliveryAddress: NSObject, NSCoding {
  
@@ -64,18 +63,18 @@ public class OrderDeliveryAddress: NSObject, NSCoding {
         
         return "No Address"
     }
-    
-    init(gmsAddress: GMSAddress) {
-        coordLatitude = gmsAddress.coordinate.latitude
-        coordLongitude = gmsAddress.coordinate.longitude
 
-//        thoroughfare = gmsAddress.thoroughfare
-        locality = gmsAddress.locality
-//        subLocality = gmsAddress.subLocality
-//        administrativeArea = gmsAddress.administrativeArea
-        postalCode = gmsAddress.postalCode
-//        country = gmsAddress.country
-        lines = gmsAddress.lines
+    public init(coordinate: CLLocationCoordinate2D?, locality: String?, postalCode: String?, lines: [String]?) {
+        coordLatitude = coordinate?.latitude ?? Double(0)
+        coordLongitude = coordinate?.longitude ?? Double(0)
+
+        //        thoroughfare = gmsAddress.thoroughfare
+        self.locality = locality
+        //        subLocality = gmsAddress.subLocality
+        //        administrativeArea = gmsAddress.administrativeArea
+        self.postalCode = postalCode
+        //        country = gmsAddress.country
+        self.lines = lines
     }
     
     public func encode(with aCoder: NSCoder) {

@@ -35,6 +35,7 @@ import FirebaseRemoteConfig
 	public var bizAppId : String!
 	public var bizAppName : String!
 	public var bizLogoUrl : String!
+    public var bizCountry2LetterCode: String!
 	public var cacheDurationSecs : Int!
 	public var categoryLayoutGrid : Bool!
     public var isdCodes : [[String : String]]!
@@ -167,6 +168,7 @@ import FirebaseRemoteConfig
 		bizAppId = remoteConfig["biz_app_id"].stringValue
 		bizAppName = remoteConfig["biz_app_name"].stringValue
 		bizLogoUrl = remoteConfig["biz_logo_url"].stringValue
+        bizCountry2LetterCode = remoteConfig["biz_country_2_letter_code"].stringValue
 		cacheDurationSecs = remoteConfig["cache_duration_secs"].numberValue as? Int
 		categoryLayoutGrid = remoteConfig["category_layout_grid"].boolValue
         let isdCodesString = remoteConfig["isd_codes"].stringValue

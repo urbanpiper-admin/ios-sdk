@@ -15,11 +15,20 @@ extension APIManager {
                            failure: APIFailure?) -> URLSessionTask {
         
         let placesAPIKey = AppConfigManager.shared.firRemoteConfigDefaults.googlePlacesApiKey!
-        let urlString = "https://maps.googleapis.com/maps/api/place/autocomplete/json?sensor=false&key=\(placesAPIKey)&components=country:IN&input=\(keyword)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+
+        var bizCountry2LetterCode = AppConfigManager.shared.firRemoteConfigDefaults.bizCountry2LetterCode
+
+        if let code = bizCountry2LetterCode, code.count > 0 {
+            let charSet = NSCharacterSet.whitespacesAndNewlines.inverted
+            if code.rangeOfCharacter(from: charSet) == nil {
+                bizCountry2LetterCode = "IN"
+            }
+        }
+
+        let urlString = "https://maps.googleapis.com/maps/api/place/autocomplete/json?sensor=false&key=\(placesAPIKey)&components=country:\(bizCountry2LetterCode)&input=\(keyword)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
 
         let url = URL(string: urlString!)!
         
-        print("url \(url)")
         var urlRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = "GET"

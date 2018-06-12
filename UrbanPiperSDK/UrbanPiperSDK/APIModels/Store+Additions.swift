@@ -23,6 +23,18 @@ extension Store {
             return false
         }
     }
+
+    @objc public var isStoreClosedForDelivery: Bool {
+        guard let closingTimeForDelivery = closingDate?.addingTimeInterval(TimeInterval(-AppConfigManager.shared.firRemoteConfigDefaults.orderDeliveryOffsetSecs)) else { return false }
+
+        //        guard let openingTimeForDelivery = closingDate?.addingTimeInterval(TimeInterval(-AppConfigManager.shared.firRemoteConfigDefaults.orderDeliveryOffsetSecs)) else { return false }
+        //
+        //        let now = Date()
+        //
+        //        return now >= openingTimeForDelivery && now <= closingTimeForDelivery
+
+        return Date() > closingTimeForDelivery
+    }
     
     public var openingDate: Date? {
         guard let openingTimeString = openingTime, let openingTime = openingTimeString.date else { return nil }

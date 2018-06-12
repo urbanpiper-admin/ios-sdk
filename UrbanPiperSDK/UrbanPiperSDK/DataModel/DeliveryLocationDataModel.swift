@@ -126,9 +126,9 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
         LocationManagerDataModel.shared.updateUserLocation()
     }
 
-    public func setCustomDelivery(location: CLLocation, address: GMSAddress?) {
+    public func setCustomDelivery(location: CLLocation, address: OrderDeliveryAddress?) {
         if let addressObject = address {
-            deliveryAddress = OrderDeliveryAddress(gmsAddress: addressObject)
+            deliveryAddress = address
             dataModelDelegate?.update(location, deliveryAddress, nil)
         } else {
             resolveAddress(from: location)
@@ -152,8 +152,9 @@ extension DeliveryLocationDataModel {
 
         let modelDelegate = dataModelDelegate
         GMSGeocoder().reverseGeocodeCoordinate(location.coordinate, completionHandler: { [weak self] (response, error) -> Void in
-            if let address = response?.firstResult() {
-                let deliveryAddress = OrderDeliveryAddress(gmsAddress: address)
+            if let addressObject = response?.firstResult() {
+                let deliveryAddress = OrderDeliveryAddress(coordinate: addressObject.coordinate, locality: addressObject.locality, postalCode: addressObject.postalCode, lines: addressObject.lines)
+
                 self?.deliveryAddress = deliveryAddress
                 modelDelegate?.update(location, deliveryAddress, nil)
             } else {
