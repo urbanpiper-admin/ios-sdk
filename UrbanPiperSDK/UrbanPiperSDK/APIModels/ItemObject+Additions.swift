@@ -90,7 +90,7 @@ extension ItemObject: NSCopying {
             itemDictionary["options"] = options
         }
 
-        itemDictionary["quantity"] = selectedQuantity
+        itemDictionary["quantity"] = quantity
         itemDictionary["item_price"] = totalAmount
         
         return itemDictionary
@@ -107,7 +107,7 @@ extension ItemObject: NSCopying {
             }
         }
         
-        selectedQuantity = dictionary["quantity"] as? Int ?? 0
+        quantity = dictionary["quantity"] as? Int ?? 0
         
         guard isOptionGroupItem else { return }
         itemPrice = 0

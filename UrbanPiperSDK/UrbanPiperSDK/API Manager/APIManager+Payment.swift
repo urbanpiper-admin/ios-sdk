@@ -120,21 +120,26 @@ extension APIManager {
         return task
     }
     
-    @objc public func initiateOnlinePayment(paymentOption: String,
-                                     purpose: String,
-                                     totalAmount: Decimal,
-                                     bizLocationId: Int,
-                                     completion: APICompletion<OnlinePaymentInitResponse>?,
-                                     failure: APIFailure?) -> URLSessionTask {
+    public func initiateOnlinePayment(paymentOption: PaymentOption,
+                                      purpose: OnlinePaymentPurpose,
+                                      totalAmount: Decimal,
+                                      bizLocationId: Int?,
+                                      completion: APICompletion<OnlinePaymentInitResponse>?,
+                                      failure: APIFailure?) -> URLSessionTask? {
         
         let appId = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
         
-        var urlString = ""
+        var urlString = "\(APIManager.baseUrl)/payments/init/\(appId)/"
+
+        if purpose == OnlinePaymentPurpose.ordering {
+            guard let locationId = bizLocationId else { return nil}
+            urlString = urlString + "\(locationId)/"
+        }
         
-        if paymentOption == PaymentOption.paytm.rawValue {
-            urlString = "\(APIManager.baseUrl)/payments/init/\(appId)/?amount=\(totalAmount * 100)&purpose=\(purpose)&channel=\(APIManager.channel)&redirect_url=https://urbanpiper.com&paytm=1"
+        if paymentOption == PaymentOption.paytm {
+            urlString = urlString + "?amount=\(totalAmount * 100)&purpose=\(purpose)&channel=\(APIManager.channel)&redirect_url=https://urbanpiper.com&paytm=1"
         } else {
-            urlString = "\(APIManager.baseUrl)/payments/init/\(appId)/\(bizLocationId)/?amount=\(totalAmount * 100)&purpose=\(purpose)&channel=\(APIManager.channel)&\(paymentOption)=1"
+            urlString = urlString + "?amount=\(totalAmount * 100)&purpose=\(purpose)&channel=\(APIManager.channel)&\(paymentOption.rawValue)=1"
         }
         
         let url = URL(string: urlString)!

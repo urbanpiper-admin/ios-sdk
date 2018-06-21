@@ -49,5 +49,12 @@ extension Date {
         Date.localeDateToStringFormatter.dateFormat = "EEEE"
         return Date.localeDateToStringFormatter.string(from: self)
     }
+    
+//  MARK: Time
+    
+    public var orderedTimeString: String {
+        Date.localeDateToStringFormatter.dateFormat = "dd LLL, yyyy (hh:mm a)";
+        return Date.localeDateToStringFormatter.string(from: self)
+    }
 
 }

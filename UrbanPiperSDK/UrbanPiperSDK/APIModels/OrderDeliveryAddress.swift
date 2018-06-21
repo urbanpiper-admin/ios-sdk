@@ -74,7 +74,7 @@ public class OrderDeliveryAddress: NSObject, NSCoding {
         //        administrativeArea = gmsAddress.administrativeArea
         self.postalCode = postalCode
         //        country = gmsAddress.country
-        self.lines = lines
+        self.lines = lines ?? []
     }
     
     public func encode(with aCoder: NSCoder) {

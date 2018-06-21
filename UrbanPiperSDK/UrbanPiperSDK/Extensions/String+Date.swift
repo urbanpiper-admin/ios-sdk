@@ -10,7 +10,7 @@ import UIKit
 
 extension String {
 
-    static let stringToDateFormatter: DateFormatter = {
+    static let stringToCurrentDateTimeFormatter: DateFormatter = {
         var formatter = DateFormatter()
         formatter.timeZone = NSTimeZone.system
         formatter.locale = NSLocale.current
@@ -20,8 +20,8 @@ extension String {
         return formatter
     }()
 
-    public var date: Date? {
-        guard let date = String.stringToDateFormatter.date(from: self) else { return  nil }
+    public var currentDateTime: Date? {
+        guard let date = String.stringToCurrentDateTimeFormatter.date(from: self) else { return  nil }
 
         let calendar = Calendar(identifier: .gregorian)
 

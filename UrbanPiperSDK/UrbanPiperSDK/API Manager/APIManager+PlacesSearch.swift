@@ -16,13 +16,11 @@ extension APIManager {
         
         let placesAPIKey = AppConfigManager.shared.firRemoteConfigDefaults.googlePlacesApiKey!
 
-        var bizCountry2LetterCode = AppConfigManager.shared.firRemoteConfigDefaults.bizCountry2LetterCode
+        var bizCountry2LetterCode = AppConfigManager.shared.firRemoteConfigDefaults.bizCountry2LetterCode ?? "IN"
 
-        if let code = bizCountry2LetterCode, code.count > 0 {
-            let charSet = NSCharacterSet.whitespacesAndNewlines.inverted
-            if code.rangeOfCharacter(from: charSet) == nil {
-                bizCountry2LetterCode = "IN"
-            }
+        let charSet = NSCharacterSet.whitespacesAndNewlines.inverted
+        if bizCountry2LetterCode.rangeOfCharacter(from: charSet) == nil {
+            bizCountry2LetterCode = "IN"
         }
 
         let urlString = "https://maps.googleapis.com/maps/api/place/autocomplete/json?sensor=false&key=\(placesAPIKey)&components=country:\(bizCountry2LetterCode)&input=\(keyword)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)

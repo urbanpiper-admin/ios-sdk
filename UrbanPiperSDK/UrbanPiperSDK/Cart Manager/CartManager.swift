@@ -31,11 +31,11 @@ public class CartManager: NSObject {
     @objc public var isReorder = false
 
     @objc public var cartValue: Decimal {
-        return cartItems.reduce (0.0, { $0 + ($1.totalAmount * Decimal($1.selectedQuantity)).rounded } )
+        return cartItems.reduce (0.0, { $0 + ($1.totalAmount * Decimal($1.quantity)).rounded } )
     }
 
     @objc public var cartCount: Int {
-        return cartItems.reduce (0, { $0 + $1.selectedQuantity } )
+        return cartItems.reduce (0, { $0 + $1.quantity } )
     }
 
     @objc public var cartPreOrderStartTime: Date? {
@@ -51,7 +51,7 @@ public class CartManager: NSObject {
     }
 
     @objc public func cartCount(for item: ItemObject) -> Int {
-        return cartItems.reduce (0, { $0 + ($1.id == item.id ? $1.selectedQuantity : 0) } )
+        return cartItems.reduce (0, { $0 + ($1.id == item.id ? $1.quantity : 0) } )
     }
 
 }
@@ -82,15 +82,15 @@ extension CartManager {
         AnalyticsManager.shared.itemAddedToCart(itemObject: itemObject)
         
         if let item = cartItems.filter({ $0 == itemObject }).last {
-            if item.isItemQuantityAvailable(quantity: itemObject.selectedQuantity) {
-                item.selectedQuantity += itemObject.selectedQuantity
+            if item.isItemQuantityAvailable(quantity: itemObject.quantity) {
+                item.quantity += itemObject.quantity
             } else {
                 let upError = UPError(type: .maxOrderableQuantityAdded(item.currentStock))
                 let _ = cartManagerObservers.map { $0.value?.handleCart(error: upError) }
             }
         } else {
             let object = itemObject.copy() as! ItemObject
-            object.selectedQuantity = itemObject.selectedQuantity
+            object.quantity = itemObject.quantity
 
             cartItems.append(object)
         }
@@ -100,9 +100,9 @@ extension CartManager {
 
     public func remove(itemObject: ItemObject) {
         guard let item = cartItems.filter({ $0.id == itemObject.id }).last else { return }
-        item.selectedQuantity -= itemObject.selectedQuantity
+        item.quantity -= itemObject.quantity
 
-        guard item.selectedQuantity == 0 else {
+        guard item.quantity == 0 else {
             let _ = cartManagerObservers.map { $0.value?.refreshCartUI() }
             return
         }

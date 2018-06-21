@@ -754,7 +754,7 @@ public class AnalyticsManager: NSObject {
                 let product = GAIEcommerceProduct()
                 product.setId("\(itemObject.id)")
                 product.setName(itemObject.itemTitle)
-                product.setQuantity(itemObject.selectedQuantity as NSNumber)
+                product.setQuantity(itemObject.quantity as NSNumber)
                 product.setPrice(itemObject.totalAmount as NSNumber)
                 product.setCategory(itemObject.category.name)
 
@@ -772,7 +772,7 @@ public class AnalyticsManager: NSObject {
                 tracker.trackEvent(AFEventAddToCart,
                                    withValues: [AFEventParamContentId: itemObject.id,
                                                 AFEventParamPrice: itemObject.totalAmount,
-                                                AFEventParamQuantity : itemObject.selectedQuantity,
+                                                AFEventParamQuantity : itemObject.quantity,
                                                 AFEventParamCurrency: "INR"])
             }
         #endif

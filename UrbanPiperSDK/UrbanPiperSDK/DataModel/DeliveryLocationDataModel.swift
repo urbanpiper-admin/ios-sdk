@@ -143,8 +143,8 @@ extension DeliveryLocationDataModel {
 
     public func resolveAddress(from location: CLLocation) {
         nextLocationUpdateDate = Calendar.current.date(byAdding: .minute,
-                                                                                 value: Int(DeliveryLocationDataModel.locationUpdateTimeInterval),
-                                                                                 to: Date())
+                                                       value: Int(DeliveryLocationDataModel.locationUpdateTimeInterval),
+                                                       to: Date())
         
         deliveryLocation = location
         
@@ -202,6 +202,8 @@ extension DeliveryLocationDataModel: LocationManagerDataModelDelegate {
 
     public func locationManagerFailed(error: Error?) {
         dataModelDelegate?.handleLocationManagerFailure(error: error)
+        guard let userLocation = LocationManagerDataModel.shared.currentUserLocation, deliveryAddress == nil else { return }
+        resolveAddress(from: userLocation)
     }
 
     public func didChangeAuthorization(status: CLAuthorizationStatus) {

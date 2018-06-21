@@ -125,6 +125,7 @@ extension FirRemoteConfigDefaults {
             if status == .success {
                 self?.remoteConfig.activateFetched()
                 self?.refreshValues()
+                APIManager.shared.updateHeaders()
             }
             completion(status)
         })

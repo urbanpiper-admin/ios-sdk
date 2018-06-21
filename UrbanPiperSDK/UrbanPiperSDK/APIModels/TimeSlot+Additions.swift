@@ -11,7 +11,7 @@ import UIKit
 extension TimeSlot {
     
     public var displayName: String {
-        return "\(startTime.date!.hhmmaString) - \(endTime.date!.hhmmaString)"
+        return "\(startTime.currentDateTime!.hhmmaString) - \(endTime.currentDateTime!.hhmmaString)"
     }
 
 }

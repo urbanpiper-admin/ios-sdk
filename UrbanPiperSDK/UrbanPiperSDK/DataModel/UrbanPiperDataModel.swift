@@ -106,14 +106,15 @@ open class UrbanPiperDataModel: NSObject {
         dataTasks.removeAll()
     }
         
-    open func addOrCancelDataTask(dataTask :URLSessionTask) {
+    open func addOrCancelDataTask(dataTask :URLSessionTask?) {
         cleanDataTasksArray()
-        guard dataTasks.filter ({ $0.value?.originalRequest?.url == dataTask.originalRequest?.url }).count == 0 else {
-            dataTask.cancel()
+        guard let task = dataTask else { return }
+        guard dataTasks.filter ({ $0.value?.originalRequest?.url == task.originalRequest?.url }).count == 0 else {
+            task.cancel()
             return
         }
-        dataTasks.append(WeakRefURLSessionTask(value: dataTask))
-        dataTask.resume()
+        dataTasks.append(WeakRefURLSessionTask(value: task))
+        task.resume()
     }
 
     open func cleanDataTasksArray() {

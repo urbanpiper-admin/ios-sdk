@@ -189,6 +189,17 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     
     lazy public var selectedRequestedDate: Date = defaultOrderDeliveryDateTime
     
+    public var deliveryDate: Date {
+        var units: Set<Calendar.Component> = [.day, .month, .year]
+        var comps = Calendar.current.dateComponents(units, from: selectedRequestedDate)
+        let day = Calendar.current.date(from: comps)
+        
+        units = [.hour, .minute, .second]
+        comps = Calendar.current.dateComponents(units, from: selectedRequestedTime)
+        
+        return Calendar.current.date(byAdding: comps, to: day!)!
+    }
+    
     public var normalDefaultOrderDeliveryDate: Date {
         let delMinOffset = TimeInterval(Biz.shared!.deliveryMinOffsetTime)
         let defaultOffset = TimeInterval(100000.0)
@@ -269,17 +280,17 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
         var filteredSlots = [TimeSlot]()
         
         if let startTime = CartManager.shared.cartPreOrderStartTime {
-            filteredSlots = availableTimeSlots.filter { $0.day == dayName && $0.startTime!.date! >= startTime }
+            filteredSlots = availableTimeSlots.filter { $0.day == dayName && $0.startTime!.currentDateTime! >= startTime }
         }
         else if Calendar.current.isDateInToday(date) {
-            filteredSlots = availableTimeSlots.filter { $0.day == dayName && $0.endTime!.date! >= date }
+            filteredSlots = availableTimeSlots.filter { $0.day == dayName && $0.endTime!.currentDateTime! >= date }
         }
         else if date < Date() {
             filteredSlots = availableTimeSlots.filter { $0.day == dayName }
         }
         
         if filteredSlots.count > 1 {
-            filteredSlots.sort { $0.startTime!.date! < $1.startTime!.date! }
+            filteredSlots.sort { $0.startTime!.currentDateTime! < $1.startTime!.currentDateTime! }
         }
         
         return filteredSlots
@@ -300,6 +311,13 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
             preProcessOrder()
         }
 
+    }
+
+    public override init() {
+        super.init()
+
+        refreshData()
+        AppUserDataModel.shared.addObserver(delegate: self)
     }
 
 }
@@ -376,8 +394,8 @@ extension OrderPaymentDataModel {
                                 phone: String) {
         dataModelDelegate?.initiatingPayment(isProcessing: true)
         let paymentOption = selectedPaymentOption
-        let dataTask = APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption.rawValue,
-                                                               purpose: OnlinePaymentPurpose.ordering.rawValue,
+        let dataTask = APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption,
+                                                               purpose: OnlinePaymentPurpose.ordering,
                                                                totalAmount: itemsTotalPrice,
                                                                bizLocationId: OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
                                                                completion: { [weak self] (onlinePaymentInitResponse) in
@@ -389,8 +407,9 @@ extension OrderPaymentDataModel {
             self?.dataModelDelegate?.initiatingPayment(isProcessing: false)
             self?.dataModelDelegate?.handleOrderPayment(error: error)
         })
-        
-        addOrCancelDataTask(dataTask: dataTask)
+
+        guard let task = dataTask else { return }
+        addOrCancelDataTask(dataTask: task)
     }
         
     public func placeOrder(instructions: String,
@@ -398,15 +417,6 @@ extension OrderPaymentDataModel {
                     onlinePaymentInitResponse: OnlinePaymentInitResponse? = nil) {
         
         dataModelDelegate?.placingOrder(isProcessing: true)
-
-        var units: Set<Calendar.Component> = [.day, .month, .year]
-        var comps = Calendar.current.dateComponents(units, from: selectedRequestedDate)
-        let day = Calendar.current.date(from: comps)
-        
-        units = [.hour, .minute, .second]
-        comps = Calendar.current.dateComponents(units, from: selectedRequestedTime)
-        
-        let deliveryDate = Calendar.current.date(byAdding: comps, to: day!)!
         
         let timeSlotDelivery = AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots!
         
@@ -497,6 +507,21 @@ extension OrderPaymentDataModel {
     public func orderPlacedTracking(orderId: String, phone: String) {
         AnalyticsManager.shared.orderPlaced(orderId: orderId, phone: phone, orderPaymentDataModel: self)
     }
+
+}
+
+extension OrderPaymentDataModel: AppUserDataModelDelegate {
+
+    public func refreshAppUserUI(isRefreshing: Bool) {
+
+    }
+
+    public func refreshBizInfoUI(isRefreshing: Bool, isFirstUpdate: Bool) {
+        guard !isRefreshing else { return }
+        bizInfo = AppUserDataModel.shared.bizInfo
+        dataModelDelegate?.refreshWalletUI(false)
+    }
+
 
 }
 

@@ -32,7 +32,7 @@ public class ItemObject : NSObject, NSCoding{
     public var subCategory : ItemCategory!
 	public var tags : [ItemTag]!
 	public var vatRate : Float!
-    @objc public var selectedQuantity: Int = 0
+    @objc public var quantity: Int = 0
 
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
@@ -100,6 +100,7 @@ public class ItemObject : NSObject, NSCoding{
             }
         }
 		vatRate = dictionary["vat_rate"] as? Float
+        quantity = dictionary["quantity"] as? Int ?? 0
 	}
 
 	/**

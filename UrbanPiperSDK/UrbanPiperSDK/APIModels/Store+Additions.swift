@@ -37,12 +37,12 @@ extension Store {
     }
     
     public var openingDate: Date? {
-        guard let openingTimeString = openingTime, let openingTime = openingTimeString.date else { return nil }
+        guard let openingTimeString = openingTime, let openingTime = openingTimeString.currentDateTime else { return nil }
         return openingTime
     }
     
     public var closingDate: Date? {
-        guard let closingTimeString = closingTime, let closingTime = closingTimeString.date else { return nil }
+        guard let closingTimeString = closingTime, let closingTime = closingTimeString.currentDateTime else { return nil }
         return closingTime
     }
 
