@@ -19,7 +19,7 @@ public class ItemOption : NSObject, NSCoding {
 	public var sortOrder : Int!
 	public var title : String!
 	public var nestedOptionGroups : [ItemOptionGroup]!
-    public var selectedQuantity: Int = 0
+    public var quantity: Int = 0
 
 
 	/**
@@ -61,7 +61,7 @@ public class ItemOption : NSObject, NSCoding {
 			}
 		}
 
-        selectedQuantity = dictionary["selected_quantity"] as? Int ?? 0
+        quantity = dictionary["quantity"] as? Int ?? 0
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class ItemOption : NSObject, NSCoding {
 			}
 			dictionary["nested_option_groups"] = dictionaryElements
 		}
-        dictionary["selected_quantity"] = selectedQuantity
+        dictionary["quantity"] = quantity
 		return dictionary
 	}
 
@@ -120,7 +120,7 @@ public class ItemOption : NSObject, NSCoding {
          sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
          title = aDecoder.decodeObject(forKey: "title") as? String
          nestedOptionGroups = aDecoder.decodeObject(forKey :"nested_option_groups") as? [ItemOptionGroup]
-        selectedQuantity = aDecoder.decodeObject(forKey: "selected_quantity") as? Int ?? 0
+        quantity = aDecoder.decodeObject(forKey: "quantity") as? Int ?? 0
 	}
 
     /**
@@ -156,7 +156,7 @@ public class ItemOption : NSObject, NSCoding {
 		if nestedOptionGroups != nil{
 			aCoder.encode(nestedOptionGroups, forKey: "nested_option_groups")
 		}
-        aCoder.encode(selectedQuantity, forKey: "selected_quantity")
+        aCoder.encode(quantity, forKey: "quantity")
 	}
 
 }

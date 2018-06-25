@@ -162,6 +162,7 @@ extension CategoryItemsDataModel {
 extension CategoryItemsDataModel {
 
     fileprivate func fetchCategoryItems(isForcedRefresh: Bool, next: String? = nil) {
+        guard isForcedRefresh || (!isForcedRefresh && categoryItemsResponse == nil) else { return }
         guard !isFetchingCategoryItems else { return }
         dataModelDelegate?.refreshCategoryItemsUI(true)
         isFetchingCategoryItems = true

@@ -99,6 +99,8 @@ extension CartManager {
     }
 
     public func remove(itemObject: ItemObject) {
+        AnalyticsManager.shared.itemRemovedFromCart(itemObject: itemObject)
+        
         guard let item = cartItems.filter({ $0.id == itemObject.id }).last else { return }
         item.quantity -= itemObject.quantity
 

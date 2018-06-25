@@ -11,11 +11,11 @@ import Foundation
 extension ItemOption {
 
     public var totalAmount: Decimal {
-        var totalAmount = selectedQuantity > 0 ? price ?? 0 : 0
+        var totalAmount = quantity > 0 ? price ?? 0 : 0
         if let nestedOptionGroups = nestedOptionGroups, nestedOptionGroups.count > 0 {
             for optionGroup in nestedOptionGroups {
                 for item in optionGroup.options {
-                    guard item.selectedQuantity > 0 else { continue }
+                    guard item.quantity > 0 else { continue }
                     totalAmount += item.totalAmount
                 }
             }
@@ -25,15 +25,15 @@ extension ItemOption {
     }
 
     public func resetQuantity() {
-        selectedQuantity = 0
+        quantity = 0
 
         if let nestedOptionGroups = nestedOptionGroups, nestedOptionGroups.count > 0 {
             for optionGroup in nestedOptionGroups {
                 for item in optionGroup.options {
                     if optionGroup.isDefault {
-                        item.selectedQuantity = 1
+                        item.quantity = 1
                     } else {
-                        item.selectedQuantity = 0
+                        item.quantity = 0
                     }
                 }
             }
@@ -41,7 +41,7 @@ extension ItemOption {
     }
 
     public var isValidCartItemOption: Bool {
-        guard selectedQuantity > 0 else { return false }
+        guard quantity > 0 else { return false }
         if let groups = nestedOptionGroups, groups.count > 0 {
 
             var isValidItem = true
@@ -51,7 +51,7 @@ extension ItemOption {
             }
 
             return isValidItem
-        } else if selectedQuantity > 0 {
+        } else if quantity > 0 {
             return true
         }
         return false
@@ -60,7 +60,7 @@ extension ItemOption {
     public var optionsToAdd: [[String : Int]] {
         var options = [[String : Int]]()
 
-        if selectedQuantity > 0 {
+        if quantity > 0 {
             options.append(["id" : id])
         }
         
@@ -80,7 +80,7 @@ extension ItemOption {
             for group in optionGroups {
                 options.append(contentsOf: group.optionsToRemove)
             }
-        } else if selectedQuantity == 0 {
+        } else if quantity == 0 {
             options.append(["id" : id])
         }
 
@@ -128,7 +128,7 @@ extension ItemOption {
         if title != nil{
             dictionary["title"] = title
         }
-        dictionary["selected_quantity"] = selectedQuantity
+        dictionary["quantity"] = quantity
         if nestedOptionGroups != nil{
             var dictionaryElements = [[String:Any]]()
             for nestedOptionGroupsElement in nestedOptionGroups {
@@ -149,6 +149,6 @@ extension ItemOption {
             lhs.sortOrder  == rhs.sortOrder  &&
             lhs.title  == rhs.title  &&
             lhs.nestedOptionGroups  == rhs.nestedOptionGroups &&
-            lhs.selectedQuantity  == rhs.selectedQuantity
+            lhs.quantity  == rhs.quantity
     }
 }

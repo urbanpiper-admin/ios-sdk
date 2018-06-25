@@ -60,7 +60,7 @@ extension ItemOptionGroup {
 
     public var descriptionText: String? {
         let descriptionArray = options.compactMap({ (itemOption) -> String? in
-            guard (isDefault && itemOption.selectedQuantity == 0) || (!isDefault && itemOption.selectedQuantity > 0) else { return nil }
+            guard (isDefault && itemOption.quantity == 0) || (!isDefault && itemOption.quantity > 0) else { return nil }
             return itemOption.descriptionText
         })
 
@@ -76,7 +76,7 @@ extension ItemOptionGroup {
         if let optionsArray = dictionary["options"] as? [[String:Any]]{
             for dic in optionsArray{
                 let value = ItemOption.init(historicalOrderItemOptionGroupOption: dic)
-                value.selectedQuantity = isDefault ? 0 : 1
+                value.quantity = isDefault ? 0 : 1
                 options.append(value)
             }
         }
@@ -94,7 +94,7 @@ extension ItemOptionGroup {
         if options != nil{
             var dictionaryElements = [[String:Any]]()
             for optionsElement in options {
-                guard optionsElement.selectedQuantity > 0 else { continue }
+                guard optionsElement.quantity > 0 else { continue }
                 dictionaryElements.append(optionsElement.equitableCheckDictionary())
             }
             dictionary["options"] = dictionaryElements

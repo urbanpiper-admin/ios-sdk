@@ -32,8 +32,8 @@ public class ItemOptionGroup : NSObject, NSCoding {
 			for dic in optionsArray{
 				let value = ItemOption(fromDictionary: dic)
                 let defaultVal = isDefault ?? false
-                if (!defaultVal && value.selectedQuantity == 0) || (defaultVal && value.selectedQuantity > 0) {
-                    value.selectedQuantity = isDefault ? 1 : 0
+                if (!defaultVal && value.quantity == 0) || (defaultVal && value.quantity > 0) {
+                    value.quantity = isDefault ? 1 : 0
                 }
 				options.append(value)
 			}
