@@ -56,7 +56,7 @@ extension NotificationsDataModel {
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
 
-        if let notificationCell = cell as? NotificationCellDelegate {
+        if let notificationCell: NotificationCellDelegate = cell as? NotificationCellDelegate {
             notificationCell.configureCell(notificationsListArray?[indexPath.row])
         } else {
             assert(false, "Cell does not conform to NotificationCellDelegate protocol")
@@ -77,7 +77,7 @@ extension NotificationsDataModel {
     public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
 
-        if let notificationCell = cell as? NotificationCellDelegate {
+        if let notificationCell: NotificationCellDelegate = cell as? NotificationCellDelegate {
             notificationCell.configureCell(notificationsListArray?[indexPath.row])
         } else {
             assert(false, "Cell does not conform to NotificationCellDelegate protocol")
@@ -94,7 +94,7 @@ extension NotificationsDataModel {
 
     fileprivate func fetchNotificationsList(isForcedRefresh: Bool) {
         dataModelDelegate?.refreshNotificationsUI(true)
-        let dataTask = APIManager.shared.fetchNotificationsList(completion: { [weak self] (data) in
+        let dataTask: URLSessionTask = APIManager.shared.fetchNotificationsList(completion: { [weak self] (data) in
             defer {
                 self?.dataModelDelegate?.refreshNotificationsUI(false)
             }

@@ -47,21 +47,35 @@ import Foundation
 }
 
 public class User : NSObject, NSCoding{
+    
+    public var firstName : String!
+    public var lastName : String!
+    @objc public var username : String!
+    
+    @objc public var phone : String!
+    @objc public var email : String!
+    
+    @objc public var gender : String?
+    
+    public var anniversary : Int!
+    public var anniversaryDate : String!
+    public var birthdate : String!
+    public var birthday : Int!
+    
+    public var currentCity : String!
+    public var address : String!
 
 	@objc public var authKey : String!
+    
 	public var biz : BizInfo!
-	@objc public var email : String!
+    
 	public var message : String!
-	@objc public var name : String!
-	@objc public var phone : String!
-    @objc public var gender : String?
 	public var success : Bool!
 	public var timestamp : String!
-	@objc public var username : String!
-    
+
     @objc public var password: String? {
         didSet {
-            guard let passwordString = password, passwordString.count > 0 else { return }
+            guard let passwordString: String = password, passwordString.count > 0 else { return }
             accessToken = nil
             provider = nil
             APIManager.shared.updateHeaders()
@@ -85,7 +99,7 @@ public class User : NSObject, NSCoding{
     
     @objc public var phoneNumberWithCountryCode: String! {
         guard phone != nil, phone!.count > 0 else { return nil }
-        let isdCodesArray = AppConfigManager.shared.firRemoteConfigDefaults.isdCodes!
+        let isdCodesArray: [[String : String]] = AppConfigManager.shared.firRemoteConfigDefaults.isdCodes!
         guard isdCodesArray.filter ({ phone.hasPrefix($0.keys.first!) }).count == 0 else { return phone }
         return "\(countryCode)\(phone!)"
     }
@@ -107,6 +121,16 @@ public class User : NSObject, NSCoding{
         
         return true
     }
+    
+    public var birthdayDateObject: Date? {
+        guard let dateIntVal = birthday else { return nil }
+        return Date(timeIntervalSince1970: TimeInterval(dateIntVal / 1000))
+    }
+    
+    public var anniversaryDateObject: Date? {
+        guard let anniversaryIntVal = anniversary else { return nil }
+        return Date(timeIntervalSince1970: TimeInterval(anniversaryIntVal / 1000))
+    }
 
     public override init() {
         
@@ -120,7 +144,7 @@ public class User : NSObject, NSCoding{
 		biz = dictionary["biz"] as? BizInfo
 		email = dictionary["email"] as? String
 		message = dictionary["message"] as? String ?? ""
-		name = dictionary["name"] as? String
+		firstName = dictionary["name"] as? String
 		phone = dictionary["phone"] as? String
 		success = dictionary["success"] as? Bool ?? false
 		timestamp = dictionary["timestamp"] as? String
@@ -130,6 +154,20 @@ public class User : NSObject, NSCoding{
         provider = nil
         accessToken = nil
 	}
+    
+    public func update(fromDictionary dictionary: [String: Any]) {
+        address = dictionary["address"] as? String
+        anniversary = dictionary["anniversary"] as? Int
+        anniversaryDate = dictionary["anniversary_date"] as? String
+        birthdate = dictionary["birthdate"] as? String
+        birthday = dictionary["birthday"] as? Int
+        currentCity = dictionary["current_city"] as? String
+        email = dictionary["email"] as? String
+        firstName = dictionary["first_name"] as? String
+        gender = dictionary["gender"] as? String
+        lastName = dictionary["last_name"] as? String
+        phone = dictionary["phone"] as? String
+    }
 
 	/**
 	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -148,9 +186,6 @@ public class User : NSObject, NSCoding{
 		}
 		if message != nil{
 			dictionary["message"] = message
-		}
-		if name != nil{
-			dictionary["name"] = name
 		}
 		if phone != nil{
 			dictionary["phone"] = phone
@@ -180,6 +215,31 @@ public class User : NSObject, NSCoding{
             dictionary["password"] = password
         }
         
+        if address != nil{
+            dictionary["address"] = address
+        }
+        if anniversary != nil{
+            dictionary["anniversary"] = anniversary
+        }
+        if anniversaryDate != nil{
+            dictionary["anniversary_date"] = anniversaryDate
+        }
+        if birthdate != nil{
+            dictionary["birthdate"] = birthdate
+        }
+        if birthday != nil{
+            dictionary["birthday"] = birthday
+        }
+        if currentCity != nil{
+            dictionary["current_city"] = currentCity
+        }
+        if firstName != nil{
+            dictionary["first_name"] = firstName
+        }
+        if lastName != nil{
+            dictionary["last_name"] = lastName
+        }
+        
 		return dictionary
 	}
 
@@ -189,18 +249,24 @@ public class User : NSObject, NSCoding{
     */
     @objc required public init(coder aDecoder: NSCoder)
 	{
+        
+        if let fn: String = aDecoder.decodeObject(forKey: "first_name") as? String {
+            firstName = fn
+        } else {
+            firstName = aDecoder.decodeObject(forKey: "name") as? String
+        }
+
          authKey = aDecoder.decodeObject(forKey: "authKey") as? String
         biz = aDecoder.decodeObject(forKey: "biz") as? BizInfo
         email = aDecoder.decodeObject(forKey: "email") as? String
          message = aDecoder.decodeObject(forKey: "message") as? String
-         name = aDecoder.decodeObject(forKey: "name") as? String
          phone = aDecoder.decodeObject(forKey: "phone") as? String
          success = aDecoder.decodeObject(forKey: "success") as? Bool ?? false
          timestamp = aDecoder.decodeObject(forKey: "timestamp") as? String
          username = aDecoder.decodeObject(forKey: "username") as? String
         gender = aDecoder.decodeObject(forKey: "gender") as? String
 
-        if let providerString = aDecoder.decodeObject(forKey: "provider") as? String {
+        if let providerString: String = aDecoder.decodeObject(forKey: "provider") as? String {
             provider = SocialLoginProvider(rawValue: providerString)
         }
         
@@ -208,6 +274,15 @@ public class User : NSObject, NSCoding{
         countryCode = aDecoder.decodeObject(forKey: "countryCode") as! String
         
         password = aDecoder.decodeObject(forKey: "password") as? String
+        
+        address = aDecoder.decodeObject(forKey: "address") as? String
+        anniversary = aDecoder.decodeObject(forKey: "anniversary") as? Int
+        anniversaryDate = aDecoder.decodeObject(forKey: "anniversary_date") as? String
+        birthdate = aDecoder.decodeObject(forKey: "birthdate") as? String
+        birthday = aDecoder.decodeObject(forKey: "birthday") as? Int
+        currentCity = aDecoder.decodeObject(forKey: "current_city") as? String
+        lastName = aDecoder.decodeObject(forKey: "last_name") as? String
+
 	}
 
     /**
@@ -227,9 +302,6 @@ public class User : NSObject, NSCoding{
 		}
 		if message != nil{
 			aCoder.encode(message, forKey: "message")
-		}
-		if name != nil{
-			aCoder.encode(name, forKey: "name")
 		}
         if gender != nil{
             aCoder.encode(gender, forKey: "gender")
@@ -261,6 +333,31 @@ public class User : NSObject, NSCoding{
         
         if password != nil {
             aCoder.encode(password!, forKey: "password")
+        }
+        
+        if address != nil{
+            aCoder.encode(address, forKey: "address")
+        }
+        if anniversary != nil{
+            aCoder.encode(anniversary, forKey: "anniversary")
+        }
+        if anniversaryDate != nil{
+            aCoder.encode(anniversaryDate, forKey: "anniversary_date")
+        }
+        if birthdate != nil{
+            aCoder.encode(birthdate, forKey: "birthdate")
+        }
+        if birthday != nil{
+            aCoder.encode(birthday, forKey: "birthday")
+        }
+        if currentCity != nil{
+            aCoder.encode(currentCity, forKey: "current_city")
+        }
+        if firstName != nil{
+            aCoder.encode(firstName, forKey: "first_name")
+        }
+        if lastName != nil{
+            aCoder.encode(lastName, forKey: "last_name")
         }
 	}
 

@@ -73,7 +73,7 @@ extension ItemOptionGroup {
         self.init(fromDictionary: dictionary)
         
         options = [ItemOption]()
-        if let optionsArray = dictionary["options"] as? [[String:Any]]{
+        if let optionsArray: [[String:Any]] = dictionary["options"] as? [[String:Any]]{
             for dic in optionsArray{
                 let value = ItemOption.init(historicalOrderItemOptionGroupOption: dic)
                 value.quantity = isDefault ? 0 : 1

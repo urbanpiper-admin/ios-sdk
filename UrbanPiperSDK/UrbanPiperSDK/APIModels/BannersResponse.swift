@@ -19,13 +19,13 @@ public class BannersResponse : NSObject, NSCoding{
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
 		images = [Image]()
-		if let imagesArray = dictionary["images"] as? [[String:Any]]{
+		if let imagesArray: [[String:Any]] = dictionary["images"] as? [[String:Any]]{
 			for dic in imagesArray{
-				let value = Image(fromDictionary: dic)
+				let value: Image = Image(fromDictionary: dic)
 				images.append(value)
 			}
 		}
-		if let metaData = dictionary["meta"] as? [String:Any]{
+		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
 			meta = Meta(fromDictionary: metaData)
 		}
 	}

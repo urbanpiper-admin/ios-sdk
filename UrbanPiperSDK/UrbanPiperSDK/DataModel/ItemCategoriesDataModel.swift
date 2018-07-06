@@ -58,7 +58,7 @@ extension ItemCategoriesDataModel {
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
 
-        if let categoryCell = cell as? CategoryCellDelegate {
+        if let categoryCell: CategoryCellDelegate = cell as? CategoryCellDelegate {
             categoryCell.configureCell(categoriesListArray?[indexPath.row])
         } else {
             assert(false, "Cell does not conform to CategoryCellDelegate protocol")
@@ -79,7 +79,7 @@ extension ItemCategoriesDataModel {
     open override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
 
-        if let categoryCell = cell as? CategoryCellDelegate {
+        if let categoryCell: CategoryCellDelegate = cell as? CategoryCellDelegate {
             categoryCell.configureCell(categoriesListArray?[indexPath.row])
         } else {
             assert(false, "Cell does not conform to CategoryCellDelegate protocol")
@@ -100,7 +100,7 @@ extension ItemCategoriesDataModel {
         guard categoriesListArray == nil || categoriesListArray!.count == 0 || isForcedRefresh else { return }
 
         dataModelDelegate?.refreshItemCategoriesUI(true)
-        let dataTask = APIManager.shared.fetchCategoriesList(isForcedRefresh, completion: { [weak self] (data) in
+        let dataTask: URLSessionTask = APIManager.shared.fetchCategoriesList(isForcedRefresh, completion: { [weak self] (data) in
             defer {
                 self?.dataModelDelegate?.refreshItemCategoriesUI(false)
             }

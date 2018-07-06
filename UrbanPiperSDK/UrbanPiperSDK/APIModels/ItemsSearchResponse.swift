@@ -18,9 +18,9 @@ public class ItemsSearchResponse : NSObject, NSCoding{
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
 		items = [ItemObject]()
-		if let itemsArray = dictionary["items"] as? [[String:Any]]{
+		if let itemsArray: [[String:Any]] = dictionary["items"] as? [[String:Any]]{
 			for dic in itemsArray{
-				let value = ItemObject(fromDictionary: dic)
+				let value: ItemObject = ItemObject(fromDictionary: dic)
 				items.append(value)
 			}
 		}

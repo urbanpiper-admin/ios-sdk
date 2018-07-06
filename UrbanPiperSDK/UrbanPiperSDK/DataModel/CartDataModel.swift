@@ -52,7 +52,7 @@ extension CartDataModel {
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
 
-        if let cartItemCell = cell as? CartItemCellDelegate {
+        if let cartItemCell: CartItemCellDelegate = cell as? CartItemCellDelegate {
             cartItemCell.configureCell(cartItemsListArray[indexPath.section][indexPath.row])
         } else {
             assert(false, "Cell does not conform to CartItemCellDelegate protocol")
@@ -73,7 +73,7 @@ extension CartDataModel {
     open override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
 
-        if let cartItemCell = cell as? CartItemCellDelegate {
+        if let cartItemCell: CartItemCellDelegate = cell as? CartItemCellDelegate {
             cartItemCell.configureCell(cartItemsListArray[indexPath.section][indexPath.row])
         } else {
             assert(false, "Cell does not conform to CartItemCellDelegate protocol")

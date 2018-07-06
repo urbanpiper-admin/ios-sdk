@@ -38,6 +38,16 @@ extension Date {
         return Date.localeDateToStringFormatter.string(from: self)
     }
     
+    public var yyyymmddString: String {
+        Date.localeDateToStringFormatter.dateFormat = "yyyy-MM-dd"
+        return Date.localeDateToStringFormatter.string(from: self)
+    }
+    
+    public var hhmmaddMMMyyyyString: String {
+        Date.localeDateToStringFormatter.dateFormat = "hh:mm a, dd MMM yyyy";
+        return Date.localeDateToStringFormatter.string(from: self)
+    }
+    
 //  MARK: Date
     
     public var ddMMMString: String {

@@ -109,11 +109,11 @@ public enum ErrorType {
         case .maxOrderableQuantityAdded(let currentStock):
             return "Sorry, current stock at the store is limited to: \(currentStock)"
         case .apiError:
-            if let msg = apiCallData?["message"] as? String {
+            if let msg: String = apiCallData?["message"] as? String {
                 return msg
             }
             
-            if let msg = apiCallData?["error_message"] as? String {
+            if let msg: String = apiCallData?["error_message"] as? String {
                 return msg
             }
             
@@ -131,7 +131,7 @@ public enum ErrorType {
         errorType = type
         apiCallData = responseObject
         
-        if let dataObject = data, let JSON = try? JSONSerialization.jsonObject(with: dataObject, options: []), let dictionary = JSON as? [String: Any] {
+        if let dataObject: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: dataObject, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
             apiCallData = dictionary
             print("Server Error Message: \(dictionary)")
         }

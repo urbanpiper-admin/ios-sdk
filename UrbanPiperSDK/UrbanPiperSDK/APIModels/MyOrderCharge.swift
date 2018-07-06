@@ -20,23 +20,16 @@ public class MyOrderCharge : NSObject, NSCoding{
 	init(fromDictionary dictionary: [String:Any]){
 		title = dictionary["title"] as? String
         
-        if let val = dictionary["value"] as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = dictionary["value"] as? Decimal {
             value = val
-        } else if let val = dictionary["value"] as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = dictionary["value"] as? Double {
             value = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: value).doubleValue))")
-        } else if let val = dictionary["value"] as? Float {
+        } else if let val: Float = dictionary["value"] as? Float {
             value = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = dictionary["value"] as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = dictionary["value"] as? Int {
             value = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: value).doubleValue))")
         } else {
             value = Decimal(0).rounded
-            print("amount value nil")
         }
 	}
 

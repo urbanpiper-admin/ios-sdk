@@ -32,31 +32,24 @@ public class ItemOption : NSObject, NSCoding {
 		id = dictionary["id"] as? Int
 		imageUrl = dictionary["image_url"] as? String
 
-        if let val = dictionary["price"] as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = dictionary["price"] as? Decimal {
             price = val
-        } else if let val = dictionary["price"] as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = dictionary["price"] as? Double {
             price = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: price).doubleValue))")
-        } else if let val = dictionary["price"] as? Float {
+        } else if let val: Float = dictionary["price"] as? Float {
             price = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = dictionary["price"] as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = dictionary["price"] as? Int {
             price = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: price).doubleValue))")
         } else {
             price = Decimal(0).rounded
-            print("amount value nil")
         }
 
 		sortOrder = dictionary["sort_order"] as? Int ?? 0
 		title = dictionary["title"] as? String
 		nestedOptionGroups = [ItemOptionGroup]()
-		if let nestedOptionGroupsArray = dictionary["nested_option_groups"] as? [[String:Any]]{
+		if let nestedOptionGroupsArray: [[String:Any]] = dictionary["nested_option_groups"] as? [[String:Any]]{
 			for dic in nestedOptionGroupsArray{
-				let value = ItemOptionGroup(fromDictionary: dic)
+				let value: ItemOptionGroup = ItemOptionGroup(fromDictionary: dic)
 				nestedOptionGroups.append(value)
 			}
 		}

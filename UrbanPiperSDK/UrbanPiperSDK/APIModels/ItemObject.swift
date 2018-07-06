@@ -38,9 +38,9 @@ public class ItemObject : NSObject, NSCoding{
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	@objc public init(fromDictionary dictionary:  [String:Any]){
-		if let categoryData = dictionary["category"] as? [String:Any]{
+		if let categoryData: [String:Any] = dictionary["category"] as? [String:Any]{
 			category = ItemCategory(fromDictionary: categoryData)
-        } else if let categoryData = dictionary["item_category"] as? [String:Any]{
+        } else if let categoryData: [String:Any] = dictionary["item_category"] as? [String:Any]{
             category = ItemCategory(fromDictionary: categoryData)
         }
 		currentStock = dictionary["current_stock"] as? Int
@@ -52,31 +52,24 @@ public class ItemObject : NSObject, NSCoding{
 		imageUrl = dictionary["image_url"] as? String
 		itemDesc = dictionary["item_desc"] as? String
 
-        if let val = dictionary["item_price"] as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = dictionary["item_price"] as? Decimal {
             itemPrice = val
-        } else if let val = dictionary["item_price"] as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = dictionary["item_price"] as? Double {
             itemPrice = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: itemPrice).doubleValue))")
-        } else if let val = dictionary["item_price"] as? Float {
+        } else if let val: Float = dictionary["item_price"] as? Float {
             itemPrice = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = dictionary["item_price"] as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = dictionary["item_price"] as? Int {
             itemPrice = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: itemPrice).doubleValue))")
         } else {
             itemPrice = Decimal(0).rounded
-            print("amount value nil")
         }
 
 		itemTitle = dictionary["item_title"] as? String
 		likes = dictionary["likes"] as? Int ?? 0
 		optionGroups = [ItemOptionGroup]()
-		if let optionGroupsArray = dictionary["option_groups"] as? [[String:Any]]{
+		if let optionGroupsArray: [[String:Any]] = dictionary["option_groups"] as? [[String:Any]]{
 			for dic in optionGroupsArray{
-				let value = ItemOptionGroup(fromDictionary: dic)
+				let value: ItemOptionGroup = ItemOptionGroup(fromDictionary: dic)
 				optionGroups.append(value)
 			}
             if optionGroups.count > 1 {
@@ -89,13 +82,13 @@ public class ItemObject : NSObject, NSCoding{
         preOrderEndTime = dictionary["pre_order_end_time"] as? Int
 		slug = dictionary["slug"] as? String
 		sortOrder = dictionary["sort_order"] as? Int ?? 0
-        if let subCategoryData = dictionary["sub_category"] as? [String:Any]{
+        if let subCategoryData: [String:Any] = dictionary["sub_category"] as? [String:Any]{
             subCategory = ItemCategory(fromDictionary: subCategoryData)
         }
         tags = [ItemTag]()
-        if let tagsArray = dictionary["tags"] as? [[String:Any]]{
+        if let tagsArray: [[String:Any]] = dictionary["tags"] as? [[String:Any]]{
             for dic in tagsArray{
-                let value = ItemTag(fromDictionary: dic)
+                let value: ItemTag = ItemTag(fromDictionary: dic)
                 tags.append(value)
             }
         }

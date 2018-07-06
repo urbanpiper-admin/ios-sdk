@@ -18,13 +18,13 @@ public class BizInfo : NSObject, NSCoding{
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
-		if let metaData = dictionary["meta"] as? [String:Any]{
+		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
 			meta = Meta(fromDictionary: metaData)
 		}
 		objects = [BizObject]()
-		if let objectsArray = dictionary["objects"] as? [[String:Any]]{
+		if let objectsArray: [[String:Any]] = dictionary["objects"] as? [[String:Any]]{
 			for dic in objectsArray{
-				let value = BizObject(fromDictionary: dic)
+				let value: BizObject = BizObject(fromDictionary: dic)
 				objects.append(value)
 			}
 		}

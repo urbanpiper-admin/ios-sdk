@@ -20,8 +20,8 @@ public class Store : NSObject, NSCoding{
     public var discount : Decimal!
 	public var hideStoreName : Bool!
     public var itemTaxes : Decimal!
-	public var lat : Float!
-	public var lng : Float!
+	public var lat : Double!
+	public var lng : Double!
 	public var minOrderTotal : Decimal!
 	@objc public var name : String!
 	public var onCloseMsg : String!
@@ -35,6 +35,7 @@ public class Store : NSObject, NSCoding{
 	public var taxRate : Float!
 	public var temporarilyClosed : Bool!
 	public var timeSlots : [AnyObject]!
+    public var distance: Double!
 
 
 	/**
@@ -42,93 +43,65 @@ public class Store : NSObject, NSCoding{
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
 		address = dictionary["address"] as? String
-		bizLocationId = dictionary["biz_location_id"] as? Int
+		bizLocationId = dictionary["biz_location_id"] as? Int ?? dictionary["id"] as? Int
 		city = dictionary["city"] as? String
 		closingDay = dictionary["closing_day"] as? Bool
 		closingTime = dictionary["closing_time"] as? String
         
         var priceVal = dictionary["delivery_charge"]
-        if let val = priceVal as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = priceVal as? Decimal {
             deliveryCharge = val
-        } else if let val = priceVal as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = priceVal as? Double {
             deliveryCharge = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: deliveryCharge).doubleValue))")
-        } else if let val = priceVal as? Float {
+        } else if let val: Float = priceVal as? Float {
             deliveryCharge = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = priceVal as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = priceVal as? Int {
             deliveryCharge = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: deliveryCharge).doubleValue))")
         } else {
             deliveryCharge = Decimal(0).rounded
-            print("amount value nil")
         }
         
         deliveryMinOffsetTime = dictionary["delivery_min_offset_time"] as? Int
         
         priceVal = dictionary["discount"]
-        if let val = priceVal as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = priceVal as? Decimal {
             discount = val
-        } else if let val = priceVal as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = priceVal as? Double {
             discount = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: discount).doubleValue))")
-        } else if let val = priceVal as? Float {
+        } else if let val: Float = priceVal as? Float {
             discount = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = priceVal as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = priceVal as? Int {
             discount = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: discount).doubleValue))")
         } else {
             discount = Decimal(0).rounded
-            print("amount value nil")
         }
         
 		hideStoreName = dictionary["hide_store_name"] as? Bool
         priceVal = dictionary["item_taxes"]
-        if let val = priceVal as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = priceVal as? Decimal {
             itemTaxes = val
-        } else if let val = priceVal as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = priceVal as? Double {
             itemTaxes = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: itemTaxes).doubleValue))")
-        } else if let val = priceVal as? Float {
+        } else if let val: Float = priceVal as? Float {
             itemTaxes = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = priceVal as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = priceVal as? Int {
             itemTaxes = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: itemTaxes).doubleValue))")
         } else {
             itemTaxes = Decimal(0).rounded
-            print("amount value nil")
         }
-		lat = dictionary["lat"] as? Float
-		lng = dictionary["lng"] as? Float
+		lat = dictionary["lat"] as? Double
+		lng = dictionary["lng"] as? Double
         
-        if let val = dictionary["min_order_total"] as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = dictionary["min_order_total"] as? Decimal {
             minOrderTotal = val
-        } else if let val = dictionary["min_order_total"] as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = dictionary["min_order_total"] as? Double {
             minOrderTotal = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: minOrderTotal).doubleValue))")
-        } else if let val = dictionary["min_order_total"] as? Float {
+        } else if let val: Float = dictionary["min_order_total"] as? Float {
             minOrderTotal = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = dictionary["min_order_total"] as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = dictionary["min_order_total"] as? Int {
             minOrderTotal = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: minOrderTotal).doubleValue))")
         } else {
             minOrderTotal = Decimal(0).rounded
-            print("amount value nil")
         }
         
         name = dictionary["name"] as? String
@@ -136,23 +109,16 @@ public class Store : NSObject, NSCoding{
 		onSelectMsg = dictionary["on_select_msg"] as? String
 		openingTime = dictionary["opening_time"] as? String
         
-        if let val = dictionary["packaging_charge"] as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = dictionary["packaging_charge"] as? Decimal {
             packagingCharge = val
-        } else if let val = dictionary["packaging_charge"] as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = dictionary["packaging_charge"] as? Double {
             packagingCharge = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: packagingCharge).doubleValue))")
-        } else if let val = dictionary["packaging_charge"] as? Float {
+        } else if let val: Float = dictionary["packaging_charge"] as? Float {
             packagingCharge = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = dictionary["packaging_charge"] as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = dictionary["packaging_charge"] as? Int {
             packagingCharge = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: packagingCharge).doubleValue))")
         } else {
             packagingCharge = Decimal(0).rounded
-            print("amount value nil")
         }
         
 		pgKey = dictionary["pg_key"] as? String
@@ -264,8 +230,8 @@ public class Store : NSObject, NSCoding{
         discount = aDecoder.decodeObject(forKey: "discount") as? Decimal
          hideStoreName = aDecoder.decodeObject(forKey: "hide_store_name") as? Bool
         itemTaxes = aDecoder.decodeObject(forKey: "item_taxes") as? Decimal
-         lat = aDecoder.decodeObject(forKey: "lat") as? Float
-         lng = aDecoder.decodeObject(forKey: "lng") as? Float
+         lat = aDecoder.decodeObject(forKey: "lat") as? Double
+         lng = aDecoder.decodeObject(forKey: "lng") as? Double
          minOrderTotal = aDecoder.decodeObject(forKey: "min_order_total") as? Decimal
          name = aDecoder.decodeObject(forKey: "name") as? String
          onCloseMsg = aDecoder.decodeObject(forKey: "on_close_msg") as? String

@@ -21,9 +21,9 @@ public class ItemExtra : NSObject, NSCoding{
 	public init(fromDictionary dictionary:  [String:Any]){
 		id = dictionary["id"] as? Int
 		keyValues = [ItemKeyValue]()
-		if let keyValuesArray = dictionary["key_values"] as? [[String:Any]]{
+		if let keyValuesArray: [[String:Any]] = dictionary["key_values"] as? [[String:Any]]{
 			for dic in keyValuesArray{
-				let value = ItemKeyValue(fromDictionary: dic)
+				let value: ItemKeyValue = ItemKeyValue(fromDictionary: dic)
 				keyValues.append(value)
 			}
 		}

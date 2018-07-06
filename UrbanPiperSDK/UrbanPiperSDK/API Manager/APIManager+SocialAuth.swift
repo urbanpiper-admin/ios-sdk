@@ -32,7 +32,7 @@ import UIKit
 
 extension APIManager {
 
-    static let socialLoginBaseUrl = "\(APIManager.baseUrl)/api/v2/social_auth/me"
+    static let socialLoginBaseUrl: String = "\(APIManager.baseUrl)/api/v2/social_auth/me"
 
     @objc public func socialLogin(user: User,
                            urlString: String,
@@ -46,21 +46,21 @@ extension APIManager {
         
         var cs = CharacterSet.urlQueryAllowed
         cs.remove(charactersIn: "@+")
-        let encodedURlString = apiURLString.addingPercentEncoding(withAllowedCharacters: cs)
+        let encodedURlString: String = apiURLString.addingPercentEncoding(withAllowedCharacters: cs)!
         
-        let url = URL(string: encodedURlString!)
+        let url: URL = URL(string: encodedURlString)!
 
-        var urlRequest = URLRequest(url: url!)
+        var urlRequest: URLRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = "GET"
         
-        let task = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
             
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
                 
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
-                    let appUser = User(fromDictionary: dictionary)
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
+                    let appUser: User = User(fromDictionary: dictionary)
 
                     appUser.countryCode = user.countryCode
                    
@@ -74,7 +74,7 @@ extension APIManager {
                     
                     appUser.gender = user.gender
 
-                    appUser.name = user.name
+                    appUser.firstName = user.firstName
                     appUser.email = user.email
                     appUser.accessToken = user.accessToken
                     
@@ -89,7 +89,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -98,7 +98,7 @@ extension APIManager {
             
         }
         
-        return task
+        return dataTask
     }
     
 }
@@ -111,7 +111,7 @@ extension APIManager {
                             completion: APICompletion<User>?,
                             failure: APIFailure?) -> URLSessionTask {
 
-        let urlString = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)"
+        let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)"
         
         return socialLogin(user: user, urlString: urlString, completion: completion, failure: failure)
     }
@@ -126,7 +126,7 @@ extension APIManager {
                                 completion: APICompletion<User>?,
                                 failure: APIFailure?) -> URLSessionTask {
         
-        let urlString = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)&action=check_phone&phone=\(user.phoneNumberWithCountryCode!)"
+        let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)&action=check_phone&phone=\(user.phoneNumberWithCountryCode!)"
         
         return socialLogin(user: user, urlString: urlString, completion: completion, failure: failure)
         
@@ -137,7 +137,7 @@ extension APIManager {
                          completion: APICompletion<User>?,
                          failure: APIFailure?) -> URLSessionTask {
         
-        let urlString = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)&action=verify_otp&phone=\(user.phoneNumberWithCountryCode!)&otp=\(otp)"
+        let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)&action=verify_otp&phone=\(user.phoneNumberWithCountryCode!)&otp=\(otp)"
         
         return socialLogin(user: user, urlString: urlString, completion: completion, failure: failure)
         

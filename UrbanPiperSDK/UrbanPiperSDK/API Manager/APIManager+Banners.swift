@@ -13,23 +13,23 @@ extension APIManager {
     @objc public func fetchBannersList(completion: APICompletion<BannersResponse>?,
                                 failure: APIFailure?) -> URLSessionTask {
 
-        let urlString = "\(APIManager.baseUrl)/api/v1/galleries/?type=app_banner"
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/galleries/?type=app_banner"
 
-        let url = URL(string: urlString)!
+        let url: URL = URL(string: urlString)!
 
-        var urlRequest = URLRequest(url: url)
+        var urlRequest: URLRequest = URLRequest(url: url)
 
         urlRequest.httpMethod = "GET"
 
         urlRequest.setValue(bizAuth(), forHTTPHeaderField: "Authorization")
         
-        let task = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
 
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
 
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
-                    let bannersResponse = BannersResponse(fromDictionary: dictionary)
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
+                    let bannersResponse: BannersResponse = BannersResponse(fromDictionary: dictionary)
 
                     DispatchQueue.main.async {
                         completionClosure(bannersResponse)
@@ -42,7 +42,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -51,7 +51,7 @@ extension APIManager {
 
         }
         
-        return task
+        return dataTask
     }
 
 }

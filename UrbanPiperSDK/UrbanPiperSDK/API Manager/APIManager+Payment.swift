@@ -23,12 +23,12 @@ extension APIManager {
                                completion: APICompletion<OrderPreProcessingResponse>?,
                                failure: APIFailure?) -> URLSessionTask {
         
-        let appId = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
-        let urlString = "\(APIManager.baseUrl)/api/v1/order/?format=json&pre_proc=1&biz_id=\(appId)"
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/order/?format=json&pre_proc=1&biz_id=\(appId)"
         
-        let url = URL(string: urlString)!
+        let url: URL = URL(string: urlString)!
         
-        var urlRequest = URLRequest(url: url)
+        var urlRequest: URLRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = "POST"
         
@@ -41,13 +41,13 @@ extension APIManager {
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
-        let task = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
             
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
                 
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
-                    let orderPreProcessingResponse = OrderPreProcessingResponse(fromDictionary: dictionary)
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
+                    let orderPreProcessingResponse: OrderPreProcessingResponse = OrderPreProcessingResponse(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
                         completionClosure(orderPreProcessingResponse)
@@ -60,7 +60,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -69,7 +69,7 @@ extension APIManager {
             
         }
         
-        return task
+        return dataTask
     }
 
     @objc public func applyCoupon(code: String,
@@ -77,11 +77,11 @@ extension APIManager {
                            completion: APICompletion<Order>?,
                            failure: APIFailure?) -> URLSessionTask {
         
-        let urlString = "\(APIManager.baseUrl)/api/v1/coupons/\(code)/".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/\(code)/".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
-        let url = URL(string: urlString)!
+        let url: URL = URL(string: urlString)!
         
-        var urlRequest = URLRequest(url: url)
+        var urlRequest: URLRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = "POST"
         
@@ -89,13 +89,13 @@ extension APIManager {
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
-        let task = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
             
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
                 
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
-                    let applyCouponResponse = Order(fromDictionary: dictionary)
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
+                    let applyCouponResponse: Order = Order(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
                         completionClosure(applyCouponResponse)
@@ -108,7 +108,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -117,7 +117,7 @@ extension APIManager {
             
         }
         
-        return task
+        return dataTask
     }
     
     public func initiateOnlinePayment(paymentOption: PaymentOption,
@@ -127,7 +127,7 @@ extension APIManager {
                                       completion: APICompletion<OnlinePaymentInitResponse>?,
                                       failure: APIFailure?) -> URLSessionTask? {
         
-        let appId = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
         
         var urlString = "\(APIManager.baseUrl)/payments/init/\(appId)/"
 
@@ -142,19 +142,19 @@ extension APIManager {
             urlString = urlString + "?amount=\(totalAmount * 100)&purpose=\(purpose)&channel=\(APIManager.channel)&\(paymentOption.rawValue)=1"
         }
         
-        let url = URL(string: urlString)!
+        let url: URL = URL(string: urlString)!
         
-        var urlRequest = URLRequest(url: url)
+        var urlRequest: URLRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = "GET"
         
-        let task = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
             
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
                 
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
-                    let onlinePaymentInitResponse = OnlinePaymentInitResponse(fromDictionary: dictionary)
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
+                    let onlinePaymentInitResponse: OnlinePaymentInitResponse = OnlinePaymentInitResponse(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
                         completionClosure(onlinePaymentInitResponse)
@@ -167,7 +167,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -176,7 +176,7 @@ extension APIManager {
             
         }
         
-        return task
+        return dataTask
     }
     
     @objc public func placeOrder(address: Address?,
@@ -203,12 +203,12 @@ extension APIManager {
                           completion: APICompletion<[String: Any]>?,
                           failure: APIFailure?) -> URLSessionTask {
         
-        let appId = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
-        let urlString = "\(APIManager.baseUrl)/api/v1/order/?format=json&biz_id=\(appId)"
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/order/?format=json&biz_id=\(appId)"
         
-        let url = URL(string: urlString)!
+        let url: URL = URL(string: urlString)!
         
-        var urlRequest = URLRequest(url: url)
+        var urlRequest: URLRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = "POST"
         
@@ -256,12 +256,12 @@ extension APIManager {
                 
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
-        let task = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
             
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
                 
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
                     DispatchQueue.main.async {
                         completionClosure(dictionary)
                     }
@@ -273,7 +273,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -282,7 +282,7 @@ extension APIManager {
             
         }
         
-        return task
+        return dataTask
     }
     
     @objc public func verifyPayment(pid: String,
@@ -291,20 +291,20 @@ extension APIManager {
         completion: APICompletion<[String: Any]>?,
                            failure: APIFailure?) -> URLSessionTask {
         
-        let urlString = "\(APIManager.baseUrl)/payments/callback/\(transactionId)/?gateway_txn_id=\(pid)&pid=\(orderId)"
+        let urlString: String = "\(APIManager.baseUrl)/payments/callback/\(transactionId)/?gateway_txn_id=\(pid)&pid=\(orderId)"
         
-        let url = URL(string: urlString)!
+        let url: URL = URL(string: urlString)!
         
-        var urlRequest = URLRequest(url: url)
+        var urlRequest: URLRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = "GET"
         
-        let task = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
             
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
                 
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
                     DispatchQueue.main.async {
                         completionClosure(dictionary)
                     }
@@ -316,7 +316,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -325,6 +325,6 @@ extension APIManager {
             
         }
         
-        return task
+        return dataTask
     }
 }

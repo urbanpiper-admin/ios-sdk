@@ -32,24 +32,24 @@ public class Result : NSObject, NSCoding{
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
 		addressComponents = [AddressComponent]()
-		if let addressComponentsArray = dictionary["address_components"] as? [[String:Any]]{
+		if let addressComponentsArray: [[String:Any]] = dictionary["address_components"] as? [[String:Any]]{
 			for dic in addressComponentsArray{
-				let value = AddressComponent(fromDictionary: dic)
+				let value: AddressComponent = AddressComponent(fromDictionary: dic)
 				addressComponents.append(value)
 			}
 		}
 		adrAddress = dictionary["adr_address"] as? String
 		formattedAddress = dictionary["formatted_address"] as? String
-		if let geometryData = dictionary["geometry"] as? [String:Any]{
+		if let geometryData: [String:Any] = dictionary["geometry"] as? [String:Any]{
 			geometry = Geometry(fromDictionary: geometryData)
 		}
 		icon = dictionary["icon"] as? String
 		id = dictionary["id"] as? String
 		name = dictionary["name"] as? String
 		photos = [Photo]()
-		if let photosArray = dictionary["photos"] as? [[String:Any]]{
+		if let photosArray: [[String:Any]] = dictionary["photos"] as? [[String:Any]]{
 			for dic in photosArray{
-				let value = Photo(fromDictionary: dic)
+				let value: Photo = Photo(fromDictionary: dic)
 				photos.append(value)
 			}
 		}

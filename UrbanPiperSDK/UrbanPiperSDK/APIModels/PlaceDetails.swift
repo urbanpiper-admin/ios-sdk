@@ -20,7 +20,7 @@ public class PlaceDetailsResponse : NSObject, NSCoding{
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
 		htmlAttributions = dictionary["html_attributions"] as? [AnyObject]
-		if let resultData = dictionary["result"] as? [String:Any]{
+		if let resultData: [String:Any] = dictionary["result"] as? [String:Any]{
 			result = Result(fromDictionary: resultData)
 		}
 		status = dictionary["status"] as? String

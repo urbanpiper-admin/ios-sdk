@@ -141,7 +141,7 @@ public class UPReachability {
     fileprivate var notifierRunning = false
     fileprivate let reachabilityRef: SCNetworkReachability
     
-    fileprivate let reachabilitySerialQueue = DispatchQueue(label: "uk.co.ashleymills.reachability")
+    fileprivate let reachabilitySerialQueue: DispatchQueue = DispatchQueue(label: "uk.co.ashleymills.reachability")
     
     fileprivate var usingHostname = false
     
@@ -152,7 +152,7 @@ public class UPReachability {
     }
     
     public convenience init?(hostname: String) {
-        guard let ref = SCNetworkReachabilityCreateWithName(nil, hostname) else { return nil }
+        guard let ref: SCNetworkReachability = SCNetworkReachabilityCreateWithName(nil, hostname) else { return nil }
         self.init(reachabilityRef: ref, usingHostname: true)
     }
     
@@ -161,7 +161,7 @@ public class UPReachability {
         zeroAddress.sa_len = UInt8(MemoryLayout<sockaddr>.size)
         zeroAddress.sa_family = sa_family_t(AF_INET)
         
-        guard let ref = SCNetworkReachabilityCreateWithAddress(nil, &zeroAddress) else { return nil }
+        guard let ref: SCNetworkReachability = SCNetworkReachabilityCreateWithAddress(nil, &zeroAddress) else { return nil }
         
         self.init(reachabilityRef: ref)
     }

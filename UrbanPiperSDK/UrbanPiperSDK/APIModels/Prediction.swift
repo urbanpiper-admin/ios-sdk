@@ -27,21 +27,21 @@ public class Prediction : NSObject, NSCoding{
 		descriptionField = dictionary["description"] as? String
 		id = dictionary["id"] as? String
 		matchedSubstrings = [MatchedSubstring]()
-		if let matchedSubstringsArray = dictionary["matched_substrings"] as? [[String:Any]]{
+		if let matchedSubstringsArray: [[String:Any]] = dictionary["matched_substrings"] as? [[String:Any]]{
 			for dic in matchedSubstringsArray{
-				let value = MatchedSubstring(fromDictionary: dic)
+				let value: MatchedSubstring = MatchedSubstring(fromDictionary: dic)
 				matchedSubstrings.append(value)
 			}
 		}
 		placeId = dictionary["place_id"] as? String
 		reference = dictionary["reference"] as? String
-		if let structuredFormattingData = dictionary["structured_formatting"] as? [String:Any]{
+		if let structuredFormattingData: [String:Any] = dictionary["structured_formatting"] as? [String:Any]{
 			structuredFormatting = StructuredFormatting(fromDictionary: structuredFormattingData)
 		}
 		terms = [Term]()
-		if let termsArray = dictionary["terms"] as? [[String:Any]]{
+		if let termsArray: [[String:Any]] = dictionary["terms"] as? [[String:Any]]{
 			for dic in termsArray{
-				let value = Term(fromDictionary: dic)
+				let value: Term = Term(fromDictionary: dic)
 				terms.append(value)
 			}
 		}

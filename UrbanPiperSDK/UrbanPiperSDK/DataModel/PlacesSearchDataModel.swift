@@ -20,7 +20,7 @@ import UIKit
 }
 
 public struct PlacesSearchUserDefaultKeys {
-    static let selectedPlacesDataKey = "SelectedPlacesDataKey"
+    static let selectedPlacesDataKey: String = "SelectedPlacesDataKey"
 }
 
 public class PlacesSearchDataModel: UrbanPiperDataModel {
@@ -32,15 +32,15 @@ public class PlacesSearchDataModel: UrbanPiperDataModel {
     private var keyword = ""
 
     public var placesResponse: GooglePlacesResponse? = {
-        guard let selectedPlacesData = UserDefaults.standard.object(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey) as? Data else { return nil }
+        guard let selectedPlacesData: Data = UserDefaults.standard.object(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey) as? Data else { return nil }
         StructuredFormatting.registerClassNameWhiteLabel()
         MatchedSubstring.registerClassNameWhiteLabel()
         Term.registerClassNameWhiteLabel()
 
         Prediction.registerClassName()
         
-        guard let selectedPlacesArray = NSKeyedUnarchiver.unarchiveObject(with: selectedPlacesData) as? [Prediction] else { return nil }
-        let response = GooglePlacesResponse(fromDictionary: [:])
+        guard let selectedPlacesArray: [Prediction] = NSKeyedUnarchiver.unarchiveObject(with: selectedPlacesData) as? [Prediction] else { return nil }
+        let response: GooglePlacesResponse = GooglePlacesResponse(fromDictionary: [:])
         response.predictions = selectedPlacesArray
         return response
         }(){
@@ -77,7 +77,7 @@ public class PlacesSearchDataModel: UrbanPiperDataModel {
     
     @objc private func searchPlaces(for keyword: String) {
         dataModelDelegate?.refreshPlacesSearchUI(true)
-        let dataTask = APIManager.shared.fetchPlaces(for: keyword,
+        let dataTask: URLSessionTask = APIManager.shared.fetchPlaces(for: keyword,
                                                             completion: { [weak self] (data) in
                                                                 defer {
                                                                     self?.dataModelDelegate?.refreshPlacesSearchUI(false)
@@ -96,7 +96,7 @@ public class PlacesSearchDataModel: UrbanPiperDataModel {
     
     public func fetchLocation(for prediction: Prediction, completion: @escaping CoordinatesFetchCompletionBlock) {
         store(prediction: prediction)
-        let dataTask = APIManager.shared.fetchCoordinates(from: prediction.placeId,
+        let dataTask: URLSessionTask = APIManager.shared.fetchCoordinates(from: prediction.placeId,
                                                      completion: { (data) in
                                                         guard let response = data else {
                                                             completion(nil, nil)
@@ -114,8 +114,8 @@ public class PlacesSearchDataModel: UrbanPiperDataModel {
         var selectedPlacesArray: [Prediction]
         Prediction.registerClassName()
 
-        if let selectedPlacesData = UserDefaults.standard.object(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey) as? Data {
-            if let predictionsArray = NSKeyedUnarchiver.unarchiveObject(with: selectedPlacesData) as? [Prediction] {
+        if let selectedPlacesData: Data = UserDefaults.standard.object(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey) as? Data {
+            if let predictionsArray: [Prediction] = NSKeyedUnarchiver.unarchiveObject(with: selectedPlacesData) as? [Prediction] {
                 selectedPlacesArray = predictionsArray
             } else {
                 selectedPlacesArray = [Prediction]()
@@ -143,7 +143,7 @@ extension PlacesSearchDataModel {
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
         
-        if let placesCell = cell as? PlacesCellDelegate {
+        if let placesCell: PlacesCellDelegate = cell as? PlacesCellDelegate {
             placesCell.configureCell(placesPredictionList?[indexPath.row])
         } else {
             assert(false, "Cell does not conform to PlacesCellDelegate protocol")
@@ -164,7 +164,7 @@ extension PlacesSearchDataModel {
     public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
         
-        if let placesCell = cell as? PlacesCellDelegate {
+        if let placesCell: PlacesCellDelegate = cell as? PlacesCellDelegate {
             placesCell.configureCell(placesPredictionList?[indexPath.row])
         } else {
             assert(false, "Cell does not conform to PlacesCellDelegate protocol")

@@ -16,13 +16,13 @@ public class NotificationsResponse : NSObject, NSCoding{
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
 		messages = [Message]()
-		if let messagesArray = dictionary["messages"] as? [[String:Any]]{
+		if let messagesArray: [[String:Any]] = dictionary["messages"] as? [[String:Any]]{
 			for dic in messagesArray{
-				let value = Message(fromDictionary: dic)
+				let value: Message = Message(fromDictionary: dic)
 				messages.append(value)
 			}
 		}
-		if let metaData = dictionary["meta"] as? [String:Any]{
+		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
 			meta = Meta(fromDictionary: metaData)
 		}
 	}

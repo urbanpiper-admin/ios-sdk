@@ -23,14 +23,14 @@ import GooglePlaces
 public class DeliveryLocationDataModel: UrbanPiperDataModel {
 
     private struct LocationUserDefaultKeys {
-        static let deliveryLocationLatitude = "DeliveryLocationLatitude"
-        static let deliveryLocationLongitude = "DeliveryLocationLongitude"
-        static let deliveryAddress = "DeliveryAddress"
+        static let deliveryLocationLatitude: String = "DeliveryLocationLatitude"
+        static let deliveryLocationLongitude: String = "DeliveryLocationLongitude"
+        static let deliveryAddress: String = "DeliveryAddress"
     }
     
-    @objc public static private(set) var shared = DeliveryLocationDataModel()
+    @objc public static private(set) var shared: DeliveryLocationDataModel = DeliveryLocationDataModel()
 
-    static let maxDistanceBetweenLocations = CLLocationDistance(200)
+    static let maxDistanceBetweenLocations: CLLocationDistance = CLLocationDistance(200)
 
     @objc static let locationUpdateTimeInterval: Int = {
         #if DEBUG
@@ -45,8 +45,8 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
     @objc var userSelectedDeliveryLocation: Bool = false
 
     @objc public var deliveryLocation: CLLocation? = {
-        guard let lat = UserDefaults.standard.object(forKey: LocationUserDefaultKeys.deliveryLocationLatitude) as? CLLocationDegrees else { return nil }
-        guard let lon = UserDefaults.standard.object(forKey: LocationUserDefaultKeys.deliveryLocationLongitude) as? CLLocationDegrees else { return nil }
+        guard let lat: CLLocationDegrees = UserDefaults.standard.object(forKey: LocationUserDefaultKeys.deliveryLocationLatitude) as? CLLocationDegrees else { return nil }
+        guard let lon: CLLocationDegrees = UserDefaults.standard.object(forKey: LocationUserDefaultKeys.deliveryLocationLongitude) as? CLLocationDegrees else { return nil }
 
         return CLLocation(latitude: lat, longitude: lon)
         }()
@@ -66,9 +66,9 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
     }
 
     @objc public var deliveryAddress: OrderDeliveryAddress? = {
-        guard let addressData = UserDefaults.standard.object(forKey: LocationUserDefaultKeys.deliveryAddress) as? Data else { return nil }
+        guard let addressData: Data = UserDefaults.standard.object(forKey: LocationUserDefaultKeys.deliveryAddress) as? Data else { return nil }
         OrderDeliveryAddress.registerClassName()
-        guard let orderDeliveryAddress = NSKeyedUnarchiver.unarchiveObject(with: addressData) as? OrderDeliveryAddress else { return nil }
+        guard let orderDeliveryAddress: OrderDeliveryAddress = NSKeyedUnarchiver.unarchiveObject(with: addressData) as? OrderDeliveryAddress else { return nil }
         return orderDeliveryAddress
         }()
         {
@@ -153,12 +153,12 @@ extension DeliveryLocationDataModel {
         let modelDelegate = dataModelDelegate
         GMSGeocoder().reverseGeocodeCoordinate(location.coordinate, completionHandler: { [weak self] (response, error) -> Void in
             if let addressObject = response?.firstResult() {
-                let deliveryAddress = OrderDeliveryAddress(coordinate: addressObject.coordinate, locality: addressObject.locality, postalCode: addressObject.postalCode, lines: addressObject.lines)
+                let deliveryAddress: OrderDeliveryAddress = OrderDeliveryAddress(coordinate: addressObject.coordinate, locality: addressObject.locality, postalCode: addressObject.postalCode, lines: addressObject.lines)
 
                 self?.deliveryAddress = deliveryAddress
                 modelDelegate?.update(location, deliveryAddress, nil)
             } else {
-                let apiError = UPAPIError(error: error, data: nil)
+                let apiError: UPAPIError? = UPAPIError(error: error, data: nil)
 
                 modelDelegate?.update(nil, nil, apiError)
             }
@@ -177,7 +177,7 @@ extension DeliveryLocationDataModel: LocationManagerDataModelDelegate {
             return
         }
 
-        let now = Date()
+        let now: Date = Date()
         let hasPassedRefreshWindow = (nextLocationUpdateDate == nil || nextLocationUpdateDate! <= now)
 
         guard deliveryLocation == nil || hasPassedRefreshWindow else {

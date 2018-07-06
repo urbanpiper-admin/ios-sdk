@@ -47,7 +47,7 @@ extension SideMenuPanelDataModel {
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
 
-        if let menuCell = cell as? SideMenuPanelCellDelegate {
+        if let menuCell: SideMenuPanelCellDelegate = cell as? SideMenuPanelCellDelegate {
             menuCell.configureCell(panelDetailArray[indexPath.row])
         } else {
             assert(false, "Cell does not conform to SideMenuPanelCellDelegate protocol")
@@ -68,7 +68,7 @@ extension SideMenuPanelDataModel {
     public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
 
-        if let menuCell = cell as? SideMenuPanelCellDelegate {
+        if let menuCell: SideMenuPanelCellDelegate = cell as? SideMenuPanelCellDelegate {
             menuCell.configureCell(panelDetailArray[indexPath.row])
         } else {
             assert(false, "Cell does not conform to SideMenuPanelCellDelegate protocol")

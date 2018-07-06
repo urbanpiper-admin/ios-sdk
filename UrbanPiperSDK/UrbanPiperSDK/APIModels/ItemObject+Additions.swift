@@ -100,7 +100,7 @@ extension ItemObject: NSCopying {
         self.init(fromDictionary: dictionary)
         
         optionGroups = [ItemOptionGroup]()
-        if let optionGroupsArray = dictionary["option_groups"] as? [[String:Any]]{
+        if let optionGroupsArray: [[String:Any]] = dictionary["option_groups"] as? [[String:Any]]{
             for dic in optionGroupsArray{
                 let value = ItemOptionGroup.init(historicalOrderItemOptionGroup: dic)
                 optionGroups.append(value)

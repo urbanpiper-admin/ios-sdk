@@ -102,7 +102,7 @@ extension ItemOption {
         self.init(fromDictionary: dictionary)
         
         nestedOptionGroups = [ItemOptionGroup]()
-        if let nestedOptionGroupsArray = dictionary["nested_option_groups"] as? [[String:Any]]{
+        if let nestedOptionGroupsArray: [[String:Any]] = dictionary["nested_option_groups"] as? [[String:Any]]{
             for dic in nestedOptionGroupsArray{
                 let value = ItemOptionGroup.init(historicalOrderItemOptionGroup: dic)
                 nestedOptionGroups.append(value)

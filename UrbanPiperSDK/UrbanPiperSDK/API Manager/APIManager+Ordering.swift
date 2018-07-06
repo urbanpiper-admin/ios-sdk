@@ -14,26 +14,26 @@ extension APIManager {
                                    completion: APICompletion<CategoriesResponse>?,
                                    failure: APIFailure?) -> URLSessionTask {
 
-        let canUseCachedResponse = AppConfigManager.shared.firRemoteConfigDefaults.enableCaching && !isForceRefresh
+        let canUseCachedResponse: Bool = AppConfigManager.shared.firRemoteConfigDefaults.enableCaching && !isForceRefresh
 
-        let appId = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
 
-        let urlString = "\(APIManager.baseUrl)/api/v1/order/categories/?format=json&biz_id=\(appId)"
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/order/categories/?format=json&biz_id=\(appId)"
 
-        let url = URL(string: urlString)!
+        let url: URL = URL(string: urlString)!
 
-        var urlRequest = URLRequest(url: url,
+        var urlRequest: URLRequest = URLRequest(url: url,
                                     cachePolicy: canUseCachedResponse ? .useProtocolCachePolicy : .reloadIgnoringLocalAndRemoteCacheData)
 
         urlRequest.httpMethod = "GET"
         
-        let task = session.dataTask(with: urlRequest) { [weak self] (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { [weak self] (data, response, error) in
 
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
 
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
-                    let categoriesResponse = CategoriesResponse(fromDictionary: dictionary)
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
+                    let categoriesResponse: CategoriesResponse = CategoriesResponse(fromDictionary: dictionary)
                     if categoriesResponse.objects.count > 1 {
                         categoriesResponse.objects.sort { $0.sortOrder < $1.sortOrder }
                     }
@@ -61,7 +61,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -70,7 +70,7 @@ extension APIManager {
 
         }
 
-        return task
+        return dataTask
     }
 
     func saveDeliveryTimingSlots(biz: Biz) {

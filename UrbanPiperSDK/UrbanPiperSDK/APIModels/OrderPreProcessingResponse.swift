@@ -18,28 +18,23 @@ public class OrderPreProcessingResponse : NSObject, NSCoding{
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
-		if let orderData = dictionary["order"] as? [String:Any]{
+		if let orderData: [String:Any] = dictionary["order"] as? [String:Any]{
 			order = Order(fromDictionary: orderData)
 		}
         
         let priceVal = dictionary["discount"]
-        if let val = priceVal as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = priceVal as? Decimal {
             discount = val
-        } else if let val = priceVal as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = priceVal as? Double {
             discount = Decimal(val).rounded
             print("Decimal Double \((NSDecimalNumber(decimal: discount!).doubleValue))")
-        } else if let val = priceVal as? Float {
+        } else if let val: Float = priceVal as? Float {
             discount = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = priceVal as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = priceVal as? Int {
             discount = Decimal(val).rounded
             print("Decimal Double \((NSDecimalNumber(decimal: discount!).doubleValue))")
         } else {
             discount = Decimal(0).rounded
-            print("amount value nil")
         }
 	}
 

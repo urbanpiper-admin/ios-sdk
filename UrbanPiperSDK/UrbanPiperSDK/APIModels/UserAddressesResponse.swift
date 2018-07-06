@@ -18,9 +18,9 @@ public class UserAddressesResponse : NSObject, NSCoding{
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
 		addresses = [Address]()
-		if let addressesArray = dictionary["addresses"] as? [[String:Any]]{
+		if let addressesArray: [[String:Any]] = dictionary["addresses"] as? [[String:Any]]{
 			for dic in addressesArray{
-				let value = Address(fromDictionary: dic)
+				let value: Address = Address(fromDictionary: dic)
 				addresses.append(value)
 			}
 		}

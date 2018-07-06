@@ -24,21 +24,21 @@ public class ReorderResponse : NSObject, NSCoding{
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	init(fromDictionary dictionary: [String:Any]){
-		if let bizLocationData = dictionary["biz_location"] as? [String:Any]{
+		if let bizLocationData: [String:Any] = dictionary["biz_location"] as? [String:Any]{
 			bizLocation = BizLocation(fromDictionary: bizLocationData)
 		}
 		deliveryCharge = dictionary["delivery_charge"] as? Float
 		itemsAvailable = [ItemObject]()
-		if let itemsAvailableArray = dictionary["items_available"] as? [[String:Any]]{
+		if let itemsAvailableArray: [[String:Any]] = dictionary["items_available"] as? [[String:Any]]{
 			for dic in itemsAvailableArray{
-				let value = ItemObject(fromDictionary: dic)
+				let value: ItemObject = ItemObject(fromDictionary: dic)
 				itemsAvailable.append(value)
 			}
 		}
         itemsNotAvailable = [ItemObject]()
-        if let itemsNotAvailableArray = dictionary["items_not_available"] as? [[String:Any]]{
+        if let itemsNotAvailableArray: [[String:Any]] = dictionary["items_not_available"] as? [[String:Any]]{
             for dic in itemsNotAvailableArray{
-                let value = ItemObject(fromDictionary: dic)
+                let value: ItemObject = ItemObject(fromDictionary: dic)
                 itemsNotAvailable.append(value)
             }
         }

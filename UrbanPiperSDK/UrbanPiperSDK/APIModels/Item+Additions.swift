@@ -22,7 +22,7 @@ extension ItemObject {
     }
 
     public var foodTypeEnum: FoodType? {
-        guard let intVal = Int(foodType), let foodTypeEnum = FoodType(rawValue: intVal) else { return  nil }
+        guard let intVal: Int = Int(foodType), let foodTypeEnum: FoodType = FoodType(rawValue: intVal) else { return  nil }
         return foodTypeEnum
     }
 

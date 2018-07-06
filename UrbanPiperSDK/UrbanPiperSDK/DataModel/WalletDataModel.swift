@@ -1,5 +1,5 @@
 //
-//  WalletReloadDataModel.swift
+//  WalletDataModel.swift
 //  UrbanPiperSDK
 //
 //  Created by Vidhyadharan Mohanram on 13/06/18.
@@ -8,8 +8,10 @@
 
 import UIKit
 
-@objc public protocol WalletReloadDataModelDelegate {
+@objc public protocol WalletDataModelDelegate {
 
+    func fetchingWalletTransactions(isRefreshing: Bool)
+    
     func initiatingWalletReload(isProcessing: Bool)
 
     func verifyingWalletReloadTransaction(isProcessing: Bool)
@@ -22,27 +24,101 @@ import UIKit
 
     func updateUserBizInfoBalance()
 
-    func handleWalletReload(error: UPError?)
+    func handleWallet(error: UPError?)
+}
+
+@objc public protocol TransactionCellDelegate {
+    func configureCell(_ transaction: Transaction?)
 }
 
 
-public class WalletReloadDataModel: UrbanPiperDataModel {
+public class WalletDataModel: UrbanPiperDataModel {
 
-    weak public var dataModelDelegate: WalletReloadDataModelDelegate?
+    weak public var dataModelDelegate: WalletDataModelDelegate?
 
     var transactionId: String?
+    
+    var walletTransactionResponse: WalletTransactionResponse? {
+        didSet {
+            tableView?.reloadData()
+            collectionView?.reloadData()
+        }
+    }
+    
+    public var transactionsListArray: [Transaction]? {
+        return walletTransactionResponse?.transactions
+    }
 
-    public convenience init(delegate: WalletReloadDataModelDelegate) {
+    public convenience init(delegate: WalletDataModelDelegate) {
         self.init()
 
         dataModelDelegate = delegate
+    }
+    
+}
+
+//  MARK: UITableView DataSource
+extension WalletDataModel {
+    
+    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return transactionsListArray?.count ?? 0
+    }
+    
+    public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
+        
+        if let transactionCell: TransactionCellDelegate = cell as? TransactionCellDelegate {
+            transactionCell.configureCell(transactionsListArray?[indexPath.row])
+        } else {
+            assert(false, "Cell does not conform to TransactionCellDelegate protocol")
+        }
+        
+        return cell
+    }
+}
+
+//  MARK: UICollectionView DataSource
+
+extension WalletDataModel {
+    
+    public override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return transactionsListArray?.count ?? 0
+    }
+    
+    public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
+        
+        if let transactionCell: TransactionCellDelegate = cell as? TransactionCellDelegate {
+            transactionCell.configureCell(transactionsListArray?[indexPath.row])
+        } else {
+            assert(false, "Cell does not conform to TransactionCellDelegate protocol")
+        }
+        
+        return cell
+    }
+    
+}
+
+extension WalletDataModel {
+    
+    public func fetchWalletTransactions() {
+        dataModelDelegate?.fetchingWalletTransactions(isRefreshing: true)
+        
+        let dataTask: URLSessionTask = APIManager.shared.fetchWalletTransactions(completion: { [weak self] (response) in
+            self?.walletTransactionResponse = response
+            self?.dataModelDelegate?.fetchingWalletTransactions(isRefreshing: false)
+        }, failure: { [weak self] (upError) in
+            self?.dataModelDelegate?.handleWallet(error: upError)
+        })
+        
+        addOrCancelDataTask(dataTask: dataTask)
     }
 
     public func initiateWalletReload(amount: Decimal, paymentOption: PaymentOption = .paymentGateway) {
         transactionId = nil
 
         dataModelDelegate?.initiatingWalletReload(isProcessing: true)
-        let dataTask = APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption,
+        let dataTask: URLSessionTask? = APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption,
                                                                purpose: .reload,
                                                                totalAmount: amount,
                                                                bizLocationId: nil,
@@ -59,7 +135,7 @@ public class WalletReloadDataModel: UrbanPiperDataModel {
                                                                 }
             }, failure: { [weak self] (upError) in
                 self?.dataModelDelegate?.initiatingWalletReload(isProcessing: false)
-                self?.dataModelDelegate?.handleWalletReload(error: upError)
+                self?.dataModelDelegate?.handleWallet(error: upError)
         });
 
         addOrCancelDataTask(dataTask: dataTask)
@@ -67,25 +143,25 @@ public class WalletReloadDataModel: UrbanPiperDataModel {
 
 }
 
-extension WalletReloadDataModel {
+extension WalletDataModel {
 
     public func verifyWalletReloadTransaction(paymentId: String) {
         dataModelDelegate?.verifyingWalletReloadTransaction(isProcessing: true)
 
-        let dataTask = APIManager.shared.verifyPayment(pid: paymentId,
+        let dataTask: URLSessionTask = APIManager.shared.verifyPayment(pid: paymentId,
                                                        orderId: OnlinePaymentPurpose.reload.rawValue,
                                                        transactionId: transactionId!,
                                                        completion: { [weak self] (responseDict) in
                                                         self?.dataModelDelegate?.verifyingWalletReloadTransaction(isProcessing: false)
-                                                        if let status = responseDict?["status"] as? String, status == "3" {
+                                                        if let status: String = responseDict?["status"] as? String, status == "3" {
                                                             self?.dataModelDelegate?.updateUserBizInfoBalance()
                                                         } else {
-                                                            let upError = UPAPIError(responseObject: responseDict)
-                                                            self?.dataModelDelegate?.handleWalletReload(error: upError)
+                                                            let apiError: UPAPIError? = UPAPIError(responseObject: responseDict)
+                                                            self?.dataModelDelegate?.handleWallet(error: apiError)
                                                         }
             }, failure: { [weak self] (error) in
                 self?.dataModelDelegate?.verifyingWalletReloadTransaction(isProcessing: false)
-                self?.dataModelDelegate?.handleWalletReload(error: error)
+                self?.dataModelDelegate?.handleWallet(error: error)
         })
 
         transactionId = nil
@@ -96,7 +172,7 @@ extension WalletReloadDataModel {
 
 //  App State Management
 
-extension WalletReloadDataModel {
+extension WalletDataModel {
 
     @objc open override func appWillEnterForeground() {
     }
@@ -109,7 +185,7 @@ extension WalletReloadDataModel {
 
 //  Reachability
 
-extension WalletReloadDataModel {
+extension WalletDataModel {
 
     @objc open override func networkIsAvailable() {
     }

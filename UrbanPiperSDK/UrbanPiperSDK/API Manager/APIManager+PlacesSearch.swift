@@ -14,30 +14,30 @@ extension APIManager {
                            completion: APICompletion<GooglePlacesResponse>?,
                            failure: APIFailure?) -> URLSessionTask {
         
-        let placesAPIKey = AppConfigManager.shared.firRemoteConfigDefaults.googlePlacesApiKey!
+        let placesAPIKey: String = AppConfigManager.shared.firRemoteConfigDefaults.googlePlacesApiKey!
 
-        var bizCountry2LetterCode = AppConfigManager.shared.firRemoteConfigDefaults.bizCountry2LetterCode ?? "IN"
+        var bizCountry2LetterCode: String = AppConfigManager.shared.firRemoteConfigDefaults.bizCountry2LetterCode ?? "IN"
 
         let charSet = NSCharacterSet.whitespacesAndNewlines.inverted
         if bizCountry2LetterCode.rangeOfCharacter(from: charSet) == nil {
             bizCountry2LetterCode = "IN"
         }
 
-        let urlString = "https://maps.googleapis.com/maps/api/place/autocomplete/json?sensor=false&key=\(placesAPIKey)&components=country:\(bizCountry2LetterCode)&input=\(keyword)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let urlString: String = "https://maps.googleapis.com/maps/api/place/autocomplete/json?sensor=false&key=\(placesAPIKey)&components=country:\(bizCountry2LetterCode)&input=\(keyword)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
 
-        let url = URL(string: urlString!)!
+        let url: URL = URL(string: urlString)!
         
-        var urlRequest = URLRequest(url: url)
+        var urlRequest: URLRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = "GET"
         
-        let task = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
             
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
                 
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
-                    let placesResponse = GooglePlacesResponse(fromDictionary: dictionary)
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
+                    let placesResponse: GooglePlacesResponse = GooglePlacesResponse(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
                         completionClosure(placesResponse)
@@ -50,7 +50,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -59,30 +59,29 @@ extension APIManager {
             
         }
         
-        return task
+        return dataTask
     }
     
     @objc public func fetchCoordinates(from placeId: String,
                                 completion: APICompletion<PlaceDetailsResponse>?,
                                 failure: APIFailure?) -> URLSessionTask {
-        let placesAPIKey = AppConfigManager.shared.firRemoteConfigDefaults.googlePlacesApiKey!
+        let placesAPIKey: String = AppConfigManager.shared.firRemoteConfigDefaults.googlePlacesApiKey!
 
-        let urlString = "https://maps.googleapis.com/maps/api/place/details/json?placeid=\(placeId)&sensor=false&key=\(placesAPIKey)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let urlString: String = "https://maps.googleapis.com/maps/api/place/details/json?placeid=\(placeId)&sensor=false&key=\(placesAPIKey)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
-        let url = URL(string: urlString!)!
+        let url: URL = URL(string: urlString)!
         
-        print("url \(url)")
-        var urlRequest = URLRequest(url: url)
+        var urlRequest: URLRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = "GET"
         
-        let task = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
             
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
                 
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
-                    let placeDetailsResponse = PlaceDetailsResponse(fromDictionary: dictionary)
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
+                    let placeDetailsResponse: PlaceDetailsResponse = PlaceDetailsResponse(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
                         completionClosure(placeDetailsResponse)
@@ -95,7 +94,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -104,7 +103,7 @@ extension APIManager {
             
         }
         
-        return task
+        return dataTask
     }
     
 }

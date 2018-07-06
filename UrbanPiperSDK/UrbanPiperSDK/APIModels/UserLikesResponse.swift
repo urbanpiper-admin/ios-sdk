@@ -16,13 +16,13 @@ public class UserLikesResponse : NSObject, NSCoding{
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
 		likes = [Like]()
-		if let likesArray = dictionary["likes"] as? [[String:Any]]{
+		if let likesArray: [[String:Any]] = dictionary["likes"] as? [[String:Any]]{
 			for dic in likesArray{
-				let value = Like(fromDictionary: dic)
+				let value: Like = Like(fromDictionary: dic)
 				likes.append(value)
 			}
 		}
-		if let metaData = dictionary["meta"] as? [String:Any]{
+		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
 			meta = Meta(fromDictionary: metaData)
 		}
 	}

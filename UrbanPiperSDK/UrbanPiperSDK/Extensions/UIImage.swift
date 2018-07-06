@@ -11,10 +11,10 @@ import UIKit
 extension UIImage {
     
     static public var appIcon: UIImage? {
-        guard let iconsDictionary = Bundle.main.infoDictionary?["CFBundleIcons"] as? [String:Any],
-            let primaryIconsDictionary = iconsDictionary["CFBundlePrimaryIcon"] as? [String:Any],
-            let iconFiles = primaryIconsDictionary["CFBundleIconFiles"] as? [String],
-            let lastIcon = iconFiles.last else { return nil }
+        guard let iconsDictionary: [String:Any] = Bundle.main.infoDictionary?["CFBundleIcons"] as? [String:Any],
+            let primaryIconsDictionary: [String:Any] = iconsDictionary["CFBundlePrimaryIcon"] as? [String:Any],
+            let iconFiles: [String] = primaryIconsDictionary["CFBundleIconFiles"] as? [String],
+            let lastIcon: String = iconFiles.last else { return nil }
         return UIImage(named: lastIcon)
     }
     

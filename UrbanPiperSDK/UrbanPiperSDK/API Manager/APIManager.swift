@@ -11,20 +11,20 @@ import UIKit
 @objc public class APIManager: NSObject {
 
     #if DEBUG
-    public static let baseUrl = "https://staging.urbanpiper.com"
+    public static let baseUrl: String = "https://staging.urbanpiper.com"
     #else
-    public static let baseUrl = "https://api.urbanpiper.com"
+    public static let baseUrl: String = "https://api.urbanpiper.com"
     #endif
 
     public typealias APISuccess = () -> Void
     public typealias APICompletion<T> = (T?) -> Void
     public typealias APIFailure = (UPError?) -> Void
 
-    @objc public static private(set) var shared = APIManager()
+    @objc public static private(set) var shared: APIManager = APIManager()
 
-    public static let channel = "app_ios"
+    public static let channel: String = "app_ios"
 
-    private static let KeyChainUUIDString = "KeyChainUUIDStringKey"
+    private static let KeyChainUUIDString: String = "KeyChainUUIDStringKey"
 
     fileprivate var sessionConfig: URLSessionConfiguration = {
         let config = URLSessionConfiguration.default
@@ -33,20 +33,20 @@ import UIKit
     }()
 
     lazy internal var session: URLSession = {
-        let session = URLSession(configuration: sessionConfig,
+        let session: URLSession = URLSession(configuration: sessionConfig,
                                  delegate: self,
                                  delegateQueue: nil)
         return session
     }()
 
-    internal static let reachability = UPReachability(hostname: "www.google.com")
+    internal static let reachability: UPReachability? = UPReachability(hostname: "www.google.com")
 
-    private static let keychain = UPKeychainWrapper(serviceName: Bundle.main.bundleIdentifier!)
+    private static let keychain: UPKeychainWrapper = UPKeychainWrapper(serviceName: Bundle.main.bundleIdentifier!)
     
     static var uuidString: String! {
         get {
-            guard let uuidStringVal = APIManager.keychain.string(forKey: APIManager.KeyChainUUIDString) else {
-                let newUUIDString = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
+            guard let uuidStringVal: String = APIManager.keychain.string(forKey: APIManager.KeyChainUUIDString) else {
+                let newUUIDString: String = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
                 APIManager.keychain.set(newUUIDString, forKey: APIManager.KeyChainUUIDString)
                 return newUUIDString
             }
@@ -60,14 +60,14 @@ import UIKit
     }
     
     func normalLoginUserAuthString(phone: String?, password: String?) -> String? {
-        guard let phoneNo = phone, let passwordString = password, phoneNo.count > 0, passwordString.count > 0 else { return nil }
+        guard let phoneNo = phone, let passwordString: String = password, phoneNo.count > 0, passwordString.count > 0 else { return nil }
         
-        let bizId = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let bizId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
         
-        let authString = "\(phoneNo)__\(bizId):\(passwordString)"
+        let authString: String = "\(phoneNo)__\(bizId):\(passwordString)"
         
         let data = authString.data(using: String.Encoding.utf8)
-        let encodedAuthString = data!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+        let encodedAuthString: String = data!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
         
         return "Basic \(encodedAuthString)"
     }
@@ -75,10 +75,10 @@ import UIKit
     func socialLoginUserAuthString(email: String?, accessToken: String?) -> String? {
         guard let emailId = email, let token = accessToken, emailId.count > 0, token.count > 0 else { return nil }
                 
-        let authString = "\(emailId):\(token)"
+        let authString: String = "\(emailId):\(token)"
         
         let data = authString.data(using: String.Encoding.utf8)
-        let encodedAuthString = data!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+        let encodedAuthString: String = data!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
         
         return "Basic \(encodedAuthString)"
     }
@@ -93,9 +93,9 @@ import UIKit
     @objc public func authorizationKey() -> String {
         let user = AppUserDataModel.shared.validAppUserData
 
-        if let normalAuthString = normalLoginUserAuthString(phone: user?.phoneNumberWithCountryCode, password: user?.password) {
+        if let normalAuthString: String = normalLoginUserAuthString(phone: user?.phoneNumberWithCountryCode, password: user?.password) {
             return normalAuthString
-        } else if let socialAuthString = socialLoginUserAuthString(email: user?.email, accessToken: user?.accessToken) {
+        } else if let socialAuthString: String = socialLoginUserAuthString(email: user?.email, accessToken: user?.accessToken) {
             return socialAuthString
         } else {
             return bizAuth()
@@ -105,7 +105,8 @@ import UIKit
     @objc public func updateHeaders() {
 
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        var additionalHeaders = ["X-Device": "ios",
+        var additionalHeaders = ["X-App-Src": "ios",
+                                 "X-Bid": AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!,
                                  "X-App-Version": version,
                                  "Content-Type": "application/json"] as [AnyHashable : Any]
         

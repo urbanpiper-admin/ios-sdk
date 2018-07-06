@@ -21,9 +21,9 @@ public class StructuredFormatting : NSObject, NSCoding{
 	public init(fromDictionary dictionary:  [String:Any]){
 		mainText = dictionary["main_text"] as? String
 		mainTextMatchedSubstrings = [MatchedSubstring]()
-		if let mainTextMatchedSubstringsArray = dictionary["main_text_matched_substrings"] as? [[String:Any]]{
+		if let mainTextMatchedSubstringsArray: [[String:Any]] = dictionary["main_text_matched_substrings"] as? [[String:Any]]{
 			for dic in mainTextMatchedSubstringsArray{
-				let value = MatchedSubstring(fromDictionary: dic)
+				let value: MatchedSubstring = MatchedSubstring(fromDictionary: dic)
 				mainTextMatchedSubstrings.append(value)
 			}
 		}

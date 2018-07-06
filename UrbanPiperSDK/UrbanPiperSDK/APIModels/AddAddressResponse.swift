@@ -10,8 +10,8 @@ import Foundation
 
 public class AddUpdateAddressResponse : NSObject, NSCoding{
 
-	var addressId : Int!
-	var msg : String!
+	public var addressId : Int!
+	public var msg : String!
 
 
 	/**

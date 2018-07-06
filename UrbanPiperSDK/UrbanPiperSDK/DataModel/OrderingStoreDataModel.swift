@@ -21,17 +21,17 @@ import CoreLocation
 public class OrderingStoreDataModel: UrbanPiperDataModel {
 
     private struct OrderingStoreUserDefaultKeys {
-        static let nearestStoreResponseKey = "NearestStoreResponse"
+        static let nearestStoreResponseKey: String = "NearestStoreResponse"
     }
 
-    @objc public static private(set) var shared = OrderingStoreDataModel(deliveryLocationDataModel: DeliveryLocationDataModel.shared)
+    @objc public static private(set) var shared: OrderingStoreDataModel = OrderingStoreDataModel(deliveryLocationDataModel: DeliveryLocationDataModel.shared)
 
     private typealias WeakRefDataModelDelegate = WeakRef<OrderingStoreDataModelDelegate>
 
     private var observers = [WeakRefDataModelDelegate]()
 
     @objc public var nearestStoreResponse: StoreResponse? = {
-        guard let storeResponseData = UserDefaults.standard.object(forKey: OrderingStoreUserDefaultKeys.nearestStoreResponseKey) as? Data else { return nil }
+        guard let storeResponseData: Data = UserDefaults.standard.object(forKey: OrderingStoreUserDefaultKeys.nearestStoreResponseKey) as? Data else { return nil }
         Biz.registerClassName()
         Biz.registerClassNameWhiteLabel()
         
@@ -45,7 +45,7 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
 
         StoreResponse.registerClassName()
 
-        guard let storeResponse = NSKeyedUnarchiver.unarchiveObject(with: storeResponseData) as? StoreResponse else { return nil }
+        guard let storeResponse: StoreResponse = NSKeyedUnarchiver.unarchiveObject(with: storeResponseData) as? StoreResponse else { return nil }
         return storeResponse
         }()
         {
@@ -108,7 +108,7 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
     }
 
     @objc public func addObserver(delegate: OrderingStoreDataModelDelegate) {
-        let weakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
+        let weakRefDataModelDelegate: WeakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
         observers.append(weakRefDataModelDelegate)
         observers = observers.filter { $0.value != nil }
     }
@@ -145,7 +145,7 @@ extension OrderingStoreDataModel {
         
         _ = observers.map { $0.value?.update(nil, location, nil, false) }
         
-        let dataTask = APIManager.shared.fetchNearestStore(location.coordinate, completion: { [weak self] (data) in
+        let dataTask: URLSessionTask = APIManager.shared.fetchNearestStore(location.coordinate, completion: { [weak self] (data) in
             defer {
                 _ = self?.observers.map { $0.value?.update(OrderingStoreDataModel.shared.nearestStoreResponse, location, nil, true) }
                 self?.updateCompletionBlock?(OrderingStoreDataModel.shared.nearestStoreResponse, nil)

@@ -28,7 +28,7 @@ public class Address : NSObject, NSCoding {
 	public var tag : String!
     
     public var addressTag: AddressTag {
-        guard let tagString = tag?.lowercased(), let addressTagVal = AddressTag(rawValue: tagString) else { return .other }
+        guard let tagString: String = tag?.lowercased(), let addressTagVal: AddressTag = AddressTag(rawValue: tagString) else { return .other }
         return addressTagVal
     }
     

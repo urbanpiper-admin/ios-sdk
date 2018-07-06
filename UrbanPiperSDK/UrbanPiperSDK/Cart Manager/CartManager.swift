@@ -17,7 +17,7 @@ import UIKit
 
 public class CartManager: NSObject {
 
-    @objc public static let shared = CartManager()
+    @objc public static let shared: CartManager = CartManager()
 
     private typealias WeakRefCartManagerDelegate = WeakRef<CartManagerDelegate>
     private var cartManagerObservers = [WeakRefCartManagerDelegate]()
@@ -61,7 +61,7 @@ public class CartManager: NSObject {
 extension CartManager {
 
     @objc public static func addObserver(delegate: CartManagerDelegate) {
-        let weakRefCartManagerDelegate = WeakRefCartManagerDelegate(value: delegate)
+        let weakRefCartManagerDelegate: WeakRefCartManagerDelegate = WeakRefCartManagerDelegate(value: delegate)
         shared.cartManagerObservers.append(weakRefCartManagerDelegate)
     }
 
@@ -85,7 +85,7 @@ extension CartManager {
             if item.isItemQuantityAvailable(quantity: itemObject.quantity) {
                 item.quantity += itemObject.quantity
             } else {
-                let upError = UPError(type: .maxOrderableQuantityAdded(item.currentStock))
+                let upError: UPError = UPError(type: .maxOrderableQuantityAdded(item.currentStock))
                 let _ = cartManagerObservers.map { $0.value?.handleCart(error: upError) }
             }
         } else {

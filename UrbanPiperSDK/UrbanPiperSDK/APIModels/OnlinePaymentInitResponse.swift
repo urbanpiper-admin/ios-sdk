@@ -21,7 +21,7 @@ public class OnlinePaymentInitResponse : NSObject, NSCoding{
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
-		if let dataData = dictionary["data"] as? [String:Any]{
+		if let dataData: [String:Any] = dictionary["data"] as? [String:Any]{
 			data = OnlinePaymentData(fromDictionary: dataData)
 		}
 		message = dictionary["message"] as? String

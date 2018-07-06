@@ -18,13 +18,13 @@ public class MyOrdersResponse : NSObject, NSCoding{
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	init(fromDictionary dictionary: [String:Any]){
-		if let metaData = dictionary["meta"] as? [String:Any]{
+		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
 			meta = MyOrderMeta(fromDictionary: metaData)
 		}
 		objects = [MyOrderObject]()
-		if let objectsArray = dictionary["objects"] as? [[String:Any]]{
+		if let objectsArray: [[String:Any]] = dictionary["objects"] as? [[String:Any]]{
 			for dic in objectsArray{
-				let value = MyOrderObject(fromDictionary: dic)
+				let value: MyOrderObject = MyOrderObject(fromDictionary: dic)
 				objects.append(value)
 			}
 		}

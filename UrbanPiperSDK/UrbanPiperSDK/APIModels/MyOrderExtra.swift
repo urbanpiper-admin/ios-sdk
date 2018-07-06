@@ -93,29 +93,22 @@ public class MyOrderExtra : NSObject, NSCoding{
 	init(fromDictionary dictionary: [String:Any]){
 		address = dictionary["address"] as? String
         
-        if let val = dictionary["amount"] as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = dictionary["amount"] as? Decimal {
             amount = val
-        } else if let val = dictionary["amount"] as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = dictionary["amount"] as? Double {
             amount = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: amount).doubleValue))")
-        } else if let val = dictionary["amount"] as? Float {
+        } else if let val: Float = dictionary["amount"] as? Float {
             amount = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = dictionary["amount"] as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = dictionary["amount"] as? Int {
             amount = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: amount).doubleValue))")
         } else {
             amount = Decimal(0).rounded
-            print("amount value nil")
         }
         
 		charges = [MyOrderCharge]()
-		if let chargesArray = dictionary["charges"] as? [[String:Any]]{
+		if let chargesArray: [[String:Any]] = dictionary["charges"] as? [[String:Any]]{
 			for dic in chargesArray{
-				let value = MyOrderCharge(fromDictionary: dic)
+				let value: MyOrderCharge = MyOrderCharge(fromDictionary: dic)
 				charges.append(value)
 			}
 		}
@@ -125,52 +118,38 @@ public class MyOrderExtra : NSObject, NSCoding{
 		deliveryTime = dictionary["delivery_time"] as? Int
 		deliveryType = dictionary["delivery_type"] as? String
         
-        if let val = dictionary["discount"] as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = dictionary["discount"] as? Decimal {
             discount = val
-        } else if let val = dictionary["discount"] as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = dictionary["discount"] as? Double {
             discount = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: discount).doubleValue))")
-        } else if let val = dictionary["discount"] as? Float {
+        } else if let val: Float = dictionary["discount"] as? Float {
             discount = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = dictionary["discount"] as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = dictionary["discount"] as? Int {
             discount = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: discount).doubleValue))")
         } else {
             discount = Decimal(0).rounded
-            print("amount value nil")
         }
         
 		id = dictionary["id"] as? Int
 		itemLevelTotalCharges = dictionary["item_level_total_charges"] as? Float
 		itemLevelTotalTaxes = dictionary["item_level_total_taxes"] as? Float
      
-        if let val = dictionary["item_tax"] as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = dictionary["item_tax"] as? Decimal {
             itemTax = val
-        } else if let val = dictionary["item_tax"] as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = dictionary["item_tax"] as? Double {
             itemTax = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: itemTax).doubleValue))")
-        } else if let val = dictionary["item_tax"] as? Float {
+        } else if let val: Float = dictionary["item_tax"] as? Float {
             itemTax = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = dictionary["item_tax"] as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = dictionary["item_tax"] as? Int {
             itemTax = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: itemTax).doubleValue))")
         } else {
             itemTax = Decimal(0).rounded
-            print("amount value nil")
         }
         
 		items = [MyOrderItem]()
-		if let itemsArray = dictionary["items"] as? [[String:Any]]{
+		if let itemsArray: [[String:Any]] = dictionary["items"] as? [[String:Any]]{
 			for dic in itemsArray{
-				let value = MyOrderItem(fromDictionary: dic)
+				let value: MyOrderItem = MyOrderItem(fromDictionary: dic)
 				items.append(value)
 			}
 		}
@@ -180,46 +159,32 @@ public class MyOrderExtra : NSObject, NSCoding{
 		paymentMode = dictionary["payment_mode"] as? String
 		phone = dictionary["phone"] as? String
 		status = dictionary["status"] as? String
-		if let storeData = dictionary["store"] as? [String:Any]{
+		if let storeData: [String:Any] = dictionary["store"] as? [String:Any]{
 			store = MyOrderStore(fromDictionary: storeData)
 		}
    
-        if let val = dictionary["subtotal"] as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = dictionary["subtotal"] as? Decimal {
             subtotal = val
-        } else if let val = dictionary["subtotal"] as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = dictionary["subtotal"] as? Double {
             subtotal = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: subtotal).doubleValue))")
-        } else if let val = dictionary["subtotal"] as? Float {
+        } else if let val: Float = dictionary["subtotal"] as? Float {
             subtotal = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = dictionary["subtotal"] as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = dictionary["subtotal"] as? Int {
             subtotal = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: subtotal).doubleValue))")
         } else {
             subtotal = Decimal(0).rounded
-            print("amount value nil")
         }
         
-        if let val = dictionary["tax"] as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = dictionary["tax"] as? Decimal {
             tax = val
-        } else if let val = dictionary["tax"] as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = dictionary["tax"] as? Double {
             tax = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: tax).doubleValue))")
-        } else if let val = dictionary["tax"] as? Float {
+        } else if let val: Float = dictionary["tax"] as? Float {
             tax = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = dictionary["tax"] as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = dictionary["tax"] as? Int {
             tax = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: tax).doubleValue))")
         } else {
             tax = Decimal(0).rounded
-            print("amount value nil")
         }
         
 		taxes = dictionary["taxes"] as? [AnyObject]

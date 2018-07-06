@@ -26,7 +26,7 @@ public class BizObject : NSObject, NSCoding{
     @objc public var lastUpdatedDateString: String?
     public var lastOrderDateString: String {
         if let val = lastOrderDt {
-            let date = Date(timeIntervalSince1970: TimeInterval(val / 1000))
+            let date: Date = Date(timeIntervalSince1970: TimeInterval(val / 1000))
             return DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .short)
         }
         return ""
@@ -39,23 +39,18 @@ public class BizObject : NSObject, NSCoding{
 	public init(fromDictionary dictionary:  [String:Any]){
 		addresses = dictionary["addresses"] as? [AnyObject]
         
-        if let val = dictionary["balance"] as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = dictionary["balance"] as? Decimal {
             balance = val as NSDecimalNumber
-        } else if let val = dictionary["balance"] as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = dictionary["balance"] as? Double {
             balance = Decimal(val).rounded as NSDecimalNumber
             print("Decimal Double \(balance.doubleValue)")
-        } else if let val = dictionary["balance"] as? Float {
+        } else if let val: Float = dictionary["balance"] as? Float {
             balance = Decimal(Double(val)).rounded as NSDecimalNumber
-            print("float amount value \(val)")
-        } else if let val = dictionary["balance"] as? Int {
-            print("int amount value \(val)")
+                    } else if let val: Int = dictionary["balance"] as? Int {
             balance = Decimal(val).rounded as NSDecimalNumber
             print("Decimal Double \(balance.doubleValue)")
         } else {
             balance = Decimal(0).rounded as NSDecimalNumber
-            print("amount value nil")
         }
         
 		bizId = dictionary["biz_id"] as? Int

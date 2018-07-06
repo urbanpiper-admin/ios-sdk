@@ -30,31 +30,24 @@ public class MyOrderItem : NSObject, NSCoding{
 		image = dictionary["image"] as? String
 		imageLandscape = dictionary["image_landscape"] as? String
 		options = [MyOrderOption]()
-		if let optionsArray = dictionary["options"] as? [[String:Any]]{
+		if let optionsArray: [[String:Any]] = dictionary["options"] as? [[String:Any]]{
 			for dic in optionsArray{
-				let value = MyOrderOption(fromDictionary: dic)
+				let value: MyOrderOption = MyOrderOption(fromDictionary: dic)
 				options.append(value)
 			}
 		}
 		optionsToRemove = dictionary["options_to_remove"] as? [AnyObject]
         
-        if let val = dictionary["price"] as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = dictionary["price"] as? Decimal {
             price = val
-        } else if let val = dictionary["price"] as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = dictionary["price"] as? Double {
             price = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: price).doubleValue))")
-        } else if let val = dictionary["price"] as? Float {
+        } else if let val: Float = dictionary["price"] as? Float {
             price = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = dictionary["price"] as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = dictionary["price"] as? Int {
             price = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: price).doubleValue))")
         } else {
             price = Decimal(0).rounded
-            print("amount value nil")
         }
         
 		quantity = dictionary["quantity"] as? Int

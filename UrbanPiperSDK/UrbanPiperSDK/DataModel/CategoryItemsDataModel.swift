@@ -55,7 +55,7 @@ open class CategoryItemsDataModel: UrbanPiperDataModel {
 
             let keys = subCategoriesItems.compactMap { $0.subCategory.name }
             let tempSet = Set<String>(keys)
-            let uniqueKeys = Array(tempSet)
+            let uniqueKeys: Array = Array(tempSet)
 
             var subCategoriesArray = [[ItemObject]]()
 
@@ -112,7 +112,7 @@ extension CategoryItemsDataModel {
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
 
-        if let categoryCell = cell as? ItemCellDelegate {
+        if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
             let itemObject: ItemObject
             if let subCategoriesArray = subCategoriesArray {
                 itemObject = subCategoriesArray[indexPath.section][indexPath.row]
@@ -146,7 +146,7 @@ extension CategoryItemsDataModel {
     open override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
 
-        if let categoryCell = cell as? ItemCellDelegate {
+        if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
             categoryCell.configureCell(itemsArray?[indexPath.row])
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
@@ -166,7 +166,7 @@ extension CategoryItemsDataModel {
         guard !isFetchingCategoryItems else { return }
         dataModelDelegate?.refreshCategoryItemsUI(true)
         isFetchingCategoryItems = true
-        let dataTask = APIManager.shared.fetchCategoryItems(categoryId: categoryObject.id,
+        let dataTask: URLSessionTask = APIManager.shared.fetchCategoryItems(categoryId: categoryObject.id,
                                                             locationID: OrderingStoreDataModel.shared.nearestStoreResponse?.store?.bizLocationId,
                                                             isForcedRefresh: isForcedRefresh,
                                                             next: next,
@@ -221,7 +221,7 @@ extension CategoryItemsDataModel {
             refreshData(false)
         }
         
-        guard let itemObject = (tableView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
+        guard let itemObject: ItemObject = (tableView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
         if let subCategoriesArray = subCategoriesArray {
             if subCategoriesArray.last?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
                 fetchCategoryItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)

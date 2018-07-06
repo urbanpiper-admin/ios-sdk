@@ -11,8 +11,17 @@ import FirebaseInstanceID
 
 @objc public protocol AppUserDataModelDelegate {
     
-    @objc func refreshAppUserUI(isRefreshing: Bool)
-    @objc func refreshBizInfoUI(isRefreshing: Bool, isFirstUpdate: Bool)
+    @objc optional func refreshAppUserUI(isRefreshing: Bool)
+    @objc optional func handleUserAPI(error: UPError?)
+
+    @objc optional func refreshUpdateAppUserUI(isRefreshing: Bool)
+    @objc optional func handleUpdateUserAPI(error: UPError?)
+
+    @objc optional func refreshUpdatePasswordUI(isRefreshing: Bool)
+    @objc optional func handleUpdatePasswordAPI(error: UPError?)
+    
+    @objc optional func refreshBizInfoUI(isRefreshing: Bool, isFirstUpdate: Bool)
+    @objc optional func handleBizInfoAPI(error: UPError?)
 
 }
 
@@ -35,8 +44,8 @@ public typealias CompletionHandler<T> = (T?, Error?) -> Void
 public class AppUserDataModel: UrbanPiperDataModel {
 
     private struct KeychainAppUserKeys {
-        static let AppUserKey = "KeyChainUserDataKey"
-        static let BizInfoKey = "KeyChainBizInfoKey"
+        static let AppUserKey: String = "KeyChainUserDataKey"
+        static let BizInfoKey: String = "KeyChainBizInfoKey"
     }
     
     @objc static let userDataUpdateTimeInterval = 5
@@ -44,11 +53,11 @@ public class AppUserDataModel: UrbanPiperDataModel {
         
     private typealias WeakRefDataModelDelegate = WeakRef<AppUserDataModelDelegate>
 
-    @objc public static private(set) var shared = AppUserDataModel()
+    @objc public static private(set) var shared: AppUserDataModel = AppUserDataModel()
 
     private var observers = [WeakRefDataModelDelegate]()
     
-    private static let keychain = UPKeychainWrapper(serviceName: Bundle.main.bundleIdentifier!)
+    private static let keychain: UPKeychainWrapper = UPKeychainWrapper(serviceName: Bundle.main.bundleIdentifier!)
     
     @objc public var appUserData: User? {
         get {
@@ -60,7 +69,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
 
             User.registerClassName()
             let obj = NSKeyedUnarchiver.unarchiveObject(with: userData)
-            guard let user = obj as? User else { return nil }
+            guard let user: User = obj as? User else { return nil }
             return user
         }
         set {
@@ -75,12 +84,16 @@ public class AppUserDataModel: UrbanPiperDataModel {
                     cookieStore.deleteCookie(cookie)
                 }
                 observers = observers.filter { $0.value != nil }
-                let _ = observers.map { $0.value?.refreshAppUserUI(isRefreshing: false) }
+                let _ = observers.map { $0.value?.refreshAppUserUI?(isRefreshing: false) }
                 return
             }
             
             if let oldUserData = appUserData, oldUserData.userStatus == .valid, user.userStatus != .valid {
                 return
+            } else if let oldUserData = appUserData, oldUserData.userStatus != .valid, user.userStatus == .valid {
+                DispatchQueue.main.async { [weak self] in
+                    self?.fetchUserData()
+                }
             }
             
             User.registerClassName()
@@ -88,7 +101,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
             AppUserDataModel.keychain.set(userData, forKey: KeychainAppUserKeys.AppUserKey)
             APIManager.shared.updateHeaders()
             observers = observers.filter { $0.value != nil }
-            let _ = observers.map { $0.value?.refreshAppUserUI(isRefreshing: false) }
+            let _ = observers.map { $0.value?.refreshAppUserUI?(isRefreshing: false) }
             
             DispatchQueue.main.async { [weak self] in
                 self?.registerForFCMMessaging()
@@ -106,14 +119,14 @@ public class AppUserDataModel: UrbanPiperDataModel {
             BizInfo.registerClassName()
 
             let obj = NSKeyedUnarchiver.unarchiveObject(with: bizInfoData)
-            guard let bizInfo = obj as? BizInfo else { return nil }
+            guard let bizInfo: BizInfo = obj as? BizInfo else { return nil }
             return bizInfo
         }
         set {
             guard let info = newValue else {
                 AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.BizInfoKey)
                 observers = observers.filter { $0.value != nil }
-                let _ = observers.map { $0.value?.refreshBizInfoUI(isRefreshing: false, isFirstUpdate: false) }
+                let _ = observers.map { $0.value?.refreshBizInfoUI?(isRefreshing: false, isFirstUpdate: false) }
                 return
             }
             
@@ -123,7 +136,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
             AppUserDataModel.keychain.set(bizInfoData, forKey: KeychainAppUserKeys.BizInfoKey)
             
             observers = observers.filter { $0.value != nil }
-            let _ = observers.map { $0.value?.refreshBizInfoUI(isRefreshing: false, isFirstUpdate: isFirstUpdate) }
+            let _ = observers.map { $0.value?.refreshBizInfoUI?(isRefreshing: false, isFirstUpdate: isFirstUpdate) }
         }
     }
     
@@ -137,13 +150,13 @@ public class AppUserDataModel: UrbanPiperDataModel {
         
         DispatchQueue.main.async { [weak self] in
             self?.registerForFCMMessaging()
+            self?.fetchUserData()
         }
         
-        updateUserData()
     }
     
     public func addObserver(delegate: AppUserDataModelDelegate) {
-        let weakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
+        let weakRefDataModelDelegate: WeakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
         observers.append(weakRefDataModelDelegate)
     }
     
@@ -186,9 +199,10 @@ public class AppUserDataModel: UrbanPiperDataModel {
 
 extension AppUserDataModel {
     
-    @objc func updateUserData(isForcedRefresh: Bool = false) {
+    @objc public func fetchUserData(isForcedRefresh: Bool = false) {
+        guard let phoneNo = validAppUserData?.phone else { return }
         let nextUserDataUpdateDate = AppUserDataModel.nextUserDataUpdateDate
-        let now = Date()
+        let now: Date = Date()
         let shouldRefreshUserData = nextUserDataUpdateDate == nil || nextUserDataUpdateDate! <= now || isForcedRefresh
         
         guard shouldRefreshUserData else { return }
@@ -196,12 +210,85 @@ extension AppUserDataModel {
         AppUserDataModel.nextUserDataUpdateDate = Calendar.current.date(byAdding: .minute,
                                                                         value: Int(AppUserDataModel.userDataUpdateTimeInterval),
                                                                         to: Date())
+
+        let _ = observers.map { $0.value?.refreshAppUserUI?(isRefreshing: true) }
+        
+        let dataTask: URLSessionTask = APIManager.shared.userInfo(phone: phoneNo, completion: { [weak self] (response) in
+            guard let dataModel = self, let user = dataModel.appUserData, let responseObject = response else { return }
+            dataModel.observers = dataModel.observers.filter { $0.value != nil }
+            let _ = dataModel.observers.map { $0.value?.refreshAppUserUI?(isRefreshing: false) }
+
+            user.update(fromDictionary: responseObject)
+            dataModel.appUserData = user
+        }, failure: { [weak self] (upError) in
+            guard let dataModel = self else { return }
+            dataModel.observers = dataModel.observers.filter { $0.value != nil }
+            let _ = dataModel.observers.map { $0.value?.handleUserAPI?(error: upError) }
+        })
+        
+        addOrCancelDataTask(dataTask: dataTask)
     }
     
-    @objc fileprivate func updateUserBizInfo() {
+    public func updateUserInfo(name: String,
+                               phone: String,
+                               email: String,
+                               gender: String? = nil,
+                               anniversary: Date? = nil,
+                               birthday: Date? = nil) {
+        let _ = observers.map { $0.value?.refreshUpdateAppUserUI?(isRefreshing: true) }
+        
+        let dataTask: URLSessionTask = APIManager.shared.updateUserInfo(name: name,
+                                         phone: phone,
+                                         email: email,
+                                         gender: gender,
+                                         anniversary: anniversary,
+                                         birthday: birthday,
+                                         completion: { [weak self] (response) in
+                                            guard let dataModel = self, let user = dataModel.appUserData, let responseObject = response else { return }
+                                            dataModel.observers = dataModel.observers.filter { $0.value != nil }
+                                            let _ = dataModel.observers.map { $0.value?.refreshUpdateAppUserUI?(isRefreshing: false) }
+                                            
+                                            user.update(fromDictionary: responseObject)
+                                            dataModel.appUserData = user
+
+            }, failure: { [weak self] (upError) in
+                guard let dataModel = self else { return }
+                dataModel.observers = dataModel.observers.filter { $0.value != nil }
+                let _ = dataModel.observers.map { $0.value?.handleUpdateUserAPI?(error: upError) }
+        })
+        
+        addOrCancelDataTask(dataTask: dataTask)
+    }
+    
+    public func updatePassword(phone: String,
+                               oldPassword: String,
+                               newPassword: String) {
+        
+        let _ = observers.map { $0.value?.refreshUpdatePasswordUI?(isRefreshing: true) }
+        let dataTask: URLSessionTask = APIManager.shared.updatePassword(phone: phone,
+                                         oldPassword: oldPassword,
+                                         newPassword: newPassword,
+                                         completion: { [weak self] (response) in
+                                            
+                                            guard let dataModel = self, let user = dataModel.appUserData, let responseObject = response else { return }
+                                            dataModel.observers = dataModel.observers.filter { $0.value != nil }
+                                            let _ = dataModel.observers.map { $0.value?.refreshUpdatePasswordUI?(isRefreshing: false) }
+                                            
+                                            user.password = newPassword
+                                            dataModel.appUserData = user
+            }, failure: { [weak self] (upError) in
+                guard let dataModel = self else { return }
+                dataModel.observers = dataModel.observers.filter { $0.value != nil }
+                let _ = dataModel.observers.map { $0.value?.handleUpdatePasswordAPI?(error: upError) }
+        })
+        
+        addOrCancelDataTask(dataTask: dataTask)
+    }
+    
+    @objc public func updateUserBizInfo() {
         guard validAppUserData != nil else { return }
         
-        let dataTask = APIManager.shared.fetchBizInfo(completion: nil, failure: nil)
+        let dataTask: URLSessionTask = APIManager.shared.fetchBizInfo(completion: nil, failure: nil)
         addOrCancelDataTask(dataTask: dataTask)
     }
     
@@ -213,12 +300,12 @@ extension AppUserDataModel {
     
     public func registerForFCMMessaging() {
         guard let fcmToken = InstanceID.instanceID().token() else { return }
-        guard let dataTask = APIManager.shared.registerForFCMMessaging(token: fcmToken, completion: nil, failure: nil) else { return }
+        guard let dataTask: URLSessionTask = APIManager.shared.registerForFCMMessaging(token: fcmToken, completion: nil, failure: nil) else { return }
         addOrCancelDataTask(dataTask: dataTask)
     }
     
     public func unRegisterForFCMMessaging() {
-        guard let dataTask = APIManager.shared.unRegisterForFCMMessaging(completion: nil, failure: nil) else { return }
+        guard let dataTask: URLSessionTask = APIManager.shared.unRegisterForFCMMessaging(completion: nil, failure: nil) else { return }
         addOrCancelDataTask(dataTask: dataTask)
     }
 }
@@ -228,7 +315,7 @@ extension AppUserDataModel {
 extension AppUserDataModel {
     
     public func login(user: User, password: String, completion: @escaping CompletionHandler<User>) {
-        let dataTask = APIManager.shared.login(user: user,
+        let dataTask: URLSessionTask = APIManager.shared.login(user: user,
                                                password: password,
                                                completion: { (appUser) in
                                                 guard let appUserData = appUser else {
@@ -251,10 +338,10 @@ extension AppUserDataModel {
     public func forgotPassword(countryCode: String,
                         phoneNumber: String,
                         completion: @escaping (Bool, Error?)-> Void) {
-        let dataTask = APIManager.shared.forgotPassword(countryCode: countryCode,
+        let dataTask: URLSessionTask = APIManager.shared.forgotPassword(countryCode: countryCode,
                                          phoneNumber: phoneNumber,
                                          completion: { (data) in
-                                            guard let dictionary = data, let statusString = dictionary["status"] as? String, statusString == "success" else {
+                                            guard let dictionary: [String: Any] = data, let statusString: String = dictionary["status"] as? String, statusString == "success" else {
                                                 completion(false, nil)
                                                 return
                                             }
@@ -272,13 +359,13 @@ extension AppUserDataModel {
                        password: String,
                        confirmPassword: String,
                        completion: @escaping (Bool, Error?)-> Void) {
-        let dataTask = APIManager.shared.resetPassword(countryCode: countryCode,
+        let dataTask: URLSessionTask = APIManager.shared.resetPassword(countryCode: countryCode,
                                         phoneNumber: phoneNumber,
                                         otp: otp,
                                         password: password,
                                         confirmPassword: confirmPassword,
                                         completion: { (data) in
-                                            guard let dictionary = data, let statusString = dictionary["status"] as? String, statusString == "success" else {
+                                            guard let dictionary: [String: Any] = data, let statusString: String = dictionary["status"] as? String, statusString == "success" else {
                                                 completion(false, nil)
                                                 return
                                             }
@@ -293,7 +380,7 @@ extension AppUserDataModel {
     public func createAccount(user: User,
                        password: String,
                        completion: @escaping CompletionHandler<CardAPIResponse>) {
-        let dataTask = APIManager.shared.createUser(user: user,
+        let dataTask: URLSessionTask = APIManager.shared.createUser(user: user,
                                      password: password,
                                      completion: { (cardAPIResponse) in
                                         user.message = UserStatus.verifyPhoneNumber.rawValue
@@ -318,7 +405,7 @@ extension AppUserDataModel {
 extension AppUserDataModel {
     
     public func registerNewSocialAuthUser(user: User!, completion: @escaping CompletionHandler<User>) {
-        let dataTask = APIManager.shared.createSocialUser(user: user, completion: { (cardAPIResponse) in
+        let dataTask: URLSessionTask = APIManager.shared.createSocialUser(user: user, completion: { (cardAPIResponse) in
             user?.message = UserStatus.registrationSuccessfullVerifyOTP.rawValue
             completion(user, nil)
         }) { (error) in
@@ -329,7 +416,7 @@ extension AppUserDataModel {
     }
     
     public func checkForUser(user: User, completion: @escaping CompletionHandler<User>) {
-        let dataTask = APIManager.shared.checkForUser(user: user,
+        let dataTask: URLSessionTask = APIManager.shared.checkForUser(user: user,
                                                       completion: { [weak self] (appUser) in
                                                         if let status = appUser?.userStatus, status == .registrationRequired {
                                                             self?.registerNewSocialAuthUser(user: user, completion: completion)
@@ -355,7 +442,7 @@ extension AppUserDataModel {
 extension AppUserDataModel {
     
     public func checkPhoneNumber(user: User, completion: @escaping CompletionHandler<User>) {
-        let dataTask = APIManager.shared.checkPhoneNumber(user: user,
+        let dataTask: URLSessionTask = APIManager.shared.checkPhoneNumber(user: user,
                                                           completion: { [weak self] (appUser) in
                                                             if let status = appUser?.userStatus, status == .registrationRequired {
                                                                 self?.registerNewSocialAuthUser(user: user, completion: completion)
@@ -373,7 +460,7 @@ extension AppUserDataModel {
     
 //  used only when "new_registration_required"
     public func verifyMobileNumber(user: User, otp: String, completion: @escaping CompletionHandler<CardAPIResponse>) {
-        let dataTask = APIManager.shared.verifyMobile(user: user, pin: otp, completion: { (cardAPIResponse) in
+        let dataTask: URLSessionTask = APIManager.shared.verifyMobile(user: user, pin: otp, completion: { (cardAPIResponse) in
             if let response = cardAPIResponse, response.success {
                 user.message = UserStatus.valid.rawValue
                 if user.isValid {
@@ -391,7 +478,7 @@ extension AppUserDataModel {
     public func verifyOTP(user: User,
                    otp: String,
                    completion: @escaping CompletionHandler<User>) {
-        let dataTask = APIManager.shared.verifyOTP(user: user,
+        let dataTask: URLSessionTask = APIManager.shared.verifyOTP(user: user,
                                                    otp: otp,
                                                    completion: { (appUser) in
                                                     if let response = appUser, response.success {
@@ -410,7 +497,7 @@ extension AppUserDataModel {
     
     public func resendOTP(user: User,
                    completion: @escaping CompletionHandler<CardAPIResponse>) {
-        let dataTask = APIManager.shared.resendOTP(user: user,
+        let dataTask: URLSessionTask = APIManager.shared.resendOTP(user: user,
                                                    completion: { (cardAPIResponse) in
                                                     completion(cardAPIResponse, nil)
         }, failure: { (error) in
@@ -428,9 +515,7 @@ extension AppUserDataModel {
     
     @objc open override func appWillEnterForeground() {
         guard validAppUserData != nil else { return }
-    
-        guard bizInfo == nil else { return }
-        updateUserBizInfo()
+        fetchUserData()
     }
     
     @objc open override func appDidEnterBackground() {
@@ -442,10 +527,8 @@ extension AppUserDataModel {
 extension AppUserDataModel {
     
     @objc open override func networkIsAvailable() {
-        
         guard validAppUserData != nil else { return }
-       
-        guard bizInfo == nil else { return }
-        updateUserBizInfo()
+        fetchUserData()
     }
+    
 }

@@ -48,7 +48,7 @@ extension ItemsSearchDataModel {
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
 
-        if let categoryCell = cell as? ItemCellDelegate {
+        if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
             categoryCell.configureCell(itemsArray?[indexPath.row])
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
@@ -69,7 +69,7 @@ extension ItemsSearchDataModel {
     open override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
 
-        if let categoryCell = cell as? ItemCellDelegate {
+        if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
             categoryCell.configureCell(itemsArray?[indexPath.row])
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
@@ -103,7 +103,7 @@ extension ItemsSearchDataModel {
 
     @objc private func searchItems(for keyword: String) {
         dataModelDelegate?.refreshItemsSearchUI(true)
-        let dataTask = APIManager.shared.fetchCategoryItems(for: keyword,
+        let dataTask: URLSessionTask = APIManager.shared.fetchCategoryItems(for: keyword,
                                                             locationID: OrderingStoreDataModel.shared.nearestStoreResponse?.store?.bizLocationId,
                                                             completion: { [weak self] (data) in
                                                                 defer {

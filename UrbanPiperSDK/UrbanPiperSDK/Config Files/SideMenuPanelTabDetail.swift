@@ -92,8 +92,8 @@ import Foundation
 
 public class SideMenuPanelTabDetail : NSObject {
 
-    public static let chaiFeedbackUrl = "http://chaipoint.com/olo/pagerequest?page=feedback&phone=%@&email=%@&authcode=%@";
-    public static let chiliFeedbackUrl = "https://chilis.inmoment.com/websurvey";
+    public static let chaiFeedbackUrl: String = "http://chaipoint.com/olo/pagerequest?page=feedback&phone=%@&email=%@&authcode=%@";
+    public static let chiliFeedbackUrl: String = "https://chilis.inmoment.com/websurvey";
 
 	public var loginMandatory : Bool = false
 	public var tabImage : String?

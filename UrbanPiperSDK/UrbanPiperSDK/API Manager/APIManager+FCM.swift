@@ -11,8 +11,8 @@ import UIKit
 extension APIManager {
     
     private struct UserDefaultsFCMKeys {
-        static let BizFCMTokenKey = "BizFCMTokenKey"
-        static let UserBizFCMTokenKey = "UserBizFCMTokenKey"
+        static let BizFCMTokenKey: String = "BizFCMTokenKey"
+        static let UserBizFCMTokenKey: String = "UserBizFCMTokenKey"
     }
     
     var lastRegisteredFCMToken: String? {
@@ -49,11 +49,11 @@ extension APIManager {
             return nil
         }
         
-        let urlString = "\(APIManager.baseUrl)/api/v1/device/fcm/"
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/device/fcm/"
         
-        let url = URL(string: urlString)!
+        let url: URL = URL(string: urlString)!
         
-        var urlRequest = URLRequest(url: url)
+        var urlRequest: URLRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = "POST"
         
@@ -63,12 +63,12 @@ extension APIManager {
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
-        let task = session.dataTask(with: urlRequest) { [weak self] (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { [weak self] (data, response, error) in
             
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
                 self?.lastRegisteredFCMToken = token
                 guard let completionClosure = completion else { return }
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
 
                     DispatchQueue.main.async {
                         completionClosure(dictionary)
@@ -81,7 +81,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -90,7 +90,7 @@ extension APIManager {
             
         }
         
-        return task
+        return dataTask
     }
     
     @objc public func unRegisterForFCMMessaging(completion: APICompletion<[String: Any]>?,
@@ -101,11 +101,11 @@ extension APIManager {
             return nil
         }
         
-        let urlString = "\(APIManager.baseUrl)/api/v1/device/fcm/"
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/device/fcm/"
 
-        let url = URL(string: urlString)!
+        let url: URL = URL(string: urlString)!
         
-        var urlRequest = URLRequest(url: url)
+        var urlRequest: URLRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = "POST"
         
@@ -114,13 +114,13 @@ extension APIManager {
                       "channel": APIManager.channel]
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
-        let task = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
             
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
                 UserDefaults.standard.removeObject(forKey: UserDefaultsFCMKeys.UserBizFCMTokenKey)
                 guard let completionClosure = completion else { return }
 
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
 
                     DispatchQueue.main.async {
                         completionClosure(dictionary)
@@ -133,7 +133,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -142,6 +142,6 @@ extension APIManager {
             
         }
         
-        return task
+        return dataTask
     }
 }

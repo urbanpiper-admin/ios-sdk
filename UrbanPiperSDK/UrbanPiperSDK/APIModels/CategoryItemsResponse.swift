@@ -20,13 +20,13 @@ public class CategoryItemsResponse : NSObject, NSCoding{
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
 		combos = dictionary["combos"] as? [AnyObject]
-		if let metaData = dictionary["meta"] as? [String:Any]{
+		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
 			meta = ItemMeta(fromDictionary: metaData)
 		}
 		objects = [ItemObject]()
-		if let objectsArray = dictionary["objects"] as? [[String:Any]]{
+		if let objectsArray: [[String:Any]] = dictionary["objects"] as? [[String:Any]]{
 			for dic in objectsArray{
-				let value = ItemObject(fromDictionary: dic)
+				let value: ItemObject = ItemObject(fromDictionary: dic)
 				objects.append(value)
 			}
 		}

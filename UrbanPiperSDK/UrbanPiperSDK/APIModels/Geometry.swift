@@ -18,10 +18,10 @@ public class Geometry : NSObject, NSCoding{
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
-		if let locationData = dictionary["location"] as? [String:Any]{
+		if let locationData: [String:Any] = dictionary["location"] as? [String:Any]{
 			location = Location(fromDictionary: locationData)
 		}
-		if let viewportData = dictionary["viewport"] as? [String:Any]{
+		if let viewportData: [String:Any] = dictionary["viewport"] as? [String:Any]{
 			viewport = Viewport(fromDictionary: viewportData)
 		}
 	}

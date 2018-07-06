@@ -25,13 +25,13 @@ import UIKit
 
 
 public struct DefaultAddressUserDefaultKeys {
-    static let defaultDeliveryAddressKey = "DefaultDeliveryAddress"
+    static let defaultDeliveryAddressKey: String = "DefaultDeliveryAddress"
 }
 
 public class AddressDataModel: UrbanPiperDataModel {
 
     
-    @objc public static private(set) var shared = AddressDataModel()
+    @objc public static private(set) var shared: AddressDataModel = AddressDataModel()
 
     private typealias WeakRefDataModelDelegate = WeakRef<AddressDataModelDelegate>
 
@@ -58,15 +58,15 @@ public class AddressDataModel: UrbanPiperDataModel {
 
     public var defaultDeliveryAddress: Address? {
         get {
-            if let defaultAddressData = UserDefaults.standard.object(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey) as? Data {
+            if let defaultAddressData: Data = UserDefaults.standard.object(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey) as? Data {
                 Address.registerClassName()
-                guard let address = NSKeyedUnarchiver.unarchiveObject(with: defaultAddressData) as? Address else { return nil }
+                guard let address: Address = NSKeyedUnarchiver.unarchiveObject(with: defaultAddressData) as? Address else { return nil }
                 return address
-            } else if let defaultAddressData = UserDefaults.standard.object(forKey: "DefaultAddressDefaultsKey") as? Data {
+            } else if let defaultAddressData: Data = UserDefaults.standard.object(forKey: "DefaultAddressDefaultsKey") as? Data {
                 UserDefaults.standard.removeObject(forKey: "DefaultAddressDefaultsKey")
                 Address.registerClassName()
                 Address.registerClassNameWhiteLabel()
-                guard let address = NSKeyedUnarchiver.unarchiveObject(with: defaultAddressData) as? Address else { return nil }
+                guard let address: Address = NSKeyedUnarchiver.unarchiveObject(with: defaultAddressData) as? Address else { return nil }
                 UserDefaults.standard.set(defaultAddressData, forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
                 return address
             } else {
@@ -97,7 +97,7 @@ public class AddressDataModel: UrbanPiperDataModel {
     }
     
     public func addObserver(delegate: AddressDataModelDelegate) {
-        let weakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
+        let weakRefDataModelDelegate: WeakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
         observers.append(weakRefDataModelDelegate)
     }
     
@@ -124,7 +124,7 @@ extension AddressDataModel {
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
         
-        if let addressCell = cell as? AddressCellDelegate {
+        if let addressCell: AddressCellDelegate = cell as? AddressCellDelegate {
             addressCell.configureCell(addressListArray?[indexPath.row])
         } else {
             assert(false, "Cell does not conform to AddressCellDelegate protocol")
@@ -145,7 +145,7 @@ extension AddressDataModel {
     public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
         
-        if let addressCell = cell as? AddressCellDelegate {
+        if let addressCell: AddressCellDelegate = cell as? AddressCellDelegate {
             
             addressCell.configureCell(addressListArray?[indexPath.row])
         } else {
@@ -163,7 +163,7 @@ extension AddressDataModel {
     
     fileprivate func fetchAddressList() {
         _ = observers.map { $0.value?.refreshDeliveryAddressUI(isRefreshing: true) }
-        let dataTask = APIManager.shared.userSavedAddresses(completion: { [weak self] (data) in
+        let dataTask: URLSessionTask = APIManager.shared.userSavedAddresses(completion: { [weak self] (data) in
             defer {
                 _ = self?.observers.map { $0.value?.refreshDeliveryAddressUI(isRefreshing: false) }
             }
@@ -179,7 +179,7 @@ extension AddressDataModel {
     
     public func addAddress(address: Address) {
         _ = observers.map { $0.value?.refreshAddAddressUI(isRefreshing: true) }
-        let dataTask = APIManager.shared.addAddress(address: address, completion: { [weak self] (data) in
+        let dataTask: URLSessionTask = APIManager.shared.addAddress(address: address, completion: { [weak self] (data) in
             defer {
                 _ = self?.observers.map { $0.value?.refreshAddAddressUI(isRefreshing: false) }
             }
@@ -199,7 +199,7 @@ extension AddressDataModel {
     
     public func updateAddress(address: Address) {
         _ = observers.map { $0.value?.refreshUpdateAddressUI(isRefreshing: true) }
-        let dataTask = APIManager.shared.updateAddress(address: address, completion: { [weak self] (data) in
+        let dataTask: URLSessionTask = APIManager.shared.updateAddress(address: address, completion: { [weak self] (data) in
             defer {
                 _ = self?.observers.map { $0.value?.refreshUpdateAddressUI(isRefreshing: false) }
             }
@@ -221,7 +221,7 @@ extension AddressDataModel {
     
     public func deleteAddress(address: Address) {
         _ = observers.map { $0.value?.refreshDeleteAddressUI(isRefreshing: true) }
-        let dataTask = APIManager.shared.deleteAddress(address: address, completion: { [weak self] in
+        let dataTask: URLSessionTask = APIManager.shared.deleteAddress(address: address, completion: { [weak self] in
             self?.userAddressesResponse?.addresses = self?.addressListArray?.filter { $0.id != address.id }
             self?.defaultDeliveryAddress = self?.addressListArray?.first
             _ = self?.observers.map { $0.value?.refreshDeleteAddressUI(isRefreshing: false) }

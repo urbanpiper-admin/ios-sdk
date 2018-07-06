@@ -10,13 +10,13 @@ import FirebaseRemoteConfig
 
 @objc public class FirRemoteConfigDefaults : NSObject {
 
-    public static let shared = FirRemoteConfigDefaults()
+    public static let shared: FirRemoteConfigDefaults = FirRemoteConfigDefaults()
 
     let remoteConfig: RemoteConfig = {
         let remoteConfig = RemoteConfig.remoteConfig()
 
         #if DEBUG
-        let remoteConfigSettings = RemoteConfigSettings(developerModeEnabled: true)
+        let remoteConfigSettings: RemoteConfigSettings = RemoteConfigSettings(developerModeEnabled: true)
         remoteConfig.configSettings = remoteConfigSettings
         #endif
 

@@ -19,9 +19,9 @@ public class GooglePlacesResponse : NSObject, NSCoding{
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
 		predictions = [Prediction]()
-		if let predictionsArray = dictionary["predictions"] as? [[String:Any]]{
+		if let predictionsArray: [[String:Any]] = dictionary["predictions"] as? [[String:Any]]{
 			for dic in predictionsArray{
-				let value = Prediction(fromDictionary: dic)
+				let value: Prediction = Prediction(fromDictionary: dic)
 				predictions.append(value)
 			}
 		}

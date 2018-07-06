@@ -31,6 +31,16 @@
 		1811F6CD20D4F3AF006FEDE1 /* MyOrdersResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1811F6C520D4F3AF006FEDE1 /* MyOrdersResponse.swift */; };
 		187185BC20DA0C4F004AE018 /* BizLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187185B920DA0C4E004AE018 /* BizLocation.swift */; };
 		187185BE20DA0C4F004AE018 /* ReorderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187185BB20DA0C4F004AE018 /* ReorderResponse.swift */; };
+		1876202620EB915A0071FA25 /* APIManager+Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1876202520EB91590071FA25 /* APIManager+Wallet.swift */; };
+		1876202E20EB92040071FA25 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1876202D20EB92040071FA25 /* AppDelegate.swift */; };
+		1876203020EB92040071FA25 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1876202F20EB92040071FA25 /* ViewController.swift */; };
+		1876203320EB92040071FA25 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1876203120EB92040071FA25 /* Main.storyboard */; };
+		1876203520EB92060071FA25 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1876203420EB92060071FA25 /* Assets.xcassets */; };
+		1876203820EB92060071FA25 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1876203620EB92060071FA25 /* LaunchScreen.storyboard */; };
+		1876203D20EB92120071FA25 /* UrbanPiperSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46E4F71E208DAB810045ED21 /* UrbanPiperSDK.framework */; };
+		1876203E20EB92120071FA25 /* UrbanPiperSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46E4F71E208DAB810045ED21 /* UrbanPiperSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1878275820EA06BD009F57FA /* WalletTransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1878275620EA06BD009F57FA /* WalletTransactionResponse.swift */; };
+		1878275920EA06BD009F57FA /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1878275720EA06BD009F57FA /* Transaction.swift */; };
 		4607A993208F1E2700128010 /* WeakRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A91E208F1E2600128010 /* WeakRef.swift */; };
 		4607A99D208F1E2700128010 /* APIManager+Banners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A92A208F1E2600128010 /* APIManager+Banners.swift */; };
 		4607A99E208F1E2700128010 /* APIManager+Ordering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A92B208F1E2600128010 /* APIManager+Ordering.swift */; };
@@ -130,7 +140,7 @@
 		4607AA00208F1E2800128010 /* UPAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A992208F1E2700128010 /* UPAPIError.swift */; };
 		460AE5D420D257F400098507 /* APIManager+MyOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460AE5D320D257F400098507 /* APIManager+MyOrders.swift */; };
 		461B167420BD4174007C6DFD /* AddressDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4655D8AA20BBF0BE00F96DEF /* AddressDataModel.swift */; };
-		4623571B20D0FB5B0077F2F1 /* WalletReloadDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623571A20D0FB5B0077F2F1 /* WalletReloadDataModel.swift */; };
+		4623571B20D0FB5B0077F2F1 /* WalletDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623571A20D0FB5B0077F2F1 /* WalletDataModel.swift */; };
 		4623DB1D208F8D3200BD7537 /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623DB1B208F854A00BD7537 /* AnalyticsManager.swift */; };
 		463981D320D2507300336F7D /* MyOrdersDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463981D220D2507300336F7D /* MyOrdersDataModel.swift */; };
 		463A529020C5346F0099E162 /* AddAddressResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463A528F20C5346E0099E162 /* AddAddressResponse.swift */; };
@@ -153,6 +163,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1876203F20EB92120071FA25 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 46E4F715208DAB810045ED21 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 46E4F71D208DAB810045ED21;
+			remoteInfo = UrbanPiperSDK;
+		};
 		46ACCAC320933C33001BD979 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 46E4F715208DAB810045ED21 /* Project object */;
@@ -161,6 +178,20 @@
 			remoteInfo = GoogleAnalyticsModuleMap;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1876204120EB92130071FA25 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				1876203E20EB92120071FA25 /* UrbanPiperSDK.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1811F6BE20D4F3AC006FEDE1 /* MyOrderOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOrderOption.swift; sourceTree = "<group>"; };
@@ -173,6 +204,16 @@
 		1811F6C520D4F3AF006FEDE1 /* MyOrdersResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOrdersResponse.swift; sourceTree = "<group>"; };
 		187185B920DA0C4E004AE018 /* BizLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BizLocation.swift; sourceTree = "<group>"; };
 		187185BB20DA0C4F004AE018 /* ReorderResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReorderResponse.swift; sourceTree = "<group>"; };
+		1876202520EB91590071FA25 /* APIManager+Wallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Wallet.swift"; sourceTree = "<group>"; };
+		1876202B20EB92030071FA25 /* UrbanPiperSDK-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UrbanPiperSDK-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1876202D20EB92040071FA25 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1876202F20EB92040071FA25 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1876203220EB92040071FA25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1876203420EB92060071FA25 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1876203720EB92060071FA25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1876203920EB92060071FA25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1878275620EA06BD009F57FA /* WalletTransactionResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletTransactionResponse.swift; sourceTree = "<group>"; };
+		1878275720EA06BD009F57FA /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		4607A91E208F1E2600128010 /* WeakRef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakRef.swift; sourceTree = "<group>"; };
 		4607A92A208F1E2600128010 /* APIManager+Banners.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Banners.swift"; sourceTree = "<group>"; };
 		4607A92B208F1E2600128010 /* APIManager+Ordering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Ordering.swift"; sourceTree = "<group>"; };
@@ -271,7 +312,7 @@
 		4607A991208F1E2700128010 /* UPError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UPError.swift; sourceTree = "<group>"; };
 		4607A992208F1E2700128010 /* UPAPIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UPAPIError.swift; sourceTree = "<group>"; };
 		460AE5D320D257F400098507 /* APIManager+MyOrders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIManager+MyOrders.swift"; sourceTree = "<group>"; };
-		4623571A20D0FB5B0077F2F1 /* WalletReloadDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletReloadDataModel.swift; sourceTree = "<group>"; };
+		4623571A20D0FB5B0077F2F1 /* WalletDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDataModel.swift; sourceTree = "<group>"; };
 		4623DB1B208F854A00BD7537 /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
 		4623DB1E20901BB300BD7537 /* UrbanPiperSDK.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = UrbanPiperSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		463981D220D2507300336F7D /* MyOrdersDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrdersDataModel.swift; sourceTree = "<group>"; };
@@ -298,6 +339,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1876202820EB92030071FA25 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1876203D20EB92120071FA25 /* UrbanPiperSDK.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		46E4F71A208DAB810045ED21 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -308,6 +357,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1876202C20EB92040071FA25 /* UrbanPiperSDK-Example */ = {
+			isa = PBXGroup;
+			children = (
+				1876202D20EB92040071FA25 /* AppDelegate.swift */,
+				1876202F20EB92040071FA25 /* ViewController.swift */,
+				1876203120EB92040071FA25 /* Main.storyboard */,
+				1876203420EB92060071FA25 /* Assets.xcassets */,
+				1876203620EB92060071FA25 /* LaunchScreen.storyboard */,
+				1876203920EB92060071FA25 /* Info.plist */,
+			);
+			path = "UrbanPiperSDK-Example";
+			sourceTree = "<group>";
+		};
 		4607A91D208F1E2600128010 /* Custom Class */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,6 +381,7 @@
 		4607A929208F1E2600128010 /* API Manager */ = {
 			isa = PBXGroup;
 			children = (
+				1876202520EB91590071FA25 /* APIManager+Wallet.swift */,
 				46A3447420977AEA004C0B67 /* APIManager+VersionCheck.swift */,
 				4607A92A208F1E2600128010 /* APIManager+Banners.swift */,
 				4607A92B208F1E2600128010 /* APIManager+Ordering.swift */,
@@ -372,7 +435,7 @@
 				4607A950208F1E2600128010 /* NotificationsDataModel.swift */,
 				4607A951208F1E2600128010 /* AppUserDataModel.swift */,
 				4607A952208F1E2600128010 /* SideMenuPanelDataModel.swift */,
-				4623571A20D0FB5B0077F2F1 /* WalletReloadDataModel.swift */,
+				4623571A20D0FB5B0077F2F1 /* WalletDataModel.swift */,
 				463981D220D2507300336F7D /* MyOrdersDataModel.swift */,
 			);
 			path = DataModel;
@@ -381,6 +444,8 @@
 		4607A953208F1E2700128010 /* APIModels */ = {
 			isa = PBXGroup;
 			children = (
+				1878275720EA06BD009F57FA /* Transaction.swift */,
+				1878275620EA06BD009F57FA /* WalletTransactionResponse.swift */,
 				187185B920DA0C4E004AE018 /* BizLocation.swift */,
 				187185BB20DA0C4F004AE018 /* ReorderResponse.swift */,
 				1811F6C320D4F3AE006FEDE1 /* MyOrderCharge.swift */,
@@ -501,6 +566,7 @@
 			children = (
 				4623DB1E20901BB300BD7537 /* UrbanPiperSDK.podspec */,
 				46E4F720208DAB810045ED21 /* UrbanPiperSDK */,
+				1876202C20EB92040071FA25 /* UrbanPiperSDK-Example */,
 				46E4F71F208DAB810045ED21 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -509,6 +575,7 @@
 			isa = PBXGroup;
 			children = (
 				46E4F71E208DAB810045ED21 /* UrbanPiperSDK.framework */,
+				1876202B20EB92030071FA25 /* UrbanPiperSDK-Example.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -549,6 +616,25 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		1876202A20EB92030071FA25 /* UrbanPiperSDK-Example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1876203A20EB92060071FA25 /* Build configuration list for PBXNativeTarget "UrbanPiperSDK-Example" */;
+			buildPhases = (
+				1876202720EB92030071FA25 /* Sources */,
+				1876202820EB92030071FA25 /* Frameworks */,
+				1876202920EB92030071FA25 /* Resources */,
+				1876204120EB92130071FA25 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1876204020EB92120071FA25 /* PBXTargetDependency */,
+			);
+			name = "UrbanPiperSDK-Example";
+			productName = "UrbanPiperSDK-Example";
+			productReference = 1876202B20EB92030071FA25 /* UrbanPiperSDK-Example.app */;
+			productType = "com.apple.product-type.application";
+		};
 		46E4F71D208DAB810045ED21 /* UrbanPiperSDK */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 46E4F726208DAB810045ED21 /* Build configuration list for PBXNativeTarget "UrbanPiperSDK" */;
@@ -574,10 +660,14 @@
 		46E4F715208DAB810045ED21 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0930;
+				DefaultBuildSystemTypeForWorkspace = Latest;
+				LastSwiftUpdateCheck = 1000;
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = UrbanPiper;
 				TargetAttributes = {
+					1876202A20EB92030071FA25 = {
+						CreatedOnToolsVersion = 10.0;
+					};
 					46ACCABE20933B88001BD979 = {
 						CreatedOnToolsVersion = 9.3;
 					};
@@ -601,11 +691,22 @@
 			targets = (
 				46E4F71D208DAB810045ED21 /* UrbanPiperSDK */,
 				46ACCABE20933B88001BD979 /* GoogleAnalyticsModuleMap */,
+				1876202A20EB92030071FA25 /* UrbanPiperSDK-Example */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1876202920EB92030071FA25 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1876203820EB92060071FA25 /* LaunchScreen.storyboard in Resources */,
+				1876203520EB92060071FA25 /* Assets.xcassets in Resources */,
+				1876203320EB92040071FA25 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		46E4F71C208DAB810045ED21 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -633,6 +734,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1876202720EB92030071FA25 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1876203020EB92040071FA25 /* ViewController.swift in Sources */,
+				1876202E20EB92040071FA25 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		46E4F719208DAB810045ED21 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -648,10 +758,11 @@
 				4607A9A8208F1E2700128010 /* APIManager+Coupon.swift in Sources */,
 				4607A9EB208F1E2700128010 /* OrderDeliveryAddress.swift in Sources */,
 				4607A99D208F1E2700128010 /* APIManager+Banners.swift in Sources */,
+				1878275920EA06BD009F57FA /* Transaction.swift in Sources */,
 				4607A9D9208F1E2700128010 /* Result.swift in Sources */,
 				4607A9F0208F1E2800128010 /* OrderItem.swift in Sources */,
 				461B167420BD4174007C6DFD /* AddressDataModel.swift in Sources */,
-				4623571B20D0FB5B0077F2F1 /* WalletReloadDataModel.swift in Sources */,
+				4623571B20D0FB5B0077F2F1 /* WalletDataModel.swift in Sources */,
 				4607A9D1208F1E2700128010 /* Like.swift in Sources */,
 				4607A9F4208F1E2800128010 /* ItemTaxes.swift in Sources */,
 				4607A9DE208F1E2700128010 /* Viewport.swift in Sources */,
@@ -693,9 +804,11 @@
 				4607A9EA208F1E2700128010 /* Term.swift in Sources */,
 				4607A9B4208F1E2700128010 /* CartDataModel.swift in Sources */,
 				4607A993208F1E2700128010 /* WeakRef.swift in Sources */,
+				1878275820EA06BD009F57FA /* WalletTransactionResponse.swift in Sources */,
 				4607A9F9208F1E2800128010 /* TimeSlot+Additions.swift in Sources */,
 				4607A9AF208F1E2700128010 /* AppConfigManager.swift in Sources */,
 				4623DB1D208F8D3200BD7537 /* AnalyticsManager.swift in Sources */,
+				1876202620EB915A0071FA25 /* APIManager+Wallet.swift in Sources */,
 				4607A9EE208F1E2800128010 /* Store.swift in Sources */,
 				4607A9C1208F1E2700128010 /* NotificationsDataModel.swift in Sources */,
 				4607A9A7208F1E2700128010 /* APIManager+User.swift in Sources */,
@@ -770,6 +883,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1876204020EB92120071FA25 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 46E4F71D208DAB810045ED21 /* UrbanPiperSDK */;
+			targetProxy = 1876203F20EB92120071FA25 /* PBXContainerItemProxy */;
+		};
 		46ACCAC420933C33001BD979 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 46ACCABE20933B88001BD979 /* GoogleAnalyticsModuleMap */;
@@ -777,7 +895,72 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		1876203120EB92040071FA25 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1876203220EB92040071FA25 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		1876203620EB92060071FA25 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1876203720EB92060071FA25 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		1876203B20EB92060071FA25 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LX9U6JG87H;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "UrbanPiperSDK-Example/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				PRODUCT_BUNDLE_IDENTIFIER = "UrbanPiper.UrbanPiperSDK-Example";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1876203C20EB92060071FA25 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = LX9U6JG87H;
+				INFOPLIST_FILE = "UrbanPiperSDK-Example/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "UrbanPiper.UrbanPiperSDK-Example";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		46ACCAC020933B89001BD979 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1313,6 +1496,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1876203A20EB92060071FA25 /* Build configuration list for PBXNativeTarget "UrbanPiperSDK-Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1876203B20EB92060071FA25 /* Debug */,
+				1876203C20EB92060071FA25 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		46ACCABF20933B89001BD979 /* Build configuration list for PBXAggregateTarget "GoogleAnalyticsModuleMap" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

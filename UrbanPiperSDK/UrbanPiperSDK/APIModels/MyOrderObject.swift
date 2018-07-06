@@ -23,7 +23,7 @@ public class MyOrderObject : NSObject, NSCoding{
 	init(fromDictionary dictionary: [String:Any]){
 		body = dictionary["body"] as? String
 		detail = dictionary["detail"] as? String
-		if let extrasData = dictionary["extras"] as? [String:Any]{
+		if let extrasData: [String:Any] = dictionary["extras"] as? [String:Any]{
 			extras = MyOrderExtra(fromDictionary: extrasData)
 		}
 		subject = dictionary["subject"] as? String

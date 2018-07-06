@@ -46,7 +46,7 @@ public enum DeliveryOption: String {
         switch self {
         case .delivery:
             if let amount = orderAmount, amount > 0.0 {
-                let currencyPrefix = AppConfigManager.shared.firRemoteConfigDefaults.lblCurrencySymbol!
+                let currencyPrefix: String = AppConfigManager.shared.firRemoteConfigDefaults.lblCurrencySymbol!
                 return "DELIVERY (MIN ORDER \(currencyPrefix) \(amount))"
             }
             return "DELIVERY"
@@ -110,9 +110,9 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
     
     public var deliveryAddress: Address? {
-        guard let defaultAddressData = UserDefaults.standard.object(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey) as? Data else { return nil }
+        guard let defaultAddressData: Data = UserDefaults.standard.object(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey) as? Data else { return nil }
             Address.registerClassName()
-        guard let address = NSKeyedUnarchiver.unarchiveObject(with: defaultAddressData) as? Address else { return nil }
+        guard let address: Address = NSKeyedUnarchiver.unarchiveObject(with: defaultAddressData) as? Address else { return nil }
         return address
     }
 
@@ -160,7 +160,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }()
     
     private var defaultPaymentOption: PaymentOption {
-        if let option = AppConfigManager.shared.firRemoteConfigDefaults.forcePaymentOptSel, option {
+        if let option: Bool = AppConfigManager.shared.firRemoteConfigDefaults.forcePaymentOptSel, option {
             return .select
         } else if let paymentOption = paymentOptions?.first {
             return paymentOption
@@ -201,10 +201,10 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
     
     public var normalDefaultOrderDeliveryDate: Date {
-        let delMinOffset = TimeInterval(Biz.shared!.deliveryMinOffsetTime)
-        let defaultOffset = TimeInterval(100000.0)
+        let delMinOffset: TimeInterval = TimeInterval(Biz.shared!.deliveryMinOffsetTime)
+        let defaultOffset: TimeInterval = TimeInterval(100000.0)
         // around 2 minutes gap to payment
-        let normalDeliveryDate = Date().addingTimeInterval(((delMinOffset + defaultOffset) / 1000.0))
+        let normalDeliveryDate: Date = Date().addingTimeInterval(((delMinOffset + defaultOffset) / 1000.0))
         return normalDeliveryDate
     }
     
@@ -255,8 +255,8 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
         // Removing paypal option
         paymentArray = paymentArray.filter { $0 != .paypal }
 
-        if let paymentOptionString = AppConfigManager.shared.firRemoteConfigDefaults.dfltPymntOpt,
-            let option = PaymentOption(rawValue: paymentOptionString) {
+        if let paymentOptionString: String = AppConfigManager.shared.firRemoteConfigDefaults.dfltPymntOpt,
+            let option: PaymentOption = PaymentOption(rawValue: paymentOptionString) {
             let defaultOptionPresent = paymentArray.filter { $0 == option }.count > 0
             
             paymentArray = paymentArray.filter { $0 != option }
@@ -329,7 +329,7 @@ extension OrderPaymentDataModel {
     public func preProcessOrder() {
         dataModelDelegate?.refreshPreProcessingUI(true)
                 
-        let dataTask = APIManager.shared.preProcessOrder(bizLocationId: OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
+        let dataTask: URLSessionTask = APIManager.shared.preProcessOrder(bizLocationId: OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
                                                          applyWalletCredit: applyWalletCredits,
                                                          deliveryOption: selectedDeliveryOption.rawValue,
                                                          items: CartManager.shared.cartItems,
@@ -350,7 +350,7 @@ extension OrderPaymentDataModel {
     
     fileprivate func updateUserBizInfo() {
         dataModelDelegate?.refreshWalletUI(true)
-        let dataTask = APIManager.shared.fetchBizInfo(completion: { [weak self] (info) in
+        let dataTask: URLSessionTask = APIManager.shared.fetchBizInfo(completion: { [weak self] (info) in
             defer {
                 self?.dataModelDelegate?.refreshWalletUI(false)
             }
@@ -373,7 +373,7 @@ extension OrderPaymentDataModel {
                          "apply_wallet_credit": applyWalletCredits] as [String : Any]
         
         dataModelDelegate?.refreshCouponUI?(true)
-        let dataTask = APIManager.shared.applyCoupon(code: code,
+        let dataTask: URLSessionTask = APIManager.shared.applyCoupon(code: code,
                                                      orderData: orderDict,
                                                      completion: { [weak self] (applyCouponResponse) in
             defer {
@@ -394,7 +394,7 @@ extension OrderPaymentDataModel {
                                 phone: String) {
         dataModelDelegate?.initiatingPayment(isProcessing: true)
         let paymentOption = selectedPaymentOption
-        let dataTask = APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption,
+        let dataTask: URLSessionTask? = APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption,
                                                                purpose: OnlinePaymentPurpose.ordering,
                                                                totalAmount: itemsTotalPrice,
                                                                bizLocationId: OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
@@ -418,10 +418,10 @@ extension OrderPaymentDataModel {
         
         dataModelDelegate?.placingOrder(isProcessing: true)
         
-        let timeSlotDelivery = AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots!
+        let timeSlotDelivery: Bool = AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots!
         
         let paymentOption = selectedPaymentOption
-        let dataTask = APIManager.shared.placeOrder(address: selectedDeliveryOption != .pickUp ? deliveryAddress : nil,
+        let dataTask: URLSessionTask = APIManager.shared.placeOrder(address: selectedDeliveryOption != .pickUp ? deliveryAddress : nil,
                                      items: CartManager.shared.cartItems,
                                      deliveryDate: deliveryDate,
                                      timeSlot: timeSlotDelivery ? selectedDeliveryTimeSlotOption : nil,
@@ -444,14 +444,14 @@ extension OrderPaymentDataModel {
                                      completion: { [weak self] (responseDict) in
                                         self?.dataModelDelegate?.placingOrder(isProcessing: false)
                                         guard let orderId = responseDict?["order_id"] else {
-                                            let error = UPAPIError(responseObject: responseDict)
+                                            let error: UPAPIError? = UPAPIError(responseObject: responseDict)
                                             self?.dataModelDelegate?.handleOrderPayment(error: error)
                                             return
                                         }
-                                        let orderIdString = "\(orderId)"
+                                        let orderIdString: String = "\(orderId)"
                                         
                                         guard orderIdString.count > 0 else {
-                                            let error = UPAPIError(responseObject: responseDict)
+                                            let error: UPAPIError? = UPAPIError(responseObject: responseDict)
                                             self?.dataModelDelegate?.handleOrderPayment(error: error)
                                             return
                                         }
@@ -484,16 +484,16 @@ extension OrderPaymentDataModel {
         dataModelDelegate?.verifyingTransaction(isProcessing: true)
         orderPlacedTracking(orderId: orderId, phone: phone)
 
-        let dataTask = APIManager.shared.verifyPayment(pid: paymentId,
+        let dataTask: URLSessionTask = APIManager.shared.verifyPayment(pid: paymentId,
                                                        orderId: orderId,
                                                        transactionId: transactionId,
                                                        completion: { [weak self] (responseDict) in
                                                         self?.dataModelDelegate?.verifyingTransaction(isProcessing: false)
-                                                        if let status = responseDict?["status"] as? String, status == "3" {
+                                                        if let status: String = responseDict?["status"] as? String, status == "3" {
                                                             self?.dataModelDelegate?.showOrderConfirmationAlert(orderId: orderId)
                                                         } else {
-                                                            let upError = UPAPIError(responseObject: responseDict)
-                                                            self?.dataModelDelegate?.handleOrderPayment(error: upError)
+                                                            let apiError: UPAPIError? = UPAPIError(responseObject: responseDict)
+                                                            self?.dataModelDelegate?.handleOrderPayment(error: apiError)
                                                         }
             }, failure: { [weak self] (error) in
                 self?.dataModelDelegate?.verifyingTransaction(isProcessing: false)
@@ -512,16 +512,11 @@ extension OrderPaymentDataModel {
 
 extension OrderPaymentDataModel: AppUserDataModelDelegate {
 
-    public func refreshAppUserUI(isRefreshing: Bool) {
-
-    }
-
     public func refreshBizInfoUI(isRefreshing: Bool, isFirstUpdate: Bool) {
         guard !isRefreshing else { return }
         bizInfo = AppUserDataModel.shared.bizInfo
         dataModelDelegate?.refreshWalletUI(false)
     }
-
 
 }
 

@@ -20,17 +20,17 @@ import Foundation
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
-		if let bizData = dictionary["biz"] as? [String:Any]{
+		if let bizData: [String:Any] = dictionary["biz"] as? [String:Any]{
 			biz = Biz(fromDictionary: bizData)
 		}
 		clearCache = dictionary["clear_cache"] as? Bool
-		if let metaData = dictionary["meta"] as? [String:Any]{
+		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
 			meta = Meta(fromDictionary: metaData)
 		}
 		objects = [Object]()
-		if let objectsArray = dictionary["objects"] as? [[String:Any]]{
+		if let objectsArray: [[String:Any]] = dictionary["objects"] as? [[String:Any]]{
 			for dic in objectsArray{
-				let value = Object(fromDictionary: dic)
+				let value: Object = Object(fromDictionary: dic)
 				objects.append(value)
 			}
 		}

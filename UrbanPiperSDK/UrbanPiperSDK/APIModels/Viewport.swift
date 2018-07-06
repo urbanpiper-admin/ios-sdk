@@ -18,10 +18,10 @@ public class Viewport : NSObject, NSCoding{
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
-		if let northeastData = dictionary["northeast"] as? [String:Any]{
+		if let northeastData: [String:Any] = dictionary["northeast"] as? [String:Any]{
 			northeast = Location(fromDictionary: northeastData)
 		}
-		if let southwestData = dictionary["southwest"] as? [String:Any]{
+		if let southwestData: [String:Any] = dictionary["southwest"] as? [String:Any]{
 			southwest = Location(fromDictionary: southwestData)
 		}
 	}

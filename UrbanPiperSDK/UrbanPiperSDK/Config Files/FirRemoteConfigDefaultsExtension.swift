@@ -11,11 +11,11 @@ import FirebaseRemoteConfig
 
 extension FirRemoteConfigDefaults {
 
-    public static let scheduleTabModuleKey = "Schedule_tab"
-    public static let bulkOrderingTabModuleKey = "Bulk_ordering_tab"
-    public static let subscriptionTabModuleKey = "Subscription_tab"
-    public static let presidenteRewardTabModuleKey = "Presidente_reward_tab"
-    public static let settingsTabModuleKey = "Settings_tab"
+    public static let scheduleTabModuleKey: String = "Schedule_tab"
+    public static let bulkOrderingTabModuleKey: String = "Bulk_ordering_tab"
+    public static let subscriptionTabModuleKey: String = "Subscription_tab"
+    public static let presidenteRewardTabModuleKey: String = "Presidente_reward_tab"
+    public static let settingsTabModuleKey: String = "Settings_tab"
 
 
     public var sideMenuTabKeyArray: [String] {

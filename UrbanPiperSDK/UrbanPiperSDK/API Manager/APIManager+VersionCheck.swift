@@ -16,24 +16,24 @@ extension APIManager {
         guard let username = AppUserDataModel.shared.validAppUserData?.phoneNumberWithCountryCode else { return nil }
         
         let infoDictionary = Bundle.main.infoDictionary
-        guard let appVersion = infoDictionary?["CFBundleShortVersionString"] as? String,
-            let biz_app_id = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId else { return nil }
+        guard let appVersion: String = infoDictionary?["CFBundleShortVersionString"] as? String,
+            let bizAppId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId else { return nil }
         
-        let urlString = "\(APIManager.baseUrl)/api/v1/app/ios/?user=\(username)&biz_id=\(biz_app_id)&ver=\(appVersion)"
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/app/ios/?user=\(username)&biz_id=\(bizAppId)&ver=\(appVersion)"
 
-        let url = URL(string: urlString)!
+        let url: URL = URL(string: urlString)!
 
-        var urlRequest = URLRequest(url: url)
+        var urlRequest: URLRequest = URLRequest(url: url)
 
         urlRequest.httpMethod = "GET"
 
-        let task = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
 
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
 
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
-                    let versionCheckResponse = VersionCheckResponse(fromDictionary: dictionary)
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
+                    let versionCheckResponse: VersionCheckResponse = VersionCheckResponse(fromDictionary: dictionary)
 
                     DispatchQueue.main.async {
                         completionClosure(versionCheckResponse)
@@ -46,7 +46,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -55,7 +55,7 @@ extension APIManager {
 
         }
         
-        return task
+        return dataTask
     }
 
 }

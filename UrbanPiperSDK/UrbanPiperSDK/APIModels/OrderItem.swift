@@ -40,7 +40,7 @@ public class OrderItem : NSObject, NSCoding{
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
-		if let categoryData = dictionary["category"] as? [String:Any]{
+		if let categoryData: [String:Any] = dictionary["category"] as? [String:Any]{
 			category = ItemCategory(fromDictionary: categoryData)
 		}
 		charges = dictionary["charges"] as? [AnyObject]
@@ -52,51 +52,42 @@ public class OrderItem : NSObject, NSCoding{
 		imageUrl = dictionary["image_url"] as? String
 		itemDesc = dictionary["item_desc"] as? String
         
-        if let val = dictionary["item_price"] as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = dictionary["item_price"] as? Decimal {
             itemPrice = val
-        } else if let val = dictionary["item_price"] as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = dictionary["item_price"] as? Double {
             itemPrice = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: itemPrice).doubleValue))")
-        } else if let val = dictionary["item_price"] as? Float {
+        } else if let val: Float = dictionary["item_price"] as? Float {
             itemPrice = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = dictionary["item_price"] as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = dictionary["item_price"] as? Int {
             itemPrice = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: itemPrice).doubleValue))")
         } else {
             itemPrice = Decimal(0).rounded
-            print("amount value nil")
         }
 
 		itemTitle = dictionary["item_title"] as? String
 		likes = dictionary["likes"] as? Int
 		options = [ItemOption]()
-		if let optionsArray = dictionary["options"] as? [[String:Any]]{
+		if let optionsArray: [[String:Any]] = dictionary["options"] as? [[String:Any]]{
 			for dic in optionsArray{
-				let value = ItemOption(fromDictionary: dic)
+				let value: ItemOption = ItemOption(fromDictionary: dic)
 				options.append(value)
 			}
 		}
         optionsToRemove = [ItemOption]()
-        if let optionsToRemoveArray = dictionary["options_to_remove"] as? [[String:Any]]{
+        if let optionsToRemoveArray: [[String:Any]] = dictionary["options_to_remove"] as? [[String:Any]]{
             for dic in optionsToRemoveArray{
-                let value = ItemOption(fromDictionary: dic)
+                let value: ItemOption = ItemOption(fromDictionary: dic)
                 optionsToRemove.append(value)
             }
         }
-//        if let val = dictionary["price"] as? Decimal {
-//            print("decimal amount value \(val)")
-//            price = val
-//        } else if let val = dictionary["price"] as? Double {
+//        if let val: Decimal = dictionary["price"] as? Decimal {
+//            //            price = val
+//        } else if let val: Double = dictionary["price"] as? Double {
 //            price = Decimal(val).rounded
 //            print("Decimal Double \((NSDecimalNumber(decimal: price).doubleValue))")
-//        } else if let val = dictionary["price"] as? Float {
+//        } else if let val: Float = dictionary["price"] as? Float {
 //            price = Decimal(Double(val)).rounded
-//            print("float amount value \(val)")
-//        } else if let val = dictionary["price"] as? Int {
+//            //        } else if let val: Int = dictionary["price"] as? Int {
 //            price = Decimal(val).rounded
 //            print("Decimal Double \((NSDecimalNumber(decimal: price).doubleValue))")
 //        } else {
@@ -109,9 +100,9 @@ public class OrderItem : NSObject, NSCoding{
 		tags = dictionary["tags"] as? [AnyObject]
 		taxPercentage = dictionary["tax_percentage"] as? Float
 		taxes = [ItemTaxes]()
-		if let taxesArray = dictionary["taxes"] as? [[String:Any]]{
+		if let taxesArray: [[String:Any]] = dictionary["taxes"] as? [[String:Any]]{
 			for dic in taxesArray{
-				let value = ItemTaxes(fromDictionary: dic)
+				let value: ItemTaxes = ItemTaxes(fromDictionary: dic)
 				taxes.append(value)
 			}
 		}

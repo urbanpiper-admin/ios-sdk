@@ -13,14 +13,14 @@ import GoogleAnalyticsSDK
 
 public class AnalyticsManager: NSObject {
     
-    @objc public static let shared = AnalyticsManager()
+    @objc public static let shared: AnalyticsManager = AnalyticsManager()
     
     public static func initializeSDKs() {
         #if !DEBUG
-        let plistPath = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")!
-        var googleServiceInfoPlist = NSDictionary(contentsOfFile: plistPath) as! [String: Any]
+        let plistPath: String = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")!
+        var googleServiceInfoPlist: [String: Any] = NSDictionary(contentsOfFile: plistPath) as! [String: Any]
         
-        if let gai = GAI.sharedInstance(), let trackingId = googleServiceInfoPlist["TRACKING_ID"] as? String {
+        if let gai: GAI = GAI.sharedInstance(), let trackingId: String = googleServiceInfoPlist["TRACKING_ID"] as? String {
             gai.tracker(withTrackingId: trackingId)
             
             gai.trackUncaughtExceptions = true
@@ -28,11 +28,11 @@ public class AnalyticsManager: NSObject {
             gai.logger.logLevel = .error
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.initialize(token: token)
         }
         
-        if let devKey = AppConfigManager.shared.firRemoteConfigDefaults.appsFlyerDevKey, let appId = AppConfigManager.shared.firRemoteConfigDefaults.appsFlyerDevAppid {
+        if let devKey: String = AppConfigManager.shared.firRemoteConfigDefaults.appsFlyerDevKey, let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.appsFlyerDevAppid {
             AppsFlyerTracker.shared().appleAppID = appId
             AppsFlyerTracker.shared().appsFlyerDevKey = devKey
         }
@@ -42,12 +42,12 @@ public class AnalyticsManager: NSObject {
     
     public func screenLoginOpened() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Login")
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "screen_login")
         }
         #endif
@@ -56,12 +56,12 @@ public class AnalyticsManager: NSObject {
     
     public func screenSignUpOpened() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Signup")
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "screen_signup")
         }
         #endif
@@ -69,12 +69,12 @@ public class AnalyticsManager: NSObject {
     
     @objc public func screenWalletOpened() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Wallet")
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "screen_wallet")
         }
         #endif
@@ -82,12 +82,12 @@ public class AnalyticsManager: NSObject {
     
     public func screenOrderingHomeOpened() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Ordering categories (Tiled)")
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "screen_ordering_home")
         }
         #endif
@@ -95,12 +95,12 @@ public class AnalyticsManager: NSObject {
     
     @objc public func screenReferralOpened() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Referral screen")
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "screen_referral")
         }
         #endif
@@ -108,7 +108,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func screenPlacesSearchOpened() {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "screen_google_place_search")
         }
         #endif
@@ -116,12 +116,12 @@ public class AnalyticsManager: NSObject {
     
     @objc public func screenOrderingHistoryOpened() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Ordering status and history")
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "screen_ordering_history")
         }
         #endif
@@ -129,12 +129,12 @@ public class AnalyticsManager: NSObject {
     
     @objc public func screenPastOrderDetailOpened() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Ordering past order detail")
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "screen_order_detail")
         }
         #endif
@@ -142,12 +142,12 @@ public class AnalyticsManager: NSObject {
     
     public func screenOrderingItemsListOpened(_ categoryTitle: String) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Ordering items. Category -- \(categoryTitle)")
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "screen_ordering_items")
         }
         #endif
@@ -155,23 +155,23 @@ public class AnalyticsManager: NSObject {
     
     public func screenCheckOutOpened() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Ordering checkout")
             
-            let product = GAIEcommerceProduct()
+            let product: GAIEcommerceProduct = GAIEcommerceProduct()
             
-            let productAction = GAIEcommerceProductAction()
+            let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
             productAction.setAction(kGAIPACheckout)
             productAction.setCheckoutStep(NSNumber(value: 1))
             
-            let builder = GAIDictionaryBuilder.createEvent(withCategory: nil, action: nil, label: nil, value: nil)!
+            let builder: GAIDictionaryBuilder = GAIDictionaryBuilder.createEvent(withCategory: nil, action: nil, label: nil, value: nil)!
             builder.add(product)
             builder.setProductAction(productAction)
             
             tracker.send(builder.build() as! [AnyHashable : Any])
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "screen_checkout",
                                           properties: ["total" : (CartManager.shared.cartValue as NSDecimalNumber).doubleValue,
                                                        "item_count" : CartManager.shared.cartCount])
@@ -181,29 +181,29 @@ public class AnalyticsManager: NSObject {
     
     public func screenOrderingPaymentOpened() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Ordering payment")
             
-            let product = GAIEcommerceProduct()
+            let product: GAIEcommerceProduct = GAIEcommerceProduct()
             
-            let productAction = GAIEcommerceProductAction()
+            let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
             productAction.setAction(kGAIPACheckout)
             productAction.setCheckoutStep(NSNumber(value: 2))
             
-            let builder = GAIDictionaryBuilder.createEvent(withCategory: nil, action: nil, label: nil, value: nil)!
+            let builder: GAIDictionaryBuilder = GAIDictionaryBuilder.createEvent(withCategory: nil, action: nil, label: nil, value: nil)!
             builder.add(product)
             builder.setProductAction(productAction)
             
             tracker.send(builder.build() as! [AnyHashable : Any])
         }
         
-        if let tracker = AppsFlyerTracker.shared() {
+        if let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() {
             tracker.trackEvent(AFEventInitiatedCheckout,
                                withValues: [AFEventParamQuantity: CartManager.shared.cartCount])
         }
         
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             var itemsDictionaryArray = [[String: Any]]()
             
             for itemObject in CartManager.shared.cartItems {
@@ -218,12 +218,12 @@ public class AnalyticsManager: NSObject {
     
     @objc public func screenFeedbackOpened() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Feedback")
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "screen_ordering_feedback")
         }
         #endif
@@ -231,7 +231,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func screenSavedAddressOpened() {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "screen_saved_address_list")
         }
         #endif
@@ -239,7 +239,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func screenValidateCouponOpened() {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "screen_validate_coupon")
         }
         #endif
@@ -247,7 +247,7 @@ public class AnalyticsManager: NSObject {
     
     public func itemsSearchScreenOpened() {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "screen_search")
         }
         #endif
@@ -255,7 +255,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func pointOfDeliverySearchScreenOpened() {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "screen_pod_search")
         }
         #endif
@@ -263,7 +263,7 @@ public class AnalyticsManager: NSObject {
     
     public func screenOrderConfirmationOpened() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Ordering confirmation")
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
@@ -272,7 +272,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func screenPrepaidReloadOpened() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Prepaid reload")
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
@@ -281,7 +281,7 @@ public class AnalyticsManager: NSObject {
     
     public func splashScreenOpened() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Splash")
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
@@ -290,7 +290,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func screenRazorPayCheckoutOpened() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "RazorPay checkout")
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
@@ -299,7 +299,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func screenGenericWebViewOpened(title: String) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             tracker.set(kGAIScreenName, value: "Generic view -- \(title)")
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
@@ -308,11 +308,11 @@ public class AnalyticsManager: NSObject {
     
     public func trackAppLaunch() {
         #if !DEBUG
-        if let tracker = AppsFlyerTracker.shared() {
+        if let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() {
             tracker.trackAppLaunch()
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "app_launched",
                                           properties: ["interval_of_day" : Date.currentHourRangeString])
         }
@@ -321,15 +321,15 @@ public class AnalyticsManager: NSObject {
     
     public func userLoggedInSuccessfully(phone: String) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "user",
                                                                    action: "login",
                                                                    label: "success",
                                                                    value: nil).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "login",
                                           properties : ["username" : phone,
                                                         "success" : true])
@@ -340,15 +340,15 @@ public class AnalyticsManager: NSObject {
     
     public func userLoginFailed(phone: String) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "user",
                                                                    action: "login",
                                                                    label: "failure",
                                                                    value: nil).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "login",
                                           properties : ["username" : phone,
                                                         "success" : false])
@@ -358,15 +358,15 @@ public class AnalyticsManager: NSObject {
     
     @objc public func userLoggedOut() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "user",
                                                                    action: "logout",
                                                                    label: nil,
                                                                    value: nil).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "logout")
             
             Mixpanel.mainInstance().people.deleteUser()
@@ -377,15 +377,15 @@ public class AnalyticsManager: NSObject {
     //  Should be called after the user has signed up and has yet to verify phone number via otp validation
     public func userSignedUpSuccessfully(phone: String) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "user",
                                                                    action: "signup",
                                                                    label: "awaiting-pin",
                                                                    value: nil).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "signup_otp_gen",
                                           properties : ["username" : phone])
         }
@@ -395,15 +395,15 @@ public class AnalyticsManager: NSObject {
     //  Should be called after the user entered otp is verfied successfully
     public func userEnteredOtpValidated(phone: String) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "user",
                                                                    action: "signup",
                                                                    label: "completed",
                                                                    value: nil).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "signup",
                                           properties : ["username" : phone])
             
@@ -414,8 +414,8 @@ public class AnalyticsManager: NSObject {
     
     public func userSelectedResendOTP() {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "user",
                                                                    action: "signup",
                                                                    label: "resend-pin",
                                                                    value: nil).build() as! [AnyHashable : Any]
@@ -427,15 +427,15 @@ public class AnalyticsManager: NSObject {
     //  Should be called when the user has signed up via social login and the phone no is not validated
     public func newSocialLoginUserSignedUp(phone: String, platform: String) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "user",
                                                                    action: "social-signup",
                                                                    label: "completed",
                                                                    value: nil).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "signup_otp_gen",
                                           properties : ["username" : phone,
                                                         "platform" : platform])
@@ -445,7 +445,7 @@ public class AnalyticsManager: NSObject {
     
     public func socialLoginUserPhoneVerified(phone: String, platform: String) {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "signup",
                                           properties : ["username" : phone,
                                                         "platform" : platform])
@@ -457,15 +457,15 @@ public class AnalyticsManager: NSObject {
     
     public func userLogInUsingSocialLogin(phone: String, platform: String) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "user",
                                                                    action: "login-social-auth",
                                                                    label: "completed",
                                                                    value: nil).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "login",
                                           properties : ["username" : phone,
                                                         "success" : true,
@@ -478,21 +478,21 @@ public class AnalyticsManager: NSObject {
     
     @objc public func feedbackSubmitted(data: [String: Any]) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
                                                                    action: "feedback",
                                                                    label: nil,
                                                                    value: data["rating"]! as! NSNumber).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             
             var properties: Properties = ["rating" : data["rating"]! as! Int,
                                           "type" : data["type"]! as! String,
                                           "type_id" : data["type_id"]! as! String]
             
-            if let choiceText = data["choice_text"] as? String {
+            if let choiceText: String = data["choice_text"] as? String {
                 properties["choice"] = choiceText
             }
             
@@ -504,7 +504,7 @@ public class AnalyticsManager: NSObject {
     
     public func itemSearch(query: String) {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             var properties = ["query" : query]
             
             if let storeId = OrderingStoreDataModel.shared.nearestStoreResponse?.store?.bizLocationId {
@@ -519,8 +519,8 @@ public class AnalyticsManager: NSObject {
     
     public func orderPlacementFailure(amount: Decimal) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
                                                                    action: "purchase",
                                                                    label: "failure",
                                                                    value: amount as NSNumber).build() as! [AnyHashable : Any]
@@ -531,15 +531,15 @@ public class AnalyticsManager: NSObject {
     
     @objc public func userInitiatedWalletReloadWithUPServer(amount: NSDecimalNumber) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
                                                                    action: "reload",
                                                                    label: "up-txn-init",
                                                                    value: amount).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             let properties: [String : MixpanelType] = ["amount" : amount.doubleValue,
                                                        "success": true]
             
@@ -551,15 +551,15 @@ public class AnalyticsManager: NSObject {
     
     @objc public func userInitiatedWalletReloadUsingRazorPay(amount: NSDecimalNumber) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
                                                                    action: "reload",
                                                                    label: "rzp-txn-init",
                                                                    value: amount).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             let properties: [String : MixpanelType] = ["amount" : amount.doubleValue,
                                                        "success": true]
             
@@ -571,8 +571,8 @@ public class AnalyticsManager: NSObject {
     
     @objc public func walletReloadedUsingRazorPay(amount: NSDecimalNumber) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
                                                                    action: "reload",
                                                                    label: "rzp-txn-complete",
                                                                    value: amount).build() as! [AnyHashable : Any]
@@ -583,8 +583,8 @@ public class AnalyticsManager: NSObject {
     
     @objc public func walletReloadedWithUPServer(amount: NSDecimalNumber) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
                                                                    action: "reload",
                                                                    label: "up-txn-complete",
                                                                    value: amount).build() as! [AnyHashable : Any]
@@ -595,7 +595,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func walletReloadFailed(amount: NSDecimalNumber) {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             let properties: [String : MixpanelType] = ["amount" : amount.doubleValue,
                                                        "success": false]
             
@@ -607,7 +607,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func couponApplied(discount: Decimal, couponCode: String) {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             let properties: [String : MixpanelType] = ["discount" : NSDecimalNumber(decimal:discount).doubleValue,
                                                        "coupon_txt": couponCode]
             
@@ -619,7 +619,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func newAddressAdded() {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "add_address")
         }
         #endif
@@ -627,7 +627,7 @@ public class AnalyticsManager: NSObject {
     
     public func referralSentDetails(link: String, channel: String) {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "referral_sent",
                                           properties: ["link": link,
                                                        "channel": channel])
@@ -637,7 +637,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func placeSelected(name: String) {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "place_selected",
                                           properties: ["name": name])
         }
@@ -646,7 +646,7 @@ public class AnalyticsManager: NSObject {
     
     public func categorySelected(name: String) {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "category_selected",
                                           properties: ["name": name])
         }
@@ -655,7 +655,7 @@ public class AnalyticsManager: NSObject {
     
     public func noStoresNearBy(lat: Double, lng: Double) {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "no_stores_nearby",
                                           properties: ["lat": lat,
                                                        "lng": lng])
@@ -665,7 +665,7 @@ public class AnalyticsManager: NSObject {
     
     public func nearestStoreClosed(lat: Double, lng: Double, deliveryAddress: String, storeName: String) {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "nearest_store_closed",
                                           properties: ["lat": lat,
                                                        "lng": lng,
@@ -677,7 +677,7 @@ public class AnalyticsManager: NSObject {
     
     public func nearestStoreTemporarilyClosed(lat: Double, lng: Double, deliveryAddress: String, storeName: String) {
         #if !DEBUG
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "nearest_store_temp_closed",
                                           properties: ["lat": lat,
                                                        "lng": lng,
@@ -689,15 +689,15 @@ public class AnalyticsManager: NSObject {
     
     @objc public func walletReloadedWith(amount: NSDecimalNumber) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
                                                                    action: "transaction",
                                                                    label: "reload",
                                                                    value: amount).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             let properties: [String : MixpanelType] = ["amount" : amount.doubleValue,
                                                        "success": true]
             
@@ -711,8 +711,8 @@ public class AnalyticsManager: NSObject {
     
     @objc public func orderPlacedUsingWallet(amount: NSDecimalNumber) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
                                                                    action: "transaction",
                                                                    label: "purchase",
                                                                    value: amount).build() as! [AnyHashable : Any]
@@ -725,24 +725,24 @@ public class AnalyticsManager: NSObject {
     
     public func itemDetailsDisplayed(itemObject: ItemObject) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             
-            let product = GAIEcommerceProduct()
+            let product: GAIEcommerceProduct = GAIEcommerceProduct()
             product.setId("\(itemObject.id)")
             product.setName(itemObject.itemTitle)
             product.setCategory(itemObject.category.name)
             
-            let productAction = GAIEcommerceProductAction()
+            let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
             productAction.setAction(kGAIPADetail)
             
-            let screenBuilder = GAIDictionaryBuilder.createScreenView()!
+            let screenBuilder: GAIDictionaryBuilder = GAIDictionaryBuilder.createScreenView()!
             screenBuilder.add(product)
             screenBuilder.setProductAction(productAction)
             
             tracker.send(screenBuilder.build() as! [AnyHashable : Any])
         }
         
-        if let tracker = AppsFlyerTracker.shared() {
+        if let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() {
             tracker.trackEvent(AFEventContentView,
                                withValues: [AFEventParamContentId: itemObject.id,
                                             AFEventParamPrice: itemObject.totalAmount,
@@ -755,26 +755,26 @@ public class AnalyticsManager: NSObject {
     
     public func itemAddedToCart(itemObject: ItemObject) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             
-            let product = GAIEcommerceProduct()
+            let product: GAIEcommerceProduct = GAIEcommerceProduct()
             product.setId("\(itemObject.id!)")
             product.setName(itemObject.itemTitle)
             product.setQuantity(itemObject.quantity as NSNumber)
             product.setPrice(itemObject.totalAmount as NSNumber)
             product.setCategory(itemObject.category.name)
             
-            let productAction = GAIEcommerceProductAction()
+            let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
             productAction.setAction(kGAIPAAdd)
             
-            let screenBuilder = GAIDictionaryBuilder.createScreenView()!
+            let screenBuilder: GAIDictionaryBuilder = GAIDictionaryBuilder.createScreenView()!
             screenBuilder.add(product)
             screenBuilder.setProductAction(productAction)
             
             tracker.send(screenBuilder.build() as! [AnyHashable : Any])
         }
         
-        if let tracker = AppsFlyerTracker.shared() {
+        if let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() {
             tracker.trackEvent(AFEventAddToCart,
                                withValues: [AFEventParamContentId: itemObject.id,
                                             AFEventParamPrice: itemObject.totalAmount,
@@ -786,19 +786,19 @@ public class AnalyticsManager: NSObject {
     
     public func itemRemovedFromCart(itemObject: ItemObject) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             
-            let product = GAIEcommerceProduct()
+            let product: GAIEcommerceProduct = GAIEcommerceProduct()
             product.setId("\(itemObject.id!)")
             product.setName(itemObject.itemTitle)
             product.setQuantity(itemObject.quantity as NSNumber)
             product.setPrice(itemObject.totalAmount as NSNumber)
             product.setCategory(itemObject.category.name)
             
-            let productAction = GAIEcommerceProductAction()
+            let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
             productAction.setAction(kGAIPARemove)
             
-            let screenBuilder = GAIDictionaryBuilder.createScreenView()!
+            let screenBuilder: GAIDictionaryBuilder = GAIDictionaryBuilder.createScreenView()!
             screenBuilder.add(product)
             screenBuilder.setProductAction(productAction)
             
@@ -810,9 +810,9 @@ public class AnalyticsManager: NSObject {
     
     public func orderPlaced(orderId: String, phone: String, orderPaymentDataModel: OrderPaymentDataModel) {
         #if !DEBUG
-        if let tracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
+            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
                                                                    action: "purchase",
                                                                    label: "success",
                                                                    value: orderPaymentDataModel.itemsTotalPrice as NSNumber).build() as! [AnyHashable : Any]
@@ -820,7 +820,7 @@ public class AnalyticsManager: NSObject {
             
             let eventBuilder = GAIDictionaryBuilder.createEvent(withCategory: nil, action: nil, label: nil, value: nil)!
             
-            let productAction = GAIEcommerceProductAction()
+            let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
             productAction.setAction(kGAIPAPurchase)
             productAction.setTransactionId(orderId)
             productAction.setAffiliation("UrbanPiper")
@@ -836,7 +836,7 @@ public class AnalyticsManager: NSObject {
             
             if let items = orderPaymentDataModel.orderResponse?.items {
                 for item in items {
-                    let product = GAIEcommerceProduct()
+                    let product: GAIEcommerceProduct = GAIEcommerceProduct()
                     product.setId("\(item.id)")
                     product.setName(item.itemTitle)
                     product.setQuantity(NSNumber(value: item.quantity))
@@ -851,7 +851,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventBuilder.build() as! [AnyHashable : Any])
         }
         
-        if let tracker = AppsFlyerTracker.shared() {
+        if let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() {
             tracker.trackEvent(AFEventPurchase,
                                withValues: [AFEventParamContentId: "",
                                             AFEventParamContentType: "",
@@ -859,7 +859,7 @@ public class AnalyticsManager: NSObject {
                                             AFEventParamCurrency: "INR"])
         }
         
-        if let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             var itemsDictionaryArray = [[String: Any]]()
             
             for item in orderPaymentDataModel.orderResponse!.items {
@@ -898,7 +898,7 @@ public class AnalyticsManager: NSObject {
     public func setMixpanelPeople() {
         #if !DEBUG
         if let user = AppUserDataModel.shared.validAppUserData,
-            let token = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+            let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             
             let mixpanel = Mixpanel.mainInstance()
             mixpanel.identify(distinctId: user.phoneNumberWithCountryCode)
@@ -908,7 +908,7 @@ public class AnalyticsManager: NSObject {
                 var properties = ["$email": user.email,
                                   "$phone": user.phoneNumberWithCountryCode,
                                   "balance": bizObject.balance.doubleValue,
-                                  "$name": user.name,
+                                  "$name": user.firstName,
                                   "last_order_dt": bizObject.lastOrderDateString] as [String : MixpanelType]
                 
                 if let val = bizObject.cardNumbers.last {
@@ -935,7 +935,7 @@ public class AnalyticsManager: NSObject {
             } else {
                 mixpanel.people.set(properties: ["$email": user.email ?? "",
                                                  "$phone": user.phoneNumberWithCountryCode,
-                                                 "$name": user.name ?? ""])
+                                                 "$name": user.firstName ?? ""])
             }
         }
         #endif

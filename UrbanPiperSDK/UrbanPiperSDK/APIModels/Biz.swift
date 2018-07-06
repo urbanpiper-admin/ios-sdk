@@ -46,32 +46,25 @@ import Foundation
 		currency = dictionary["currency"] as? String
 		deliveryMinOffsetTime = dictionary["delivery_min_offset_time"] as? Int
 		feedbackConfig = [FeedbackConfig]()
-		if let feedbackConfigArray = dictionary["feedback_config"] as? [[String:Any]]{
+		if let feedbackConfigArray: [[String:Any]] = dictionary["feedback_config"] as? [[String:Any]]{
 			for dic in feedbackConfigArray{
-				let value = FeedbackConfig(fromDictionary: dic)
+				let value: FeedbackConfig = FeedbackConfig(fromDictionary: dic)
 				feedbackConfig.append(value)
 			}
 		}
 		gst = dictionary["gst"] as? String
 		isPickupEnabled = dictionary["is_pickup_enabled"] as? Bool
         
-        if let val = dictionary["min_order_total"] as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = dictionary["min_order_total"] as? Decimal {
             minOrderTotal = val
-        } else if let val = dictionary["min_order_total"] as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = dictionary["min_order_total"] as? Double {
             minOrderTotal = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: minOrderTotal).doubleValue))")
-        } else if let val = dictionary["min_order_total"] as? Float {
+        } else if let val: Float = dictionary["min_order_total"] as? Float {
             minOrderTotal = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = dictionary["min_order_total"] as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = dictionary["min_order_total"] as? Int {
             minOrderTotal = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: minOrderTotal).doubleValue))")
         } else {
             minOrderTotal = Decimal(0).rounded
-            print("amount value nil")
         }
         
 		minimumWalletCreditThreshold = dictionary["minimum_wallet_credit_threshold"] as? Float
@@ -88,9 +81,9 @@ import Foundation
 		referralUiLbl = dictionary["referral_ui_lbl"] as? String
 		simplClientId = dictionary["simpl_client_id"] as? String
 		timeSlots = [TimeSlot]()
-		if let timeSlotsArray = dictionary["time_slots"] as? [[String:Any]]{
+		if let timeSlotsArray: [[String:Any]] = dictionary["time_slots"] as? [[String:Any]]{
 			for dic in timeSlotsArray{
-				let value = TimeSlot(fromDictionary: dic)
+				let value: TimeSlot = TimeSlot(fromDictionary: dic)
 				timeSlots.append(value)
 			}
 		}

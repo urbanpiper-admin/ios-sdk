@@ -44,7 +44,7 @@ private let SecReturnAttributes: String = kSecReturnAttributes as String
 open class UPKeychainWrapper {
     
     /// Default keychain wrapper access
-    public static let standard = UPKeychainWrapper()
+    public static let standard: UPKeychainWrapper = UPKeychainWrapper()
     
     /// ServiceName is used for the kSecAttrService property to uniquely identify this keychain accessor. If no service name is specified, KeychainWrapper will default to using the bundleIdentifier.
     private (set) public var serviceName: String
@@ -77,7 +77,7 @@ open class UPKeychainWrapper {
     /// - parameter withAccessibility: Optional accessibility to use when retrieving the keychain item.
     /// - returns: True if a value exists for the key. False otherwise.
     open func hasValue(forKey key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> Bool {
-        if let _ = data(forKey: key, withAccessibility: accessibility) {
+        if let _: Data = data(forKey: key, withAccessibility: accessibility) {
             return true
         } else {
             return false
@@ -98,9 +98,9 @@ open class UPKeychainWrapper {
         
         // Search
         var result: AnyObject?
-        let status = SecItemCopyMatching(keychainQueryDictionary as CFDictionary, &result)
+        let status: OSStatus = SecItemCopyMatching(keychainQueryDictionary as CFDictionary, &result)
         
-        guard status == noErr, let resultsDictionary = result as? [String:AnyObject], let accessibilityAttrValue = resultsDictionary[SecAttrAccessible] as? String else {
+        guard status == noErr, let resultsDictionary: [String:AnyObject] = result as? [String:AnyObject], let accessibilityAttrValue: String = resultsDictionary[SecAttrAccessible] as? String else {
             return nil
         }
         
@@ -121,15 +121,15 @@ open class UPKeychainWrapper {
         }
         
         var result: AnyObject?
-        let status = SecItemCopyMatching(keychainQueryDictionary as CFDictionary, &result)
+        let status: OSStatus = SecItemCopyMatching(keychainQueryDictionary as CFDictionary, &result)
         
         guard status == errSecSuccess else { return [] }
         
         var keys = Set<String>()
-        if let results = result as? [[AnyHashable: Any]] {
+        if let results: [[AnyHashable: Any]] = result as? [[AnyHashable: Any]] {
             for attributes in results {
-                if let accountData = attributes[SecAttrAccount] as? Data,
-                    let account = String(data: accountData, encoding: String.Encoding.utf8) {
+                if let accountData: Data = attributes[SecAttrAccount] as? Data,
+                    let account: String = String(data: accountData, encoding: String.Encoding.utf8) {
                     keys.insert(account)
                 }
             }
@@ -140,7 +140,7 @@ open class UPKeychainWrapper {
     // MARK: Public Getters
     
     open func integer(forKey key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> Int? {
-        guard let numberValue = object(forKey: key, withAccessibility: accessibility) as? NSNumber else {
+        guard let numberValue: NSNumber = object(forKey: key, withAccessibility: accessibility) as? NSNumber else {
             return nil
         }
         
@@ -148,7 +148,7 @@ open class UPKeychainWrapper {
     }
     
     open func float(forKey key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> Float? {
-        guard let numberValue = object(forKey: key, withAccessibility: accessibility) as? NSNumber else {
+        guard let numberValue: NSNumber = object(forKey: key, withAccessibility: accessibility) as? NSNumber else {
             return nil
         }
         
@@ -156,7 +156,7 @@ open class UPKeychainWrapper {
     }
     
     open func double(forKey key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> Double? {
-        guard let numberValue = object(forKey: key, withAccessibility: accessibility) as? NSNumber else {
+        guard let numberValue: NSNumber = object(forKey: key, withAccessibility: accessibility) as? NSNumber else {
             return nil
         }
         
@@ -164,7 +164,7 @@ open class UPKeychainWrapper {
     }
     
     open func bool(forKey key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> Bool? {
-        guard let numberValue = object(forKey: key, withAccessibility: accessibility) as? NSNumber else {
+        guard let numberValue: NSNumber = object(forKey: key, withAccessibility: accessibility) as? NSNumber else {
             return nil
         }
         
@@ -177,7 +177,7 @@ open class UPKeychainWrapper {
     /// - parameter withAccessibility: Optional accessibility to use when retrieving the keychain item.
     /// - returns: The String associated with the key if it exists. If no data exists, or the data found cannot be encoded as a string, returns nil.
     open func string(forKey key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> String? {
-        guard let keychainData = data(forKey: key, withAccessibility: accessibility) else {
+        guard let keychainData: Data = data(forKey: key, withAccessibility: accessibility) else {
             return nil
         }
         
@@ -190,7 +190,7 @@ open class UPKeychainWrapper {
     /// - parameter withAccessibility: Optional accessibility to use when retrieving the keychain item.
     /// - returns: The decoded object associated with the key if it exists. If no data exists, or the data found cannot be decoded, returns nil.
     open func object(forKey key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> NSCoding? {
-        guard let keychainData = data(forKey: key, withAccessibility: accessibility) else {
+        guard let keychainData: Data = data(forKey: key, withAccessibility: accessibility) else {
             return nil
         }
         
@@ -214,7 +214,7 @@ open class UPKeychainWrapper {
         
         // Search
         var result: AnyObject?
-        let status = SecItemCopyMatching(keychainQueryDictionary as CFDictionary, &result)
+        let status: OSStatus = SecItemCopyMatching(keychainQueryDictionary as CFDictionary, &result)
         
         return status == noErr ? result as? Data : nil
     }
@@ -236,7 +236,7 @@ open class UPKeychainWrapper {
         
         // Search
         var result: AnyObject?
-        let status = SecItemCopyMatching(keychainQueryDictionary as CFDictionary, &result)
+        let status: OSStatus = SecItemCopyMatching(keychainQueryDictionary as CFDictionary, &result)
         
         return status == noErr ? result as? Data : nil
     }
@@ -377,7 +377,7 @@ open class UPKeychainWrapper {
     ///
     ///
     @discardableResult private class func deleteKeychainSecClass(_ secClass: AnyObject) -> Bool {
-        let query = [SecClass: secClass]
+        let query: [String : AnyObject] = [SecClass: secClass]
         let status: OSStatus = SecItemDelete(query as CFDictionary)
         
         if status == errSecSuccess {
@@ -419,18 +419,18 @@ open class UPKeychainWrapper {
         
         var result: AnyObject?
         
-        let lastResultCode = withUnsafeMutablePointer(to: &result) {
+        let lastResultCode: OSStatus = withUnsafeMutablePointer(to: &result) {
             SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
         }
         
         var values = [String:String]()
         if lastResultCode == noErr {
-            let array = result as? Array<Dictionary<String, Any>>
+            let array: Array<Dictionary<String, Any>>! = result as? Array<Dictionary<String, Any>>
             
-            for item in array! {
+            for item in array {
                 print("itemDictionary \(item as AnyObject)")
-                if let key = item[kSecAttrAccount as String] as? String,
-                    let value = item[kSecValueData as String] as? Data {
+                if let key: String = item[kSecAttrAccount as String] as? String,
+                    let value: Data = item[kSecValueData as String] as? Data {
                     values[key] = String(data: value, encoding:.utf8)
                 }
             }

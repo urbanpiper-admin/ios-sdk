@@ -28,6 +28,11 @@ public class OrderDeliveryAddress: NSObject, NSCoding {
     
     public var lines: [String?]!
     
+    public var coordinate: CLLocationCoordinate2D? {
+        guard coordLatitude != 0, coordLongitude != 0 else { return nil }
+        return CLLocationCoordinate2D(latitude: coordLatitude, longitude: coordLongitude)
+    }
+    
     public var fullAddress: String? {
         if let address = lines {
             var filteredAddress = address.compactMap { $0 }

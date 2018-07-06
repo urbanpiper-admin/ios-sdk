@@ -23,13 +23,13 @@ extension String {
     public var currentDateTime: Date? {
         guard let date = String.stringToCurrentDateTimeFormatter.date(from: self) else { return  nil }
 
-        let calendar = Calendar(identifier: .gregorian)
+        let calendar: Calendar = Calendar(identifier: .gregorian)
 
         let hour = calendar.component(.hour, from: date)
         let minutes = calendar.component(.minute, from: date)
         let seconds = calendar.component(.second, from: date)
 
-        let now = Date()
+        let now: Date = Date()
         let dateToday = calendar.date(bySettingHour: hour, minute: minutes, second: seconds, of: now)!
 
         return dateToday

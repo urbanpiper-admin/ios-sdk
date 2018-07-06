@@ -53,7 +53,7 @@ extension MyOrdersDataModel {
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
         
-        if let orderCell = cell as? OrderCellDelegate {
+        if let orderCell: OrderCellDelegate = cell as? OrderCellDelegate {
             orderCell.configureCell(myOrdersArray[indexPath.row])
         } else {
             assert(false, "Cell does not conform to OrderCellDelegate protocol")
@@ -74,7 +74,7 @@ extension MyOrdersDataModel {
     open override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
         
-        if let orderCell = cell as? OrderCellDelegate {
+        if let orderCell: OrderCellDelegate = cell as? OrderCellDelegate {
             orderCell.configureCell(myOrdersArray[indexPath.row])
         } else {
             assert(false, "Cell does not conform to OrderCellDelegate protocol")
@@ -92,7 +92,7 @@ extension MyOrdersDataModel {
     public func fetchOrderHistory() {
 
         dataModelDelegate?.refreshMyOrdersUI(isProcessing: true)
-        let dataTask = APIManager.shared.fetchOrderHistory(completion: { [weak self] (data) in
+        let dataTask: URLSessionTask = APIManager.shared.fetchOrderHistory(completion: { [weak self] (data) in
             self?.dataModelDelegate?.refreshMyOrdersUI(isProcessing: false)
             guard let response = data else { return }
             self?.myOrdersResponse = response

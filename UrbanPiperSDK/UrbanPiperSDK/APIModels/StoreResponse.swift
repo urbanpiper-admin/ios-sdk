@@ -18,10 +18,10 @@ import Foundation
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
-		if let bizData = dictionary["biz"] as? [String:Any]{
+		if let bizData: [String:Any] = dictionary["biz"] as? [String:Any]{
 			biz = Biz(fromDictionary: bizData)
 		}
-		if let storeData = dictionary["store"] as? [String:Any]{
+		if let storeData: [String:Any] = dictionary["store"] as? [String:Any]{
 			store = Store(fromDictionary: storeData)
 		}
 	}

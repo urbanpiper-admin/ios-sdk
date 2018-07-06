@@ -23,23 +23,16 @@ public class Discount : NSObject, NSCoding{
 		success = dictionary["success"] as? Bool
         
         let priceVal = dictionary["value"]
-        if let val = priceVal as? Decimal {
-            print("decimal amount value \(val)")
+        if let val: Decimal = priceVal as? Decimal {
             value = val
-        } else if let val = priceVal as? Double {
-            print("double amount value \(val)")
+        } else if let val: Double = priceVal as? Double {
             value = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: value).doubleValue))")
-        } else if let val = priceVal as? Float {
+        } else if let val: Float = priceVal as? Float {
             value = Decimal(Double(val)).rounded
-            print("float amount value \(val)")
-        } else if let val = priceVal as? Int {
-            print("int amount value \(val)")
+        } else if let val: Int = priceVal as? Int {
             value = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: value).doubleValue))")
         } else {
             value = Decimal(0).rounded
-            print("amount value nil")
         }
     }
 

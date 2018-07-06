@@ -17,33 +17,33 @@ extension APIManager {
                             completion: APICompletion<CategoryItemsResponse>?,
                             failure: APIFailure?) -> URLSessionTask {
 
-        let canUseCachedResponse = AppConfigManager.shared.firRemoteConfigDefaults.enableCaching && !isForcedRefresh
+        let canUseCachedResponse: Bool = AppConfigManager.shared.firRemoteConfigDefaults.enableCaching && !isForcedRefresh
 
-        let appId = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
         var urlString = "\(APIManager.baseUrl)/api/v1/order/categories/\(categoryId)/items/?format=json&biz_id=\(appId)"
 
         if let id = locationID {
             urlString = urlString.appending("&location_id=\(id)")
         }
         
-        if let nextUrlString = next {
+        if let nextUrlString: String = next {
             urlString = "\(APIManager.baseUrl)\(nextUrlString)"
         }
 
-        let url = URL(string: urlString)!
+        let url: URL = URL(string: urlString)!
 
-        var urlRequest = URLRequest(url: url,
+        var urlRequest: URLRequest = URLRequest(url: url,
                                     cachePolicy: canUseCachedResponse ? .useProtocolCachePolicy : .reloadIgnoringLocalAndRemoteCacheData)
 
         urlRequest.httpMethod = "GET"
 
-        let task = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
 
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
 
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
-                    let categoryItemsResponse = CategoryItemsResponse(fromDictionary: dictionary)
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
+                    let categoryItemsResponse: CategoryItemsResponse = CategoryItemsResponse(fromDictionary: dictionary)
 
                     DispatchQueue.main.async {
                         completionClosure(categoryItemsResponse)
@@ -56,7 +56,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -65,7 +65,7 @@ extension APIManager {
 
         }
 
-        return task
+        return dataTask
     }
 
     func fetchCategoryItems(for keyword: String,
@@ -73,26 +73,26 @@ extension APIManager {
                             completion: APICompletion<ItemsSearchResponse>?,
                             failure: APIFailure?) -> URLSessionTask {
 
-        let appId = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
         var urlString = "\(APIManager.baseUrl)/api/v1/search/items/?keyword=\(keyword)&biz_id=\(appId)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
 
         if let id = locationID {
             urlString = urlString!.appending("&location_id=\(id)")
         }
 
-        let url = URL(string: urlString!)!
+        let url: URL = URL(string: urlString!)!
 
-        var urlRequest = URLRequest(url: url)
+        var urlRequest: URLRequest = URLRequest(url: url)
 
         urlRequest.httpMethod = "GET"
 
-        let task = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
 
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
 
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
-                    let itemsSearchResponse = ItemsSearchResponse(fromDictionary: dictionary)
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
+                    let itemsSearchResponse: ItemsSearchResponse = ItemsSearchResponse(fromDictionary: dictionary)
 
                     DispatchQueue.main.async {
                         completionClosure(itemsSearchResponse)
@@ -105,7 +105,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -114,7 +114,7 @@ extension APIManager {
 
         }
 
-        return task
+        return dataTask
     }
 
     func fetchItemDetails(itemId: Int,
@@ -124,7 +124,7 @@ extension APIManager {
 
         var urlString = "\(APIManager.baseUrl)/api/v1/items/\(itemId)/"
 
-        let now = Date()
+        let now: Date = Date()
         let timeInt = now.timeIntervalSince1970 * 1000
 
         if let id = locationID {
@@ -133,19 +133,19 @@ extension APIManager {
             urlString = urlString.appending("?cx=\(timeInt)")
         }
 
-        let url = URL(string: urlString)!
+        let url: URL = URL(string: urlString)!
 
-        var urlRequest = URLRequest(url: url)
+        var urlRequest: URLRequest = URLRequest(url: url)
 
         urlRequest.httpMethod = "GET"
 
-        let task = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
 
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
 
-                if let jsonData = data, let JSON = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary = JSON as? [String: Any] {
-                    let item = ItemObject(fromDictionary: dictionary)
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
+                    let item: ItemObject = ItemObject(fromDictionary: dictionary)
 
                     DispatchQueue.main.async {
                         completionClosure(item)
@@ -158,7 +158,7 @@ extension APIManager {
                 }
             } else {
                 if let failureClosure = failure {
-                    guard let apiError = UPAPIError(error: error, data: data) else { return }
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
                     DispatchQueue.main.async {
                         failureClosure(apiError as UPError)
                     }
@@ -167,7 +167,7 @@ extension APIManager {
 
         }
 
-        return task
+        return dataTask
     }
 
 }

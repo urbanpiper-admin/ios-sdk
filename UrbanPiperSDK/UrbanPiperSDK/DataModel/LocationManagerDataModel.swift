@@ -21,12 +21,12 @@ public class LocationManagerDataModel: UrbanPiperDataModel {
 
     private typealias WeakRefDataModelDelegate = WeakRef<LocationManagerDataModelDelegate>
 
-    @objc public static private(set) var shared = LocationManagerDataModel()
+    @objc public static private(set) var shared: LocationManagerDataModel = LocationManagerDataModel()
 
     @objc public var currentUserLocation: CLLocation?
 
     lazy var locationManager: CLLocationManager = {
-        let manager = CLLocationManager()
+        let manager: CLLocationManager = CLLocationManager()
         manager.delegate = self
         manager.pausesLocationUpdatesAutomatically = false
         manager.desiredAccuracy = kCLLocationAccuracyBest
@@ -42,7 +42,7 @@ public class LocationManagerDataModel: UrbanPiperDataModel {
     }
 
     func addObserver(delegate: LocationManagerDataModelDelegate) {
-        let weakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
+        let weakRefDataModelDelegate: WeakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
         locationUpdateObservers.append(weakRefDataModelDelegate)
     }
 

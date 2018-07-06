@@ -24,9 +24,9 @@ public class ItemTag : NSObject, NSCoding{
 		title = dictionary["title"] as? String
 		group = dictionary["group"] as? String
 		tags = [ItemTag]()
-		if let tagsArray = dictionary["tags"] as? [[String:Any]]{
+		if let tagsArray: [[String:Any]] = dictionary["tags"] as? [[String:Any]]{
 			for dic in tagsArray{
-				let value = ItemTag(fromDictionary: dic)
+				let value: ItemTag = ItemTag(fromDictionary: dic)
 				tags.append(value)
 			}
 		}

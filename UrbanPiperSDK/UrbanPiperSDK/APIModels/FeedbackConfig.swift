@@ -19,9 +19,9 @@ public class FeedbackConfig : NSObject, NSCoding{
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
 		choices = [Choice]()
-		if let choicesArray = dictionary["choices"] as? [[String:Any]]{
+		if let choicesArray: [[String:Any]] = dictionary["choices"] as? [[String:Any]]{
 			for dic in choicesArray{
-				let value = Choice(fromDictionary: dic)
+				let value: Choice = Choice(fromDictionary: dic)
 				choices.append(value)
 			}
 		}
