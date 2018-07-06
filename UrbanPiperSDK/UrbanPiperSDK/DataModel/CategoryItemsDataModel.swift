@@ -63,7 +63,12 @@ open class CategoryItemsDataModel: UrbanPiperDataModel {
                 var itemsArray = subCategoriesItems.filter { $0.subCategory.name == key }
                 guard itemsArray.count > 0 else { return }
                 if itemsArray.count > 1 {
-                    itemsArray.sort { $0.sortOrder < $1.sortOrder }
+                    itemsArray.sort { (obj1, obj2) in
+                        guard obj1.currentStock != 0 else { return false }
+                        guard obj2.currentStock != 0 else { return true }
+                        
+                        return obj1.sortOrder < obj2.sortOrder
+                    }
                 }
                 subCategoriesArray.append(itemsArray)
             }
@@ -78,7 +83,12 @@ open class CategoryItemsDataModel: UrbanPiperDataModel {
                 var genericItems = objects.filter { $0.subCategory == nil }
                 if genericItems.count > 0 {
                     if genericItems.count > 1 {
-                        genericItems.sort { $0.sortOrder < $1.sortOrder }
+                        genericItems.sort { (obj1, obj2) in
+                            guard obj1.currentStock != 0 else { return false }
+                            guard obj2.currentStock != 0 else { return true }
+                            
+                            return obj1.sortOrder < obj2.sortOrder
+                        }
                     }
                     
                     self.subCategoriesArray?.insert(genericItems, at: 0)
@@ -175,7 +185,12 @@ extension CategoryItemsDataModel {
                                                                 guard let response = data else { return }
                                                                 if next == nil {
                                                                     if response.objects.count > 1 {
-                                                                        response.objects.sort { $0.sortOrder < $1.sortOrder }
+                                                                        response.objects.sort { (obj1, obj2) in
+                                                                            guard obj1.currentStock != 0 else { return false }
+                                                                            guard obj2.currentStock != 0 else { return true }
+                                                                            
+                                                                            return obj1.sortOrder < obj2.sortOrder
+                                                                        }
                                                                     }
                                                                     self?.categoryItemsResponse = response
                                                                 } else {
