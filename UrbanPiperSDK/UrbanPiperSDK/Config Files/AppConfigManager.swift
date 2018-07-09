@@ -15,13 +15,14 @@ public class AppConfigManager: NSObject {
     @objc public let firRemoteConfigDefaults = FirRemoteConfigDefaults.shared
 
     lazy var sideMenuPanelTabDetails: [SideMenuPanelTabDetail]! = {
-        let plistPath: String = Bundle(for: AppConfigManager.self).path(forResource: "WLDetailOptionData", ofType: "plist")!
-        var plistArray = NSArray(contentsOfFile: plistPath) as! [[String: Any]]
-        let unFilteredTabsArray = plistArray.map { SideMenuPanelTabDetail(fromDictionary: $0) }
-        let sideMenuTabKeyArray = firRemoteConfigDefaults.sideMenuTabKeyArray
+        let bundle: Bundle = Bundle(for: AppConfigManager.self)
+        let plistPath: String = bundle.path(forResource: "WLDetailOptionData", ofType: "plist")!
+        var plistArray: [[String: Any]] = NSArray(contentsOfFile: plistPath) as! [[String: Any]]
+        let unFilteredTabsArray: [SideMenuPanelTabDetail] = plistArray.map { SideMenuPanelTabDetail(fromDictionary: $0) }
+        let sideMenuTabKeyArray: [String] = firRemoteConfigDefaults.sideMenuTabKeyArray
 
-        let filteredTabsArray = sideMenuTabKeyArray.map({ (key) -> SideMenuPanelTabDetail in
-            let module = Module.init(rawValue: key)
+        let filteredTabsArray: [SideMenuPanelTabDetail] = sideMenuTabKeyArray.map({ (key) -> SideMenuPanelTabDetail in
+            let module: Module = Module.init(rawValue: key)!
             return unFilteredTabsArray.filter { $0.tag == module }.last!
         })
 

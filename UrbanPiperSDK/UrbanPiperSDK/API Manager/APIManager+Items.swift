@@ -6,7 +6,7 @@
 //  Copyright © 2017 UrbanPiper Inc. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 extension APIManager {
 
@@ -15,15 +15,15 @@ extension APIManager {
                             isForcedRefresh: Bool,
                             next: String?,
                             completion: APICompletion<CategoryItemsResponse>?,
-                            failure: APIFailure?) -> URLSessionTask {
+                            failure: APIFailure?) -> URLSessionDataTask {
 
         let canUseCachedResponse: Bool = AppConfigManager.shared.firRemoteConfigDefaults.enableCaching && !isForcedRefresh
 
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
-        var urlString = "\(APIManager.baseUrl)/api/v1/order/categories/\(categoryId)/items/?format=json&biz_id=\(appId)"
+        var urlString: String = "\(APIManager.baseUrl)/api/v1/order/categories/\(categoryId)/items/?format=json&biz_id=\(appId)"
 
         if let id = locationID {
-            urlString = urlString.appending("&location_id=\(id)")
+            urlString = "\(urlString)&location_id=\(id)"
         }
         
         if let nextUrlString: String = next {
@@ -37,7 +37,7 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
 
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
 
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
@@ -71,22 +71,23 @@ extension APIManager {
     func fetchCategoryItems(for keyword: String,
                             locationID: Int?,
                             completion: APICompletion<ItemsSearchResponse>?,
-                            failure: APIFailure?) -> URLSessionTask {
+                            failure: APIFailure?) -> URLSessionDataTask {
 
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
-        var urlString = "\(APIManager.baseUrl)/api/v1/search/items/?keyword=\(keyword)&biz_id=\(appId)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        var urlString: String = "\(APIManager.baseUrl)/api/v1/search/items/?keyword=\(keyword)&biz_id=\(appId)"
+        urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
 
         if let id = locationID {
-            urlString = urlString!.appending("&location_id=\(id)")
+            urlString = urlString.appending("&location_id=\(id)")
         }
 
-        let url: URL = URL(string: urlString!)!
+        let url: URL = URL(string: urlString)!
 
         var urlRequest: URLRequest = URLRequest(url: url)
 
         urlRequest.httpMethod = "GET"
 
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
 
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
@@ -120,9 +121,9 @@ extension APIManager {
     func fetchItemDetails(itemId: Int,
                           locationID: Int?,
                           completion: APICompletion<ItemObject>?,
-                          failure: APIFailure?) -> URLSessionTask {
+                          failure: APIFailure?) -> URLSessionDataTask {
 
-        var urlString = "\(APIManager.baseUrl)/api/v1/items/\(itemId)/"
+        var urlString: String = "\(APIManager.baseUrl)/api/v1/items/\(itemId)/"
 
         let now: Date = Date()
         let timeInt = now.timeIntervalSince1970 * 1000
@@ -139,7 +140,7 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
 
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
 
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }

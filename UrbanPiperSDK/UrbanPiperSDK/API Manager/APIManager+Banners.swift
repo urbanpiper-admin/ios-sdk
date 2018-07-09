@@ -6,12 +6,12 @@
 //  Copyright © 2017 UrbanPiper Inc. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 extension APIManager {
 
     @objc public func fetchBannersList(completion: APICompletion<BannersResponse>?,
-                                failure: APIFailure?) -> URLSessionTask {
+                                failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/galleries/?type=app_banner"
 
@@ -23,7 +23,7 @@ extension APIManager {
 
         urlRequest.setValue(bizAuth(), forHTTPHeaderField: "Authorization")
         
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
 
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }

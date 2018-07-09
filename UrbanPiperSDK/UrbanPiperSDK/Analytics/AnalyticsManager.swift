@@ -7,9 +7,12 @@
 //
 
 import UIKit
+
+#if !DEBUG
 import AppsFlyerLib
 import Mixpanel
 import GoogleAnalyticsSDK
+#endif
 
 public class AnalyticsManager: NSObject {
     
@@ -505,7 +508,7 @@ public class AnalyticsManager: NSObject {
     public func itemSearch(query: String) {
         #if !DEBUG
         if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
-            var properties = ["query" : query]
+            var properties: Properties = ["query" : query]
             
             if let storeId = OrderingStoreDataModel.shared.nearestStoreResponse?.store?.bizLocationId {
                 properties["store_id"] = "\(storeId)"
@@ -825,9 +828,9 @@ public class AnalyticsManager: NSObject {
             productAction.setTransactionId(orderId)
             productAction.setAffiliation("UrbanPiper")
             productAction.setRevenue(NSDecimalNumber(decimal: orderPaymentDataModel.itemsTotalPrice))
-            productAction.setTax(NSDecimalNumber(decimal: orderPaymentDataModel.itemTaxes ?? Decimal(0).rounded))
+            productAction.setTax(NSDecimalNumber(decimal: orderPaymentDataModel.itemTaxes ?? Decimal.zero))
             
-            let deliveryCharge = orderPaymentDataModel.selectedDeliveryOption == .pickUp ? Decimal(0).rounded : orderPaymentDataModel.deliveryCharge
+            let deliveryCharge = orderPaymentDataModel.selectedDeliveryOption == .pickUp ? Decimal.zero : orderPaymentDataModel.deliveryCharge
             productAction.setShipping(NSDecimalNumber(decimal: deliveryCharge))
             productAction.setCheckoutOption(orderPaymentDataModel.selectedPaymentOption.rawValue)
             
@@ -905,7 +908,7 @@ public class AnalyticsManager: NSObject {
             mixpanel.identify(distinctId: mixpanel.distinctId)
             
             if let bizObject = AppUserDataModel.shared.bizInfo?.objects.last {
-                var properties = ["$email": user.email,
+                var properties: Properties = ["$email": user.email,
                                   "$phone": user.phoneNumberWithCountryCode,
                                   "balance": bizObject.balance.doubleValue,
                                   "$name": user.firstName,

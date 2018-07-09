@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class ItemOption : NSObject, NSCoding {
+public class ItemOption : NSObject {
 
 	public var currentStock : Int!
 	public var descriptionField : String!
@@ -36,12 +36,8 @@ public class ItemOption : NSObject, NSCoding {
             price = val
         } else if let val: Double = dictionary["price"] as? Double {
             price = Decimal(val).rounded
-        } else if let val: Float = dictionary["price"] as? Float {
-            price = Decimal(Double(val)).rounded
-        } else if let val: Int = dictionary["price"] as? Int {
-            price = Decimal(val).rounded
         } else {
-            price = Decimal(0).rounded
+            price = Decimal.zero
         }
 
 		sortOrder = dictionary["sort_order"] as? Int ?? 0
@@ -57,100 +53,100 @@ public class ItemOption : NSObject, NSCoding {
         quantity = dictionary["quantity"] as? Int ?? 0
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if currentStock != nil{
-			dictionary["current_stock"] = currentStock
-		}
-		if descriptionField != nil{
-			dictionary["description"] = descriptionField
-		}
-		if foodType != nil{
-			dictionary["food_type"] = foodType
-		}
-		if id != nil{
-			dictionary["id"] = id
-		}
-		if imageUrl != nil{
-			dictionary["image_url"] = imageUrl
-		}
-		if price != nil{
-			dictionary["price"] = price
-		}
-		if sortOrder != nil{
-			dictionary["sort_order"] = sortOrder
-		}
-		if title != nil{
-			dictionary["title"] = title
-		}
-		if nestedOptionGroups != nil{
-			var dictionaryElements = [[String:Any]]()
-			for nestedOptionGroupsElement in nestedOptionGroups {
-				dictionaryElements.append(nestedOptionGroupsElement.toDictionary())
-			}
-			dictionary["nested_option_groups"] = dictionaryElements
-		}
+    /**
+     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String : Any] = [String:Any]()
+        if currentStock != nil{
+            dictionary["current_stock"] = currentStock
+        }
+        if descriptionField != nil{
+            dictionary["description"] = descriptionField
+        }
+        if foodType != nil{
+            dictionary["food_type"] = foodType
+        }
+        if id != nil{
+            dictionary["id"] = id
+        }
+        if imageUrl != nil{
+            dictionary["image_url"] = imageUrl
+        }
+        if price != nil{
+            dictionary["price"] = price
+        }
+        if sortOrder != nil{
+            dictionary["sort_order"] = sortOrder
+        }
+        if title != nil{
+            dictionary["title"] = title
+        }
+        if nestedOptionGroups != nil{
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            for nestedOptionGroupsElement in nestedOptionGroups {
+                dictionaryElements.append(nestedOptionGroupsElement.toDictionary())
+            }
+            dictionary["nested_option_groups"] = dictionaryElements
+        }
         dictionary["quantity"] = quantity
-		return dictionary
-	}
+        return dictionary
+    }
 
-    /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    @objc required public init(coder aDecoder: NSCoder)
-	{
-         currentStock = aDecoder.decodeObject(forKey: "current_stock") as? Int
-         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
-         foodType = aDecoder.decodeObject(forKey: "food_type") as? String
-         id = aDecoder.decodeObject(forKey: "id") as? Int
-         imageUrl = aDecoder.decodeObject(forKey: "image_url") as? String
-         price = aDecoder.decodeObject(forKey: "price") as? Decimal
-         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
-         title = aDecoder.decodeObject(forKey: "title") as? String
-         nestedOptionGroups = aDecoder.decodeObject(forKey :"nested_option_groups") as? [ItemOptionGroup]
-        quantity = aDecoder.decodeObject(forKey: "quantity") as? Int ?? 0
-	}
-
-    /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    @objc public func encode(with aCoder: NSCoder)
-	{
-		if currentStock != nil{
-			aCoder.encode(currentStock, forKey: "current_stock")
-		}
-		if descriptionField != nil{
-			aCoder.encode(descriptionField, forKey: "description")
-		}
-		if foodType != nil{
-			aCoder.encode(foodType, forKey: "food_type")
-		}
-		if id != nil{
-			aCoder.encode(id, forKey: "id")
-		}
-		if imageUrl != nil{
-			aCoder.encode(imageUrl, forKey: "image_url")
-		}
-		if price != nil{
-			aCoder.encode(price, forKey: "price")
-		}
-		if sortOrder != nil{
-			aCoder.encode(sortOrder, forKey: "sort_order")
-		}
-		if title != nil{
-			aCoder.encode(title, forKey: "title")
-		}
-		if nestedOptionGroups != nil{
-			aCoder.encode(nestedOptionGroups, forKey: "nested_option_groups")
-		}
-        aCoder.encode(quantity, forKey: "quantity")
-	}
+//    /**
+//    * NSCoding required initializer.
+//    * Fills the data from the passed decoder
+//    */
+//    @objc required public init(coder aDecoder: NSCoder)
+//    {
+//         currentStock = aDecoder.decodeObject(forKey: "current_stock") as? Int
+//         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
+//         foodType = aDecoder.decodeObject(forKey: "food_type") as? String
+//         id = aDecoder.decodeObject(forKey: "id") as? Int
+//         imageUrl = aDecoder.decodeObject(forKey: "image_url") as? String
+//         price = aDecoder.decodeObject(forKey: "price") as? Decimal
+//         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
+//         title = aDecoder.decodeObject(forKey: "title") as? String
+//         nestedOptionGroups = aDecoder.decodeObject(forKey :"nested_option_groups") as? [ItemOptionGroup]
+//        quantity = aDecoder.decodeObject(forKey: "quantity") as? Int ?? 0
+//    }
+//
+//    /**
+//    * NSCoding required method.
+//    * Encodes mode properties into the decoder
+//    */
+//    @objc public func encode(with aCoder: NSCoder)
+//    {
+//        if currentStock != nil{
+//            aCoder.encode(currentStock, forKey: "current_stock")
+//        }
+//        if descriptionField != nil{
+//            aCoder.encode(descriptionField, forKey: "description")
+//        }
+//        if foodType != nil{
+//            aCoder.encode(foodType, forKey: "food_type")
+//        }
+//        if id != nil{
+//            aCoder.encode(id, forKey: "id")
+//        }
+//        if imageUrl != nil{
+//            aCoder.encode(imageUrl, forKey: "image_url")
+//        }
+//        if price != nil{
+//            aCoder.encode(price, forKey: "price")
+//        }
+//        if sortOrder != nil{
+//            aCoder.encode(sortOrder, forKey: "sort_order")
+//        }
+//        if title != nil{
+//            aCoder.encode(title, forKey: "title")
+//        }
+//        if nestedOptionGroups != nil{
+//            aCoder.encode(nestedOptionGroups, forKey: "nested_option_groups")
+//        }
+//        aCoder.encode(quantity, forKey: "quantity")
+//    }
 
 }
 

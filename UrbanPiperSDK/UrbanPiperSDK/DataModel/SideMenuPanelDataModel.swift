@@ -45,7 +45,7 @@ extension SideMenuPanelDataModel {
     }
 
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
 
         if let menuCell: SideMenuPanelCellDelegate = cell as? SideMenuPanelCellDelegate {
             menuCell.configureCell(panelDetailArray[indexPath.row])
@@ -66,7 +66,7 @@ extension SideMenuPanelDataModel {
     }
 
     public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
+       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
 
         if let menuCell: SideMenuPanelCellDelegate = cell as? SideMenuPanelCellDelegate {
             menuCell.configureCell(panelDetailArray[indexPath.row])

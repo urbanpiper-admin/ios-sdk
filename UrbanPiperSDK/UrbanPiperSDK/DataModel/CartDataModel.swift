@@ -50,7 +50,7 @@ extension CartDataModel {
     }
 
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
 
         if let cartItemCell: CartItemCellDelegate = cell as? CartItemCellDelegate {
             cartItemCell.configureCell(cartItemsListArray[indexPath.section][indexPath.row])
@@ -71,7 +71,7 @@ extension CartDataModel {
     }
 
     open override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
 
         if let cartItemCell: CartItemCellDelegate = cell as? CartItemCellDelegate {
             cartItemCell.configureCell(cartItemsListArray[indexPath.section][indexPath.row])

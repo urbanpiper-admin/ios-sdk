@@ -30,24 +30,24 @@ public class BizInfo : NSObject, NSCoding{
 		}
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if meta != nil{
-			dictionary["meta"] = meta.toDictionary()
-		}
-		if objects != nil{
-            var dictionaryElements = [[String:Any]]()
-			for objectsElement in objects {
-				dictionaryElements.append(objectsElement.toDictionary())
-			}
-			dictionary["objects"] = dictionaryElements
-		}
-		return dictionary
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    public func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if meta != nil{
+//            dictionary["meta"] = meta.toDictionary()
+//        }
+//        if objects != nil{
+//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//            for objectsElement in objects {
+//                dictionaryElements.append(objectsElement.toDictionary())
+//            }
+//            dictionary["objects"] = dictionaryElements
+//        }
+//        return dictionary
+//    }
 
     /**
     * NSCoding required initializer.

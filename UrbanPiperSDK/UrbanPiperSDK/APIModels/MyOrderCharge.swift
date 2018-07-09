@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class MyOrderCharge : NSObject, NSCoding{
+public class MyOrderCharge : NSObject{
 
 	public var title : String!
 	public var value : Decimal!
@@ -24,54 +24,50 @@ public class MyOrderCharge : NSObject, NSCoding{
             value = val
         } else if let val: Double = dictionary["value"] as? Double {
             value = Decimal(val).rounded
-        } else if let val: Float = dictionary["value"] as? Float {
-            value = Decimal(Double(val)).rounded
-        } else if let val: Int = dictionary["value"] as? Int {
-            value = Decimal(val).rounded
         } else {
-            value = Decimal(0).rounded
+            value = Decimal.zero
         }
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if title != nil{
-			dictionary["title"] = title
-		}
-		if value != nil{
-			dictionary["value"] = value
-		}
-		return dictionary
-	}
-
-    /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    @objc required public init(coder aDecoder: NSCoder)
-	{
-         title = aDecoder.decodeObject(forKey: "title") as? String
-         value = aDecoder.decodeObject(forKey: "value") as? Decimal
-
-	}
-
-    /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    @objc public func encode(with aCoder: NSCoder)
-	{
-		if title != nil{
-			aCoder.encode(title, forKey: "title")
-		}
-		if value != nil{
-			aCoder.encode(value, forKey: "value")
-		}
-
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if title != nil{
+//            dictionary["title"] = title
+//        }
+//        if value != nil{
+//            dictionary["value"] = value
+//        }
+//        return dictionary
+//    }
+//
+//    /**
+//    * NSCoding required initializer.
+//    * Fills the data from the passed decoder
+//    */
+//    @objc required public init(coder aDecoder: NSCoder)
+//    {
+//         title = aDecoder.decodeObject(forKey: "title") as? String
+//         value = aDecoder.decodeObject(forKey: "value") as? Decimal
+//
+//    }
+//
+//    /**
+//    * NSCoding required method.
+//    * Encodes mode properties into the decoder
+//    */
+//    @objc public func encode(with aCoder: NSCoder)
+//    {
+//        if title != nil{
+//            aCoder.encode(title, forKey: "title")
+//        }
+//        if value != nil{
+//            aCoder.encode(value, forKey: "value")
+//        }
+//
+//    }
 
 }

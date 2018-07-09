@@ -128,7 +128,7 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
 
     public func setCustomDelivery(location: CLLocation, address: OrderDeliveryAddress?) {
         if let addressObject = address {
-            deliveryAddress = address
+            deliveryAddress = addressObject
             dataModelDelegate?.update(location, deliveryAddress, nil)
         } else {
             resolveAddress(from: location)

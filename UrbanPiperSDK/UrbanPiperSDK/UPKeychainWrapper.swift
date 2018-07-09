@@ -85,7 +85,7 @@ open class UPKeychainWrapper {
     }
     
     open func accessibilityOfKey(_ key: String) -> UPKeychainItemAccessibility? {
-        var keychainQueryDictionary = setupKeychainQueryDictionary(forKey: key)
+        var keychainQueryDictionary: [String : Any] = setupKeychainQueryDictionary(forKey: key)
         
         // Remove accessibility attribute
         keychainQueryDictionary.removeValue(forKey: SecAttrAccessible)
@@ -125,7 +125,7 @@ open class UPKeychainWrapper {
         
         guard status == errSecSuccess else { return [] }
         
-        var keys = Set<String>()
+        var keys: Set<String> = Set<String>()
         if let results: [[AnyHashable: Any]] = result as? [[AnyHashable: Any]] {
             for attributes in results {
                 if let accountData: Data = attributes[SecAttrAccount] as? Data,
@@ -204,7 +204,7 @@ open class UPKeychainWrapper {
     /// - parameter withAccessibility: Optional accessibility to use when retrieving the keychain item.
     /// - returns: The Data object associated with the key if it exists. If no data exists, returns nil.
     open func data(forKey key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> Data? {
-        var keychainQueryDictionary = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
+        var keychainQueryDictionary: [String : Any] = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
         
         // Limit search results to one
         keychainQueryDictionary[SecMatchLimit] = kSecMatchLimitOne
@@ -226,7 +226,7 @@ open class UPKeychainWrapper {
     /// - parameter withAccessibility: Optional accessibility to use when retrieving the keychain item.
     /// - returns: The persistent data reference object associated with the key if it exists. If no data exists, returns nil.
     open func dataRef(forKey key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> Data? {
-        var keychainQueryDictionary = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
+        var keychainQueryDictionary: [String : Any] = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
         
         // Limit search results to one
         keychainQueryDictionary[SecMatchLimit] = kSecMatchLimitOne
@@ -423,12 +423,11 @@ open class UPKeychainWrapper {
             SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
         }
         
-        var values = [String:String]()
+        var values: [String:String] = [String:String]()
         if lastResultCode == noErr {
             let array: Array<Dictionary<String, Any>>! = result as? Array<Dictionary<String, Any>>
             
             for item in array {
-                print("itemDictionary \(item as AnyObject)")
                 if let key: String = item[kSecAttrAccount as String] as? String,
                     let value: Data = item[kSecValueData as String] as? Data {
                     values[key] = String(data: value, encoding:.utf8)

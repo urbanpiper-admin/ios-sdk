@@ -6,7 +6,7 @@
 //  Copyright © 2018 UrbanPiper Inc. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 @objc public enum SocialLoginProvider: Int, RawRepresentable {
     case google
@@ -37,14 +37,14 @@ extension APIManager {
     @objc public func socialLogin(user: User,
                            urlString: String,
                            completion: APICompletion<User>?,
-                           failure: APIFailure?) -> URLSessionTask {
+                           failure: APIFailure?) -> URLSessionDataTask {
 
-        var apiURLString = urlString
+        var apiURLString: String = urlString
         if let gender = user.gender {
-            apiURLString.append("&gender=\(gender)")
+            apiURLString = "\(apiURLString)&gender=\(gender)"
         }
         
-        var cs = CharacterSet.urlQueryAllowed
+        var cs: CharacterSet = CharacterSet.urlQueryAllowed
         cs.remove(charactersIn: "@+")
         let encodedURlString: String = apiURLString.addingPercentEncoding(withAllowedCharacters: cs)!
         
@@ -54,7 +54,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
@@ -109,7 +109,7 @@ extension APIManager {
     
     @objc public func checkForUser(user: User,
                             completion: APICompletion<User>?,
-                            failure: APIFailure?) -> URLSessionTask {
+                            failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)"
         
@@ -124,7 +124,7 @@ extension APIManager {
     
     @objc public func checkPhoneNumber(user: User,
                                 completion: APICompletion<User>?,
-                                failure: APIFailure?) -> URLSessionTask {
+                                failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)&action=check_phone&phone=\(user.phoneNumberWithCountryCode!)"
         
@@ -135,7 +135,7 @@ extension APIManager {
     @objc public func verifyOTP(user: User,
                          otp: String,
                          completion: APICompletion<User>?,
-                         failure: APIFailure?) -> URLSessionTask {
+                         failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)&action=verify_otp&phone=\(user.phoneNumberWithCountryCode!)&otp=\(otp)"
         

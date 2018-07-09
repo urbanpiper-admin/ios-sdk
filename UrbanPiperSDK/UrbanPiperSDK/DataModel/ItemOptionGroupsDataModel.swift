@@ -33,7 +33,7 @@ extension ItemOptionGroupsDataModel {
     }
 
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
 
         if let menuCell: ItemOptionGroupsCellDelegate = cell as? ItemOptionGroupsCellDelegate {
             menuCell.configureCell(itemOptionGroupsArray?[indexPath.row])
@@ -54,7 +54,7 @@ extension ItemOptionGroupsDataModel {
     }
 
     public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
 
         if let menuCell: ItemOptionGroupsCellDelegate = cell as? ItemOptionGroupsCellDelegate {
             menuCell.configureCell(itemOptionGroupsArray?[indexPath.row])

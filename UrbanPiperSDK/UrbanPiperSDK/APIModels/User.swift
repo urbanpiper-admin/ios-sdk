@@ -95,7 +95,7 @@ public class User : NSObject, NSCoding{
         return UserStatus(rawValue: msg) ?? .invalid
     }
     
-    public var countryCode = "+\(AppConfigManager.shared.firRemoteConfigDefaults.defaultCountryCode!)"
+    public var countryCode: String = "+\(AppConfigManager.shared.firRemoteConfigDefaults.defaultCountryCode!)"
     
     @objc public var phoneNumberWithCountryCode: String! {
         guard phone != nil, phone!.count > 0 else { return nil }
@@ -169,79 +169,79 @@ public class User : NSObject, NSCoding{
         phone = dictionary["phone"] as? String
     }
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if authKey != nil{
-			dictionary["authKey"] = authKey
-		}
-		if biz != nil{
-			dictionary["biz"] = biz
-		}
-		if email != nil{
-			dictionary["email"] = email
-		}
-		if message != nil{
-			dictionary["message"] = message
-		}
-		if phone != nil{
-			dictionary["phone"] = phone
-		}
-        if gender != nil{
-            dictionary["gender"] = gender
-        }
-        dictionary["success"] = success
-		if timestamp != nil{
-			dictionary["timestamp"] = timestamp
-		}
-		if username != nil{
-			dictionary["username"] = username
-		}
-        
-        if provider != nil {
-            dictionary["provider"] = provider
-        }
-        
-        if accessToken != nil {
-            dictionary["accessToken"] = accessToken
-        }
-        
-        dictionary["countryCode"] = countryCode
-        
-        if password != nil {
-            dictionary["password"] = password
-        }
-        
-        if address != nil{
-            dictionary["address"] = address
-        }
-        if anniversary != nil{
-            dictionary["anniversary"] = anniversary
-        }
-        if anniversaryDate != nil{
-            dictionary["anniversary_date"] = anniversaryDate
-        }
-        if birthdate != nil{
-            dictionary["birthdate"] = birthdate
-        }
-        if birthday != nil{
-            dictionary["birthday"] = birthday
-        }
-        if currentCity != nil{
-            dictionary["current_city"] = currentCity
-        }
-        if firstName != nil{
-            dictionary["first_name"] = firstName
-        }
-        if lastName != nil{
-            dictionary["last_name"] = lastName
-        }
-        
-		return dictionary
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    public func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if authKey != nil{
+//            dictionary["authKey"] = authKey
+//        }
+//        if biz != nil{
+//            dictionary["biz"] = biz
+//        }
+//        if email != nil{
+//            dictionary["email"] = email
+//        }
+//        if message != nil{
+//            dictionary["message"] = message
+//        }
+//        if phone != nil{
+//            dictionary["phone"] = phone
+//        }
+//        if gender != nil{
+//            dictionary["gender"] = gender
+//        }
+//        dictionary["success"] = success
+//        if timestamp != nil{
+//            dictionary["timestamp"] = timestamp
+//        }
+//        if username != nil{
+//            dictionary["username"] = username
+//        }
+//        
+//        if provider != nil {
+//            dictionary["provider"] = provider
+//        }
+//        
+//        if accessToken != nil {
+//            dictionary["accessToken"] = accessToken
+//        }
+//        
+//        dictionary["countryCode"] = countryCode
+//        
+//        if password != nil {
+//            dictionary["password"] = password
+//        }
+//        
+//        if address != nil{
+//            dictionary["address"] = address
+//        }
+//        if anniversary != nil{
+//            dictionary["anniversary"] = anniversary
+//        }
+//        if anniversaryDate != nil{
+//            dictionary["anniversary_date"] = anniversaryDate
+//        }
+//        if birthdate != nil{
+//            dictionary["birthdate"] = birthdate
+//        }
+//        if birthday != nil{
+//            dictionary["birthday"] = birthday
+//        }
+//        if currentCity != nil{
+//            dictionary["current_city"] = currentCity
+//        }
+//        if firstName != nil{
+//            dictionary["first_name"] = firstName
+//        }
+//        if lastName != nil{
+//            dictionary["last_name"] = lastName
+//        }
+//        
+//        return dictionary
+//    }
 
     /**
     * NSCoding required initializer.

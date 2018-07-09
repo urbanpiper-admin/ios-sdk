@@ -29,7 +29,7 @@ public class Choice : NSObject, NSCoding{
 	 */
 	public func toDictionary() -> [String:Any]
 	{
-		var dictionary = [String:Any]()
+		var dictionary: [String : Any] = [String:Any]()
 		if id != nil{
 			dictionary["id"] = id
 		}

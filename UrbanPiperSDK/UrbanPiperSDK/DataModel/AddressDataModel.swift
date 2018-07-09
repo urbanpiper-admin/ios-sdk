@@ -39,14 +39,16 @@ public class AddressDataModel: UrbanPiperDataModel {
 
     public var userAddressesResponse: UserAddressesResponse? {
         didSet {
-            if let defaultAddress = defaultDeliveryAddress {
-                if userAddressesResponse?.addresses.filter ({ $0.id == defaultAddress.id }).last == nil {
+            let addresses: [Address]? = userAddressesResponse?.addresses
+            if let defaultAddress: Address = defaultDeliveryAddress {
+                if addresses?.filter ({ $0.id == defaultAddress.id }).last == nil {
                     defaultDeliveryAddress = nil
                 }
             }
-            if let address = userAddressesResponse?.addresses.first, defaultDeliveryAddress == nil {
+            if let address: Address = addresses?.first, defaultDeliveryAddress == nil {
                 defaultDeliveryAddress = address
             }
+            
             tableView?.reloadData()
             collectionView?.reloadData()
         }
@@ -122,7 +124,7 @@ extension AddressDataModel {
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
         
         if let addressCell: AddressCellDelegate = cell as? AddressCellDelegate {
             addressCell.configureCell(addressListArray?[indexPath.row])
@@ -143,7 +145,7 @@ extension AddressDataModel {
     }
     
     public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let addressCell: AddressCellDelegate = cell as? AddressCellDelegate {
             
@@ -163,7 +165,7 @@ extension AddressDataModel {
     
     fileprivate func fetchAddressList() {
         _ = observers.map { $0.value?.refreshDeliveryAddressUI(isRefreshing: true) }
-        let dataTask: URLSessionTask = APIManager.shared.userSavedAddresses(completion: { [weak self] (data) in
+        let dataTask: URLSessionDataTask = APIManager.shared.userSavedAddresses(completion: { [weak self] (data) in
             defer {
                 _ = self?.observers.map { $0.value?.refreshDeliveryAddressUI(isRefreshing: false) }
             }
@@ -179,7 +181,7 @@ extension AddressDataModel {
     
     public func addAddress(address: Address) {
         _ = observers.map { $0.value?.refreshAddAddressUI(isRefreshing: true) }
-        let dataTask: URLSessionTask = APIManager.shared.addAddress(address: address, completion: { [weak self] (data) in
+        let dataTask: URLSessionDataTask = APIManager.shared.addAddress(address: address, completion: { [weak self] (data) in
             defer {
                 _ = self?.observers.map { $0.value?.refreshAddAddressUI(isRefreshing: false) }
             }
@@ -199,7 +201,7 @@ extension AddressDataModel {
     
     public func updateAddress(address: Address) {
         _ = observers.map { $0.value?.refreshUpdateAddressUI(isRefreshing: true) }
-        let dataTask: URLSessionTask = APIManager.shared.updateAddress(address: address, completion: { [weak self] (data) in
+        let dataTask: URLSessionDataTask = APIManager.shared.updateAddress(address: address, completion: { [weak self] (data) in
             defer {
                 _ = self?.observers.map { $0.value?.refreshUpdateAddressUI(isRefreshing: false) }
             }
@@ -221,7 +223,7 @@ extension AddressDataModel {
     
     public func deleteAddress(address: Address) {
         _ = observers.map { $0.value?.refreshDeleteAddressUI(isRefreshing: true) }
-        let dataTask: URLSessionTask = APIManager.shared.deleteAddress(address: address, completion: { [weak self] in
+        let dataTask: URLSessionDataTask = APIManager.shared.deleteAddress(address: address, completion: { [weak self] in
             self?.userAddressesResponse?.addresses = self?.addressListArray?.filter { $0.id != address.id }
             self?.defaultDeliveryAddress = self?.addressListArray?.first
             _ = self?.observers.map { $0.value?.refreshDeleteAddressUI(isRefreshing: false) }

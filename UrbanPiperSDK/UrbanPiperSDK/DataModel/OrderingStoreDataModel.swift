@@ -145,7 +145,7 @@ extension OrderingStoreDataModel {
         
         _ = observers.map { $0.value?.update(nil, location, nil, false) }
         
-        let dataTask: URLSessionTask = APIManager.shared.fetchNearestStore(location.coordinate, completion: { [weak self] (data) in
+        let dataTask: URLSessionDataTask = APIManager.shared.fetchNearestStore(location.coordinate, completion: { [weak self] (data) in
             defer {
                 _ = self?.observers.map { $0.value?.update(OrderingStoreDataModel.shared.nearestStoreResponse, location, nil, true) }
                 self?.updateCompletionBlock?(OrderingStoreDataModel.shared.nearestStoreResponse, nil)

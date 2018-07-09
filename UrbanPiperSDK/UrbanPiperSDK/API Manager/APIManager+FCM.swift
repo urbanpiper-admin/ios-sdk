@@ -6,7 +6,7 @@
 //  Copyright © 2018 UrbanPiper Inc. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 extension APIManager {
     
@@ -42,7 +42,7 @@ extension APIManager {
 
     @objc public func registerForFCMMessaging(token: String,
                                        completion: APICompletion<[String : Any]>?,
-                                       failure: APIFailure?) -> URLSessionTask? {
+                                       failure: APIFailure?) -> URLSessionDataTask? {
         
         guard lastRegisteredFCMToken == nil || lastRegisteredFCMToken! != token else {
             completion?(nil)
@@ -57,13 +57,13 @@ extension APIManager {
         
         urlRequest.httpMethod = "POST"
         
-        let params = ["registration_id": token,
+        let params: [String: Any] = ["registration_id": token,
                       "device_id": APIManager.uuidString,
                       "channel": APIManager.channel]
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { [weak self] (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
                 self?.lastRegisteredFCMToken = token
@@ -94,7 +94,7 @@ extension APIManager {
     }
     
     @objc public func unRegisterForFCMMessaging(completion: APICompletion<[String: Any]>?,
-                                         failure: APIFailure?) -> URLSessionTask? {
+                                         failure: APIFailure?) -> URLSessionDataTask? {
         let oldToken = UserDefaults.standard.string(forKey: UserDefaultsFCMKeys.UserBizFCMTokenKey)
         guard AppUserDataModel.shared.validAppUserData == nil, oldToken != nil else {
             completion?(nil)
@@ -109,12 +109,12 @@ extension APIManager {
         
         urlRequest.httpMethod = "POST"
         
-        let params = ["registration_id": oldToken,
+        let params: [String: Any] = ["registration_id": oldToken,
                       "device_id": APIManager.uuidString,
                       "channel": APIManager.channel]
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
                 UserDefaults.standard.removeObject(forKey: UserDefaultsFCMKeys.UserBizFCMTokenKey)

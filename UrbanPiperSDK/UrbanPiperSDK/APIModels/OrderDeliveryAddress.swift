@@ -35,7 +35,7 @@ public class OrderDeliveryAddress: NSObject, NSCoding {
     
     public var fullAddress: String? {
         if let address = lines {
-            var filteredAddress = address.compactMap { $0 }
+            var filteredAddress: [String] = address.compactMap { $0 }
             filteredAddress = filteredAddress.filter { $0.count > 0 }
             let addressText = filteredAddress.joined(separator: ", ")
             return addressText
@@ -45,22 +45,22 @@ public class OrderDeliveryAddress: NSObject, NSCoding {
     }
     
     @objc public var displayAddress: String {
-        if let address = lines {
-            var filteredAddress = address.compactMap { $0 }
+        if let address: [String?] = lines {
+            var filteredAddress: [String] = address.compactMap { $0 }
             filteredAddress = filteredAddress.filter { $0.count > 0 }
             
-            if let code = postalCode, code.count > 0 {
+            if let code: String = postalCode, code.count > 0 {
                 filteredAddress = filteredAddress.map { $0.replacingOccurrences(of: code, with: "") }
             }
             
             filteredAddress = filteredAddress.filter({ (text) -> Bool in
-                let trimmedText = text.trimmingCharacters(in: CharacterSet.whitespaces)
+                let trimmedText: String = text.trimmingCharacters(in: CharacterSet.whitespaces)
                 guard Int(trimmedText) == nil else { return false }
                 return true
             })
             
-            let addressText = filteredAddress.joined(separator: ", ")
-            let trimmedText = addressText.trimmingCharacters(in: CharacterSet.whitespaces)
+            let addressText: String = filteredAddress.joined(separator: ", ")
+            let trimmedText: String = addressText.trimmingCharacters(in: CharacterSet.whitespaces)
             if trimmedText.count > 0 {
                 return trimmedText
             }
@@ -70,8 +70,8 @@ public class OrderDeliveryAddress: NSObject, NSCoding {
     }
 
     public init(coordinate: CLLocationCoordinate2D?, locality: String?, postalCode: String?, lines: [String]?) {
-        coordLatitude = coordinate?.latitude ?? Double(0)
-        coordLongitude = coordinate?.longitude ?? Double(0)
+        coordLatitude = coordinate?.latitude ?? Double.zero
+        coordLongitude = coordinate?.longitude ?? Double.zero
 
         //        thoroughfare = gmsAddress.thoroughfare
         self.locality = locality

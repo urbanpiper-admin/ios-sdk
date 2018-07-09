@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class ItemOptionGroup : NSObject, NSCoding {
+public class ItemOptionGroup : NSObject {
 
 	public var descriptionField : String!
 	public var id : Int!
@@ -45,92 +45,92 @@ public class ItemOptionGroup : NSObject, NSCoding {
 		title = dictionary["title"] as? String
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if descriptionField != nil{
-			dictionary["description"] = descriptionField
-		}
-		if id != nil{
-			dictionary["id"] = id
-		}
-		if isDefault != nil{
-			dictionary["is_default"] = isDefault
-		}
-		if maxSelectable != nil{
-			dictionary["max_selectable"] = maxSelectable
-		}
-		if minSelectable != nil{
-			dictionary["min_selectable"] = minSelectable
-		}
-		if options != nil{
-			var dictionaryElements = [[String:Any]]()
-			for optionsElement in options {
-				dictionaryElements.append(optionsElement.toDictionary())
-			}
-			dictionary["options"] = dictionaryElements
-		}
-		if sortOrder != nil{
-			dictionary["sort_order"] = sortOrder
-		}
-		if title != nil{
-			dictionary["title"] = title
-		}
-
-		return dictionary
-	}
-
     /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    @objc required public init(coder aDecoder: NSCoder)
-	{
-         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
-         id = aDecoder.decodeObject(forKey: "id") as? Int
-         isDefault = aDecoder.decodeObject(forKey: "is_default") as? Bool
-         maxSelectable = aDecoder.decodeObject(forKey: "max_selectable") as? Int
-         minSelectable = aDecoder.decodeObject(forKey: "min_selectable") as? Int
-         options = aDecoder.decodeObject(forKey :"options") as? [ItemOption]
-         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
-         title = aDecoder.decodeObject(forKey: "title") as? String
-	}
+     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String : Any] = [String:Any]()
+        if descriptionField != nil{
+            dictionary["description"] = descriptionField
+        }
+        if id != nil{
+            dictionary["id"] = id
+        }
+        if isDefault != nil{
+            dictionary["is_default"] = isDefault
+        }
+        if maxSelectable != nil{
+            dictionary["max_selectable"] = maxSelectable
+        }
+        if minSelectable != nil{
+            dictionary["min_selectable"] = minSelectable
+        }
+        if options != nil{
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            for optionsElement in options {
+                dictionaryElements.append(optionsElement.toDictionary())
+            }
+            dictionary["options"] = dictionaryElements
+        }
+        if sortOrder != nil{
+            dictionary["sort_order"] = sortOrder
+        }
+        if title != nil{
+            dictionary["title"] = title
+        }
 
-    /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    @objc public func encode(with aCoder: NSCoder)
-	{
-		if descriptionField != nil{
-			aCoder.encode(descriptionField, forKey: "description")
-		}
-		if id != nil{
-			aCoder.encode(id, forKey: "id")
-		}
-		if isDefault != nil{
-			aCoder.encode(isDefault, forKey: "is_default")
-		}
-		if maxSelectable != nil{
-			aCoder.encode(maxSelectable, forKey: "max_selectable")
-		}
-		if minSelectable != nil{
-			aCoder.encode(minSelectable, forKey: "min_selectable")
-		}
-		if options != nil{
-			aCoder.encode(options, forKey: "options")
-		}
-		if sortOrder != nil{
-			aCoder.encode(sortOrder, forKey: "sort_order")
-		}
-		if title != nil{
-			aCoder.encode(title, forKey: "title")
-		}
-        
-	}
+        return dictionary
+    }
+
+//    /**
+//    * NSCoding required initializer.
+//    * Fills the data from the passed decoder
+//    */
+//    @objc required public init(coder aDecoder: NSCoder)
+//    {
+//         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
+//         id = aDecoder.decodeObject(forKey: "id") as? Int
+//         isDefault = aDecoder.decodeObject(forKey: "is_default") as? Bool
+//         maxSelectable = aDecoder.decodeObject(forKey: "max_selectable") as? Int
+//         minSelectable = aDecoder.decodeObject(forKey: "min_selectable") as? Int
+//         options = aDecoder.decodeObject(forKey :"options") as? [ItemOption]
+//         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
+//         title = aDecoder.decodeObject(forKey: "title") as? String
+//    }
+//
+//    /**
+//    * NSCoding required method.
+//    * Encodes mode properties into the decoder
+//    */
+//    @objc public func encode(with aCoder: NSCoder)
+//    {
+//        if descriptionField != nil{
+//            aCoder.encode(descriptionField, forKey: "description")
+//        }
+//        if id != nil{
+//            aCoder.encode(id, forKey: "id")
+//        }
+//        if isDefault != nil{
+//            aCoder.encode(isDefault, forKey: "is_default")
+//        }
+//        if maxSelectable != nil{
+//            aCoder.encode(maxSelectable, forKey: "max_selectable")
+//        }
+//        if minSelectable != nil{
+//            aCoder.encode(minSelectable, forKey: "min_selectable")
+//        }
+//        if options != nil{
+//            aCoder.encode(options, forKey: "options")
+//        }
+//        if sortOrder != nil{
+//            aCoder.encode(sortOrder, forKey: "sort_order")
+//        }
+//        if title != nil{
+//            aCoder.encode(title, forKey: "title")
+//        }
+//        
+//    }
 
 }
 

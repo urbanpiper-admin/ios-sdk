@@ -48,46 +48,46 @@ public class Prediction : NSObject, NSCoding{
 		types = dictionary["types"] as? [String]
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if descriptionField != nil{
-			dictionary["description"] = descriptionField
-		}
-		if id != nil{
-			dictionary["id"] = id
-		}
-		if matchedSubstrings != nil{
-            var dictionaryElements = [[String:Any]]()
-			for matchedSubstringsElement in matchedSubstrings {
-				dictionaryElements.append(matchedSubstringsElement.toDictionary())
-			}
-			dictionary["matched_substrings"] = dictionaryElements
-		}
-		if placeId != nil{
-			dictionary["place_id"] = placeId
-		}
-		if reference != nil{
-			dictionary["reference"] = reference
-		}
-		if structuredFormatting != nil{
-			dictionary["structured_formatting"] = structuredFormatting.toDictionary()
-		}
-		if terms != nil{
-            var dictionaryElements = [[String:Any]]()
-			for termsElement in terms {
-				dictionaryElements.append(termsElement.toDictionary())
-			}
-			dictionary["terms"] = dictionaryElements
-		}
-		if types != nil{
-			dictionary["types"] = types
-		}
-		return dictionary
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    public func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if descriptionField != nil{
+//            dictionary["description"] = descriptionField
+//        }
+//        if id != nil{
+//            dictionary["id"] = id
+//        }
+//        if matchedSubstrings != nil{
+//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//            for matchedSubstringsElement in matchedSubstrings {
+//                dictionaryElements.append(matchedSubstringsElement.toDictionary())
+//            }
+//            dictionary["matched_substrings"] = dictionaryElements
+//        }
+//        if placeId != nil{
+//            dictionary["place_id"] = placeId
+//        }
+//        if reference != nil{
+//            dictionary["reference"] = reference
+//        }
+//        if structuredFormatting != nil{
+//            dictionary["structured_formatting"] = structuredFormatting.toDictionary()
+//        }
+//        if terms != nil{
+//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//            for termsElement in terms {
+//                dictionaryElements.append(termsElement.toDictionary())
+//            }
+//            dictionary["terms"] = dictionaryElements
+//        }
+//        if types != nil{
+//            dictionary["types"] = types
+//        }
+//        return dictionary
+//    }
 
     /**
     * NSCoding required initializer.

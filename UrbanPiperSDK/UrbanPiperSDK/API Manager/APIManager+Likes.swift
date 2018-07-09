@@ -6,12 +6,12 @@
 //  Copyright © 2017 UrbanPiper Inc. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 extension APIManager {
 
     @objc public func userLikes(completion: APICompletion<UserLikesResponse>?,
-                         failure: APIFailure?) -> URLSessionTask {
+                         failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/item/likes/"
 
@@ -21,7 +21,7 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
 
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
 
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, (httpResponse.statusCode == 200 || httpResponse.statusCode == 204) {
                 guard let completionClosure = completion else { return }
@@ -55,7 +55,7 @@ extension APIManager {
     @objc public func likeUnlikeItem(itemId: Int,
                               like: Bool,
                               completion: APICompletion<[String: Any]>?,
-                              failure: APIFailure?) -> URLSessionTask {
+                              failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/item/\(itemId)/like/"
 
@@ -69,7 +69,7 @@ extension APIManager {
             urlRequest.httpMethod = "DELETE"
         }
 
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
 
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, (httpResponse.statusCode == 200 || httpResponse.statusCode == 204) {
                 guard let completionClosure = completion else { return }

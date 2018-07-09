@@ -11,10 +11,15 @@ import Foundation
 extension ItemOption {
 
     public var totalAmount: Decimal {
-        var totalAmount = quantity > 0 ? price ?? 0 : 0
-        if let nestedOptionGroups = nestedOptionGroups, nestedOptionGroups.count > 0 {
-            for optionGroup in nestedOptionGroups {
-                for item in optionGroup.options {
+        var totalAmount: Decimal = Decimal.zero
+        
+        if let priceVal: Decimal = price, quantity > 0 {
+            totalAmount = priceVal
+        }
+        
+        if let nestedOptionGroups: [ItemOptionGroup] = nestedOptionGroups, nestedOptionGroups.count > 0 {
+            for optionGroup: ItemOptionGroup in nestedOptionGroups {
+                for item: ItemOption in optionGroup.options {
                     guard item.quantity > 0 else { continue }
                     totalAmount += item.totalAmount
                 }
@@ -44,7 +49,7 @@ extension ItemOption {
         guard quantity > 0 else { return false }
         if let groups = nestedOptionGroups, groups.count > 0 {
 
-            var isValidItem = true
+            var isValidItem : Bool = true
 
             for option in nestedOptionGroups {
                 isValidItem = isValidItem && option.isValidCartOptionGroup
@@ -58,7 +63,7 @@ extension ItemOption {
     }
 
     public var optionsToAdd: [[String : Int]] {
-        var options = [[String : Int]]()
+        var options: [[String : Int]] = [[String : Int]]()
 
         if quantity > 0 {
             options.append(["id" : id])
@@ -74,7 +79,7 @@ extension ItemOption {
     }
 
     public var optionsToRemove: [[String: Int]] {
-        var options = [[String : Int]]()
+        var options: [[String : Int]] = [[String : Int]]()
 
         if let optionGroups = nestedOptionGroups, optionGroups.count > 0 {
             for group in optionGroups {
@@ -89,9 +94,9 @@ extension ItemOption {
 
     public var descriptionText: String? {
         if let groups = nestedOptionGroups, groups.count > 0 {
-            let descriptionArray = groups.compactMap { $0.descriptionText }
-            guard let titleText = title, descriptionArray.count > 0 else { return nil }
-            let text = descriptionArray.joined(separator: "\n")
+            let descriptionArray: [String] = groups.compactMap { $0.descriptionText }
+            guard let titleText: String = title, descriptionArray.count > 0 else { return nil }
+            let text: String = descriptionArray.joined(separator: "\n")
             return "\(titleText)\n\(text)"
         } else {
             return title
@@ -115,7 +120,7 @@ extension ItemOption {
 extension ItemOption {
     
     public func equitableCheckDictionary() -> [String: Any] {
-        var dictionary = [String:Any]()
+        var dictionary: [String : Any] = [String:Any]()
         if currentStock != nil{
             dictionary["current_stock"] = currentStock
         }
@@ -130,7 +135,7 @@ extension ItemOption {
         }
         dictionary["quantity"] = quantity
         if nestedOptionGroups != nil{
-            var dictionaryElements = [[String:Any]]()
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
             for nestedOptionGroupsElement in nestedOptionGroups {
                 dictionaryElements.append(nestedOptionGroupsElement.equitableCheckDictionary())
             }
@@ -140,15 +145,20 @@ extension ItemOption {
     }
     
     static public func == (lhs: ItemOption, rhs: ItemOption) -> Bool {
-        return lhs.currentStock  == rhs.currentStock  &&
-            lhs.descriptionField  == rhs.descriptionField  &&
-            lhs.foodType  == rhs.foodType  &&
-            lhs.id  == rhs.id  &&
-            lhs.imageUrl  == rhs.imageUrl  &&
-            lhs.price  == rhs.price  &&
-            lhs.sortOrder  == rhs.sortOrder  &&
-            lhs.title  == rhs.title  &&
-            lhs.nestedOptionGroups  == rhs.nestedOptionGroups &&
-            lhs.quantity  == rhs.quantity
+        let lhsDictionary = lhs.equitableCheckDictionary()
+        let rhsDictionary = rhs.equitableCheckDictionary()
+        
+        return NSDictionary(dictionary: lhsDictionary).isEqual(to: rhsDictionary)
+
+//        return lhs.currentStock == rhs.currentStock  &&
+//            lhs.descriptionField == rhs.descriptionField  &&
+//            lhs.foodType == rhs.foodType  &&
+//            lhs.id == rhs.id  &&
+//            lhs.imageUrl == rhs.imageUrl  &&
+//            lhs.price == rhs.price  &&
+//            lhs.sortOrder == rhs.sortOrder  &&
+//            lhs.title  == rhs.title  &&
+//            lhs.nestedOptionGroups == rhs.nestedOptionGroups &&
+//            lhs.quantity  == rhs.quantity
     }
 }

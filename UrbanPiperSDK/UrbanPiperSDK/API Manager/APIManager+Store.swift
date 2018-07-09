@@ -5,13 +5,13 @@
 //  Created by Vid on 04/07/18.
 //
 
-import UIKit
+import Foundation
 import CoreLocation
 
 extension APIManager {
     
     @objc public func fetchAllStores(completion: APICompletion<StoreLocatorResponse>?,
-                                     failure: APIFailure?) -> URLSessionTask {
+                                     failure: APIFailure?) -> URLSessionDataTask {
         
         let bizAppId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId
         let urlString: String = "\(APIManager.baseUrl)/api/v1/stores/?format=json&biz_id=\(bizAppId)&all=1"
@@ -22,7 +22,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
@@ -55,7 +55,7 @@ extension APIManager {
     
     @objc public func fetchNearestStore(_ coordinates: CLLocationCoordinate2D,
                                         completion: APICompletion<StoreResponse>?,
-                                        failure: APIFailure?) -> URLSessionTask {
+                                        failure: APIFailure?) -> URLSessionDataTask {
         
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
         
@@ -67,7 +67,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }

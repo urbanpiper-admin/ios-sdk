@@ -47,7 +47,7 @@ public class StoreLocatorDataModel: UrbanPiperDataModel {
     
     public func fetchStores() {
         dataModelDelegate?.refreshStoreLocatorUI(true)
-        let dataTask: URLSessionTask = APIManager.shared.fetchAllStores(completion: { [weak self] (storeLocatorResponse) in
+        let dataTask: URLSessionDataTask = APIManager.shared.fetchAllStores(completion: { [weak self] (storeLocatorResponse) in
             defer {
                 self?.dataModelDelegate?.refreshStoreLocatorUI(false)
             }
@@ -92,7 +92,7 @@ extension StoreLocatorDataModel {
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
         
         if let placesCell: StoreLocatorCellDelegate = cell as? StoreLocatorCellDelegate {
             placesCell.configureCell(storesListArray?[indexPath.row])
@@ -113,7 +113,7 @@ extension StoreLocatorDataModel {
     }
     
     public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let placesCell: StoreLocatorCellDelegate = cell as? StoreLocatorCellDelegate {
             placesCell.configureCell(storesListArray?[indexPath.row])

@@ -54,7 +54,7 @@ extension NotificationsDataModel {
     }
 
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
 
         if let notificationCell: NotificationCellDelegate = cell as? NotificationCellDelegate {
             notificationCell.configureCell(notificationsListArray?[indexPath.row])
@@ -75,7 +75,7 @@ extension NotificationsDataModel {
     }
 
     public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
+     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
 
         if let notificationCell: NotificationCellDelegate = cell as? NotificationCellDelegate {
             notificationCell.configureCell(notificationsListArray?[indexPath.row])
@@ -94,7 +94,7 @@ extension NotificationsDataModel {
 
     fileprivate func fetchNotificationsList(isForcedRefresh: Bool) {
         dataModelDelegate?.refreshNotificationsUI(true)
-        let dataTask: URLSessionTask = APIManager.shared.fetchNotificationsList(completion: { [weak self] (data) in
+        let dataTask: URLSessionDataTask = APIManager.shared.fetchNotificationsList(completion: { [weak self] (data) in
             defer {
                 self?.dataModelDelegate?.refreshNotificationsUI(false)
             }

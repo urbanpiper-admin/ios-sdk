@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		148C278CD81EDDC8C41C31CA /* Pods_UrbanPiperSDK_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39443BA2F36CED8D4A3831DA /* Pods_UrbanPiperSDK_Example.framework */; };
 		1811F6C620D4F3AF006FEDE1 /* MyOrderOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1811F6BE20D4F3AC006FEDE1 /* MyOrderOption.swift */; };
 		1811F6C720D4F3AF006FEDE1 /* MyOrderMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1811F6BF20D4F3AD006FEDE1 /* MyOrderMeta.swift */; };
 		1811F6C820D4F3AF006FEDE1 /* MyOrderExtra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1811F6C020D4F3AD006FEDE1 /* MyOrderExtra.swift */; };
@@ -29,6 +30,9 @@
 		1811F6CB20D4F3AF006FEDE1 /* MyOrderCharge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1811F6C320D4F3AE006FEDE1 /* MyOrderCharge.swift */; };
 		1811F6CC20D4F3AF006FEDE1 /* MyOrderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1811F6C420D4F3AE006FEDE1 /* MyOrderItem.swift */; };
 		1811F6CD20D4F3AF006FEDE1 /* MyOrdersResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1811F6C520D4F3AF006FEDE1 /* MyOrdersResponse.swift */; };
+		181B4CBF20EFE49F00BF6629 /* APIManager+Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181B4CBE20EFE49E00BF6629 /* APIManager+Store.swift */; };
+		181B4CC120EFE52100BF6629 /* StoreLocatorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181B4CC020EFE52100BF6629 /* StoreLocatorResponse.swift */; };
+		181B4CC320EFE54100BF6629 /* StoreLocatorDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181B4CC220EFE54000BF6629 /* StoreLocatorDataModel.swift */; };
 		187185BC20DA0C4F004AE018 /* BizLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187185B920DA0C4E004AE018 /* BizLocation.swift */; };
 		187185BE20DA0C4F004AE018 /* ReorderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187185BB20DA0C4F004AE018 /* ReorderResponse.swift */; };
 		1876202620EB915A0071FA25 /* APIManager+Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1876202520EB91590071FA25 /* APIManager+Wallet.swift */; };
@@ -41,12 +45,13 @@
 		1876203E20EB92120071FA25 /* UrbanPiperSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46E4F71E208DAB810045ED21 /* UrbanPiperSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1878275820EA06BD009F57FA /* WalletTransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1878275620EA06BD009F57FA /* WalletTransactionResponse.swift */; };
 		1878275920EA06BD009F57FA /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1878275720EA06BD009F57FA /* Transaction.swift */; };
+		188E9F8B20EFEEC100980530 /* Double+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188E9F8A20EFEEC100980530 /* Double+Additions.swift */; };
+		2073699D7C2B999D403B919A /* Pods_UrbanPiperSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C0655D28DDE30308D870A62 /* Pods_UrbanPiperSDK.framework */; };
 		4607A993208F1E2700128010 /* WeakRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A91E208F1E2600128010 /* WeakRef.swift */; };
 		4607A99D208F1E2700128010 /* APIManager+Banners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A92A208F1E2600128010 /* APIManager+Banners.swift */; };
 		4607A99E208F1E2700128010 /* APIManager+Ordering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A92B208F1E2600128010 /* APIManager+Ordering.swift */; };
 		4607A99F208F1E2700128010 /* APIManager+Likes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A92C208F1E2600128010 /* APIManager+Likes.swift */; };
 		4607A9A0208F1E2700128010 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A92D208F1E2600128010 /* APIManager.swift */; };
-		4607A9A1208F1E2700128010 /* APIManager+NearestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A92E208F1E2600128010 /* APIManager+NearestStore.swift */; };
 		4607A9A2208F1E2700128010 /* APIManager+SocialAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A92F208F1E2600128010 /* APIManager+SocialAuth.swift */; };
 		4607A9A3208F1E2700128010 /* APIManager+FCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A930208F1E2600128010 /* APIManager+FCM.swift */; };
 		4607A9A4208F1E2700128010 /* APIManager+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A931208F1E2600128010 /* APIManager+Auth.swift */; };
@@ -147,7 +152,7 @@
 		4640C766209847AF00573F7B /* WLDetailOptionData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4640C765209847AF00573F7B /* WLDetailOptionData.plist */; };
 		46A3447520977AEB004C0B67 /* APIManager+VersionCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A3447420977AEA004C0B67 /* APIManager+VersionCheck.swift */; };
 		46A3447720977E8F004C0B67 /* VersionCheckResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A3447620977E8E004C0B67 /* VersionCheckResponse.swift */; };
-		46CE3FC4208F655A0022475F /* Decimal+Rounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CE3FBC208F655A0022475F /* Decimal+Rounded.swift */; };
+		46CE3FC4208F655A0022475F /* Decimal+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CE3FBC208F655A0022475F /* Decimal+Additions.swift */; };
 		46CE3FC5208F655A0022475F /* UITapGestureRecognizer+LabelInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CE3FBD208F655A0022475F /* UITapGestureRecognizer+LabelInteraction.swift */; };
 		46CE3FC6208F655A0022475F /* Date+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CE3FBE208F655A0022475F /* Date+String.swift */; };
 		46CE3FC7208F655A0022475F /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CE3FBF208F655A0022475F /* UIImage.swift */; };
@@ -202,6 +207,9 @@
 		1811F6C320D4F3AE006FEDE1 /* MyOrderCharge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOrderCharge.swift; sourceTree = "<group>"; };
 		1811F6C420D4F3AE006FEDE1 /* MyOrderItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOrderItem.swift; sourceTree = "<group>"; };
 		1811F6C520D4F3AF006FEDE1 /* MyOrdersResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOrdersResponse.swift; sourceTree = "<group>"; };
+		181B4CBE20EFE49E00BF6629 /* APIManager+Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Store.swift"; sourceTree = "<group>"; };
+		181B4CC020EFE52100BF6629 /* StoreLocatorResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreLocatorResponse.swift; sourceTree = "<group>"; };
+		181B4CC220EFE54000BF6629 /* StoreLocatorDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreLocatorDataModel.swift; sourceTree = "<group>"; };
 		187185B920DA0C4E004AE018 /* BizLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BizLocation.swift; sourceTree = "<group>"; };
 		187185BB20DA0C4F004AE018 /* ReorderResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReorderResponse.swift; sourceTree = "<group>"; };
 		1876202520EB91590071FA25 /* APIManager+Wallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Wallet.swift"; sourceTree = "<group>"; };
@@ -214,12 +222,14 @@
 		1876203920EB92060071FA25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1878275620EA06BD009F57FA /* WalletTransactionResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletTransactionResponse.swift; sourceTree = "<group>"; };
 		1878275720EA06BD009F57FA /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		188E9F8A20EFEEC100980530 /* Double+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Additions.swift"; sourceTree = "<group>"; };
+		39443BA2F36CED8D4A3831DA /* Pods_UrbanPiperSDK_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UrbanPiperSDK_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3C0655D28DDE30308D870A62 /* Pods_UrbanPiperSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UrbanPiperSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4607A91E208F1E2600128010 /* WeakRef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakRef.swift; sourceTree = "<group>"; };
 		4607A92A208F1E2600128010 /* APIManager+Banners.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Banners.swift"; sourceTree = "<group>"; };
 		4607A92B208F1E2600128010 /* APIManager+Ordering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Ordering.swift"; sourceTree = "<group>"; };
 		4607A92C208F1E2600128010 /* APIManager+Likes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Likes.swift"; sourceTree = "<group>"; };
 		4607A92D208F1E2600128010 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
-		4607A92E208F1E2600128010 /* APIManager+NearestStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+NearestStore.swift"; sourceTree = "<group>"; };
 		4607A92F208F1E2600128010 /* APIManager+SocialAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+SocialAuth.swift"; sourceTree = "<group>"; };
 		4607A930208F1E2600128010 /* APIManager+FCM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+FCM.swift"; sourceTree = "<group>"; };
 		4607A931208F1E2600128010 /* APIManager+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Auth.swift"; sourceTree = "<group>"; };
@@ -321,7 +331,7 @@
 		4655D8AA20BBF0BE00F96DEF /* AddressDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressDataModel.swift; sourceTree = "<group>"; };
 		46A3447420977AEA004C0B67 /* APIManager+VersionCheck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+VersionCheck.swift"; sourceTree = "<group>"; };
 		46A3447620977E8E004C0B67 /* VersionCheckResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionCheckResponse.swift; sourceTree = "<group>"; };
-		46CE3FBC208F655A0022475F /* Decimal+Rounded.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Decimal+Rounded.swift"; sourceTree = "<group>"; };
+		46CE3FBC208F655A0022475F /* Decimal+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Decimal+Additions.swift"; sourceTree = "<group>"; };
 		46CE3FBD208F655A0022475F /* UITapGestureRecognizer+LabelInteraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITapGestureRecognizer+LabelInteraction.swift"; sourceTree = "<group>"; };
 		46CE3FBE208F655A0022475F /* Date+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+String.swift"; sourceTree = "<group>"; };
 		46CE3FBF208F655A0022475F /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
@@ -336,6 +346,10 @@
 		46E4F721208DAB810045ED21 /* UrbanPiperSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UrbanPiperSDK.h; sourceTree = "<group>"; };
 		46E4F722208DAB810045ED21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		46E4F7FF208DB86D0045ED21 /* UPKeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UPKeychainWrapper.swift; sourceTree = "<group>"; };
+		B8F032B430062380690ADA81 /* Pods-UrbanPiperSDK-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UrbanPiperSDK-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example.release.xcconfig"; sourceTree = "<group>"; };
+		D778F01032700D87F941AD0A /* Pods-UrbanPiperSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UrbanPiperSDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UrbanPiperSDK/Pods-UrbanPiperSDK.debug.xcconfig"; sourceTree = "<group>"; };
+		E6CC1A3A676C65DFD6A5C6F4 /* Pods-UrbanPiperSDK-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UrbanPiperSDK-Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example.debug.xcconfig"; sourceTree = "<group>"; };
+		F09801B6C281198F355F0C84 /* Pods-UrbanPiperSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UrbanPiperSDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-UrbanPiperSDK/Pods-UrbanPiperSDK.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -344,6 +358,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1876203D20EB92120071FA25 /* UrbanPiperSDK.framework in Frameworks */,
+				148C278CD81EDDC8C41C31CA /* Pods_UrbanPiperSDK_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,6 +366,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2073699D7C2B999D403B919A /* Pods_UrbanPiperSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,13 +397,13 @@
 		4607A929208F1E2600128010 /* API Manager */ = {
 			isa = PBXGroup;
 			children = (
+				181B4CBE20EFE49E00BF6629 /* APIManager+Store.swift */,
 				1876202520EB91590071FA25 /* APIManager+Wallet.swift */,
 				46A3447420977AEA004C0B67 /* APIManager+VersionCheck.swift */,
 				4607A92A208F1E2600128010 /* APIManager+Banners.swift */,
 				4607A92B208F1E2600128010 /* APIManager+Ordering.swift */,
 				4607A92C208F1E2600128010 /* APIManager+Likes.swift */,
 				4607A92D208F1E2600128010 /* APIManager.swift */,
-				4607A92E208F1E2600128010 /* APIManager+NearestStore.swift */,
 				4607A92F208F1E2600128010 /* APIManager+SocialAuth.swift */,
 				4607A930208F1E2600128010 /* APIManager+FCM.swift */,
 				4607A931208F1E2600128010 /* APIManager+Auth.swift */,
@@ -418,6 +434,7 @@
 		4607A93E208F1E2600128010 /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
+				181B4CC220EFE54000BF6629 /* StoreLocatorDataModel.swift */,
 				4607A940208F1E2600128010 /* DeliveryLocationDataModel.swift */,
 				4607A941208F1E2600128010 /* CategoryItemsDataModel.swift */,
 				4607A942208F1E2600128010 /* ItemDetailsDataModel.swift */,
@@ -444,6 +461,7 @@
 		4607A953208F1E2700128010 /* APIModels */ = {
 			isa = PBXGroup;
 			children = (
+				181B4CC020EFE52100BF6629 /* StoreLocatorResponse.swift */,
 				1878275720EA06BD009F57FA /* Transaction.swift */,
 				1878275620EA06BD009F57FA /* WalletTransactionResponse.swift */,
 				187185B920DA0C4E004AE018 /* BizLocation.swift */,
@@ -548,7 +566,7 @@
 		46CE3FBB208F655A0022475F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				46CE3FBC208F655A0022475F /* Decimal+Rounded.swift */,
+				46CE3FBC208F655A0022475F /* Decimal+Additions.swift */,
 				46CE3FBD208F655A0022475F /* UITapGestureRecognizer+LabelInteraction.swift */,
 				46CE3FBE208F655A0022475F /* Date+String.swift */,
 				46CE3FBF208F655A0022475F /* UIImage.swift */,
@@ -556,6 +574,7 @@
 				46CE3FC1208F655A0022475F /* NSCoding+Additions.swift */,
 				46CE3FC2208F655A0022475F /* String+Date.swift */,
 				46CE3FC3208F655A0022475F /* String+Dictionary.swift */,
+				188E9F8A20EFEEC100980530 /* Double+Additions.swift */,
 			);
 			name = Extensions;
 			path = UrbanPiperSDK/Extensions;
@@ -568,6 +587,8 @@
 				46E4F720208DAB810045ED21 /* UrbanPiperSDK */,
 				1876202C20EB92040071FA25 /* UrbanPiperSDK-Example */,
 				46E4F71F208DAB810045ED21 /* Products */,
+				B77CE7E6485E579AF6B44544 /* Pods */,
+				B87BEFD956721185EBCB67AD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -602,6 +623,26 @@
 			path = UrbanPiperSDK;
 			sourceTree = "<group>";
 		};
+		B77CE7E6485E579AF6B44544 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D778F01032700D87F941AD0A /* Pods-UrbanPiperSDK.debug.xcconfig */,
+				F09801B6C281198F355F0C84 /* Pods-UrbanPiperSDK.release.xcconfig */,
+				E6CC1A3A676C65DFD6A5C6F4 /* Pods-UrbanPiperSDK-Example.debug.xcconfig */,
+				B8F032B430062380690ADA81 /* Pods-UrbanPiperSDK-Example.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B87BEFD956721185EBCB67AD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3C0655D28DDE30308D870A62 /* Pods_UrbanPiperSDK.framework */,
+				39443BA2F36CED8D4A3831DA /* Pods_UrbanPiperSDK_Example.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -620,10 +661,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1876203A20EB92060071FA25 /* Build configuration list for PBXNativeTarget "UrbanPiperSDK-Example" */;
 			buildPhases = (
+				027B8823300EAFA4AB36B8C3 /* [CP] Check Pods Manifest.lock */,
 				1876202720EB92030071FA25 /* Sources */,
 				1876202820EB92030071FA25 /* Frameworks */,
 				1876202920EB92030071FA25 /* Resources */,
 				1876204120EB92130071FA25 /* Embed Frameworks */,
+				21CC7DE4E5BF91519C7ADBDF /* [CP] Embed Pods Frameworks */,
+				16C16A829921847B6DCAFA69 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -639,10 +683,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 46E4F726208DAB810045ED21 /* Build configuration list for PBXNativeTarget "UrbanPiperSDK" */;
 			buildPhases = (
+				8496F101EF58DF311DDEFF42 /* [CP] Check Pods Manifest.lock */,
 				46E4F719208DAB810045ED21 /* Sources */,
 				46E4F71A208DAB810045ED21 /* Frameworks */,
 				46E4F71B208DAB810045ED21 /* Headers */,
 				46E4F71C208DAB810045ED21 /* Resources */,
+				A23CD8B44D1DD438D051F03E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -662,7 +708,7 @@
 			attributes = {
 				DefaultBuildSystemTypeForWorkspace = Latest;
 				LastSwiftUpdateCheck = 1000;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = UrbanPiper;
 				TargetAttributes = {
 					1876202A20EB92030071FA25 = {
@@ -718,6 +764,68 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		027B8823300EAFA4AB36B8C3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-UrbanPiperSDK-Example-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		16C16A829921847B6DCAFA69 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		21CC7DE4E5BF91519C7ADBDF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mixpanel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		46ACCAC220933BA7001BD979 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -729,7 +837,45 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This if-statement means we'll only run the main script if the GoogleAnalyticsModuleMap directory doesn't exist\n# Because otherwise the rest of the script causes a full recompile for anything where GoogleAnalytics is a dependency\n# Do a \"Clean Build Folder\" to remove this directory and trigger the rest of the script to run\nif [ -d \"${BUILT_PRODUCTS_DIR}/GoogleAnalyticsModuleMap\" ]; then\necho \"${BUILT_PRODUCTS_DIR}/GoogleAnalyticsModuleMap directory already exists, so skipping the rest of the script.\"\nexit 0\nfi\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/GoogleAnalyticsModuleMap\"\necho \"$SRCROOT\"\ncat <<EOF > \"${BUILT_PRODUCTS_DIR}/GoogleAnalyticsModuleMap/module.modulemap\"\nmodule GoogleAnalytics {\n    header \"$SRCROOT/../../Pods/GoogleAnalytics/Sources/GAI.h\"\n    header \"$SRCROOT/../../Pods/GoogleAnalytics/Sources/GAIFields.h\"\n    header \"$SRCROOT/../../Pods/GoogleAnalytics/Sources/GAIEcommerceFields.h\"\n    header \"$SRCROOT/../../Pods/GoogleAnalytics/Sources/GAIDictionaryBuilder.h\"\n    export *\n}\nEOF";
+			shellScript = "# This if-statement means we'll only run the main script if the GoogleAnalyticsModuleMap directory doesn't exist\n# Because otherwise the rest of the script causes a full recompile for anything where GoogleAnalytics is a dependency\n# Do a \"Clean Build Folder\" to remove this directory and trigger the rest of the script to run\nif [ -d \"${BUILT_PRODUCTS_DIR}/GoogleAnalyticsModuleMap\" ]; then\necho \"${BUILT_PRODUCTS_DIR}/GoogleAnalyticsModuleMap directory already exists, so skipping the rest of the script.\"\nexit 0\nfi\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/GoogleAnalyticsModuleMap\"\necho \"$SRCROOT\"\ncat <<EOF > \"${BUILT_PRODUCTS_DIR}/GoogleAnalyticsModuleMap/module.modulemap\"\nmodule GoogleAnalyticsSDK {\n    header \"$SRCROOT/Pods/GoogleAnalytics/Sources/GAI.h\"\n    header \"$SRCROOT/Pods/GoogleAnalytics/Sources/GAIFields.h\"\n    header \"$SRCROOT/Pods/GoogleAnalytics/Sources/GAIEcommerceFields.h\"\n    header \"$SRCROOT/Pods/GoogleAnalytics/Sources/GAIDictionaryBuilder.h\"\n    export *\n}\nEOF";
+		};
+		8496F101EF58DF311DDEFF42 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-UrbanPiperSDK-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A23CD8B44D1DD438D051F03E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK/Pods-UrbanPiperSDK-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK/Pods-UrbanPiperSDK-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -753,6 +899,7 @@
 				4607A9DD208F1E2700128010 /* NotificationsResponse.swift in Sources */,
 				4607A9B7208F1E2700128010 /* OrderPaymentDataModel.swift in Sources */,
 				1811F6CD20D4F3AF006FEDE1 /* MyOrdersResponse.swift in Sources */,
+				181B4CC120EFE52100BF6629 /* StoreLocatorResponse.swift in Sources */,
 				4607A9F8208F1E2800128010 /* StoreResponse.swift in Sources */,
 				46CE3FC7208F655A0022475F /* UIImage.swift in Sources */,
 				4607A9A8208F1E2700128010 /* APIManager+Coupon.swift in Sources */,
@@ -787,6 +934,7 @@
 				4607A9C3208F1E2700128010 /* SideMenuPanelDataModel.swift in Sources */,
 				4607A9BC208F1E2700128010 /* ItemsSearchDataModel.swift in Sources */,
 				1811F6CA20D4F3AF006FEDE1 /* MyOrderStore.swift in Sources */,
+				188E9F8B20EFEEC100980530 /* Double+Additions.swift in Sources */,
 				4607A9C2208F1E2700128010 /* AppUserDataModel.swift in Sources */,
 				4607A9EC208F1E2700128010 /* UserLikesResponse.swift in Sources */,
 				463A529020C5346F0099E162 /* AddAddressResponse.swift in Sources */,
@@ -816,6 +964,7 @@
 				46A3447720977E8F004C0B67 /* VersionCheckResponse.swift in Sources */,
 				46CE3FC6208F655A0022475F /* Date+String.swift in Sources */,
 				46A3447520977AEB004C0B67 /* APIManager+VersionCheck.swift in Sources */,
+				181B4CC320EFE54100BF6629 /* StoreLocatorDataModel.swift in Sources */,
 				4607A9FA208F1E2800128010 /* StructuredFormatting.swift in Sources */,
 				4607A9DB208F1E2700128010 /* Image.swift in Sources */,
 				4607A9B6208F1E2700128010 /* ItemOptionGroupsDataModel.swift in Sources */,
@@ -834,7 +983,7 @@
 				4607A9A0208F1E2700128010 /* APIManager.swift in Sources */,
 				463981D320D2507300336F7D /* MyOrdersDataModel.swift in Sources */,
 				4607A9F5208F1E2800128010 /* Object.swift in Sources */,
-				46CE3FC4208F655A0022475F /* Decimal+Rounded.swift in Sources */,
+				46CE3FC4208F655A0022475F /* Decimal+Additions.swift in Sources */,
 				4607A99F208F1E2700128010 /* APIManager+Likes.swift in Sources */,
 				4607A9CE208F1E2700128010 /* Address.swift in Sources */,
 				4607A9A2208F1E2700128010 /* APIManager+SocialAuth.swift in Sources */,
@@ -876,7 +1025,7 @@
 				46CE3FC9208F655A0022475F /* NSCoding+Additions.swift in Sources */,
 				4607A9D3208F1E2700128010 /* Order.swift in Sources */,
 				4607A9C7208F1E2700128010 /* Store+Additions.swift in Sources */,
-				4607A9A1208F1E2700128010 /* APIManager+NearestStore.swift in Sources */,
+				181B4CBF20EFE49F00BF6629 /* APIManager+Store.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -917,8 +1066,9 @@
 /* Begin XCBuildConfiguration section */
 		1876203B20EB92060071FA25 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E6CC1A3A676C65DFD6A5C6F4 /* Pods-UrbanPiperSDK-Example.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LX9U6JG87H;
@@ -927,7 +1077,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "UrbanPiperSDK-Example/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -936,27 +1086,28 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "UrbanPiper.UrbanPiperSDK-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		1876203C20EB92060071FA25 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B8F032B430062380690ADA81 /* Pods-UrbanPiperSDK-Example.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LX9U6JG87H;
 				INFOPLIST_FILE = "UrbanPiperSDK-Example/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "UrbanPiper.UrbanPiperSDK-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1132,9 +1283,11 @@
 					"-framework",
 					"\"nanopb\"",
 				);
+				OTHER_SWIFT_FLAGS = "-Xfrontend -debug-time-function-bodies -Xfrontend -warn-long-function-bodies=100 -Xfrontend -warn-long-expression-type-checking=100";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1287,10 +1440,12 @@
 					"-framework",
 					"\"nanopb\"",
 				);
+				OTHER_SWIFT_FLAGS = "-Xfrontend -debug-time-function-bodies -Xfrontend -warn-long-function-bodies=100 -Xfrontend -warn-long-expression-type-checking=100";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.0;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1299,6 +1454,7 @@
 		};
 		46E4F727208DAB810045ED21 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D778F01032700D87F941AD0A /* Pods-UrbanPiperSDK.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -1397,6 +1553,7 @@
 		};
 		46E4F728208DAB810045ED21 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F09801B6C281198F355F0C84 /* Pods-UrbanPiperSDK.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;

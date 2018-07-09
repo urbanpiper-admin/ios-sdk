@@ -6,12 +6,12 @@
 //  Copyright © 2018 UrbanPiper Inc. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 extension APIManager {
     
     @objc public func fetchBizInfo(completion: APICompletion<BizInfo>?,
-                                failure: APIFailure?) -> URLSessionTask {
+                                failure: APIFailure?) -> URLSessionDataTask {
         
         let bizAppId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
 
@@ -23,7 +23,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {

@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class Discount : NSObject, NSCoding{
+public class Discount : NSObject{
 
 	public var msg : String!
 	public var success : Bool!
@@ -27,61 +27,57 @@ public class Discount : NSObject, NSCoding{
             value = val
         } else if let val: Double = priceVal as? Double {
             value = Decimal(val).rounded
-        } else if let val: Float = priceVal as? Float {
-            value = Decimal(Double(val)).rounded
-        } else if let val: Int = priceVal as? Int {
-            value = Decimal(val).rounded
         } else {
-            value = Decimal(0).rounded
+            value = Decimal.zero
         }
     }
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if msg != nil{
-			dictionary["msg"] = msg
-		}
-		if success != nil{
-			dictionary["success"] = success
-		}
-		if value != nil{
-			dictionary["value"] = value
-		}
-		return dictionary
-	}
-
-    /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    @objc required public init(coder aDecoder: NSCoder)
-	{
-         msg = aDecoder.decodeObject(forKey: "msg") as? String
-         success = aDecoder.decodeObject(forKey: "success") as? Bool
-         value = aDecoder.decodeObject(forKey: "value") as? Decimal
-
-	}
-
-    /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    @objc public func encode(with aCoder: NSCoder)
-	{
-		if msg != nil{
-			aCoder.encode(msg, forKey: "msg")
-		}
-		if success != nil{
-			aCoder.encode(success, forKey: "success")
-		}
-		if value != nil{
-			aCoder.encode(value, forKey: "value")
-		}
-
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    public func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if msg != nil{
+//            dictionary["msg"] = msg
+//        }
+//        if success != nil{
+//            dictionary["success"] = success
+//        }
+//        if value != nil{
+//            dictionary["value"] = value
+//        }
+//        return dictionary
+//    }
+//
+//    /**
+//    * NSCoding required initializer.
+//    * Fills the data from the passed decoder
+//    */
+//    @objc required public init(coder aDecoder: NSCoder)
+//    {
+//         msg = aDecoder.decodeObject(forKey: "msg") as? String
+//         success = aDecoder.decodeObject(forKey: "success") as? Bool
+//         value = aDecoder.decodeObject(forKey: "value") as? Decimal
+//
+//    }
+//
+//    /**
+//    * NSCoding required method.
+//    * Encodes mode properties into the decoder
+//    */
+//    @objc public func encode(with aCoder: NSCoder)
+//    {
+//        if msg != nil{
+//            aCoder.encode(msg, forKey: "msg")
+//        }
+//        if success != nil{
+//            aCoder.encode(success, forKey: "success")
+//        }
+//        if value != nil{
+//            aCoder.encode(value, forKey: "value")
+//        }
+//
+//    }
 
 }

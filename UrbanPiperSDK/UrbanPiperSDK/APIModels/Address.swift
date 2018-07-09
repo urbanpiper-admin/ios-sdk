@@ -28,12 +28,12 @@ public class Address : NSObject, NSCoding {
 	public var tag : String!
     
     public var addressTag: AddressTag {
-        guard let tagString: String = tag?.lowercased(), let addressTagVal: AddressTag = AddressTag(rawValue: tagString) else { return .other }
+        guard let tagString: String = tag, let addressTagVal: AddressTag = AddressTag(rawValue: tagString.lowercased()) else { return .other }
         return addressTagVal
     }
     
     public var fullAddress: String? {
-        var fullAddress = ""
+        var fullAddress: String = ""
         if let string = address1 {
             fullAddress = "\(fullAddress + string)\n"
         }
@@ -61,52 +61,52 @@ public class Address : NSObject, NSCoding {
 		address2 = dictionary["address_2"] as? String
 		city = dictionary["city"] as? String
 		id = dictionary["id"] as? Int
-		lat = dictionary["lat"] as? Double ?? Double(0)
-		lng = dictionary["lng"] as? Double ?? Double(0)
+		lat = dictionary["lat"] as? Double ?? Double.zero
+		lng = dictionary["lng"] as? Double ?? Double.zero
 		pin = dictionary["pin"] as? String
 		podId = dictionary["pod_id"] as? Int
 		subLocality = dictionary["sub_locality"] as? String
 		tag = dictionary["tag"] as? String
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if address1 != nil{
-			dictionary["address_1"] = address1
-		}
-		if address2 != nil{
-			dictionary["address_2"] = address2
-		}
-		if city != nil{
-			dictionary["city"] = city
-		}
-		if id != nil{
-			dictionary["id"] = id
-		}
-		if lat != nil{
-			dictionary["lat"] = lat
-		}
-		if lng != nil{
-			dictionary["lng"] = lng
-		}
-		if pin != nil{
-			dictionary["pin"] = pin
-		}
-		if podId != nil{
-			dictionary["pod_id"] = podId
-		}
-		if subLocality != nil{
-			dictionary["sub_locality"] = subLocality
-		}
-		if tag != nil{
-			dictionary["tag"] = tag
-		}
-		return dictionary
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    public func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if address1 != nil{
+//            dictionary["address_1"] = address1
+//        }
+//        if address2 != nil{
+//            dictionary["address_2"] = address2
+//        }
+//        if city != nil{
+//            dictionary["city"] = city
+//        }
+//        if id != nil{
+//            dictionary["id"] = id
+//        }
+//        if lat != nil{
+//            dictionary["lat"] = lat
+//        }
+//        if lng != nil{
+//            dictionary["lng"] = lng
+//        }
+//        if pin != nil{
+//            dictionary["pin"] = pin
+//        }
+//        if podId != nil{
+//            dictionary["pod_id"] = podId
+//        }
+//        if subLocality != nil{
+//            dictionary["sub_locality"] = subLocality
+//        }
+//        if tag != nil{
+//            dictionary["tag"] = tag
+//        }
+//        return dictionary
+//    }
 
     /**
     * NSCoding required initializer.
@@ -118,8 +118,8 @@ public class Address : NSObject, NSCoding {
          address2 = aDecoder.decodeObject(forKey: "address_2") as? String
          city = aDecoder.decodeObject(forKey: "city") as? String
          id = aDecoder.decodeObject(forKey: "id") as? Int
-         lat = aDecoder.decodeObject(forKey: "lat") as? Double ?? Double(0)
-         lng = aDecoder.decodeObject(forKey: "lng") as? Double ?? Double(0)
+         lat = aDecoder.decodeObject(forKey: "lat") as? Double ?? Double.zero
+         lng = aDecoder.decodeObject(forKey: "lng") as? Double ?? Double.zero
          pin = aDecoder.decodeObject(forKey: "pin") as? String
          podId = aDecoder.decodeObject(forKey: "pod_id") as? Int
          subLocality = aDecoder.decodeObject(forKey: "sub_locality") as? String

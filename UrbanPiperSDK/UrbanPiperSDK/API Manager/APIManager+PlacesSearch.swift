@@ -6,41 +6,34 @@
 //  Copyright © 2018 UrbanPiper Inc. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 extension APIManager {
-
-    @objc public func fetchPlaces(for keyword: String,
-                           completion: APICompletion<GooglePlacesResponse>?,
-                           failure: APIFailure?) -> URLSessionTask {
-        
+    
+    @objc public func fetchCoordinates(from placeId: String,
+                                completion: APICompletion<PlaceDetailsResponse>?,
+                                failure: APIFailure?) -> URLSessionDataTask {
         let placesAPIKey: String = AppConfigManager.shared.firRemoteConfigDefaults.googlePlacesApiKey!
 
-        var bizCountry2LetterCode: String = AppConfigManager.shared.firRemoteConfigDefaults.bizCountry2LetterCode ?? "IN"
-
-        let charSet = NSCharacterSet.whitespacesAndNewlines.inverted
-        if bizCountry2LetterCode.rangeOfCharacter(from: charSet) == nil {
-            bizCountry2LetterCode = "IN"
-        }
-
-        let urlString: String = "https://maps.googleapis.com/maps/api/place/autocomplete/json?sensor=false&key=\(placesAPIKey)&components=country:\(bizCountry2LetterCode)&input=\(keyword)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-
+        var urlString: String = "https://maps.googleapis.com/maps/api/place/details/json?placeid=\(placeId)&sensor=false&key=\(placesAPIKey)"
+        urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        
         let url: URL = URL(string: urlString)!
         
         var urlRequest: URLRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let placesResponse: GooglePlacesResponse = GooglePlacesResponse(fromDictionary: dictionary)
+                    let placeDetailsResponse: PlaceDetailsResponse = PlaceDetailsResponse(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
-                        completionClosure(placesResponse)
+                        completionClosure(placeDetailsResponse)
                     }
                     return
                 }
@@ -62,12 +55,22 @@ extension APIManager {
         return dataTask
     }
     
-    @objc public func fetchCoordinates(from placeId: String,
-                                completion: APICompletion<PlaceDetailsResponse>?,
-                                failure: APIFailure?) -> URLSessionTask {
+    @objc public func fetchPlaces(for keyword: String,
+                                  completion: APICompletion<GooglePlacesResponse>?,
+                                  failure: APIFailure?) -> URLSessionDataTask {
+        
+        let bizCountry2LetterCode: String
+        
+        if let countryCode = AppConfigManager.shared.firRemoteConfigDefaults.bizCountry2LetterCode {
+            bizCountry2LetterCode = countryCode
+        } else {
+            bizCountry2LetterCode = "IN"
+        }
+        
         let placesAPIKey: String = AppConfigManager.shared.firRemoteConfigDefaults.googlePlacesApiKey!
-
-        let urlString: String = "https://maps.googleapis.com/maps/api/place/details/json?placeid=\(placeId)&sensor=false&key=\(placesAPIKey)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        
+        var urlString: String = "https://maps.googleapis.com/maps/api/place/autocomplete/json?sensor=false&key=\(placesAPIKey)&components=country:\(bizCountry2LetterCode)&input=\(keyword)"
+        urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
         let url: URL = URL(string: urlString)!
         
@@ -75,16 +78,16 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let placeDetailsResponse: PlaceDetailsResponse = PlaceDetailsResponse(fromDictionary: dictionary)
+                    let placesResponse: GooglePlacesResponse = GooglePlacesResponse(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
-                        completionClosure(placeDetailsResponse)
+                        completionClosure(placesResponse)
                     }
                     return
                 }

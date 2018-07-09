@@ -10,7 +10,8 @@ import UIKit
 
 extension NSCoding {
     static func registerClassName() {
-        let className: String = NSStringFromClass(self).components(separatedBy: ".").last!
+        let fullClassName: String = NSStringFromClass(self)
+        let className: String = fullClassName.components(separatedBy: ".").last!
         NSKeyedArchiver.setClassName(className, for: self)
         NSKeyedUnarchiver.setClass(self, forClassName: className)
     }

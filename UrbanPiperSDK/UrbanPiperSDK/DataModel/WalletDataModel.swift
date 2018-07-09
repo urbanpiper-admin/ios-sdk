@@ -65,7 +65,7 @@ extension WalletDataModel {
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
         
         if let transactionCell: TransactionCellDelegate = cell as? TransactionCellDelegate {
             transactionCell.configureCell(transactionsListArray?[indexPath.row])
@@ -86,7 +86,7 @@ extension WalletDataModel {
     }
     
     public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let transactionCell: TransactionCellDelegate = cell as? TransactionCellDelegate {
             transactionCell.configureCell(transactionsListArray?[indexPath.row])
@@ -104,7 +104,7 @@ extension WalletDataModel {
     public func fetchWalletTransactions() {
         dataModelDelegate?.fetchingWalletTransactions(isRefreshing: true)
         
-        let dataTask: URLSessionTask = APIManager.shared.fetchWalletTransactions(completion: { [weak self] (response) in
+        let dataTask: URLSessionDataTask = APIManager.shared.fetchWalletTransactions(completion: { [weak self] (response) in
             self?.walletTransactionResponse = response
             self?.dataModelDelegate?.fetchingWalletTransactions(isRefreshing: false)
         }, failure: { [weak self] (upError) in
@@ -118,7 +118,7 @@ extension WalletDataModel {
         transactionId = nil
 
         dataModelDelegate?.initiatingWalletReload(isProcessing: true)
-        let dataTask: URLSessionTask? = APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption,
+        let dataTask: URLSessionDataTask? = APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption,
                                                                purpose: .reload,
                                                                totalAmount: amount,
                                                                bizLocationId: nil,
@@ -148,7 +148,7 @@ extension WalletDataModel {
     public func verifyWalletReloadTransaction(paymentId: String) {
         dataModelDelegate?.verifyingWalletReloadTransaction(isProcessing: true)
 
-        let dataTask: URLSessionTask = APIManager.shared.verifyPayment(pid: paymentId,
+        let dataTask: URLSessionDataTask = APIManager.shared.verifyPayment(pid: paymentId,
                                                        orderId: OnlinePaymentPurpose.reload.rawValue,
                                                        transactionId: transactionId!,
                                                        completion: { [weak self] (responseDict) in

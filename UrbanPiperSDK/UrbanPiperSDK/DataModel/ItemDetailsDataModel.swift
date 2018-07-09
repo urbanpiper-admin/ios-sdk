@@ -61,7 +61,7 @@ extension ItemDetailsDataModel {
     fileprivate func fetchItemLikes() {
         guard AppUserDataModel.shared.validAppUserData != nil else { return }
 
-        let dataTask: URLSessionTask = APIManager.shared.userLikes(completion: { [weak self] (data) in
+        let dataTask: URLSessionDataTask = APIManager.shared.userLikes(completion: { [weak self] (data) in
             defer {
                 self?.dataModelDelegate?.refreshItemDetailsUI()
             }
@@ -79,7 +79,7 @@ extension ItemDetailsDataModel {
     public func likeUnlikeItem(like: Bool) {
         guard let itemDetails = item, let userLikes = userLikesResponse else { return }
 
-        let dataTask: URLSessionTask = APIManager.shared.likeUnlikeItem(itemId: itemDetails.id,
+        let dataTask: URLSessionDataTask = APIManager.shared.likeUnlikeItem(itemId: itemDetails.id,
                                                         like: like, completion: { [weak self] (data) in
                                                             if let likeCount = self?.item?.likes {
                                                                 if like {
@@ -101,7 +101,7 @@ extension ItemDetailsDataModel {
 
     fileprivate func fetchItemDetails(itemId: Int)  {
 
-        let dataTask: URLSessionTask = APIManager.shared.fetchItemDetails(itemId: itemId,
+        let dataTask: URLSessionDataTask = APIManager.shared.fetchItemDetails(itemId: itemId,
                                                           locationID: OrderingStoreDataModel.shared.nearestStoreResponse?.store?.bizLocationId,
                                                           completion: { [weak self] (data) in
             defer {

@@ -14,7 +14,7 @@ extension UITapGestureRecognizer {
         label.lineBreakMode = .byWordWrapping
         
         // Make sure label contains attributed text
-        guard let attributedText = label.attributedText else {
+        guard let attributedText: NSAttributedString = label.attributedText else {
             return false
         }
         

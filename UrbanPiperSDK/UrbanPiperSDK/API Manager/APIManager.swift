@@ -6,7 +6,7 @@
 //  Copyright © 2017 UrbanPiper Inc. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 @objc public class APIManager: NSObject {
 
@@ -60,16 +60,19 @@ import UIKit
     }
     
     func normalLoginUserAuthString(phone: String?, password: String?) -> String? {
-        guard let phoneNo = phone, let passwordString: String = password, phoneNo.count > 0, passwordString.count > 0 else { return nil }
+        guard let pNo: String = phone, pNo.count > 0 else { return nil }
+        guard let passwordString: String = password, passwordString.count > 0 else { return nil }
         
         let bizId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
         
-        let authString: String = "\(phoneNo)__\(bizId):\(passwordString)"
+        let authString: String = "\(pNo)__\(bizId):\(passwordString)"
         
-        let data = authString.data(using: String.Encoding.utf8)
-        let encodedAuthString: String = data!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+        let data: Data = authString.data(using: String.Encoding.utf8)!
+        let encodedAuthString: String = data.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
         
-        return "Basic \(encodedAuthString)"
+        let returnVal: String = "Basic \(encodedAuthString)"
+        
+        return returnVal
     }
     
     func socialLoginUserAuthString(email: String?, accessToken: String?) -> String? {
@@ -105,11 +108,11 @@ import UIKit
     @objc public func updateHeaders() {
 
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        var additionalHeaders = ["X-App-Src": "ios",
-                                 "X-Bid": AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!,
-                                 "X-App-Version": version,
-                                 "Content-Type": "application/json"] as [AnyHashable : Any]
-        
+        var additionalHeaders: [String : Any] = ["X-App-Src": "ios",
+                                                 "X-Bid": AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!,
+                                                 "X-App-Version": version,
+                                                 "Content-Type": "application/json"] as [String : Any]
+
         additionalHeaders["Accept-Encoding"] = "gzip"
         
         additionalHeaders["Authorization"] = authorizationKey()

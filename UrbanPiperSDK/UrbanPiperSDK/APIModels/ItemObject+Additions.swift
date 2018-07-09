@@ -11,7 +11,7 @@ import Foundation
 extension ItemObject: NSCopying {
 
     public var totalAmount: Decimal {
-        var totalAmount = itemPrice ?? 0
+        var totalAmount: Decimal = itemPrice ?? Decimal.zero
         for group in optionGroups {
             for item in group.options {
                 totalAmount += item.totalAmount
@@ -29,11 +29,18 @@ extension ItemObject: NSCopying {
     }
     
     public var isNestedOptionItem: Bool {
-        return optionGroups.filter { $0.options != nil && $0.options.filter { $0.nestedOptionGroups != nil && $0.nestedOptionGroups.count > 0 }.count > 0 }.count > 0
+        return optionGroups.filter ({ (optionGroup) -> Bool in
+            guard let options = optionGroup.options else { return false }
+            return options.filter ({ (option) -> Bool in
+                guard let nestedOptionGroup = option.nestedOptionGroups, nestedOptionGroup.count > 0 else { return false }
+                return true
+            }).count > 0
+        }).count > 0
+//        return optionGroups.filter { $0.options != nil && $0.options.filter { $0.nestedOptionGroups != nil && $0.nestedOptionGroups.count > 0 }.count > 0 }.count > 0
     }
 
     public var isValidCartItemObject: Bool {
-        var isValidItem = true
+        var isValidItem : Bool = true
 
         for group in optionGroups {
             isValidItem = isValidItem && group.isValidCartOptionGroup
@@ -43,13 +50,13 @@ extension ItemObject: NSCopying {
     }
 
     public var descriptionText: String? {
-        let descriptionArray = optionGroups.compactMap { $0.descriptionText }
+        let descriptionArray: [String] = optionGroups.compactMap { $0.descriptionText }
         guard descriptionArray.count > 0 else { return nil }
         return descriptionArray.joined(separator: "\n")
     }
 
     public var optionsToAdd: [[String : Int]]? {
-        var options = [[String : Int]]()
+        var options: [[String : Int]] = [[String : Int]]()
 
         guard let optionGroups = optionGroups, optionGroups.count > 0 else { return  nil }
 
@@ -61,7 +68,7 @@ extension ItemObject: NSCopying {
     }
 
     public var optionsToRemove: [[String: Int]]? {
-        var options = [[String : Int]]()
+        var options: [[String : Int]] = [[String : Int]]()
 
         guard let optionGroups = optionGroups, optionGroups.count > 0 else { return  nil }
 
@@ -73,9 +80,9 @@ extension ItemObject: NSCopying {
     }
 
     @objc public var apiItemDictionary: [String: Any] {
-        var itemDictionary = discountCouponApiItemDictionary
+        var itemDictionary: [String : Any] = discountCouponApiItemDictionary
 
-        if let options = optionsToRemove {
+        if let options: [[String: Int]] = optionsToRemove {
             itemDictionary["options_to_remove"] = options
         }
 
@@ -122,7 +129,7 @@ extension ItemObject {
     }
 
     public func equitableCheckDictionary() -> [String: Any] {
-        var dictionary = [String:Any]()
+        var dictionary: [String : Any] = [String:Any]()
         if category != nil{
             dictionary["category"] = category.toDictionary()
         }
@@ -136,7 +143,7 @@ extension ItemObject {
             dictionary["item_title"] = itemTitle
         }
         if optionGroups != nil{
-            var dictionaryElements = [[String:Any]]()
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
             for optionGroupsElement in optionGroups {
                 dictionaryElements.append(optionGroupsElement.equitableCheckDictionary())
             }

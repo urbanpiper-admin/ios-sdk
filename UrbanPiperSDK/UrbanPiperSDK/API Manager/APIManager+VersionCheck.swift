@@ -6,17 +6,17 @@
 //  Copyright © 2017 UrbanPiper Inc. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 extension APIManager {
 
     @objc public func checkForUpgrade(completion: APICompletion<VersionCheckResponse>?,
-                                 failure: APIFailure?) -> URLSessionTask? {
+                                 failure: APIFailure?) -> URLSessionDataTask? {
 
-        guard let username = AppUserDataModel.shared.validAppUserData?.phoneNumberWithCountryCode else { return nil }
+        guard let username: String = AppUserDataModel.shared.validAppUserData?.phoneNumberWithCountryCode else { return nil }
         
-        let infoDictionary = Bundle.main.infoDictionary
-        guard let appVersion: String = infoDictionary?["CFBundleShortVersionString"] as? String,
+        let infoDictionary: [String: Any] = Bundle.main.infoDictionary!
+        guard let appVersion: String = infoDictionary["CFBundleShortVersionString"] as? String,
             let bizAppId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId else { return nil }
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/app/ios/?user=\(username)&biz_id=\(bizAppId)&ver=\(appVersion)"
@@ -27,7 +27,7 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
 
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
 
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }

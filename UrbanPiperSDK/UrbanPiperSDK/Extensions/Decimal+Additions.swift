@@ -1,5 +1,5 @@
 //
-//  Decimal+Rounded.swift
+//  Decimal+Additions.swift
 //  WhiteLabel
 //
 //  Created by Vidhyadharan Mohanram on 01/02/18.
@@ -9,6 +9,8 @@
 import UIKit
 
 extension Decimal {
+    
+    public static let zero: Decimal = Decimal.zero
     
     public var rounded: Decimal {
         var current = self

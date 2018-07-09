@@ -10,9 +10,9 @@ import UIKit
 
 open class UrbanPiperDataModel: NSObject {
 
-    typealias WeakRefURLSessionTask = WeakRef<URLSessionTask>
+    typealias WeakRefURLSessionDataTask = WeakRef<URLSessionDataTask>
 
-    var dataTasks = [WeakRefURLSessionTask]()
+    var dataTasks = [WeakRefURLSessionDataTask]()
 
     public private(set) weak var collectionView: UICollectionView?
     
@@ -21,34 +21,6 @@ open class UrbanPiperDataModel: NSObject {
     public private(set) var tableViewCellIdentifier: String!
     
     public private(set) var collectionViewCellIdentifier: String!
-    
-    public private(set) var identifier: String?
-    
-    public var cellIdentifier: String? {
-        get {
-            guard identifier == nil else { return identifier }
-            
-            if tableView != nil {
-                guard tableView?.dequeueReusableCell(withIdentifier: tableViewCellIdentifier) != nil else {
-                    print("Provide a valid table view cell identifier")
-                    return nil
-                }
-                
-                identifier = tableViewCellIdentifier
-            }
-            
-            if collectionView != nil {
-                guard collectionView?.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier, for: IndexPath(row: 0, section: 0)) != nil else {
-                    print("Provide a valid collection view cell identifier")
-                    return nil
-                }
-                
-                identifier = collectionViewCellIdentifier
-            }
-            
-            return identifier
-        }
-    }
     
     public override init() {
         super.init()
@@ -80,6 +52,11 @@ open class UrbanPiperDataModel: NSObject {
     }
     
     open func configure(tableView: UITableView, cellIdentifier: String) {
+        guard tableView.dequeueReusableCell(withIdentifier: cellIdentifier) != nil else {
+            assert(false, "Provide a valid table view cell identifier")
+            return
+        }
+        
         tableViewCellIdentifier = cellIdentifier
         tableView.dataSource = self
         
@@ -106,14 +83,14 @@ open class UrbanPiperDataModel: NSObject {
         dataTasks.removeAll()
     }
         
-    open func addOrCancelDataTask(dataTask :URLSessionTask?) {
+    open func addOrCancelDataTask(dataTask :URLSessionDataTask?) {
         cleanDataTasksArray()
         guard let task = dataTask else { return }
         guard dataTasks.filter ({ $0.value?.originalRequest?.url == task.originalRequest?.url }).count == 0 else {
             task.cancel()
             return
         }
-        dataTasks.append(WeakRefURLSessionTask(value: task))
+        dataTasks.append(WeakRefURLSessionDataTask(value: task))
         task.resume()
     }
 

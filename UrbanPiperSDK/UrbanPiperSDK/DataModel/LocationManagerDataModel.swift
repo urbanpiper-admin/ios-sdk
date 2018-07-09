@@ -73,7 +73,7 @@ extension LocationManagerDataModel: CLLocationManagerDelegate {
             return
         }
 
-        print("HorizontalAccuracy \(location.horizontalAccuracy)")
+//        print("HorizontalAccuracy \(location.horizontalAccuracy)")
 //        guard location.horizontalAccuracy < 200 else { return }
 
         currentUserLocation = location

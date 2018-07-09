@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class MyOrdersResponse : NSObject, NSCoding{
+public class MyOrdersResponse : NSObject{
 
 	public var meta : MyOrderMeta!
 	public var objects : [MyOrderObject]!
@@ -30,49 +30,49 @@ public class MyOrdersResponse : NSObject, NSCoding{
 		}
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if meta != nil{
-			dictionary["meta"] = meta.toDictionary()
-		}
-		if objects != nil{
-			var dictionaryElements = [[String:Any]]()
-			for objectsElement in objects {
-				dictionaryElements.append(objectsElement.toDictionary())
-			}
-			dictionary["objects"] = dictionaryElements
-		}
-		return dictionary
-	}
-
-    /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    @objc required public init(coder aDecoder: NSCoder)
-	{
-         meta = aDecoder.decodeObject(forKey: "meta") as? MyOrderMeta
-         objects = aDecoder.decodeObject(forKey :"objects") as? [MyOrderObject]
-
-	}
-
-    /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    @objc public func encode(with aCoder: NSCoder)
-	{
-		if meta != nil{
-			aCoder.encode(meta, forKey: "meta")
-		}
-		if objects != nil{
-			aCoder.encode(objects, forKey: "objects")
-		}
-
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if meta != nil{
+//            dictionary["meta"] = meta.toDictionary()
+//        }
+//        if objects != nil{
+//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//            for objectsElement in objects {
+//                dictionaryElements.append(objectsElement.toDictionary())
+//            }
+//            dictionary["objects"] = dictionaryElements
+//        }
+//        return dictionary
+//    }
+//
+//    /**
+//    * NSCoding required initializer.
+//    * Fills the data from the passed decoder
+//    */
+//    @objc required public init(coder aDecoder: NSCoder)
+//    {
+//         meta = aDecoder.decodeObject(forKey: "meta") as? MyOrderMeta
+//         objects = aDecoder.decodeObject(forKey :"objects") as? [MyOrderObject]
+//
+//    }
+//
+//    /**
+//    * NSCoding required method.
+//    * Encodes mode properties into the decoder
+//    */
+//    @objc public func encode(with aCoder: NSCoder)
+//    {
+//        if meta != nil{
+//            aCoder.encode(meta, forKey: "meta")
+//        }
+//        if objects != nil{
+//            aCoder.encode(objects, forKey: "objects")
+//        }
+//
+//    }
 
 }

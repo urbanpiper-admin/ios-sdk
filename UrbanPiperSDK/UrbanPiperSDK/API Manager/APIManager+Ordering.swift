@@ -6,13 +6,13 @@
 //  Copyright © 2017 UrbanPiper Inc. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 extension APIManager {
 
     @objc public func fetchCategoriesList(_ isForceRefresh: Bool,
                                    completion: APICompletion<CategoriesResponse>?,
-                                   failure: APIFailure?) -> URLSessionTask {
+                                   failure: APIFailure?) -> URLSessionDataTask {
 
         let canUseCachedResponse: Bool = AppConfigManager.shared.firRemoteConfigDefaults.enableCaching && !isForceRefresh
 
@@ -27,7 +27,7 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { [weak self] (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
 
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }

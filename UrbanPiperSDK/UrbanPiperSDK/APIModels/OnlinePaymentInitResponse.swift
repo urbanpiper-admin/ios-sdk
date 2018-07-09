@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class OnlinePaymentInitResponse : NSObject, NSCoding{
+public class OnlinePaymentInitResponse : NSObject{
 
 	public var data : OnlinePaymentData!
 	public var message : String!
@@ -30,66 +30,66 @@ public class OnlinePaymentInitResponse : NSObject, NSCoding{
 		url = dictionary["url"] as AnyObject
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if data != nil{
-			dictionary["data"] = data.toDictionary()
-		}
-		if message != nil{
-			dictionary["message"] = message
-		}
-		if success != nil{
-			dictionary["success"] = success
-		}
-		if transactionId != nil{
-			dictionary["transaction_id"] = transactionId
-		}
-		if url != nil{
-			dictionary["url"] = url
-		}
-		return dictionary
-	}
-
-    /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    @objc required public init(coder aDecoder: NSCoder)
-	{
-         data = aDecoder.decodeObject(forKey: "data") as? OnlinePaymentData
-         message = aDecoder.decodeObject(forKey: "message") as? String
-         success = aDecoder.decodeObject(forKey: "success") as? Bool
-         transactionId = aDecoder.decodeObject(forKey: "transaction_id") as? String
-         url = aDecoder.decodeObject(forKey: "url") as AnyObject
-
-	}
-
-    /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    @objc public func encode(with aCoder: NSCoder)
-	{
-		if data != nil{
-			aCoder.encode(data, forKey: "data")
-		}
-		if message != nil{
-			aCoder.encode(message, forKey: "message")
-		}
-		if success != nil{
-			aCoder.encode(success, forKey: "success")
-		}
-		if transactionId != nil{
-			aCoder.encode(transactionId, forKey: "transaction_id")
-		}
-		if url != nil{
-			aCoder.encode(url, forKey: "url")
-		}
-
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    public func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if data != nil{
+//            dictionary["data"] = data.toDictionary()
+//        }
+//        if message != nil{
+//            dictionary["message"] = message
+//        }
+//        if success != nil{
+//            dictionary["success"] = success
+//        }
+//        if transactionId != nil{
+//            dictionary["transaction_id"] = transactionId
+//        }
+//        if url != nil{
+//            dictionary["url"] = url
+//        }
+//        return dictionary
+//    }
+//
+//    /**
+//    * NSCoding required initializer.
+//    * Fills the data from the passed decoder
+//    */
+//    @objc required public init(coder aDecoder: NSCoder)
+//    {
+//         data = aDecoder.decodeObject(forKey: "data") as? OnlinePaymentData
+//         message = aDecoder.decodeObject(forKey: "message") as? String
+//         success = aDecoder.decodeObject(forKey: "success") as? Bool
+//         transactionId = aDecoder.decodeObject(forKey: "transaction_id") as? String
+//         url = aDecoder.decodeObject(forKey: "url") as AnyObject
+//
+//    }
+//
+//    /**
+//    * NSCoding required method.
+//    * Encodes mode properties into the decoder
+//    */
+//    @objc public func encode(with aCoder: NSCoder)
+//    {
+//        if data != nil{
+//            aCoder.encode(data, forKey: "data")
+//        }
+//        if message != nil{
+//            aCoder.encode(message, forKey: "message")
+//        }
+//        if success != nil{
+//            aCoder.encode(success, forKey: "success")
+//        }
+//        if transactionId != nil{
+//            aCoder.encode(transactionId, forKey: "transaction_id")
+//        }
+//        if url != nil{
+//            aCoder.encode(url, forKey: "url")
+//        }
+//
+//    }
 
 }

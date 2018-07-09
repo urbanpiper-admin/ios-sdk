@@ -25,9 +25,9 @@ extension ItemOptionGroup {
     }
 
     public var isValidCartOptionGroup: Bool {
-        guard let groupOptions = options, groupOptions.count > 0 else { return false }
+        guard let groupOptions: [ItemOption] = options, groupOptions.count > 0 else { return false }
 
-        var isValidItem = minSelectable == SelectionQuantity.one ? false : true
+        var isValidItem: Bool = minSelectable == SelectionQuantity.one ? false : true
 
         for option in groupOptions {
             isValidItem = isValidItem || option.isValidCartItemOption
@@ -64,8 +64,8 @@ extension ItemOptionGroup {
             return itemOption.descriptionText
         })
 
-        guard let titleText = title, descriptionArray.count > 0 else { return nil }
-        let text = descriptionArray.joined(separator: ", ")
+        guard let titleText: String = title, descriptionArray.count > 0 else { return nil }
+        let text: String = descriptionArray.joined(separator: ", ")
         return "• \(titleText): \(text)"
     }
     
@@ -87,12 +87,12 @@ extension ItemOptionGroup {
 extension ItemOptionGroup {
     
     public func equitableCheckDictionary() -> [String: Any] {
-        var dictionary = [String:Any]()
+        var dictionary: [String : Any] = [String:Any]()
         if isDefault != nil{
             dictionary["is_default"] = isDefault
         }
         if options != nil{
-            var dictionaryElements = [[String:Any]]()
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
             for optionsElement in options {
                 guard optionsElement.quantity > 0 else { continue }
                 dictionaryElements.append(optionsElement.equitableCheckDictionary())
@@ -104,13 +104,18 @@ extension ItemOptionGroup {
     }
     
     static public func == (lhs: ItemOptionGroup, rhs: ItemOptionGroup) -> Bool {
-        return lhs.descriptionField  == rhs.descriptionField  &&
-            lhs.id  == rhs.id  &&
-            lhs.isDefault  == rhs.isDefault  &&
-            lhs.maxSelectable  == rhs.maxSelectable  &&
-            lhs.minSelectable  == rhs.minSelectable  &&
-            lhs.options  == rhs.options  &&
-            lhs.sortOrder  == rhs.sortOrder  &&
-            lhs.title  == rhs.title
+        let lhsDictionary = lhs.equitableCheckDictionary()
+        let rhsDictionary = rhs.equitableCheckDictionary()
+        
+        return NSDictionary(dictionary: lhsDictionary).isEqual(to: rhsDictionary)
+
+//        return lhs.descriptionField == rhs.descriptionField &&
+//            lhs.id == rhs.id &&
+//            lhs.isDefault == rhs.isDefault &&
+//            lhs.maxSelectable == rhs.maxSelectable &&
+//            lhs.minSelectable == rhs.minSelectable &&
+//            lhs.options == rhs.options &&
+//            lhs.sortOrder == rhs.sortOrder &&
+//            lhs.title == rhs.title
     }
 }

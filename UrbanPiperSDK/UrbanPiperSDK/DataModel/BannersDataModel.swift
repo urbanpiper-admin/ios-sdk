@@ -28,7 +28,7 @@ public class BannersDataModel: UrbanPiperDataModel {
             tableView?.reloadData()
             collectionView?.reloadData()
 
-            guard let count = bannersResponse?.images.count, count > 1 else { return }
+            guard let count: Int = bannersResponse?.images.count, count > 1 else { return }
             
             DispatchQueue.main.async { [weak self] in
                 let indexPath: IndexPath = IndexPath(row: 1, section: 0)
@@ -62,7 +62,7 @@ extension BannersDataModel {
     }
 
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
 
         if let bannerCell: BannerCellDelegate = cell as? BannerCellDelegate {
             bannerCell.configureCell(bannersListArray?[indexPath.row])
@@ -88,7 +88,7 @@ extension BannersDataModel {
     }
 
     public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
+     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
 
         if let bannerCell: BannerCellDelegate = cell as? BannerCellDelegate {
             let image: Image?
@@ -120,7 +120,7 @@ extension BannersDataModel {
 extension BannersDataModel {
 
     fileprivate func fetchBannersList() {
-        let dataTask: URLSessionTask = APIManager.shared.fetchBannersList(completion: { [weak self] (data) in
+        let dataTask: URLSessionDataTask = APIManager.shared.fetchBannersList(completion: { [weak self] (data) in
             defer {
                 self?.dataModelDelegate?.refreshBannersUI()
             }

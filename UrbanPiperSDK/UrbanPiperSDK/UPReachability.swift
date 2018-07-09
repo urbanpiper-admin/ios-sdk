@@ -105,7 +105,7 @@ public class UPReachability {
         // If we're reachable, but not on an iOS device (i.e. simulator), we must be on WiFi
         guard isRunningOnDevice else { return .wifi }
         
-        var connection = Connection.none
+        var connection: Connection = Connection.none
         
         if !isConnectionRequiredFlagSet {
             connection = .wifi
@@ -138,12 +138,12 @@ public class UPReachability {
         #endif
     }()
     
-    fileprivate var notifierRunning = false
+    fileprivate var notifierRunning: Bool = false
     fileprivate let reachabilityRef: SCNetworkReachability
     
     fileprivate let reachabilitySerialQueue: DispatchQueue = DispatchQueue(label: "uk.co.ashleymills.reachability")
     
-    fileprivate var usingHostname = false
+    fileprivate var usingHostname: Bool = false
     
     required public init(reachabilityRef: SCNetworkReachability, usingHostname: Bool = false) {
         allowsCellularConnection = true
@@ -157,7 +157,7 @@ public class UPReachability {
     }
     
     public convenience init?() {
-        var zeroAddress = sockaddr()
+        var zeroAddress: sockaddr = sockaddr()
         zeroAddress.sa_len = UInt8(MemoryLayout<sockaddr>.size)
         zeroAddress.sa_family = sa_family_t(AF_INET)
         
@@ -177,7 +177,7 @@ public extension UPReachability {
     func startNotifier() throws {
         guard !notifierRunning else { return }
         
-        var context = SCNetworkReachabilityContext(version: 0, info: nil, retain: nil, release: nil, copyDescription: nil)
+        var context: SCNetworkReachabilityContext = SCNetworkReachabilityContext(version: 0, info: nil, retain: nil, release: nil, copyDescription: nil)
         context.info = UnsafeMutableRawPointer(Unmanaged<UPReachability>.passUnretained(self).toOpaque())
         if !SCNetworkReachabilitySetCallback(reachabilityRef, callback, &context) {
             stopNotifier()
@@ -263,9 +263,9 @@ fileprivate extension UPReachability {
         let block = connection != .none ? whenReachable : whenUnreachable
         
         DispatchQueue.main.async {
-            if self.usingHostname {
-                print("USING HOSTNAME ABOUT TO CALL BLOCK")
-            }
+//            if self.usingHostname {
+//                print("USING HOSTNAME ABOUT TO CALL BLOCK")
+//            }
             block?(self)
             self.notificationCenter.post(name: .reachabilityChanged, object:self)
         }
@@ -312,9 +312,9 @@ fileprivate extension UPReachability {
     }
     
     var flags: SCNetworkReachabilityFlags {
-        var flags = SCNetworkReachabilityFlags()
+        var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags()
         if SCNetworkReachabilityGetFlags(reachabilityRef, &flags) {
-            print("Returning flags \(flags)")
+//            print("Returning flags \(flags)")
             return flags
         } else {
             return SCNetworkReachabilityFlags()

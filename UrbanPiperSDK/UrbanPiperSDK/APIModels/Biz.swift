@@ -59,12 +59,8 @@ import Foundation
             minOrderTotal = val
         } else if let val: Double = dictionary["min_order_total"] as? Double {
             minOrderTotal = Decimal(val).rounded
-        } else if let val: Float = dictionary["min_order_total"] as? Float {
-            minOrderTotal = Decimal(Double(val)).rounded
-        } else if let val: Int = dictionary["min_order_total"] as? Int {
-            minOrderTotal = Decimal(val).rounded
         } else {
-            minOrderTotal = Decimal(0).rounded
+            minOrderTotal = Decimal.zero
         }
         
 		minimumWalletCreditThreshold = dictionary["minimum_wallet_credit_threshold"] as? Float
@@ -97,7 +93,7 @@ import Foundation
 	 */
 	public func toDictionary() -> [String:Any]
 	{
-		var dictionary = [String:Any]()
+		var dictionary: [String : Any] = [String:Any]()
 		if contactPhone != nil{
 			dictionary["contact_phone"] = contactPhone
 		}
@@ -108,7 +104,7 @@ import Foundation
 			dictionary["delivery_min_offset_time"] = deliveryMinOffsetTime
 		}
 		if feedbackConfig != nil{
-            var dictionaryElements = [[String:Any]]()
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
 			for feedbackConfigElement in feedbackConfig {
 				dictionaryElements.append(feedbackConfigElement.toDictionary())
 			}
@@ -163,7 +159,7 @@ import Foundation
 			dictionary["simpl_client_id"] = simplClientId
 		}
 		if timeSlots != nil{
-            var dictionaryElements = [[String:Any]]()
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
 			for timeSlotsElement in timeSlots {
 				dictionaryElements.append(timeSlotsElement.toDictionary())
 			}

@@ -6,7 +6,7 @@
 //  Copyright © 2018 UrbanPiper Inc. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 public enum OnlinePaymentPurpose: String {
     case reload = "reload"
@@ -21,7 +21,7 @@ extension APIManager {
                                items: [ItemObject],
                                orderTotal: Decimal,
                                completion: APICompletion<OrderPreProcessingResponse>?,
-                               failure: APIFailure?) -> URLSessionTask {
+                               failure: APIFailure?) -> URLSessionDataTask {
         
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
         let urlString: String = "\(APIManager.baseUrl)/api/v1/order/?format=json&pre_proc=1&biz_id=\(appId)"
@@ -32,7 +32,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "POST"
         
-        let params = ["biz_location_id": bizLocationId,
+        let params: [String: Any] = ["biz_location_id": bizLocationId,
                       "apply_wallet_credit": applyWalletCredit,
                       "order_type": deliveryOption,
                       "channel": APIManager.channel,
@@ -41,7 +41,7 @@ extension APIManager {
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
@@ -75,9 +75,10 @@ extension APIManager {
     @objc public func applyCoupon(code: String,
                            orderData: [String: Any],
                            completion: APICompletion<Order>?,
-                           failure: APIFailure?) -> URLSessionTask {
+                           failure: APIFailure?) -> URLSessionDataTask {
         
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/\(code)/".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        var urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/\(code)/"
+        urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
         let url: URL = URL(string: urlString)!
         
@@ -85,11 +86,11 @@ extension APIManager {
         
         urlRequest.httpMethod = "POST"
         
-        let params = ["order": orderData]
+        let params: [String: Any] = ["order": orderData]
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
@@ -125,11 +126,11 @@ extension APIManager {
                                       totalAmount: Decimal,
                                       bizLocationId: Int?,
                                       completion: APICompletion<OnlinePaymentInitResponse>?,
-                                      failure: APIFailure?) -> URLSessionTask? {
+                                      failure: APIFailure?) -> URLSessionDataTask? {
         
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
         
-        var urlString = "\(APIManager.baseUrl)/payments/init/\(appId)/"
+        var urlString: String = "\(APIManager.baseUrl)/payments/init/\(appId)/"
 
         if purpose == OnlinePaymentPurpose.ordering {
             guard let locationId = bizLocationId else { return nil}
@@ -137,9 +138,9 @@ extension APIManager {
         }
         
         if paymentOption == PaymentOption.paytm {
-            urlString = urlString + "?amount=\(totalAmount * 100)&purpose=\(purpose)&channel=\(APIManager.channel)&redirect_url=https://urbanpiper.com&paytm=1"
+            urlString = "\(urlString)?amount=\(totalAmount * 100)&purpose=\(purpose)&channel=\(APIManager.channel)&redirect_url=https://urbanpiper.com&paytm=1"
         } else {
-            urlString = urlString + "?amount=\(totalAmount * 100)&purpose=\(purpose)&channel=\(APIManager.channel)&\(paymentOption.rawValue)=1"
+            urlString = "\(urlString)?amount=\(totalAmount * 100)&purpose=\(purpose)&channel=\(APIManager.channel)&\(paymentOption.rawValue)=1"
         }
         
         let url: URL = URL(string: urlString)!
@@ -148,7 +149,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
@@ -201,7 +202,7 @@ extension APIManager {
                           payableAmount: Decimal,
                           onlinePaymentInitResponse: OnlinePaymentInitResponse?,
                           completion: APICompletion<[String: Any]>?,
-                          failure: APIFailure?) -> URLSessionTask {
+                          failure: APIFailure?) -> URLSessionDataTask {
         
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
         let urlString: String = "\(APIManager.baseUrl)/api/v1/order/?format=json&biz_id=\(appId)"
@@ -212,7 +213,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "POST"
         
-        var params = ["channel": APIManager.channel,
+        var params: [String: Any] = ["channel": APIManager.channel,
                       "order_type": deliveryOption,
                       "instructions": instructions,
                       "items": items.map { $0.apiItemDictionary },
@@ -225,8 +226,8 @@ extension APIManager {
                       "packaging_charge": packagingCharge,
                       "item_taxes": itemTaxes,
                       "discount_applied": discountApplied,
-                      "delivery_charge": deliveryOption == DeliveryOption.pickUp.rawValue ? Decimal(0).rounded : deliveryCharge,
-                      "order_total": orderTotal] as [String: Any]
+                      "delivery_charge": deliveryOption == DeliveryOption.pickUp.rawValue ? Decimal.zero : deliveryCharge,
+        "order_total": orderTotal] as [String: Any]
         
         if applyWalletCredit {
             params["wallet_credit_applicable"] = true
@@ -256,7 +257,7 @@ extension APIManager {
                 
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
@@ -289,7 +290,7 @@ extension APIManager {
                              orderId: String,
                              transactionId: String,
         completion: APICompletion<[String: Any]>?,
-                           failure: APIFailure?) -> URLSessionTask {
+                           failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/payments/callback/\(transactionId)/?gateway_txn_id=\(pid)&pid=\(orderId)"
         
@@ -299,7 +300,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }

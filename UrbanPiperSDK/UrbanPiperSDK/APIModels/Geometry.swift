@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class Geometry : NSObject, NSCoding{
+public class Geometry : NSObject{
 
 	public var location : Location!
 	public var viewport : Viewport!
@@ -26,45 +26,45 @@ public class Geometry : NSObject, NSCoding{
 		}
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if location != nil{
-			dictionary["location"] = location.toDictionary()
-		}
-		if viewport != nil{
-			dictionary["viewport"] = viewport.toDictionary()
-		}
-		return dictionary
-	}
-
-    /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    @objc required public init(coder aDecoder: NSCoder)
-	{
-         location = aDecoder.decodeObject(forKey: "location") as? Location
-         viewport = aDecoder.decodeObject(forKey: "viewport") as? Viewport
-
-	}
-
-    /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    @objc public func encode(with aCoder: NSCoder)
-	{
-		if location != nil{
-			aCoder.encode(location, forKey: "location")
-		}
-		if viewport != nil{
-			aCoder.encode(viewport, forKey: "viewport")
-		}
-
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    public func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if location != nil{
+//            dictionary["location"] = location.toDictionary()
+//        }
+//        if viewport != nil{
+//            dictionary["viewport"] = viewport.toDictionary()
+//        }
+//        return dictionary
+//    }
+//
+//    /**
+//    * NSCoding required initializer.
+//    * Fills the data from the passed decoder
+//    */
+//    @objc required public init(coder aDecoder: NSCoder)
+//    {
+//         location = aDecoder.decodeObject(forKey: "location") as? Location
+//         viewport = aDecoder.decodeObject(forKey: "viewport") as? Viewport
+//
+//    }
+//
+//    /**
+//    * NSCoding required method.
+//    * Encodes mode properties into the decoder
+//    */
+//    @objc public func encode(with aCoder: NSCoder)
+//    {
+//        if location != nil{
+//            aCoder.encode(location, forKey: "location")
+//        }
+//        if viewport != nil{
+//            aCoder.encode(viewport, forKey: "viewport")
+//        }
+//
+//    }
 
 }

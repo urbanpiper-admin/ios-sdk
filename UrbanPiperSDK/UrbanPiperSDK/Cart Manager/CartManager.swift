@@ -20,7 +20,7 @@ public class CartManager: NSObject {
     @objc public static let shared: CartManager = CartManager()
 
     private typealias WeakRefCartManagerDelegate = WeakRef<CartManagerDelegate>
-    private var cartManagerObservers = [WeakRefCartManagerDelegate]()
+    private var cartManagerObservers: [WeakRefCartManagerDelegate] = [WeakRefCartManagerDelegate]()
 
     @objc public var cartItems = [ItemObject]()
 
@@ -28,7 +28,7 @@ public class CartManager: NSObject {
         return Array(Dictionary(grouping:cartItems){$0.category.id ?? 0}.values)
     }
     
-    @objc public var isReorder = false
+    @objc public var isReorder: Bool = false
 
     @objc public var cartValue: Decimal {
         return cartItems.reduce (0.0, { $0 + ($1.totalAmount * Decimal($1.quantity)).rounded } )

@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class OrderPreProcessingResponse : NSObject, NSCoding{
+public class OrderPreProcessingResponse : NSObject{
 
 	public var order : Order!
     public var discount : Decimal?
@@ -27,56 +27,50 @@ public class OrderPreProcessingResponse : NSObject, NSCoding{
             discount = val
         } else if let val: Double = priceVal as? Double {
             discount = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: discount!).doubleValue))")
-        } else if let val: Float = priceVal as? Float {
-            discount = Decimal(Double(val)).rounded
-        } else if let val: Int = priceVal as? Int {
-            discount = Decimal(val).rounded
-            print("Decimal Double \((NSDecimalNumber(decimal: discount!).doubleValue))")
         } else {
-            discount = Decimal(0).rounded
+            discount = Decimal.zero
         }
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if order != nil{
-			dictionary["order"] = order.toDictionary()
-		}
-        if discount != nil{
-            dictionary["discount"] = discount
-        }
-		return dictionary
-	}
-
-    /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    @objc required public init(coder aDecoder: NSCoder)
-	{
-         order = aDecoder.decodeObject(forKey: "order") as? Order
-        discount = aDecoder.decodeObject(forKey: "discount") as? Decimal
-
-	}
-
-    /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    @objc public func encode(with aCoder: NSCoder)
-	{
-		if order != nil{
-			aCoder.encode(order, forKey: "order")
-		}
-        if discount != nil{
-            aCoder.encode(discount, forKey: "discount")
-        }
-
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    public func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if order != nil{
+//            dictionary["order"] = order.toDictionary()
+//        }
+//        if discount != nil{
+//            dictionary["discount"] = discount
+//        }
+//        return dictionary
+//    }
+//
+//    /**
+//    * NSCoding required initializer.
+//    * Fills the data from the passed decoder
+//    */
+//    @objc required public init(coder aDecoder: NSCoder)
+//    {
+//         order = aDecoder.decodeObject(forKey: "order") as? Order
+//        discount = aDecoder.decodeObject(forKey: "discount") as? Decimal
+//
+//    }
+//
+//    /**
+//    * NSCoding required method.
+//    * Encodes mode properties into the decoder
+//    */
+//    @objc public func encode(with aCoder: NSCoder)
+//    {
+//        if order != nil{
+//            aCoder.encode(order, forKey: "order")
+//        }
+//        if discount != nil{
+//            aCoder.encode(discount, forKey: "discount")
+//        }
+//
+//    }
 
 }

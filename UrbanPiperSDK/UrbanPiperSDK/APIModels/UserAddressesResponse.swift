@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class UserAddressesResponse : NSObject, NSCoding{
+public class UserAddressesResponse : NSObject{
 
 	public var addresses : [Address]!
 
@@ -26,42 +26,42 @@ public class UserAddressesResponse : NSObject, NSCoding{
 		}
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if addresses != nil{
-			var dictionaryElements = [[String:Any]]()
-			for addressesElement in addresses {
-				dictionaryElements.append(addressesElement.toDictionary())
-			}
-			dictionary["addresses"] = dictionaryElements
-		}
-		return dictionary
-	}
-
-    /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    @objc required public init(coder aDecoder: NSCoder)
-	{
-         addresses = aDecoder.decodeObject(forKey :"addresses") as? [Address]
-
-	}
-
-    /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    @objc public func encode(with aCoder: NSCoder)
-	{
-		if addresses != nil{
-			aCoder.encode(addresses, forKey: "addresses")
-		}
-
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    public func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if addresses != nil{
+//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//            for addressesElement in addresses {
+//                dictionaryElements.append(addressesElement.toDictionary())
+//            }
+//            dictionary["addresses"] = dictionaryElements
+//        }
+//        return dictionary
+//    }
+//
+//    /**
+//    * NSCoding required initializer.
+//    * Fills the data from the passed decoder
+//    */
+//    @objc required public init(coder aDecoder: NSCoder)
+//    {
+//         addresses = aDecoder.decodeObject(forKey :"addresses") as? [Address]
+//
+//    }
+//
+//    /**
+//    * NSCoding required method.
+//    * Encodes mode properties into the decoder
+//    */
+//    @objc public func encode(with aCoder: NSCoder)
+//    {
+//        if addresses != nil{
+//            aCoder.encode(addresses, forKey: "addresses")
+//        }
+//
+//    }
 
 }

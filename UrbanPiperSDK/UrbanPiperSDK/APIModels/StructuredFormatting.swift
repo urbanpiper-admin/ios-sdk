@@ -30,27 +30,27 @@ public class StructuredFormatting : NSObject, NSCoding{
 		secondaryText = dictionary["secondary_text"] as? String
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if mainText != nil{
-			dictionary["main_text"] = mainText
-		}
-		if mainTextMatchedSubstrings != nil{
-            var dictionaryElements = [[String:Any]]()
-			for mainTextMatchedSubstringsElement in mainTextMatchedSubstrings {
-				dictionaryElements.append(mainTextMatchedSubstringsElement.toDictionary())
-			}
-			dictionary["main_text_matched_substrings"] = dictionaryElements
-		}
-		if secondaryText != nil{
-			dictionary["secondary_text"] = secondaryText
-		}
-		return dictionary
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    public func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if mainText != nil{
+//            dictionary["main_text"] = mainText
+//        }
+//        if mainTextMatchedSubstrings != nil{
+//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//            for mainTextMatchedSubstringsElement in mainTextMatchedSubstrings {
+//                dictionaryElements.append(mainTextMatchedSubstringsElement.toDictionary())
+//            }
+//            dictionary["main_text_matched_substrings"] = dictionaryElements
+//        }
+//        if secondaryText != nil{
+//            dictionary["secondary_text"] = secondaryText
+//        }
+//        return dictionary
+//    }
 
     /**
     * NSCoding required initializer.

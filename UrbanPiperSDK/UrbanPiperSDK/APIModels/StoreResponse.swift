@@ -26,20 +26,20 @@ import Foundation
 		}
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-    @objc public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if biz != nil{
-			dictionary["biz"] = biz.toDictionary()
-		}
-		if store != nil{
-			dictionary["store"] = store!.toDictionary()
-		}
-		return dictionary
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    @objc public func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if biz != nil{
+//            dictionary["biz"] = biz.toDictionary()
+//        }
+//        if store != nil{
+//            dictionary["store"] = store!.toDictionary()
+//        }
+//        return dictionary
+//    }
 
     /**
     * NSCoding required initializer.

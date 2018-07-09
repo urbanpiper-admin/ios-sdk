@@ -48,17 +48,13 @@ public class Store : NSObject, NSCoding{
 		closingDay = dictionary["closing_day"] as? Bool
 		closingTime = dictionary["closing_time"] as? String
         
-        var priceVal = dictionary["delivery_charge"]
+        var priceVal: Any? = dictionary["delivery_charge"]
         if let val: Decimal = priceVal as? Decimal {
             deliveryCharge = val
         } else if let val: Double = priceVal as? Double {
             deliveryCharge = Decimal(val).rounded
-        } else if let val: Float = priceVal as? Float {
-            deliveryCharge = Decimal(Double(val)).rounded
-        } else if let val: Int = priceVal as? Int {
-            deliveryCharge = Decimal(val).rounded
         } else {
-            deliveryCharge = Decimal(0).rounded
+            deliveryCharge = Decimal.zero
         }
         
         deliveryMinOffsetTime = dictionary["delivery_min_offset_time"] as? Int
@@ -68,12 +64,8 @@ public class Store : NSObject, NSCoding{
             discount = val
         } else if let val: Double = priceVal as? Double {
             discount = Decimal(val).rounded
-        } else if let val: Float = priceVal as? Float {
-            discount = Decimal(Double(val)).rounded
-        } else if let val: Int = priceVal as? Int {
-            discount = Decimal(val).rounded
         } else {
-            discount = Decimal(0).rounded
+            discount = Decimal.zero
         }
         
 		hideStoreName = dictionary["hide_store_name"] as? Bool
@@ -82,12 +74,8 @@ public class Store : NSObject, NSCoding{
             itemTaxes = val
         } else if let val: Double = priceVal as? Double {
             itemTaxes = Decimal(val).rounded
-        } else if let val: Float = priceVal as? Float {
-            itemTaxes = Decimal(Double(val)).rounded
-        } else if let val: Int = priceVal as? Int {
-            itemTaxes = Decimal(val).rounded
         } else {
-            itemTaxes = Decimal(0).rounded
+            itemTaxes = Decimal.zero
         }
 		lat = dictionary["lat"] as? Double
 		lng = dictionary["lng"] as? Double
@@ -96,12 +84,8 @@ public class Store : NSObject, NSCoding{
             minOrderTotal = val
         } else if let val: Double = dictionary["min_order_total"] as? Double {
             minOrderTotal = Decimal(val).rounded
-        } else if let val: Float = dictionary["min_order_total"] as? Float {
-            minOrderTotal = Decimal(Double(val)).rounded
-        } else if let val: Int = dictionary["min_order_total"] as? Int {
-            minOrderTotal = Decimal(val).rounded
         } else {
-            minOrderTotal = Decimal(0).rounded
+            minOrderTotal = Decimal.zero
         }
         
         name = dictionary["name"] as? String
@@ -113,12 +97,8 @@ public class Store : NSObject, NSCoding{
             packagingCharge = val
         } else if let val: Double = dictionary["packaging_charge"] as? Double {
             packagingCharge = Decimal(val).rounded
-        } else if let val: Float = dictionary["packaging_charge"] as? Float {
-            packagingCharge = Decimal(Double(val)).rounded
-        } else if let val: Int = dictionary["packaging_charge"] as? Int {
-            packagingCharge = Decimal(val).rounded
         } else {
-            packagingCharge = Decimal(0).rounded
+            packagingCharge = Decimal.zero
         }
         
 		pgKey = dictionary["pg_key"] as? String
@@ -130,89 +110,89 @@ public class Store : NSObject, NSCoding{
 		timeSlots = dictionary["time_slots"] as? [AnyObject]
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if address != nil{
-			dictionary["address"] = address
-		}
-		if bizLocationId != nil{
-			dictionary["biz_location_id"] = bizLocationId
-		}
-		if city != nil{
-			dictionary["city"] = city
-		}
-		if closingDay != nil{
-			dictionary["closing_day"] = closingDay
-		}
-		if closingTime != nil{
-			dictionary["closing_time"] = closingTime
-		}
-		if deliveryCharge != nil{
-			dictionary["delivery_charge"] = deliveryCharge
-		}
-		if deliveryMinOffsetTime != nil{
-			dictionary["delivery_min_offset_time"] = deliveryMinOffsetTime
-		}
-        if discount != nil{
-            dictionary["discount"] = discount
-        }
-		if hideStoreName != nil{
-			dictionary["hide_store_name"] = hideStoreName
-		}
-        if itemTaxes != nil{
-            dictionary["item_taxes"] = itemTaxes
-        }
-		if lat != nil{
-			dictionary["lat"] = lat
-		}
-		if lng != nil{
-			dictionary["lng"] = lng
-		}
-		if minOrderTotal != nil{
-			dictionary["min_order_total"] = minOrderTotal
-		}
-		if name != nil{
-			dictionary["name"] = name
-		}
-		if onCloseMsg != nil{
-			dictionary["on_close_msg"] = onCloseMsg
-		}
-		if onSelectMsg != nil{
-			dictionary["on_select_msg"] = onSelectMsg
-		}
-		if openingTime != nil{
-			dictionary["opening_time"] = openingTime
-		}
-		if packagingCharge != nil{
-			dictionary["packaging_charge"] = packagingCharge
-		}
-		if pgKey != nil{
-			dictionary["pg_key"] = pgKey
-		}
-		if phone != nil{
-			dictionary["phone"] = phone
-		}
-		if pickupMinOffsetTime != nil{
-			dictionary["pickup_min_offset_time"] = pickupMinOffsetTime
-		}
-		if sortOrder != nil{
-			dictionary["sort_order"] = sortOrder
-		}
-		if taxRate != nil{
-			dictionary["tax_rate"] = taxRate
-		}
-		if temporarilyClosed != nil{
-			dictionary["temporarily_closed"] = temporarilyClosed
-		}
-		if timeSlots != nil{
-			dictionary["time_slots"] = timeSlots
-		}
-		return dictionary
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    public func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if address != nil{
+//            dictionary["address"] = address
+//        }
+//        if bizLocationId != nil{
+//            dictionary["biz_location_id"] = bizLocationId
+//        }
+//        if city != nil{
+//            dictionary["city"] = city
+//        }
+//        if closingDay != nil{
+//            dictionary["closing_day"] = closingDay
+//        }
+//        if closingTime != nil{
+//            dictionary["closing_time"] = closingTime
+//        }
+//        if deliveryCharge != nil{
+//            dictionary["delivery_charge"] = deliveryCharge
+//        }
+//        if deliveryMinOffsetTime != nil{
+//            dictionary["delivery_min_offset_time"] = deliveryMinOffsetTime
+//        }
+//        if discount != nil{
+//            dictionary["discount"] = discount
+//        }
+//        if hideStoreName != nil{
+//            dictionary["hide_store_name"] = hideStoreName
+//        }
+//        if itemTaxes != nil{
+//            dictionary["item_taxes"] = itemTaxes
+//        }
+//        if lat != nil{
+//            dictionary["lat"] = lat
+//        }
+//        if lng != nil{
+//            dictionary["lng"] = lng
+//        }
+//        if minOrderTotal != nil{
+//            dictionary["min_order_total"] = minOrderTotal
+//        }
+//        if name != nil{
+//            dictionary["name"] = name
+//        }
+//        if onCloseMsg != nil{
+//            dictionary["on_close_msg"] = onCloseMsg
+//        }
+//        if onSelectMsg != nil{
+//            dictionary["on_select_msg"] = onSelectMsg
+//        }
+//        if openingTime != nil{
+//            dictionary["opening_time"] = openingTime
+//        }
+//        if packagingCharge != nil{
+//            dictionary["packaging_charge"] = packagingCharge
+//        }
+//        if pgKey != nil{
+//            dictionary["pg_key"] = pgKey
+//        }
+//        if phone != nil{
+//            dictionary["phone"] = phone
+//        }
+//        if pickupMinOffsetTime != nil{
+//            dictionary["pickup_min_offset_time"] = pickupMinOffsetTime
+//        }
+//        if sortOrder != nil{
+//            dictionary["sort_order"] = sortOrder
+//        }
+//        if taxRate != nil{
+//            dictionary["tax_rate"] = taxRate
+//        }
+//        if temporarilyClosed != nil{
+//            dictionary["temporarily_closed"] = temporarilyClosed
+//        }
+//        if timeSlots != nil{
+//            dictionary["time_slots"] = timeSlots
+//        }
+//        return dictionary
+//    }
 
     /**
     * NSCoding required initializer.

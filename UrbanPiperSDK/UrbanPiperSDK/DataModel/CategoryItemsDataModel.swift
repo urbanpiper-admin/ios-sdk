@@ -51,16 +51,16 @@ open class CategoryItemsDataModel: UrbanPiperDataModel {
 
     open func setUpSubCategoriesArray() {
         if let objects = categoryItemsResponse?.objects {
-            let subCategoriesItems = objects.filter { $0.subCategory != nil }
+            let subCategoriesItems: [ItemObject] = objects.filter { $0.subCategory != nil }
 
             let keys = subCategoriesItems.compactMap { $0.subCategory.name }
-            let tempSet = Set<String>(keys)
+            let tempSet: Set<String> = Set<String>(keys)
             let uniqueKeys: Array = Array(tempSet)
 
             var subCategoriesArray = [[ItemObject]]()
 
             for key in uniqueKeys {
-                var itemsArray = subCategoriesItems.filter { $0.subCategory.name == key }
+                var itemsArray: [ItemObject] = subCategoriesItems.filter { $0.subCategory.name == key }
                 guard itemsArray.count > 0 else { return }
                 if itemsArray.count > 1 {
                     itemsArray.sort { (obj1, obj2) in
@@ -80,7 +80,7 @@ open class CategoryItemsDataModel: UrbanPiperDataModel {
                     self.subCategoriesArray = subCategoriesArray.sorted { $0.first!.subCategory.sortOrder < $1.first!.subCategory.sortOrder }
                 }
                 
-                var genericItems = objects.filter { $0.subCategory == nil }
+                var genericItems: [ItemObject] = objects.filter { $0.subCategory == nil }
                 if genericItems.count > 0 {
                     if genericItems.count > 1 {
                         genericItems.sort { (obj1, obj2) in
@@ -116,11 +116,17 @@ extension CategoryItemsDataModel {
     
 
     open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return subCategoriesArray?[section].count ?? itemsArray?.count ?? 0
+        if let subCategoryCount = subCategoriesArray?[section].count {
+            return subCategoryCount
+        } else if let itemArrayCount = itemsArray?.count {
+            return itemArrayCount
+        } else {
+            return 0
+        }
     }
 
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
 
         if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
             let itemObject: ItemObject
@@ -154,7 +160,7 @@ extension CategoryItemsDataModel {
     }
 
     open override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
+     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
 
         if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
             categoryCell.configureCell(itemsArray?[indexPath.row])
@@ -176,7 +182,7 @@ extension CategoryItemsDataModel {
         guard !isFetchingCategoryItems else { return }
         dataModelDelegate?.refreshCategoryItemsUI(true)
         isFetchingCategoryItems = true
-        let dataTask: URLSessionTask = APIManager.shared.fetchCategoryItems(categoryId: categoryObject.id,
+        let dataTask: URLSessionDataTask = APIManager.shared.fetchCategoryItems(categoryId: categoryObject.id,
                                                             locationID: OrderingStoreDataModel.shared.nearestStoreResponse?.store?.bizLocationId,
                                                             isForcedRefresh: isForcedRefresh,
                                                             next: next,

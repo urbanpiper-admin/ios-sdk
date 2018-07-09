@@ -6,7 +6,7 @@
 //  Copyright © 2018 UrbanPiper. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import CoreLocation
 
 extension APIManager {
@@ -15,19 +15,17 @@ extension APIManager {
                         userLocation: CLLocationCoordinate2D?,
                         bizLocationId: Int?,
                         completion: APICompletion<ReorderResponse>?,
-                        failure: APIFailure?) -> URLSessionTask {
+                        failure: APIFailure?) -> URLSessionDataTask {
 
-        let bizAppId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        var urlString: String = "\(APIManager.baseUrl)/api/v2/order/\(orderId)/reorder"
 
-        var urlString = "\(APIManager.baseUrl)/api/v2/order/\(orderId)/reorder"
-
-        if let location = userLocation, location.latitude != 0, location.longitude != 0 {
-            urlString = urlString + "/?lat=\(location.latitude)&lng=\(location.longitude)"
-            if let locationId = bizLocationId {
-                urlString = urlString + "&location_id=\(locationId)"
+        if let location: CLLocationCoordinate2D = userLocation, location.latitude != 0, location.longitude != 0 {
+            urlString = "\(urlString)/?lat=\(location.latitude)&lng=\(location.longitude)"
+            if let locationId: Int = bizLocationId {
+                urlString = "\(urlString)&location_id=\(locationId)"
             }
-        } else if let locationId = bizLocationId {
-            urlString = urlString + "/?location_id=\(locationId)"
+        } else if let locationId: Int = bizLocationId {
+            urlString = "\(urlString)/?location_id=\(locationId)"
         }
 
         let url: URL = URL(string: urlString)!
@@ -36,7 +34,7 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
 
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
 
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {

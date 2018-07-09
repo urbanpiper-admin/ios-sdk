@@ -29,7 +29,7 @@ public class PlacesSearchDataModel: UrbanPiperDataModel {
 
     weak public var dataModelDelegate: PlacesSearchDataModelDelegate?
 
-    private var keyword = ""
+    private var keyword: String = ""
 
     public var placesResponse: GooglePlacesResponse? = {
         guard let selectedPlacesData: Data = UserDefaults.standard.object(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey) as? Data else { return nil }
@@ -77,7 +77,7 @@ public class PlacesSearchDataModel: UrbanPiperDataModel {
     
     @objc private func searchPlaces(for keyword: String) {
         dataModelDelegate?.refreshPlacesSearchUI(true)
-        let dataTask: URLSessionTask = APIManager.shared.fetchPlaces(for: keyword,
+        let dataTask: URLSessionDataTask = APIManager.shared.fetchPlaces(for: keyword,
                                                             completion: { [weak self] (data) in
                                                                 defer {
                                                                     self?.dataModelDelegate?.refreshPlacesSearchUI(false)
@@ -96,7 +96,7 @@ public class PlacesSearchDataModel: UrbanPiperDataModel {
     
     public func fetchLocation(for prediction: Prediction, completion: @escaping CoordinatesFetchCompletionBlock) {
         store(prediction: prediction)
-        let dataTask: URLSessionTask = APIManager.shared.fetchCoordinates(from: prediction.placeId,
+        let dataTask: URLSessionDataTask = APIManager.shared.fetchCoordinates(from: prediction.placeId,
                                                      completion: { (data) in
                                                         guard let response = data else {
                                                             completion(nil, nil)
@@ -141,7 +141,7 @@ extension PlacesSearchDataModel {
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier!, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
         
         if let placesCell: PlacesCellDelegate = cell as? PlacesCellDelegate {
             placesCell.configureCell(placesPredictionList?[indexPath.row])
@@ -162,7 +162,7 @@ extension PlacesSearchDataModel {
     }
     
     public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier!, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let placesCell: PlacesCellDelegate = cell as? PlacesCellDelegate {
             placesCell.configureCell(placesPredictionList?[indexPath.row])

@@ -22,20 +22,20 @@ public class MatchedSubstring : NSObject, NSCoding{
 		offset = dictionary["offset"] as? Int
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if length != nil{
-			dictionary["length"] = length
-		}
-		if offset != nil{
-			dictionary["offset"] = offset
-		}
-		return dictionary
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    public func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if length != nil{
+//            dictionary["length"] = length
+//        }
+//        if offset != nil{
+//            dictionary["offset"] = offset
+//        }
+//        return dictionary
+//    }
 
     /**
     * NSCoding required initializer.

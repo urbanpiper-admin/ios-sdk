@@ -6,7 +6,7 @@
 //  Copyright © 2018 UrbanPiper Inc. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 extension APIManager {
 
@@ -16,15 +16,18 @@ extension APIManager {
                      items: [[String: Any]],
                      applyWalletCredit: Bool,
                      completion: APICompletion<Order>?,
-                        failure: APIFailure?) -> URLSessionTask {
+                        failure: APIFailure?) -> URLSessionDataTask {
 
-        let params = ["order": ["biz_location_id": storeLocationId,
-                                "order_type": deliveryOption,
-                                "channel": APIManager.channel,
-                                "items": items,
-                                "apply_wallet_credit": applyWalletCredit]] as [String : Any]
+        let order: [String: Any] = ["biz_location_id": storeLocationId,
+                                    "order_type": deliveryOption,
+                                    "channel": APIManager.channel,
+                                    "items": items,
+                                    "apply_wallet_credit": applyWalletCredit] as [String : Any]
         
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/\(coupon)/".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let params: [String : Any] = ["order": order] as [String : Any]
+        
+        var urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/\(coupon)/"
+        urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         
         let url: URL = URL(string: urlString)!
         
@@ -34,7 +37,7 @@ extension APIManager {
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }

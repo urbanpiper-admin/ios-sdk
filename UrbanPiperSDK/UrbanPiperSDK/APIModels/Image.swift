@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class Image : NSObject, NSCoding{
+public class Image : NSObject{
 
 	public var created : String!
 	public var id : Int!
@@ -28,66 +28,66 @@ public class Image : NSObject, NSCoding{
 		markups = dictionary["markups"] as? String
 	}
 
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary = [String:Any]()
-		if created != nil{
-			dictionary["created"] = created
-		}
-		if id != nil{
-			dictionary["id"] = id
-		}
-		if image != nil{
-			dictionary["image"] = image
-		}
-		if imgType != nil{
-			dictionary["img_type"] = imgType
-		}
-		if markups != nil{
-			dictionary["markups"] = markups
-		}
-		return dictionary
-	}
-
-    /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    @objc required public init(coder aDecoder: NSCoder)
-	{
-         created = aDecoder.decodeObject(forKey: "created") as? String
-         id = aDecoder.decodeObject(forKey: "id") as? Int
-         image = aDecoder.decodeObject(forKey: "image") as? String
-         imgType = aDecoder.decodeObject(forKey: "img_type") as? String
-         markups = aDecoder.decodeObject(forKey: "markups") as? String
-
-	}
-
-    /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    @objc public func encode(with aCoder: NSCoder)
-	{
-		if created != nil{
-			aCoder.encode(created, forKey: "created")
-		}
-		if id != nil{
-			aCoder.encode(id, forKey: "id")
-		}
-		if image != nil{
-			aCoder.encode(image, forKey: "image")
-		}
-		if imgType != nil{
-			aCoder.encode(imgType, forKey: "img_type")
-		}
-		if markups != nil{
-			aCoder.encode(markups, forKey: "markups")
-		}
-
-	}
+//    /**
+//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    public func toDictionary() -> [String:Any]
+//    {
+//        var dictionary: [String : Any] = [String:Any]()
+//        if created != nil{
+//            dictionary["created"] = created
+//        }
+//        if id != nil{
+//            dictionary["id"] = id
+//        }
+//        if image != nil{
+//            dictionary["image"] = image
+//        }
+//        if imgType != nil{
+//            dictionary["img_type"] = imgType
+//        }
+//        if markups != nil{
+//            dictionary["markups"] = markups
+//        }
+//        return dictionary
+//    }
+//
+//    /**
+//    * NSCoding required initializer.
+//    * Fills the data from the passed decoder
+//    */
+//    @objc required public init(coder aDecoder: NSCoder)
+//    {
+//         created = aDecoder.decodeObject(forKey: "created") as? String
+//         id = aDecoder.decodeObject(forKey: "id") as? Int
+//         image = aDecoder.decodeObject(forKey: "image") as? String
+//         imgType = aDecoder.decodeObject(forKey: "img_type") as? String
+//         markups = aDecoder.decodeObject(forKey: "markups") as? String
+//
+//    }
+//
+//    /**
+//    * NSCoding required method.
+//    * Encodes mode properties into the decoder
+//    */
+//    @objc public func encode(with aCoder: NSCoder)
+//    {
+//        if created != nil{
+//            aCoder.encode(created, forKey: "created")
+//        }
+//        if id != nil{
+//            aCoder.encode(id, forKey: "id")
+//        }
+//        if image != nil{
+//            aCoder.encode(image, forKey: "image")
+//        }
+//        if imgType != nil{
+//            aCoder.encode(imgType, forKey: "img_type")
+//        }
+//        if markups != nil{
+//            aCoder.encode(markups, forKey: "markups")
+//        }
+//
+//    }
 
 }

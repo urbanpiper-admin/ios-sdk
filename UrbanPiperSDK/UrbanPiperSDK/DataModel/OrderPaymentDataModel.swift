@@ -132,7 +132,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
     
     public var deliveryCharge: Decimal {
-        return orderResponse?.deliveryCharge ?? OrderingStoreDataModel.shared.nearestStoreResponse?.store?.deliveryCharge ?? Decimal(0).rounded
+        return orderResponse?.deliveryCharge ?? OrderingStoreDataModel.shared.nearestStoreResponse?.store?.deliveryCharge ?? Decimal.zero
     }
     
     public var packagingCharge: Decimal? {
@@ -191,13 +191,13 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     
     public var deliveryDate: Date {
         var units: Set<Calendar.Component> = [.day, .month, .year]
-        var comps = Calendar.current.dateComponents(units, from: selectedRequestedDate)
-        let day = Calendar.current.date(from: comps)
+        var comps: DateComponents = Calendar.current.dateComponents(units, from: selectedRequestedDate)
+        let day: Date = Calendar.current.date(from: comps)!
         
         units = [.hour, .minute, .second]
         comps = Calendar.current.dateComponents(units, from: selectedRequestedTime)
         
-        return Calendar.current.date(byAdding: comps, to: day!)!
+        return Calendar.current.date(byAdding: comps, to: day)!
     }
     
     public var normalDefaultOrderDeliveryDate: Date {
@@ -236,7 +236,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     public var paymentOptions: [PaymentOption]? {
         guard let paymentsStringArray = orderPreProcessingResponse?.order.paymentModes else { return nil }
         
-        var paymentArray = paymentsStringArray.compactMap { PaymentOption(rawValue: $0) }
+        var paymentArray: [PaymentOption] = paymentsStringArray.compactMap { PaymentOption(rawValue: $0) }
         
         // Removing wallet option
         if !AppConfigManager.shared.firRemoteConfigDefaults.moduleWallet {
@@ -305,8 +305,8 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
         }
 
         if isForcedRefresh || orderPreProcessingResponse == nil
-            || (selectedDeliveryOption == .pickUp && deliveryCharge > Decimal(0).rounded)
-            || (selectedDeliveryOption != .pickUp && deliveryCharge == Decimal(0).rounded) {
+            || (selectedDeliveryOption == .pickUp && deliveryCharge > Decimal.zero)
+            || (selectedDeliveryOption != .pickUp && deliveryCharge == Decimal.zero) {
             orderPreProcessingResponse = nil
             preProcessOrder()
         }
@@ -329,7 +329,7 @@ extension OrderPaymentDataModel {
     public func preProcessOrder() {
         dataModelDelegate?.refreshPreProcessingUI(true)
                 
-        let dataTask: URLSessionTask = APIManager.shared.preProcessOrder(bizLocationId: OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
+        let dataTask: URLSessionDataTask = APIManager.shared.preProcessOrder(bizLocationId: OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
                                                          applyWalletCredit: applyWalletCredits,
                                                          deliveryOption: selectedDeliveryOption.rawValue,
                                                          items: CartManager.shared.cartItems,
@@ -350,7 +350,7 @@ extension OrderPaymentDataModel {
     
     fileprivate func updateUserBizInfo() {
         dataModelDelegate?.refreshWalletUI(true)
-        let dataTask: URLSessionTask = APIManager.shared.fetchBizInfo(completion: { [weak self] (info) in
+        let dataTask: URLSessionDataTask = APIManager.shared.fetchBizInfo(completion: { [weak self] (info) in
             defer {
                 self?.dataModelDelegate?.refreshWalletUI(false)
             }
@@ -366,14 +366,14 @@ extension OrderPaymentDataModel {
     
     public func applyCoupon(code: String) {
         guard code.count > 0 else { return }
-        let orderDict = ["biz_location_id": OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
+        let orderDict: [String: Any] = ["biz_location_id": OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
                          "order_type": selectedDeliveryOption.rawValue,
                          "channel": APIManager.channel,
                          "items": CartManager.shared.cartItems.map { $0.discountCouponApiItemDictionary },
                          "apply_wallet_credit": applyWalletCredits] as [String : Any]
         
         dataModelDelegate?.refreshCouponUI?(true)
-        let dataTask: URLSessionTask = APIManager.shared.applyCoupon(code: code,
+        let dataTask: URLSessionDataTask = APIManager.shared.applyCoupon(code: code,
                                                      orderData: orderDict,
                                                      completion: { [weak self] (applyCouponResponse) in
             defer {
@@ -394,7 +394,7 @@ extension OrderPaymentDataModel {
                                 phone: String) {
         dataModelDelegate?.initiatingPayment(isProcessing: true)
         let paymentOption = selectedPaymentOption
-        let dataTask: URLSessionTask? = APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption,
+        let dataTask: URLSessionDataTask? = APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption,
                                                                purpose: OnlinePaymentPurpose.ordering,
                                                                totalAmount: itemsTotalPrice,
                                                                bizLocationId: OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
@@ -421,7 +421,7 @@ extension OrderPaymentDataModel {
         let timeSlotDelivery: Bool = AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots!
         
         let paymentOption = selectedPaymentOption
-        let dataTask: URLSessionTask = APIManager.shared.placeOrder(address: selectedDeliveryOption != .pickUp ? deliveryAddress : nil,
+        let dataTask: URLSessionDataTask = APIManager.shared.placeOrder(address: selectedDeliveryOption != .pickUp ? deliveryAddress : nil,
                                      items: CartManager.shared.cartItems,
                                      deliveryDate: deliveryDate,
                                      timeSlot: timeSlotDelivery ? selectedDeliveryTimeSlotOption : nil,
@@ -438,7 +438,7 @@ extension OrderPaymentDataModel {
                                      orderSubTotal: itemsPrice,
                                      orderTotal: itemsTotalPrice,
                                      applyWalletCredit: applyWalletCredits,
-                                     walletCreditApplied: orderPreProcessingResponse?.order.walletCreditApplied ?? Decimal(0).rounded,
+                                     walletCreditApplied: orderPreProcessingResponse?.order.walletCreditApplied ?? Decimal.zero,
                                      payableAmount: itemsTotalPrice,
                                      onlinePaymentInitResponse: onlinePaymentInitResponse,
                                      completion: { [weak self] (responseDict) in
@@ -484,7 +484,7 @@ extension OrderPaymentDataModel {
         dataModelDelegate?.verifyingTransaction(isProcessing: true)
         orderPlacedTracking(orderId: orderId, phone: phone)
 
-        let dataTask: URLSessionTask = APIManager.shared.verifyPayment(pid: paymentId,
+        let dataTask: URLSessionDataTask = APIManager.shared.verifyPayment(pid: paymentId,
                                                        orderId: orderId,
                                                        transactionId: transactionId,
                                                        completion: { [weak self] (responseDict) in

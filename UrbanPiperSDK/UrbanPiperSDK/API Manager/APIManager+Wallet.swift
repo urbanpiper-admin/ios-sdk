@@ -5,12 +5,12 @@
 //  Created by Vid on 02/07/18.
 //
 
-import UIKit
+import Foundation
 
 extension APIManager {
 
     @objc public func fetchWalletTransactions(completion: APICompletion<WalletTransactionResponse>?,
-                                              failure: APIFailure?) -> URLSessionTask {
+                                              failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/ub/wallet/transactions/"
         
@@ -20,7 +20,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionTask = session.dataTask(with: urlRequest) { (data, response, error) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
             
             if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 guard let completionClosure = completion else { return }
