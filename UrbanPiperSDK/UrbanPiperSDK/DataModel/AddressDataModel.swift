@@ -68,6 +68,7 @@ public class AddressDataModel: UrbanPiperDataModel {
                 UserDefaults.standard.removeObject(forKey: "DefaultAddressDefaultsKey")
                 Address.registerClassName()
                 Address.registerClassNameWhiteLabel()
+                Address.registerClassNameUrbanPiperSDK()
                 guard let address: Address = NSKeyedUnarchiver.unarchiveObject(with: defaultAddressData) as? Address else { return nil }
                 UserDefaults.standard.set(defaultAddressData, forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
                 return address

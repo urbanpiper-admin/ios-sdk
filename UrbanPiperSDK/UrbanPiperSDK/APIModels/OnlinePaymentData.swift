@@ -42,51 +42,51 @@ public class OnlinePaymentData : NSObject{
 		type = dictionary["type"] as? String
 	}
 
-//    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    public func toDictionary() -> [String:Any]
-//    {
-//        var dictionary: [String : Any] = [String:Any]()
-//        if key != nil{
-//            dictionary["key"] = key
-//        }
-//        if cALLBACKURL != nil{
-//            dictionary["CALLBACK_URL"] = cALLBACKURL
-//        }
-//        if cHANNELID != nil{
-//            dictionary["CHANNEL_ID"] = cHANNELID
-//        }
-//        if cHECKSUMHASH != nil{
-//            dictionary["CHECKSUMHASH"] = cHECKSUMHASH
-//        }
-//        if cUSTID != nil{
-//            dictionary["CUST_ID"] = cUSTID
-//        }
-//        if iNDUSTRYTYPEID != nil{
-//            dictionary["INDUSTRY_TYPE_ID"] = iNDUSTRYTYPEID
-//        }
-//        if mID != nil{
-//            dictionary["MID"] = mID
-//        }
-//        if oRDERID != nil{
-//            dictionary["ORDER_ID"] = oRDERID
-//        }
-//        if tXNAMOUNT != nil{
-//            dictionary["TXN_AMOUNT"] = tXNAMOUNT
-//        }
-//        if wEBSITE != nil{
-//            dictionary["WEBSITE"] = wEBSITE
-//        }
-//        if paymentUrl != nil{
-//            dictionary["payment_url"] = paymentUrl
-//        }
-//        if type != nil{
-//            dictionary["type"] = type
-//        }
-//        return dictionary
-//    }
-//
+    /**
+     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String : Any] = [String:Any]()
+        if key != nil{
+            dictionary["key"] = key
+        }
+        if cALLBACKURL != nil{
+            dictionary["CALLBACK_URL"] = cALLBACKURL
+        }
+        if cHANNELID != nil{
+            dictionary["CHANNEL_ID"] = cHANNELID
+        }
+        if cHECKSUMHASH != nil{
+            dictionary["CHECKSUMHASH"] = cHECKSUMHASH
+        }
+        if cUSTID != nil{
+            dictionary["CUST_ID"] = cUSTID
+        }
+        if iNDUSTRYTYPEID != nil{
+            dictionary["INDUSTRY_TYPE_ID"] = iNDUSTRYTYPEID
+        }
+        if mID != nil{
+            dictionary["MID"] = mID
+        }
+        if oRDERID != nil{
+            dictionary["ORDER_ID"] = oRDERID
+        }
+        if tXNAMOUNT != nil{
+            dictionary["TXN_AMOUNT"] = tXNAMOUNT
+        }
+        if wEBSITE != nil{
+            dictionary["WEBSITE"] = wEBSITE
+        }
+        if paymentUrl != nil{
+            dictionary["payment_url"] = paymentUrl
+        }
+        if type != nil{
+            dictionary["type"] = type
+        }
+        return dictionary
+    }
+
 //    /**
 //    * NSCoding required initializer.
 //    * Fills the data from the passed decoder

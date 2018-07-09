@@ -30,30 +30,30 @@ public class OnlinePaymentInitResponse : NSObject{
 		url = dictionary["url"] as AnyObject
 	}
 
-//    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    public func toDictionary() -> [String:Any]
-//    {
-//        var dictionary: [String : Any] = [String:Any]()
-//        if data != nil{
-//            dictionary["data"] = data.toDictionary()
-//        }
-//        if message != nil{
-//            dictionary["message"] = message
-//        }
-//        if success != nil{
-//            dictionary["success"] = success
-//        }
-//        if transactionId != nil{
-//            dictionary["transaction_id"] = transactionId
-//        }
-//        if url != nil{
-//            dictionary["url"] = url
-//        }
-//        return dictionary
-//    }
-//
+    /**
+     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String : Any] = [String:Any]()
+        if data != nil{
+            dictionary["data"] = data.toDictionary()
+        }
+        if message != nil{
+            dictionary["message"] = message
+        }
+        if success != nil{
+            dictionary["success"] = success
+        }
+        if transactionId != nil{
+            dictionary["transaction_id"] = transactionId
+        }
+        if url != nil{
+            dictionary["url"] = url
+        }
+        return dictionary
+    }
+
 //    /**
 //    * NSCoding required initializer.
 //    * Fills the data from the passed decoder

@@ -48,7 +48,7 @@ import Foundation
 
 public class User : NSObject, NSCoding{
     
-    public var firstName : String!
+    @objc public var firstName : String!
     public var lastName : String!
     @objc public var username : String!
     

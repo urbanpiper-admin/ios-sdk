@@ -64,8 +64,11 @@ public class AppUserDataModel: UrbanPiperDataModel {
 //            debugPrint(AppUserDataModel.keychain.getAllKeyChainItemsOfClass(kSecClassGenericPassword as String))
             guard let userData = AppUserDataModel.keychain.data(forKey: KeychainAppUserKeys.AppUserKey) else { return nil}
             Meta.registerClassNameWhiteLabel()
+            Meta.registerClassNameUrbanPiperSDK()
             BizObject.registerClassNameWhiteLabel()
+            BizObject.registerClassNameUrbanPiperSDK()
             BizInfo.registerClassNameWhiteLabel()
+            BizInfo.registerClassNameUrbanPiperSDK()
 
             User.registerClassName()
             let obj = NSKeyedUnarchiver.unarchiveObject(with: userData)
@@ -114,9 +117,13 @@ public class AppUserDataModel: UrbanPiperDataModel {
         get {
             guard let bizInfoData = AppUserDataModel.keychain.data(forKey: KeychainAppUserKeys.BizInfoKey) else { return nil}
             Meta.registerClassNameWhiteLabel()
+            Meta.registerClassNameUrbanPiperSDK()
             BizObject.registerClassNameWhiteLabel()
-            BizInfo.registerClassNameWhiteLabel()
+            BizObject.registerClassNameUrbanPiperSDK()
+            BizInfo.registerClassNameUrbanPiperSDK()
+            
             BizInfo.registerClassName()
+            BizInfo.registerClassNameWhiteLabel()
 
             let obj = NSKeyedUnarchiver.unarchiveObject(with: bizInfoData)
             guard let bizInfo: BizInfo = obj as? BizInfo else { return nil }

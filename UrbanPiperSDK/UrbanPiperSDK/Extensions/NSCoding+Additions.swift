@@ -21,4 +21,10 @@ extension NSCoding {
         let fullClassName: String = "WhiteLabel.\(className)"
         NSKeyedUnarchiver.setClass(self, forClassName: fullClassName)
     }
+    
+    static func registerClassNameUrbanPiperSDK() {
+        let className: String = NSStringFromClass(self).components(separatedBy: ".").last!
+        let fullClassName: String = "UrbanPiperSDK.\(className)"
+        NSKeyedUnarchiver.setClass(self, forClassName: fullClassName)
+    }
 }

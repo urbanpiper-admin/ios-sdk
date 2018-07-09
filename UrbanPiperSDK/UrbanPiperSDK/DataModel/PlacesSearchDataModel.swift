@@ -34,8 +34,11 @@ public class PlacesSearchDataModel: UrbanPiperDataModel {
     public var placesResponse: GooglePlacesResponse? = {
         guard let selectedPlacesData: Data = UserDefaults.standard.object(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey) as? Data else { return nil }
         StructuredFormatting.registerClassNameWhiteLabel()
+        StructuredFormatting.registerClassNameUrbanPiperSDK()
         MatchedSubstring.registerClassNameWhiteLabel()
+        MatchedSubstring.registerClassNameUrbanPiperSDK()
         Term.registerClassNameWhiteLabel()
+        Term.registerClassNameUrbanPiperSDK()
 
         Prediction.registerClassName()
         
