@@ -205,6 +205,13 @@ extension CategoryItemsDataModel {
                                                                     currentCategoriesItemsResponse?.objects.append(contentsOf: response.objects)
                                                                     currentCategoriesItemsResponse?.meta = response.meta
                                                                     
+                                                                    currentCategoriesItemsResponse?.objects.sort { (obj1, obj2) in
+                                                                        guard obj1.currentStock != 0 else { return false }
+                                                                        guard obj2.currentStock != 0 else { return true }
+                                                                        
+                                                                        return obj1.sortOrder < obj2.sortOrder
+                                                                    }
+                                                                    
                                                                     self?.categoryItemsResponse = currentCategoriesItemsResponse
                                                                 }
         }, failure: { [weak self] (upError) in

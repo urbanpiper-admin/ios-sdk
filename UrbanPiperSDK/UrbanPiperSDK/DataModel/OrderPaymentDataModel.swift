@@ -61,7 +61,7 @@ public enum DeliveryOption: String {
     func refreshPreProcessingUI(_ isRefreshing: Bool)
     func refreshWalletUI(_ isRefreshing: Bool)
     
-    @objc optional func refreshCouponUI(_ isRefreshing: Bool)
+    @objc optional func refreshApplyCouponUI(_ isRefreshing: Bool)
     
     func initiatingPayment(isProcessing: Bool)
     
@@ -372,21 +372,26 @@ extension OrderPaymentDataModel {
                          "items": CartManager.shared.cartItems.map { $0.discountCouponApiItemDictionary },
                          "apply_wallet_credit": applyWalletCredits] as [String : Any]
         
-        dataModelDelegate?.refreshCouponUI?(true)
+        dataModelDelegate?.refreshApplyCouponUI?(true)
         let dataTask: URLSessionDataTask = APIManager.shared.applyCoupon(code: code,
                                                      orderData: orderDict,
-                                                     completion: { [weak self] (applyCouponResponse) in
-            defer {
-                self?.couponCode = code
-                self?.dataModelDelegate?.refreshCouponUI?(false)
-            }
-            self?.applyCouponResponse = applyCouponResponse
-            }, failure: { [weak self] (upError) in
-                defer {
-                    self?.dataModelDelegate?.refreshCouponUI?(false)
-                    self?.dataModelDelegate?.handleOrderPayment(error: upError)
+                                                     completion:
+            { [weak self] (applyCouponResponse) in
+                if let discount = applyCouponResponse?.discount, discount.success {
+                    self?.applyCouponResponse = applyCouponResponse
+                    self?.couponCode = code
+                    self?.dataModelDelegate?.refreshApplyCouponUI?(false)
+                } else {
+                    let upApiError = UPAPIError(error: nil, data: nil, responseObject: applyCouponResponse?.discount.toDictionary())
+                    self?.dataModelDelegate?.handleOrderPayment(error: upApiError)
                 }
-        })
+
+                }, failure: { [weak self] (upError) in
+                    defer {
+                        self?.dataModelDelegate?.refreshApplyCouponUI?(false)
+                        self?.dataModelDelegate?.handleOrderPayment(error: upError)
+                    }
+                })
         addOrCancelDataTask(dataTask: dataTask)
     }
     

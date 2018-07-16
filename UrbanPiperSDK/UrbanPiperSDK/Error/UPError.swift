@@ -117,6 +117,10 @@ public enum ErrorType {
                 return msg
             }
             
+            if let msg: String = apiCallData?["msg"] as? String {
+                return msg
+            }
+            
             return "Unable to process your request"
         case .paymentFailure(let errorText):
             return errorText

@@ -30,6 +30,8 @@ public class CartManager: NSObject {
     
     @objc public var isReorder: Bool = false
 
+    @objc public var couponCodeToApply: String?
+
     @objc public var cartValue: Decimal {
         return cartItems.reduce (0.0, { $0 + ($1.totalAmount * Decimal($1.quantity)).rounded } )
     }

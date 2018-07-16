@@ -37,8 +37,4 @@ public class AppConfigManager: NSObject {
         return sideMenuPanelTabDetails.filter { $0.tag != .login }
     }()
 
-    public override init() {
-        
-    }
-
 }
