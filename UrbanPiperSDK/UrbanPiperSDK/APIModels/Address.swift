@@ -57,12 +57,33 @@ public class Address : NSObject, NSCoding {
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
-		address1 = dictionary["address_1"] as? String
-		address2 = dictionary["address_2"] as? String
 		city = dictionary["city"] as? String
+        
+        if let latitude: Double = dictionary["latitude"] as? Double {
+            lat = latitude
+        } else {
+            lat = dictionary["lat"] as? Double ?? Double.zero
+        }
+        
+        if let longitude: Double = dictionary["longitude"] as? Double {
+            
+        } else {
+            lng = dictionary["lng"] as? Double ?? Double.zero
+        }
+        
+        if let line1: String = dictionary["line_1"] as? String {
+            address2 = line1
+        } else {
+            address1 = dictionary["address_1"] as? String
+        }
+        
+        if let line2: String = dictionary["line_2"] as? String {
+            address2 = line2
+        } else {
+            address2 = dictionary["address_2"] as? String
+        }
+        
 		id = dictionary["id"] as? Int
-		lat = dictionary["lat"] as? Double ?? Double.zero
-		lng = dictionary["lng"] as? Double ?? Double.zero
 		pin = dictionary["pin"] as? String
 		podId = dictionary["pod_id"] as? Int
 		subLocality = dictionary["sub_locality"] as? String

@@ -52,15 +52,16 @@ public class ItemObject : NSObject{
 		imageUrl = dictionary["image_url"] as? String
 		itemDesc = dictionary["item_desc"] as? String
 
-        if let val: Decimal = dictionary["item_price"] as? Decimal {
+        let priceVal: Any = dictionary["item_price"] ?? dictionary["price"]
+        if let val: Decimal = priceVal as? Decimal {
             itemPrice = val
-        } else if let val: Double = dictionary["item_price"] as? Double {
+        } else if let val: Double = priceVal as? Double {
             itemPrice = Decimal(val).rounded
         } else {
             itemPrice = Decimal.zero
         }
 
-		itemTitle = dictionary["item_title"] as? String
+		itemTitle = dictionary["item_title"] as? String ?? dictionary["title"] as? String
 		likes = dictionary["likes"] as? Int ?? 0
 		optionGroups = [ItemOptionGroup]()
 		if let optionGroupsArray: [[String:Any]] = dictionary["option_groups"] as? [[String:Any]]{

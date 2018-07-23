@@ -165,6 +165,11 @@ extension OffersDataModel {
     open override func appWillEnterForeground() {
         guard couponCodesArray == nil || couponCodesArray?.count == 0 else { return }
         refreshData(false)
+        
+        guard let coupon: Coupon = (tableView?.visibleCells.last as? OfferCellDelegate)?.object() else { return }
+        if couponCodesArray?.last === coupon, couponCodesArray!.count < offersAPIResponse!.meta.totalCount {
+            availableCoupons(next: offersAPIResponse?.meta.next)
+        }
     }
     
     @objc open override func appDidEnterBackground() {

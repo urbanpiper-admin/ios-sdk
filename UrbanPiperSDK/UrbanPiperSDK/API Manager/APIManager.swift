@@ -6,6 +6,25 @@
 //  Copyright © 2017 UrbanPiper Inc. All rights reserved.
 //
 
+/*@GET("/api/v2/social_auth/me/")
+ @GET("/api/v2/ub/wallet/transactions/")
+ @POST("/api/v2/card/")
+ @GET("/api/v2/items/0/recommendations/")
+ @GET("/api/v2/order/{id}/reorder/")
+
+ @GET("/api/v2/orders/")
+ @GET("/api/v2/orders/{order_id}/")
+
+ @GET("/api/v2/search/items/")
+
+ @POST("/api/v2/feedback/")
+ 
+ @GET("/api/v2/rewards/")
+ @POST("/api/v2/rewards/{rewards_id}/redeem/")
+ 
+ @GET("/api/v2/store/{store_id}/pod/")
+*/
+
 import Foundation
 
 @objc public class APIManager: NSObject {
@@ -127,5 +146,11 @@ import Foundation
 }
 
 extension APIManager: URLSessionDelegate {
-
+    
+//    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+//        guard session.delegateQueue.operationCount == 0 else { return }
+//        print("task count \(session.delegateQueue.operationCount)")
+//        session.finishTasksAndInvalidate()
+//    }
+    
 }

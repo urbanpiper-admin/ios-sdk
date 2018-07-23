@@ -36,12 +36,14 @@ public class Store : NSObject, NSCoding{
 	public var temporarilyClosed : Bool!
 	public var timeSlots : [AnyObject]!
     public var distance: Double!
+    public var merchantRefId: String!
 
 
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
+        merchantRefId = dictionary["merchant_ref_id"] as? String
 		address = dictionary["address"] as? String
 		bizLocationId = dictionary["biz_location_id"] as? Int ?? dictionary["id"] as? Int
 		city = dictionary["city"] as? String
@@ -77,8 +79,8 @@ public class Store : NSObject, NSCoding{
         } else {
             itemTaxes = Decimal.zero
         }
-		lat = dictionary["lat"] as? Double
-		lng = dictionary["lng"] as? Double
+		lat = dictionary["lat"] as? Double ?? dictionary["latitude"] as? Double
+		lng = dictionary["lng"] as? Double ?? dictionary["longitude"] as? Double
         
         if let val: Decimal = dictionary["min_order_total"] as? Decimal {
             minOrderTotal = val
@@ -191,6 +193,10 @@ public class Store : NSObject, NSCoding{
         if timeSlots != nil{
             dictionary["time_slots"] = timeSlots
         }
+        if merchantRefId != nil{
+            dictionary["merchant_ref_id"] = merchantRefId
+        }
+
         return dictionary
     }
 
@@ -225,6 +231,7 @@ public class Store : NSObject, NSCoding{
          taxRate = aDecoder.decodeObject(forKey: "tax_rate") as? Float
          temporarilyClosed = aDecoder.decodeObject(forKey: "temporarily_closed") as? Bool
          timeSlots = aDecoder.decodeObject(forKey: "time_slots") as? [AnyObject]
+        merchantRefId = aDecoder.decodeObject(forKey: "merchant_ref_id") as? String
 
 	}
 
@@ -309,6 +316,9 @@ public class Store : NSObject, NSCoding{
 		if timeSlots != nil{
 			aCoder.encode(timeSlots, forKey: "time_slots")
 		}
+        if merchantRefId != nil{
+            aCoder.encode(merchantRefId, forKey: "merchant_ref_id")
+        }
 
 	}
 

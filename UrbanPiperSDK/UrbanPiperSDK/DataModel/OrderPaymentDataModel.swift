@@ -295,6 +295,8 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
         
         return filteredSlots
     }
+    
+    public var globalCouponApplied: Bool = false
         
     public func refreshData(_ isForcedRefresh: Bool = false) {
         guard AppUserDataModel.shared.validAppUserData != nil else { return }
@@ -377,7 +379,16 @@ extension OrderPaymentDataModel {
                                                      orderData: orderDict,
                                                      completion:
             { [weak self] (applyCouponResponse) in
+                
+                if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon == code {
+                    self?.globalCouponApplied = true
+                }
+
                 if let discount = applyCouponResponse?.discount, discount.success {
+                    if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon != code {
+                        self?.globalCouponApplied = false
+                    }
+
                     self?.applyCouponResponse = applyCouponResponse
                     self?.couponCode = code
                     self?.dataModelDelegate?.refreshApplyCouponUI?(false)

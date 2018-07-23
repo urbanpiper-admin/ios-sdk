@@ -10,7 +10,8 @@ import Foundation
 
 extension APIManager {
 
-    @objc public func fetchCategoriesList(_ isForceRefresh: Bool,
+    public func fetchCategoriesList(_ isForceRefresh: Bool,
+                                          locationID: Int?,
                                    completion: APICompletion<CategoriesResponse>?,
                                    failure: APIFailure?) -> URLSessionDataTask {
 
@@ -18,8 +19,12 @@ extension APIManager {
 
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
 
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/order/categories/?format=json&biz_id=\(appId)"
+        var urlString: String = "\(APIManager.baseUrl)/api/v1/order/categories/?format=json&biz_id=\(appId)"
 
+        if let id = locationID {
+            urlString = "\(urlString)&location_id=\(id)"
+        }
+        
         let url: URL = URL(string: urlString)!
 
         var urlRequest: URLRequest = URLRequest(url: url,

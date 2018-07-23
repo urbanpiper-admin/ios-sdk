@@ -1,5 +1,5 @@
 //
-//	MyOrdersResponse.swift
+//	MyOrderDetailsResponse.swift
 //
 //	Create by Vidhyadharan Mohanram on 18/7/2018
 //	Copyright © 2018. All rights reserved.
@@ -8,25 +8,21 @@
 import Foundation
 
 
-public class MyOrdersResponse : NSObject{
+public class MyOrderDetailsResponse : NSObject{
 
-	public var meta : Meta!
-	public var orders : [MyOrder]!
+	public var customer : Customer!
+	public var order : OrderDetails!
 
 
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	init(fromDictionary dictionary: [String:Any]){
-		if let metaData = dictionary["meta"] as? [String:Any]{
-			meta = Meta(fromDictionary: metaData)
+		if let customerData = dictionary["customer"] as? [String:Any]{
+			customer = Customer(fromDictionary: customerData)
 		}
-		orders = [MyOrder]()
-		if let ordersArray = dictionary["orders"] as? [[String:Any]]{
-			for dic in ordersArray{
-				let value = MyOrder(fromDictionary: dic)
-				orders.append(value)
-			}
+		if let orderData = dictionary["order"] as? [String:Any]{
+			order = OrderDetails(fromDictionary: orderData)
 		}
 	}
 
@@ -36,15 +32,11 @@ public class MyOrdersResponse : NSObject{
 	func toDictionary() -> [String:Any]
 	{
 		var dictionary = [String:Any]()
-		if meta != nil{
-			dictionary["meta"] = meta.toDictionary()
+		if customer != nil{
+			dictionary["customer"] = customer.toDictionary()
 		}
-		if orders != nil{
-			var dictionaryElements = [[String:Any]]()
-			for ordersElement in orders {
-				dictionaryElements.append(ordersElement.toDictionary())
-			}
-			dictionary["orders"] = dictionaryElements
+		if order != nil{
+			dictionary["order"] = order.toDictionary()
 		}
 		return dictionary
 	}
@@ -55,8 +47,8 @@ public class MyOrdersResponse : NSObject{
     */
     @objc required init(coder aDecoder: NSCoder)
 	{
-         meta = aDecoder.decodeObject(forKey: "meta") as? Meta
-         orders = aDecoder.decodeObject(forKey :"orders") as? [MyOrder]
+         customer = aDecoder.decodeObject(forKey: "customer") as? Customer
+         order = aDecoder.decodeObject(forKey: "order") as? Order
 
 	}
 
@@ -66,11 +58,11 @@ public class MyOrdersResponse : NSObject{
     */
     @objc func encode(with aCoder: NSCoder)
 	{
-		if meta != nil{
-			aCoder.encode(meta, forKey: "meta")
+		if customer != nil{
+			aCoder.encode(customer, forKey: "customer")
 		}
-		if orders != nil{
-			aCoder.encode(orders, forKey: "orders")
+		if order != nil{
+			aCoder.encode(order, forKey: "order")
 		}
 
 	}*/

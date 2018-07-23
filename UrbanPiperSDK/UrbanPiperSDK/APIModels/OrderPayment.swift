@@ -1,5 +1,5 @@
 //
-//	MyOrdersResponse.swift
+//	OrderPayment.swift
 //
 //	Create by Vidhyadharan Mohanram on 18/7/2018
 //	Copyright © 2018. All rights reserved.
@@ -8,26 +8,20 @@
 import Foundation
 
 
-public class MyOrdersResponse : NSObject{
+public class OrderPayment : NSObject{
 
-	public var meta : Meta!
-	public var orders : [MyOrder]!
+	public var amount : Float!
+	public var option : String!
+	public var srvrTrxId : AnyObject!
 
 
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	init(fromDictionary dictionary: [String:Any]){
-		if let metaData = dictionary["meta"] as? [String:Any]{
-			meta = Meta(fromDictionary: metaData)
-		}
-		orders = [MyOrder]()
-		if let ordersArray = dictionary["orders"] as? [[String:Any]]{
-			for dic in ordersArray{
-				let value = MyOrder(fromDictionary: dic)
-				orders.append(value)
-			}
-		}
+		amount = dictionary["amount"] as? Float
+		option = dictionary["option"] as? String
+		srvrTrxId = dictionary["srvr_trx_id"] as? AnyObject
 	}
 
 /*	/**
@@ -36,15 +30,14 @@ public class MyOrdersResponse : NSObject{
 	func toDictionary() -> [String:Any]
 	{
 		var dictionary = [String:Any]()
-		if meta != nil{
-			dictionary["meta"] = meta.toDictionary()
+		if amount != nil{
+			dictionary["amount"] = amount
 		}
-		if orders != nil{
-			var dictionaryElements = [[String:Any]]()
-			for ordersElement in orders {
-				dictionaryElements.append(ordersElement.toDictionary())
-			}
-			dictionary["orders"] = dictionaryElements
+		if option != nil{
+			dictionary["option"] = option
+		}
+		if srvrTrxId != nil{
+			dictionary["srvr_trx_id"] = srvrTrxId
 		}
 		return dictionary
 	}
@@ -55,8 +48,9 @@ public class MyOrdersResponse : NSObject{
     */
     @objc required init(coder aDecoder: NSCoder)
 	{
-         meta = aDecoder.decodeObject(forKey: "meta") as? Meta
-         orders = aDecoder.decodeObject(forKey :"orders") as? [MyOrder]
+         amount = aDecoder.decodeObject(forKey: "amount") as? Float
+         option = aDecoder.decodeObject(forKey: "option") as? String
+         srvrTrxId = aDecoder.decodeObject(forKey: "srvr_trx_id") as? AnyObject
 
 	}
 
@@ -66,11 +60,14 @@ public class MyOrdersResponse : NSObject{
     */
     @objc func encode(with aCoder: NSCoder)
 	{
-		if meta != nil{
-			aCoder.encode(meta, forKey: "meta")
+		if amount != nil{
+			aCoder.encode(amount, forKey: "amount")
 		}
-		if orders != nil{
-			aCoder.encode(orders, forKey: "orders")
+		if option != nil{
+			aCoder.encode(option, forKey: "option")
+		}
+		if srvrTrxId != nil{
+			aCoder.encode(srvrTrxId, forKey: "srvr_trx_id")
 		}
 
 	}*/

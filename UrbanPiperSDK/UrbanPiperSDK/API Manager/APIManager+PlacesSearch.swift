@@ -61,7 +61,7 @@ extension APIManager {
         
         let bizCountry2LetterCode: String
         
-        if let countryCode = AppConfigManager.shared.firRemoteConfigDefaults.bizCountry2LetterCode {
+        if let countryCode = AppConfigManager.shared.firRemoteConfigDefaults.bizCountry2LetterCode, countryCode.count > 0 {
             bizCountry2LetterCode = countryCode
         } else {
             bizCountry2LetterCode = "IN"

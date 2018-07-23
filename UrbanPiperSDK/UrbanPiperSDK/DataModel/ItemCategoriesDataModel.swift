@@ -100,12 +100,15 @@ extension ItemCategoriesDataModel {
         guard categoriesListArray == nil || categoriesListArray!.count == 0 || isForcedRefresh else { return }
 
         dataModelDelegate?.refreshItemCategoriesUI(true)
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchCategoriesList(isForcedRefresh, completion: { [weak self] (data) in
-            defer {
-                self?.dataModelDelegate?.refreshItemCategoriesUI(false)
-            }
-            guard let response = data else { return }
-            self?.categoriesResponse = response
+        let dataTask: URLSessionDataTask = APIManager.shared.fetchCategoriesList(isForcedRefresh,
+                                                                                 locationID: OrderingStoreDataModel.shared.nearestStoreResponse?.store?.bizLocationId,
+                                                                                 completion:
+            { [weak self] (data) in
+                defer {
+                    self?.dataModelDelegate?.refreshItemCategoriesUI(false)
+                }
+                guard let response = data else { return }
+                self?.categoriesResponse = response
         }, failure: { [weak self] (upError) in
             defer {
                 self?.dataModelDelegate?.handleItemCategories(error: upError)

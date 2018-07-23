@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 @objc public protocol FeaturedItemsDataModelDelegate {
     
@@ -15,7 +16,7 @@ import UIKit
 }
 
 
-class FeaturedItemsDataModel: UrbanPiperDataModel {
+open class FeaturedItemsDataModel: UrbanPiperDataModel {
     weak open var dataModelDelegate: FeaturedItemsDataModelDelegate?
     
     open var categoryItemsResponse: CategoryItemsResponse? {
@@ -32,7 +33,14 @@ class FeaturedItemsDataModel: UrbanPiperDataModel {
     }
     
     open func refreshData(_ isForcedRefresh: Bool = false) {
+        guard AppConfigManager.shared.firRemoteConfigDefaults.showFeaturedItems else { return }
         fetchFeaturedItems(isForcedRefresh: isForcedRefresh)
+    }
+    
+    public override init() {
+        super.init()
+        
+        OrderingStoreDataModel.shared.addObserver(delegate: self)
     }
 
 }
@@ -130,6 +138,62 @@ extension FeaturedItemsDataModel {
         }
         
         return cell
+    }
+    
+}
+
+extension FeaturedItemsDataModel: OrderingStoreDataModelDelegate {
+    
+    open func update(_ storeResponse: StoreResponse?, _ deliveryLocation: CLLocation?, _ error: UPError?, _ storeUpdated: Bool) {
+        guard storeUpdated else { return }
+        
+        categoryItemsResponse = nil
+        refreshData(true)
+    }
+    
+    open func handleLocationManagerFailure(error: Error?) {
+        refreshData(false)
+    }
+    
+    open func didChangeAuthorization(status: CLAuthorizationStatus) {
+        guard status == .notDetermined || status == .restricted || status == .denied else { return }
+        refreshData(false)
+    }
+    
+}
+
+//  App State Management
+
+extension FeaturedItemsDataModel {
+    
+    override open func appWillEnterForeground() {
+        guard itemsArray == nil || itemsArray!.count == 0 else { return }
+        refreshData(false)
+        
+        guard let itemObject: ItemObject = (collectionView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
+        if itemsArray?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
+            fetchFeaturedItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
+        }
+    }
+    
+    @objc open override func appDidEnterBackground() {
+        
+    }
+    
+}
+
+//  Reachability
+
+extension FeaturedItemsDataModel {
+    
+    override open func networkIsAvailable() {
+        guard itemsArray == nil || itemsArray!.count == 0 else { return }
+        refreshData(false)
+        
+        guard let itemObject: ItemObject = (collectionView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
+        if itemsArray?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
+            fetchFeaturedItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
+        }
     }
     
 }

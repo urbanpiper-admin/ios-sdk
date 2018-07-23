@@ -10,7 +10,7 @@ import Foundation
 
 public class BannersResponse : NSObject{
 
-	public var images : [Image]!
+	public var images : [BannerImage]!
 	public var meta : Meta!
 
 
@@ -18,10 +18,10 @@ public class BannersResponse : NSObject{
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
-		images = [Image]()
+		images = [BannerImage]()
 		if let imagesArray: [[String:Any]] = dictionary["images"] as? [[String:Any]]{
 			for dic in imagesArray{
-				let value: Image = Image(fromDictionary: dic)
+				let value: BannerImage = BannerImage(fromDictionary: dic)
 				images.append(value)
 			}
 		}

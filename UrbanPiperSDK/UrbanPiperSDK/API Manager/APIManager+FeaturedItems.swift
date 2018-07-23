@@ -17,7 +17,7 @@ extension APIManager {
         var urlString: String = "\(APIManager.baseUrl)/api/v2/items/0/recommendations/"
         
         if let id = locationID {
-            urlString = "\(urlString)&location_id=\(id)"
+            urlString = "\(urlString)?location_id=\(id)"
         }
         
         if let nextUrlString: String = next {
@@ -27,7 +27,9 @@ extension APIManager {
         let url: URL = URL(string: urlString)!
         
         var urlRequest: URLRequest = URLRequest(url: url)
-        
+
+        urlRequest.setValue(bizAuth(), forHTTPHeaderField: "Authorization")
+
         urlRequest.httpMethod = "GET"
         
         let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in

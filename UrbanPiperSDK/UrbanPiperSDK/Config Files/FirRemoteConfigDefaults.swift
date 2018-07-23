@@ -23,124 +23,133 @@ import FirebaseRemoteConfig
         remoteConfig.setDefaults(fromPlist: "RemoteConfigDefaults")
         return remoteConfig
     }()
+    
+    #if DEBUG
+    public var customBannersState: Bool! {
+        didSet {
+            showBanners = customBannersState
+        }
+    }
+    #endif
 
-	public var allowCashForOrderCheckout : Bool!
-	public var altDeliveryTimeText : String!
-	public var apiKey : String!
-	public var apiUsername : String!
-	public var appsFlyerDevAppid : String!
-	public var appsFlyerDevKey : String!
-    public var applyWalletCredits: Bool!
-	public var badRatingThreshold : Int!
-	public var bizAppId : String!
-	public var bizAppName : String!
-	public var bizLogoUrl : String!
-    public var bizCountry2LetterCode: String!
-	public var cacheDurationSecs : Int!
-	public var categoryLayoutGrid : Bool!
-    public var isdCodes : [[String : String]]!
-	public var defaultCountryCode : String!
-	public var dfltPymntOpt : String!
-	public var dfltTabToShow : String!
-	public var disableWalletReload : Bool!
-	public var enableCaching : Bool!
-    public var showBanners : Bool!
-	public var enableItemDirectLoading : Bool!
-	public var enablePostOrderFeedback : Bool!
-	public var enableSocialLogin : Bool!
-	public var enableTimeSlots : Bool!
-	public var enforceMinOffsetTime : Bool!
-	public var errAccountExists : String!
-	public var errCouponInvalid : String!
-	public var feedbackScale : Int!
-	public var forcePaymentOptSel : Bool!
-	public var googleOauthClientId : String!
-	public var googlePlacesApiKey : String!
-	public var helpEmail : String!
-	public var helpPhone : String!
-	public var hideCategoryScreen : Bool!
-	public var hideLockedRewards : Bool!
-	public var hidePoints : Bool!
-	public var hotlineAppId : String!
-	public var hotlineAppKey : String!
-	public var hotlineEnable2way : Bool!
-	public var inStorePrepaidEnabled : Bool!
-	public var itemLayoutLandscape : Bool!
-	public var itemQtyRestrictToCurentStock : Bool!
-	public var itemSearchEnabled : Bool!
-    public var lblAlertConfirmationButtonTitle : String!
-	public var lblCheckoutTax : String!
-	public var lblCurrencySymbol : String!
-	public var lblCurrencySymbolIso4217 : String!
-	public var lblFeedbackQuestion : String!
-	public var lblForgotPwd : String!
-	public var lblItemTaxRateString : String!
-	public var lblItemTaxesString : String!
-	public var lblLoginHdr : String!
-	public var lblOrderTaxString : String!
-	public var lblOutOfStock : String!
-	public var lblSignupHdr : String!
-	public var lblSocialSignupHdr : String!
-	public var locationMandatoryForItems : Bool!
-	public var maxReloadAmt : Int!
-	public var minOrderValue : Int!
-	public var minReloadAmt : Int!
-	public var minReloadBttnVal : Int!
-	public var mixpanelProjectToken : String!
-	public var moduleBookTable : Bool!
-	public var moduleFaq : Bool!
-	public var moduleFeedbackOld : Bool!
-	public var moduleHelp : Bool!
-	public var moduleHistory : Bool!
-    public var moduleHome : Bool!
-	public var moduleNotifications : Bool!
-	public var moduleOffers : Bool!
-	public var moduleOrdering : Bool!
-	public var moduleReferral : Bool!
-	public var moduleRewards : Bool!
-	public var moduleRewardsOld : Bool!
-    public var moduleSchedule : Bool!
-	public var moduleSettings : Bool!
-	public var moduleStoreLoc : Bool!
-	public var moduleStoreLocOld : Bool!
-	public var moduleWallet : Bool!
-    public var moduleAboutUs : Bool!
-	public var orderDeliveryOffsetSecs : Int!
-	public var orderDetailDeliveryDtMsg : String!
-	public var orderFeedbackMandatory : Bool!
-	public var orderItemCount : Int!
-	public var orderSuccessMsgExtra : String!
-	public var orderTotalAlert : Bool!
-	public var orderTotalAlertMsg : String!
-	public var orderTotalDisclaimer : Bool!
-	public var paymentGateway : String!
-	public var pgRzpKey : String!
-	public var promptForStore : Bool!
-	public var promptInitialBalanceAlert : Bool!
-	public var promptToChkAddress : Bool!
-	public var reorderEnabled : Bool!
-    public var simplClientId : String?
-	public var showAltDeliveryTimeMsg : Bool!
-	public var showDeliveryDateField : Bool!
-	public var showDeliveryOpts : Bool!
-	public var showItemCheck : Bool!
-	public var showItemDesc : Bool!
-	public var showItemInfoIcon : Bool!
-	public var showLocBarAtPayment : Bool!
-	public var showOrderConfirmationScreen : Bool!
-	public var showSplRequest : Bool!
-	public var sideMenu3rdPartEnabled : Bool!
-	public var signupNameRequired : Bool!
-	public var signupShowNameField : Bool!
-	public var skipLogin : Bool!
-	public var skipStoreTimingCheck : Bool!
-	public var splashDisplayLengthMillis : Int!
-	public var storeCacheExpiryMillis : Int!
-	public var tabsExpandEqually : Bool!
-	public var timeToElapseForFeebdackSecs : Int!
-	public var toolbarNoShadow : Bool!
-	public var usingHotline : Bool!
-    public var aboutUsLink : String!
+	public private(set) var allowCashForOrderCheckout : Bool!
+	public private(set) var altDeliveryTimeText : String!
+	public private(set) var apiKey : String!
+	public private(set) var apiUsername : String!
+	public private(set) var appsFlyerDevAppid : String!
+	public private(set) var appsFlyerDevKey : String!
+    public private(set) var applyWalletCredits: Bool!
+	public private(set) var badRatingThreshold : Int!
+	public private(set) var bizAppId : String!
+	public private(set) var bizAppName : String!
+	public private(set) var bizLogoUrl : String!
+    public private(set) var bizCountry2LetterCode: String!
+	public private(set) var cacheDurationSecs : Int!
+	public private(set) var categoryLayoutGrid : Bool!
+    public private(set) var isdCodes : [[String : String]]!
+	public private(set) var defaultCountryCode : String!
+	public private(set) var dfltPymntOpt : String!
+	public private(set) var dfltTabToShow : String!
+	public private(set) var disableWalletReload : Bool!
+	public private(set) var enableCaching : Bool!
+    public private(set) var showBanners : Bool!
+    public private(set) var showFeaturedItems : Bool!
+	public private(set) var enableItemDirectLoading : Bool!
+	public private(set) var enablePostOrderFeedback : Bool!
+	public private(set) var enableSocialLogin : Bool!
+	public private(set) var enableTimeSlots : Bool!
+	public private(set) var enforceMinOffsetTime : Bool!
+	public private(set) var errAccountExists : String!
+	public private(set) var errCouponInvalid : String!
+	public private(set) var feedbackScale : Int!
+	public private(set) var forcePaymentOptSel : Bool!
+	public private(set) var googleOauthClientId : String!
+	public private(set) var googlePlacesApiKey : String!
+	public private(set) var helpEmail : String!
+	public private(set) var helpPhone : String!
+	public private(set) var hideCategoryScreen : Bool!
+	public private(set) var hideLockedRewards : Bool!
+	public private(set) var hidePoints : Bool!
+	public private(set) var hotlineAppId : String!
+	public private(set) var hotlineAppKey : String!
+	public private(set) var hotlineEnable2way : Bool!
+	public private(set) var inStorePrepaidEnabled : Bool!
+	public private(set) var itemLayoutLandscape : Bool!
+	public private(set) var itemQtyRestrictToCurentStock : Bool!
+	public private(set) var itemSearchEnabled : Bool!
+    public private(set) var lblAlertConfirmationButtonTitle : String!
+	public private(set) var lblCheckoutTax : String!
+	public private(set) var lblCurrencySymbol : String!
+	public private(set) var lblCurrencySymbolIso4217 : String!
+	public private(set) var lblFeedbackQuestion : String!
+	public private(set) var lblForgotPwd : String!
+	public private(set) var lblItemTaxRateString : String!
+	public private(set) var lblItemTaxesString : String!
+	public private(set) var lblLoginHdr : String!
+	public private(set) var lblOrderTaxString : String!
+	public private(set) var lblOutOfStock : String!
+	public private(set) var lblSignupHdr : String!
+	public private(set) var lblSocialSignupHdr : String!
+	public private(set) var locationMandatoryForItems : Bool!
+	public private(set) var maxReloadAmt : Int!
+	public private(set) var minOrderValue : Int!
+	public private(set) var minReloadAmt : Int!
+	public private(set) var minReloadBttnVal : Int!
+	public private(set) var mixpanelProjectToken : String!
+	public private(set) var moduleBookTable : Bool!
+	public private(set) var moduleFaq : Bool!
+	public private(set) var moduleFeedbackOld : Bool!
+	public private(set) var moduleHelp : Bool!
+	public private(set) var moduleHistory : Bool!
+    public private(set) var moduleHome : Bool!
+	public private(set) var moduleNotifications : Bool!
+	public private(set) var moduleOffers : Bool!
+	public private(set) var moduleOrdering : Bool!
+	public private(set) var moduleReferral : Bool!
+	public private(set) var moduleRewards : Bool!
+	public private(set) var moduleRewardsOld : Bool!
+    public private(set) var moduleSchedule : Bool!
+	public private(set) var moduleSettings : Bool!
+	public private(set) var moduleStoreLoc : Bool!
+	public private(set) var moduleStoreLocOld : Bool!
+	public private(set) var moduleWallet : Bool!
+    public private(set) var moduleAboutUs : Bool!
+	public private(set) var orderDeliveryOffsetSecs : Int!
+	public private(set) var orderDetailDeliveryDtMsg : String!
+	public private(set) var orderFeedbackMandatory : Bool!
+	public private(set) var orderItemCount : Int!
+	public private(set) var orderSuccessMsgExtra : String!
+	public private(set) var orderTotalAlert : Bool!
+	public private(set) var orderTotalAlertMsg : String!
+	public private(set) var orderTotalDisclaimer : Bool!
+	public private(set) var paymentGateway : String!
+	public private(set) var pgRzpKey : String!
+	public private(set) var promptForStore : Bool!
+	public private(set) var promptInitialBalanceAlert : Bool!
+	public private(set) var promptToChkAddress : Bool!
+	public private(set) var reorderEnabled : Bool!
+    public private(set) var simplClientId : String?
+	public private(set) var showAltDeliveryTimeMsg : Bool!
+	public private(set) var showDeliveryDateField : Bool!
+	public private(set) var showDeliveryOpts : Bool!
+	public private(set) var showItemCheck : Bool!
+	public private(set) var showItemDesc : Bool!
+	public private(set) var showItemInfoIcon : Bool!
+	public private(set) var showLocBarAtPayment : Bool!
+	public private(set) var showOrderConfirmationScreen : Bool!
+	public private(set) var showSplRequest : Bool!
+	public private(set) var sideMenu3rdPartEnabled : Bool!
+	public private(set) var signupNameRequired : Bool!
+	public private(set) var signupShowNameField : Bool!
+	public private(set) var skipLogin : Bool!
+	public private(set) var skipStoreTimingCheck : Bool!
+	public private(set) var splashDisplayLengthMillis : Int!
+	public private(set) var storeCacheExpiryMillis : Int!
+	public private(set) var tabsExpandEqually : Bool!
+	public private(set) var timeToElapseForFeebdackSecs : Int!
+	public private(set) var toolbarNoShadow : Bool!
+	public private(set) var usingHotline : Bool!
+    public private(set) var aboutUsLink : String!
 
 
 	/**
@@ -179,6 +188,7 @@ import FirebaseRemoteConfig
 		disableWalletReload = remoteConfig["disable_wallet_reload"].boolValue
 		enableCaching = remoteConfig["enable_caching"].boolValue
         showBanners = remoteConfig["show_banners"].boolValue
+        showFeaturedItems = remoteConfig["show_featured_items"].boolValue
 		enableItemDirectLoading = remoteConfig["enable_item_direct_loading"].boolValue
 		enablePostOrderFeedback = remoteConfig["enable_post_order_feedback"].boolValue
 		enableSocialLogin = remoteConfig["enable_social_login"].boolValue

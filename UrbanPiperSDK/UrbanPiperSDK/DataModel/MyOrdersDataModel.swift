@@ -9,7 +9,9 @@
 import UIKit
 
 @objc public protocol OrderCellDelegate {
-    func configureCell(_ order: MyOrderObject)
+    func object() -> MyOrder?
+    
+    func configureCell(_ myOrder: MyOrder?)
 }
 
 @objc public protocol MyOrdersDataModelDelegate {
@@ -34,8 +36,8 @@ open class MyOrdersDataModel: UrbanPiperDataModel {
         }
     }
     
-    var myOrdersArray: [MyOrderObject] {
-        return myOrdersResponse?.objects ?? []
+    var myOrdersArray: [MyOrder] {
+        return myOrdersResponse?.orders ?? []
     }
 
     func refreshData() {
@@ -54,7 +56,12 @@ extension MyOrdersDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
         
         if let orderCell: OrderCellDelegate = cell as? OrderCellDelegate {
-            orderCell.configureCell(myOrdersArray[indexPath.row])
+            let myOrder: MyOrder = myOrdersArray[indexPath.row]
+            
+            orderCell.configureCell(myOrder)
+            if myOrdersArray.last === myOrder, myOrdersArray.count < myOrdersResponse!.meta.totalCount {
+                fetchOrderHistory(next:  myOrdersResponse?.meta.next)
+            }
         } else {
             assert(false, "Cell does not conform to OrderCellDelegate protocol")
         }
@@ -75,7 +82,12 @@ extension MyOrdersDataModel {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let orderCell: OrderCellDelegate = cell as? OrderCellDelegate {
-            orderCell.configureCell(myOrdersArray[indexPath.row])
+            let myOrder: MyOrder = myOrdersArray[indexPath.row]
+            
+            orderCell.configureCell(myOrder)
+            if myOrdersArray.last === myOrder, myOrdersArray.count < myOrdersResponse!.meta.totalCount {
+                fetchOrderHistory(next:  myOrdersResponse?.meta.next)
+            }
         } else {
             assert(false, "Cell does not conform to OrderCellDelegate protocol")
         }
@@ -89,13 +101,25 @@ extension MyOrdersDataModel {
 
 extension MyOrdersDataModel {
 
-    public func fetchOrderHistory() {
+    public func fetchOrderHistory(next: String? = nil) {
 
         dataModelDelegate?.refreshMyOrdersUI(isProcessing: true)
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchOrderHistory(completion: { [weak self] (data) in
+        let dataTask: URLSessionDataTask = APIManager.shared.fetchOrderHistory(next: next,
+                                                                               completion:
+            { [weak self] (data) in
             self?.dataModelDelegate?.refreshMyOrdersUI(isProcessing: false)
             guard let response = data else { return }
-            self?.myOrdersResponse = response
+                
+                if next == nil {
+                    self?.myOrdersResponse = response
+                } else {
+                    let currentMyOrdersResponse = self?.myOrdersResponse
+                    
+                    currentMyOrdersResponse?.orders.append(contentsOf: response.orders)
+                    currentMyOrdersResponse?.meta = response.meta
+
+                    self?.myOrdersResponse = currentMyOrdersResponse
+                }
         }, failure: { [weak self] (upError) in
             defer {
                 self?.dataModelDelegate?.handleMyOrders(error: upError)
@@ -113,6 +137,15 @@ extension MyOrdersDataModel {
 extension MyOrdersDataModel {
 
     @objc open override func appWillEnterForeground() {
+        if myOrdersArray == nil || myOrdersArray.count == 0 {
+            refreshData()
+        }
+        
+        guard let myOrder: MyOrder = (tableView?.visibleCells.last as? OrderCellDelegate)?.object() else { return }
+        if myOrdersArray.last === myOrder, myOrdersArray.count < myOrdersResponse!.meta.totalCount {
+            fetchOrderHistory(next: myOrdersResponse?.meta.next)
+        }
+
     }
 
     @objc open override func appDidEnterBackground() {
@@ -126,6 +159,15 @@ extension MyOrdersDataModel {
 extension MyOrdersDataModel {
 
     @objc open override func networkIsAvailable() {
+        if myOrdersArray == nil || myOrdersArray.count == 0 {
+            refreshData()
+        }
+        
+        guard let myOrder: MyOrder = (tableView?.visibleCells.last as? OrderCellDelegate)?.object() else { return }
+        if myOrdersArray.last === myOrder, myOrdersArray.count < myOrdersResponse!.meta.totalCount {
+            fetchOrderHistory(next: myOrdersResponse?.meta.next)
+        }
+
     }
 
     @objc open override func networkIsDown() {

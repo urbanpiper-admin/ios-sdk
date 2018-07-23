@@ -1,5 +1,5 @@
 //
-//	MyOrderCharge.swift
+//	Charge.swift
 //
 //	Create by Vidhyadharan Mohanram on 16/6/2018
 //	Copyright © 2018. All rights reserved.
@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class MyOrderCharge : NSObject{
+public class Charge : NSObject{
 
 	public var title : String!
 	public var value : Decimal!

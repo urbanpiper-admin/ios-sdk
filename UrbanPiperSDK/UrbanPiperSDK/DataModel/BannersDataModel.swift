@@ -16,7 +16,7 @@ import UIKit
 }
 
 @objc public protocol BannerCellDelegate {
-    func configureCell(_ bannersImage: Image?)
+    func configureCell(_ bannersImage: BannerImage?)
 }
 
 public class BannersDataModel: UrbanPiperDataModel {
@@ -38,7 +38,7 @@ public class BannersDataModel: UrbanPiperDataModel {
         }
     }
 
-    public var bannersListArray: [Image]? {
+    public var bannersListArray: [BannerImage]? {
         return bannersResponse?.images
     }
 
@@ -91,7 +91,7 @@ extension BannersDataModel {
      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
 
         if let bannerCell: BannerCellDelegate = cell as? BannerCellDelegate {
-            let image: Image?
+            let image: BannerImage?
 
             if let images = bannersListArray {
                 if indexPath.row == 0 {

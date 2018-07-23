@@ -175,14 +175,20 @@ public class AppUserDataModel: UrbanPiperDataModel {
     
     @objc public func reset() {
         CartManager.shared.clearCart()
+        CartManager.shared.couponCodeToApply = nil
+
         DeliveryLocationDataModel.shared.deliveryLocation = nil
         DeliveryLocationDataModel.shared.deliveryAddress = nil
+
         OrderingStoreDataModel.shared.nearestStoreResponse = nil
         UserDefaults.standard.removeObject(forKey: "defaultAddress")
+
         appUserData = nil
         bizInfo = nil
+
         AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
         AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.BizInfoKey)
+
         APIManager.shared.updateHeaders()
         APIManager.shared.lastRegisteredFCMToken = nil
         
@@ -195,6 +201,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
         UserDefaults.standard.removeObject(forKey: "payment_options")
 
         UserDefaults.standard.removeObject(forKey: "NextLocationUpdateDate")
+      
         UserDefaults.standard.removeObject(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey)
         UserDefaults.standard.removeObject(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
 

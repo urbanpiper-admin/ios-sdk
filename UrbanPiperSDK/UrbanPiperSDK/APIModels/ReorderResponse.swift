@@ -31,7 +31,7 @@ public class ReorderResponse : NSObject{
 		itemsAvailable = [ItemObject]()
 		if let itemsAvailableArray: [[String:Any]] = dictionary["items_available"] as? [[String:Any]]{
 			for dic in itemsAvailableArray{
-				let value: ItemObject = ItemObject(fromDictionary: dic)
+				let value: ItemObject = ItemObject(historicalOrderItemDictionary: dic)
 				itemsAvailable.append(value)
 			}
 		}

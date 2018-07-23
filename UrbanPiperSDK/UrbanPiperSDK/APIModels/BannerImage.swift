@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class Image : NSObject{
+public class BannerImage : NSObject{
 
 	public var created : String!
 	public var id : Int!
