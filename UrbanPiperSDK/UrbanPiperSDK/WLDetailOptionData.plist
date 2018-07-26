@@ -168,7 +168,7 @@
 		<key>title</key>
 		<string>Offers</string>
 		<key>loginMandatory</key>
-		<true/>
+		<false/>
 	</dict>
 	<dict>
 		<key>tag</key>

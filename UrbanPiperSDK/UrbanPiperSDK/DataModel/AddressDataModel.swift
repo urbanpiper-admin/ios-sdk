@@ -74,7 +74,6 @@ public class AddressDataModel: UrbanPiperDataModel {
                 return address
             } else {
                 guard let address = self.userAddressesResponse?.addresses.first else { return nil }
-                Address.registerClassName()
                 let defaultAddressData = NSKeyedArchiver.archivedData(withRootObject: address)
 
                 UserDefaults.standard.set(defaultAddressData, forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
@@ -83,7 +82,6 @@ public class AddressDataModel: UrbanPiperDataModel {
         }
         set {
             if let val = newValue {
-                Address.registerClassName()
                 let defaultAddressData = NSKeyedArchiver.archivedData(withRootObject: val)
 
                 UserDefaults.standard.set(defaultAddressData, forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
@@ -112,6 +110,7 @@ public class AddressDataModel: UrbanPiperDataModel {
 
     
     public func refreshData(_ isForcedRefresh: Bool = false) {
+        guard OrderingStoreDataModel.shared.deliveryOption == .delivery else { return }
         fetchAddressList()
     }
     

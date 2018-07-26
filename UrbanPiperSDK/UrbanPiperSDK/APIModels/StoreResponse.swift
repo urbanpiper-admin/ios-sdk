@@ -21,6 +21,9 @@ import Foundation
 		if let bizData: [String:Any] = dictionary["biz"] as? [String:Any]{
 			biz = Biz(fromDictionary: bizData)
 		}
+        
+        Biz.shared = biz
+        
 		if let storeData: [String:Any] = dictionary["store"] as? [String:Any]{
 			store = Store(fromDictionary: storeData)
 		}
@@ -48,6 +51,7 @@ import Foundation
     @objc required public init(coder aDecoder: NSCoder)
 	{
         biz = aDecoder.decodeObject(forKey: "biz") as? Biz
+        Biz.shared = biz
         store = aDecoder.decodeObject(forKey: "store") as? Store
     }
 

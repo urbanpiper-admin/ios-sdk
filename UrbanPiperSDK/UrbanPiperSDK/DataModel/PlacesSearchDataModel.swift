@@ -115,7 +115,6 @@ public class PlacesSearchDataModel: UrbanPiperDataModel {
 
     private func store(prediction: Prediction) {
         var selectedPlacesArray: [Prediction]
-        Prediction.registerClassName()
 
         if let selectedPlacesData: Data = UserDefaults.standard.object(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey) as? Data {
             if let predictionsArray: [Prediction] = NSKeyedUnarchiver.unarchiveObject(with: selectedPlacesData) as? [Prediction] {

@@ -14,7 +14,7 @@ public class Transaction : NSObject{
 	public var comments : String!
 	public var created : Int!
 	public var id : Int!
-	public var paymentAmount : Int!
+	public var paymentAmount : Decimal!
 	public var paymentSrc : String!
 	public var paymentType : String!
 	public var posMcId : AnyObject!
@@ -31,7 +31,16 @@ public class Transaction : NSObject{
 		comments = dictionary["comments"] as? String
 		created = dictionary["created"] as? Int
 		id = dictionary["id"] as? Int
-		paymentAmount = dictionary["payment_amount"] as? Int
+        
+        let priceVal = dictionary["payment_amount"]
+        if let val: Decimal = priceVal as? Decimal {
+            paymentAmount = val
+        } else if let val: Double = priceVal as? Double {
+            paymentAmount = Decimal(val).rounded
+        } else {
+            paymentAmount = Decimal.zero
+        }
+        
 		paymentSrc = dictionary["payment_src"] as? String
 		paymentType = dictionary["payment_type"] as? String
 		posMcId = dictionary["pos_mc_id"] as AnyObject

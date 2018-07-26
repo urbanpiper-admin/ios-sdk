@@ -24,6 +24,7 @@ public class StoreLocatorDataModel: UrbanPiperDataModel {
     
     public var storeLocatorResponse: StoreLocatorResponse? {
         didSet {
+            filteredStoresArray = storeLocatorResponse?.stores
             tableView?.reloadData()
             collectionView?.reloadData()
         }
@@ -31,6 +32,13 @@ public class StoreLocatorDataModel: UrbanPiperDataModel {
     
     public var storesListArray: [Store]? {
         return storeLocatorResponse?.stores
+    }
+    
+    public var filteredStoresArray: [Store]? {
+        didSet {
+            tableView?.reloadData()
+            collectionView?.reloadData()
+        }
     }
     
     public convenience init(delegate: StoreLocatorDataModelDelegate) {
@@ -82,20 +90,35 @@ public class StoreLocatorDataModel: UrbanPiperDataModel {
         storeLocatorResponse = response
     }
     
+    public func filterStores(key: String) {
+        let trimmedKey = key.trimmingCharacters(in: CharacterSet.whitespaces).lowercased()
+        
+        if trimmedKey.count > 0 {
+            let filteredStores = storesListArray?.filter({ (store) -> Bool in
+                guard store.name.lowercased().range(of: trimmedKey) == nil else { return true }
+                return store.address.lowercased().range(of: trimmedKey) != nil
+            })
+            
+            filteredStoresArray = filteredStores
+        } else {
+            filteredStoresArray = storesListArray
+        }
+    }
+    
 }
 
 //  MARK: UITableView DataSource
 extension StoreLocatorDataModel {
     
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return storesListArray?.count ?? 0
+        return filteredStoresArray?.count ?? 0
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
         
         if let placesCell: StoreLocatorCellDelegate = cell as? StoreLocatorCellDelegate {
-            placesCell.configureCell(storesListArray?[indexPath.row])
+            placesCell.configureCell(filteredStoresArray?[indexPath.row])
         } else {
             assert(false, "Cell does not conform to StoreLocatorCellDelegate protocol")
         }
@@ -109,14 +132,14 @@ extension StoreLocatorDataModel {
 extension StoreLocatorDataModel {
     
     public override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return storesListArray?.count ?? 0
+        return filteredStoresArray?.count ?? 0
     }
     
     public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let placesCell: StoreLocatorCellDelegate = cell as? StoreLocatorCellDelegate {
-            placesCell.configureCell(storesListArray?[indexPath.row])
+            placesCell.configureCell(filteredStoresArray?[indexPath.row])
         } else {
             assert(false, "Cell does not conform to StoreLocatorCellDelegate protocol")
         }
@@ -131,7 +154,7 @@ extension StoreLocatorDataModel {
 extension StoreLocatorDataModel {
     
     @objc open override func appWillEnterForeground() {
-        guard storesListArray == nil || storesListArray!.count == 0 else { return }
+        guard filteredStoresArray == nil || filteredStoresArray!.count == 0 else { return }
         refreshData(true)
     }
     
@@ -145,7 +168,7 @@ extension StoreLocatorDataModel {
 extension StoreLocatorDataModel {
     
     @objc open override func networkIsAvailable() {
-        guard storesListArray == nil || storesListArray!.count == 0 else { return }
+        guard filteredStoresArray == nil || filteredStoresArray!.count == 0 else { return }
         refreshData(true)
     }
     

@@ -99,7 +99,6 @@ public class AppUserDataModel: UrbanPiperDataModel {
                 }
             }
             
-            User.registerClassName()
             let userData: Data = NSKeyedArchiver.archivedData(withRootObject: user)
             AppUserDataModel.keychain.set(userData, forKey: KeychainAppUserKeys.AppUserKey)
             APIManager.shared.updateHeaders()
@@ -137,7 +136,6 @@ public class AppUserDataModel: UrbanPiperDataModel {
                 return
             }
             
-            BizInfo.registerClassName()
             let isFirstUpdate = bizInfo == nil
             let bizInfoData: Data = NSKeyedArchiver.archivedData(withRootObject: info)
             AppUserDataModel.keychain.set(bizInfoData, forKey: KeychainAppUserKeys.BizInfoKey)

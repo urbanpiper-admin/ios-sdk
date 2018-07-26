@@ -52,7 +52,7 @@ extension FeaturedItemsDataModel {
     fileprivate func fetchFeaturedItems(isForcedRefresh: Bool, next: String? = nil) {
         guard isForcedRefresh || (!isForcedRefresh && categoryItemsResponse == nil) else { return }
         dataModelDelegate?.refreshFeaturedItemsUI(true)
-        let dataTask: URLSessionDataTask = APIManager.shared.featuredItems(locationID: OrderingStoreDataModel.shared.nearestStoreResponse?.store?.bizLocationId,
+        let dataTask: URLSessionDataTask = APIManager.shared.featuredItems(locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
                                                                            next: next,
                                                                            completion: { [weak self] (data) in
                                                                             guard let response = data else { return }

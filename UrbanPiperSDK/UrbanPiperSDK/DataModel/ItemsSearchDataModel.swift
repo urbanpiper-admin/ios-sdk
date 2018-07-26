@@ -104,7 +104,7 @@ extension ItemsSearchDataModel {
     @objc private func searchItems(for keyword: String) {
         dataModelDelegate?.refreshItemsSearchUI(true)
         let dataTask: URLSessionDataTask = APIManager.shared.fetchCategoryItems(for: keyword,
-                                                            locationID: OrderingStoreDataModel.shared.nearestStoreResponse?.store?.bizLocationId,
+                                                            locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
                                                             completion: { [weak self] (data) in
                                                                 defer {
                                                                     self?.dataModelDelegate?.refreshItemsSearchUI(false)

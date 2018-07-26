@@ -30,6 +30,39 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
 
     private var observers = [WeakRefDataModelDelegate]()
 
+    public var pickupStore: Store? {
+        didSet {
+            guard let store = pickupStore else { return }
+            if let previousBizId = oldValue?.bizLocationId, previousBizId != store.bizLocationId {
+                CartManager.shared.clearCart()
+            }
+            deliveryOption = .pickUp
+            _ = observers.map { $0.value?.update(nil, nil, nil, true) }
+        }
+    }
+    
+    public var deliveryOption: DeliveryOption = .delivery {
+        didSet {
+            let pickupStoreVal = pickupStore
+            
+            switch deliveryOption {
+            case .delivery:
+                pickupStore = nil
+            case .pickUp: break
+            }
+            
+            guard oldValue != deliveryOption else { return }
+            
+            guard let deliveryBizId = nearestStoreResponse?.store?.bizLocationId, let pickupStoreBizId = pickupStoreVal?.bizLocationId else {
+                CartManager.shared.clearCart()
+                return
+            }
+            
+            guard deliveryBizId != pickupStoreBizId else { return }
+            CartManager.shared.clearCart()
+        }
+    }
+
     @objc public var nearestStoreResponse: StoreResponse? = {
         guard let storeResponseData: Data = UserDefaults.standard.object(forKey: OrderingStoreUserDefaultKeys.nearestStoreResponseKey) as? Data else { return nil }
         Biz.registerClassName()
@@ -60,39 +93,37 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
                 CartManager.shared.clearCart()
                 return
             }
+            
+            if let store = storeResponse.store {
+                if let previousStoreId = previousStoreResponse?.store?.bizLocationId, let currentStoreId = store.bizLocationId, previousStoreId != currentStoreId {
+                    CartManager.shared.clearCart()
+                }
 
-            if let previousStoreId = previousStoreResponse?.store?.bizLocationId, let currentStoreId = storeResponse.store?.bizLocationId, previousStoreId != currentStoreId {
-                
-                if let store = storeResponse.store {
-                    if let deliverAddress = DeliveryLocationDataModel.shared.deliveryAddress?.fullAddress {
-                        if store.closingDay || store.isStoreClosed {
-                            if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                                AnalyticsManager.shared.nearestStoreClosed(lat: coordinate.latitude,
-                                                                           lng: coordinate.longitude,
-                                                                           deliveryAddress: deliverAddress,
-                                                                           storeName: store.name)
-                            }
-                            
-                        } else if store.temporarilyClosed {
-                            if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                                AnalyticsManager.shared.nearestStoreTemporarilyClosed(lat: coordinate.latitude,
-                                                                                      lng: coordinate.longitude,
-                                                                                      deliveryAddress: deliverAddress,
-                                                                                      storeName: store.name)
-                            }
+                if let deliverAddress = DeliveryLocationDataModel.shared.deliveryAddress?.fullAddress {
+                    if store.closingDay || store.isStoreClosed {
+                        if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
+                            AnalyticsManager.shared.nearestStoreClosed(lat: coordinate.latitude,
+                                                                       lng: coordinate.longitude,
+                                                                       deliveryAddress: deliverAddress,
+                                                                       storeName: store.name)
+                        }
+                        
+                    } else if store.temporarilyClosed {
+                        if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
+                            AnalyticsManager.shared.nearestStoreTemporarilyClosed(lat: coordinate.latitude,
+                                                                                  lng: coordinate.longitude,
+                                                                                  deliveryAddress: deliverAddress,
+                                                                                  storeName: store.name)
                         }
                     }
-                } else {
-                    if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                        AnalyticsManager.shared.noStoresNearBy(lat: coordinate.latitude, lng: coordinate.longitude)
-                    }
                 }
+            } else {
                 CartManager.shared.clearCart()
-            } else if storeResponse.store == nil {
-                CartManager.shared.clearCart()
+                if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
+                    AnalyticsManager.shared.noStoresNearBy(lat: coordinate.latitude, lng: coordinate.longitude)
+                }
             }
 
-            StoreResponse.registerClassName()
             let storeResponseData: Data = NSKeyedArchiver.archivedData(withRootObject: storeResponse)
 
             UserDefaults.standard.set(storeResponseData, forKey: OrderingStoreUserDefaultKeys.nearestStoreResponseKey)
@@ -100,6 +131,15 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
     }
 
     var previousStoreResponse: StoreResponse?
+    
+    public var orderingStore: Store? {
+        switch deliveryOption {
+        case .delivery:
+            return nearestStoreResponse?.store
+        case .pickUp:
+            return pickupStore
+        }
+    }
 
     public typealias UpdateCompletionBlock = (StoreResponse?, UPError?) -> Void
     var updateCompletionBlock: UpdateCompletionBlock?
@@ -125,9 +165,17 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
     }
 
 
-    @objc public func updateLocationAndNearestStore(completion: @escaping UpdateCompletionBlock) {
+    @objc public func updateLocationAndNearestStore(forced: Bool = true, completion: UpdateCompletionBlock? = nil) {
         updateCompletionBlock = completion
-        DeliveryLocationDataModel.shared.updateCurrentUserLocation()
+        DeliveryLocationDataModel.shared.updateCurrentUserLocation(forced: forced)
+    }
+    
+    
+    public func setPickupFrom(store: Store) {
+        DeliveryLocationDataModel.shared.nextLocationUpdateDate = Calendar.current.date(byAdding: .minute,
+                                                                                        value: Int(DeliveryLocationDataModel.locationUpdateTimeInterval),
+                                                                                        to: Date())
+        pickupStore = store
     }
 
 }
@@ -146,12 +194,13 @@ extension OrderingStoreDataModel {
         isFetchingNearestStoreForLocation = location
 
         previousStoreResponse = OrderingStoreDataModel.shared.nearestStoreResponse
-        OrderingStoreDataModel.shared.nearestStoreResponse = nil
         
         _ = observers.map { $0.value?.update(nil, location, nil, false) }
         
         let dataTask: URLSessionDataTask = APIManager.shared.fetchNearestStore(location.coordinate, completion: { [weak self] (data) in
             defer {
+                self?.deliveryOption = .delivery
+                
                 _ = self?.observers.map { $0.value?.update(OrderingStoreDataModel.shared.nearestStoreResponse, location, nil, true) }
                 self?.updateCompletionBlock?(OrderingStoreDataModel.shared.nearestStoreResponse, nil)
                 self?.updateCompletionBlock = nil
@@ -163,6 +212,7 @@ extension OrderingStoreDataModel {
             OrderingStoreDataModel.shared.nearestStoreResponse = response
             
             }, failure: { [weak self] (upError) in
+                OrderingStoreDataModel.shared.nearestStoreResponse = nil
                 self?.isFetchingNearestStoreForLocation = nil
 
                 defer {
@@ -186,7 +236,7 @@ extension OrderingStoreDataModel {
             completion?(nil, nil)
             return
         }
-
+        
         updateCompletionBlock = completion
         DeliveryLocationDataModel.shared.setCustomDelivery(location: loc, address: address)
     }
@@ -203,6 +253,8 @@ extension OrderingStoreDataModel: DeliveryLocationDataModelDelegate {
             fetchNearestStore(location: deliveryLocation!)
             _ = observers.map { $0.value?.update(OrderingStoreDataModel.shared.nearestStoreResponse, deliveryLocation, nil, false) }
         } else if deliveryLocation != nil, deliveryAddress != nil, upError == nil {
+            deliveryOption = .delivery
+            
             _ = observers.map { $0.value?.update(OrderingStoreDataModel.shared.nearestStoreResponse, deliveryLocation, nil, false) }
             
             updateCompletionBlock?(OrderingStoreDataModel.shared.nearestStoreResponse, nil)

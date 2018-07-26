@@ -183,7 +183,7 @@ extension CategoryItemsDataModel {
         dataModelDelegate?.refreshCategoryItemsUI(true)
         isFetchingCategoryItems = true
         let dataTask: URLSessionDataTask = APIManager.shared.fetchCategoryItems(categoryId: categoryObject.id,
-                                                            locationID: OrderingStoreDataModel.shared.nearestStoreResponse?.store?.bizLocationId,
+                                                            locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
                                                             isForcedRefresh: isForcedRefresh,
                                                             next: next,
                                                             completion: { [weak self] (data) in

@@ -73,10 +73,10 @@ extension APIManager {
                 guard let completionClosure = completion else { return }
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let storeDetail: StoreResponse = StoreResponse(fromDictionary: dictionary)
+                    let storeResponse: StoreResponse = StoreResponse(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
-                        completionClosure(storeDetail)
+                        completionClosure(storeResponse)
                     }
                     return
                 }

@@ -19,5 +19,19 @@ extension Decimal {
         
         return rounded
     }
+    
+    static let numberFormatter: NumberFormatter = {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.minimumIntegerDigits = 1
+        numberFormatter.minimumFractionDigits = 2
+        numberFormatter.maximumFractionDigits = 2
+//        numberFormatter.numberStyle = .currency
+//        numberFormatter.locale = someSKProduct.priceLocale
+
+        return numberFormatter
+    }()
+    public var stringVal: String {
+        return Decimal.numberFormatter.string(from: self as NSDecimalNumber)!
+    }
 
 }

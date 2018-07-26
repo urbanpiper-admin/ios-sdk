@@ -46,8 +46,8 @@ public enum DeliveryOption: String {
         switch self {
         case .delivery:
             if let amount = orderAmount, amount > 0.0 {
-                let currencyPrefix: String = AppConfigManager.shared.firRemoteConfigDefaults.lblCurrencySymbol!
-                return "DELIVERY (MIN ORDER \(currencyPrefix) \(amount))"
+                let currencySymbol: String = AppConfigManager.shared.firRemoteConfigDefaults.lblCurrencySymbol!
+                return "DELIVERY (MIN ORDER \(currencySymbol) \(amount.stringVal))"
             }
             return "DELIVERY"
         case .pickUp:
@@ -132,15 +132,15 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
     
     public var deliveryCharge: Decimal {
-        return orderResponse?.deliveryCharge ?? OrderingStoreDataModel.shared.nearestStoreResponse?.store?.deliveryCharge ?? Decimal.zero
+        return orderResponse?.deliveryCharge ?? OrderingStoreDataModel.shared.orderingStore?.deliveryCharge ?? Decimal.zero
     }
     
     public var packagingCharge: Decimal? {
-        return orderResponse?.packagingCharge ?? OrderingStoreDataModel.shared.nearestStoreResponse?.store?.packagingCharge
+        return orderResponse?.packagingCharge ?? OrderingStoreDataModel.shared.orderingStore?.packagingCharge
     }
     
     public var discountPrice: Decimal? {
-        return applyCouponResponse?.discount.value ?? orderPreProcessingResponse?.discount ?? OrderingStoreDataModel.shared.nearestStoreResponse?.store?.discount
+        return applyCouponResponse?.discount.value ?? orderPreProcessingResponse?.discount ?? OrderingStoreDataModel.shared.orderingStore?.discount
     }
 
     public var itemsTotalPrice: Decimal {
@@ -148,11 +148,11 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
     
     public var itemTaxes: Decimal? {
-        return orderResponse?.itemTaxes ?? OrderingStoreDataModel.shared.nearestStoreResponse?.store?.itemTaxes
+        return orderResponse?.itemTaxes ?? OrderingStoreDataModel.shared.orderingStore?.itemTaxes
     }
     
     public var taxRate: Float {
-        return orderResponse?.taxRate ?? OrderingStoreDataModel.shared.nearestStoreResponse?.store?.taxRate ?? 0
+        return orderResponse?.taxRate ?? OrderingStoreDataModel.shared.orderingStore?.taxRate ?? 0
     }
 
     lazy public var selectedPaymentOption: PaymentOption = {
@@ -174,10 +174,15 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }()
     
     private var defaultDeliveryOption: DeliveryOption {
-        if let deliveryOption = deliveryOptions?.first {
-            return deliveryOption
+        switch OrderingStoreDataModel.shared.deliveryOption {
+        case .delivery:
+            if let deliveryOption = deliveryOptions?.first {
+                return deliveryOption
+            }
+            return .delivery
+        case .pickUp:
+            return .pickUp
         }
-        return .delivery
     }
     
     lazy public var selectedDeliveryTimeSlotOption: TimeSlot? = {
@@ -331,7 +336,7 @@ extension OrderPaymentDataModel {
     public func preProcessOrder() {
         dataModelDelegate?.refreshPreProcessingUI(true)
                 
-        let dataTask: URLSessionDataTask = APIManager.shared.preProcessOrder(bizLocationId: OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
+        let dataTask: URLSessionDataTask = APIManager.shared.preProcessOrder(bizLocationId: OrderingStoreDataModel.shared.orderingStore!.bizLocationId,
                                                          applyWalletCredit: applyWalletCredits,
                                                          deliveryOption: selectedDeliveryOption.rawValue,
                                                          items: CartManager.shared.cartItems,
@@ -368,7 +373,7 @@ extension OrderPaymentDataModel {
     
     public func applyCoupon(code: String) {
         guard code.count > 0 else { return }
-        let orderDict: [String: Any] = ["biz_location_id": OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
+        let orderDict: [String: Any] = ["biz_location_id": OrderingStoreDataModel.shared.orderingStore!.bizLocationId,
                          "order_type": selectedDeliveryOption.rawValue,
                          "channel": APIManager.channel,
                          "items": CartManager.shared.cartItems.map { $0.discountCouponApiItemDictionary },
@@ -413,7 +418,7 @@ extension OrderPaymentDataModel {
         let dataTask: URLSessionDataTask? = APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption,
                                                                purpose: OnlinePaymentPurpose.ordering,
                                                                totalAmount: itemsTotalPrice,
-                                                               bizLocationId: OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
+                                                               bizLocationId: OrderingStoreDataModel.shared.orderingStore!.bizLocationId,
                                                                completion: { [weak self] (onlinePaymentInitResponse) in
                                                                 self?.dataModelDelegate?.initiatingPayment(isProcessing: false)
                                                                 if paymentOption == .paymentGateway || paymentOption == .paytm || paymentOption == .simpl {
@@ -443,7 +448,7 @@ extension OrderPaymentDataModel {
                                      timeSlot: timeSlotDelivery ? selectedDeliveryTimeSlotOption : nil,
                                      deliveryOption: selectedDeliveryOption.rawValue,
                                      phone: phone,
-                                     bizLocationId: OrderingStoreDataModel.shared.nearestStoreResponse!.store!.bizLocationId,
+                                     bizLocationId: OrderingStoreDataModel.shared.orderingStore!.bizLocationId,
                                      paymentOption: paymentOption.rawValue,
                                      taxRate: taxRate,
                                      couponCode: couponCode,

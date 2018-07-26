@@ -510,7 +510,7 @@ public class AnalyticsManager: NSObject {
         if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             var properties: Properties = ["query" : query]
             
-            if let storeId = OrderingStoreDataModel.shared.nearestStoreResponse?.store?.bizLocationId {
+            if let storeId = OrderingStoreDataModel.shared.orderingStore?.bizLocationId {
                 properties["store_id"] = "\(storeId)"
             }
             
@@ -872,7 +872,7 @@ public class AnalyticsManager: NSObject {
             var properties: [String : MixpanelType] = ["order_total" : NSDecimalNumber(decimal: orderPaymentDataModel.itemsTotalPrice).doubleValue,
                                                        "num_items": orderPaymentDataModel.orderResponse!.items.count,
                                                        "payment_option" : orderPaymentDataModel.selectedPaymentOption.rawValue,
-                                                       "store" : OrderingStoreDataModel.shared.nearestStoreResponse!.store!.name,
+                                                       "store" : OrderingStoreDataModel.shared.orderingStore!.name,
                                                        "order_phone" : phone,
                                                        "channel" : orderPaymentDataModel.orderResponse!.channel,
                                                        "order_id" : orderId,
