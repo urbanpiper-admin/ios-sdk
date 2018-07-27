@@ -29,11 +29,11 @@ public class AppConfigManager: NSObject {
         return filteredTabsArray
     }()
 
-    lazy var guestUserSidePanelTabs: [SideMenuPanelTabDetail] = {
+    public lazy var guestUserSidePanelTabs: [SideMenuPanelTabDetail] = {
         return sideMenuPanelTabDetails.filter { !$0.loginMandatory }
     }()
 
-    lazy var loggedInUserSidePanelTabs: [SideMenuPanelTabDetail] = {
+    public lazy var loggedInUserSidePanelTabs: [SideMenuPanelTabDetail] = {
         return sideMenuPanelTabDetails.filter { $0.tag != .login }
     }()
 

@@ -55,6 +55,11 @@ extension Date {
         return Date.localeDateToStringFormatter.string(from: self)
     }
     
+    public var ddMMMyyyyString: String {
+        Date.localeDateToStringFormatter.dateFormat = "dd MMM, yyyy"
+        return Date.localeDateToStringFormatter.string(from: self)
+    }
+    
     public var dayName: String {
         Date.localeDateToStringFormatter.dateFormat = "EEEE"
         return Date.localeDateToStringFormatter.string(from: self)

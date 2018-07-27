@@ -131,7 +131,7 @@ public enum ErrorType {
     private var apiStatusCode: Int?
     private var multiPartEncodingError: Error?
     
-    public init(type: ErrorType, data: Data? =  nil, responseObject: [String: Any]? = nil) {
+    public init(type: ErrorType, errorCode: Int = 0, data: Data? =  nil, responseObject: [String: Any]? = nil) {
         errorType = type
         apiCallData = responseObject
         
@@ -144,7 +144,7 @@ public enum ErrorType {
             errorType = .noInternetError
         }
         
-        super.init(domain: "com.urbanpiper.error", code: 0, userInfo: apiCallData)
+        super.init(domain: "com.urbanpiper.error", code: errorCode, userInfo: apiCallData)
     }
         
     convenience init(multiPartEncodingError error: Error) {

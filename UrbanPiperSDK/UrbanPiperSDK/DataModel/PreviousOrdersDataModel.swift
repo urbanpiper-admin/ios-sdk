@@ -147,9 +147,6 @@ extension PreviousOrdersDataModel {
         let dataTask: URLSessionDataTask = APIManager.shared.fetchOrderDetails(orderId: orderId,
                                                                                completion:
             { [weak self] (data) in
-                defer {
-                    self?.dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: false)
-                }
                 guard let response = data else { return }
                 objc_sync_enter(lock)
                 let order: MyOrder? = self?.myOrdersArray?.filter ({ $0.id == response.order.details.id }).last

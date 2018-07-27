@@ -36,7 +36,7 @@ open class MyOrdersDataModel: UrbanPiperDataModel {
         }
     }
     
-    var myOrdersArray: [MyOrder] {
+    public var myOrdersArray: [MyOrder] {
         return myOrdersResponse?.orders ?? []
     }
 
@@ -107,7 +107,9 @@ extension MyOrdersDataModel {
         let dataTask: URLSessionDataTask = APIManager.shared.fetchOrderHistory(next: next,
                                                                                completion:
             { [weak self] (data) in
-            self?.dataModelDelegate?.refreshMyOrdersUI(isProcessing: false)
+                defer {
+                    self?.dataModelDelegate?.refreshMyOrdersUI(isProcessing: false)
+                }
             guard let response = data else { return }
                 
                 if next == nil {
@@ -124,7 +126,6 @@ extension MyOrdersDataModel {
             defer {
                 self?.dataModelDelegate?.handleMyOrders(error: upError)
             }
-            self?.dataModelDelegate?.refreshMyOrdersUI(isProcessing: false)
         })
         
         addOrCancelDataTask(dataTask: dataTask)

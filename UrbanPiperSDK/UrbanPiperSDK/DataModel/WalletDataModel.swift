@@ -175,6 +175,8 @@ extension WalletDataModel {
 extension WalletDataModel {
 
     @objc open override func appWillEnterForeground() {
+        guard walletTransactionResponse?.transactions == nil || walletTransactionResponse!.transactions.count == 0 else { return }
+        fetchWalletTransactions()
     }
 
     @objc open override func appDidEnterBackground() {
@@ -188,6 +190,8 @@ extension WalletDataModel {
 extension WalletDataModel {
 
     @objc open override func networkIsAvailable() {
+        guard walletTransactionResponse?.transactions == nil || walletTransactionResponse!.transactions.count == 0 else { return }
+        fetchWalletTransactions()
     }
 
     @objc open override func networkIsDown() {

@@ -11,10 +11,12 @@ import UIKit
 @objc public class UPAPIError: UPError {
 
     public convenience init?(error: Error? = nil, data: Data? = nil, responseObject: [String: Any]? = nil) {
-        if error != nil && (error! as NSError).code == NSURLErrorCancelled {
+        let errorCode = (error! as NSError).code
+        if error != nil && errorCode == NSURLErrorCancelled {
             return nil
         }
-        self.init(type: .apiError, data: data, responseObject: responseObject)
+        
+        self.init(type: .apiError, errorCode: errorCode, data: data, responseObject: responseObject)        
     }
 
 }
