@@ -38,19 +38,19 @@ public enum OrderStatus: String {
     public var displayColor: UIColor {
         switch self {
         case .cancelled:
-            return UIColor(red: 0.7529411765, green: 0.2235294118, blue: 0.168627451, alpha: 1.0)
+            return #colorLiteral(red: 0.631372549, green: 0.1529411765, blue: 0, alpha: 1)
         case .expired:
-            return UIColor(red: 0.7529411765, green: 0.2235294118, blue: 0.168627451, alpha: 1.0)
+            return #colorLiteral(red: 0.7529411765, green: 0.2235294118, blue: 0.168627451, alpha: 1)
         case .completed:
-            return UIColor(red: 0.1529411765, green: 0.6823529412, blue: 0.3764705882, alpha: 1.0)
+            return #colorLiteral(red: 0, green: 0.4235294118, blue: 0.2235294118, alpha: 1)
         case .placed:
-            return UIColor(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1.0)
+            return #colorLiteral(red: 0.5568627451, green: 0.2666666667, blue: 0.6784313725, alpha: 1)
         case .acknowledged:
-            return UIColor(red: 0.1607843137, green: 0.5019607843, blue: 0.7254901961, alpha: 1.0)
+            return #colorLiteral(red: 0.1607843137, green: 0.5019607843, blue: 0.7254901961, alpha: 1)
         case .dispatched:
-            return UIColor(red: 0.0862745098, green: 0.6274509804, blue: 0.5215686275, alpha: 1.0)
+            return #colorLiteral(red: 0.1725490196, green: 0.2431372549, blue: 0.3137254902, alpha: 1)
         case .awaitingPayment:
-            return UIColor(red: 0.0862745098, green: 0.6274509804, blue: 0.5215686275, alpha: 1.0)
+            return #colorLiteral(red: 0.0862745098, green: 0.6274509804, blue: 0.5215686275, alpha: 1.0)
         }
     }
     

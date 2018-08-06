@@ -907,7 +907,7 @@ public class AnalyticsManager: NSObject {
             mixpanel.identify(distinctId: user.phoneNumberWithCountryCode)
             mixpanel.identify(distinctId: mixpanel.distinctId)
             
-            if let bizObject = AppUserDataModel.shared.bizInfo?.objects.last {
+            if let bizObject = AppUserDataModel.shared.bizInfo?.objects?.last {
                 var properties: Properties = ["$email": user.email,
                                   "$phone": user.phoneNumberWithCountryCode,
                                   "balance": bizObject.balance.doubleValue,

@@ -48,7 +48,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
         static let BizInfoKey: String = "KeyChainBizInfoKey"
     }
     
-    @objc static let userDataUpdateTimeInterval = 5
+    @objc static let userDataUpdateTimeInterval = 10
     @objc static public var nextUserDataUpdateDate: Date?
         
     private typealias WeakRefDataModelDelegate = WeakRef<AppUserDataModelDelegate>
@@ -173,6 +173,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
     
     @objc public func reset() {
         CartManager.shared.clearCart()
+        CartManager.shared.lastOrder = nil
         CartManager.shared.couponCodeToApply = nil
 
         DeliveryLocationDataModel.shared.deliveryLocation = nil

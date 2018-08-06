@@ -65,23 +65,19 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
 
     @objc public var nearestStoreResponse: StoreResponse? = {
         guard let storeResponseData: Data = UserDefaults.standard.object(forKey: OrderingStoreUserDefaultKeys.nearestStoreResponseKey) as? Data else { return nil }
-        Biz.registerClassName()
-        Biz.registerClassNameWhiteLabel()
-        Biz.registerClassNameUrbanPiperSDK()
-        
-        Store.registerClassName()
-        Store.registerClassNameWhiteLabel()
-        Store.registerClassNameUrbanPiperSDK()
-        
-        FeedbackConfig.registerClassNameWhiteLabel()
-        FeedbackConfig.registerClassNameUrbanPiperSDK()
-        Choice.registerClassNameWhiteLabel()
-        Choice.registerClassNameUrbanPiperSDK()
-        
-        TimeSlot.registerClassNameWhiteLabel()
-        TimeSlot.registerClassNameUrbanPiperSDK()
-
         StoreResponse.registerClassName()
+        StoreResponse.registerClassNameUrbanPiperSDK()
+        Biz.registerClassName()
+        Biz.registerClassNameUrbanPiperSDK()
+        Store.registerClassName()
+        Store.registerClassNameUrbanPiperSDK()
+        FeedbackConfig.registerClassName()
+        FeedbackConfig.registerClassNameUrbanPiperSDK()
+        TimeSlot.registerClassName()
+        TimeSlot.registerClassNameUrbanPiperSDK()
+        Choice.registerClassName()
+        Choice.registerClassNameUrbanPiperSDK()
+
 
         guard let storeResponse: StoreResponse = NSKeyedUnarchiver.unarchiveObject(with: storeResponseData) as? StoreResponse else { return nil }
         return storeResponse

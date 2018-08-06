@@ -87,10 +87,6 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
             guard orderPreProcessingResponse != nil else { return }
             applyWalletCredits = orderPreProcessingResponse?.order.walletCreditApplicable ?? false
             
-            if oldValue == nil {
-                selectedPaymentOption = defaultPaymentOption
-            }
-            
             if applyCouponResponse != nil && couponCode != nil {
                 let code = couponCode!
                 DispatchQueue.main.async { [weak self] in
@@ -311,9 +307,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
             updateUserBizInfo()
         }
 
-        if isForcedRefresh || orderPreProcessingResponse == nil
-            || (selectedDeliveryOption == .pickUp && deliveryCharge > Decimal.zero)
-            || (selectedDeliveryOption != .pickUp && deliveryCharge == Decimal.zero) {
+        if isForcedRefresh || orderPreProcessingResponse == nil {
             orderPreProcessingResponse = nil
             preProcessOrder()
         }

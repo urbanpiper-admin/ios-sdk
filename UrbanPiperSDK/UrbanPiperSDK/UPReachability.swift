@@ -39,7 +39,7 @@ public enum ReachabilityError: Error {
 public let ReachabilityChangedNotification = NSNotification.Name("ReachabilityChangedNotification")
 
 extension Notification.Name {
-    public static let reachabilityChanged = Notification.Name("reachabilityChanged")
+    public static let reachabilityChanged = Notification.Name("UPReachabilityChanged")
 }
 
 func callback(reachability: SCNetworkReachability, flags: SCNetworkReachabilityFlags, info: UnsafeMutableRawPointer?) {

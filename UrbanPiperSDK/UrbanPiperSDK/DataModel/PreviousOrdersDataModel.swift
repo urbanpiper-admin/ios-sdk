@@ -46,7 +46,12 @@ open class PreviousOrdersDataModel: UrbanPiperDataModel {
         AppUserDataModel.shared.addObserver(delegate: self)
     }
     
-    func refreshData() {
+    public func refreshData() {
+        fetchOrderHistory()
+    }
+    
+    public func refreshPreviousOrders(for orderId: String) {
+        guard myOrdersArray?.filter({ $0.id == Int(orderId) }).last == nil else { return }
         fetchOrderHistory()
     }
 }
@@ -116,13 +121,23 @@ extension PreviousOrdersDataModel {
         }
         
         dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: true)
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchOrderHistory(limit: PreviousOrdersDataModel.previousOrdersFetchlimit,
-                                                                               completion:
+        let dataTask: URLSessionDataTask = APIManager.shared.fetchOrderHistory(completion:
             { [weak self] (data) in
                 guard let response = data else {
                     self?.dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: false)
                     return
                 }
+
+                response.orders = response.orders.filter({ (order) -> Bool in
+                    let orderStatus = OrderStatus(rawValue: order.orderState.lowercased())
+                    guard orderStatus != .expired else { return false }
+                    guard orderStatus != .cancelled else { return false }
+                    return true
+                })
+                if let count = response.orders?.count, count > 3 {
+                    response.orders.removeLast(count - 3)
+                }
+                
                 self?.myOrdersResponse = response
             }, failure: { [weak self] (upError) in
                 defer {
@@ -135,6 +150,10 @@ extension PreviousOrdersDataModel {
     }
     
     func fetchAllOrderDetails() {
+        guard myOrdersArray!.count > 0 else {
+            dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: false)
+            return
+        }
         for myOrder: MyOrder in myOrdersArray! {
             fetchOrderDetails(orderId: myOrder.id)
         }

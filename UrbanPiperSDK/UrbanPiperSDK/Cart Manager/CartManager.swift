@@ -31,6 +31,20 @@ public class CartManager: NSObject {
     @objc public var isReorder: Bool = false
 
     @objc public var couponCodeToApply: String?
+    
+    public var lastOrder: [String : Any]? = {
+       return UserDefaults.standard.value(forKey: "lastOrderKey") as? [String : Any]
+    }()
+    {
+        didSet {
+            if lastOrder == nil {
+                UserDefaults.standard.removeObject(forKey: "lastOrderKey")
+            } else {
+                UserDefaults.standard.set(lastOrder, forKey: "lastOrderKey")
+            }
+            let _ = cartManagerObservers.map { $0.value?.refreshCartUI() }
+        }
+    }
 
     @objc public var cartValue: Decimal {
         return cartItems.reduce (0.0, { $0 + ($1.totalAmount * Decimal($1.quantity)).rounded } )

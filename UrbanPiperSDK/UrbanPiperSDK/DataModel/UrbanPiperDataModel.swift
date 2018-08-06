@@ -33,7 +33,7 @@ open class UrbanPiperDataModel: NSObject {
             self?.appDidEnterBackground()
         }
 
-        NotificationCenter.default.addObserver(forName: Notification.Name("reachabilityChanged"), object: nil, queue: OperationQueue.main) { [weak self] (notification) in
+        NotificationCenter.default.addObserver(forName: Notification.Name("UPReachabilityChanged"), object: nil, queue: OperationQueue.main) { [weak self] (notification) in
             self?.reachabilityChanged(notification)
         }
 

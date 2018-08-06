@@ -10,7 +10,7 @@ import UIKit
 
 @objc public protocol BannersDataModelDelegate {
 
-    func refreshBannersUI()
+    func refreshBannersUI(isRefreshing: Bool)
     func handleBanners(error: UPError?)
 
 }
@@ -45,7 +45,15 @@ public class BannersDataModel: UrbanPiperDataModel {
     public override init() {
         super.init()
 
-        refreshData()
+        DispatchQueue.main.async {
+            self.refreshData()
+        }
+    }
+    
+    public convenience init(delegate: BannersDataModelDelegate) {
+        self.init()
+        
+        dataModelDelegate = delegate
     }
 
     public func refreshData(_ isForcedRefresh: Bool = false) {
@@ -120,9 +128,10 @@ extension BannersDataModel {
 extension BannersDataModel {
 
     fileprivate func fetchBannersList() {
+        dataModelDelegate?.refreshBannersUI(isRefreshing: true)
         let dataTask: URLSessionDataTask = APIManager.shared.fetchBannersList(completion: { [weak self] (data) in
             defer {
-                self?.dataModelDelegate?.refreshBannersUI()
+                self?.dataModelDelegate?.refreshBannersUI(isRefreshing: false)
             }
             guard let response = data else { return }
             self?.bannersResponse = response

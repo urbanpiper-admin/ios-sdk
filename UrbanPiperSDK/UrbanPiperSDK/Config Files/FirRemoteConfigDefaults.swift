@@ -30,6 +30,11 @@ import FirebaseRemoteConfig
             showBanners = customBannersState
         }
     }
+    public var customapplyWalletCreditsState: Bool! {
+        didSet {
+            applyWalletCredits = customapplyWalletCreditsState
+        }
+    }
     #endif
 
 	public private(set) var allowCashForOrderCheckout : Bool!

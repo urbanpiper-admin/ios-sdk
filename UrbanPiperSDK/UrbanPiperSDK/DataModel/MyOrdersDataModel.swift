@@ -40,7 +40,7 @@ open class MyOrdersDataModel: UrbanPiperDataModel {
         return myOrdersResponse?.orders ?? []
     }
 
-    func refreshData() {
+    public func refreshData() {
         fetchOrderHistory()
     }
 }
