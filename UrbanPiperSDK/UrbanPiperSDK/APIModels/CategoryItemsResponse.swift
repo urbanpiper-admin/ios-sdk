@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class CategoryItemsResponse : NSObject{
+public class CategoryItemsResponse : NSObject, NSCopying{
 
 	public var combos : [AnyObject]!
 	public var meta : ItemMeta!
@@ -32,28 +32,31 @@ public class CategoryItemsResponse : NSObject{
 		}
 	}
 
-//    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    public func toDictionary() -> [String:Any]
-//    {
-//        var dictionary: [String : Any] = [String:Any]()
-//        if combos != nil{
-//            dictionary["combos"] = combos
-//        }
-//        if meta != nil{
-//            dictionary["meta"] = meta.toDictionary()
-//        }
-//        if objects != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
-//            for objectsElement in objects {
-//                dictionaryElements.append(objectsElement.toDictionary())
-//            }
-//            dictionary["objects"] = dictionaryElements
-//        }
-//        return dictionary
-//    }
-//
+    /**
+     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String : Any] = [String:Any]()
+        if combos != nil{
+            dictionary["combos"] = combos
+        }
+        if meta != nil{
+            dictionary["meta"] = meta.toDictionary()
+        }
+        if objects != nil{
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            for objectsElement in objects {
+                dictionaryElements.append(objectsElement.toDictionary())
+            }
+            dictionary["objects"] = dictionaryElements
+        }
+        return dictionary
+    }
+
+    public func copy(with zone: NSZone? = nil) -> Any {
+        return CategoryItemsResponse(fromDictionary: toDictionary())
+    }
 //    /**
 //    * NSCoding required initializer.
 //    * Fills the data from the passed decoder

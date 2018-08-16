@@ -391,9 +391,12 @@ extension OrderPaymentDataModel {
                     self?.applyCouponResponse = applyCouponResponse
                     self?.couponCode = code
                     self?.dataModelDelegate?.refreshApplyCouponUI?(false)
+                    
+                    AnalyticsManager.shared.couponApplied(discount: discount.value!, couponCode: code)
                 } else {
                     let upApiError = UPAPIError(error: nil, data: nil, responseObject: applyCouponResponse?.discount.toDictionary())
                     self?.dataModelDelegate?.handleOrderPayment(error: upApiError)
+                    AnalyticsManager.shared.couponApplyFailed(couponCode: code)
                 }
 
                 }, failure: { [weak self] (upError) in
@@ -401,6 +404,7 @@ extension OrderPaymentDataModel {
                         self?.dataModelDelegate?.refreshApplyCouponUI?(false)
                         self?.dataModelDelegate?.handleOrderPayment(error: upError)
                     }
+                    AnalyticsManager.shared.couponApplyFailed(couponCode: code)
                 })
         addOrCancelDataTask(dataTask: dataTask)
     }
@@ -478,6 +482,9 @@ extension OrderPaymentDataModel {
                                         } else if paymentOption == .simpl {
                                             self?.dataModelDelegate?.initiateSimplPayment(orderId: orderIdString, phone: phone, transactionId: onlinePaymentInitResponse!.transactionId)
                                         } else {
+                                            if paymentOption == .prepaid {
+                                                AnalyticsManager.shared.orderPlacedUsingWallet(amount: NSDecimalNumber(decimal: self!.itemsTotalPrice))
+                                            }
                                             self?.orderPlacedTracking(orderId: orderIdString, phone: phone)
                                             self?.dataModelDelegate?.showOrderConfirmationAlert(orderId: orderIdString)
                                         }

@@ -13,8 +13,8 @@ extension APIManager {
     @objc public func fetchAllStores(completion: APICompletion<StoreLocatorResponse>?,
                                      failure: APIFailure?) -> URLSessionDataTask {
         
-        let bizAppId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/stores/?format=json&biz_id=\(bizAppId)&all=1"
+        let bizId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/stores/?format=json&biz_id=\(bizId)&all=1"
         
         let url: URL = URL(string: urlString)!
         
@@ -57,7 +57,7 @@ extension APIManager {
                                         completion: APICompletion<StoreResponse>?,
                                         failure: APIFailure?) -> URLSessionDataTask {
         
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/stores/?format=json&biz_id=\(appId)&lat=\(coordinates.latitude)&lng=\(coordinates.longitude)"
         

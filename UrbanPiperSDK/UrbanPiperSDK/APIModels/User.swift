@@ -58,8 +58,6 @@ public class User : NSObject, NSCoding{
     @objc public var gender : String?
     
     public var anniversary : Int!
-    public var anniversaryDate : String!
-    public var birthdate : String!
     public var birthday : Int!
     
     public var currentCity : String!
@@ -156,10 +154,9 @@ public class User : NSObject, NSCoding{
 	}
     
     public func update(fromDictionary dictionary: [String: Any]) {
+        print("\(dictionary as AnyObject)")
         address = dictionary["address"] as? String
         anniversary = dictionary["anniversary"] as? Int
-        anniversaryDate = dictionary["anniversary_date"] as? String
-        birthdate = dictionary["birthdate"] as? String
         birthday = dictionary["birthday"] as? Int
         currentCity = dictionary["current_city"] as? String
         email = dictionary["email"] as? String
@@ -277,8 +274,6 @@ public class User : NSObject, NSCoding{
         
         address = aDecoder.decodeObject(forKey: "address") as? String
         anniversary = aDecoder.decodeObject(forKey: "anniversary") as? Int
-        anniversaryDate = aDecoder.decodeObject(forKey: "anniversary_date") as? String
-        birthdate = aDecoder.decodeObject(forKey: "birthdate") as? String
         birthday = aDecoder.decodeObject(forKey: "birthday") as? Int
         currentCity = aDecoder.decodeObject(forKey: "current_city") as? String
         lastName = aDecoder.decodeObject(forKey: "last_name") as? String
@@ -340,12 +335,6 @@ public class User : NSObject, NSCoding{
         }
         if anniversary != nil{
             aCoder.encode(anniversary, forKey: "anniversary")
-        }
-        if anniversaryDate != nil{
-            aCoder.encode(anniversaryDate, forKey: "anniversary_date")
-        }
-        if birthdate != nil{
-            aCoder.encode(birthdate, forKey: "birthdate")
         }
         if birthday != nil{
             aCoder.encode(birthday, forKey: "birthday")

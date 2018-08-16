@@ -17,9 +17,9 @@ extension APIManager {
         
         let infoDictionary: [String: Any] = Bundle.main.infoDictionary!
         guard let appVersion: String = infoDictionary["CFBundleShortVersionString"] as? String,
-            let bizAppId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId else { return nil }
+            let bizId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId else { return nil }
         
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/app/ios/?user=\(username ?? "null")&biz_id=\(bizAppId)&ver=\(appVersion)"
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/app/ios/?user=\(username ?? "null")&biz_id=\(bizId)&ver=\(appVersion)"
 
         let url: URL = URL(string: urlString)!
 

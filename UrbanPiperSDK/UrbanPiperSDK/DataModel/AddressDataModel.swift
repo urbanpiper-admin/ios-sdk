@@ -40,13 +40,22 @@ public class AddressDataModel: UrbanPiperDataModel {
     public var userAddressesResponse: UserAddressesResponse? {
         didSet {
             let addresses: [Address]? = userAddressesResponse?.addresses
+            var serverDefaultDeliveryAddress: Address?
             if let defaultAddress: Address = defaultDeliveryAddress {
-                if addresses?.filter ({ $0.id == defaultAddress.id }).last == nil {
+                serverDefaultDeliveryAddress = addresses?.filter ({ $0.id == defaultAddress.id }).last
+                if serverDefaultDeliveryAddress == nil {
                     defaultDeliveryAddress = nil
                 }
             }
+            
             if let address: Address = addresses?.first, defaultDeliveryAddress == nil {
                 defaultDeliveryAddress = address
+                serverDefaultDeliveryAddress = address
+            }
+            
+            if let val = serverDefaultDeliveryAddress, let index = userAddressesResponse?.addresses?.index(of: val), index > 2 {
+                userAddressesResponse?.addresses?.remove(at: index)
+                userAddressesResponse?.addresses?.insert(val, at: 0)
             }
             
             tableView?.reloadData()
@@ -83,10 +92,15 @@ public class AddressDataModel: UrbanPiperDataModel {
         set {
             if let val = newValue {
                 let defaultAddressData = NSKeyedArchiver.archivedData(withRootObject: val)
-
+                if let index = userAddressesResponse?.addresses?.index(of: val), index > 2 {
+                    userAddressesResponse?.addresses?.remove(at: index)
+                    userAddressesResponse?.addresses?.insert(val, at: 0)
+                }
                 UserDefaults.standard.set(defaultAddressData, forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
+                _ = observers.map { $0.value?.refreshDeliveryAddressUI(isRefreshing: false) }
             } else {
                 UserDefaults.standard.removeObject(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
+                _ = observers.map { $0.value?.refreshDeliveryAddressUI(isRefreshing: false) }
             }
         }
     }

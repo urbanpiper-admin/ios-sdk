@@ -204,6 +204,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
         UserDefaults.standard.removeObject(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey)
         UserDefaults.standard.removeObject(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
 
+        AnalyticsManager.shared.userLoggedOut()
     }
     
 }
@@ -261,7 +262,19 @@ extension AppUserDataModel {
                                             dataModel.observers = dataModel.observers.filter { $0.value != nil }
                                             let _ = dataModel.observers.map { $0.value?.refreshUpdateAppUserUI?(isRefreshing: false) }
                                             
-                                            user.update(fromDictionary: responseObject)
+                                            user.firstName = name
+                                            user.phone = phone
+                                            user.email = email
+                                            user.gender = gender
+                                            
+                                            if let date = anniversary {
+                                                user.anniversary = Int(date.timeIntervalSince1970 * 1000)
+                                            }
+                                            
+                                            if let date = birthday {
+                                                user.birthday = Int(date.timeIntervalSince1970 * 1000)
+                                            }
+                                            
                                             dataModel.appUserData = user
 
             }, failure: { [weak self] (upError) in
@@ -283,7 +296,7 @@ extension AppUserDataModel {
                                          newPassword: newPassword,
                                          completion: { [weak self] (response) in
                                             
-                                            guard let dataModel = self, let user = dataModel.appUserData, response != nil else { return }
+                                            guard let dataModel = self, let user = dataModel.appUserData else { return }
                                             dataModel.observers = dataModel.observers.filter { $0.value != nil }
                                             let _ = dataModel.observers.map { $0.value?.refreshUpdatePasswordUI?(isRefreshing: false) }
                                             

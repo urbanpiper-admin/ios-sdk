@@ -292,7 +292,7 @@
 		<key>tabImage</key>
 		<string>nav_setting</string>
 		<key>title</key>
-		<string>Settings</string>
+		<string>User Profile</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>

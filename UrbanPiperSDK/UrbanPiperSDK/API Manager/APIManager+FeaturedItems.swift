@@ -9,12 +9,23 @@ import UIKit
 
 extension APIManager {
 
-    public func featuredItems(locationID: Int?,
+    public func featuredItems(itemIds: [Int] = [0],
+                              locationID: Int?,
                               next: String?,
                               completion: APICompletion<CategoryItemsResponse>?,
                               failure: APIFailure?) -> URLSessionDataTask {
         
-        var urlString: String = "\(APIManager.baseUrl)/api/v2/items/0/recommendations/"
+        var urlString: String = "\(APIManager.baseUrl)/api/v2/items/"
+        
+        for id in itemIds {
+            if id == itemIds.first! {
+                urlString.append("\(id)")
+            } else {
+                urlString.append(",\(id)")
+            }
+        }
+        
+        urlString.append("/recommendations/")
         
         if let id = locationID {
             urlString = "\(urlString)?location_id=\(id)"

@@ -82,7 +82,7 @@ import Foundation
         guard let pNo: String = phone, pNo.count > 0 else { return nil }
         guard let passwordString: String = password, passwordString.count > 0 else { return nil }
         
-        let bizId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let bizId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
         
         let authString: String = "\(pNo)__\(bizId):\(passwordString)"
         
@@ -128,7 +128,7 @@ import Foundation
 
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
         var additionalHeaders: [String : Any] = ["X-App-Src": "ios",
-                                                 "X-Bid": AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!,
+                                                 "X-Bid": AppConfigManager.shared.firRemoteConfigDefaults.bizId!,
                                                  "X-App-Version": version,
                                                  "Content-Type": "application/json"] as [String : Any]
 

@@ -59,7 +59,9 @@ open class PreviousOrdersDataModel: UrbanPiperDataModel {
 extension PreviousOrdersDataModel: AppUserDataModelDelegate {
     
     public func refreshAppUserUI(isRefreshing: Bool) {
-        fetchOrderHistory()
+        if myOrdersArray == nil || myOrdersArray!.count == 0 {
+            refreshData()
+        }
     }
     
     public func handleUserAPI(error: UPError?) {

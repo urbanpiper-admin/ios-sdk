@@ -186,6 +186,8 @@ import Foundation
          contactPhone = aDecoder.decodeObject(forKey: "contact_phone") as? String
          currency = aDecoder.decodeObject(forKey: "currency") as? String
          deliveryMinOffsetTime = aDecoder.decodeObject(forKey: "delivery_min_offset_time") as? Int
+        FeedbackConfig.registerClassName()
+        FeedbackConfig.registerClassNameWhiteLabel()
         feedbackConfig = aDecoder.decodeObject(forKey :"feedback_config") as? [FeedbackConfig]
          gst = aDecoder.decodeObject(forKey: "gst") as? String
          isPickupEnabled = aDecoder.decodeObject(forKey: "is_pickup_enabled") as? Bool

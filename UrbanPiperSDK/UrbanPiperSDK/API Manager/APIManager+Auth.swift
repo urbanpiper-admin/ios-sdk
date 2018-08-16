@@ -70,7 +70,7 @@ extension APIManager {
         var urlRequest: URLRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
                 
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
         let params: [String: Any] = ["biz_id": appId,
                       "phone": "\(countryCode)\(phoneNumber)"]
 
@@ -121,7 +121,7 @@ extension APIManager {
         var urlRequest: URLRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
 
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
         let params: [String: Any] = ["biz_id": appId,
                       "phone": "\(countryCode)\(phoneNumber)",
                       "token": otp,
@@ -284,7 +284,7 @@ extension APIManager {
     @objc public func resendOTP(user: User,
                          completion: APICompletion<CardAPIResponse>?,
                          failure: APIFailure?) -> URLSessionDataTask {
-        
+        AnalyticsManager.shared.resendOTP()
         let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(user.phoneNumberWithCountryCode!)&pin=resendotp"
         
         return card(urlString: urlString, completion: completion, failure: failure)

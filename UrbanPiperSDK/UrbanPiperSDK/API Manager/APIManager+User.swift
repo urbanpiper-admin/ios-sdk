@@ -69,12 +69,21 @@ extension APIManager {
         
         urlRequest.httpMethod = "PUT"
         
-        let userInfo: [String: Any] = ["email": email,
+        var userInfo: [String: Any] = ["email": email,
                         "phone": phone,
-                        "gender": gender ?? "",
-                        "anniversary": (anniversary?.timeIntervalSince1970 ?? 0) * 1000,
-                        "birthday": (birthday?.timeIntervalSince1970 ?? 0) * 1000,
                         "first_name": name] as [String : Any]
+        
+        if let string = gender {
+            userInfo["gender"] = string
+        }
+        
+        if let date = birthday {
+            userInfo["birthday"] = date.timeIntervalSince1970 * 1000
+        }
+        
+        if let date = anniversary {
+            userInfo["anniversary"] = date.timeIntervalSince1970 * 1000
+        }
         
         let params: [String: Any] = ["user_data": userInfo]
         
@@ -132,12 +141,12 @@ extension APIManager {
         
         urlRequest.httpMethod = "PUT"
         
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
-        let params: [String: Any] = ["user_data":["phone": phone,
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
+        let params: [String: Any] = ["phone": phone,
                                    "biz_id": appId,
                                    "old_password": oldPassword,
                                    "new_password1": newPassword,
-                                   "new_password2": newPassword]]
+                                   "new_password2": newPassword]
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
@@ -163,15 +172,14 @@ extension APIManager {
                     DispatchQueue.main.async {
                         completionClosure(nil)
                     }
-                } else {
-                    if let failureClosure = failure {
-                        guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
-                        DispatchQueue.main.async {
-                            failureClosure(apiError as UPError)
-                        }
+                }
+            } else {
+                if let failureClosure = failure {
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
+                    DispatchQueue.main.async {
+                        failureClosure(apiError as UPError)
                     }
                 }
-                
             }
         }
         
@@ -181,7 +189,7 @@ extension APIManager {
     @objc public func userSavedAddresses(completion: APICompletion<UserAddressesResponse>?,
                          failure: APIFailure?) -> URLSessionDataTask {
         
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/address/?biz_id=\(appId)"
         
         let url: URL = URL(string: urlString)!
@@ -234,7 +242,7 @@ extension APIManager {
         urlRequest.httpMethod = "POST"
         
         var addressDict: [String: Any] = ["tag" : address.tag,
-                           "biz_id" : AppConfigManager.shared.firRemoteConfigDefaults.bizAppId,
+                           "biz_id" : AppConfigManager.shared.firRemoteConfigDefaults.bizId,
                            "sub_locality" : address.subLocality,
                            "address_1" : address.address1,
                            "address_2" : "",
@@ -300,7 +308,7 @@ extension APIManager {
                                     completion: APICompletion<AddUpdateAddressResponse>?,
                                     failure: APIFailure?) -> URLSessionDataTask {
         
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/address/"
 
@@ -378,7 +386,7 @@ extension APIManager {
     @objc public func deleteAddress(address: Address, completion: APISuccess?,
                                     failure: APIFailure?) -> URLSessionDataTask {
         
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/address/\(address.id!)/?biz_id=\(appId)"
 

@@ -19,6 +19,19 @@ import CoreLocation
 open class FeaturedItemsDataModel: UrbanPiperDataModel {
     weak open var dataModelDelegate: FeaturedItemsDataModelDelegate?
     
+    open var itemIds: [Int] = [0]
+    public var filterOutItemsAddedToCart: Bool = false
+    
+    var fullCategoryItemsResponse: CategoryItemsResponse? {
+        didSet {
+            if !filterOutItemsAddedToCart {
+                categoryItemsResponse = fullCategoryItemsResponse
+            } else {
+                categoryItemsResponse = filteredCategoryItemsResponse()
+            }
+        }
+    }
+
     open var categoryItemsResponse: CategoryItemsResponse? {
         didSet {
             dataModelDelegate?.refreshFeaturedItemsUI(false)
@@ -33,14 +46,32 @@ open class FeaturedItemsDataModel: UrbanPiperDataModel {
     }
     
     open func refreshData(_ isForcedRefresh: Bool = false) {
-        guard AppConfigManager.shared.firRemoteConfigDefaults.showFeaturedItems else { return }
         fetchFeaturedItems(isForcedRefresh: isForcedRefresh)
     }
     
     public override init() {
         super.init()
         
+        CartManager.addObserver(delegate: self)
         OrderingStoreDataModel.shared.addObserver(delegate: self)
+    }
+    
+    func filteredCategoryItemsResponse() -> CategoryItemsResponse? {
+        let cartItemIds = CartManager.shared.cartItemIds
+        
+        if let categoryResponse = fullCategoryItemsResponse?.copy() as? CategoryItemsResponse {
+            
+            let filteredObjects = categoryResponse.objects.filter({ (itemObject) -> Bool in
+                guard cartItemIds.filter({ itemObject.id == $0 }).last == nil else { return false }
+                return true
+            })
+            
+            categoryResponse.objects = filteredObjects
+            
+            return categoryResponse
+        } else {
+            return fullCategoryItemsResponse
+        }
     }
 
 }
@@ -52,7 +83,8 @@ extension FeaturedItemsDataModel {
     fileprivate func fetchFeaturedItems(isForcedRefresh: Bool, next: String? = nil) {
         guard isForcedRefresh || (!isForcedRefresh && categoryItemsResponse == nil) else { return }
         dataModelDelegate?.refreshFeaturedItemsUI(true)
-        let dataTask: URLSessionDataTask = APIManager.shared.featuredItems(locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
+        let dataTask: URLSessionDataTask = APIManager.shared.featuredItems(itemIds: itemIds,
+                                                                             locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
                                                                            next: next,
                                                                            completion: { [weak self] (data) in
                                                                             guard let response = data else { return }
@@ -65,21 +97,21 @@ extension FeaturedItemsDataModel {
                                                                                         return obj1.sortOrder < obj2.sortOrder
                                                                                     }
                                                                                 }
-                                                                                self?.categoryItemsResponse = response
+                                                                                self?.fullCategoryItemsResponse = response
                                                                             } else {
-                                                                                let currentCategoriesItemsResponse = self?.categoryItemsResponse
+                                                                                let currentCategoryItemsResponse = self?.fullCategoryItemsResponse
                                                                                 
-                                                                                currentCategoriesItemsResponse?.objects.append(contentsOf: response.objects)
-                                                                                currentCategoriesItemsResponse?.meta = response.meta
+                                                                                currentCategoryItemsResponse?.objects.append(contentsOf: response.objects)
+                                                                                currentCategoryItemsResponse?.meta = response.meta
                                                                                 
-                                                                                currentCategoriesItemsResponse?.objects.sort { (obj1, obj2) in
+                                                                                currentCategoryItemsResponse?.objects.sort { (obj1, obj2) in
                                                                                     guard obj1.currentStock != 0 else { return false }
                                                                                     guard obj2.currentStock != 0 else { return true }
                                                                                     
                                                                                     return obj1.sortOrder < obj2.sortOrder
                                                                                 }
                                                                                 
-                                                                                self?.categoryItemsResponse = currentCategoriesItemsResponse
+                                                                                self?.fullCategoryItemsResponse = currentCategoryItemsResponse
                                                                             }
             }, failure: { [weak self] (upError) in
                 defer {
@@ -147,7 +179,7 @@ extension FeaturedItemsDataModel: OrderingStoreDataModelDelegate {
     open func update(_ storeResponse: StoreResponse?, _ deliveryLocation: CLLocation?, _ error: UPError?, _ storeUpdated: Bool) {
         guard storeUpdated else { return }
         
-        categoryItemsResponse = nil
+        fullCategoryItemsResponse = nil
         refreshData(true)
     }
     
@@ -158,6 +190,18 @@ extension FeaturedItemsDataModel: OrderingStoreDataModelDelegate {
     open func didChangeAuthorization(status: CLAuthorizationStatus) {
         guard status == .notDetermined || status == .restricted || status == .denied else { return }
         refreshData(false)
+    }
+    
+}
+
+extension FeaturedItemsDataModel: CartManagerDelegate {
+    
+    public func refreshCartUI() {
+        guard filterOutItemsAddedToCart else { return }
+        categoryItemsResponse = filteredCategoryItemsResponse()
+    }
+    
+    public func handleCart(error: UPError?) {
     }
     
 }

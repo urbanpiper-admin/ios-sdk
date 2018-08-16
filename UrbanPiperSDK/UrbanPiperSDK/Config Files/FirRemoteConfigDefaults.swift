@@ -45,8 +45,8 @@ import FirebaseRemoteConfig
 	public private(set) var appsFlyerDevKey : String!
     public private(set) var applyWalletCredits: Bool!
 	public private(set) var badRatingThreshold : Int!
-	public private(set) var bizAppId : String!
-	public private(set) var bizAppName : String!
+	public private(set) var bizId : String!
+	public private(set) var bizName : String!
 	public private(set) var bizLogoUrl : String!
     public private(set) var bizCountry2LetterCode: String!
 	public private(set) var cacheDurationSecs : Int!
@@ -179,8 +179,8 @@ import FirebaseRemoteConfig
 		appsFlyerDevKey = remoteConfig["apps_flyer_dev_key"].stringValue
         applyWalletCredits = remoteConfig["apply_wallet_credits"].boolValue
 		badRatingThreshold = remoteConfig["bad_rating_threshold"].numberValue as? Int
-		bizAppId = remoteConfig["biz_app_id"].stringValue
-		bizAppName = remoteConfig["biz_app_name"].stringValue
+		bizId = remoteConfig["biz_id"].stringValue
+		bizName = remoteConfig["biz_name"].stringValue
 		bizLogoUrl = remoteConfig["biz_logo_url"].stringValue
         bizCountry2LetterCode = remoteConfig["biz_country_2_letter_code"].stringValue
 		cacheDurationSecs = remoteConfig["cache_duration_secs"].numberValue as? Int

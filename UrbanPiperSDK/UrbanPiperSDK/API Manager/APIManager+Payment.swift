@@ -23,7 +23,7 @@ extension APIManager {
                                completion: APICompletion<OrderPreProcessingResponse>?,
                                failure: APIFailure?) -> URLSessionDataTask {
         
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
         let urlString: String = "\(APIManager.baseUrl)/api/v1/order/?format=json&pre_proc=1&biz_id=\(appId)"
         
         let url: URL = URL(string: urlString)!
@@ -128,7 +128,7 @@ extension APIManager {
                                       completion: APICompletion<OnlinePaymentInitResponse>?,
                                       failure: APIFailure?) -> URLSessionDataTask? {
         
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
         
         var urlString: String = "\(APIManager.baseUrl)/payments/init/\(appId)/"
 
@@ -204,7 +204,7 @@ extension APIManager {
                           completion: APICompletion<[String: Any]>?,
                           failure: APIFailure?) -> URLSessionDataTask {
         
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizAppId!
+        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
         let urlString: String = "\(APIManager.baseUrl)/api/v1/order/?format=json&biz_id=\(appId)"
         
         let url: URL = URL(string: urlString)!

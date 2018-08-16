@@ -53,6 +53,10 @@ public class CartManager: NSObject {
     @objc public var cartCount: Int {
         return cartItems.reduce (0, { $0 + $1.quantity } )
     }
+    
+    public var cartItemIds: [Int] {
+        return cartItems.map { $0.id }
+    }
 
     @objc public var cartPreOrderStartTime: Date? {
         var preOrderItems = cartItems.filter { $0.preOrderStartTime != nil }

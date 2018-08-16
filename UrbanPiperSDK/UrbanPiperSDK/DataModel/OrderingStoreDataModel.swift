@@ -90,34 +90,40 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
                 return
             }
             
-            if let store = storeResponse.store {
-                if let previousStoreId = previousStoreResponse?.store?.bizLocationId, let currentStoreId = store.bizLocationId, previousStoreId != currentStoreId {
-                    CartManager.shared.clearCart()
-                }
-
-                if let deliverAddress = DeliveryLocationDataModel.shared.deliveryAddress?.fullAddress {
-                    if store.closingDay || store.isStoreClosed {
+            if let previousStoreId = oldValue?.store?.bizLocationId, let currentStoreId = storeResponse.store?.bizLocationId, previousStoreId != currentStoreId {
+                
+                if let store = storeResponse.store {
+                    
+                    if let deliverAddress = DeliveryLocationDataModel.shared.deliveryAddress?.fullAddress {
                         if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                            AnalyticsManager.shared.nearestStoreClosed(lat: coordinate.latitude,
-                                                                       lng: coordinate.longitude,
-                                                                       deliveryAddress: deliverAddress,
-                                                                       storeName: store.name)
+                            AnalyticsManager.shared.nearestStoreFound(lat: coordinate.latitude,
+                                                                      lng: coordinate.longitude,
+                                                                      storeName: store.name)
                         }
-                        
-                    } else if store.temporarilyClosed {
-                        if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                            AnalyticsManager.shared.nearestStoreTemporarilyClosed(lat: coordinate.latitude,
-                                                                                  lng: coordinate.longitude,
-                                                                                  deliveryAddress: deliverAddress,
-                                                                                  storeName: store.name)
+
+                        if store.closingDay || store.isStoreClosed {
+                            if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
+                                AnalyticsManager.shared.nearestStoreClosed(lat: coordinate.latitude,
+                                                                           lng: coordinate.longitude,
+                                                                           deliveryAddress: deliverAddress,
+                                                                           storeName: store.name)
+                            }
+                            
+                        } else if store.temporarilyClosed {
+                            if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
+                                AnalyticsManager.shared.nearestStoreTemporarilyClosed(lat: coordinate.latitude,
+                                                                                      lng: coordinate.longitude,
+                                                                                      deliveryAddress: deliverAddress,
+                                                                                      storeName: store.name)
+                            }
                         }
                     }
+                } else {
+                    if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
+                        AnalyticsManager.shared.noStoresNearBy(lat: coordinate.latitude, lng: coordinate.longitude)
+                    }
                 }
-            } else {
                 CartManager.shared.clearCart()
-                if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                    AnalyticsManager.shared.noStoresNearBy(lat: coordinate.latitude, lng: coordinate.longitude)
-                }
             }
 
             let storeResponseData: Data = NSKeyedArchiver.archivedData(withRootObject: storeResponse)

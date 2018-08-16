@@ -325,10 +325,16 @@ public class AnalyticsManager: NSObject {
     public func userLoggedInSuccessfully(phone: String) {
         #if !DEBUG
         if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "user",
+            var eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
                                                                    action: "login",
                                                                    label: "success",
                                                                    value: nil).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+            
+            eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                               action: nil,
+                                                               label: "login-success",
+                                                               value: 0).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
@@ -344,10 +350,16 @@ public class AnalyticsManager: NSObject {
     public func userLoginFailed(phone: String) {
         #if !DEBUG
         if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "user",
+            var eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
                                                                    action: "login",
                                                                    label: "failure",
                                                                    value: nil).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+            
+            eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                               action: nil,
+                                                               label: "login-failed",
+                                                               value: 0).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
@@ -373,6 +385,18 @@ public class AnalyticsManager: NSObject {
             Mixpanel.mainInstance().track(event: "logout")
             
             Mixpanel.mainInstance().people.deleteUser()
+        }
+        #endif
+    }
+    
+    public func forgotPassword() {
+        #if !DEBUG
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "password-reset",
+                                                                   value: 0).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
         }
         #endif
     }
@@ -427,14 +451,32 @@ public class AnalyticsManager: NSObject {
         #endif
     }
     
+    func resendOTP() {
+        #if !DEBUG
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "resend-otp",
+                                                                   value: nil).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+        }
+        #endif
+    }
+    
     //  Should be called when the user has signed up via social login and the phone no is not validated
     public func newSocialLoginUserSignedUp(phone: String, platform: String) {
         #if !DEBUG
         if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "user",
+            var eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
                                                                    action: "social-signup",
                                                                    label: "completed",
                                                                    value: nil).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+            
+            eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                               action: nil,
+                                                               label: "social-login-success",
+                                                               value: platform == "google" ? 1 : 2).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
@@ -461,10 +503,16 @@ public class AnalyticsManager: NSObject {
     public func userLogInUsingSocialLogin(phone: String, platform: String) {
         #if !DEBUG
         if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "user",
+            var eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
                                                                    action: "login-social-auth",
                                                                    label: "completed",
                                                                    value: nil).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+            
+            eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                               action: nil,
+                                                               label: "social-login-success",
+                                                               value: platform == "google" ? 1 : 2).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
@@ -475,6 +523,18 @@ public class AnalyticsManager: NSObject {
                                                         "platform" : platform])
             
             setMixpanelPeople()
+        }
+        #endif
+    }
+    
+    public func socialLoginFailure(platform: String) {
+        #if !DEBUG
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "social-login-failed",
+                                                                   value: platform == "google" ? 1 : 2).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
         }
         #endif
     }
@@ -572,7 +632,7 @@ public class AnalyticsManager: NSObject {
         #endif
     }
     
-    @objc public func walletReloadedUsingRazorPay(amount: NSDecimalNumber) {
+    @objc public func walletReloadedWithRazorPay(amount: NSDecimalNumber) {
         #if !DEBUG
         if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
@@ -587,10 +647,16 @@ public class AnalyticsManager: NSObject {
     @objc public func walletReloadedWithUPServer(amount: NSDecimalNumber) {
         #if !DEBUG
         if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
+            var eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
                                                                    action: "reload",
                                                                    label: "up-txn-complete",
                                                                    value: amount).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+            
+            eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                               action: nil,
+                                                               label: "reload-success",
+                                                               value: amount).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         #endif
@@ -598,6 +664,13 @@ public class AnalyticsManager: NSObject {
     
     @objc public func walletReloadFailed(amount: NSDecimalNumber) {
         #if !DEBUG
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "reload-failed",
+                                                                   value: amount).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+        }
         if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             let properties: [String : MixpanelType] = ["amount" : amount.doubleValue,
                                                        "success": false]
@@ -610,12 +683,32 @@ public class AnalyticsManager: NSObject {
     
     @objc public func couponApplied(discount: Decimal, couponCode: String) {
         #if !DEBUG
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "coupon-success",
+                                                                   action: nil,
+                                                                   label: couponCode,
+                                                                   value: NSDecimalNumber(decimal:discount)).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+        }
+        
         if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             let properties: [String : MixpanelType] = ["discount" : NSDecimalNumber(decimal:discount).doubleValue,
                                                        "coupon_txt": couponCode]
             
             Mixpanel.mainInstance().track(event: "validate_coupon",
                                           properties : properties)
+        }
+        #endif
+    }
+    
+    @objc public func couponApplyFailed(couponCode: String) {
+        #if !DEBUG
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "coupon-failure",
+                                                                   action: nil,
+                                                                   label: couponCode,
+                                                                   value: 0).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
         }
         #endif
     }
@@ -658,10 +751,49 @@ public class AnalyticsManager: NSObject {
     
     public func noStoresNearBy(lat: Double, lng: Double) {
         #if !DEBUG
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
+                                                                   action: nil,
+                                                                   label: "no-stores-nearby",
+                                                                   value: 0).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+        }
         if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "no_stores_nearby",
                                           properties: ["lat": lat,
                                                        "lng": lng])
+        }
+        #endif
+    }
+    
+    public func nearestStoreFound(lat: Double, lng: Double, storeName: String) {
+        #if !DEBUG
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
+                                                                   action: nil,
+                                                                   label: "nearest-store-found",
+                                                                   value: 0).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+        }
+        #endif
+    }
+    
+    public func nearestStoreClosedToday(lat: Double, lng: Double, deliveryAddress: String, storeName: String) {
+        #if !DEBUG
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
+                                                                   action: nil,
+                                                                   label: "nearest-store-closed-today",
+                                                                   value: nil).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+        }
+        
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+            Mixpanel.mainInstance().track(event: "nearest_store_closed",
+                                          properties: ["lat": lat,
+                                                       "lng": lng,
+                                                       "location": deliveryAddress,
+                                                       "store": storeName])
         }
         #endif
     }
@@ -680,6 +812,14 @@ public class AnalyticsManager: NSObject {
     
     public func nearestStoreTemporarilyClosed(lat: Double, lng: Double, deliveryAddress: String, storeName: String) {
         #if !DEBUG
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
+                                                                   action: nil,
+                                                                   label: "nearest-store-closed-temp",
+                                                                   value: 0).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+        }
+        
         if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
             Mixpanel.mainInstance().track(event: "nearest_store_temp_closed",
                                           properties: ["lat": lat,
@@ -693,10 +833,16 @@ public class AnalyticsManager: NSObject {
     @objc public func walletReloadedWith(amount: NSDecimalNumber) {
         #if !DEBUG
         if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
-            let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
+            var eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
                                                                    action: "transaction",
                                                                    label: "reload",
                                                                    value: amount).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+            
+            eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                               action: nil,
+                                                               label: "reload-success",
+                                                               value: amount).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
         
