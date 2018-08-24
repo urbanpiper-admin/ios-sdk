@@ -55,6 +55,52 @@ extension APIManager {
         return dataTask
     }
     
+    @objc public func reverseGeoCode(lat: Double,
+                                     lng: Double,
+                                       completion: APICompletion<PlaceDetailsResponse>?,
+                                       failure: APIFailure?) -> URLSessionDataTask {
+        let placesAPIKey: String = AppConfigManager.shared.firRemoteConfigDefaults.googlePlacesApiKey!
+        
+        var urlString: String = "https://maps.googleapis.com/maps/api/geocode/json?latlng=\(lat),\(lng)&key=\(placesAPIKey)"
+        urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        
+        let url: URL = URL(string: urlString)!
+        
+        var urlRequest: URLRequest = URLRequest(url: url)
+        
+        urlRequest.httpMethod = "GET"
+        
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
+            
+            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                guard let completionClosure = completion else { return }
+                
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
+                    let placeDetailsResponse: PlaceDetailsResponse = PlaceDetailsResponse(fromDictionary: dictionary)
+                    
+                    DispatchQueue.main.async {
+                        completionClosure(placeDetailsResponse)
+                    }
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    completionClosure(nil)
+                }
+            } else {
+                if let failureClosure = failure {
+                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
+                    DispatchQueue.main.async {
+                        failureClosure(apiError as UPError)
+                    }
+                }
+            }
+            
+        }
+        
+        return dataTask
+    }
+    
     @objc public func fetchPlaces(for keyword: String,
                                   completion: APICompletion<GooglePlacesResponse>?,
                                   failure: APIFailure?) -> URLSessionDataTask {

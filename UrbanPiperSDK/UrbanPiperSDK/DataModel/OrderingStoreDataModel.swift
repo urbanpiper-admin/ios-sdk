@@ -90,9 +90,8 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
                 return
             }
             
-            if let previousStoreId = oldValue?.store?.bizLocationId, let currentStoreId = storeResponse.store?.bizLocationId, previousStoreId != currentStoreId {
-                
-                if let store = storeResponse.store {
+            if let store = storeResponse.store {
+                if let previousStoreId = oldValue?.store?.bizLocationId, let currentStoreId = store.bizLocationId, previousStoreId != currentStoreId {
                     
                     if let deliverAddress = DeliveryLocationDataModel.shared.deliveryAddress?.fullAddress {
                         if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
@@ -100,7 +99,7 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
                                                                       lng: coordinate.longitude,
                                                                       storeName: store.name)
                         }
-
+                        
                         if store.closingDay || store.isStoreClosed {
                             if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
                                 AnalyticsManager.shared.nearestStoreClosed(lat: coordinate.latitude,
@@ -118,10 +117,11 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
                             }
                         }
                     }
-                } else {
-                    if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                        AnalyticsManager.shared.noStoresNearBy(lat: coordinate.latitude, lng: coordinate.longitude)
-                    }
+                    CartManager.shared.clearCart()
+                }
+            } else {
+                if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
+                    AnalyticsManager.shared.noStoresNearBy(lat: coordinate.latitude, lng: coordinate.longitude)
                 }
                 CartManager.shared.clearCart()
             }
@@ -232,21 +232,50 @@ extension OrderingStoreDataModel {
 
 extension OrderingStoreDataModel {
 
-    @objc public func updateNearestStore(for location: CLLocation?, address: OrderDeliveryAddress? = nil, completion: UpdateCompletionBlock?) {
-        guard let loc = location else {
+//    @objc public func updateNearestStore(for address: Address?, completion: UpdateCompletionBlock?) {
+//        guard let deliveryAddress = address else {
+//            _ = observers.map { $0.value?.update(nil, nil, nil, false) }
+//            completion?(nil, nil)
+//            return
+//        }
+//        
+//        updateCompletionBlock = completion
+//        DeliveryLocationDataModel.shared.setCustomDelivery(location: loc, address: address)
+//    }
+    
+    @objc public func updateNearestStore(for location: CLLocation? = nil,
+                                         placeDetailsResponse: PlaceDetailsResponse? = nil,
+                                         address: Address? = nil,
+                                         completion: UpdateCompletionBlock? = nil) {
+        var deliveryAddress = address
+        
+        if let placeDetails = placeDetailsResponse {
+            deliveryAddress = Address(placeDetailsResponse: placeDetails)
+        }
+        
+        var addressLoc: CLLocation? = nil
+        
+        if let loc = location {
+            addressLoc = loc
+        } else if let lat = deliveryAddress?.lat, let lng = deliveryAddress?.lng {
+            addressLoc = CLLocation(latitude: lat, longitude: lng)
+        }
+        
+        guard let loc = addressLoc else {
             _ = observers.map { $0.value?.update(nil, nil, nil, false) }
             completion?(nil, nil)
             return
         }
         
+        fetchNearestStore(location: loc)
         updateCompletionBlock = completion
-        DeliveryLocationDataModel.shared.setCustomDelivery(location: loc, address: address)
+        DeliveryLocationDataModel.shared.setCustomDelivery(location: loc, address: deliveryAddress)
     }
 }
 
 extension OrderingStoreDataModel: DeliveryLocationDataModelDelegate {
 
-    public func update(_ deliveryLocation: CLLocation?, _ deliveryAddress: OrderDeliveryAddress?, _ upError: UPError?) {
+    public func update(_ deliveryLocation: CLLocation?, _ deliveryAddress: Address?, _ upError: UPError?) {
         if let error = upError {
             _ = observers.map { $0.value?.update(nil, nil, error, false) }
             updateCompletionBlock?(nil, error)

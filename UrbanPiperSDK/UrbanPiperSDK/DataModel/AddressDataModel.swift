@@ -20,7 +20,7 @@ import UIKit
 }
 
 @objc public protocol AddressCellDelegate {
-    func configureCell(_ address: Address?)
+    func configureAddressCell(_ address: Address?)
 }
 
 
@@ -58,16 +58,20 @@ public class AddressDataModel: UrbanPiperDataModel {
                 userAddressesResponse?.addresses?.insert(val, at: 0)
             }
             
+            addressListArray = userAddressesResponse?.addresses
+            deliverableAddressListArray = userAddressesResponse?.addresses.filter { $0.deliverable }
+            unDeliverableAddressListArray = userAddressesResponse?.addresses.filter { !$0.deliverable }
+            
             tableView?.reloadData()
             collectionView?.reloadData()
         }
     }
     
-    public var addressListArray: [Address]? {
-        return userAddressesResponse?.addresses
-    }
+    public var addressListArray: [Address]?
+    public var deliverableAddressListArray: [Address]?
+    public var unDeliverableAddressListArray: [Address]?
 
-    public var defaultDeliveryAddress: Address? {
+    private var defaultDeliveryAddress: Address? {
         get {
             if let defaultAddressData: Data = UserDefaults.standard.object(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey) as? Data {
                 Address.registerClassName()
@@ -141,7 +145,7 @@ extension AddressDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
         
         if let addressCell: AddressCellDelegate = cell as? AddressCellDelegate {
-            addressCell.configureCell(addressListArray?[indexPath.row])
+            addressCell.configureAddressCell(addressListArray?[indexPath.row])
         } else {
             assert(false, "Cell does not conform to AddressCellDelegate protocol")
         }
@@ -163,7 +167,7 @@ extension AddressDataModel {
         
         if let addressCell: AddressCellDelegate = cell as? AddressCellDelegate {
             
-            addressCell.configureCell(addressListArray?[indexPath.row])
+            addressCell.configureAddressCell(addressListArray?[indexPath.row])
         } else {
             assert(false, "Cell does not conform to AddressCellDelegate protocol")
         }
@@ -178,8 +182,10 @@ extension AddressDataModel {
 extension AddressDataModel {
     
     fileprivate func fetchAddressList() {
+        guard AppUserDataModel.shared.validAppUserData != nil else { return }
         _ = observers.map { $0.value?.refreshDeliveryAddressUI(isRefreshing: true) }
-        let dataTask: URLSessionDataTask = APIManager.shared.userSavedAddresses(completion: { [weak self] (data) in
+        let dataTask: URLSessionDataTask = APIManager.shared.userSavedDeliverableAddresses(locationId: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
+                                                                                           completion: { [weak self] (data) in
             defer {
                 _ = self?.observers.map { $0.value?.refreshDeliveryAddressUI(isRefreshing: false) }
             }
@@ -201,10 +207,15 @@ extension AddressDataModel {
             }
             guard let response = data, let addressId = response.addressId else { return }
             address.id = addressId
+            address.deliverable = true
             self?.defaultDeliveryAddress = address
-            self?.userAddressesResponse?.addresses = self?.addressListArray?.filter { $0.id != address.id }
-            self?.userAddressesResponse?.addresses.insert(address, at: 0)
             
+            var addressesResponse = self?.userAddressesResponse
+
+            addressesResponse?.addresses = self?.addressListArray?.filter { $0.id != address.id }
+            addressesResponse?.addresses?.insert(address, at: 0)
+            
+            self?.userAddressesResponse = addressesResponse
             }, failure: { [weak self] (upError) in
                 defer {
                     _ = self?.observers.map { $0.value?.handleAddress(error: upError) }
@@ -224,8 +235,15 @@ extension AddressDataModel {
             address.id = addressId
             
             self?.defaultDeliveryAddress = address
-            self?.userAddressesResponse?.addresses = self?.addressListArray?.filter { $0.id != address.id }
-            self?.userAddressesResponse?.addresses.insert(address, at: 0)
+            
+            var addressesResponse = self?.userAddressesResponse
+            address.deliverable = self?.addressListArray?.filter { $0.id == address.id }.last?.deliverable ?? false
+
+            addressesResponse?.addresses = self?.addressListArray?.filter { $0.id != address.id }
+            addressesResponse?.addresses.insert(address, at: 0)
+
+            self?.userAddressesResponse = addressesResponse
+            
             
             }, failure: { [weak self] (upError) in
                 defer {
@@ -238,7 +256,11 @@ extension AddressDataModel {
     public func deleteAddress(address: Address) {
         _ = observers.map { $0.value?.refreshDeleteAddressUI(isRefreshing: true) }
         let dataTask: URLSessionDataTask = APIManager.shared.deleteAddress(address: address, completion: { [weak self] in
-            self?.userAddressesResponse?.addresses = self?.addressListArray?.filter { $0.id != address.id }
+            var addressesResponse = self?.userAddressesResponse
+            
+            addressesResponse?.addresses = self?.addressListArray?.filter { $0.id != address.id }
+            self?.userAddressesResponse = addressesResponse
+            
             self?.defaultDeliveryAddress = self?.addressListArray?.first
             _ = self?.observers.map { $0.value?.refreshDeleteAddressUI(isRefreshing: false) }
             }, failure: { [weak self] (upError) in

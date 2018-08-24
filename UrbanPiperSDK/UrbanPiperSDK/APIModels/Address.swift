@@ -6,6 +6,7 @@
 //	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
 
 import Foundation
+import CoreLocation
 
 public enum AddressTag: String {
     case home = "home"
@@ -18,6 +19,7 @@ public class Address : NSObject, NSCoding {
 
 	public var address1 : String!
 	public var address2 : String!
+    public var deliverable : Bool!
 	public var city : String!
 	public var id : Int!
 	public var lat : Double!
@@ -30,6 +32,10 @@ public class Address : NSObject, NSCoding {
     public var addressTag: AddressTag {
         guard let tagString: String = tag, let addressTagVal: AddressTag = AddressTag(rawValue: tagString.lowercased()) else { return .other }
         return addressTagVal
+    }
+    
+    public var addressString: String? {
+        return fullAddress?.replacingOccurrences(of: "\n", with: ", ")
     }
     
     public var fullAddress: String? {
@@ -47,18 +53,80 @@ public class Address : NSObject, NSCoding {
             fullAddress = "\(fullAddress + string)"
         }
         if let string = pin {
-            fullAddress = "\(fullAddress) - \(string)\n"
+            fullAddress = "\(fullAddress) - \(string)"
         }
         guard fullAddress.count > 0 else { return nil }
         return fullAddress
     }
+    
+    public init(placeDetailsResponse: PlaceDetailsResponse) {
+        lat = placeDetailsResponse.result.geometry.location.lat
+        lng = placeDetailsResponse.result.geometry.location.lng
+        
+        let addressComponents = placeDetailsResponse.result.addressComponents
+        
+        var subLocalityArray = [String]()
+        
+        let subLocalityLevel1 = addressComponents?.filter ({ $0.types.contains("sublocality_level_1")}).last?.longName
+        let subLocalityLevel2 = addressComponents?.filter ({ $0.types.contains("sublocality_level_2")}).last?.longName
+
+        if let text = addressComponents?.filter ({ $0.types.contains("route")}).last?.longName {
+            subLocalityArray.append(text)
+        }
+        if let text = addressComponents?.filter ({ $0.types.contains("neighborhood")}).last?.longName {
+            subLocalityArray.append(text)
+        }
+        if let text = addressComponents?.filter ({ $0.types.contains("sublocality_level_5")}).last?.longName {
+            subLocalityArray.append(text)
+        }
+        if let text = addressComponents?.filter ({ $0.types.contains("sublocality_level_4")}).last?.longName {
+            subLocalityArray.append(text)
+        }
+        if let text = addressComponents?.filter ({ $0.types.contains("sublocality_level_3")}).last?.longName {
+            subLocalityArray.append(text)
+        }
+        if let text = subLocalityLevel2 {
+            subLocalityArray.append(text)
+            address2 = text
+        }
+        if let text = subLocalityLevel1 {
+            subLocalityArray.append(text)
+            address1 = text
+        }
+        if let text = addressComponents?.filter ({ $0.types.contains("locality")}).last?.longName {
+            subLocalityArray.append(text)
+            city = text
+        }
+        
+        subLocality = subLocalityArray.joined(separator: ", ")
+        
+        pin = addressComponents?.filter ({ $0.types.contains("postal_code")}).last?.longName
+    }
+    
+//    public init(coordinate: CLLocationCoordinate2D?, thoroughfare: String?, locality: String?, administrativeArea: String?, postalCode: String?, lines: [String?]?) {
+//        lat = coordinate?.latitude ?? Double.zero
+//        lng = coordinate?.longitude ?? Double.zero
+//        
+//        address1 = thoroughfare
+//        if let linesString = lines {
+//            if let address2Val = lines?[1] {
+//                address2 = address2Val
+//            }
+//        }
+//        
+//        subLocality = locality
+//        city = administrativeArea
+//        pin = postalCode
+//    }
 
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
 		city = dictionary["city"] as? String
-        
+
+         deliverable = dictionary["deliverable"] as? Bool ?? false
+
         if let latitude: Double = dictionary["latitude"] as? Double {
             lat = latitude
         } else {
@@ -102,6 +170,9 @@ public class Address : NSObject, NSCoding {
 //        if address2 != nil{
 //            dictionary["address_2"] = address2
 //        }
+//        if deliverable != nil{
+//            dictionary["deliverable"] = deliverable
+//        }
 //        if city != nil{
 //            dictionary["city"] = city
 //        }
@@ -137,6 +208,7 @@ public class Address : NSObject, NSCoding {
 	{
          address1 = aDecoder.decodeObject(forKey: "address_1") as? String
          address2 = aDecoder.decodeObject(forKey: "address_2") as? String
+         deliverable = aDecoder.decodeObject(forKey: "deliverable") as? Bool ?? false
          city = aDecoder.decodeObject(forKey: "city") as? String
          id = aDecoder.decodeObject(forKey: "id") as? Int
          lat = aDecoder.decodeObject(forKey: "lat") as? Double ?? Double.zero
@@ -160,6 +232,9 @@ public class Address : NSObject, NSCoding {
 		if address2 != nil{
 			aCoder.encode(address2, forKey: "address_2")
 		}
+        if deliverable != nil{
+            aCoder.encode(deliverable, forKey: "deliverable")
+        }
 		if city != nil{
 			aCoder.encode(city, forKey: "city")
 		}

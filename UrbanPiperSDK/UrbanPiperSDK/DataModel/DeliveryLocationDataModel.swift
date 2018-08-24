@@ -13,7 +13,7 @@ import GooglePlaces
 
 @objc public protocol DeliveryLocationDataModelDelegate {
 
-    func update(_ deliveryLocation: CLLocation?, _ deliveryAddress: OrderDeliveryAddress?, _ upError: UPError?)
+    func update(_ deliveryLocation: CLLocation?, _ deliveryAddress: Address?, _ upError: UPError?)
 
     func handleLocationManagerFailure(error: Error?)
     func didChangeAuthorization(status: CLAuthorizationStatus)
@@ -64,11 +64,12 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
             deliveryAddress = nil
         }
     }
-
-    @objc public var deliveryAddress: OrderDeliveryAddress? = {
+    
+    @objc public var deliveryAddress: Address? = {
         guard let addressData: Data = UserDefaults.standard.object(forKey: LocationUserDefaultKeys.deliveryAddress) as? Data else { return nil }
         OrderDeliveryAddress.registerClassName()
-        guard let orderDeliveryAddress: OrderDeliveryAddress = NSKeyedUnarchiver.unarchiveObject(with: addressData) as? OrderDeliveryAddress else { return nil }
+        Address.registerClassName()
+        guard let orderDeliveryAddress: Address = NSKeyedUnarchiver.unarchiveObject(with: addressData) as? Address else { return nil }
         return orderDeliveryAddress
         }()
         {
@@ -141,7 +142,7 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
         LocationManagerDataModel.shared.updateUserLocation()
     }
 
-    public func setCustomDelivery(location: CLLocation, address: OrderDeliveryAddress?) {
+    public func setCustomDelivery(location: CLLocation, address: Address?) {
         if let addressObject = address {
             deliveryLocation = location
             deliveryAddress = addressObject
@@ -150,7 +151,6 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
             resolveAddress(from: location)
         }
     }
-    
 }
 
 //  MARK: API Calls
@@ -167,18 +167,32 @@ extension DeliveryLocationDataModel {
         dataModelDelegate?.update(location, nil, nil)
 
         let modelDelegate = dataModelDelegate
-        GMSGeocoder().reverseGeocodeCoordinate(location.coordinate, completionHandler: { [weak self] (response, error) -> Void in
-            if let addressObject = response?.firstResult() {
-                let deliveryAddress: OrderDeliveryAddress = OrderDeliveryAddress(coordinate: addressObject.coordinate, locality: addressObject.locality, postalCode: addressObject.postalCode, lines: addressObject.lines)
-
-                self?.deliveryAddress = deliveryAddress
-                modelDelegate?.update(location, deliveryAddress, nil)
-            } else {
-                let apiError: UPAPIError? = UPAPIError(error: error, data: nil)
-
-                modelDelegate?.update(nil, nil, apiError)
-            }
+        let dataTask = APIManager.shared.reverseGeoCode(lat: location.coordinate.latitude, lng: location.coordinate.longitude, completion: { [weak self] (placeDetailsResponse) in
+            let deliveryAddress = Address(placeDetailsResponse: placeDetailsResponse!)
+            self?.deliveryAddress = deliveryAddress
+            modelDelegate?.update(location, deliveryAddress, nil)
+        }, failure: { (error) in
+            modelDelegate?.update(nil, nil, error)
         })
+        
+        addOrCancelDataTask(dataTask: dataTask)
+        
+//        GMSGeocoder().reverseGeocodeCoordinate(location.coordinate, completionHandler: { [weak self] (response, error) -> Void in
+//            if let addressObject = response?.firstResult() {
+//                print("\ndelivery address \(addressObject as AnyObject)\n")
+//
+//                let deliveryAddress: Address = Address(coordinate: addressObject.coordinate, thoroughfare: addressObject.thoroughfare,
+//                                                       locality: addressObject.locality, administrativeArea: addressObject.administrativeArea,
+//                                                       postalCode: addressObject.postalCode, lines: addressObject.lines)
+//
+//                self?.deliveryAddress = deliveryAddress
+//                modelDelegate?.update(location, deliveryAddress, nil)
+//            } else {
+//                let apiError: UPAPIError? = UPAPIError(error: error, data: nil)
+//
+//                modelDelegate?.update(nil, nil, apiError)
+//            }
+//        })
     }
     
 }

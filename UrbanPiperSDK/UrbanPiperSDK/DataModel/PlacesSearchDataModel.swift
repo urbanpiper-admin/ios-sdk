@@ -23,29 +23,18 @@ public struct PlacesSearchUserDefaultKeys {
     static let selectedPlacesDataKey: String = "SelectedPlacesDataKey"
 }
 
-public class PlacesSearchDataModel: UrbanPiperDataModel {
+open class PlacesSearchDataModel: UrbanPiperDataModel {
     
     public typealias CoordinatesFetchCompletionBlock = (PlaceDetailsResponse? ,UPError?) -> Void
 
     weak public var dataModelDelegate: PlacesSearchDataModelDelegate?
 
+    public var lastSearchKeyword: String = ""
+
     private var keyword: String = ""
 
     public var placesResponse: GooglePlacesResponse? = {
-        guard let selectedPlacesData: Data = UserDefaults.standard.object(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey) as? Data else { return nil }
-        StructuredFormatting.registerClassNameWhiteLabel()
-        StructuredFormatting.registerClassNameUrbanPiperSDK()
-        MatchedSubstring.registerClassNameWhiteLabel()
-        MatchedSubstring.registerClassNameUrbanPiperSDK()
-        Term.registerClassNameWhiteLabel()
-        Term.registerClassNameUrbanPiperSDK()
-
-        Prediction.registerClassName()
-        
-        guard let selectedPlacesArray: [Prediction] = NSKeyedUnarchiver.unarchiveObject(with: selectedPlacesData) as? [Prediction] else { return nil }
-        let response: GooglePlacesResponse = GooglePlacesResponse(fromDictionary: [:])
-        response.predictions = selectedPlacesArray
-        return response
+        return PlacesSearchDataModel.recentSearcesResponse
         }(){
         didSet {
             tableView?.reloadData()
@@ -55,6 +44,23 @@ public class PlacesSearchDataModel: UrbanPiperDataModel {
     
     public var placesPredictionList: [Prediction]? {
         return placesResponse?.predictions
+    }
+    
+    private static var recentSearcesResponse: GooglePlacesResponse? {
+        guard let selectedPlacesData: Data = UserDefaults.standard.object(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey) as? Data else { return nil }
+        StructuredFormatting.registerClassNameWhiteLabel()
+        StructuredFormatting.registerClassNameUrbanPiperSDK()
+        MatchedSubstring.registerClassNameWhiteLabel()
+        MatchedSubstring.registerClassNameUrbanPiperSDK()
+        Term.registerClassNameWhiteLabel()
+        Term.registerClassNameUrbanPiperSDK()
+        
+        Prediction.registerClassName()
+        
+        guard let selectedPlacesArray: [Prediction] = NSKeyedUnarchiver.unarchiveObject(with: selectedPlacesData) as? [Prediction] else { return nil }
+        let response: GooglePlacesResponse = GooglePlacesResponse(fromDictionary: [:])
+        response.predictions = selectedPlacesArray
+        return response
     }
     
     public func refreshData(_ isForcedRefresh: Bool = false) {
@@ -70,7 +76,8 @@ public class PlacesSearchDataModel: UrbanPiperDataModel {
         NSObject.cancelPreviousPerformRequests(withTarget: self)
         
         guard keyword.count > 2 else {
-            placesResponse = nil
+            lastSearchKeyword = ""
+            placesResponse = PlacesSearchDataModel.recentSearcesResponse
             dataModelDelegate?.refreshPlacesSearchUI(false)
             return
         }
@@ -80,6 +87,7 @@ public class PlacesSearchDataModel: UrbanPiperDataModel {
     
     @objc private func searchPlaces(for keyword: String) {
         dataModelDelegate?.refreshPlacesSearchUI(true)
+        lastSearchKeyword = keyword
         let dataTask: URLSessionDataTask = APIManager.shared.fetchPlaces(for: keyword,
                                                             completion: { [weak self] (data) in
                                                                 defer {
@@ -91,6 +99,7 @@ public class PlacesSearchDataModel: UrbanPiperDataModel {
                 defer {
                     self?.dataModelDelegate?.handlePlacesSearch(error: upError)
                 }
+                self?.lastSearchKeyword = ""
                 self?.keyword = keyword
         })
         
@@ -138,11 +147,15 @@ public class PlacesSearchDataModel: UrbanPiperDataModel {
 //  MARK: UITableView DataSource
 extension PlacesSearchDataModel {
     
-    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return placesPredictionList?.count ?? 0
     }
     
-    public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
         
         if let placesCell: PlacesCellDelegate = cell as? PlacesCellDelegate {
@@ -153,17 +166,21 @@ extension PlacesSearchDataModel {
         
         return cell
     }
+    
+    open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return nil
+    }
 }
 
 //  MARK: UICollectionView DataSource
 
 extension PlacesSearchDataModel {
     
-    public override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    open override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return placesPredictionList?.count ?? 0
     }
     
-    public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    open override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let placesCell: PlacesCellDelegate = cell as? PlacesCellDelegate {

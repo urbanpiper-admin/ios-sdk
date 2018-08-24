@@ -18,4 +18,22 @@ extension UIImage {
         return UIImage(named: lastIcon)
     }
     
+    static public var launchImage: UIImage? {
+        let allPngImageNames = Bundle.main.paths(forResourcesOfType: "png", inDirectory: nil)
+        
+        for imageName in allPngImageNames {
+            guard imageName.contains("LaunchImage") else { continue }
+            
+            guard let image = UIImage(named: imageName) else { continue }
+            
+            // if the image has the same scale AND dimensions as the current device's screen...
+            
+            if (image.scale == UIScreen.main.scale) && (image.size.equalTo(UIScreen.main.bounds.size)) {
+                return image
+            }
+        }
+        
+        return nil
+    }
+    
 }

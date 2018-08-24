@@ -58,7 +58,14 @@ import Foundation
         return session
     }()
 
-    internal static let reachability: UPReachability? = UPReachability(hostname: "www.google.com")
+    internal static let reachability: UPReachability? = {
+        let reachability = UPReachability(hostname: "www.google.com")
+        do {
+            try reachability?.startNotifier()
+        } catch {
+        }
+        return reachability
+    }()
 
     private static let keychain: UPKeychainWrapper = UPKeychainWrapper(serviceName: Bundle.main.bundleIdentifier!)
     

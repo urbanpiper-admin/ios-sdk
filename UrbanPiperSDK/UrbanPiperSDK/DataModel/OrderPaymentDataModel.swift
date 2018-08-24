@@ -61,7 +61,7 @@ public enum DeliveryOption: String {
     func refreshPreProcessingUI(_ isRefreshing: Bool)
     func refreshWalletUI(_ isRefreshing: Bool)
     
-    @objc optional func refreshApplyCouponUI(_ isRefreshing: Bool)
+    @objc func refreshApplyCouponUI(_ isRefreshing: Bool, code: String)
     
     func initiatingPayment(isProcessing: Bool)
     
@@ -77,7 +77,9 @@ public enum DeliveryOption: String {
     
     func showOrderConfirmationAlert(orderId: String)
     
-    func handleOrderPayment(error: UPError?)
+    func handleOrderPayment(isOrderPaymentError: Bool, error: UPError?)
+    
+    func handleApplyCoupon(code: String, error: UPError?)
 }
 
 public class OrderPaymentDataModel: UrbanPiperDataModel {
@@ -91,10 +93,13 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
                 let code = couponCode!
                 DispatchQueue.main.async { [weak self] in
                     self?.applyCoupon(code: code)
+                    self?.couponCode = nil
+                    self?.applyCouponResponse = nil
                 }
+            } else {
+                couponCode = nil
+                applyCouponResponse = nil
             }
-            couponCode = nil
-            applyCouponResponse = nil
         }
     }
     
@@ -105,12 +110,13 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
         }
     }
     
-    public var deliveryAddress: Address? {
-        guard let defaultAddressData: Data = UserDefaults.standard.object(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey) as? Data else { return nil }
-            Address.registerClassName()
-        guard let address: Address = NSKeyedUnarchiver.unarchiveObject(with: defaultAddressData) as? Address else { return nil }
-        return address
-    }
+    public var deliveryAddress: Address?
+//    {
+//        guard let defaultAddressData: Data = UserDefaults.standard.object(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey) as? Data else { return nil }
+//            Address.registerClassName()
+//        guard let address: Address = NSKeyedUnarchiver.unarchiveObject(with: defaultAddressData) as? Address else { return nil }
+//        return address
+//    }
 
     public var couponCode: String?
     public var applyCouponResponse: Order?
@@ -343,7 +349,7 @@ extension OrderPaymentDataModel {
             }, failure: { [weak self] (upError) in
             defer {
                 self?.dataModelDelegate?.refreshPreProcessingUI(false)
-                self?.dataModelDelegate?.handleOrderPayment(error: upError)
+                self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: true, error: upError)
             }
         })
         addOrCancelDataTask(dataTask: dataTask)
@@ -359,7 +365,7 @@ extension OrderPaymentDataModel {
         }, failure: { [weak self] (upError) in
             defer {
                 self?.dataModelDelegate?.refreshWalletUI(false)
-                self?.dataModelDelegate?.handleOrderPayment(error: upError)
+                self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: upError)
             }
         })
         addOrCancelDataTask(dataTask: dataTask)
@@ -373,36 +379,40 @@ extension OrderPaymentDataModel {
                          "items": CartManager.shared.cartItems.map { $0.discountCouponApiItemDictionary },
                          "apply_wallet_credit": applyWalletCredits] as [String : Any]
         
-        dataModelDelegate?.refreshApplyCouponUI?(true)
+        dataModelDelegate?.refreshApplyCouponUI(true, code: code)
         let dataTask: URLSessionDataTask = APIManager.shared.applyCoupon(code: code,
                                                      orderData: orderDict,
                                                      completion:
             { [weak self] (applyCouponResponse) in
-                
-                if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon == code {
-                    self?.globalCouponApplied = true
-                }
-
                 if let discount = applyCouponResponse?.discount, discount.success {
                     if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon != code {
                         self?.globalCouponApplied = false
+                    } else {
+                        self?.globalCouponApplied = true
                     }
+
 
                     self?.applyCouponResponse = applyCouponResponse
                     self?.couponCode = code
-                    self?.dataModelDelegate?.refreshApplyCouponUI?(false)
+                    self?.dataModelDelegate?.refreshApplyCouponUI(false, code: code)
                     
                     AnalyticsManager.shared.couponApplied(discount: discount.value!, couponCode: code)
                 } else {
+                    if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon == code {
+                        self?.globalCouponApplied = false
+                    }
                     let upApiError = UPAPIError(error: nil, data: nil, responseObject: applyCouponResponse?.discount.toDictionary())
-                    self?.dataModelDelegate?.handleOrderPayment(error: upApiError)
+                    self?.dataModelDelegate?.handleApplyCoupon(code: code, error: upApiError)
                     AnalyticsManager.shared.couponApplyFailed(couponCode: code)
                 }
 
                 }, failure: { [weak self] (upError) in
                     defer {
-                        self?.dataModelDelegate?.refreshApplyCouponUI?(false)
-                        self?.dataModelDelegate?.handleOrderPayment(error: upError)
+                        self?.dataModelDelegate?.refreshApplyCouponUI(false, code: code)
+                        self?.dataModelDelegate?.handleApplyCoupon(code: code, error: upError)
+                    }
+                    if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon == code {
+                        self?.globalCouponApplied = false
                     }
                     AnalyticsManager.shared.couponApplyFailed(couponCode: code)
                 })
@@ -424,7 +434,7 @@ extension OrderPaymentDataModel {
                                                                 }
         }, failure: { [weak self] (error) in
             self?.dataModelDelegate?.initiatingPayment(isProcessing: false)
-            self?.dataModelDelegate?.handleOrderPayment(error: error)
+            self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
         })
 
         guard let task = dataTask else { return }
@@ -464,14 +474,14 @@ extension OrderPaymentDataModel {
                                         self?.dataModelDelegate?.placingOrder(isProcessing: false)
                                         guard let orderId = responseDict?["order_id"] else {
                                             let error: UPAPIError? = UPAPIError(responseObject: responseDict)
-                                            self?.dataModelDelegate?.handleOrderPayment(error: error)
+                                            self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
                                             return
                                         }
                                         let orderIdString: String = "\(orderId)"
                                         
                                         guard orderIdString.count > 0 else {
                                             let error: UPAPIError? = UPAPIError(responseObject: responseDict)
-                                            self?.dataModelDelegate?.handleOrderPayment(error: error)
+                                            self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
                                             return
                                         }
 
@@ -491,7 +501,7 @@ extension OrderPaymentDataModel {
             }, failure: { [weak self] (error) in
                 AnalyticsManager.shared.orderPlacementFailure(amount: self!.itemsTotalPrice)
                 self?.dataModelDelegate?.placingOrder(isProcessing: false)
-                self?.dataModelDelegate?.handleOrderPayment(error: error)
+                self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
                 
         })
         
@@ -515,11 +525,11 @@ extension OrderPaymentDataModel {
                                                             self?.dataModelDelegate?.showOrderConfirmationAlert(orderId: orderId)
                                                         } else {
                                                             let apiError: UPAPIError? = UPAPIError(responseObject: responseDict)
-                                                            self?.dataModelDelegate?.handleOrderPayment(error: apiError)
+                                                            self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: apiError)
                                                         }
             }, failure: { [weak self] (error) in
                 self?.dataModelDelegate?.verifyingTransaction(isProcessing: false)
-                self?.dataModelDelegate?.handleOrderPayment(error: error)
+                self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
         })
         
         addOrCancelDataTask(dataTask: dataTask)

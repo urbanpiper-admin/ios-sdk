@@ -41,9 +41,7 @@ open class OffersDataModel: UrbanPiperDataModel {
     public var applyCouponResponse: Order?
     
     public override init() {
-        super.init()
-        
-        refreshData()
+        super.init()        
     }
 
     open func refreshData(_ isForcedRefresh: Bool = false) {

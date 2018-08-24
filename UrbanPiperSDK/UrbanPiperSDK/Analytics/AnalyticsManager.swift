@@ -18,6 +18,8 @@ public class AnalyticsManager: NSObject {
     
     @objc public static let shared: AnalyticsManager = AnalyticsManager()
     
+    var sdksInitialized: Bool = false
+    
     public static func initializeSDKs() {
         #if !DEBUG
         let plistPath: String = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")!
@@ -39,6 +41,8 @@ public class AnalyticsManager: NSObject {
             AppsFlyerTracker.shared().appleAppID = appId
             AppsFlyerTracker.shared().appsFlyerDevKey = devKey
         }
+        
+        AnalyticsManager.shared.sdksInitialized = true
         #endif
     }
     
@@ -50,7 +54,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "screen_login")
         }
         #endif
@@ -64,7 +68,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "screen_signup")
         }
         #endif
@@ -77,7 +81,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "screen_wallet")
         }
         #endif
@@ -90,7 +94,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "screen_ordering_home")
         }
         #endif
@@ -103,7 +107,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "screen_referral")
         }
         #endif
@@ -111,7 +115,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func screenPlacesSearchOpened() {
         #if !DEBUG
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "screen_google_place_search")
         }
         #endif
@@ -124,7 +128,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "screen_ordering_history")
         }
         #endif
@@ -137,7 +141,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "screen_order_detail")
         }
         #endif
@@ -150,7 +154,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "screen_ordering_items")
         }
         #endif
@@ -174,7 +178,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(builder.build() as! [AnyHashable : Any])
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "screen_checkout",
                                           properties: ["total" : (CartManager.shared.cartValue as NSDecimalNumber).doubleValue,
                                                        "item_count" : CartManager.shared.cartCount])
@@ -206,7 +210,7 @@ public class AnalyticsManager: NSObject {
         }
         
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             var itemsDictionaryArray = [[String: Any]]()
             
             for itemObject in CartManager.shared.cartItems {
@@ -226,7 +230,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(GAIDictionaryBuilder.createScreenView()!.build() as! [AnyHashable : Any])
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "screen_ordering_feedback")
         }
         #endif
@@ -234,7 +238,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func screenSavedAddressOpened() {
         #if !DEBUG
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "screen_saved_address_list")
         }
         #endif
@@ -242,7 +246,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func screenValidateCouponOpened() {
         #if !DEBUG
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "screen_validate_coupon")
         }
         #endif
@@ -250,7 +254,7 @@ public class AnalyticsManager: NSObject {
     
     public func itemsSearchScreenOpened() {
         #if !DEBUG
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "screen_search")
         }
         #endif
@@ -258,7 +262,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func pointOfDeliverySearchScreenOpened() {
         #if !DEBUG
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "screen_pod_search")
         }
         #endif
@@ -315,7 +319,7 @@ public class AnalyticsManager: NSObject {
             tracker.trackAppLaunch()
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "app_launched",
                                           properties: ["interval_of_day" : Date.currentHourRangeString])
         }
@@ -338,7 +342,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "login",
                                           properties : ["username" : phone,
                                                         "success" : true])
@@ -363,7 +367,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "login",
                                           properties : ["username" : phone,
                                                         "success" : false])
@@ -381,7 +385,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized, sdksInitialized {
             Mixpanel.mainInstance().track(event: "logout")
             
             Mixpanel.mainInstance().people.deleteUser()
@@ -412,7 +416,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "signup_otp_gen",
                                           properties : ["username" : phone])
         }
@@ -430,7 +434,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "signup",
                                           properties : ["username" : phone])
             
@@ -480,7 +484,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "signup_otp_gen",
                                           properties : ["username" : phone,
                                                         "platform" : platform])
@@ -490,7 +494,7 @@ public class AnalyticsManager: NSObject {
     
     public func socialLoginUserPhoneVerified(phone: String, platform: String) {
         #if !DEBUG
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "signup",
                                           properties : ["username" : phone,
                                                         "platform" : platform])
@@ -516,7 +520,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "login",
                                           properties : ["username" : phone,
                                                         "success" : true,
@@ -549,7 +553,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             
             var properties: Properties = ["rating" : data["rating"]! as! Int,
                                           "type" : data["type"]! as! String,
@@ -567,7 +571,7 @@ public class AnalyticsManager: NSObject {
     
     public func itemSearch(query: String) {
         #if !DEBUG
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             var properties: Properties = ["query" : query]
             
             if let storeId = OrderingStoreDataModel.shared.orderingStore?.bizLocationId {
@@ -602,7 +606,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             let properties: [String : MixpanelType] = ["amount" : amount.doubleValue,
                                                        "success": true]
             
@@ -622,7 +626,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             let properties: [String : MixpanelType] = ["amount" : amount.doubleValue,
                                                        "success": true]
             
@@ -671,7 +675,7 @@ public class AnalyticsManager: NSObject {
                                                                    value: amount).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             let properties: [String : MixpanelType] = ["amount" : amount.doubleValue,
                                                        "success": false]
             
@@ -691,7 +695,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             let properties: [String : MixpanelType] = ["discount" : NSDecimalNumber(decimal:discount).doubleValue,
                                                        "coupon_txt": couponCode]
             
@@ -715,7 +719,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func newAddressAdded() {
         #if !DEBUG
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "add_address")
         }
         #endif
@@ -723,7 +727,7 @@ public class AnalyticsManager: NSObject {
     
     public func referralSentDetails(link: String, channel: String) {
         #if !DEBUG
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "referral_sent",
                                           properties: ["link": link,
                                                        "channel": channel])
@@ -733,7 +737,7 @@ public class AnalyticsManager: NSObject {
     
     @objc public func placeSelected(name: String) {
         #if !DEBUG
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "place_selected",
                                           properties: ["name": name])
         }
@@ -742,7 +746,7 @@ public class AnalyticsManager: NSObject {
     
     public func categorySelected(name: String) {
         #if !DEBUG
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "category_selected",
                                           properties: ["name": name])
         }
@@ -758,7 +762,7 @@ public class AnalyticsManager: NSObject {
                                                                    value: 0).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "no_stores_nearby",
                                           properties: ["lat": lat,
                                                        "lng": lng])
@@ -788,7 +792,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "nearest_store_closed",
                                           properties: ["lat": lat,
                                                        "lng": lng,
@@ -800,7 +804,7 @@ public class AnalyticsManager: NSObject {
     
     public func nearestStoreClosed(lat: Double, lng: Double, deliveryAddress: String, storeName: String) {
         #if !DEBUG
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "nearest_store_closed",
                                           properties: ["lat": lat,
                                                        "lng": lng,
@@ -820,7 +824,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "nearest_store_temp_closed",
                                           properties: ["lat": lat,
                                                        "lng": lng,
@@ -846,7 +850,7 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             let properties: [String : MixpanelType] = ["amount" : amount.doubleValue,
                                                        "success": true]
             
@@ -1008,7 +1012,7 @@ public class AnalyticsManager: NSObject {
                                             AFEventParamCurrency: "INR"])
         }
         
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             var itemsDictionaryArray = [[String: Any]]()
             
             for item in orderPaymentDataModel.orderResponse!.items {
@@ -1047,7 +1051,7 @@ public class AnalyticsManager: NSObject {
     public func setMixpanelPeople() {
         #if !DEBUG
         if let user = AppUserDataModel.shared.validAppUserData,
-            let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 {
+            let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             
             let mixpanel = Mixpanel.mainInstance()
             mixpanel.identify(distinctId: user.phoneNumberWithCountryCode)
