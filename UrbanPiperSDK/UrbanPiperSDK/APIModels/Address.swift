@@ -134,7 +134,7 @@ public class Address : NSObject, NSCoding {
         }
         
         if let longitude: Double = dictionary["longitude"] as? Double {
-            
+            lng = longitude
         } else {
             lng = dictionary["lng"] as? Double ?? Double.zero
         }

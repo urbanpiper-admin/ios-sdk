@@ -13,7 +13,8 @@ import UIKit
     public convenience init?(error: Error? = nil, data: Data? = nil, responseObject: [String: Any]? = nil) {
         var errorCode = 0
         
-        if let nsError = error as? NSError {
+        if error != nil {
+            let nsError = error! as NSError
             errorCode = nsError.code
             guard nsError.code != NSURLErrorCancelled else { return nil }
         }

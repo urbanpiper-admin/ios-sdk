@@ -13,13 +13,13 @@ extension APIManager {
     @objc public func checkForUpgrade(completion: APICompletion<VersionCheckResponse>?,
                                  failure: APIFailure?) -> URLSessionDataTask? {
 
-        let username: String = AppUserDataModel.shared.validAppUserData?.phoneNumberWithCountryCode ?? "nil"
+        let username: String = AppUserDataModel.shared.validAppUserData?.phoneNumberWithCountryCode ?? "null"
         
         let infoDictionary: [String: Any] = Bundle.main.infoDictionary!
         guard let appVersion: String = infoDictionary["CFBundleShortVersionString"] as? String,
             let bizId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId else { return nil }
         
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/app/ios/?user=\(username ?? "null")&biz_id=\(bizId)&ver=\(appVersion)"
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/app/ios/?user=\(username)&biz_id=\(bizId)&ver=\(appVersion)"
 
         let url: URL = URL(string: urlString)!
 

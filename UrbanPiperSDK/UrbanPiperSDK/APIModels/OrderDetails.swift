@@ -33,7 +33,7 @@ public class OrderDetails : NSObject{
 				items.append(value)
 			}
 		}
-		nextState = dictionary["next_state"] as? AnyObject
+		nextState = dictionary["next_state"] as AnyObject
 		nextStates = dictionary["next_states"] as? [String]
 		payment = [OrderPayment]()
 		if let paymentArray = dictionary["payment"] as? [[String:Any]]{

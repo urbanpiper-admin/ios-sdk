@@ -138,7 +138,7 @@ extension MyOrdersDataModel {
 extension MyOrdersDataModel {
 
     @objc open override func appWillEnterForeground() {
-        if myOrdersArray == nil || myOrdersArray.count == 0 {
+        if myOrdersArray.count == 0 {
             refreshData()
         }
         
@@ -160,7 +160,7 @@ extension MyOrdersDataModel {
 extension MyOrdersDataModel {
 
     @objc open override func networkIsAvailable() {
-        if myOrdersArray == nil || myOrdersArray.count == 0 {
+        if myOrdersArray.count == 0 {
             refreshData()
         }
         

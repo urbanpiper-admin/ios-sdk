@@ -21,7 +21,7 @@ public class OrderPayment : NSObject{
 	init(fromDictionary dictionary: [String:Any]){
 		amount = dictionary["amount"] as? Float
 		option = dictionary["option"] as? String
-		srvrTrxId = dictionary["srvr_trx_id"] as? AnyObject
+		srvrTrxId = dictionary["srvr_trx_id"] as AnyObject
 	}
 
 /*	/**

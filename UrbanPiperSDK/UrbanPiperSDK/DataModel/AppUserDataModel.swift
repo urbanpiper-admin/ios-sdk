@@ -258,7 +258,7 @@ extension AppUserDataModel {
                                          anniversary: anniversary,
                                          birthday: birthday,
                                          completion: { [weak self] (response) in
-                                            guard let dataModel = self, let user = dataModel.appUserData, let responseObject = response else { return }
+                                            guard let dataModel = self, let user = dataModel.appUserData, response != nil else { return }
                                             dataModel.observers = dataModel.observers.filter { $0.value != nil }
                                             let _ = dataModel.observers.map { $0.value?.refreshUpdateAppUserUI?(isRefreshing: false) }
                                             

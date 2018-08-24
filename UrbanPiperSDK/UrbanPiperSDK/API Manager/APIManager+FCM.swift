@@ -109,7 +109,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "POST"
         
-        let params: [String: Any] = ["registration_id": oldToken,
+        let params: [String: Any] = ["registration_id": oldToken!,
                       "device_id": APIManager.uuidString,
                       "channel": APIManager.channel]
         
