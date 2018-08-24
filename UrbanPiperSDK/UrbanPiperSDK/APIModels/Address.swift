@@ -98,7 +98,11 @@ public class Address : NSObject, NSCoding {
             city = text
         }
         
-        subLocality = subLocalityArray.joined(separator: ", ")
+        if subLocalityArray.count < 3 {
+            subLocality = placeDetailsResponse.result.formattedAddress
+        } else {
+            subLocality = subLocalityArray.joined(separator: ", ")
+        }
         
         pin = addressComponents?.filter ({ $0.types.contains("postal_code")}).last?.longName
     }

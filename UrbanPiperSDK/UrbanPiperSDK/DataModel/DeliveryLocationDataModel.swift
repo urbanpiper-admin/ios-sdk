@@ -168,9 +168,14 @@ extension DeliveryLocationDataModel {
 
         let modelDelegate = dataModelDelegate
         let dataTask = APIManager.shared.reverseGeoCode(lat: location.coordinate.latitude, lng: location.coordinate.longitude, completion: { [weak self] (placeDetailsResponse) in
-            let deliveryAddress = Address(placeDetailsResponse: placeDetailsResponse!)
-            self?.deliveryAddress = deliveryAddress
-            modelDelegate?.update(location, deliveryAddress, nil)
+            if placeDetailsResponse?.result != nil {
+                let deliveryAddress = Address(placeDetailsResponse: placeDetailsResponse!)
+                self?.deliveryAddress = deliveryAddress
+                modelDelegate?.update(location, deliveryAddress, nil)
+            } else {
+                let upError = UPError(type: .apiError)
+                modelDelegate?.update(nil, nil, upError)
+            }            
         }, failure: { (error) in
             modelDelegate?.update(nil, nil, error)
         })
