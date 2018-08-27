@@ -241,8 +241,8 @@ extension APIManager {
         
         if let addressObject = address, deliveryOption != DeliveryOption.pickUp.rawValue {
             params["address_id"] = addressObject.id
-            params["address_lat"] = addressObject.lat ?? 0
-            params["address_lng"] = addressObject.lng ?? 0
+            params["address_lat"] = addressObject.lat
+            params["address_lng"] = addressObject.lng
         }
         
         if let timeSlotObject = timeSlot, AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots {

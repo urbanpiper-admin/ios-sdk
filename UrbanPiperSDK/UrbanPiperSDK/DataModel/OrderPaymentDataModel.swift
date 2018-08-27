@@ -313,7 +313,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
             updateUserBizInfo()
         }
 
-        if isForcedRefresh || orderPreProcessingResponse == nil {
+        if isForcedRefresh || orderPreProcessingResponse == nil || (selectedDeliveryOption == .pickUp && deliveryCharge > Decimal.zero) {
             orderPreProcessingResponse = nil
             preProcessOrder()
         }

@@ -22,8 +22,8 @@ public class Address : NSObject, NSCoding {
     public var deliverable : Bool!
 	public var city : String!
 	public var id : Int!
-	public var lat : Double!
-	public var lng : Double!
+    @objc public var lat : CLLocationDegrees = 0
+    @objc public var lng : CLLocationDegrees = 0
 	public var pin : String!
 	public var podId : Int!
 	public var subLocality : String!
@@ -245,12 +245,11 @@ public class Address : NSObject, NSCoding {
 		if id != nil{
 			aCoder.encode(id, forKey: "id")
 		}
-		if lat != nil{
-			aCoder.encode(lat, forKey: "lat")
-		}
-		if lng != nil{
-			aCoder.encode(lng, forKey: "lng")
-		}
+        
+        aCoder.encode(lat, forKey: "lat")
+		
+        aCoder.encode(lng, forKey: "lng")
+
 		if pin != nil{
 			aCoder.encode(pin, forKey: "pin")
 		}
