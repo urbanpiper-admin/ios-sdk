@@ -92,6 +92,8 @@ public class AppUserDataModel: UrbanPiperDataModel {
             }
             
             if let oldUserData = appUserData, oldUserData.userStatus == .valid, user.userStatus != .valid {
+                observers = observers.filter { $0.value != nil }
+                let _ = observers.map { $0.value?.refreshAppUserUI?(isRefreshing: false) }
                 return
             } else if let oldUserData = appUserData, oldUserData.userStatus != .valid, user.userStatus == .valid {
                 DispatchQueue.main.async { [weak self] in
@@ -229,9 +231,7 @@ extension AppUserDataModel {
         
         let dataTask: URLSessionDataTask = APIManager.shared.userInfo(phone: phoneNo, completion: { [weak self] (response) in
             guard let dataModel = self, let user = dataModel.appUserData, let responseObject = response else { return }
-            dataModel.observers = dataModel.observers.filter { $0.value != nil }
-            let _ = dataModel.observers.map { $0.value?.refreshAppUserUI?(isRefreshing: false) }
-
+            
             user.update(fromDictionary: responseObject)
             dataModel.appUserData = user
         }, failure: { [weak self] (upError) in

@@ -170,6 +170,11 @@ extension PlacesSearchDataModel {
     open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return nil
     }
+    
+    open func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return nil
+    }
+
 }
 
 //  MARK: UICollectionView DataSource
