@@ -11,6 +11,7 @@ import UIKit
 @objc public protocol CategoryItemsDataModelDelegate {
 
     func refreshCategoryItemsUI(_ isRefreshing: Bool)
+    func refreshFilterSortUI(_ isRefreshing: Bool)
     func handleCategoryItems(error: UPError?)
 
 }
@@ -46,6 +47,12 @@ open class CategoryItemsDataModel: UrbanPiperDataModel {
     }
 
     open var subCategoriesArray: [[ItemObject]]?
+    
+    public var categoryOptionsResponse: CategoryOptionsResponse?
+    
+    public var selectedSortOption: String?
+    
+    public var selectedFilterOptions: [FilterOption] = []
     
     open var isFetchingCategoryItems: Bool = false
 
@@ -102,6 +109,7 @@ open class CategoryItemsDataModel: UrbanPiperDataModel {
     }
 
     open func refreshData(_ isForcedRefresh: Bool = false) {
+        fetchCategoryOptions()
         fetchCategoryItems(isForcedRefresh: isForcedRefresh)
     }
 
@@ -184,6 +192,8 @@ extension CategoryItemsDataModel {
         isFetchingCategoryItems = true
         let dataTask: URLSessionDataTask = APIManager.shared.fetchCategoryItems(categoryId: categoryObject.id,
                                                             locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
+                                                            sortKey: selectedSortOption,
+                                                            filterOptions: selectedFilterOptions,
                                                             isForcedRefresh: isForcedRefresh,
                                                             next: next,
                                                             completion: { [weak self] (data) in
@@ -223,6 +233,24 @@ extension CategoryItemsDataModel {
 
         addOrCancelDataTask(dataTask: dataTask)
     }
+    
+    fileprivate func fetchCategoryOptions() {
+        guard categoryOptionsResponse == nil else { return }
+        dataModelDelegate?.refreshFilterSortUI(true)
+        let dataTask = APIManager.shared.fetchCategoryOptions(id: categoryObject.id, completion: { [weak self] (data) in
+            defer {
+                self?.dataModelDelegate?.refreshFilterSortUI(false)
+            }
+            guard let response = data else { return }
+            self?.categoryOptionsResponse = response
+            }, failure: { [weak self] (upError) in
+                defer {
+                    self?.dataModelDelegate?.handleCategoryItems(error: upError)
+                }
+                self?.isFetchingCategoryItems = false
+        })
+        addOrCancelDataTask(dataTask: dataTask)
+    }
 }
 
 //  App State Management
@@ -230,6 +258,7 @@ extension CategoryItemsDataModel {
 extension CategoryItemsDataModel {
 
     open override func appWillEnterForeground() {
+        fetchCategoryOptions()
         guard itemsArray == nil || itemsArray!.count == 0 else { return }
         refreshData(false)
     }
@@ -245,6 +274,7 @@ extension CategoryItemsDataModel {
 extension CategoryItemsDataModel {
 
     open override func networkIsAvailable() {
+        fetchCategoryOptions()
         if itemsArray == nil || itemsArray!.count == 0 {
             refreshData(false)
         }

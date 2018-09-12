@@ -17,7 +17,7 @@ import Foundation
 	public var deliveryMinOffsetTime : Int!
 	public var feedbackConfig : [FeedbackConfig]!
 	public var gst : String!
-	public var isPickupEnabled : Bool!
+	public var isPickupEnabled : Bool = false
 	public var minOrderTotal : Decimal!
 	public var minimumWalletCreditThreshold : Float!
 	public var msgNearestStoreClosed : String!
@@ -53,7 +53,7 @@ import Foundation
 			}
 		}
 		gst = dictionary["gst"] as? String
-		isPickupEnabled = dictionary["is_pickup_enabled"] as? Bool
+		isPickupEnabled = dictionary["is_pickup_enabled"] as? Bool ?? false
         
         if let val: Decimal = dictionary["min_order_total"] as? Decimal {
             minOrderTotal = val
@@ -113,9 +113,7 @@ import Foundation
 		if gst != nil{
 			dictionary["gst"] = gst
 		}
-		if isPickupEnabled != nil{
-			dictionary["is_pickup_enabled"] = isPickupEnabled
-		}
+        dictionary["is_pickup_enabled"] = isPickupEnabled
 		if minOrderTotal != nil{
 			dictionary["min_order_total"] = minOrderTotal
 		}
@@ -190,7 +188,7 @@ import Foundation
         FeedbackConfig.registerClassNameWhiteLabel()
         feedbackConfig = aDecoder.decodeObject(forKey :"feedback_config") as? [FeedbackConfig]
          gst = aDecoder.decodeObject(forKey: "gst") as? String
-         isPickupEnabled = aDecoder.decodeObject(forKey: "is_pickup_enabled") as? Bool
+         isPickupEnabled = aDecoder.decodeObject(forKey: "is_pickup_enabled") as? Bool ?? false
          minOrderTotal = aDecoder.decodeObject(forKey: "min_order_total") as? Decimal
          minimumWalletCreditThreshold = aDecoder.decodeObject(forKey: "minimum_wallet_credit_threshold") as? Float
          msgNearestStoreClosed = aDecoder.decodeObject(forKey: "msg_nearest_store_closed") as? String
@@ -233,9 +231,7 @@ import Foundation
 		if gst != nil{
 			aCoder.encode(gst, forKey: "gst")
 		}
-		if isPickupEnabled != nil{
-			aCoder.encode(isPickupEnabled, forKey: "is_pickup_enabled")
-		}
+        aCoder.encode(isPickupEnabled, forKey: "is_pickup_enabled")
 		if minOrderTotal != nil{
 			aCoder.encode(minOrderTotal, forKey: "min_order_total")
 		}

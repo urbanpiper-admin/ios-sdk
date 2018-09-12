@@ -303,8 +303,8 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
         return filteredSlots
     }
     
-    public var globalCouponApplied: Bool = false
-        
+//    public var globalCouponApplied: Bool = false
+    
     public func refreshData(_ isForcedRefresh: Bool = false) {
         guard AppUserDataModel.shared.validAppUserData != nil else { return }
 
@@ -385,11 +385,11 @@ extension OrderPaymentDataModel {
                                                      completion:
             { [weak self] (applyCouponResponse) in
                 if let discount = applyCouponResponse?.discount, discount.success {
-                    if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon != code {
-                        self?.globalCouponApplied = false
-                    } else {
-                        self?.globalCouponApplied = true
-                    }
+//                    if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon == code {
+//                        self?.globalCouponApplied = true
+//                    } else {
+//                        self?.globalCouponApplied = false
+//                    }
 
 
                     self?.applyCouponResponse = applyCouponResponse
@@ -398,9 +398,9 @@ extension OrderPaymentDataModel {
                     
                     AnalyticsManager.shared.couponApplied(discount: discount.value!, couponCode: code)
                 } else {
-                    if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon == code {
-                        self?.globalCouponApplied = false
-                    }
+//                    if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon == code {
+//                        self?.globalCouponApplied = false
+//                    }
                     let upApiError = UPAPIError(error: nil, data: nil, responseObject: applyCouponResponse?.discount.toDictionary())
                     self?.dataModelDelegate?.handleApplyCoupon(code: code, error: upApiError)
                     AnalyticsManager.shared.couponApplyFailed(couponCode: code)
@@ -411,9 +411,9 @@ extension OrderPaymentDataModel {
                         self?.dataModelDelegate?.refreshApplyCouponUI(false, code: code)
                         self?.dataModelDelegate?.handleApplyCoupon(code: code, error: upError)
                     }
-                    if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon == code {
-                        self?.globalCouponApplied = false
-                    }
+//                    if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon == code {
+//                        self?.globalCouponApplied = false
+//                    }
                     AnalyticsManager.shared.couponApplyFailed(couponCode: code)
                 })
         addOrCancelDataTask(dataTask: dataTask)

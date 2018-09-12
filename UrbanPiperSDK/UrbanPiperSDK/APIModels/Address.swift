@@ -20,13 +20,13 @@ public class Address : NSObject, NSCoding {
 	public var address1 : String!
 	public var address2 : String!
     public var deliverable : Bool!
-	public var city : String!
+	@objc public var city : String!
 	public var id : Int!
     @objc public var lat : CLLocationDegrees = 0
     @objc public var lng : CLLocationDegrees = 0
-	public var pin : String!
+	@objc public var pin : String!
 	public var podId : Int!
-	public var subLocality : String!
+	@objc public var subLocality : String!
 	public var tag : String!
     
     public var addressTag: AddressTag {

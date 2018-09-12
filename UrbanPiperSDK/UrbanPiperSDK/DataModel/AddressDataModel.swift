@@ -71,7 +71,7 @@ public class AddressDataModel: UrbanPiperDataModel {
     public var deliverableAddressListArray: [Address]?
     public var unDeliverableAddressListArray: [Address]?
 
-    private var defaultDeliveryAddress: Address? {
+    public var defaultDeliveryAddress: Address? {
         get {
             if let defaultAddressData: Data = UserDefaults.standard.object(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey) as? Data {
                 Address.registerClassName()
