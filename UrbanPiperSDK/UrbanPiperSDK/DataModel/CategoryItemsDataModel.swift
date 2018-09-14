@@ -54,6 +54,8 @@ open class CategoryItemsDataModel: UrbanPiperDataModel {
     
     public var selectedFilterOptions: [FilterOption] = []
     
+    private var categoryOptionsApplied = true
+    
     open var isFetchingCategoryItems: Bool = false
 
     open func setUpSubCategoriesArray() {
@@ -198,6 +200,7 @@ extension CategoryItemsDataModel {
                                                             next: next,
                                                             completion: { [weak self] (data) in
                                                                 self?.isFetchingCategoryItems = false
+                                                                self?.categoryOptionsApplied = true
                                                                 guard let response = data else { return }
                                                                 if next == nil {
                                                                     if response.objects.count > 1 {
@@ -228,6 +231,7 @@ extension CategoryItemsDataModel {
             defer {
                 self?.dataModelDelegate?.handleCategoryItems(error: upError)
             }
+            self?.categoryOptionsApplied = false
             self?.isFetchingCategoryItems = false
         })
 
@@ -247,7 +251,6 @@ extension CategoryItemsDataModel {
                 defer {
                     self?.dataModelDelegate?.handleCategoryItems(error: upError)
                 }
-                self?.isFetchingCategoryItems = false
         })
         addOrCancelDataTask(dataTask: dataTask)
     }
@@ -259,8 +262,23 @@ extension CategoryItemsDataModel {
 
     open override func appWillEnterForeground() {
         fetchCategoryOptions()
-        guard itemsArray == nil || itemsArray!.count == 0 else { return }
-        refreshData(false)
+        
+        if !categoryOptionsApplied {
+            refreshData(true)
+        } else if itemsArray == nil || itemsArray!.count == 0 {
+            refreshData(false)
+        }
+        
+        guard let itemObject: ItemObject = (tableView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
+        if let subCategoriesArray = subCategoriesArray {
+            if subCategoriesArray.last?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
+                fetchCategoryItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
+            }
+        } else {
+            if itemsArray?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
+                fetchCategoryItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
+            }
+        }
     }
 
     @objc open override func appDidEnterBackground() {
@@ -275,10 +293,14 @@ extension CategoryItemsDataModel {
 
     open override func networkIsAvailable() {
         fetchCategoryOptions()
-        if itemsArray == nil || itemsArray!.count == 0 {
+        if !categoryOptionsApplied {
+            refreshData(true)
+            return
+        } else if itemsArray == nil || itemsArray!.count == 0 {
             refreshData(false)
+            return
         }
-        
+
         guard let itemObject: ItemObject = (tableView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
         if let subCategoriesArray = subCategoriesArray {
             if subCategoriesArray.last?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
