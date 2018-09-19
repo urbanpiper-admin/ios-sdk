@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
     
     s.source_files = ['UrbanPiperSDK/**/*.{h,swift}']
     s.dependency 'FirebaseMessaging'
-    s.dependency 'Firebase/RemoteConfig'
+    s.dependency 'FirebaseRemoteConfig'
     s.dependency 'GooglePlaces'
     s.dependency 'GoogleMaps'
     s.dependency 'GoogleAnalytics'

@@ -135,7 +135,8 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
     }
 
     public func updateCurrentUserLocation(forced: Bool) {
-        if CLLocationManager.locationServicesEnabled(), forced {
+        if CLLocationManager.locationServicesEnabled(), CLLocationManager.authorizationStatus() != .denied,
+            CLLocationManager.authorizationStatus() != .restricted, forced {
             nextLocationUpdateDate = nil
         }
         
