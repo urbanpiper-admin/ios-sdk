@@ -95,8 +95,7 @@ open class UrbanPiperDataModel: NSObject {
     }
 
     open func cleanDataTasksArray() {
-        dataTasks = dataTasks.filter { $0.value != nil }
-        dataTasks = dataTasks.filter { $0.value!.state == .suspended || $0.value!.state == .running }
+        dataTasks = dataTasks.filter { $0.value != nil && ($0.value!.state == .suspended || $0.value!.state == .running) }
     }
 }
 

@@ -195,6 +195,9 @@ import FirebaseRemoteConfig
         showBanners = remoteConfig["show_banners"].boolValue
         showFeaturedItems = remoteConfig["show_featured_items"].boolValue
 		enableItemDirectLoading = remoteConfig["enable_item_direct_loading"].boolValue
+        #if DEBUG
+        enableItemDirectLoading = false
+        #endif
 		enablePostOrderFeedback = remoteConfig["enable_post_order_feedback"].boolValue
 		enableSocialLogin = remoteConfig["enable_social_login"].boolValue
 		enableTimeSlots = remoteConfig["enable_time_slots"].boolValue
