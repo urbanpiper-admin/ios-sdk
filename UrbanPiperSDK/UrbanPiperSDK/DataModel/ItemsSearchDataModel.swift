@@ -103,6 +103,7 @@ extension ItemsSearchDataModel {
 
     @objc private func searchItems(for keyword: String) {
         dataModelDelegate?.refreshItemsSearchUI(true)
+        AnalyticsManager.shared.itemSearch(query: keyword)
         let dataTask: URLSessionDataTask = APIManager.shared.fetchCategoryItems(for: keyword,
                                                             locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
                                                             completion: { [weak self] (data) in

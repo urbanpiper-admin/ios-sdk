@@ -326,6 +326,30 @@ public class AnalyticsManager: NSObject {
         #endif
     }
     
+    public func signUpStart() {
+        #if !DEBUG
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "signup-start",
+                                                                   value: 0).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+        }
+        #endif
+    }
+
+    public func socialSignUpStart(platform: String) {
+        #if !DEBUG
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "social-signup-start",
+                                                                   value: platform == "google" ? 1 : 2).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+        }
+        #endif
+    }
+    
     public func userLoggedInSuccessfully(phone: String) {
         #if !DEBUG
         if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
@@ -380,7 +404,7 @@ public class AnalyticsManager: NSObject {
         if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "user",
                                                                    action: "logout",
-                                                                   label: nil,
+                                                                   label: "logout",
                                                                    value: nil).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
         }
@@ -434,6 +458,14 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "signup-complete",
+                                                                   value: 0).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+        }
+        
         if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "signup",
                                           properties : ["username" : phone])
@@ -484,6 +516,14 @@ public class AnalyticsManager: NSObject {
             tracker.send(eventDictionary)
         }
         
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "social-signup-complete",
+                                                                   value: platform == "google" ? 1 : 2).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+        }
+        
         if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "signup_otp_gen",
                                           properties : ["username" : phone,
@@ -494,6 +534,13 @@ public class AnalyticsManager: NSObject {
     
     public func socialLoginUserPhoneVerified(phone: String, platform: String) {
         #if !DEBUG
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "social-signup-complete",
+                                                                   value: platform == "google" ? 1 : 2).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+        }
         if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             Mixpanel.mainInstance().track(event: "signup",
                                           properties : ["username" : phone,
@@ -571,6 +618,14 @@ public class AnalyticsManager: NSObject {
     
     public func itemSearch(query: String) {
         #if !DEBUG
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
+                                                                   action: nil,
+                                                                   label: "item-search",
+                                                                   value: 0).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+        }
+
         if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
             var properties: Properties = ["query" : query]
             
@@ -598,6 +653,14 @@ public class AnalyticsManager: NSObject {
     
     @objc public func userInitiatedWalletReloadWithUPServer(amount: NSDecimalNumber) {
         #if !DEBUG
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "reload-init",
+                                                                   value: 0).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+        }
+
         if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "prepaid",
                                                                    action: "reload",
@@ -961,9 +1024,15 @@ public class AnalyticsManager: NSObject {
         #endif
     }
     
-    public func orderPlaced(orderId: String, phone: String, orderPaymentDataModel: OrderPaymentDataModel) {
+    public func orderPlaced(orderId: String, phone: String, orderPaymentDataModel: OrderPaymentDataModel, isReorder: Bool) {
         #if !DEBUG
-        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
+        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker, isReorder {
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
+                                                                   action: nil,
+                                                                   label: "re-order",
+                                                                   value: 0).build() as! [AnyHashable : Any]
+            tracker.send(eventDictionary)
+        } else if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
             
             let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
                                                                    action: "purchase",
@@ -1034,7 +1103,7 @@ public class AnalyticsManager: NSObject {
                 properties["order_discount"] = NSDecimalNumber(decimal: orderPaymentDataModel.discountPrice!).doubleValue
             }
             
-            if CartManager.shared.isReorder {
+            if isReorder {
                 Mixpanel.mainInstance().track(event: "reorder",
                                               properties : properties)
             } else {

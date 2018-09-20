@@ -117,6 +117,8 @@ extension WalletDataModel {
     public func initiateWalletReload(amount: Decimal, paymentOption: PaymentOption = .paymentGateway) {
         transactionId = nil
 
+        AnalyticsManager.shared.userInitiatedWalletReloadWithUPServer(amount: NSDecimalNumber(decimal: amount))
+
         dataModelDelegate?.initiatingWalletReload(isProcessing: true)
         let dataTask: URLSessionDataTask? = APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption,
                                                                purpose: .reload,

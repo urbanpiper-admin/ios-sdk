@@ -406,6 +406,7 @@ extension AppUserDataModel {
     public func createAccount(user: User,
                        password: String,
                        completion: @escaping CompletionHandler<CardAPIResponse>) {
+        AnalyticsManager.shared.signUpStart()
         let dataTask: URLSessionDataTask = APIManager.shared.createUser(user: user,
                                      password: password,
                                      completion: { (cardAPIResponse) in

@@ -537,7 +537,7 @@ extension OrderPaymentDataModel {
     
 
     public func orderPlacedTracking(orderId: String, phone: String) {
-        AnalyticsManager.shared.orderPlaced(orderId: orderId, phone: phone, orderPaymentDataModel: self)
+        AnalyticsManager.shared.orderPlaced(orderId: orderId, phone: phone, orderPaymentDataModel: self, isReorder: CartManager.shared.isReorder)
     }
 
 }
