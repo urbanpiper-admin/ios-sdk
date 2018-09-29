@@ -186,6 +186,20 @@
 	</dict>
 	<dict>
 		<key>tag</key>
+		<string>Coupons_tab</string>
+		<key>tabSelectedIcon</key>
+		<string>nav_offer</string>
+		<key>url</key>
+		<string></string>
+		<key>tabImage</key>
+		<string>nav_offer</string>
+		<key>title</key>
+		<string>Offers</string>
+		<key>loginMandatory</key>
+		<false/>
+	</dict>
+	<dict>
+		<key>tag</key>
 		<string>Presidente_reward_tab</string>
 		<key>tabSelectedIcon</key>
 		<string>nav_reward</string>

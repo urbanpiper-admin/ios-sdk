@@ -38,6 +38,9 @@ public class Store : NSObject, NSCoding{
     public var distance: Double!
     public var merchantRefId: String!
 
+    @objc public var locationID: NSNumber {
+        return NSNumber(integerLiteral: bizLocationId)
+    }
 
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
