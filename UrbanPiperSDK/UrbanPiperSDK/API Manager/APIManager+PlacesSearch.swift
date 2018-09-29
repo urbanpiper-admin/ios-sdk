@@ -57,7 +57,7 @@ extension APIManager {
     
     @objc public func reverseGeoCode(lat: Double,
                                      lng: Double,
-                                       completion: APICompletion<PlaceDetailsResponse>?,
+                                       completion: APICompletion<Address>?,
                                        failure: APIFailure?) -> URLSessionDataTask {
         let placesAPIKey: String = AppConfigManager.shared.firRemoteConfigDefaults.googlePlacesApiKey!
         
@@ -77,9 +77,14 @@ extension APIManager {
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
                     let placeDetailsResponse: PlaceDetailsResponse = PlaceDetailsResponse(fromDictionary: dictionary)
+                    var address: Address?
+                    
+                    if placeDetailsResponse.result != nil {
+                        address = Address(placeDetailsResponse: placeDetailsResponse)
+                    }
                     
                     DispatchQueue.main.async {
-                        completionClosure(placeDetailsResponse)
+                        completionClosure(address)
                     }
                     return
                 }

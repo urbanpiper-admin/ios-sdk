@@ -33,11 +33,11 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
     static let maxDistanceBetweenLocations: CLLocationDistance = CLLocationDistance(200)
 
     @objc static let locationUpdateTimeInterval: Int = {
-        #if DEBUG
-            return 1
-        #else
-            return 10
-        #endif
+       #if DEBUG
+	   		return 1
+       #else
+       		return 10
+       #endif
     }()
     
     @objc var nextLocationUpdateDate: Date?
@@ -168,9 +168,8 @@ extension DeliveryLocationDataModel {
         dataModelDelegate?.update(location, nil, nil)
 
         let modelDelegate = dataModelDelegate
-        let dataTask = APIManager.shared.reverseGeoCode(lat: location.coordinate.latitude, lng: location.coordinate.longitude, completion: { [weak self] (placeDetailsResponse) in
-            if placeDetailsResponse?.result != nil {
-                let deliveryAddress = Address(placeDetailsResponse: placeDetailsResponse!)
+        let dataTask = APIManager.shared.reverseGeoCode(lat: location.coordinate.latitude, lng: location.coordinate.longitude, completion: { [weak self] (address) in
+            if let deliveryAddress = address {
                 self?.deliveryAddress = deliveryAddress
                 modelDelegate?.update(location, deliveryAddress, nil)
             } else {

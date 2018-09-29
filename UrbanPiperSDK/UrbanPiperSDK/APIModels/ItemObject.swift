@@ -37,8 +37,14 @@ public class ItemObject : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	@objc public init(fromDictionary dictionary:  [String:Any]){
-		if let categoryData: [String:Any] = dictionary["category"] as? [String:Any]{
+    @objc init(fromDictionary dictionary: [String:Any]){
+        
+        super.init()
+        update(fromDictionary: dictionary)
+    }
+
+    func update(fromDictionary dictionary: [String:Any]){
+    if let categoryData: [String:Any] = dictionary["category"] as? [String:Any]{
 			category = ItemCategory(fromDictionary: categoryData)
         } else if let categoryData: [String:Any] = dictionary["item_category"] as? [String:Any]{
             category = ItemCategory(fromDictionary: categoryData)

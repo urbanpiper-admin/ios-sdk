@@ -99,7 +99,29 @@ public class Address : NSObject, NSCoding {
         }
         
         if subLocalityArray.count < 3 {
-            subLocality = placeDetailsResponse.result.formattedAddress
+            let formattedAddress = placeDetailsResponse.result?.formattedAddress ?? ""
+            var addressComps = formattedAddress.components(separatedBy: ", ")
+            if let neighborhood = subLocalityLevel2, let index = addressComps.index(of: neighborhood) {
+                addressComps.removeFirst(index)
+                let addressString = addressComps.joined(separator: ", ")
+                let stringWithoutDigit = (addressString.components(separatedBy: NSCharacterSet.decimalDigits).joined(separator: ""))
+                subLocality = stringWithoutDigit.replacingOccurrences(of: " ,", with: ",")
+            } else if let area = subLocalityLevel1, let index = addressComps.index(of: area) {
+                addressComps.removeFirst(index)
+                let addressString = addressComps.joined(separator: ", ")
+                let stringWithoutDigit = (addressString.components(separatedBy: NSCharacterSet.decimalDigits).joined(separator: ""))
+                subLocality = stringWithoutDigit.replacingOccurrences(of: " ,", with: ",")
+            } else if let cityName = city, var index = addressComps.index(of: cityName) {
+                if index > 2 {
+                    index = index - 1
+                }
+                addressComps.removeFirst(index)
+                let addressString = addressComps.joined(separator: ", ")
+                let stringWithoutDigit = (addressString.components(separatedBy: NSCharacterSet.decimalDigits).joined(separator: ""))
+                subLocality = stringWithoutDigit.replacingOccurrences(of: " ,", with: ",")
+            } else {
+                subLocality = placeDetailsResponse.result.formattedAddress
+            }
         } else {
             subLocality = subLocalityArray.joined(separator: ", ")
         }

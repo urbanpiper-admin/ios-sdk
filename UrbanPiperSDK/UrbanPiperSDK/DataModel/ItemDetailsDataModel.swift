@@ -100,7 +100,6 @@ extension ItemDetailsDataModel {
     }
 
     fileprivate func fetchItemDetails(itemId: Int)  {
-
         let dataTask: URLSessionDataTask = APIManager.shared.fetchItemDetails(itemId: itemId,
                                                           locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
                                                           completion: { [weak self] (data) in
@@ -108,7 +107,7 @@ extension ItemDetailsDataModel {
                 self?.dataModelDelegate?.refreshItemDetailsUI()
             }
             guard let response = data else { return }
-            self?.item = response
+            self?.item?.update(fromDictionary: response.toDictionary())
         }, failure: { [weak self] (upError) in
             defer {
                 self?.dataModelDelegate?.handleItemDetails(error: upError)

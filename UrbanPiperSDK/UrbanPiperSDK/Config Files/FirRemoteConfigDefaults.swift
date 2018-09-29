@@ -59,6 +59,7 @@ import FirebaseRemoteConfig
 	public private(set) var enableCaching : Bool!
     public private(set) var showBanners : Bool!
     public private(set) var showFeaturedItems : Bool!
+    public private(set) var enableFilterSort : Bool!
 	public private(set) var enableItemDirectLoading : Bool!
 	public private(set) var enablePostOrderFeedback : Bool!
 	public private(set) var enableSocialLogin : Bool!
@@ -194,6 +195,7 @@ import FirebaseRemoteConfig
 		enableCaching = remoteConfig["enable_caching"].boolValue
         showBanners = remoteConfig["show_banners"].boolValue
         showFeaturedItems = remoteConfig["show_featured_items"].boolValue
+        enableFilterSort = remoteConfig["enable_filter_sort"].boolValue
 		enableItemDirectLoading = remoteConfig["enable_item_direct_loading"].boolValue
         #if DEBUG
         enableItemDirectLoading = false

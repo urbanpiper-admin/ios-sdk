@@ -34,7 +34,7 @@ import Foundation
     #elseif RELEASE
     public static let baseUrl: String = "https://api.urbanpiper.com"
     #else
-    public static let baseUrl: String = "https://biz.urbanpiper.com"
+    public static let baseUrl: String = "https://api.urbanpiper.com"
     #endif
 
     public typealias APISuccess = () -> Void
