@@ -103,7 +103,7 @@ public class OrderDeliveryAddress: NSObject, NSCoding {
 //        administrativeArea = aDecoder.decodeObject(forKey: "administrativeArea") as? String
         postalCode = aDecoder.decodeObject(forKey: "postalCode") as? String ?? ""
 //        country = aDecoder.decodeObject(forKey: "country") as? String ?? ""
-        lines = aDecoder.decodeObject(forKey: "lines") as! [String?]
+        lines = (aDecoder.decodeObject(forKey: "lines") as! [String?])
     }
     
 }
