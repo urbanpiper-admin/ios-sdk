@@ -325,9 +325,11 @@ extension AppUserDataModel {
 extension AppUserDataModel {
     
     public func registerForFCMMessaging() {
-        guard let fcmToken = InstanceID.instanceID().token() else { return }
-        guard let dataTask: URLSessionDataTask = APIManager.shared.registerForFCMMessaging(token: fcmToken, completion: nil, failure: nil) else { return }
-        addOrCancelDataTask(dataTask: dataTask)
+        InstanceID.instanceID().instanceID(handler: { (result, error) in
+            guard let fcmToken = result?.token else { return }
+            guard let dataTask: URLSessionDataTask = APIManager.shared.registerForFCMMessaging(token: fcmToken, completion: nil, failure: nil) else { return }
+            self.addOrCancelDataTask(dataTask: dataTask)
+        })
     }
     
     public func unRegisterForFCMMessaging() {
