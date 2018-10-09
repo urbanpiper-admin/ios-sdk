@@ -76,6 +76,7 @@ extension ItemOptionGroup {
         if let optionsArray: [[String:Any]] = dictionary["options"] as? [[String:Any]]{
             for dic in optionsArray{
                 let value = ItemOption.init(historicalOrderItemOptionGroupOption: dic)
+                value.price = Decimal.zero
                 value.quantity = isDefault ? 0 : 1
                 options.append(value)
             }
@@ -88,9 +89,9 @@ extension ItemOptionGroup {
     
     public func equitableCheckDictionary() -> [String: Any] {
         var dictionary: [String : Any] = [String:Any]()
-        if isDefault != nil{
-            dictionary["is_default"] = isDefault
-        }
+//        if isDefault != nil{
+//            dictionary["is_default"] = isDefault
+//        }
         if options != nil{
             var dictionaryElements: [[String:Any]] = [[String:Any]]()
             for optionsElement in options {

@@ -115,9 +115,6 @@ extension ItemObject: NSCopying {
         }
         
         quantity = dictionary["quantity"] as? Int ?? 0
-        
-        guard isOptionGroupItem else { return }
-        itemPrice = 0
     }
 
 }
@@ -130,18 +127,18 @@ extension ItemObject {
 
     public func equitableCheckDictionary() -> [String: Any] {
         var dictionary: [String : Any] = [String:Any]()
-        if category != nil{
-            dictionary["category"] = category.toDictionary()
-        }
-        if currentStock != nil{
-            dictionary["current_stock"] = currentStock
-        }
+//        if category != nil{
+//            dictionary["category"] = category.equitableCheckDictionary()
+//        }
+//        if currentStock != nil{
+//            dictionary["current_stock"] = currentStock
+//        }
         if id != nil{
             dictionary["id"] = id
         }
-        if itemTitle != nil{
-            dictionary["item_title"] = itemTitle
-        }
+//        if itemTitle != nil{
+//            dictionary["item_title"] = itemTitle
+//        }
         if optionGroups != nil{
             var dictionaryElements: [[String:Any]] = [[String:Any]]()
             for optionGroupsElement in optionGroups {

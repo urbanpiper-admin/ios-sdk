@@ -121,19 +121,19 @@ extension ItemOption {
     
     public func equitableCheckDictionary() -> [String: Any] {
         var dictionary: [String : Any] = [String:Any]()
-        if currentStock != nil{
-            dictionary["current_stock"] = currentStock
-        }
+//        if currentStock != nil{
+//            dictionary["current_stock"] = currentStock
+//        }
         if id != nil{
             dictionary["id"] = id
         }
-        if price != nil{
-            dictionary["price"] = price
-        }
-        if title != nil{
-            dictionary["title"] = title
-        }
-        dictionary["quantity"] = quantity
+//        if price != nil{
+//            dictionary["price"] = price
+//        }
+//        if title != nil{
+//            dictionary["title"] = title
+//        }
+//        dictionary["quantity"] = quantity
         if nestedOptionGroups != nil{
             var dictionaryElements: [[String:Any]] = [[String:Any]]()
             for nestedOptionGroupsElement in nestedOptionGroups {

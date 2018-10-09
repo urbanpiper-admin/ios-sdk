@@ -41,6 +41,20 @@ public class ItemCategory : NSObject{
         }
         return dictionary
     }
+    
+    func equitableCheckDictionary() -> [String: Any] {
+        var dictionary: [String:Any] = [String:Any]()
+        if id != nil{
+            dictionary["id"] = id
+        }
+//        if name != nil{
+//            dictionary["name"] = name
+//        }
+//        if sortOrder != nil{
+//            dictionary["sort_order"] = sortOrder
+//        }
+        return dictionary
+    }
 
 //    /**
 //    * NSCoding required initializer.
