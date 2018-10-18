@@ -93,35 +93,29 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
             if let store = storeResponse.store {
                 if let previousStoreId = oldValue?.store?.bizLocationId, let currentStoreId = store.bizLocationId, previousStoreId != currentStoreId {
                     
-                    if let deliverAddress = DeliveryLocationDataModel.shared.deliveryAddress?.fullAddress {
+                    if (DeliveryLocationDataModel.shared.deliveryAddress?.fullAddress) != nil {
                         if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                            AnalyticsManager.shared.nearestStoreFound(lat: coordinate.latitude,
-                                                                      lng: coordinate.longitude,
-                                                                      storeName: store.name)
+                            AnalyticsManager.shared.track(event: .nearestStoreFound(lat: coordinate.latitude, lng: coordinate.longitude, storeName: store.name))
                         }
                         
                         if store.closingDay || store.isStoreClosed {
                             if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                                AnalyticsManager.shared.nearestStoreClosed(lat: coordinate.latitude,
-                                                                           lng: coordinate.longitude,
-                                                                           deliveryAddress: deliverAddress,
-                                                                           storeName: store.name)
+                                AnalyticsManager.shared.track(event: .nearestStoreClosed(lat: coordinate.latitude, lng: coordinate.longitude, storeName: store.name))
                             }
                             
                         } else if store.temporarilyClosed {
                             if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                                AnalyticsManager.shared.nearestStoreTemporarilyClosed(lat: coordinate.latitude,
-                                                                                      lng: coordinate.longitude,
-                                                                                      deliveryAddress: deliverAddress,
-                                                                                      storeName: store.name)
+                                AnalyticsManager.shared.track(event: .nearestStoreClosedTemp(lat: coordinate.latitude,
+                                                                                             lng: coordinate.longitude,
+                                                                                             storeName: store.name))
                             }
                         }
                     }
                     CartManager.shared.clearCart()
                 }
             } else {
-                if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                    AnalyticsManager.shared.noStoresNearBy(lat: coordinate.latitude, lng: coordinate.longitude)
+                if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate, let deliveryAddress = DeliveryLocationDataModel.shared.deliveryAddress?.fullAddress {
+                    AnalyticsManager.shared.track(event: .noStoreNearby(lat: coordinate.latitude, lng: coordinate.longitude, addressString: deliveryAddress))
                 }
                 CartManager.shared.clearCart()
             }
@@ -265,6 +259,10 @@ extension OrderingStoreDataModel {
             _ = observers.map { $0.value?.update(nil, nil, nil, false) }
             completion?(nil, nil)
             return
+        }
+        
+        if completion == nil {
+            AnalyticsManager.shared.track(event: .addressSelected)
         }
         
         fetchNearestStore(location: loc)

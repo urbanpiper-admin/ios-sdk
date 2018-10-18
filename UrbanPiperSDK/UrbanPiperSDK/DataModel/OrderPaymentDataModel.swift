@@ -91,8 +91,9 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
             
             if applyCouponResponse != nil && couponCode != nil {
                 let code = couponCode!
+                let isSuggested = isSuggestedCoupon
                 DispatchQueue.main.async { [weak self] in
-                    self?.applyCoupon(code: code)
+                    self?.applyCoupon(code: code, isSuggested: isSuggested, preSelected: code == CartManager.shared.couponCodeToApply)
                     self?.couponCode = nil
                     self?.applyCouponResponse = nil
                 }
@@ -119,6 +120,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
 //    }
 
     public var couponCode: String?
+    public var isSuggestedCoupon: Bool = false
     public var applyCouponResponse: Order?
     
     public var applyWalletCredits: Bool = AppConfigManager.shared.firRemoteConfigDefaults.applyWalletCredits
@@ -341,16 +343,20 @@ extension OrderPaymentDataModel {
                                                          deliveryOption: selectedDeliveryOption.rawValue,
                                                          items: CartManager.shared.cartItems,
                                                          orderTotal: itemsTotalPrice,
-                                                         completion: { [weak self] (orderPreProcessingResponse) in
-            defer {
-                self?.dataModelDelegate?.refreshPreProcessingUI(false)
-            }
-            self?.orderPreProcessingResponse = orderPreProcessingResponse
+                                                         completion:
+            { [weak self] (orderPreProcessingResponse) in
+                defer {
+                    self?.dataModelDelegate?.refreshPreProcessingUI(false)
+                }
+                if let order = orderPreProcessingResponse?.order, self?.orderPreProcessingResponse == nil {
+                    AnalyticsManager.shared.track(event: .checkoutInit(payableAmt: order.payableAmount, walletCreditsApplied: order.walletCreditApplicable ?? false))
+                }
+                self?.orderPreProcessingResponse = orderPreProcessingResponse
             }, failure: { [weak self] (upError) in
-            defer {
-                self?.dataModelDelegate?.refreshPreProcessingUI(false)
-                self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: true, error: upError)
-            }
+                defer {
+                    self?.dataModelDelegate?.refreshPreProcessingUI(false)
+                    self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: true, error: upError)
+                }
         })
         addOrCancelDataTask(dataTask: dataTask)
     }
@@ -371,7 +377,7 @@ extension OrderPaymentDataModel {
         addOrCancelDataTask(dataTask: dataTask)
     }
     
-    public func applyCoupon(code: String) {
+    public func applyCoupon(code: String, isSuggested: Bool, preSelected: Bool) {
         guard code.count > 0 else { return }
         let orderDict: [String: Any] = ["biz_location_id": OrderingStoreDataModel.shared.orderingStore!.bizLocationId,
                          "order_type": selectedDeliveryOption.rawValue,
@@ -394,16 +400,18 @@ extension OrderPaymentDataModel {
 
                     self?.applyCouponResponse = applyCouponResponse
                     self?.couponCode = code
+                    self?.isSuggestedCoupon = isSuggested
                     self?.dataModelDelegate?.refreshApplyCouponUI(false, code: code)
                     
-                    AnalyticsManager.shared.couponApplied(discount: discount.value!, couponCode: code)
+                    AnalyticsManager.shared.track(event: .couponSuccess(discount: discount.value!, couponCode: code, isSuggested: isSuggested, preSelected: preSelected))
                 } else {
 //                    if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon == code {
 //                        self?.globalCouponApplied = false
 //                    }
                     let upApiError = UPAPIError(error: nil, data: nil, responseObject: applyCouponResponse?.discount.toDictionary())
                     self?.dataModelDelegate?.handleApplyCoupon(code: code, error: upApiError)
-                    AnalyticsManager.shared.couponApplyFailed(couponCode: code)
+                    AnalyticsManager.shared.track(event: .couponFailed(discount: Decimal.zero, couponCode: code, isSuggested: isSuggested, preSelected: preSelected))
+                    
                 }
 
                 }, failure: { [weak self] (upError) in
@@ -414,7 +422,7 @@ extension OrderPaymentDataModel {
 //                    if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon == code {
 //                        self?.globalCouponApplied = false
 //                    }
-                    AnalyticsManager.shared.couponApplyFailed(couponCode: code)
+                    AnalyticsManager.shared.track(event: .couponFailed(discount: Decimal.zero, couponCode: code, isSuggested: isSuggested, preSelected: preSelected))
                 })
         addOrCancelDataTask(dataTask: dataTask)
     }
@@ -492,14 +500,10 @@ extension OrderPaymentDataModel {
                                         } else if paymentOption == .simpl {
                                             self?.dataModelDelegate?.initiateSimplPayment(orderId: orderIdString, phone: phone, transactionId: onlinePaymentInitResponse!.transactionId)
                                         } else {
-                                            if paymentOption == .prepaid {
-                                                AnalyticsManager.shared.orderPlacedUsingWallet(amount: NSDecimalNumber(decimal: self!.itemsTotalPrice))
-                                            }
                                             self?.orderPlacedTracking(orderId: orderIdString, phone: phone)
                                             self?.dataModelDelegate?.showOrderConfirmationAlert(orderId: orderIdString)
                                         }
             }, failure: { [weak self] (error) in
-                AnalyticsManager.shared.orderPlacementFailure(amount: self!.itemsTotalPrice)
                 self?.dataModelDelegate?.placingOrder(isProcessing: false)
                 self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
                 
@@ -537,7 +541,9 @@ extension OrderPaymentDataModel {
     
 
     public func orderPlacedTracking(orderId: String, phone: String) {
-        AnalyticsManager.shared.orderPlaced(orderId: orderId, phone: phone, orderPaymentDataModel: self, isReorder: CartManager.shared.isReorder)
+        AnalyticsManager.shared.track(event: .purchaseCompleted(orderID: orderId,
+                                                                orderPaymentDataModel: self,
+                                                                isReorder: CartManager.shared.isReorder))
     }
 
 }

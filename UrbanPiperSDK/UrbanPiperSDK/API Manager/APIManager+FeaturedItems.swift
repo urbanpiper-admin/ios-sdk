@@ -49,7 +49,11 @@ extension APIManager {
                 guard let completionClosure = completion else { return }
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let categoryItemsResponse: CategoryItemsResponse = CategoryItemsResponse(fromDictionary: dictionary)
+                    let isUpsoldItems = itemIds.count > 1
+                    let isRecommendedItems = itemIds.count == 1 && itemIds.last! == 0
+                    let categoryItemsResponse: CategoryItemsResponse = CategoryItemsResponse(fromDictionary: dictionary,
+                                                                                             isUpsoldItems: isUpsoldItems,
+                                                                                             isRecommendedItems: isRecommendedItems)
                     
                     DispatchQueue.main.async {
                         completionClosure(categoryItemsResponse)

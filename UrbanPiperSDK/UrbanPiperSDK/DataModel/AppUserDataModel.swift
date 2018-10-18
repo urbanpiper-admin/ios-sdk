@@ -174,6 +174,8 @@ public class AppUserDataModel: UrbanPiperDataModel {
     }
     
     @objc public func reset() {
+        AnalyticsManager.shared.track(event: .logout(phone: AppUserDataModel.shared.validAppUserData!.phone))
+
         CartManager.shared.clearCart()
         CartManager.shared.lastOrder = nil
         CartManager.shared.couponCodeToApply = nil
@@ -205,8 +207,6 @@ public class AppUserDataModel: UrbanPiperDataModel {
       
         UserDefaults.standard.removeObject(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey)
         UserDefaults.standard.removeObject(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
-
-        AnalyticsManager.shared.userLoggedOut()
     }
     
 }
@@ -258,6 +258,7 @@ extension AppUserDataModel {
                                          anniversary: anniversary,
                                          birthday: birthday,
                                          completion: { [weak self] (response) in
+                                            AnalyticsManager.shared.track(event: .profileUpdated(phone: phone, pwdChanged: false))
                                             guard let dataModel = self, let user = dataModel.appUserData, response != nil else { return }
                                             dataModel.observers = dataModel.observers.filter { $0.value != nil }
                                             let _ = dataModel.observers.map { $0.value?.refreshUpdateAppUserUI?(isRefreshing: false) }
@@ -295,7 +296,7 @@ extension AppUserDataModel {
                                          oldPassword: oldPassword,
                                          newPassword: newPassword,
                                          completion: { [weak self] (response) in
-                                            
+                                            AnalyticsManager.shared.track(event: .profileUpdated(phone: phone, pwdChanged: true))
                                             guard let dataModel = self, let user = dataModel.appUserData else { return }
                                             dataModel.observers = dataModel.observers.filter { $0.value != nil }
                                             let _ = dataModel.observers.map { $0.value?.refreshUpdatePasswordUI?(isRefreshing: false) }
@@ -354,6 +355,9 @@ extension AppUserDataModel {
                                                 appUserData.message = UserStatus.valid.rawValue
                                                 if appUserData.isValid {
                                                     AppUserDataModel.shared.appUserData = appUserData
+                                                    AnalyticsManager.shared.track(event: .loginSuccess(phone: user.phone))
+                                                } else {
+                                                    AnalyticsManager.shared.track(event: .loginFailed(phone: user.phone))
                                                 }
                                                 completion(appUserData, nil)
         }) { (error) in
@@ -387,6 +391,7 @@ extension AppUserDataModel {
                        password: String,
                        confirmPassword: String,
                        completion: @escaping (Bool, Error?)-> Void) {
+        AnalyticsManager.shared.track(event: .passwordReset(phone: phoneNumber))
         let dataTask: URLSessionDataTask = APIManager.shared.resetPassword(countryCode: countryCode,
                                         phoneNumber: phoneNumber,
                                         otp: otp,
@@ -408,7 +413,6 @@ extension AppUserDataModel {
     public func createAccount(user: User,
                        password: String,
                        completion: @escaping CompletionHandler<CardAPIResponse>) {
-        AnalyticsManager.shared.signUpStart()
         let dataTask: URLSessionDataTask = APIManager.shared.createUser(user: user,
                                      password: password,
                                      completion: { (cardAPIResponse) in
@@ -416,6 +420,7 @@ extension AppUserDataModel {
                                         user.password = password
                                         if user.isValid {
                                             AppUserDataModel.shared.appUserData = user
+                                            AnalyticsManager.shared.track(event: .signupComplete(phone: user.phone))
                                         }
 
                                         completion(cardAPIResponse, nil)
@@ -434,6 +439,7 @@ extension AppUserDataModel {
 extension AppUserDataModel {
     
     public func registerNewSocialAuthUser(user: User!, completion: @escaping CompletionHandler<User>) {
+        AnalyticsManager.shared.track(event: .socialAuthSignupStart(phone: user.phone, platform: user.provider!.rawValue))
         let dataTask: URLSessionDataTask = APIManager.shared.createSocialUser(user: user, completion: { (cardAPIResponse) in
             user?.message = UserStatus.registrationSuccessfullVerifyOTP.rawValue
             completion(user, nil)
@@ -450,10 +456,11 @@ extension AppUserDataModel {
                                                         if let status = appUser?.userStatus, status == .registrationRequired {
                                                             self?.registerNewSocialAuthUser(user: user, completion: completion)
                                                         } else {
-                                                            if let success = appUser?.success, success {
+                                                            if let user = appUser, let success = user.success, success {
                                                                 appUser?.message = UserStatus.valid.rawValue
                                                                 if let userVal = appUser, userVal.isValid {
                                                                     AppUserDataModel.shared.appUserData = userVal
+                                                                    AnalyticsManager.shared.track(event: .socialLoginSuccess(phone: user.phone, platform: user.provider!.rawValue))
                                                                 }
                                                             }
                                                             completion(appUser, nil)
@@ -526,6 +533,7 @@ extension AppUserDataModel {
     
     public func resendOTP(user: User,
                    completion: @escaping CompletionHandler<CardAPIResponse>) {
+        AnalyticsManager.shared.track(event: .resendOTP(phone: user.phone))
         let dataTask: URLSessionDataTask = APIManager.shared.resendOTP(user: user,
                                                    completion: { (cardAPIResponse) in
                                                     completion(cardAPIResponse, nil)

@@ -81,36 +81,23 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
             
             if let store = OrderingStoreDataModel.shared.nearestStoreResponse?.store {
                 if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                    AnalyticsManager.shared.nearestStoreFound(lat: coordinate.latitude,
-                                                              lng: coordinate.longitude,
-                                                              storeName: store.name)
+                    AnalyticsManager.shared.track(event: .nearestStoreFound(lat: coordinate.latitude, lng: coordinate.longitude, storeName: store.name))
                 }
                 
-                if store.closingDay {
+                if store.closingDay || store.isStoreClosed {
                     if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                        AnalyticsManager.shared.nearestStoreClosedToday(lat: coordinate.latitude,
-                                                                        lng: coordinate.longitude,
-                                                                        deliveryAddress: address.fullAddress ?? "",
-                                                                        storeName: store.name)
-                    }
-                } else if store.isStoreClosed {
-                    if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                        AnalyticsManager.shared.nearestStoreClosed(lat: coordinate.latitude,
-                                                                   lng: coordinate.longitude,
-                                                                   deliveryAddress: address.fullAddress ?? "",
-                                                                   storeName: store.name)
+                        AnalyticsManager.shared.track(event: .nearestStoreClosed(lat: coordinate.latitude, lng: coordinate.longitude, storeName: store.name))
                     }
                 } else if store.temporarilyClosed {
                     if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                        AnalyticsManager.shared.nearestStoreTemporarilyClosed(lat: coordinate.latitude,
+                        AnalyticsManager.shared.track(event: .nearestStoreClosedTemp(lat: coordinate.latitude,
                                                                               lng: coordinate.longitude,
-                                                                              deliveryAddress: address.fullAddress ?? "",
-                                                                              storeName: store.name)
+                                                                              storeName: store.name))
                     }
                 }
             } else {
                 if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                    AnalyticsManager.shared.noStoresNearBy(lat: coordinate.latitude, lng: coordinate.longitude)
+                    AnalyticsManager.shared.track(event: .noStoreNearby(lat: coordinate.latitude, lng: coordinate.longitude, addressString: address.addressString!))
                 }
             }
 

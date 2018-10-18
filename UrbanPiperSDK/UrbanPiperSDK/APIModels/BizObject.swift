@@ -24,12 +24,12 @@ public class BizObject : NSObject, NSCoding{
 	public var signupDt : Int!
 	public var totalOrderValue : Float!
     @objc public var lastUpdatedDateString: String?
-    public var lastOrderDateString: String {
+    public var lastOrderDateString: String? {
         if let val = lastOrderDt {
             let date: Date = Date(timeIntervalSince1970: TimeInterval(val / 1000))
             return DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .short)
         }
-        return ""
+        return nil
     }
 
 

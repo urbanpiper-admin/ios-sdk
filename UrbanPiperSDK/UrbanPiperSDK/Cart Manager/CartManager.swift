@@ -98,8 +98,14 @@ extension CartManager {
 
 extension CartManager {
 
-    @objc public func add(itemObject: ItemObject) {
-        AnalyticsManager.shared.itemAddedToCart(itemObject: itemObject)
+    @objc public func add(itemObject: ItemObject, fromDetailScreen: Bool, fromCheckoutScreen: Bool) {
+        if cartCount == 0 {
+            AnalyticsManager.shared.track(event: .cartInit)
+        }
+
+        AnalyticsManager.shared.track(event: .addToCart(item: itemObject,
+                                                        checkoutPageItemAdd: fromCheckoutScreen,
+                                                        itemDetailsPageItemAdd: fromDetailScreen))
         
         if let item = cartItems.filter({ $0 == itemObject }).last {
             if item.isItemQuantityAvailable(quantity: itemObject.quantity) {
@@ -119,7 +125,7 @@ extension CartManager {
     }
 
     public func remove(itemObject: ItemObject) {
-        AnalyticsManager.shared.itemRemovedFromCart(itemObject: itemObject)
+        AnalyticsManager.shared.track(event: .removeFromCart(item: itemObject))
         
         guard let item = cartItems.filter({ $0.id == itemObject.id }).last else { return }
         item.quantity -= itemObject.quantity

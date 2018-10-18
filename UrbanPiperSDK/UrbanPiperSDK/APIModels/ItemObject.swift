@@ -33,7 +33,10 @@ public class ItemObject : NSObject{
 	public var tags : [ItemTag]!
 	public var vatRate : Float!
     @objc public var quantity: Int = 0
-
+    public var isRecommendedItem: Bool = false
+    public var isUpsoldItem: Bool = false
+    public var isSearchItem: Bool = false
+    
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */

@@ -84,8 +84,10 @@ extension ItemDetailsDataModel {
                                                             if let likeCount = self?.item?.likes {
                                                                 if like {
                                                                     self?.item?.likes = likeCount + 1
+                                                                    AnalyticsManager.shared.track(event: .itemLiked(itemTitle: itemDetails.itemTitle))
                                                                 } else {
                                                                     self?.item?.likes = likeCount - 1
+                                                                    AnalyticsManager.shared.track(event: .itemUnliked(itemTitle: itemDetails.itemTitle))
                                                                 }
                                                             }
                                                             self?.fetchItemLikes()

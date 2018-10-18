@@ -176,11 +176,7 @@ extension APIManager {
         urlRequest.httpMethod = "POST"
         
         if let params = referralParams {
-            urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
-            
-            if let link: String = params["code_link"] as? String, let val: String = params["channel"] as? String {
-                AnalyticsManager.shared.referralSentDetails(link: link, channel: val)
-            }
+            urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])            
         }
 
         let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
@@ -250,7 +246,7 @@ extension APIManager {
                           password: String,
                           completion: APICompletion<CardAPIResponse>?,
                           failure: APIFailure?) -> URLSessionDataTask {
-        
+        AnalyticsManager.shared.track(event: .signupStart(phone: user.phone))
         let urlString: String = "\(APIManager.cardBaseUrl)/?customer_name=\(user.firstName!)&customer_phone=\(user.phoneNumberWithCountryCode!)&email=\(user.email!)&password=\(password)&channel=\(APIManager.channel)"
         
         return card(urlString: urlString, referralParams: referralDict(), completion: completion, failure: failure)
@@ -284,7 +280,6 @@ extension APIManager {
     @objc public func resendOTP(user: User,
                          completion: APICompletion<CardAPIResponse>?,
                          failure: APIFailure?) -> URLSessionDataTask {
-        AnalyticsManager.shared.resendOTP()
         let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(user.phoneNumberWithCountryCode!)&pin=resendotp"
         
         return card(urlString: urlString, completion: completion, failure: failure)
