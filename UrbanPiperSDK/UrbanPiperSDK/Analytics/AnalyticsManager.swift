@@ -852,14 +852,14 @@ public class AnalyticsManager: NSObject {
 //        #endif
 //    }
 //    
-    @objc public func newAddressAdded() {
-        #if !DEBUG
-        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
-            Mixpanel.mainInstance().track(event: "add_address")
-        }
-        #endif
-    }
-    
+//    @objc public func newAddressAdded() {
+//        #if !DEBUG
+//        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
+//            Mixpanel.mainInstance().track(event: "add_address")
+//        }
+//        #endif
+//    }
+//    
 //    public func referralSentDetails(link: String, channel: String) {
 //        #if !DEBUG
 //        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
