@@ -20,7 +20,6 @@ public enum AnalyticsEvent {
     case noStoreNearby(lat: CLLocationDegrees, lng: CLLocationDegrees, addressString: String);
     case nearestStoreClosedTemp(lat: CLLocationDegrees, lng: CLLocationDegrees, storeName: String);
     case nearestStoreClosed(lat: CLLocationDegrees, lng: CLLocationDegrees, storeName: String);
-//    case nearestStoreClosedToday(lat: CLLocationDegrees, lng: CLLocationDegrees, storeName: String);
     case itemSearch(query: String, storeName: String?, results: [String: Any]);
     case couponSuccess(discount: Decimal, couponCode: String, isSuggested: Bool, preSelected: Bool);
     case couponFailed(discount: Decimal, couponCode: String, isSuggested: Bool, preSelected: Bool);
