@@ -174,7 +174,9 @@ public class AppUserDataModel: UrbanPiperDataModel {
     }
     
     @objc public func reset() {
-        AnalyticsManager.shared.track(event: .logout(phone: AppUserDataModel.shared.validAppUserData!.phone))
+        if let user = AppUserDataModel.shared.validAppUserData {
+            AnalyticsManager.shared.track(event: .logout(phone: user.phone))
+        }
 
         CartManager.shared.clearCart()
         CartManager.shared.lastOrder = nil
