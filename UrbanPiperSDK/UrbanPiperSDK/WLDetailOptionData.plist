@@ -12,7 +12,7 @@
 		<key>tabImage</key>
 		<string>nav_account</string>
 		<key>title</key>
-		<string>Home</string>
+		<string>home_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -26,7 +26,7 @@
 		<key>tabImage</key>
 		<string>nav_order</string>
 		<key>title</key>
-		<string>Order Now</string>
+		<string>ordering_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
 	</dict>
@@ -40,7 +40,7 @@
 		<key>tabImage</key>
 		<string>nav_history</string>
 		<key>title</key>
-		<string>Order History</string>
+		<string>order_history_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -54,7 +54,7 @@
 		<key>tabImage</key>
 		<string>nav_account</string>
 		<key>title</key>
-		<string>Wallet</string>
+		<string>wallet_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -68,7 +68,7 @@
 		<key>tabImage</key>
 		<string>nav_referearn</string>
 		<key>title</key>
-		<string>Refer and earn</string>
+		<string>referal_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -82,7 +82,7 @@
 		<key>tabImage</key>
 		<string>nav_schedule</string>
 		<key>title</key>
-		<string>Schedule</string>
+		<string>schedule_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -96,7 +96,7 @@
 		<key>tabImage</key>
 		<string>nav_bulk_ordering</string>
 		<key>title</key>
-		<string>Bulk ordering</string>
+		<string>bulk_ordering_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -110,7 +110,7 @@
 		<key>tabImage</key>
 		<string>nav_subscription</string>
 		<key>title</key>
-		<string>Subscription</string>
+		<string>subscription_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -124,7 +124,7 @@
 		<key>tabImage</key>
 		<string>nav_reward</string>
 		<key>title</key>
-		<string>Rewards</string>
+		<string>rewards_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -138,7 +138,7 @@
 		<key>tabImage</key>
 		<string>nav_reward</string>
 		<key>title</key>
-		<string>Rewards</string>
+		<string>rewards_web_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -152,7 +152,7 @@
 		<key>tabImage</key>
 		<string>nav_promo</string>
 		<key>title</key>
-		<string>Promo Code</string>
+		<string>promo_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -166,7 +166,7 @@
 		<key>tabImage</key>
 		<string>nav_offer</string>
 		<key>title</key>
-		<string>Offers</string>
+		<string>offers_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
 	</dict>
@@ -180,7 +180,7 @@
 		<key>tabImage</key>
 		<string>nav_history</string>
 		<key>title</key>
-		<string>History</string>
+		<string>order_history_web_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -194,7 +194,7 @@
 		<key>tabImage</key>
 		<string>nav_offer</string>
 		<key>title</key>
-		<string>Offers</string>
+		<string>coupons_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
 	</dict>
@@ -208,7 +208,7 @@
 		<key>tabImage</key>
 		<string>nav_reward</string>
 		<key>title</key>
-		<string>Presidente Rewards</string>
+		<string>presidente_rewards_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -222,7 +222,7 @@
 		<key>tabImage</key>
 		<string>nav_book_table</string>
 		<key>title</key>
-		<string>Book A Table</string>
+		<string>book_table_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -236,7 +236,7 @@
 		<key>tabImage</key>
 		<string>nav_feedback</string>
 		<key>title</key>
-		<string>Feedback</string>
+		<string>feedback_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -250,7 +250,7 @@
 		<key>tabImage</key>
 		<string>nav_notification</string>
 		<key>title</key>
-		<string>Notifications</string>
+		<string>notifications_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -264,7 +264,7 @@
 		<key>tabImage</key>
 		<string>nav_location</string>
 		<key>title</key>
-		<string>Locations</string>
+		<string>locations_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
 	</dict>
@@ -278,7 +278,7 @@
 		<key>tabImage</key>
 		<string>nav_location</string>
 		<key>title</key>
-		<string>Store Locations</string>
+		<string>store_tocations_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
 	</dict>
@@ -292,7 +292,7 @@
 		<key>tabImage</key>
 		<string>nav_faq</string>
 		<key>title</key>
-		<string>FAQ&apos;s</string>
+		<string>faq_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
 	</dict>
@@ -306,7 +306,7 @@
 		<key>tabImage</key>
 		<string>nav_setting</string>
 		<key>title</key>
-		<string>User Profile</string>
+		<string>user_settings_web_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -320,7 +320,7 @@
 		<key>tabImage</key>
 		<string>nav_setting</string>
 		<key>title</key>
-		<string>Settings</string>
+		<string>user_settings_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -334,7 +334,7 @@
 		<key>tabImage</key>
 		<string>nav_contactus</string>
 		<key>title</key>
-		<string>Contact Us</string>
+		<string>contact_us_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
 	</dict>
@@ -348,7 +348,7 @@
 		<key>tabImage</key>
 		<string>nav_logout</string>
 		<key>title</key>
-		<string>Logout</string>
+		<string>logout_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
 	</dict>
@@ -362,7 +362,7 @@
 		<key>tabImage</key>
 		<string>nav_login</string>
 		<key>title</key>
-		<string>Login</string>
+		<string>login_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
 	</dict>
@@ -376,7 +376,7 @@
 		<key>tabImage</key>
 		<string>info</string>
 		<key>title</key>
-		<string>About Us</string>
+		<string>about_us_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
 	</dict>
