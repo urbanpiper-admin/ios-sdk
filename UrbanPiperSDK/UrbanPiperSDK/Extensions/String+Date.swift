@@ -13,7 +13,7 @@ extension String {
     static let stringToCurrentDateTimeFormatter: DateFormatter = {
         var formatter = DateFormatter()
         formatter.timeZone = NSTimeZone.system
-        formatter.locale = NSLocale.current
+        formatter.locale = Locale.currentAppleLanguage()
         formatter.formatterBehavior = .default
         formatter.dateFormat = "HH:mm:ss"
 

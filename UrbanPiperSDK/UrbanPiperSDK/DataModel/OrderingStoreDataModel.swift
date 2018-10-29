@@ -265,9 +265,9 @@ extension OrderingStoreDataModel {
             AnalyticsManager.shared.track(event: .addressSelected)
         }
         
+        DeliveryLocationDataModel.shared.setCustomDelivery(location: loc, address: deliveryAddress)
         fetchNearestStore(location: loc)
         updateCompletionBlock = completion
-        DeliveryLocationDataModel.shared.setCustomDelivery(location: loc, address: deliveryAddress)
     }
 }
 

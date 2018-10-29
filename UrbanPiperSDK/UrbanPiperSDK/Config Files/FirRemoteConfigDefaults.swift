@@ -58,6 +58,7 @@ import FirebaseRemoteConfig
 	public private(set) var disableWalletReload : Bool!
 	public private(set) var enableCaching : Bool!
     public private(set) var showBanners : Bool!
+    public private(set) var showStoreOpeningTime : Bool!
     public private(set) var showFeaturedItems : Bool!
     public private(set) var enableFilterSort : Bool!
 	public private(set) var enableItemDirectLoading : Bool!
@@ -194,6 +195,7 @@ import FirebaseRemoteConfig
 		disableWalletReload = remoteConfig["disable_wallet_reload"].boolValue
 		enableCaching = remoteConfig["enable_caching"].boolValue
         showBanners = remoteConfig["show_banners"].boolValue
+        showStoreOpeningTime = remoteConfig["show_store_opening_time"].boolValue
         showFeaturedItems = remoteConfig["show_featured_items"].boolValue
         enableFilterSort = remoteConfig["enable_filter_sort"].boolValue
 		enableItemDirectLoading = remoteConfig["enable_item_direct_loading"].boolValue

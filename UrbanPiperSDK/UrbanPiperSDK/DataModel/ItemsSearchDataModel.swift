@@ -19,7 +19,7 @@ open class ItemsSearchDataModel: UrbanPiperDataModel {
     
     weak open var dataModelDelegate: ItemsSearchDataModelDelegate?
 
-    private var keyword: String = ""
+    private var searchKeyword: String = ""
 
     open var itemsSearchResponse: ItemsSearchResponse? {
         didSet {
@@ -33,7 +33,7 @@ open class ItemsSearchDataModel: UrbanPiperDataModel {
     }
 
     open func refreshData(_ isForcedRefresh: Bool = false) {
-        fetchItems(for: keyword)
+        fetchItems(for: searchKeyword)
     }
 
 }
@@ -49,7 +49,11 @@ extension ItemsSearchDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
 
         if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
-            categoryCell.configureCell(itemsArray?[indexPath.row])
+            let itemObject: ItemObject = itemsArray![indexPath.row]
+            if itemsArray?.last === itemObject, itemsArray!.count < itemsSearchResponse!.meta.totalCount {
+                searchItems(for: searchKeyword, next: itemsSearchResponse?.meta.next)
+            }
+            categoryCell.configureCell(itemObject)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }
@@ -70,7 +74,11 @@ extension ItemsSearchDataModel {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
 
         if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
-            categoryCell.configureCell(itemsArray?[indexPath.row])
+            let itemObject: ItemObject = itemsArray![indexPath.row]
+            if itemsArray?.last === itemObject, itemsArray!.count < itemsSearchResponse!.meta.totalCount {
+                searchItems(for: searchKeyword, next: itemsSearchResponse?.meta.next)
+            }
+            categoryCell.configureCell(itemObject)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }
@@ -100,25 +108,30 @@ extension ItemsSearchDataModel {
 
         perform(#selector(searchItems(for:)), with: keyword, afterDelay: 1.0)
     }
-
+    
     @objc private func searchItems(for keyword: String) {
-        dataModelDelegate?.refreshItemsSearchUI(true)
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchCategoryItems(for: keyword,
-                                                            locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
-                                                            completion: { [weak self] (data) in
-                                                                defer {
-                                                                    self?.dataModelDelegate?.refreshItemsSearchUI(false)
-                                                                }
-                                                                self?.keyword = ""
-                                                                guard let response = data else { return }
-                                                                AnalyticsManager.shared.track(event: .itemSearch(query: keyword, storeName: OrderingStoreDataModel.shared.nearestStoreResponse?.store?.name, results: response.toDictionary()))
+        searchItems(for: keyword, next: nil)
+    }
 
-                                                                self?.itemsSearchResponse = response
+    private func searchItems(for keyword: String, next: String? = nil) {
+        dataModelDelegate?.refreshItemsSearchUI(true)
+        searchKeyword = keyword
+        let dataTask: URLSessionDataTask = APIManager.shared.fetchCategoryItems(for: keyword,
+                                                                                next: next,
+                                                                                locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
+                                                                                completion:
+            { [weak self] (data) in
+                defer {
+                    self?.dataModelDelegate?.refreshItemsSearchUI(false)
+                }
+                guard let response = data else { return }
+                AnalyticsManager.shared.track(event: .itemSearch(query: keyword, storeName: OrderingStoreDataModel.shared.nearestStoreResponse?.store?.name, results: response.toDictionary()))
+                
+                self?.itemsSearchResponse = response
             }, failure: { [weak self] (upError) in
                 defer {
                     self?.dataModelDelegate?.handleItemsSearch(error: upError)
                 }
-                self?.keyword = keyword
         })
 
         addOrCancelDataTask(dataTask: dataTask)
@@ -132,7 +145,7 @@ extension ItemsSearchDataModel {
 extension ItemsSearchDataModel {
 
     open override func appWillEnterForeground() {
-        guard keyword.count > 0 else { return }
+        guard itemsSearchResponse == nil || (itemsSearchResponse!.items.count == 0 && itemsSearchResponse!.meta.totalCount > 0) else { return }
         refreshData(false)
     }
 
@@ -147,7 +160,7 @@ extension ItemsSearchDataModel {
 extension ItemsSearchDataModel {
 
     open override func networkIsAvailable() {
-        guard keyword.count > 0 else { return }
+        guard itemsSearchResponse == nil || (itemsSearchResponse!.items.count == 0 && itemsSearchResponse!.meta.totalCount > 0) else { return }
         refreshData(false)
     }
 

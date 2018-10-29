@@ -127,12 +127,18 @@ extension APIManager {
     }
 
     func fetchCategoryItems(for keyword: String,
+                            next: String? = nil,
                             locationID: Int?,
                             completion: APICompletion<ItemsSearchResponse>?,
                             failure: APIFailure?) -> URLSessionDataTask {
 
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
-        var urlString: String = "\(APIManager.baseUrl)/api/v1/search/items/?keyword=\(keyword)&biz_id=\(appId)"
+        var urlString: String = "\(APIManager.baseUrl)/api/v2/search/items/?keyword=\(keyword)&biz_id=\(appId)"
+        
+        if let nextUrlString: String = next {
+            urlString = "\(APIManager.baseUrl)\(nextUrlString)"
+        }
+        
         urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
 
         if let id = locationID {
@@ -152,7 +158,6 @@ extension APIManager {
 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
                     let itemsSearchResponse: ItemsSearchResponse = ItemsSearchResponse(fromDictionary: dictionary)
-
                     DispatchQueue.main.async {
                         completionClosure(itemsSearchResponse)
                     }

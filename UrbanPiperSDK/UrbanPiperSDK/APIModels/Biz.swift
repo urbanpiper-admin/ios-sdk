@@ -7,6 +7,25 @@
 
 import Foundation
 
+public enum Language: String {
+    case english = "en"
+    case hindi = "hi"
+    case japanese = "ja"
+    case arabic = "ar"
+    
+    public var displayName: String {
+        switch self {
+        case .english:
+            return "English"
+        case .hindi:
+            return "Hindi"
+        case .japanese:
+            return "Japanese"
+        case .arabic:
+            return "Arabic"
+        }
+    }
+}
 
 @objc public class Biz : NSObject, NSCoding{
     
@@ -25,6 +44,7 @@ import Foundation
 	public var msgStoreClosedTemporary : String!
 	public var orderDeliveryRadius : Int!
 	public var paymentOptions : [String]!
+    public var supportedLanguages : [String]!
     public var paypalClientToken : String!
 	public var pgProvider : String!
 	public var pickupMinOffsetTime : Int!
@@ -69,6 +89,7 @@ import Foundation
 		msgStoreClosedTemporary = dictionary["msg_store_closed_temporary"] as? String
 		orderDeliveryRadius = dictionary["order_delivery_radius"] as? Int
 		paymentOptions = dictionary["payment_options"] as? [String]
+        supportedLanguages = dictionary["supported_languages"] as? [String]
 		paypalClientToken = dictionary["paypal_client_token"] as? String
 		pgProvider = dictionary["pg_provider"] as? String
 		pickupMinOffsetTime = dictionary["pickup_min_offset_time"] as? Int
@@ -135,6 +156,9 @@ import Foundation
 		if paymentOptions != nil{
 			dictionary["payment_options"] = paymentOptions
 		}
+        if supportedLanguages != nil{
+            dictionary["supported_languages"] = supportedLanguages
+        }
 		if paypalClientToken != nil{
 			dictionary["paypal_client_token"] = paypalClientToken
 		}
@@ -196,6 +220,7 @@ import Foundation
          msgStoreClosedTemporary = aDecoder.decodeObject(forKey: "msg_store_closed_temporary") as? String
          orderDeliveryRadius = aDecoder.decodeObject(forKey: "order_delivery_radius") as? Int
          paymentOptions = aDecoder.decodeObject(forKey: "payment_options") as? [String]
+         supportedLanguages = aDecoder.decodeObject(forKey: "supported_languages") as? [String]
          paypalClientToken = aDecoder.decodeObject(forKey: "paypal_client_token") as? String
          pgProvider = aDecoder.decodeObject(forKey: "pg_provider") as? String
          pickupMinOffsetTime = aDecoder.decodeObject(forKey: "pickup_min_offset_time") as? Int
@@ -253,6 +278,9 @@ import Foundation
 		if paymentOptions != nil{
 			aCoder.encode(paymentOptions, forKey: "payment_options")
 		}
+        if supportedLanguages != nil{
+            aCoder.encode(paymentOptions, forKey: "supported_languages")
+        }
 		if paypalClientToken != nil{
 			aCoder.encode(paypalClientToken, forKey: "paypal_client_token")
 		}

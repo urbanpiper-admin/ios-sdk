@@ -11,6 +11,7 @@ import Foundation
 public class ItemsSearchResponse : NSObject{
 
 	public var items : [ItemObject]!
+    public var meta : Meta!
 
 
 	/**
@@ -25,6 +26,9 @@ public class ItemsSearchResponse : NSObject{
 				items.append(value)
 			}
 		}
+        if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
+            meta = Meta(fromDictionary: metaData)
+        }
 	}
 
     /**
@@ -40,6 +44,9 @@ public class ItemsSearchResponse : NSObject{
             }
             dictionary["items"] = dictionaryElements
         }
+        if meta != nil{
+            dictionary["meta"] = meta.toDictionary()
+        }
         return dictionary
     }
 
@@ -50,7 +57,7 @@ public class ItemsSearchResponse : NSObject{
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
 //         items = aDecoder.decodeObject(forKey :"items") as? [ItemObject]
-//
+//         meta = aDecoder.decodeObject(forKey: "meta") as? Meta
 //    }
 //
 //    /**
@@ -61,6 +68,9 @@ public class ItemsSearchResponse : NSObject{
 //    {
 //        if items != nil{
 //            aCoder.encode(items, forKey: "items")
+//        }
+//        if meta != nil{
+//            aCoder.encode(meta, forKey: "meta")
 //        }
 //
 //    }

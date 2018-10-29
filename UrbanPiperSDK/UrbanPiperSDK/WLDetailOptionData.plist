@@ -322,7 +322,7 @@
 		<key>title</key>
 		<string>user_settings_tab_title</string>
 		<key>loginMandatory</key>
-		<true/>
+		<false/>
 	</dict>
 	<dict>
 		<key>tag</key>

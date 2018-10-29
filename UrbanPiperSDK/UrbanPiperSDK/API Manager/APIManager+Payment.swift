@@ -138,7 +138,9 @@ extension APIManager {
         }
         
         if paymentOption == PaymentOption.paytm {
-            urlString = "\(urlString)?amount=\(totalAmount * 100)&purpose=\(purpose)&channel=\(APIManager.channel)&redirect_url=https://urbanpiper.com&paytm=1"
+            urlString = "\(urlString)?amount=\(totalAmount * 100)&purpose=\(purpose)&channel=\(APIManager.channel)&redirect_url=https://urbanpiper.com/pg-redirect&paytm=1"
+        } else if paymentOption == PaymentOption.paymentGateway {
+            urlString = "\(urlString)?amount=\(totalAmount * 100)&purpose=\(purpose)&channel=\(APIManager.channel)&\(paymentOption.rawValue)=1&redirect_url=https://urbanpiper.com/pg-redirect"
         } else {
             urlString = "\(urlString)?amount=\(totalAmount * 100)&purpose=\(purpose)&channel=\(APIManager.channel)&\(paymentOption.rawValue)=1"
         }

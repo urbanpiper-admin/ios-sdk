@@ -8,6 +8,11 @@
 
 import UIKit
 
+public enum PaymentGateway: String {
+    case razorpay = "razorpay"
+    case paytabs = "paytabs"
+}
+
 public enum PaymentOption: String {
     case cash = "cash"
     case prepaid = "prepaid"
@@ -72,6 +77,8 @@ public enum DeliveryOption: String {
     func initiatePayTMWebOnlinePayment(orderId: String, onlinePaymentInitResponse: OnlinePaymentInitResponse)
     
     func initiateRazorOnlinePayment(orderId: String, phone: String, responseDict: [String: Any], onlinePaymentInitResponse: OnlinePaymentInitResponse)
+    
+    func initiatePaytabsOnlinePayment(orderId: String, phone: String, responseDict: [String: Any], onlinePaymentInitResponse: OnlinePaymentInitResponse)
     
     func initiateSimplPayment(orderId: String, phone: String, transactionId: String)
     
@@ -494,7 +501,13 @@ extension OrderPaymentDataModel {
                                         }
 
                                         if paymentOption == .paymentGateway {
-                                            self?.dataModelDelegate?.initiateRazorOnlinePayment(orderId: orderIdString, phone: phone, responseDict: responseDict!, onlinePaymentInitResponse: onlinePaymentInitResponse!)
+                                            let paymentGateway = PaymentGateway(rawValue: Biz.shared!.pgProvider)!
+                                            switch paymentGateway {
+                                            case .razorpay:
+                                                self?.dataModelDelegate?.initiateRazorOnlinePayment(orderId: orderIdString, phone: phone, responseDict: responseDict!, onlinePaymentInitResponse: onlinePaymentInitResponse!)
+                                            case .paytabs:
+                                                self?.dataModelDelegate?.initiatePaytabsOnlinePayment(orderId: orderIdString, phone: phone, responseDict: responseDict!, onlinePaymentInitResponse: onlinePaymentInitResponse!)
+                                            }
                                         } else if paymentOption == .paytm {
                                             self?.dataModelDelegate?.initiatePayTMWebOnlinePayment(orderId: orderIdString, onlinePaymentInitResponse: onlinePaymentInitResponse!)
                                         } else if paymentOption == .simpl {

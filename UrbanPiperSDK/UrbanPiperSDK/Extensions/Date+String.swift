@@ -25,7 +25,7 @@ extension Date {
     static let localeDateToStringFormatter: DateFormatter = {
         var formatter = DateFormatter()
         formatter.timeZone = NSTimeZone.system
-        formatter.locale = NSLocale.current
+        formatter.locale = Locale.currentAppleLanguage()
         formatter.formatterBehavior = .default
 
         return formatter

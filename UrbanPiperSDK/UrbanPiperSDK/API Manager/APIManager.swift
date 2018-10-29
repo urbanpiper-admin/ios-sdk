@@ -41,7 +41,13 @@ import Foundation
     public typealias APICompletion<T> = (T?) -> Void
     public typealias APIFailure = (UPError?) -> Void
 
-    @objc public static private(set) var shared: APIManager = APIManager()
+    @objc public static private(set) var shared: APIManager!
+    
+    var language: Language = .english {
+        didSet {
+            updateHeaders()
+        }
+    }
 
     public static let channel: String = "app_ios"
 
@@ -82,9 +88,14 @@ import Foundation
         }
     }
 
-    public override init() {
+    private init(language: Language) {
         super.init()
+        self.language = language
         updateHeaders()
+    }
+    
+    internal class func initializeManager(language: Language) {
+        shared = APIManager(language: language)
     }
     
     func normalLoginUserAuthString(phone: String?, password: String?) -> String? {
@@ -139,6 +150,7 @@ import Foundation
         var additionalHeaders: [String : Any] = ["X-App-Src": "ios",
                                                  "X-Bid": AppConfigManager.shared.firRemoteConfigDefaults.bizId!,
                                                  "X-App-Version": version,
+                                                 "X-Use-Lang": language.rawValue,
                                                  "Content-Type": "application/json"] as [String : Any]
 
         additionalHeaders["Accept-Encoding"] = "gzip"

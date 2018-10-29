@@ -7,6 +7,10 @@
 
 import Foundation
 
+public enum PaymentType: String {
+    case paytm = "paytm"
+    case paytabs = "paytabs"
+}
 
 public class OnlinePaymentData : NSObject{
 
@@ -22,6 +26,10 @@ public class OnlinePaymentData : NSObject{
 	public var paymentUrl : String!
 	public var type : String!
     public var key : String!
+    
+    public var paymentType: PaymentType {
+        return PaymentType(rawValue: type)!
+    }
 
 
 	/**

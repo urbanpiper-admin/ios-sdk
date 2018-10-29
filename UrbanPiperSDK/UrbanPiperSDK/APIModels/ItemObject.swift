@@ -52,7 +52,7 @@ public class ItemObject : NSObject{
         } else if let categoryData: [String:Any] = dictionary["item_category"] as? [String:Any]{
             category = ItemCategory(fromDictionary: categoryData)
         }
-		currentStock = dictionary["current_stock"] as? Int
+		currentStock = dictionary["current_stock"] as? Int ?? 0
 		extras = dictionary["extras"] as? [AnyObject]
 		foodType = dictionary["food_type"] as? String
 		fulfillmentModes = dictionary["fulfillment_modes"] as? [String]
