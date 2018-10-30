@@ -81,6 +81,14 @@ open class FeaturedItemsDataModel: UrbanPiperDataModel {
 extension FeaturedItemsDataModel {
     
     fileprivate func fetchFeaturedItems(isForcedRefresh: Bool, next: String? = nil) {
+        if let itemId = itemIds.last, itemId == 0, !AppConfigManager.shared.firRemoteConfigDefaults.showFeaturedItems {
+            dataModelDelegate?.handleFeaturedItems(error: nil)
+            return
+        }
+        if itemIds.count > 1, !AppConfigManager.shared.firRemoteConfigDefaults.enableItemUpselling {
+            dataModelDelegate?.handleFeaturedItems(error: nil)
+            return
+        }
         guard isForcedRefresh || (!isForcedRefresh && categoryItemsResponse == nil) else { return }
         dataModelDelegate?.refreshFeaturedItemsUI(true)
         let dataTask: URLSessionDataTask = APIManager.shared.featuredItems(itemIds: itemIds,
