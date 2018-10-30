@@ -11,7 +11,7 @@ import Foundation
 extension APIManager {
     
     @objc public func availableCoupons(next: String?,
-                                       completion: APICompletion<OffersAPIResponse>?,
+                                       completion: ((OffersAPIResponse?) -> Void)?,
                                        failure: APIFailure?) -> URLSessionDataTask {
         
         var urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/"
@@ -62,7 +62,7 @@ extension APIManager {
                      deliveryOption: String,
                      items: [[String: Any]],
                      applyWalletCredit: Bool,
-                     completion: APICompletion<Order>?,
+                     completion: ((Order?) -> Void)?,
                         failure: APIFailure?) -> URLSessionDataTask {
 
         let order: [String: Any] = ["biz_location_id": storeLocationId,

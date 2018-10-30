@@ -12,7 +12,7 @@ extension APIManager {
     public func featuredItems(itemIds: [Int] = [0],
                               locationID: Int?,
                               next: String?,
-                              completion: APICompletion<CategoryItemsResponse>?,
+                              completion: ((CategoryItemsResponse?) -> Void)?,
                               failure: APIFailure?) -> URLSessionDataTask {
         
         var urlString: String = "\(APIManager.baseUrl)/api/v2/items/"

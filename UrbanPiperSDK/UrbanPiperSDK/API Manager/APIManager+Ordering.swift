@@ -12,7 +12,7 @@ extension APIManager {
 
     public func fetchCategoriesList(_ isForceRefresh: Bool,
                                           locationID: Int?,
-                                   completion: APICompletion<CategoriesResponse>?,
+                                   completion: ((CategoriesResponse?) -> Void)?,
                                    failure: APIFailure?) -> URLSessionDataTask {
 
         let canUseCachedResponse: Bool = AppConfigManager.shared.firRemoteConfigDefaults.enableCaching && !isForceRefresh

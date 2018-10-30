@@ -14,7 +14,7 @@ extension APIManager {
     
     @objc public func login(user: User,
                      password: String,
-                     completion: APICompletion<User>?,
+                     completion: ((User?) -> Void)?,
                      failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/auth/me/?format=json/"
@@ -60,7 +60,7 @@ extension APIManager {
     
     @objc public func forgotPassword(countryCode: String,
                      phoneNumber: String,
-                     completion: APICompletion<[String: Any]>?,
+                     completion: (([String: Any]?) -> Void)?,
                      failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/password/token/"
@@ -111,7 +111,7 @@ extension APIManager {
                              otp: String,
                              password: String,
                              confirmPassword: String,
-                             completion: APICompletion<[String: Any]>?,
+                             completion: (([String: Any]?) -> Void)?,
                              failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/password/"
@@ -162,7 +162,7 @@ extension APIManager {
     
     @objc public func card(urlString: String,
                     referralParams: [String : Any]? = nil,
-                    completion: APICompletion<CardAPIResponse>?,
+                    completion: ((CardAPIResponse?) -> Void)?,
                     failure: APIFailure?) -> URLSessionDataTask {
         
         var cs: CharacterSet = CharacterSet.urlQueryAllowed
@@ -244,7 +244,7 @@ extension APIManager {
     
     @objc public func createUser(user: User,
                           password: String,
-                          completion: APICompletion<CardAPIResponse>?,
+                          completion: ((CardAPIResponse?) -> Void)?,
                           failure: APIFailure?) -> URLSessionDataTask {
         AnalyticsManager.shared.track(event: .signupStart(phone: user.phone))
         let urlString: String = "\(APIManager.cardBaseUrl)/?customer_name=\(user.firstName!)&customer_phone=\(user.phoneNumberWithCountryCode!)&email=\(user.email!)&password=\(password)&channel=\(APIManager.channel)"
@@ -253,7 +253,7 @@ extension APIManager {
     }
     
     @objc public func createSocialUser(user: User,
-                          completion: APICompletion<CardAPIResponse>?,
+                          completion: ((CardAPIResponse?) -> Void)?,
                           failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.cardBaseUrl)/?customer_name=\(user.firstName!)&customer_phone=\(user.phoneNumberWithCountryCode!)&email=\(user.email!)&password=\(user.accessToken!)&channel=\(APIManager.channel)"
@@ -269,7 +269,7 @@ extension APIManager {
     
     @objc public func verifyMobile(user: User,
                             pin: String,
-                            completion: APICompletion<CardAPIResponse>?,
+                            completion: ((CardAPIResponse?) -> Void)?,
                             failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(user.phoneNumberWithCountryCode!)&pin=\(pin)&nopinsend=true"
@@ -278,7 +278,7 @@ extension APIManager {
     }
     
     @objc public func resendOTP(user: User,
-                         completion: APICompletion<CardAPIResponse>?,
+                         completion: ((CardAPIResponse?) -> Void)?,
                          failure: APIFailure?) -> URLSessionDataTask {
         let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(user.phoneNumberWithCountryCode!)&pin=resendotp"
         

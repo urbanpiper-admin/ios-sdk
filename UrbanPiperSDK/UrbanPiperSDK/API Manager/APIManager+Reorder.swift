@@ -14,7 +14,7 @@ extension APIManager {
     public func reorder(orderId: Int,
                         userLocation: CLLocationCoordinate2D?,
                         bizLocationId: Int?,
-                        completion: APICompletion<ReorderResponse>?,
+                        completion: ((ReorderResponse?) -> Void)?,
                         failure: APIFailure?) -> URLSessionDataTask {
 
         var urlString: String = "\(APIManager.baseUrl)/api/v2/order/\(orderId)/reorder"

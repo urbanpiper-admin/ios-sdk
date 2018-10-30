@@ -10,7 +10,7 @@ import CoreLocation
 
 extension APIManager {
     
-    @objc public func fetchAllStores(completion: APICompletion<StoreLocatorResponse>?,
+    @objc public func fetchAllStores(completion: ((StoreLocatorResponse?) -> Void)?,
                                      failure: APIFailure?) -> URLSessionDataTask {
         
         let bizId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId
@@ -54,7 +54,7 @@ extension APIManager {
     }
     
     @objc public func fetchNearestStore(_ coordinates: CLLocationCoordinate2D,
-                                        completion: APICompletion<StoreResponse>?,
+                                        completion: ((StoreResponse?) -> Void)?,
                                         failure: APIFailure?) -> URLSessionDataTask {
         
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!

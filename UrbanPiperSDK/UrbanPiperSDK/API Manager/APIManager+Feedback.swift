@@ -15,7 +15,7 @@ extension APIManager {
                                      orderId: String,
                                      choiceText: String?,
                                      comments: String?,
-                                     completion: APICompletion<[String : Any]>?,
+                                     completion: (([String : Any]?) -> Void)?,
                                      failure: APIFailure?) -> URLSessionDataTask? {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/feedback/"

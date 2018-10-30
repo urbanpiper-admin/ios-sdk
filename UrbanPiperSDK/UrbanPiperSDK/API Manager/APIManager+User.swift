@@ -11,7 +11,7 @@ import Foundation
 extension APIManager {
     
     @objc public func userInfo(phone: String,
-                               completion: APICompletion<[String: Any]>?,
+                               completion: (([String: Any]?) -> Void)?,
                                failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/profile/?customer_phone=\(phone)"
@@ -58,7 +58,7 @@ extension APIManager {
                                      gender: String? = nil,
                                      anniversary: Date? = nil,
                                      birthday: Date? = nil,
-                                     completion: APICompletion<[String: Any]>?,
+                                     completion: (([String: Any]?) -> Void)?,
                                      failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/profile/?customer_phone=\(phone)"
@@ -130,7 +130,7 @@ extension APIManager {
     @objc public func updatePassword(phone: String,
                                      oldPassword: String,
                                      newPassword: String,
-                                     completion: APICompletion<[String: Any]>?,
+                                     completion: (([String: Any]?) -> Void)?,
                                      failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/password/"
@@ -186,7 +186,7 @@ extension APIManager {
         return dataTask
     }
     
-    @objc public func userSavedAddresses(completion: APICompletion<UserAddressesResponse>?,
+    @objc public func userSavedAddresses(completion: ((UserAddressesResponse?) -> Void)?,
                          failure: APIFailure?) -> URLSessionDataTask {
         
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
@@ -230,7 +230,7 @@ extension APIManager {
     }
     
     public func userSavedDeliverableAddresses(locationId: Int?,
-                                                    completion: APICompletion<UserAddressesResponse>?,
+                                                    completion: ((UserAddressesResponse?) -> Void)?,
                                                     failure: APIFailure?) -> URLSessionDataTask {
         
         var urlString: String = "\(APIManager.baseUrl)/api/v1/user/address/"
@@ -280,7 +280,7 @@ extension APIManager {
     }
     
     @objc public func addAddress(address: Address,
-                                 completion: APICompletion<AddUpdateAddressResponse>?,
+                                 completion: ((AddUpdateAddressResponse?) -> Void)?,
                                  failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/address/"
@@ -355,7 +355,7 @@ extension APIManager {
     }
     
     @objc public func updateAddress(address: Address,
-                                    completion: APICompletion<AddUpdateAddressResponse>?,
+                                    completion: ((AddUpdateAddressResponse?) -> Void)?,
                                     failure: APIFailure?) -> URLSessionDataTask {
         
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!

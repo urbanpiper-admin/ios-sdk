@@ -10,7 +10,7 @@ import Foundation
 
 extension APIManager {
 
-    @objc public func userLikes(completion: APICompletion<UserLikesResponse>?,
+    @objc public func userLikes(completion: ((UserLikesResponse?) -> Void)?,
                          failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/item/likes/"
@@ -54,7 +54,7 @@ extension APIManager {
 
     @objc public func likeUnlikeItem(itemId: Int,
                               like: Bool,
-                              completion: APICompletion<[String: Any]>?,
+                              completion: (([String: Any]?) -> Void)?,
                               failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/item/\(itemId)/like/"

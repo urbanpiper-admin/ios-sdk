@@ -11,7 +11,7 @@ import Foundation
 extension APIManager {
     
     func fetchCategoryOptions(id: Int,
-                            completion: APICompletion<CategoryOptionsResponse>?,
+                            completion: ((CategoryOptionsResponse?) -> Void)?,
                             failure: APIFailure?) -> URLSessionDataTask {
         
         var urlString: String = "\(APIManager.baseUrl)/api/v2/categories/\(id)/options/"
@@ -62,7 +62,7 @@ extension APIManager {
                             filterOptions: [FilterOption]?,
                             isForcedRefresh: Bool,
                             next: String?,
-                            completion: APICompletion<CategoryItemsResponse>?,
+                            completion: ((CategoryItemsResponse?) -> Void)?,
                             failure: APIFailure?) -> URLSessionDataTask {
 
         let canUseCachedResponse: Bool = AppConfigManager.shared.firRemoteConfigDefaults.enableCaching && !isForcedRefresh
@@ -129,7 +129,7 @@ extension APIManager {
     func fetchCategoryItems(for keyword: String,
                             next: String? = nil,
                             locationID: Int?,
-                            completion: APICompletion<ItemsSearchResponse>?,
+                            completion: ((ItemsSearchResponse?) -> Void)?,
                             failure: APIFailure?) -> URLSessionDataTask {
 
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
@@ -183,7 +183,7 @@ extension APIManager {
 
     func fetchItemDetails(itemId: Int,
                           locationID: Int?,
-                          completion: APICompletion<ItemObject>?,
+                          completion: ((ItemObject?) -> Void)?,
                           failure: APIFailure?) -> URLSessionDataTask {
 
         var urlString: String = "\(APIManager.baseUrl)/api/v1/items/\(itemId)/"

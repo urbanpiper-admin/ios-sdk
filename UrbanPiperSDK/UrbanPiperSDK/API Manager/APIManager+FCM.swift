@@ -41,7 +41,7 @@ extension APIManager {
     }
 
     @objc public func registerForFCMMessaging(token: String,
-                                       completion: APICompletion<[String : Any]>?,
+                                       completion: (([String : Any]?) -> Void)?,
                                        failure: APIFailure?) -> URLSessionDataTask? {
         
         guard lastRegisteredFCMToken == nil || lastRegisteredFCMToken! != token else {
@@ -93,7 +93,7 @@ extension APIManager {
         return dataTask
     }
     
-    @objc public func unRegisterForFCMMessaging(completion: APICompletion<[String: Any]>?,
+    @objc public func unRegisterForFCMMessaging(completion: (([String: Any]?) -> Void)?,
                                          failure: APIFailure?) -> URLSessionDataTask? {
         let oldToken = UserDefaults.standard.string(forKey: UserDefaultsFCMKeys.UserBizFCMTokenKey)
         guard AppUserDataModel.shared.validAppUserData == nil, oldToken != nil else {

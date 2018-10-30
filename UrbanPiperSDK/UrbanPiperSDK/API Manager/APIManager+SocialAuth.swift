@@ -36,7 +36,7 @@ extension APIManager {
 
     @objc public func socialLogin(user: User,
                            urlString: String,
-                           completion: APICompletion<User>?,
+                           completion: ((User?) -> Void)?,
                            failure: APIFailure?) -> URLSessionDataTask {
 
         var apiURLString: String = urlString
@@ -108,7 +108,7 @@ extension APIManager {
 extension APIManager {
     
     @objc public func checkForUser(user: User,
-                            completion: APICompletion<User>?,
+                            completion: ((User?) -> Void)?,
                             failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)"
@@ -123,7 +123,7 @@ extension APIManager {
 extension APIManager {
     
     @objc public func checkPhoneNumber(user: User,
-                                completion: APICompletion<User>?,
+                                completion: ((User?) -> Void)?,
                                 failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)&action=check_phone&phone=\(user.phoneNumberWithCountryCode!)"
@@ -134,7 +134,7 @@ extension APIManager {
     
     @objc public func verifyOTP(user: User,
                          otp: String,
-                         completion: APICompletion<User>?,
+                         completion: ((User?) -> Void)?,
                          failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)&action=verify_otp&phone=\(user.phoneNumberWithCountryCode!)&otp=\(otp)"

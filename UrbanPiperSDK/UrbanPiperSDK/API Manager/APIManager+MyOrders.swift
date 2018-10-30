@@ -12,7 +12,7 @@ extension APIManager {
 
     public func fetchOrderHistory(limit: Int? = nil,
                                   next: String? = nil,
-                                  completion: APICompletion<MyOrdersResponse>?,
+                                  completion: ((MyOrdersResponse?) -> Void)?,
                                   failure: APIFailure?) -> URLSessionDataTask {
 
         var urlString: String = "\(APIManager.baseUrl)/api/v2/orders/"
@@ -59,7 +59,7 @@ extension APIManager {
     }
     
     public func fetchOrderDetails(orderId: Int,
-                                  completion: APICompletion<MyOrderDetailsResponse>?,
+                                  completion: ((MyOrderDetailsResponse?) -> Void)?,
                                   failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/orders/\(orderId)/"

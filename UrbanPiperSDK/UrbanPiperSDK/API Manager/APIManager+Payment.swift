@@ -20,7 +20,7 @@ extension APIManager {
                                deliveryOption: String,
                                items: [ItemObject],
                                orderTotal: Decimal,
-                               completion: APICompletion<OrderPreProcessingResponse>?,
+                               completion: ((OrderPreProcessingResponse?) -> Void)?,
                                failure: APIFailure?) -> URLSessionDataTask {
         
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
@@ -74,7 +74,7 @@ extension APIManager {
 
     @objc public func applyCoupon(code: String,
                            orderData: [String: Any],
-                           completion: APICompletion<Order>?,
+                           completion: ((Order?) -> Void)?,
                            failure: APIFailure?) -> URLSessionDataTask {
         
         var urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/\(code)/"
@@ -125,7 +125,7 @@ extension APIManager {
                                       purpose: OnlinePaymentPurpose,
                                       totalAmount: Decimal,
                                       bizLocationId: Int?,
-                                      completion: APICompletion<OnlinePaymentInitResponse>?,
+                                      completion: ((OnlinePaymentInitResponse?) -> Void)?,
                                       failure: APIFailure?) -> URLSessionDataTask? {
         
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
@@ -203,7 +203,7 @@ extension APIManager {
                           walletCreditApplied: Decimal,
                           payableAmount: Decimal,
                           onlinePaymentInitResponse: OnlinePaymentInitResponse?,
-                          completion: APICompletion<[String: Any]>?,
+                          completion: (([String: Any]?) -> Void)?,
                           failure: APIFailure?) -> URLSessionDataTask {
         
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
@@ -291,7 +291,7 @@ extension APIManager {
     @objc public func verifyPayment(pid: String,
                              orderId: String,
                              transactionId: String,
-        completion: APICompletion<[String: Any]>?,
+        completion: (([String: Any]?) -> Void)?,
                            failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/payments/callback/\(transactionId)/?gateway_txn_id=\(pid)&pid=\(orderId)"

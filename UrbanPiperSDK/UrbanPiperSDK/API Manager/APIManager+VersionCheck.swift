@@ -10,7 +10,7 @@ import Foundation
 
 extension APIManager {
 
-    @objc public func checkForUpgrade(completion: APICompletion<VersionCheckResponse>?,
+    @objc public func checkForUpgrade(completion: ((VersionCheckResponse?) -> Void)?,
                                  failure: APIFailure?) -> URLSessionDataTask? {
 
         let username: String = AppUserDataModel.shared.validAppUserData?.phoneNumberWithCountryCode ?? "null"
