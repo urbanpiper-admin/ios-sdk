@@ -15,7 +15,7 @@ public protocol AnalyticsEventObserver: AnyObject {
 }
 
 public enum AnalyticsEvent {
-    case appLaunch;
+    case appLaunch(theme: String);
     case nearestStoreFound(lat: CLLocationDegrees, lng: CLLocationDegrees, storeName: String);
     case noStoreNearby(lat: CLLocationDegrees, lng: CLLocationDegrees, addressString: String);
     case nearestStoreClosedTemp(lat: CLLocationDegrees, lng: CLLocationDegrees, storeName: String);

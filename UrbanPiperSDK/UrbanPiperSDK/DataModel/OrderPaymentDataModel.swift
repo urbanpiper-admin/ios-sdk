@@ -47,6 +47,15 @@ public enum DeliveryOption: String {
     case delivery = "delivery"
     case pickUp = "pickup"
     
+    public var deliveryOptionOffsetTimeSecs: TimeInterval {
+        switch self {
+        case .delivery:
+            return TimeInterval(Biz.shared!.deliveryMinOffsetTime / 1000)
+        case .pickUp:
+            return TimeInterval(Biz.shared!.pickupMinOffsetTime / 1000)
+        }
+    }
+    
     public func displayName(orderAmount: Decimal?) -> String {
         switch self {
         case .delivery:
@@ -217,10 +226,21 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
     
     public var normalDefaultOrderDeliveryDate: Date {
-        let delMinOffset: TimeInterval = TimeInterval(Biz.shared!.deliveryMinOffsetTime)
-        let defaultOffset: TimeInterval = TimeInterval(100000.0)
+        let paymentOffsetTimeSecs: TimeInterval = selectedDeliveryOption.deliveryOptionOffsetTimeSecs
+        let defaultOffset: TimeInterval = TimeInterval(120)
         // around 2 minutes gap to payment
-        let normalDeliveryDate: Date = Date().addingTimeInterval(((delMinOffset + defaultOffset) / 1000.0))
+        var normalDeliveryDate: Date = Date().addingTimeInterval(paymentOffsetTimeSecs + defaultOffset)
+        let openingDate: Date = OrderingStoreDataModel.shared.orderingStore!.openingDate!
+        let openingDateWithOffset: Date = openingDate.addingTimeInterval(paymentOffsetTimeSecs + defaultOffset)
+        let closingDate: Date = OrderingStoreDataModel.shared.orderingStore!.closingDate!
+        let closingDateWithOffset: Date = closingDate.addingTimeInterval(-(paymentOffsetTimeSecs + defaultOffset))
+        
+        if normalDeliveryDate < openingDateWithOffset {
+            normalDeliveryDate = openingDateWithOffset
+        } else if normalDeliveryDate > closingDateWithOffset {
+            normalDeliveryDate = closingDateWithOffset
+        }
+        
         return normalDeliveryDate
     }
     

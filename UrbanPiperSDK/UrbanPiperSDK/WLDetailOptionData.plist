@@ -12,6 +12,8 @@
 		<key>tabImage</key>
 		<string>nav_account</string>
 		<key>title</key>
+		<string>Home</string>
+		<key>locKey</key>
 		<string>home_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -26,6 +28,8 @@
 		<key>tabImage</key>
 		<string>nav_order</string>
 		<key>title</key>
+		<string>Order Now</string>
+		<key>locKey</key>
 		<string>ordering_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
@@ -40,6 +44,8 @@
 		<key>tabImage</key>
 		<string>nav_history</string>
 		<key>title</key>
+		<string>Order History</string>
+		<key>locKey</key>
 		<string>order_history_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -54,6 +60,8 @@
 		<key>tabImage</key>
 		<string>nav_account</string>
 		<key>title</key>
+		<string>Wallet</string>
+		<key>locKey</key>
 		<string>wallet_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -68,6 +76,8 @@
 		<key>tabImage</key>
 		<string>nav_referearn</string>
 		<key>title</key>
+		<string>Refer and earn</string>
+		<key>locKey</key>
 		<string>referal_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -82,6 +92,8 @@
 		<key>tabImage</key>
 		<string>nav_schedule</string>
 		<key>title</key>
+		<string>Schedule</string>
+		<key>locKey</key>
 		<string>schedule_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -96,6 +108,8 @@
 		<key>tabImage</key>
 		<string>nav_bulk_ordering</string>
 		<key>title</key>
+		<string>Bulk ordering</string>
+		<key>locKey</key>
 		<string>bulk_ordering_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -110,6 +124,8 @@
 		<key>tabImage</key>
 		<string>nav_subscription</string>
 		<key>title</key>
+		<string>Subscription</string>
+		<key>locKey</key>
 		<string>subscription_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -124,6 +140,8 @@
 		<key>tabImage</key>
 		<string>nav_reward</string>
 		<key>title</key>
+		<string>Rewards</string>
+		<key>locKey</key>
 		<string>rewards_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -138,6 +156,8 @@
 		<key>tabImage</key>
 		<string>nav_reward</string>
 		<key>title</key>
+		<string>Rewards</string>
+		<key>locKey</key>
 		<string>rewards_web_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -152,6 +172,8 @@
 		<key>tabImage</key>
 		<string>nav_promo</string>
 		<key>title</key>
+		<string>Promo Code</string>
+		<key>locKey</key>
 		<string>promo_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -166,6 +188,8 @@
 		<key>tabImage</key>
 		<string>nav_offer</string>
 		<key>title</key>
+		<string>Offers</string>
+		<key>locKey</key>
 		<string>offers_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
@@ -180,23 +204,11 @@
 		<key>tabImage</key>
 		<string>nav_history</string>
 		<key>title</key>
+		<string>History</string>
+		<key>locKey</key>
 		<string>order_history_web_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
-	</dict>
-	<dict>
-		<key>tag</key>
-		<string>Coupons_tab</string>
-		<key>tabSelectedIcon</key>
-		<string>nav_offer</string>
-		<key>url</key>
-		<string></string>
-		<key>tabImage</key>
-		<string>nav_offer</string>
-		<key>title</key>
-		<string>coupons_tab_title</string>
-		<key>loginMandatory</key>
-		<false/>
 	</dict>
 	<dict>
 		<key>tag</key>
@@ -208,6 +220,8 @@
 		<key>tabImage</key>
 		<string>nav_reward</string>
 		<key>title</key>
+		<string>Presidente Rewards</string>
+		<key>locKey</key>
 		<string>presidente_rewards_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -222,6 +236,8 @@
 		<key>tabImage</key>
 		<string>nav_book_table</string>
 		<key>title</key>
+		<string>Book A Table</string>
+		<key>locKey</key>
 		<string>book_table_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -236,6 +252,8 @@
 		<key>tabImage</key>
 		<string>nav_feedback</string>
 		<key>title</key>
+		<string>Feedback</string>
+		<key>locKey</key>
 		<string>feedback_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -250,6 +268,8 @@
 		<key>tabImage</key>
 		<string>nav_notification</string>
 		<key>title</key>
+		<string>Notifications</string>
+		<key>locKey</key>
 		<string>notifications_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -264,6 +284,8 @@
 		<key>tabImage</key>
 		<string>nav_location</string>
 		<key>title</key>
+		<string>Locations</string>
+		<key>locKey</key>
 		<string>locations_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
@@ -278,6 +300,8 @@
 		<key>tabImage</key>
 		<string>nav_location</string>
 		<key>title</key>
+		<string>Store Locations</string>
+		<key>locKey</key>
 		<string>store_tocations_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
@@ -292,6 +316,8 @@
 		<key>tabImage</key>
 		<string>nav_faq</string>
 		<key>title</key>
+		<string>FAQ&apos;s</string>
+		<key>locKey</key>
 		<string>faq_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
@@ -306,6 +332,8 @@
 		<key>tabImage</key>
 		<string>nav_setting</string>
 		<key>title</key>
+		<string>User Profile</string>
+		<key>locKey</key>
 		<string>user_settings_web_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -320,6 +348,8 @@
 		<key>tabImage</key>
 		<string>nav_setting</string>
 		<key>title</key>
+		<string>Settings</string>
+		<key>locKey</key>
 		<string>user_settings_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
@@ -334,6 +364,8 @@
 		<key>tabImage</key>
 		<string>nav_contactus</string>
 		<key>title</key>
+		<string>Contact Us</string>
+		<key>locKey</key>
 		<string>contact_us_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
@@ -348,6 +380,8 @@
 		<key>tabImage</key>
 		<string>nav_logout</string>
 		<key>title</key>
+		<string>Logout</string>
+		<key>locKey</key>
 		<string>logout_tab_title</string>
 		<key>loginMandatory</key>
 		<true/>
@@ -362,6 +396,8 @@
 		<key>tabImage</key>
 		<string>nav_login</string>
 		<key>title</key>
+		<string>Login</string>
+		<key>locKey</key>
 		<string>login_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>
@@ -376,6 +412,8 @@
 		<key>tabImage</key>
 		<string>info</string>
 		<key>title</key>
+		<string>About Us</string>
+		<key>locKey</key>
 		<string>about_us_tab_title</string>
 		<key>loginMandatory</key>
 		<false/>

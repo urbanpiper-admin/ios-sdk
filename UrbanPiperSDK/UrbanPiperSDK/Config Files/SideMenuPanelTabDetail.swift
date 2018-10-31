@@ -16,7 +16,6 @@ import Foundation
     case wallet
     case referral
     case offers
-    case coupons
     case schedule
     case bookTable
     case feedbackOld
@@ -44,7 +43,6 @@ import Foundation
         case "Pay_tab": self = .wallet
         case "ReferEarn_tab": self = .referral
         case "Offer_tab": self = .offers
-        case "Coupons_tab": self = .coupons
         case "Schedule_tab": self = .schedule
         case "Book_table_tab": self = .bookTable
         case "Feedback_tab": self = .feedbackOld
@@ -73,7 +71,6 @@ import Foundation
         case .wallet: return "Pay_tab"
         case .referral: return "ReferEarn_tab"
         case .offers: return "Offer_tab"
-        case .coupons: return "Coupons_tab"
         case .schedule: return "Schedule_tab"
         case .bookTable: return "Book_table_tab"
         case .feedbackOld: return "Feedback_tab"
@@ -103,6 +100,7 @@ public class SideMenuPanelTabDetail : NSObject {
 	public var tabSelectedIcon : String?
 	public var tag : Module!
 	public var title : String!
+    public var locKey : String!
 	public var url : String?
 
 
@@ -115,6 +113,7 @@ public class SideMenuPanelTabDetail : NSObject {
 		tabSelectedIcon = dictionary["tabSelectedIcon"] as? String
 		tag = Module.init(rawValue: dictionary["tag"] as! String)
 		title = dictionary["title"] as? String
+        locKey = dictionary["locKey"] as? String
 		url = dictionary["url"] as? String
 	}
 

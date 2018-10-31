@@ -19,7 +19,7 @@ class AppsFlyerObserver: AnalyticsObserver {
     
     override func track(event: AnalyticsEvent) {
         switch event {
-        case .appLaunch:
+        case .appLaunch(_):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
             tracker.trackAppLaunch()
         case .addToCart(let item, _, _):

@@ -13,26 +13,14 @@ class MixpanelObserver: AnalyticsObserver {
     override func initializeTracker() {
         guard let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 else { return }
         Mixpanel.initialize(token: token)
-        
-        let theme: String
-        
-        #if NEWTON
-        theme = "newton"
-        #else
-        if AppConfigManager.shared.firRemoteConfigDefaults.enableItemDirectLoading {
-            theme = "curie"
-        } else {
-            theme = "raman"
-        }
-        #endif
-        Mixpanel.mainInstance().registerSuperProperties(["theme": theme,
-                                                         "platform": "ios"])
     }
  
     override func track(event: AnalyticsEvent) {
         switch event {
-        case .appLaunch:
+        case .appLaunch(let theme):
             guard let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 else { return }
+            Mixpanel.mainInstance().registerSuperProperties(["theme": theme,
+                                                             "platform": "ios"])
             Mixpanel.mainInstance().track(event: "ppr-app-launched",
                                           properties: ["interval_of_day" : Date.currentHourRangeString])
         case .nearestStoreFound(let lat, let lng, let storeName):

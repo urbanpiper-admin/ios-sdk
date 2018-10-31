@@ -63,11 +63,7 @@ extension FirRemoteConfigDefaults {
         }
 
         if moduleOffers {
-            #if RATNADEEP
             stringArray.append(Module.offers.rawValue)
-            #else
-            stringArray.append(Module.coupons.rawValue)
-            #endif
         }
 
 //        if "custom offer enabled" {
