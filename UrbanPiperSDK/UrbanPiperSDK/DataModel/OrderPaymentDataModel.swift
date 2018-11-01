@@ -105,6 +105,10 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
             guard orderPreProcessingResponse != nil else { return }
             applyWalletCredits = orderPreProcessingResponse?.order.walletCreditApplicable ?? false
             
+            if selectedPaymentOption == .select, selectedPaymentOption != defaultPaymentOption {
+                selectedPaymentOption = defaultPaymentOption
+            }
+            
             if applyCouponResponse != nil && couponCode != nil {
                 let code = couponCode!
                 let isSuggested = isSuggestedCoupon
@@ -482,7 +486,7 @@ extension OrderPaymentDataModel {
         
         dataModelDelegate?.placingOrder(isProcessing: true)
         
-        let timeSlotDelivery: Bool = AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots!
+        let timeSlotDelivery: Bool = AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots
         
         let paymentOption = selectedPaymentOption
         let dataTask: URLSessionDataTask = APIManager.shared.placeOrder(address: selectedDeliveryOption != .pickUp ? deliveryAddress : nil,

@@ -20,6 +20,7 @@ public class ItemObject : NSObject{
 	public var imageUrl : String!
 	public var itemDesc : String!
 	public var itemPrice : Decimal!
+    public var total : Decimal!
 	public var itemTitle : String!
 	public var likes : Int!
 	public var optionGroups : [ItemOptionGroup]!
@@ -61,13 +62,22 @@ public class ItemObject : NSObject{
 		imageUrl = dictionary["image_url"] as? String
 		itemDesc = dictionary["item_desc"] as? String
 
-        let priceVal: Any = dictionary["item_price"] ?? dictionary["price"] as Any
+        var priceVal: Any = dictionary["item_price"] ?? dictionary["price"] as Any
         if let val: Decimal = priceVal as? Decimal {
             itemPrice = val
         } else if let val: Double = priceVal as? Double {
             itemPrice = Decimal(val).rounded
         } else {
             itemPrice = Decimal.zero
+        }
+        
+        priceVal = dictionary["total"]
+        if let val: Decimal = priceVal as? Decimal {
+            total = val
+        } else if let val: Double = priceVal as? Double {
+            total = Decimal(val).rounded
+        } else {
+            total = Decimal.zero
         }
 
 		itemTitle = dictionary["item_title"] as? String ?? dictionary["title"] as? String
@@ -138,6 +148,9 @@ public class ItemObject : NSObject{
         if itemPrice != nil{
             dictionary["item_price"] = itemPrice
         }
+        if total != nil{
+            dictionary["total"] = total
+        }
         if itemTitle != nil{
             dictionary["item_title"] = itemTitle
         }
@@ -201,6 +214,7 @@ public class ItemObject : NSObject{
 //         imageUrl = aDecoder.decodeObject(forKey: "image_url") as? String
 //         itemDesc = aDecoder.decodeObject(forKey: "item_desc") as? String
 //         itemPrice = aDecoder.decodeObject(forKey: "item_price") as? Decimal
+//         total = aDecoder.decodeObject(forKey: "total") as? Decimal
 //         itemTitle = aDecoder.decodeObject(forKey: "item_title") as? String
 //         likes = aDecoder.decodeObject(forKey: "likes") as? Int
 //         optionGroups = aDecoder.decodeObject(forKey :"option_groups") as? [ItemOptionGroup]
@@ -251,6 +265,9 @@ public class ItemObject : NSObject{
 //        }
 //        if itemPrice != nil{
 //            aCoder.encode(itemPrice, forKey: "item_price")
+//        }
+//        if total != nil{
+//            aCoder.encode(total, forKey: "total")
 //        }
 //        if itemTitle != nil{
 //            aCoder.encode(itemTitle, forKey: "item_title")

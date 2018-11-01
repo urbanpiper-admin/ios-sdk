@@ -15,6 +15,7 @@ import UIKit
 public class SideMenuPanelDataModel: UrbanPiperDataModel {
     
     public var hideLoginTab: Bool = false
+    public var hideSettingsTabForGuestUser: Bool = false
 
     public var panelDetailArray: [SideMenuPanelTabDetail] {
         if AppUserDataModel.shared.validAppUserData != nil {
@@ -22,6 +23,8 @@ public class SideMenuPanelDataModel: UrbanPiperDataModel {
         } else {
             if hideLoginTab {
                 return AppConfigManager.shared.guestUserSidePanelTabs.filter { $0.tag != Module.login }
+            } else if hideSettingsTabForGuestUser {
+                return AppConfigManager.shared.guestUserSidePanelTabs.filter { $0.tag != Module.settings }
             } else {
                 return AppConfigManager.shared.guestUserSidePanelTabs
             }
