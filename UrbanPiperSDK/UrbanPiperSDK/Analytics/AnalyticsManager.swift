@@ -54,19 +54,13 @@ public enum AnalyticsEvent {
     case bizInfoUpdated;
 }
 
-#if !DEBUG
-import AppsFlyerLib
-import Mixpanel
-import GoogleAnalyticsSDK
-#endif
-
 public class AnalyticsManager: NSObject {
     
     @objc public static let shared: AnalyticsManager = {
         let manager = AnalyticsManager()
         manager.addObserver(observer: MixpanelObserver())
         manager.addObserver(observer: GAObserver())
-        manager.addObserver(observer: AppsFlyerObserver())
+//        manager.addObserver(observer: AppsFlyerObserver())
         return manager
     }()
     

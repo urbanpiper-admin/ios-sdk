@@ -80,7 +80,7 @@ import Foundation
     static var uuidString: String! {
         get {
             guard let uuidStringVal: String = APIManager.keychain.string(forKey: APIManager.KeyChainUUIDString) else {
-                let newUUIDString: String = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
+                let newUUIDString: String = UUID().uuidString
                 APIManager.keychain.set(newUUIDString, forKey: APIManager.KeyChainUUIDString)
                 return newUUIDString
             }
