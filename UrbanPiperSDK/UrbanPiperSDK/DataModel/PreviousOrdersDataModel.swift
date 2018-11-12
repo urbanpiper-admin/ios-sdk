@@ -57,6 +57,10 @@ open class PreviousOrdersDataModel: UrbanPiperDataModel {
 }
 
 extension PreviousOrdersDataModel: AppUserDataModelDelegate {
+    public func logout() {
+        
+    }
+    
     
     public func refreshAppUserUI(isRefreshing: Bool) {
         if myOrdersArray == nil || myOrdersArray!.count == 0 {

@@ -70,6 +70,7 @@ public class User : NSObject, NSCoding{
 	public var message : String!
 	public var success : Bool!
 	public var timestamp : String!
+    public var jwt: JWT!
 
     @objc public var password: String? {
         didSet {
@@ -154,7 +155,6 @@ public class User : NSObject, NSCoding{
 	}
     
     public func update(fromDictionary dictionary: [String: Any]) {
-        print("\(dictionary as AnyObject)")
         address = dictionary["address"] as? String
         anniversary = dictionary["anniversary"] as? Int
         birthday = dictionary["birthday"] as? Int
@@ -165,7 +165,23 @@ public class User : NSObject, NSCoding{
         lastName = dictionary["last_name"] as? String
         phone = dictionary["phone"] as? String
     }
-
+    
+    public convenience init(jwtToken: String) {
+        self.init()
+        update(fromJWTToken: jwtToken)
+        message = UserStatus.valid.rawValue
+    }
+    
+    public func update(fromJWTToken jwtToken: String) -> User {
+        jwt = JWT(jwtToken: jwtToken, decodeHandler: { [weak self] (dictionary) in
+            self?.email = dictionary["email"] as? String
+            self?.phone = dictionary["phone"] as? String
+            self?.firstName = dictionary["first_name"] as? String
+            self?.lastName = dictionary["last_name"] as? String
+        })
+        return self
+    }
+    
 //    /**
 //     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
@@ -236,6 +252,9 @@ public class User : NSObject, NSCoding{
 //        if lastName != nil{
 //            dictionary["last_name"] = lastName
 //        }
+//        if jwt != nil{
+//            dictionary["jwt"] = jwt.toDictionary()
+//        }
 //        
 //        return dictionary
 //    }
@@ -277,7 +296,7 @@ public class User : NSObject, NSCoding{
         birthday = aDecoder.decodeObject(forKey: "birthday") as? Int
         currentCity = aDecoder.decodeObject(forKey: "current_city") as? String
         lastName = aDecoder.decodeObject(forKey: "last_name") as? String
-
+        jwt = aDecoder.decodeObject(forKey: "jwt") as? JWT
 	}
 
     /**
@@ -347,6 +366,9 @@ public class User : NSObject, NSCoding{
         }
         if lastName != nil{
             aCoder.encode(lastName, forKey: "last_name")
+        }
+        if jwt != nil{
+            aCoder.encode(jwt, forKey: "jwt")
         }
 	}
 

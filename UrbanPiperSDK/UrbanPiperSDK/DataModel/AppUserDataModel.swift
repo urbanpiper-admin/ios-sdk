@@ -23,6 +23,7 @@ import FirebaseInstanceID
     @objc optional func refreshBizInfoUI(isRefreshing: Bool, isFirstUpdate: Bool)
     @objc optional func handleBizInfoAPI(error: UPError?)
 
+    func logout()
 }
 
 public struct Simpl {
@@ -148,7 +149,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
     }
     
     @objc public var validAppUserData: User? {
-        guard let user = appUserData, user.userStatus == .valid, user.isValid else { return nil }
+        guard let user = appUserData, user.userStatus == .valid else { return nil }
         return user
     }
         
@@ -209,6 +210,8 @@ public class AppUserDataModel: UrbanPiperDataModel {
       
         UserDefaults.standard.removeObject(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey)
         UserDefaults.standard.removeObject(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
+        
+        let _ = observers.map { $0.value?.logout() }
     }
     
 }
@@ -353,9 +356,7 @@ extension AppUserDataModel {
                                                     completion(nil, nil)
                                                     return
                                                 }
-                                                appUserData.password = password
-                                                appUserData.message = UserStatus.valid.rawValue
-                                                if appUserData.isValid {
+                                                if appUserData.userStatus == .valid {
                                                     AppUserDataModel.shared.appUserData = appUserData
                                                     AnalyticsManager.shared.track(event: .loginSuccess(phone: user.phone))
                                                 } else {

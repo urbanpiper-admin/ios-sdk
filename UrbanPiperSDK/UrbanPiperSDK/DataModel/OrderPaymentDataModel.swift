@@ -439,7 +439,7 @@ extension OrderPaymentDataModel {
 //                    if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon == code {
 //                        self?.globalCouponApplied = false
 //                    }
-                    let upApiError = UPAPIError(error: nil, data: nil, responseObject: applyCouponResponse?.discount.toDictionary())
+                    let upApiError = UPAPIError(responseObject: applyCouponResponse?.discount.toDictionary())
                     self?.dataModelDelegate?.handleApplyCoupon(code: code, error: upApiError)
                     AnalyticsManager.shared.track(event: .couponFailed(discount: Decimal.zero, couponCode: code, isSuggested: isSuggested, preSelected: preSelected))
                     
@@ -586,6 +586,10 @@ extension OrderPaymentDataModel {
 }
 
 extension OrderPaymentDataModel: AppUserDataModelDelegate {
+    
+    public func logout() {
+        
+    }
 
     public func refreshBizInfoUI(isRefreshing: Bool, isFirstUpdate: Bool) {
         guard !isRefreshing else { return }

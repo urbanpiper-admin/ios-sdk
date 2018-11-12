@@ -87,7 +87,7 @@ extension BannersDataModel {
 extension BannersDataModel {
 
     public override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let count = bannersListArray?.count {
+        if let count = bannersResponse?.images?.count {
             guard count > 1 else { return count }
             return count + 2
         } else {

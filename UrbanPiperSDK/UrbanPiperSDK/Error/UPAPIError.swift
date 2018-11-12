@@ -10,15 +10,7 @@ import UIKit
 
 @objc public class UPAPIError: UPError {
 
-    public convenience init?(error: Error? = nil, data: Data? = nil, responseObject: [String: Any]? = nil) {
-        var errorCode = 0
-        
-        if error != nil {
-            let nsError = error! as NSError
-            errorCode = nsError.code
-            guard nsError.code != NSURLErrorCancelled else { return nil }
-        }
-        
+    public convenience init?(errorCode: Int = 0, data: Data? = nil, responseObject: [String: Any]? = nil) {        
         self.init(type: .apiError, errorCode: errorCode, data: data, responseObject: responseObject)
     }
 

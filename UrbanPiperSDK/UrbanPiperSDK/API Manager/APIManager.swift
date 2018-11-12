@@ -92,39 +92,24 @@ import Foundation
         super.init()
         self.language = language
         updateHeaders()
+        refreshToken()
     }
     
     internal class func initializeManager(language: Language) {
         shared = APIManager(language: language)
     }
     
-    func normalLoginUserAuthString(phone: String?, password: String?) -> String? {
-        guard let pNo: String = phone, pNo.count > 0 else { return nil }
-        guard let passwordString: String = password, passwordString.count > 0 else { return nil }
-        
-        let bizId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
-        
-        let authString: String = "\(pNo)__\(bizId):\(passwordString)"
-        
-        let data: Data = authString.data(using: String.Encoding.utf8)!
-        let encodedAuthString: String = data.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-        
-        let returnVal: String = "Basic \(encodedAuthString)"
-        
-        return returnVal
+    public func refreshToken() {
+        guard let jwt = AppUserDataModel.shared.validAppUserData?.jwt, jwt.shouldRefreshToken else { return }
+        let task = refreshToken(token: jwt.token, completion: { [weak self] (newToken) in
+            guard let token = newToken else { return }
+            let user = AppUserDataModel.shared.validAppUserData?.update(fromJWTToken: token)
+            AppUserDataModel.shared.appUserData = user
+            self?.updateHeaders()
+        }, failure: nil)
+        task.resume()
     }
-    
-    func socialLoginUserAuthString(email: String?, accessToken: String?) -> String? {
-        guard let emailId = email, let token = accessToken, emailId.count > 0, token.count > 0 else { return nil }
-                
-        let authString: String = "\(emailId):\(token)"
-        
-        let data = authString.data(using: String.Encoding.utf8)
-        let encodedAuthString: String = data!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-        
-        return "Basic \(encodedAuthString)"
-    }
-    
+
     func bizAuth() -> String {
         let apiUsername: String = AppConfigManager.shared.firRemoteConfigDefaults.apiUsername
         let apiKey: String = AppConfigManager.shared.firRemoteConfigDefaults.apiKey
@@ -133,12 +118,8 @@ import Foundation
     }
     
     @objc public func authorizationKey() -> String {
-        let user = AppUserDataModel.shared.validAppUserData
-
-        if let normalAuthString: String = normalLoginUserAuthString(phone: user?.phoneNumberWithCountryCode, password: user?.password) {
-            return normalAuthString
-        } else if let socialAuthString: String = socialLoginUserAuthString(email: user?.email, accessToken: user?.accessToken) {
-            return socialAuthString
+        if let token: String = AppUserDataModel.shared.validAppUserData?.jwt?.token {
+            return "Bearer \(token)"
         } else {
             return bizAuth()
         }
@@ -162,6 +143,22 @@ import Foundation
         session = URLSession(configuration: sessionConfig,
                              delegate: self,
                              delegateQueue: nil)
+    }
+    
+    public func handleAPIError(errorCode: Int = 0, data: Data?, failureClosure: APIFailure?) {
+        if let httpStatusCode = HTTPStatusCode(rawValue: errorCode), httpStatusCode == .unauthorized {
+            AppUserDataModel.shared.reset()
+            return
+        }
+        if let closure = failureClosure {
+            DispatchQueue.main.async {
+                if let apiError: UPAPIError = UPAPIError(errorCode: errorCode, data: data) {
+                    closure(apiError as UPError)
+                } else {
+                    closure(nil)
+                }
+            }
+        }
     }
 
 }

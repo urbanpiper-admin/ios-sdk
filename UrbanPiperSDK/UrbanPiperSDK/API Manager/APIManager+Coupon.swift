@@ -26,9 +26,10 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
-            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode
+            if let code = statusCode, code == 200 {
                 guard let completionClosure = completion else { return }
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
@@ -44,12 +45,7 @@ extension APIManager {
                     completionClosure(nil)
                 }
             } else {
-                if let failureClosure = failure {
-                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
-                    DispatchQueue.main.async {
-                        failureClosure(apiError as UPError)
-                    }
-                }
+                self?.handleAPIError(errorCode: statusCode ?? 0, data: data, failureClosure: failure)
             }
             
         }
@@ -84,9 +80,10 @@ extension APIManager {
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
-            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode
+            if let code = statusCode, code == 200 {
                 guard let completionClosure = completion else { return }
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
@@ -102,12 +99,7 @@ extension APIManager {
                     completionClosure(nil)
                 }
             } else {
-                if let failureClosure = failure {
-                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
-                    DispatchQueue.main.async {
-                        failureClosure(apiError as UPError)
-                    }
-                }
+                self?.handleAPIError(errorCode: statusCode ?? 0, data: data, failureClosure: failure)
             }
             
         }

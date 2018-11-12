@@ -12,29 +12,75 @@ extension APIManager {
 
     static let cardBaseUrl: String = "\(APIManager.baseUrl)/api/v2/card"
     
+    public func refreshToken(token: String,
+                             completion: ((String?) -> Void)?,
+                             failure: APIFailure?) -> URLSessionDataTask {
+        
+        let urlString: String = "\(APIManager.baseUrl)/api/v2/auth/refresh-token/"
+        
+        let url: URL = URL(string: urlString)!
+        
+        var urlRequest: URLRequest = URLRequest(url: url)
+
+        urlRequest.setValue(bizAuth(), forHTTPHeaderField: "Authorization")
+
+        urlRequest.httpMethod = "POST"
+        
+        let params: [String: Any] = ["token": token]
+        
+        urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+        
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+            
+            let statusCode = (response as? HTTPURLResponse)?.statusCode
+            if let code = statusCode, code == 200 {
+                guard let completionClosure = completion else { return }
+                
+                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any], let newToken = dictionary["token"] as? String {
+                    DispatchQueue.main.async {
+                        completionClosure(newToken)
+                    }
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    completionClosure(nil)
+                }
+            } else {
+                self?.handleAPIError(errorCode: statusCode ?? 0, data: data, failureClosure: failure)
+            }
+            
+        }
+        
+        return dataTask
+    }
+    
     @objc public func login(user: User,
                      password: String,
                      completion: ((User?) -> Void)?,
                      failure: APIFailure?) -> URLSessionDataTask {
         
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/auth/me/?format=json/"
+        let urlString: String = "\(APIManager.baseUrl)/api/v2/auth/token/"
 
         let url: URL = URL(string: urlString)!
         
         var urlRequest: URLRequest = URLRequest(url: url)
         
-        urlRequest.setValue(normalLoginUserAuthString(phone: user.phoneNumberWithCountryCode, password: password)!,
-                            forHTTPHeaderField: "Authorization")
-                
-        urlRequest.httpMethod = "GET"
+        urlRequest.httpMethod = "POST"
         
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
+        let params: [String: Any] = ["username": user.phoneNumberWithCountryCode,
+                                     "pass": password]
+        
+        urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
-            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode
+            if let code = statusCode, code == 200 {
                 guard let completionClosure = completion else { return }
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let appUser: User = User(fromDictionary: dictionary)
+                    let appUser = User(jwtToken: (dictionary["token"] as! String))
                     DispatchQueue.main.async {
                         completionClosure(appUser)
                     }
@@ -45,12 +91,7 @@ extension APIManager {
                     completionClosure(nil)
                 }
             } else {
-                if let failureClosure = failure {
-                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
-                    DispatchQueue.main.async {
-                        failureClosure(apiError as UPError)
-                    }
-                }
+                self?.handleAPIError(errorCode: statusCode ?? 0, data: data, failureClosure: failure)
             }
             
         }
@@ -76,9 +117,10 @@ extension APIManager {
 
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
-            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode
+            if let code = statusCode, code == 200 {
                 guard let completionClosure = completion else { return }
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
@@ -93,12 +135,7 @@ extension APIManager {
                     completionClosure(nil)
                 }
             } else {
-                if let failureClosure = failure {
-                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
-                    DispatchQueue.main.async {
-                        failureClosure(apiError as UPError)
-                    }
-                }
+                self?.handleAPIError(errorCode: statusCode ?? 0, data: data, failureClosure: failure)
             }
             
         }
@@ -130,9 +167,10 @@ extension APIManager {
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
-            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode
+            if let code = statusCode, code == 200 {
                 guard let completionClosure = completion else { return }
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
@@ -147,12 +185,7 @@ extension APIManager {
                     completionClosure(nil)
                 }
             } else {
-                if let failureClosure = failure {
-                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
-                    DispatchQueue.main.async {
-                        failureClosure(apiError as UPError)
-                    }
-                }
+                self?.handleAPIError(errorCode: statusCode ?? 0, data: data, failureClosure: failure)
             }
             
         }
@@ -179,9 +212,10 @@ extension APIManager {
             urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])            
         }
 
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { (data: Data?, response: URLResponse?, error: Error?) in
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
-            if let httpResponse: HTTPURLResponse = response as? HTTPURLResponse, (httpResponse.statusCode == 200 || httpResponse.statusCode == 201) {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode
+            if let code = statusCode, (code == 200 || code == 201) {
                 guard let completionClosure = completion else { return }
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
@@ -197,12 +231,7 @@ extension APIManager {
                     completionClosure(nil)
                 }
             } else {
-                if let failureClosure = failure {
-                    guard let apiError: UPAPIError = UPAPIError(error: error, data: data) else { return }
-                    DispatchQueue.main.async {
-                        failureClosure(apiError as UPError)
-                    }
-                }
+                self?.handleAPIError(errorCode: statusCode ?? 0, data: data, failureClosure: failure)
             }
             
         }
