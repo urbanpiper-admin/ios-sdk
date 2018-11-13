@@ -279,7 +279,7 @@ public enum Language: String {
 			aCoder.encode(paymentOptions, forKey: "payment_options")
 		}
         if supportedLanguages != nil{
-            aCoder.encode(paymentOptions, forKey: "supported_languages")
+            aCoder.encode(supportedLanguages, forKey: "supported_languages")
         }
 		if paypalClientToken != nil{
 			aCoder.encode(paypalClientToken, forKey: "paypal_client_token")

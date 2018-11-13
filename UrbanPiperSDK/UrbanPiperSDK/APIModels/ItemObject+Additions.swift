@@ -54,6 +54,12 @@ extension ItemObject: NSCopying {
         guard descriptionArray.count > 0 else { return nil }
         return descriptionArray.joined(separator: "\n")
     }
+    
+    public var orderOptionsText: String? {
+        let descriptionArray: [String] = orderOptionsToAdd.compactMap { $0.descriptionText }
+        guard descriptionArray.count > 0 else { return nil }
+        return descriptionArray.joined(separator: "\n")
+    }
 
     public var optionsToAdd: [[String : Int]]? {
         var options: [[String : Int]] = [[String : Int]]()
