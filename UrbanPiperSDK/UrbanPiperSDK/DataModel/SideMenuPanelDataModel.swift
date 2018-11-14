@@ -21,13 +21,18 @@ public class SideMenuPanelDataModel: UrbanPiperDataModel {
         if AppUserDataModel.shared.validAppUserData != nil {
             return AppConfigManager.shared.loggedInUserSidePanelTabs.filter { $0.tag != Module.login }
         } else {
+            var guestUserTabs = AppConfigManager.shared.guestUserSidePanelTabs
+            
             if hideLoginTab {
-                return AppConfigManager.shared.guestUserSidePanelTabs.filter { $0.tag != Module.login }
-            } else if hideSettingsTabForGuestUser {
-                return AppConfigManager.shared.guestUserSidePanelTabs.filter { $0.tag != Module.settings }
-            } else {
-                return AppConfigManager.shared.guestUserSidePanelTabs
+                guestUserTabs = guestUserTabs.filter { $0.tag != Module.login }
             }
+            
+            let supportedLanguagesCount = Biz.shared?.supportedLanguages.count ?? 1
+            if supportedLanguagesCount == 1 || hideSettingsTabForGuestUser {
+                guestUserTabs = guestUserTabs.filter { $0.tag != Module.settings }
+            }
+            
+            return guestUserTabs
         }
     }
 

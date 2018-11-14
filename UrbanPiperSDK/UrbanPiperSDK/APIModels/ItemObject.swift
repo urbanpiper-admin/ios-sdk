@@ -24,6 +24,8 @@ public class ItemObject : NSObject{
 	public var itemTitle : String!
 	public var likes : Int!
 	public var optionGroups : [ItemOptionGroup]!
+    public var orderOptionsToAdd : [ItemOption]!
+    public var orderOptionsToRemove : [ItemOption]!
 	public var priceDescriptor : String!
 	public var serviceTaxRate : Float!
     public var preOrderStartTime : Int?
@@ -92,6 +94,21 @@ public class ItemObject : NSObject{
                 optionGroups.sort { $0.sortOrder < $1.sortOrder }
             }
 		}
+        orderOptionsToAdd = [ItemOption]()
+        if let orderOptionsToAddArray: [[String:Any]] = dictionary["options_to_add"] as? [[String:Any]]{
+            for dic in orderOptionsToAddArray{
+                let value: ItemOption = ItemOption(fromDictionary: dic)
+                orderOptionsToAdd.append(value)
+            }
+        }
+        orderOptionsToRemove = [ItemOption]()
+        if let orderOptionsToRemoveArray: [[String:Any]] = dictionary["options_to_remove"] as? [[String:Any]]{
+            for dic in orderOptionsToRemoveArray{
+                let value: ItemOption = ItemOption(fromDictionary: dic)
+                orderOptionsToRemove.append(value)
+            }
+        }
+
         priceDescriptor = dictionary["price_descriptor"] as? String
 		serviceTaxRate = dictionary["service_tax_rate"] as? Float
         preOrderStartTime = dictionary["pre_order_start_time"] as? Int
@@ -164,6 +181,20 @@ public class ItemObject : NSObject{
             }
             dictionary["option_groups"] = dictionaryElements
         }
+        if orderOptionsToAdd != nil{
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            for orderOptionsToAddElement in orderOptionsToAdd {
+                dictionaryElements.append(orderOptionsToAddElement.toDictionary())
+            }
+            dictionary["options_to_add"] = dictionaryElements
+        }
+        if orderOptionsToRemove != nil{
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            for orderOptionsToRemoveElement in orderOptionsToRemove {
+                dictionaryElements.append(orderOptionsToRemoveElement.toDictionary())
+            }
+            dictionary["options_to_remove"] = dictionaryElements
+        }
         if priceDescriptor != nil{
             dictionary["price_descriptor"] = priceDescriptor
         }
@@ -218,6 +249,8 @@ public class ItemObject : NSObject{
 //         itemTitle = aDecoder.decodeObject(forKey: "item_title") as? String
 //         likes = aDecoder.decodeObject(forKey: "likes") as? Int
 //         optionGroups = aDecoder.decodeObject(forKey :"option_groups") as? [ItemOptionGroup]
+//         optionsToAdd = aDecoder.decodeObject(forKey :"options_to_add") as? [ItemOption]
+//         optionsToRemove = aDecoder.decodeObject(forKey :"options_to_remove") as? [ItemOption]
 //         priceDescriptor = aDecoder.decodeObject(forKey: "price_descriptor") as? String
 //         serviceTaxRate = aDecoder.decodeObject(forKey: "service_tax_rate") as? Float
 //        preOrderStartTime = aDecoder.decodeObject(forKey: "pre_order_start_time") as? Int
@@ -277,6 +310,12 @@ public class ItemObject : NSObject{
 //        }
 //        if optionGroups != nil{
 //            aCoder.encode(optionGroups, forKey: "option_groups")
+//        }
+//        if optionsToAdd != nil{
+//            aCoder.encode(optionsToAdd, forKey: "options_to_add")
+//        }
+//        if optionsToRemove != nil{
+//            aCoder.encode(optionsToRemove, forKey: "options_to_remove")
 //        }
 //        if priceDescriptor != nil{
 //            aCoder.encode(priceDescriptor, forKey: "price_descriptor")

@@ -55,6 +55,10 @@ import Foundation
         Store.registerClassName()
         Store.registerClassNameWhiteLabel()
         biz = aDecoder.decodeObject(forKey: "biz") as? Biz
+        
+//      Remove this code after next release
+        biz.supportedLanguages = ["en"]
+        
         Biz.shared = biz
         store = aDecoder.decodeObject(forKey: "store") as? Store
     }
