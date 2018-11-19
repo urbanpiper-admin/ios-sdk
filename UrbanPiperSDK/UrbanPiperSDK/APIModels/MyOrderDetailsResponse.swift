@@ -10,8 +10,8 @@ import Foundation
 
 public class MyOrderDetailsResponse : NSObject{
 
-	public var customer : Customer!
-	public var order : OrderDetails!
+	@objc public var customer : Customer!
+	@objc public var order : OrderDetails!
 
 
 	/**

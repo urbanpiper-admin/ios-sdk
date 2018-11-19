@@ -54,7 +54,7 @@ extension APIManager {
         return dataTask
     }
     
-    public func fetchOrderDetails(orderId: Int,
+    @objc public func fetchOrderDetails(orderId: Int,
                                   completion: ((MyOrderDetailsResponse?) -> Void)?,
                                   failure: APIFailure?) -> URLSessionDataTask {
         

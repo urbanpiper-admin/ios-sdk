@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class ItemObject : NSObject{
+@objc public class ItemObject : NSObject{
 
 	public var category : ItemCategory!
 	public var currentStock : Int!
@@ -226,6 +226,7 @@ public class ItemObject : NSObject{
         if vatRate != nil{
             dictionary["vat_rate"] = vatRate
         }
+        dictionary["quantity"] = quantity
         return dictionary
     }
 

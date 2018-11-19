@@ -8,12 +8,12 @@
 import Foundation
 
 
-public class Customer : NSObject{
+@objc public class Customer : NSObject{
 
-	public var address : Address!
-	public var email : String!
-	public var name : String!
-	public var phone : String!
+	@objc public var address : Address!
+	@objc public var email : String!
+	@objc public var name : String!
+	@objc public var phone : String!
 
 
 	/**

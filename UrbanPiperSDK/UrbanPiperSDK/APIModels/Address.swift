@@ -15,7 +15,7 @@ public enum AddressTag: String {
 }
 
 
-public class Address : NSObject, NSCoding {
+@objc public class Address : NSObject, NSCoding {
 
 	public var address1 : String!
 	public var address2 : String!
@@ -27,18 +27,18 @@ public class Address : NSObject, NSCoding {
 	@objc public var pin : String!
 	public var podId : Int!
 	@objc public var subLocality : String!
-	public var tag : String!
+	@objc public var tag : String!
     
     public var addressTag: AddressTag {
         guard let tagString: String = tag, let addressTagVal: AddressTag = AddressTag(rawValue: tagString.lowercased()) else { return .other }
         return addressTagVal
     }
     
-    public var addressString: String? {
+    @objc public var addressString: String? {
         return fullAddress?.replacingOccurrences(of: "\n", with: ", ")
     }
     
-    public var fullAddress: String? {
+    @objc public var fullAddress: String? {
         var fullAddress: String = ""
         if let string = address1 {
             fullAddress = "\(fullAddress + string)\n"
@@ -166,7 +166,7 @@ public class Address : NSObject, NSCoding {
         }
         
         if let line1: String = dictionary["line_1"] as? String {
-            address2 = line1
+            address1 = line1
         } else {
             address1 = dictionary["address_1"] as? String
         }
@@ -181,7 +181,7 @@ public class Address : NSObject, NSCoding {
 		pin = dictionary["pin"] as? String
 		podId = dictionary["pod_id"] as? Int
 		subLocality = dictionary["sub_locality"] as? String
-		tag = dictionary["tag"] as? String
+		tag = dictionary["tag"] as? String ?? AddressTag.other.rawValue
 	}
 
 //    /**

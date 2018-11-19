@@ -56,31 +56,31 @@ public enum OrderStatus: String {
     
 }
 
-public class MyOrder : NSObject{
+@objc public class MyOrder : NSObject{
 
 	public var address : String!
 	public var bizLocationId : Int!
 	public var channel : String!
 	public var charges : [Charge]!
-	public var coupon : String!
-	public var created : Int!
+	@objc public var coupon : String!
+	@objc public var created : Int = 0
 	public var customerName : String!
 	public var deliveryAddressRef : Int!
-	public var deliveryDatetime : Int!
+	@objc public var deliveryDatetime : Int = 0
 	public var discount : Decimal!
-	public var id : Int!
+	@objc public var id : Int = 0
 	public var instructions : String!
 	public var itemLevelTotalCharges : Float!
 	public var itemLevelTotalTaxes : Float!
-	public var merchantRefId : Int!
+	@objc public var merchantRefId : Int = 0
 	public var orderLevelTotalCharges : Float!
 	public var orderLevelTotalTaxes : Float!
-	public var orderState : String!
+	@objc public var orderState : String!
 	public var orderSubtotal : Decimal!
 	public var orderTotal : Decimal!
 	public var orderType : String!
 	public var paymentOption : String!
-	public var phone : String!
+	@objc public var phone : String!
 	public var taxAmt : Decimal!
 	public var taxRate : Float!
 	public var taxes : [AnyObject]!
@@ -88,6 +88,48 @@ public class MyOrder : NSObject{
 	public var totalTaxes : Decimal!
     public var myOrderDetailsResponse: MyOrderDetailsResponse?
 
+
+    @objc public var orderSubTotalString: String {
+        return "\(orderSubtotal.stringVal)"
+    }
+    
+    @objc public var orderTotalString: String {
+        return "\(orderTotal.stringVal)"
+    }
+    
+    public var packagingCharge: Decimal? {
+        return charges.filter({ $0.title == "Packaging charge" }).last?.value
+    }
+    
+    public var deliveryCharge: Decimal? {
+        return charges.filter({ $0.title == "Delivery charge" }).last?.value
+    }
+    
+    @objc public var discountDecimalNumber: NSDecimalNumber? {
+        guard let val = discount else { return nil }
+        return NSDecimalNumber(decimal: val)
+    }
+    
+    @objc public var packingChargeDecimalNumber: NSDecimalNumber? {
+        guard let charge = packagingCharge else { return nil }
+        return NSDecimalNumber(decimal: charge)
+    }
+    
+    @objc public var deliveryChargeDecimalNumber: NSDecimalNumber? {
+        guard let charge = deliveryCharge else { return nil }
+        return NSDecimalNumber(decimal: charge)
+    }
+    
+    @objc public var itemTaxesDecimalNumber: NSDecimalNumber? {
+        guard let val = totalTaxes else { return nil }
+        return NSDecimalNumber(decimal: val)
+    }
+    
+    @objc public var taxAmtDecimalNumber: NSDecimalNumber? {
+        guard let val = taxAmt else { return nil }
+        return NSDecimalNumber(decimal: val)
+    }
+    
 
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
@@ -104,10 +146,10 @@ public class MyOrder : NSObject{
 			}
 		}
 		coupon = dictionary["coupon"] as? String
-		created = dictionary["created"] as? Int
+		created = dictionary["created"] as? Int ?? 0
 		customerName = dictionary["customer_name"] as? String
 		deliveryAddressRef = dictionary["delivery_address_ref"] as? Int
-		deliveryDatetime = dictionary["delivery_datetime"] as? Int
+		deliveryDatetime = dictionary["delivery_datetime"] as? Int ?? 0
         
         if let val: Decimal = dictionary["discount"] as? Decimal {
             discount = val
@@ -117,15 +159,15 @@ public class MyOrder : NSObject{
             discount = Decimal.zero
         }
 
-        id = dictionary["id"] as? Int
+        id = dictionary["id"] as? Int ?? 0
 		instructions = dictionary["instructions"] as? String
 		itemLevelTotalCharges = dictionary["item_level_total_charges"] as? Float
 		itemLevelTotalTaxes = dictionary["item_level_total_taxes"] as? Float
         
         if let refId: String = dictionary["merchant_ref_id"] as? String {
-            merchantRefId = Int(refId)
+            merchantRefId = Int(refId) ?? 0
         } else {
-            merchantRefId = dictionary["merchant_ref_id"] as? Int
+            merchantRefId = dictionary["merchant_ref_id"] as? Int ?? 0
         }
         
 		orderLevelTotalCharges = dictionary["order_level_total_charges"] as? Float
@@ -177,7 +219,7 @@ public class MyOrder : NSObject{
         }
 	}
 
-/*	/**
+	/**
 	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
 	func toDictionary() -> [String:Any]
@@ -217,9 +259,7 @@ public class MyOrder : NSObject{
 		if discount != nil{
 			dictionary["discount"] = discount
 		}
-		if id != nil{
-			dictionary["id"] = id
-		}
+        dictionary["id"] = id
 		if instructions != nil{
 			dictionary["instructions"] = instructions
 		}
@@ -229,9 +269,7 @@ public class MyOrder : NSObject{
 		if itemLevelTotalTaxes != nil{
 			dictionary["item_level_total_taxes"] = itemLevelTotalTaxes
 		}
-		if merchantRefId != nil{
-			dictionary["merchant_ref_id"] = merchantRefId
-		}
+        dictionary["merchant_ref_id"] = merchantRefId
 		if orderLevelTotalCharges != nil{
 			dictionary["order_level_total_charges"] = orderLevelTotalCharges
 		}
@@ -274,7 +312,7 @@ public class MyOrder : NSObject{
 		return dictionary
 	}
 
-    /**
+/*    /**
     * NSCoding required initializer.
     * Fills the data from the passed decoder
     */

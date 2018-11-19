@@ -8,10 +8,10 @@
 import Foundation
 
 
-public class OrderPayment : NSObject{
+@objc public class OrderPayment : NSObject{
 
 	public var amount : Float!
-	public var option : String!
+	@objc public var option : String!
 	public var srvrTrxId : AnyObject!
 
 
@@ -24,7 +24,7 @@ public class OrderPayment : NSObject{
 		srvrTrxId = dictionary["srvr_trx_id"] as AnyObject
 	}
 
-/*	/**
+	/**
 	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
 	func toDictionary() -> [String:Any]
@@ -42,7 +42,7 @@ public class OrderPayment : NSObject{
 		return dictionary
 	}
 
-    /**
+/*    /**
     * NSCoding required initializer.
     * Fills the data from the passed decoder
     */

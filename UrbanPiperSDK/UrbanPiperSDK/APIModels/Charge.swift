@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class Charge : NSObject{
+@objc public class Charge : NSObject{
 
 	public var title : String!
 	public var value : Decimal!
@@ -29,21 +29,21 @@ public class Charge : NSObject{
         }
 	}
 
-//    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    func toDictionary() -> [String:Any]
-//    {
-//        var dictionary: [String : Any] = [String:Any]()
-//        if title != nil{
-//            dictionary["title"] = title
-//        }
-//        if value != nil{
-//            dictionary["value"] = value
-//        }
-//        return dictionary
-//    }
-//
+    /**
+     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String : Any] = [String:Any]()
+        if title != nil{
+            dictionary["title"] = title
+        }
+        if value != nil{
+            dictionary["value"] = value
+        }
+        return dictionary
+    }
+
 //    /**
 //    * NSCoding required initializer.
 //    * Fills the data from the passed decoder

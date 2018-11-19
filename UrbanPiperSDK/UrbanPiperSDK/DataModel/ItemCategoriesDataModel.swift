@@ -24,6 +24,8 @@ open class ItemCategoriesDataModel: UrbanPiperDataModel {
 
     weak open var dataModelDelegate: ItemCategoriesDataModelDelegate?
     
+    public var filterByIds: [Int]?
+
     open var categoriesResponse: CategoriesResponse? {
         didSet {
             tableView?.reloadData()
@@ -108,6 +110,9 @@ extension ItemCategoriesDataModel {
                     self?.dataModelDelegate?.refreshItemCategoriesUI(false)
                 }
                 guard let response = data else { return }
+                if let idsToBeFiltered = self?.filterByIds {
+                    response.objects = response.objects.filter { idsToBeFiltered.contains($0.id) }
+                }
                 self?.categoriesResponse = response
         }, failure: { [weak self] (upError) in
             defer {

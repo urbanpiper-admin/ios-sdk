@@ -128,7 +128,9 @@ extension ItemObject: NSCopying {
 extension ItemObject {
 
     public func copy(with zone: NSZone? = nil) -> Any {
-        return ItemObject(fromDictionary: toDictionary())
+        var dictionary = toDictionary()
+        dictionary.removeValue(forKey: "quantity")
+        return ItemObject(fromDictionary: dictionary)
     }
 
     public func equitableCheckDictionary() -> [String: Any] {

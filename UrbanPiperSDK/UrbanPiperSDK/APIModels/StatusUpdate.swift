@@ -26,7 +26,7 @@ public class StatusUpdate : NSObject{
 		updatedBy = dictionary["updated_by"] as? String
 	}
 
-/*	/**
+	/**
 	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
 	func toDictionary() -> [String:Any]
@@ -47,7 +47,7 @@ public class StatusUpdate : NSObject{
 		return dictionary
 	}
 
-    /**
+/*    /**
     * NSCoding required initializer.
     * Fills the data from the passed decoder
     */

@@ -8,13 +8,13 @@
 import Foundation
 
 
-public class OrderDetails : NSObject{
+@objc public class OrderDetails : NSObject{
 
-	public var details : MyOrder!
-	public var items : [ItemObject]!
+	@objc public var details : MyOrder!
+	@objc public var items : [ItemObject]!
 	public var nextState : AnyObject!
 	public var nextStates : [String]!
-	public var payment : [OrderPayment]!
+	@objc public var payment : [OrderPayment]!
 	public var statusUpdates : [StatusUpdate]!
 	public var store : Store!
 
@@ -54,10 +54,10 @@ public class OrderDetails : NSObject{
 		}
 	}
 
-/*	/**
+	/**
 	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
-	func toDictionary() -> [String:Any]
+	@objc public func toDictionary() -> [String:Any]
 	{
 		var dictionary = [String:Any]()
 		if details != nil{
@@ -96,7 +96,7 @@ public class OrderDetails : NSObject{
 		return dictionary
 	}
 
-    /**
+/*    /**
     * NSCoding required initializer.
     * Fills the data from the passed decoder
     */
