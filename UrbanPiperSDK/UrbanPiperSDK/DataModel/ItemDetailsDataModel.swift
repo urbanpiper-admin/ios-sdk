@@ -109,7 +109,11 @@ extension ItemDetailsDataModel {
                 self?.dataModelDelegate?.refreshItemDetailsUI()
             }
             guard let response = data else { return }
-            self?.item?.update(fromDictionary: response.toDictionary())
+            if self?.item != nil {
+                self?.item?.update(fromDictionary: response.toDictionary())
+            } else {
+                self?.item = response
+            }
         }, failure: { [weak self] (upError) in
             defer {
                 self?.dataModelDelegate?.handleItemDetails(error: upError)

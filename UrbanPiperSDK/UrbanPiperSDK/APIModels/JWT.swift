@@ -19,6 +19,12 @@ public class JWT: NSObject, NSCoding {
         let utcTime: Int = Int(Date().timeIntervalSince1970)
         return Int(0.8 * Double(exp - iat)) < (utcTime - iat)
     }
+    
+    var tokenExpired: Bool {
+        guard exp != nil, iat != nil else { return false }
+        let utcTime: Int = Int(Date().timeIntervalSince1970)
+        return Int(Double(exp - iat)) < (utcTime - iat)
+    }
 
     static func decode(jwtToken jwt: String) -> [String: Any] {
         let segments = jwt.components(separatedBy: ".")

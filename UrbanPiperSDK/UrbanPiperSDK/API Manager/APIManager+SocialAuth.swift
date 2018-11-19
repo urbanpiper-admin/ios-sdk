@@ -61,23 +61,28 @@ extension APIManager {
                 guard let completionClosure = completion else { return }
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let appUser: User = User(fromDictionary: dictionary)
-
-                    appUser.countryCode = user.countryCode
-                   
-                    if appUser.phone == nil || appUser.phone.count == 0 {
-                        appUser.phone = user.phone
+                    let appUser: User
+                    if let jwtToken = dictionary["token"] as? String {
+                        appUser = User(jwtToken: jwtToken)
+                    } else {
+                        appUser = User(fromDictionary: dictionary)
+                        
+                        appUser.countryCode = user.countryCode
+                        
+                        if appUser.phone == nil || appUser.phone.count == 0 {
+                            appUser.phone = user.phone
+                        }
+                        
+                        if appUser.provider == nil {
+                            appUser.provider = user.provider
+                        }
+                        
+                        appUser.gender = user.gender
+                        
+                        appUser.firstName = user.firstName
+                        appUser.email = user.email
+                        appUser.accessToken = user.accessToken
                     }
-                    
-                    if appUser.provider == nil {
-                        appUser.provider = user.provider
-                    }
-                    
-                    appUser.gender = user.gender
-
-                    appUser.firstName = user.firstName
-                    appUser.email = user.email
-                    appUser.accessToken = user.accessToken
                     
                     DispatchQueue.main.async {
                         completionClosure(appUser)

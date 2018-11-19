@@ -44,54 +44,54 @@ public class CardAPIResponse : NSObject{
 		totalBalance = dictionary["total_balance"] as? Float
 	}
 
-//    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    public func toDictionary() -> [String:Any]
-//    {
-//        var dictionary: [String : Any] = [String:Any]()
-//        if approvalCode != nil{
-//            dictionary["approval_code"] = approvalCode
-//        }
-//        if authKey != nil{
-//            dictionary["auth_key"] = authKey
-//        }
-//        if cardNumber != nil{
-//            dictionary["card_number"] = cardNumber
-//        }
-//        if customerEmail != nil{
-//            dictionary["customer_email"] = customerEmail
-//        }
-//        if customerName != nil{
-//            dictionary["customer_name"] = customerName
-//        }
-//        if customerPhone != nil{
-//            dictionary["customer_phone"] = customerPhone
-//        }
-//        if message != nil{
-//            dictionary["message"] = message
-//        }
-//        if points != nil{
-//            dictionary["points"] = points
-//        }
-//        if prepaidBalance != nil{
-//            dictionary["prepaid_balance"] = prepaidBalance
-//        }
-//        if result != nil{
-//            dictionary["result"] = result
-//        }
-//        if success != nil{
-//            dictionary["success"] = success
-//        }
-//        if timestamp != nil{
-//            dictionary["timestamp"] = timestamp
-//        }
-//        if totalBalance != nil{
-//            dictionary["total_balance"] = totalBalance
-//        }
-//        return dictionary
-//    }
-//
+    /**
+     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String : Any] = [String:Any]()
+        if approvalCode != nil{
+            dictionary["approval_code"] = approvalCode
+        }
+        if authKey != nil{
+            dictionary["auth_key"] = authKey
+        }
+        if cardNumber != nil{
+            dictionary["card_number"] = cardNumber
+        }
+        if customerEmail != nil{
+            dictionary["customer_email"] = customerEmail
+        }
+        if customerName != nil{
+            dictionary["customer_name"] = customerName
+        }
+        if customerPhone != nil{
+            dictionary["customer_phone"] = customerPhone
+        }
+        if message != nil{
+            dictionary["message"] = message
+        }
+        if points != nil{
+            dictionary["points"] = points
+        }
+        if prepaidBalance != nil{
+            dictionary["prepaid_balance"] = prepaidBalance
+        }
+        if result != nil{
+            dictionary["result"] = result
+        }
+        if success != nil{
+            dictionary["success"] = success
+        }
+        if timestamp != nil{
+            dictionary["timestamp"] = timestamp
+        }
+        if totalBalance != nil{
+            dictionary["total_balance"] = totalBalance
+        }
+        return dictionary
+    }
+
 //    /**
 //    * NSCoding required initializer.
 //    * Fills the data from the passed decoder

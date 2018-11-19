@@ -146,10 +146,6 @@ import Foundation
     }
     
     public func handleAPIError(errorCode: Int = 0, data: Data?, failureClosure: APIFailure?) {
-        if let httpStatusCode = HTTPStatusCode(rawValue: errorCode), httpStatusCode == .unauthorized {
-            AppUserDataModel.shared.reset()
-            return
-        }
         if let closure = failureClosure {
             DispatchQueue.main.async {
                 if let apiError: UPAPIError = UPAPIError(errorCode: errorCode, data: data) {
@@ -159,6 +155,15 @@ import Foundation
                 }
             }
         }
+
+        guard let jwt = AppUserDataModel.shared.validAppUserData?.jwt,
+            let httpStatusCode = HTTPStatusCode(rawValue: errorCode),
+            httpStatusCode == .unauthorized, jwt.tokenExpired else { return }
+        
+        DispatchQueue.main.async {
+            AppUserDataModel.shared.reset()
+        }
+        return
     }
 
 }

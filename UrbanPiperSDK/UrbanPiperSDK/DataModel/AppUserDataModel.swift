@@ -40,7 +40,7 @@ public struct Simpl {
     }
 }
 
-public typealias CompletionHandler<T> = (T?, Error?) -> Void
+public typealias CompletionHandler<T> = (T?, UPError?) -> Void
 
 public class AppUserDataModel: UrbanPiperDataModel {
 
@@ -305,9 +305,6 @@ extension AppUserDataModel {
                                             guard let dataModel = self, let user = dataModel.appUserData else { return }
                                             dataModel.observers = dataModel.observers.filter { $0.value != nil }
                                             let _ = dataModel.observers.map { $0.value?.refreshUpdatePasswordUI?(isRefreshing: false) }
-                                            
-                                            user.password = newPassword
-                                            dataModel.appUserData = user
             }, failure: { [weak self] (upError) in
                 guard let dataModel = self else { return }
                 dataModel.observers = dataModel.observers.filter { $0.value != nil }
@@ -348,21 +345,19 @@ extension AppUserDataModel {
 
 extension AppUserDataModel {
     
-    public func login(user: User, password: String, completion: @escaping CompletionHandler<User>) {
-        let dataTask: URLSessionDataTask = APIManager.shared.login(user: user,
-                                               password: password,
-                                               completion: { (appUser) in
-                                                guard let appUserData = appUser else {
-                                                    completion(nil, nil)
-                                                    return
-                                                }
-                                                if appUserData.userStatus == .valid {
-                                                    AppUserDataModel.shared.appUserData = appUserData
-                                                    AnalyticsManager.shared.track(event: .loginSuccess(phone: user.phone))
-                                                } else {
-                                                    AnalyticsManager.shared.track(event: .loginFailed(phone: user.phone))
-                                                }
-                                                completion(appUserData, nil)
+    public func login(username: String, password: String, completion: @escaping CompletionHandler<User>) {
+        let dataTask: URLSessionDataTask = APIManager.shared.login(username: username, password: password, completion: { (appUser) in
+            guard let appUserData = appUser else {
+                completion(nil, nil)
+                return
+            }
+            if appUserData.userStatus == .valid {
+                AppUserDataModel.shared.appUserData = appUserData
+                AnalyticsManager.shared.track(event: .loginSuccess(phone: appUserData.phone))
+            } else {
+                AnalyticsManager.shared.track(event: .loginFailed(phone: appUserData.phone))
+            }
+            completion(appUserData, nil)
         }) { (error) in
             completion(nil, error)
         }
@@ -373,14 +368,12 @@ extension AppUserDataModel {
     public func forgotPassword(countryCode: String,
                         phoneNumber: String,
                         completion: @escaping (Bool, Error?)-> Void) {
-        let dataTask: URLSessionDataTask = APIManager.shared.forgotPassword(countryCode: countryCode,
-                                         phoneNumber: phoneNumber,
-                                         completion: { (data) in
-                                            guard let dictionary: [String: Any] = data, let statusString: String = dictionary["status"] as? String, statusString == "success" else {
-                                                completion(false, nil)
-                                                return
-                                            }
-                                            completion(true, nil)
+        let dataTask: URLSessionDataTask = APIManager.shared.forgotPassword(countryCode: countryCode, phoneNumber: phoneNumber, completion: { (data) in
+            guard let dictionary: [String: Any] = data, let statusString: String = dictionary["status"] as? String, statusString == "success" else {
+                completion(false, nil)
+                return
+            }
+            completion(true, nil)
         }) { (error) in
             completion(false, error)
         }
@@ -419,12 +412,8 @@ extension AppUserDataModel {
         let dataTask: URLSessionDataTask = APIManager.shared.createUser(user: user,
                                      password: password,
                                      completion: { (cardAPIResponse) in
-                                        user.message = UserStatus.verifyPhoneNumber.rawValue
+                                        user.message = cardAPIResponse?.message
                                         user.password = password
-                                        if user.isValid {
-                                            AppUserDataModel.shared.appUserData = user
-                                            AnalyticsManager.shared.track(event: .signupComplete(phone: user.phone))
-                                        }
 
                                         completion(cardAPIResponse, nil)
 
@@ -454,20 +443,15 @@ extension AppUserDataModel {
     }
     
     public func checkForUser(user: User, completion: @escaping CompletionHandler<User>) {
-        let dataTask: URLSessionDataTask = APIManager.shared.checkForUser(user: user,
-                                                      completion: { [weak self] (appUser) in
-                                                        if let status = appUser?.userStatus, status == .registrationRequired {
-                                                            self?.registerNewSocialAuthUser(user: user, completion: completion)
-                                                        } else {
-                                                            if let user = appUser, let success = user.success, success {
-                                                                appUser?.message = UserStatus.valid.rawValue
-                                                                if let userVal = appUser, userVal.isValid {
-                                                                    AppUserDataModel.shared.appUserData = userVal
-                                                                    AnalyticsManager.shared.track(event: .socialLoginSuccess(phone: user.phone, platform: user.provider!.rawValue))
-                                                                }
-                                                            }
-                                                            completion(appUser, nil)
-                                                        }
+        let dataTask: URLSessionDataTask = APIManager.shared.checkForUser(user: user, completion: { (appUser) in
+//            if let status = appUser?.userStatus, (status == .registrationRequired) {
+//                self?.registerNewSocialAuthUser(user: user, completion: completion)
+//            } else {
+                if let user = appUser, user.jwt != nil {
+                    AppUserDataModel.shared.appUserData = user
+                }
+                completion(appUser, nil)
+//            }
             }, failure: { (error) in
                 completion(nil, error)
         })
@@ -481,15 +465,12 @@ extension AppUserDataModel {
 extension AppUserDataModel {
     
     public func checkPhoneNumber(user: User, completion: @escaping CompletionHandler<User>) {
-        let dataTask: URLSessionDataTask = APIManager.shared.checkPhoneNumber(user: user,
-                                                          completion: { [weak self] (appUser) in
-                                                            if let status = appUser?.userStatus, status == .registrationRequired {
-                                                                self?.registerNewSocialAuthUser(user: user, completion: completion)
-                                                                return
-                                                            } else if let userVal = appUser, userVal.isValid {
-                                                                AppUserDataModel.shared.appUserData = userVal
-                                                            }
-                                                            completion(appUser, nil)
+        let dataTask: URLSessionDataTask = APIManager.shared.checkPhoneNumber(user: user, completion: { [weak self] (appUser) in
+            if let status = appUser?.userStatus, status == .registrationRequired {
+                self?.registerNewSocialAuthUser(user: user, completion: completion)
+            } else {
+                completion(appUser, nil)
+            }
         }, failure: { (error) in
             completion(nil, error)
         })
@@ -500,12 +481,6 @@ extension AppUserDataModel {
 //  used only when "new_registration_required"
     public func verifyMobileNumber(user: User, otp: String, completion: @escaping CompletionHandler<CardAPIResponse>) {
         let dataTask: URLSessionDataTask = APIManager.shared.verifyMobile(user: user, pin: otp, completion: { (cardAPIResponse) in
-            if let response = cardAPIResponse, response.success {
-                user.message = UserStatus.valid.rawValue
-                if user.isValid {
-                    AppUserDataModel.shared.appUserData = user
-                }
-            }
             completion(cardAPIResponse, nil)
         }, failure: { (error) in
             completion(nil, error)
@@ -517,16 +492,11 @@ extension AppUserDataModel {
     public func verifyOTP(user: User,
                    otp: String,
                    completion: @escaping CompletionHandler<User>) {
-        let dataTask: URLSessionDataTask = APIManager.shared.verifyOTP(user: user,
-                                                   otp: otp,
-                                                   completion: { (appUser) in
-                                                    if let response = appUser, response.success {
-                                                        appUser?.message = UserStatus.valid.rawValue
-                                                        if let userVal = appUser, userVal.isValid {
-                                                            AppUserDataModel.shared.appUserData = userVal
-                                                        }
-                                                    }
-                                                    completion(appUser, nil)
+        let dataTask: URLSessionDataTask = APIManager.shared.verifyOTP(user: user, otp: otp, completion: { (appUser) in
+            if let user = appUser, user.jwt != nil {
+                AppUserDataModel.shared.appUserData = user
+            }
+            completion(appUser, nil)
             }, failure: { (error) in
                 completion(nil, error)
         })

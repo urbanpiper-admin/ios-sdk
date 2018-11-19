@@ -55,7 +55,7 @@ extension APIManager {
         return dataTask
     }
     
-    @objc public func login(user: User,
+    @objc public func login(username: String,
                      password: String,
                      completion: ((User?) -> Void)?,
                      failure: APIFailure?) -> URLSessionDataTask {
@@ -67,8 +67,8 @@ extension APIManager {
         var urlRequest: URLRequest = URLRequest(url: url)
         
         urlRequest.httpMethod = "POST"
-        
-        let params: [String: Any] = ["username": user.phoneNumberWithCountryCode,
+
+        let params: [String: Any] = ["username": username,
                                      "pass": password]
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
@@ -217,7 +217,6 @@ extension APIManager {
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, (code == 200 || code == 201) {
                 guard let completionClosure = completion else { return }
-                
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
                     let cardAPIResponse: CardAPIResponse = CardAPIResponse(fromDictionary: dictionary)
                     

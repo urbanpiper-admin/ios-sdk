@@ -68,7 +68,7 @@ public class User : NSObject, NSCoding{
 	public var biz : BizInfo!
     
 	public var message : String!
-	public var success : Bool!
+//    public var success : Bool!
 	public var timestamp : String!
     public var jwt: JWT!
 
@@ -107,20 +107,6 @@ public class User : NSObject, NSCoding{
         return phoneNo.replacingOccurrences(of: countryCode, with: "")
     }
     
-    public var isValid: Bool {
-        if phone == nil && email == nil {
-            return false
-        } else if (phone == nil || phone.count == 0) && (email == nil || email.count == 0) {
-            return false
-        } else if password == nil && accessToken == nil {
-            return false
-        } else if (password == nil || password!.count == 0) && (accessToken == nil || accessToken!.count == 0) {
-            return false
-        }
-        
-        return true
-    }
-    
     public var birthdayDateObject: Date? {
         guard let dateIntVal = birthday else { return nil }
         return Date(timeIntervalSince1970: TimeInterval(dateIntVal / 1000))
@@ -145,7 +131,7 @@ public class User : NSObject, NSCoding{
 		message = dictionary["message"] as? String ?? ""
 		firstName = dictionary["name"] as? String
 		phone = dictionary["phone"] as? String
-		success = dictionary["success"] as? Bool ?? false
+//        success = dictionary["success"] as? Bool ?? false
 		timestamp = dictionary["timestamp"] as? String
 		username = dictionary["username"] as? String
         gender = dictionary["gender"] as? String
@@ -172,7 +158,7 @@ public class User : NSObject, NSCoding{
         message = UserStatus.valid.rawValue
     }
     
-    public func update(fromJWTToken jwtToken: String) -> User {
+    @discardableResult public func update(fromJWTToken jwtToken: String) -> User {
         jwt = JWT(jwtToken: jwtToken, decodeHandler: { [weak self] (dictionary) in
             self?.email = dictionary["email"] as? String
             self?.phone = dictionary["phone"] as? String
@@ -277,7 +263,7 @@ public class User : NSObject, NSCoding{
         email = aDecoder.decodeObject(forKey: "email") as? String
          message = aDecoder.decodeObject(forKey: "message") as? String
          phone = aDecoder.decodeObject(forKey: "phone") as? String
-         success = aDecoder.decodeObject(forKey: "success") as? Bool ?? false
+//         success = aDecoder.decodeObject(forKey: "success") as? Bool ?? false
          timestamp = aDecoder.decodeObject(forKey: "timestamp") as? String
          username = aDecoder.decodeObject(forKey: "username") as? String
         gender = aDecoder.decodeObject(forKey: "gender") as? String
@@ -324,9 +310,9 @@ public class User : NSObject, NSCoding{
 			aCoder.encode(phone, forKey: "phone")
 		}
         
-        if success != nil {
-            aCoder.encode(success, forKey: "success")
-        }
+//        if success != nil {
+//            aCoder.encode(success, forKey: "success")
+//        }
         
 		if timestamp != nil{
 			aCoder.encode(timestamp, forKey: "timestamp")

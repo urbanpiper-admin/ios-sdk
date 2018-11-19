@@ -80,6 +80,8 @@ public enum HTTPStatusCode: Int {
 
 public enum ErrorType {
     case unknown
+    case googleLoginFailed
+    case facebookLoginFailed
     case maxOrderableQuantityAdded(Int)
     case invalidString
     case invalidUsername
@@ -105,6 +107,10 @@ public enum ErrorType {
     
     public var errorTitle: String {
         switch errorType {
+        case .facebookLoginFailed:
+            return "Error"
+        case .googleLoginFailed:
+            return "Error"
         case .invalidString:
             return "Error"
         case .invalidUsername:
@@ -146,6 +152,10 @@ public enum ErrorType {
     
     public var errorMessage: String {
         switch errorType {
+        case .facebookLoginFailed:
+            return "Facebook login failed"
+        case .googleLoginFailed:
+            return "Google login failed"
         case .invalidString:
             return "Invalid text"
         case .invalidUsername:
