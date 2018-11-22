@@ -183,6 +183,10 @@ extension AddressDataModel {
     
     fileprivate func fetchAddressList() {
         guard AppUserDataModel.shared.validAppUserData != nil else { return }
+        userAddressesResponse = nil
+        addressListArray = nil
+        deliverableAddressListArray = nil
+        unDeliverableAddressListArray = nil
         _ = observers.map { $0.value?.refreshDeliveryAddressUI(isRefreshing: true) }
         let dataTask: URLSessionDataTask = APIManager.shared.userSavedDeliverableAddresses(locationId: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
                                                                                            completion: { [weak self] (data) in
