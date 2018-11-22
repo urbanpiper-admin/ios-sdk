@@ -100,6 +100,7 @@ import FirebaseRemoteConfig
 	public private(set) var lblSocialSignupHdr : String!
 	public private(set) var locationMandatoryForItems : Bool!
 	public private(set) var maxReloadAmt : Int!
+    public private(set) var maxPreOrderDate : Int!
 	public private(set) var minOrderValue : Int!
 	public private(set) var minReloadAmt : Int!
 	public private(set) var minReloadBttnVal : Int!
@@ -207,6 +208,9 @@ import FirebaseRemoteConfig
 		enablePostOrderFeedback = remoteConfig["enable_post_order_feedback"].boolValue
 		enableSocialLogin = remoteConfig["enable_social_login"].boolValue
 		enableTimeSlots = remoteConfig["enable_time_slots"].boolValue
+        #if DEBUG
+        enableTimeSlots = true
+        #endif
 		enforceMinOffsetTime = remoteConfig["enforce_min_offset_time"].boolValue
 		errAccountExists = remoteConfig["err_account_exists"].stringValue
 		errCouponInvalid = remoteConfig["err_coupon_invalid"].stringValue
@@ -241,6 +245,7 @@ import FirebaseRemoteConfig
 		lblSocialSignupHdr = remoteConfig["lbl_social_signup_hdr"].stringValue
 		locationMandatoryForItems = remoteConfig["location_mandatory_for_items"].boolValue
 		maxReloadAmt = remoteConfig["max_reload_amt"].numberValue as? Int
+        maxPreOrderDate = remoteConfig["max_pre_order_date"].numberValue as? Int
 		minOrderValue = remoteConfig["min_order_value"].numberValue as? Int
 		minReloadAmt = remoteConfig["min_reload_amt"].numberValue as? Int
 		minReloadBttnVal = remoteConfig["min_reload_bttn_val"].numberValue as? Int

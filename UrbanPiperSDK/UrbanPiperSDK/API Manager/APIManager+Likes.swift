@@ -23,7 +23,8 @@ extension APIManager {
 
         let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
 
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
+            let errorCode = (error as NSError?)?.code
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? errorCode
             if let code = statusCode, (code == 200 || code == 204) {
                 guard let completionClosure = completion else { return }
 
@@ -40,7 +41,7 @@ extension APIManager {
                     completionClosure(nil)
                 }
             } else {
-                self?.handleAPIError(errorCode: statusCode ?? 0, data: data, failureClosure: failure)
+                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
             }
 
         }
@@ -67,7 +68,8 @@ extension APIManager {
 
         let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
 
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
+            let errorCode = (error as NSError?)?.code
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? errorCode
             if let code = statusCode, (code == 200 || code == 204) {
                 guard let completionClosure = completion else { return }
                 
@@ -83,7 +85,7 @@ extension APIManager {
                     completionClosure(nil)
                 }
             } else {
-                self?.handleAPIError(errorCode: statusCode ?? 0, data: data, failureClosure: failure)
+                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
             }
 
         }

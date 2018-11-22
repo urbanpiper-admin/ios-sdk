@@ -92,7 +92,9 @@ import Foundation
         super.init()
         self.language = language
         updateHeaders()
-        refreshToken()
+        DispatchQueue.main.async {
+            self.refreshToken()
+        }
     }
     
     internal class func initializeManager(language: Language) {
@@ -100,7 +102,14 @@ import Foundation
     }
     
     public func refreshToken() {
-        guard let jwt = AppUserDataModel.shared.validAppUserData?.jwt, jwt.shouldRefreshToken else { return }
+        guard let jwt = AppUserDataModel.shared.validAppUserData?.jwt else { return }
+        guard !jwt.tokenExpired else {
+            AppUserDataModel.shared.reset()
+            updateHeaders()
+            return
+        }
+        guard jwt.shouldRefreshToken else { return }
+
         let task = refreshToken(token: jwt.token, completion: { [weak self] (newToken) in
             guard let token = newToken else { return }
             let user = AppUserDataModel.shared.validAppUserData?.update(fromJWTToken: token)
@@ -145,25 +154,28 @@ import Foundation
                              delegateQueue: nil)
     }
     
-    public func handleAPIError(errorCode: Int = 0, data: Data?, failureClosure: APIFailure?) {
+    public func handleAPIError(httpStatusCode: Int?, errorCode: Int?, data: Data?, failureClosure: APIFailure?) {
+        guard errorCode == nil || errorCode != NSURLErrorCancelled else { return }
+        
+        if let jwt = AppUserDataModel.shared.validAppUserData?.jwt, let code = httpStatusCode,
+            let httpStatusCodeObj = HTTPStatusCode(rawValue: code),
+            httpStatusCodeObj == .unauthorized, jwt.tokenExpired {
+            
+            DispatchQueue.main.async {
+                AppUserDataModel.shared.reset()
+            }
+            return
+        }
+        
         if let closure = failureClosure {
             DispatchQueue.main.async {
-                if let apiError: UPAPIError = UPAPIError(errorCode: errorCode, data: data) {
+                if let apiError: UPAPIError = UPAPIError(httpStatusCode: httpStatusCode, errorCode: errorCode, data: data) {
                     closure(apiError as UPError)
                 } else {
                     closure(nil)
                 }
             }
         }
-
-        guard let jwt = AppUserDataModel.shared.validAppUserData?.jwt,
-            let httpStatusCode = HTTPStatusCode(rawValue: errorCode),
-            httpStatusCode == .unauthorized, jwt.tokenExpired else { return }
-        
-        DispatchQueue.main.async {
-            AppUserDataModel.shared.reset()
-        }
-        return
     }
 
 }

@@ -210,46 +210,48 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
     
     lazy public var selectedDeliveryTimeSlotOption: TimeSlot? = {
-        guard let deliveryTimeSlotOption = deliverySlotsOptions?.first else { return nil }
+        guard let deliveryTimeSlotOption = deliverySlotsOptions.first else { return nil }
             return deliveryTimeSlotOption
     }()
     
-    lazy public var selectedRequestedTime: Date = defaultOrderDeliveryDateTime
+    lazy public var selectedRequestedTime: Date? = defaultOrderDeliveryDateTime
     
-    lazy public var selectedRequestedDate: Date = defaultOrderDeliveryDateTime
+    lazy public var selectedRequestedDate: Date = defaultOrderDeliveryDateTime ?? Date()
     
-    public var deliveryDate: Date {
+    public var deliveryDateTime: Date? {
+        guard let deliveryTime = selectedRequestedTime else { return nil }
+
         var units: Set<Calendar.Component> = [.day, .month, .year]
         var comps: DateComponents = Calendar.current.dateComponents(units, from: selectedRequestedDate)
         let day: Date = Calendar.current.date(from: comps)!
         
         units = [.hour, .minute, .second]
-        comps = Calendar.current.dateComponents(units, from: selectedRequestedTime)
+        comps = Calendar.current.dateComponents(units, from: deliveryTime)
         
         return Calendar.current.date(byAdding: comps, to: day)!
     }
     
-    public var normalDefaultOrderDeliveryDate: Date {
+    public var normalDefaultOrderDeliveryDate: Date? {
         let paymentOffsetTimeSecs: TimeInterval = selectedDeliveryOption.deliveryOptionOffsetTimeSecs
         let defaultOffset: TimeInterval = TimeInterval(120)
         // around 2 minutes gap to payment
-        var normalDeliveryDate: Date = Date().addingTimeInterval(paymentOffsetTimeSecs + defaultOffset)
+        var normalDeliveryDate: Date? = Date().addingTimeInterval(paymentOffsetTimeSecs + defaultOffset)
         let openingDate: Date = OrderingStoreDataModel.shared.orderingStore!.openingDate!
         let openingDateWithOffset: Date = openingDate.addingTimeInterval(paymentOffsetTimeSecs + defaultOffset)
         let closingDate: Date = OrderingStoreDataModel.shared.orderingStore!.closingDate!
         let closingDateWithOffset: Date = closingDate.addingTimeInterval(-(paymentOffsetTimeSecs + defaultOffset))
         
-        if normalDeliveryDate < openingDateWithOffset {
+        if normalDeliveryDate! < openingDateWithOffset {
             normalDeliveryDate = openingDateWithOffset
-        } else if normalDeliveryDate > closingDateWithOffset {
-            normalDeliveryDate = closingDateWithOffset
+        } else if normalDeliveryDate! > closingDateWithOffset {
+            normalDeliveryDate = nil
         }
         
         return normalDeliveryDate
     }
     
-    public var defaultOrderDeliveryDateTime: Date {
-        let normalOrderDDate = normalDefaultOrderDeliveryDate
+    public var defaultOrderDeliveryDateTime: Date? {
+        guard let normalOrderDDate = normalDefaultOrderDeliveryDate else { return nil }
         let preOrderDDate = CartManager.shared.cartPreOrderStartTime
         if let date = preOrderDDate, date > normalOrderDDate {
             return date
@@ -309,23 +311,19 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
         return paymentArray
     }
     
-    public var deliverySlotsOptions: [TimeSlot]? {
-        guard AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots else { return nil }
-        guard let availableTimeSlots = Biz.shared?.timeSlots, availableTimeSlots.count > 0 else { return nil }
-
-        let date = defaultOrderDeliveryDateTime
+    public var deliverySlotsOptions: [TimeSlot] {
+        guard AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots else { return [] }
+        guard let availableTimeSlots = Biz.shared?.timeSlots, availableTimeSlots.count > 0 else { return [] }
         
-        let dayName = date.dayName
+        let dayName = selectedRequestedDate.dayName
         
         var filteredSlots = [TimeSlot]()
         
         if let startTime = CartManager.shared.cartPreOrderStartTime {
             filteredSlots = availableTimeSlots.filter { $0.day == dayName && $0.startTime!.currentDateTime! >= startTime }
-        }
-        else if Calendar.current.isDateInToday(date) {
-            filteredSlots = availableTimeSlots.filter { $0.day == dayName && $0.endTime!.currentDateTime! >= date }
-        }
-        else if date < Date() {
+        } else if Calendar.current.isDateInToday(selectedRequestedDate) {
+            filteredSlots = availableTimeSlots.filter { $0.day == dayName && $0.endTime!.currentDateTime! >= defaultOrderDeliveryDateTime! }
+        } else {
             filteredSlots = availableTimeSlots.filter { $0.day == dayName }
         }
         
@@ -491,7 +489,7 @@ extension OrderPaymentDataModel {
         let paymentOption = selectedPaymentOption
         let dataTask: URLSessionDataTask = APIManager.shared.placeOrder(address: selectedDeliveryOption != .pickUp ? deliveryAddress : nil,
                                      items: CartManager.shared.cartItems,
-                                     deliveryDate: deliveryDate,
+                                     deliveryDate: deliveryDateTime!,
                                      timeSlot: timeSlotDelivery ? selectedDeliveryTimeSlotOption : nil,
                                      deliveryOption: selectedDeliveryOption.rawValue,
                                      phone: phone,

@@ -10,8 +10,8 @@ import UIKit
 
 @objc public class UPAPIError: UPError {
 
-    public convenience init?(errorCode: Int = 0, data: Data? = nil, responseObject: [String: Any]? = nil) {        
-        self.init(type: .apiError, errorCode: errorCode, data: data, responseObject: responseObject)
+    public convenience init?(httpStatusCode: Int? = nil, errorCode: Int? = nil, data: Data? = nil, responseObject: [String: Any]? = nil) {
+        self.init(type: .apiError, errorCode: errorCode ?? 0, data: data, responseObject: responseObject)
     }
 
 }

@@ -198,6 +198,8 @@ public class AppUserDataModel: UrbanPiperDataModel {
         APIManager.shared.updateHeaders()
         APIManager.shared.lastRegisteredFCMToken = nil
         
+        AddressDataModel.shared.userAddressesResponse = nil
+        
         UserDefaults.standard.removeObject(forKey: "deliverySlots")
         UserDefaults.standard.removeObject(forKey: "deliverySlotsEnabled")
         UserDefaults.standard.removeObject(forKey: "feedback_config")
