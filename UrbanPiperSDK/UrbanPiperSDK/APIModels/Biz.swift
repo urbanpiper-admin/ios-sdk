@@ -228,6 +228,8 @@ public enum Language: String {
          referralShareLbl = aDecoder.decodeObject(forKey: "referral_share_lbl") as? String
          referralUiLbl = aDecoder.decodeObject(forKey: "referral_ui_lbl") as? String
          simplClientId = aDecoder.decodeObject(forKey: "simpl_client_id") as? String
+        TimeSlot.registerClassName()
+        TimeSlot.registerClassNameWhiteLabel()
         timeSlots = aDecoder.decodeObject(forKey :"time_slots") as? [TimeSlot]
          timezone = aDecoder.decodeObject(forKey: "timezone") as? String
          tin = aDecoder.decodeObject(forKey: "tin") as? String
