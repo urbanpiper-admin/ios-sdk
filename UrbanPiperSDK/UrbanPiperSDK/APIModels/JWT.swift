@@ -23,12 +23,13 @@ public class JWT: NSObject, NSCoding {
     var tokenExpired: Bool {
         guard exp != nil, iat != nil else { return false }
         let utcTime: Int = Int(Date().timeIntervalSince1970)
-        return Int(Double(exp - iat)) < (utcTime - iat)
+        return exp < utcTime
     }
 
     static func decode(jwtToken jwt: String) -> [String: Any] {
-        let segments = jwt.components(separatedBy: ".")
-        return decodeJWTPart(segments[1]) ?? [:]
+        let segments: [String?] = jwt.components(separatedBy: ".")
+        guard let segment = segments[1] else { return [:] }
+        return decodeJWTPart(segment) ?? [:]
     }
     
     static func base64UrlDecode(_ value: String) -> Data? {
@@ -55,7 +56,7 @@ public class JWT: NSObject, NSCoding {
         return payload
     }
     
-    public init(jwtToken: String, decodeHandler: ([String: Any]) -> Void) {
+    public init(jwtToken: String, decodeHandler: (([String: Any]) -> Void)?) {
         let dictionary = JWT.decode(jwtToken: jwtToken)
         
         exp = dictionary["exp"] as? Int
@@ -63,7 +64,7 @@ public class JWT: NSObject, NSCoding {
         jit = dictionary["jit"] as? String
         token = jwtToken
         
-        decodeHandler(dictionary)
+        decodeHandler?(dictionary)
     }
     
 //    public func toDictionary() -> [String:Any] {

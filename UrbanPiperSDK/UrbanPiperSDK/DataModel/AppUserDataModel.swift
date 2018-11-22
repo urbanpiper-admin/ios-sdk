@@ -159,6 +159,8 @@ public class AppUserDataModel: UrbanPiperDataModel {
         DispatchQueue.main.async { [weak self] in
             self?.registerForFCMMessaging()
             self?.fetchUserData()
+            
+            self?.loginUserWithJWT()
         }
         
     }
@@ -172,6 +174,29 @@ public class AppUserDataModel: UrbanPiperDataModel {
     public func removeObserver(delegate: AppUserDataModelDelegate) {
         guard let index = (observers.index { $0.value === delegate }) else { return }
         observers.remove(at: index)
+    }
+    
+    func loginUserWithJWT() {
+        guard let appUser = validAppUserData, appUser.jwt == nil else { return }
+        let task: URLSessionDataTask
+        if appUser.provider != nil {
+            task = APIManager.shared.checkForUser(user: appUser, completion: { [weak self] (user) in
+                if let jwt = user?.jwt, !jwt.tokenExpired {
+                    self?.appUserData = user
+                } else if let msg = user?.message, msg == "email_check_failed" {
+                    self?.reset()
+                }
+            }, failure: nil)
+        } else {
+            task = APIManager.shared.login(username: appUser.phoneNumberWithCountryCode, password: appUser.password!, completion: { [weak self] (user) in
+                if let jwt = user?.jwt, !jwt.tokenExpired {
+                    self?.appUserData = user
+                } else if let msg = user?.message, msg == "email_check_failed" {
+                    self?.reset()
+                }
+            }, failure: nil)
+        }
+        super.addOrCancelDataTask(dataTask: task)
     }
     
     @objc public func reset() {
@@ -526,8 +551,7 @@ extension AppUserDataModel {
 extension AppUserDataModel {
     
     @objc open override func appWillEnterForeground() {
-        guard validAppUserData != nil else { return }
-        fetchUserData()
+        loginUserWithJWT()
     }
     
     @objc open override func appDidEnterBackground() {
@@ -539,8 +563,7 @@ extension AppUserDataModel {
 extension AppUserDataModel {
     
     @objc open override func networkIsAvailable() {
-        guard validAppUserData != nil else { return }
-        fetchUserData()
+        loginUserWithJWT()
     }
     
 }

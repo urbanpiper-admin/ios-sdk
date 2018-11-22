@@ -202,15 +202,9 @@ import FirebaseRemoteConfig
         enableItemUpselling = remoteConfig["enable_item_upselling"].boolValue
         enableFilterSort = remoteConfig["enable_filter_sort"].boolValue
 		enableItemDirectLoading = remoteConfig["enable_item_direct_loading"].boolValue
-        #if DEBUG
-        enableItemDirectLoading = false
-        #endif
 		enablePostOrderFeedback = remoteConfig["enable_post_order_feedback"].boolValue
 		enableSocialLogin = remoteConfig["enable_social_login"].boolValue
 		enableTimeSlots = remoteConfig["enable_time_slots"].boolValue
-        #if DEBUG
-        enableTimeSlots = true
-        #endif
 		enforceMinOffsetTime = remoteConfig["enforce_min_offset_time"].boolValue
 		errAccountExists = remoteConfig["err_account_exists"].stringValue
 		errCouponInvalid = remoteConfig["err_coupon_invalid"].stringValue
