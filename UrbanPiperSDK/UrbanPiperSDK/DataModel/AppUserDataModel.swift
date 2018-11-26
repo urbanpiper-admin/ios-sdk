@@ -155,8 +155,8 @@ public class AppUserDataModel: UrbanPiperDataModel {
         
     public override init() {
         super.init()
-        
         DispatchQueue.main.async { [weak self] in
+            APIManager.shared.addObserver(delegate: self!)
             self?.registerForFCMMessaging()
             self?.fetchUserData()
             
@@ -237,8 +237,6 @@ public class AppUserDataModel: UrbanPiperDataModel {
       
         UserDefaults.standard.removeObject(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey)
         UserDefaults.standard.removeObject(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
-        
-        let _ = observers.map { $0.value?.logout() }
     }
     
 }
@@ -542,6 +540,14 @@ extension AppUserDataModel {
         })
         
         addOrCancelDataTask(dataTask: dataTask)
+    }
+    
+}
+
+extension AppUserDataModel: APIManagerDelegate {
+    
+    public func forceLogout() {
+        let _ = observers.map { $0.value?.logout() }
     }
     
 }

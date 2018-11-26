@@ -27,6 +27,10 @@
 
 import Foundation
 
+@objc public protocol APIManagerDelegate {
+    func forceLogout()
+}
+
 @objc public class APIManager: NSObject {
 
     #if DEBUG
@@ -87,6 +91,11 @@ import Foundation
             return uuidStringVal
         }
     }
+    
+    private typealias WeakRefDataModelDelegate = WeakRef<APIManagerDelegate>
+    
+    private var observers = [WeakRefDataModelDelegate]()
+    
 
     private init(language: Language) {
         super.init()
@@ -99,6 +108,17 @@ import Foundation
     
     internal class func initializeManager(language: Language) {
         shared = APIManager(language: language)
+    }
+    
+    public func addObserver(delegate: APIManagerDelegate) {
+        let weakRefDataModelDelegate: WeakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
+        observers.append(weakRefDataModelDelegate)
+    }
+    
+    
+    public func removeObserver(delegate: APIManagerDelegate) {
+        guard let index = (observers.index { $0.value === delegate }) else { return }
+        observers.remove(at: index)
     }
     
     public func refreshToken() {
@@ -157,12 +177,13 @@ import Foundation
     public func handleAPIError(httpStatusCode: Int?, errorCode: Int?, data: Data?, failureClosure: APIFailure?) {
         guard errorCode == nil || errorCode != NSURLErrorCancelled else { return }
         
-        if let jwt = AppUserDataModel.shared.validAppUserData?.jwt, let code = httpStatusCode,
+        if let code = httpStatusCode,
             let httpStatusCodeObj = HTTPStatusCode(rawValue: code),
-            httpStatusCodeObj == .unauthorized, jwt.tokenExpired {
+            httpStatusCodeObj == .unauthorized, AppUserDataModel.shared.validAppUserData?.jwt != nil {
             
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
                 AppUserDataModel.shared.reset()
+                let _ = self?.observers.map { $0.value?.forceLogout() }
             }
             return
         }
