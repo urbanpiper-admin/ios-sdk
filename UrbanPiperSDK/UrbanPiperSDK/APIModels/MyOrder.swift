@@ -244,18 +244,14 @@ public enum OrderStatus: String {
 		if coupon != nil{
 			dictionary["coupon"] = coupon
 		}
-		if created != nil{
-			dictionary["created"] = created
-		}
+        dictionary["created"] = created
 		if customerName != nil{
 			dictionary["customer_name"] = customerName
 		}
 		if deliveryAddressRef != nil{
 			dictionary["delivery_address_ref"] = deliveryAddressRef
 		}
-		if deliveryDatetime != nil{
-			dictionary["delivery_datetime"] = deliveryDatetime
-		}
+        dictionary["delivery_datetime"] = deliveryDatetime
 		if discount != nil{
 			dictionary["discount"] = discount
 		}

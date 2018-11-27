@@ -73,7 +73,7 @@ import Foundation
             itemPrice = Decimal.zero
         }
         
-        priceVal = dictionary["total"]
+        priceVal = dictionary["total"] as Any
         if let val: Decimal = priceVal as? Decimal {
             total = val
         } else if let val: Double = priceVal as? Double {

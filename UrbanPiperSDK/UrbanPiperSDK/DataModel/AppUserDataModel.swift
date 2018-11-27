@@ -327,7 +327,7 @@ extension AppUserDataModel {
                                          newPassword: newPassword,
                                          completion: { [weak self] (response) in
                                             AnalyticsManager.shared.track(event: .profileUpdated(phone: phone, pwdChanged: true))
-                                            guard let dataModel = self, let user = dataModel.appUserData else { return }
+                                            guard let dataModel = self, dataModel.appUserData != nil else { return }
                                             dataModel.observers = dataModel.observers.filter { $0.value != nil }
                                             let _ = dataModel.observers.map { $0.value?.refreshUpdatePasswordUI?(isRefreshing: false) }
             }, failure: { [weak self] (upError) in

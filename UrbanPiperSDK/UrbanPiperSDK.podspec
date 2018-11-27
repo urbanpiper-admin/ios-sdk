@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
     s.dependency 'GoogleMaps'
     s.dependency 'GoogleAnalytics'
     s.dependency 'Mixpanel-swift'
-#    s.dependency 'AppsFlyerFramework'
+    s.dependency 'AppsFlyerFramework'
     s.resources = ['UrbanPiperSDK/WLDetailOptionData.plist']
 
     s.xcconfig = { 'SWIFT_INCLUDE_PATHS' => '"${PODS_TARGET_SRCROOT}/UrbanPiperSDK/GoogleAnalyticsSDK/"' }
