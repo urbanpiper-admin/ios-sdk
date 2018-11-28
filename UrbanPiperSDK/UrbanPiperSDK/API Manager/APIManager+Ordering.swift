@@ -15,8 +15,6 @@ extension APIManager {
                                    completion: ((CategoriesResponse?) -> Void)?,
                                    failure: APIFailure?) -> URLSessionDataTask {
 
-        let canUseCachedResponse: Bool = AppConfigManager.shared.firRemoteConfigDefaults.enableCaching && !isForceRefresh
-
         let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
 
         var urlString: String = "\(APIManager.baseUrl)/api/v1/order/categories/?format=json&biz_id=\(appId)"
@@ -28,7 +26,7 @@ extension APIManager {
         let url: URL = URL(string: urlString)!
 
         var urlRequest: URLRequest = URLRequest(url: url,
-                                    cachePolicy: canUseCachedResponse ? .useProtocolCachePolicy : .reloadIgnoringLocalAndRemoteCacheData)
+                                                cachePolicy: isForceRefresh ? .reloadIgnoringLocalAndRemoteCacheData : .useProtocolCachePolicy)
 
         urlRequest.httpMethod = "GET"
         

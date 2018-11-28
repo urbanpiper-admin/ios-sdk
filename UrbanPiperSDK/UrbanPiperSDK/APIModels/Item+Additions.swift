@@ -27,7 +27,6 @@ extension ItemObject {
     }
 
     public func isItemQuantityAvailable(quantity: Int) -> Bool {
-        guard AppConfigManager.shared.firRemoteConfigDefaults.itemQtyRestrictToCurentStock else { return true }
         guard let stock = currentStock else { return true }
         guard stock != StockQuantity.unlimited else { return true }
         guard stock != StockQuantity.noStock else { return false }

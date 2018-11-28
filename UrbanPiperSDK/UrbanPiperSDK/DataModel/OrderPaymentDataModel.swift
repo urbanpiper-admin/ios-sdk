@@ -184,9 +184,10 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }()
     
     private var defaultPaymentOption: PaymentOption {
-        if let option: Bool = AppConfigManager.shared.firRemoteConfigDefaults.forcePaymentOptSel, option {
-            return .select
-        } else if let paymentOption = paymentOptions?.first {
+//        if let option: Bool = AppConfigManager.shared.firRemoteConfigDefaults.forcePaymentOptSel, option {
+//            return .select
+//        } else
+        if let paymentOption = paymentOptions?.first {
             return paymentOption
         } else {
             return .select

@@ -41,10 +41,10 @@ extension FirRemoteConfigDefaults {
 //        if "subscription ordering enabled" {
 //        }
 
-        if moduleRewardsOld {
-            stringArray.append(Module.rewardsOld.rawValue)
-            stringArray.append(Module.promo.rawValue)
-        }
+//        if moduleRewardsOld {
+//            stringArray.append(Module.rewardsOld.rawValue)
+//            stringArray.append(Module.promo.rawValue)
+//        }
 
         if moduleReferral {
             stringArray.append(Module.referral.rawValue)
@@ -57,12 +57,7 @@ extension FirRemoteConfigDefaults {
             stringArray.append(Module.rewards.rawValue)
         }
         
-
-        if moduleBookTable {
-            stringArray.append(Module.bookTable.rawValue)
-        }
-
-        if moduleOffers {
+        if moduleOffersV2 {
             stringArray.append(Module.offers.rawValue)
         }
 
@@ -73,16 +68,16 @@ extension FirRemoteConfigDefaults {
             stringArray.append(Module.schedule.rawValue)
         }
 
-        if !moduleOrdering, moduleHistory {
-            stringArray.append(Module.historyWeb.rawValue)
-        }
-
+//        if !moduleOrdering, moduleHistory {
+//            stringArray.append(Module.historyWeb.rawValue)
+//        }
+//
 //        if "custom messages enabled" {
 //        }
-
-        if moduleStoreLocOld {
-            stringArray.append(Module.storeLocOld.rawValue)
-        }
+//
+//        if moduleStoreLocOld {
+//            stringArray.append(Module.storeLocOld.rawValue)
+//        }
 
         if moduleFeedbackOld {
             stringArray.append(Module.feedbackOld.rawValue)

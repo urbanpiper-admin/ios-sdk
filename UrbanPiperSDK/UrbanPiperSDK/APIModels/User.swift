@@ -94,13 +94,11 @@ public class User : NSObject, NSCoding{
         return UserStatus(rawValue: msg) ?? .invalid
     }
     
-    public var countryCode: String = "+\(AppConfigManager.shared.firRemoteConfigDefaults.defaultCountryCode!)"
+    public var countryCode: String = AppConfigManager.shared.firRemoteConfigDefaults.bizISDCode!
     
     @objc public var phoneNumberWithCountryCode: String! {
         guard phone != nil, phone!.count > 0 else { return nil }
-        let isdCodesArray: [[String : String]] = AppConfigManager.shared.firRemoteConfigDefaults.isdCodes!
-        guard isdCodesArray.filter ({ phone.hasPrefix($0.keys.first!) }).count == 0 else { return phone }
-        return "\(countryCode)\(phone!)"
+        return "\(AppConfigManager.shared.firRemoteConfigDefaults.bizISDCode!)\(phone!)"
     }
     public var phoneNumberWithOutCountryCode: String! {
         guard let phoneNo = phone else { return ""}
