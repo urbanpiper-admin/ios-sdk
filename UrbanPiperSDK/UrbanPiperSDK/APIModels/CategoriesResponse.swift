@@ -10,7 +10,7 @@ import Foundation
 
 @objc public class CategoriesResponse : NSObject{
 
-	public var biz : Biz!
+	private var biz : Biz!
 	public var clearCache : Bool!
 	public var meta : Meta!
     public var objects : [Object]!
@@ -23,6 +23,9 @@ import Foundation
 		if let bizData: [String:Any] = dictionary["biz"] as? [String:Any]{
 			biz = Biz(fromDictionary: bizData)
 		}
+        
+        Biz.shared = biz
+
 		clearCache = dictionary["clear_cache"] as? Bool
 		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
 			meta = Meta(fromDictionary: metaData)

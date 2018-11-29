@@ -42,18 +42,16 @@ extension APIManager {
                     if categoriesResponse.objects.count > 1 {
                         categoriesResponse.objects.sort { $0.sortOrder < $1.sortOrder }
                     }
-
-                    Biz.shared = categoriesResponse.biz
                     
-                    self?.saveDeliveryTimingSlots(biz: categoriesResponse.biz)
-                    // Saving feedback config info
-                    self?.saveFeedbackConfiguration(biz: categoriesResponse.biz)
-                    // Baba Fattoosh Specific
-                    self?.saveReferEarnDetail(biz: categoriesResponse.biz)
-                    // POD feature enable
-                    self?.usePODEnabled(biz: categoriesResponse.biz)
-                    // PayTm payment Enabled
-                    self?.savePaymentOptionsDetail(biz: categoriesResponse.biz)
+//                    self?.saveDeliveryTimingSlots(biz: categoriesResponse.biz)
+//                    // Saving feedback config info
+//                    self?.saveFeedbackConfiguration(biz: categoriesResponse.biz)
+//                    // Baba Fattoosh Specific
+//                    self?.saveReferEarnDetail(biz: categoriesResponse.biz)
+//                    // POD feature enable
+//                    self?.usePODEnabled(biz: categoriesResponse.biz)
+//                    // PayTm payment Enabled
+//                    self?.savePaymentOptionsDetail(biz: categoriesResponse.biz)
 
                     DispatchQueue.main.async {
                         completionClosure(categoriesResponse)

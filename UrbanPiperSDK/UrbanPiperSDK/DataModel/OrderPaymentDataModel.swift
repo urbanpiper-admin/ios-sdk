@@ -50,9 +50,9 @@ public enum DeliveryOption: String {
     public var deliveryOptionOffsetTimeSecs: TimeInterval {
         switch self {
         case .delivery:
-            return TimeInterval(Biz.shared!.deliveryMinOffsetTime / 1000)
+            return TimeInterval((OrderingStoreDataModel.shared.orderingStore?.deliveryMinOffsetTime ?? Biz.shared!.deliveryMinOffsetTime) / 1000)
         case .pickUp:
-            return TimeInterval(Biz.shared!.pickupMinOffsetTime / 1000)
+            return TimeInterval((OrderingStoreDataModel.shared.orderingStore?.pickupMinOffsetTime ?? Biz.shared!.pickupMinOffsetTime) / 1000)
         }
     }
     
@@ -261,12 +261,12 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
 
     public var deliveryOptions: [DeliveryOption]? {
-        guard let bizDetails = OrderingStoreDataModel.shared.nearestStoreResponse?.biz else { return nil }
+        guard let isPickupEnabled = OrderingStoreDataModel.shared.nearestStoreResponse?.biz.isPickupEnabled ?? Biz.shared?.isPickupEnabled else { return nil }
         var array = [DeliveryOption]()
         
         array.append(.delivery)
         
-        if bizDetails.isPickupEnabled {
+        if isPickupEnabled {
             array.append(.pickUp)
         }
         return array
@@ -314,7 +314,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     
     public var deliverySlotsOptions: [TimeSlot] {
         guard AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots else { return [] }
-        guard let availableTimeSlots = Biz.shared?.timeSlots, availableTimeSlots.count > 0 else { return [] }
+        guard let availableTimeSlots = OrderingStoreDataModel.shared.orderingStore?.timeSlots ?? Biz.shared?.timeSlots, availableTimeSlots.count > 0 else { return [] }
         
         let dayName = selectedRequestedDate.dayName
         

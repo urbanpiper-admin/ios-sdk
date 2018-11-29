@@ -77,6 +77,11 @@ public class AppUserDataModel: UrbanPiperDataModel {
             return user
         }
         set {
+            defer {
+                DispatchQueue.main.async { [weak self] in
+                    self?.registerForFCMMessaging()
+                }
+            }
             guard let user = newValue else {
                 AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
                 APIManager.shared.updateHeaders()
@@ -109,7 +114,6 @@ public class AppUserDataModel: UrbanPiperDataModel {
             let _ = observers.map { $0.value?.refreshAppUserUI?(isRefreshing: false) }
             
             DispatchQueue.main.async { [weak self] in
-                self?.registerForFCMMessaging()
                 self?.updateUserBizInfo()
             }
         }
@@ -214,9 +218,6 @@ public class AppUserDataModel: UrbanPiperDataModel {
         OrderingStoreDataModel.shared.nearestStoreResponse = nil
         UserDefaults.standard.removeObject(forKey: "defaultAddress")
 
-        appUserData = nil
-        bizInfo = nil
-
         AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
         AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.BizInfoKey)
 
@@ -237,6 +238,9 @@ public class AppUserDataModel: UrbanPiperDataModel {
       
         UserDefaults.standard.removeObject(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey)
         UserDefaults.standard.removeObject(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
+        
+        appUserData = nil
+        bizInfo = nil
     }
     
 }

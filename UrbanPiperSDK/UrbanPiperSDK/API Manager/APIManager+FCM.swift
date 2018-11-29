@@ -26,16 +26,13 @@ extension APIManager {
         set {
             if let token = newValue {
                 if AppUserDataModel.shared.validAppUserData != nil {
-                    return UserDefaults.standard.set(token, forKey: UserDefaultsFCMKeys.UserBizFCMTokenKey)
+                    UserDefaults.standard.set(token, forKey: UserDefaultsFCMKeys.UserBizFCMTokenKey)
                 } else {
-                    return UserDefaults.standard.set(token, forKey: UserDefaultsFCMKeys.BizFCMTokenKey)
+                    UserDefaults.standard.set(token, forKey: UserDefaultsFCMKeys.BizFCMTokenKey)
                 }
             } else {
-                if AppUserDataModel.shared.validAppUserData != nil {
-                    return UserDefaults.standard.removeObject(forKey: UserDefaultsFCMKeys.UserBizFCMTokenKey)
-                } else {
-                    return UserDefaults.standard.removeObject(forKey: UserDefaultsFCMKeys.BizFCMTokenKey)
-                }
+                UserDefaults.standard.removeObject(forKey: UserDefaultsFCMKeys.UserBizFCMTokenKey)
+                UserDefaults.standard.removeObject(forKey: UserDefaultsFCMKeys.BizFCMTokenKey)
             }
         }
     }

@@ -98,7 +98,7 @@ public class User : NSObject, NSCoding{
     
     @objc public var phoneNumberWithCountryCode: String! {
         guard phone != nil, phone!.count > 0 else { return nil }
-        return "\(AppConfigManager.shared.firRemoteConfigDefaults.bizISDCode!)\(phone!)"
+        return phone!
     }
     public var phoneNumberWithOutCountryCode: String! {
         guard let phoneNo = phone else { return ""}
