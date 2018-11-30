@@ -221,7 +221,6 @@ public class AppUserDataModel: UrbanPiperDataModel {
         AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
         AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.BizInfoKey)
 
-        APIManager.shared.updateHeaders()
         APIManager.shared.lastRegisteredFCMToken = nil
         
         AddressDataModel.shared.userAddressesResponse = nil
@@ -241,6 +240,8 @@ public class AppUserDataModel: UrbanPiperDataModel {
         
         appUserData = nil
         bizInfo = nil
+        
+        APIManager.shared.updateHeaders()
     }
     
 }

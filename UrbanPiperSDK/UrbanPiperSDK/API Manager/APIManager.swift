@@ -182,7 +182,6 @@ import Foundation
             httpStatusCodeObj == .unauthorized, AppUserDataModel.shared.validAppUserData?.jwt != nil {
             
             DispatchQueue.main.async { [weak self] in
-                AppUserDataModel.shared.reset()
                 let _ = self?.observers.map { $0.value?.forceLogout() }
             }
             return
