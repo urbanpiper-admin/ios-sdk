@@ -19,6 +19,12 @@ import CoreLocation
 open class FeaturedItemsDataModel: UrbanPiperDataModel {
     weak open var dataModelDelegate: FeaturedItemsDataModelDelegate?
     
+    private typealias WeakRefDataModelDelegate = WeakRef<FeaturedItemsDataModelDelegate>
+    
+    private var observers = [WeakRefDataModelDelegate]()
+
+    public weak var parentViewController: UIViewController!
+
     open var itemIds: [Int] = [0]
     public var filterOutItemsAddedToCart: Bool = false
     
@@ -34,8 +40,6 @@ open class FeaturedItemsDataModel: UrbanPiperDataModel {
 
     open var categoryItemsResponse: CategoryItemsResponse? {
         didSet {
-            dataModelDelegate?.refreshFeaturedItemsUI(false)
-            
             tableView?.reloadData()
             collectionView?.reloadData()
         }
@@ -56,6 +60,18 @@ open class FeaturedItemsDataModel: UrbanPiperDataModel {
         OrderingStoreDataModel.shared.addObserver(delegate: self)
     }
     
+    @objc public func addObserver(delegate: FeaturedItemsDataModelDelegate) {
+        let weakRefDataModelDelegate: WeakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
+        observers.append(weakRefDataModelDelegate)
+        observers = observers.filter { $0.value != nil }
+    }
+    
+    
+    public func removeObserver(delegate: FeaturedItemsDataModelDelegate) {
+        guard let index = (observers.index { $0.value === delegate }) else { return }
+        observers.remove(at: index)
+    }
+
     func filteredCategoryItemsResponse() -> CategoryItemsResponse? {
         let cartItemIds = CartManager.shared.cartItemIds
         
@@ -83,14 +99,17 @@ extension FeaturedItemsDataModel {
     fileprivate func fetchFeaturedItems(isForcedRefresh: Bool, next: String? = nil) {
         if let itemId = itemIds.last, itemId == 0, !AppConfigManager.shared.firRemoteConfigDefaults.showFeaturedItems {
             dataModelDelegate?.handleFeaturedItems(error: nil)
+            let _ = observers.map { $0.value?.handleFeaturedItems(error: nil) }
             return
         }
         if itemIds.count > 1, !AppConfigManager.shared.firRemoteConfigDefaults.enableItemUpselling {
             dataModelDelegate?.handleFeaturedItems(error: nil)
+            let _ = observers.map { $0.value?.handleFeaturedItems(error: nil) }
             return
         }
         guard isForcedRefresh || (!isForcedRefresh && categoryItemsResponse == nil) else { return }
         dataModelDelegate?.refreshFeaturedItemsUI(true)
+        let _ = observers.map { $0.value?.refreshFeaturedItemsUI(true) }
         let dataTask: URLSessionDataTask = APIManager.shared.featuredItems(itemIds: itemIds,
                                                                              locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
                                                                            next: next,
@@ -121,9 +140,13 @@ extension FeaturedItemsDataModel {
                                                                                 
                                                                                 self?.fullCategoryItemsResponse = currentCategoryItemsResponse
                                                                             }
+                                                                            self?.dataModelDelegate?.refreshFeaturedItemsUI(false)
+                                                                            let _ = self?.observers.map { $0.value?.refreshFeaturedItemsUI(false) }
+
             }, failure: { [weak self] (upError) in
                 defer {
                     self?.dataModelDelegate?.handleFeaturedItems(error: upError)
+                    let _ = self?.observers.map { $0.value?.handleFeaturedItems(error: upError) }
                 }
         })
         
@@ -150,7 +173,7 @@ extension FeaturedItemsDataModel {
             if itemsArray?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
                 fetchFeaturedItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
             }
-            categoryCell.configureCell(itemObject)
+            categoryCell.configureCell(itemObject, controller: parentViewController)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }
@@ -172,7 +195,7 @@ extension FeaturedItemsDataModel {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
-            categoryCell.configureCell(itemsArray?[indexPath.row])
+            categoryCell.configureCell(itemsArray?[indexPath.row], controller: parentViewController)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }

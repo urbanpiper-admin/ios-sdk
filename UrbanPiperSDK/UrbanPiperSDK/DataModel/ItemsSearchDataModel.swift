@@ -19,6 +19,8 @@ open class ItemsSearchDataModel: UrbanPiperDataModel {
     
     weak open var dataModelDelegate: ItemsSearchDataModelDelegate?
 
+    public weak var parentViewController: UIViewController!
+
     private var searchKeyword: String = ""
 
     open var itemsSearchResponse: ItemsSearchResponse? {
@@ -53,7 +55,7 @@ extension ItemsSearchDataModel {
             if itemsArray?.last === itemObject, itemsArray!.count < itemsSearchResponse!.meta.totalCount {
                 searchItems(for: searchKeyword, next: itemsSearchResponse?.meta.next)
             }
-            categoryCell.configureCell(itemObject)
+            categoryCell.configureCell(itemObject, controller: parentViewController)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }
@@ -78,7 +80,7 @@ extension ItemsSearchDataModel {
             if itemsArray?.last === itemObject, itemsArray!.count < itemsSearchResponse!.meta.totalCount {
                 searchItems(for: searchKeyword, next: itemsSearchResponse?.meta.next)
             }
-            categoryCell.configureCell(itemObject)
+            categoryCell.configureCell(itemObject, controller: parentViewController)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }

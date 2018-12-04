@@ -20,9 +20,18 @@ open class PreviousOrdersDataModel: UrbanPiperDataModel {
 
     weak public var dataModelDelegate: PreviousOrdersDataModelDelegate? {
         didSet {
-            refreshData()
+            DispatchQueue.main.async {
+                self.refreshData()
+            }
         }
     }
+    
+    private typealias WeakRefDataModelDelegate = WeakRef<PreviousOrdersDataModelDelegate>
+    
+    private var observers = [WeakRefDataModelDelegate]()
+    
+    public weak var parentViewController: UIViewController!
+
     
     open var myOrdersResponse: MyOrdersResponse? {
         didSet {
@@ -44,6 +53,18 @@ open class PreviousOrdersDataModel: UrbanPiperDataModel {
         super.init()
         
         AppUserDataModel.shared.addObserver(delegate: self)
+    }
+    
+    @objc public func addObserver(delegate: PreviousOrdersDataModelDelegate) {
+        let weakRefDataModelDelegate: WeakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
+        observers.append(weakRefDataModelDelegate)
+        observers = observers.filter { $0.value != nil }
+    }
+    
+    
+    public func removeObserver(delegate: PreviousOrdersDataModelDelegate) {
+        guard let index = (observers.index { $0.value === delegate }) else { return }
+        observers.remove(at: index)
     }
     
     public func refreshData() {
@@ -123,14 +144,17 @@ extension PreviousOrdersDataModel {
         guard AppUserDataModel.shared.validAppUserData != nil else {
             myOrdersResponse = nil
             dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: false)
+            let _ = observers.map { $0.value?.refreshPreviousOrdersUI(isProcessing: false) }
             return
         }
         
         dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: true)
+        let _ = observers.map { $0.value?.refreshPreviousOrdersUI(isProcessing: true) }
         let dataTask: URLSessionDataTask = APIManager.shared.fetchOrderHistory(completion:
             { [weak self] (data) in
                 guard let response = data else {
                     self?.dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: false)
+                    let _ = self?.observers.map { $0.value?.refreshPreviousOrdersUI(isProcessing: false) }
                     return
                 }
 
@@ -148,8 +172,10 @@ extension PreviousOrdersDataModel {
             }, failure: { [weak self] (upError) in
                 defer {
                     self?.dataModelDelegate?.handlePreviousOrders(error: upError)
+                    let _ = self?.observers.map { $0.value?.handlePreviousOrders(error: upError) }
                 }
                 self?.dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: false)
+                let _ = self?.observers.map { $0.value?.refreshPreviousOrdersUI(isProcessing: false) }
         })
 
         addOrCancelDataTask(dataTask: dataTask)
@@ -158,6 +184,7 @@ extension PreviousOrdersDataModel {
     func fetchAllOrderDetails() {
         guard myOrdersArray!.count > 0 else {
             dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: false)
+            let _ = observers.map { $0.value?.refreshPreviousOrdersUI(isProcessing: false) }
             return
         }
         for myOrder: MyOrder in myOrdersArray! {
@@ -169,6 +196,7 @@ extension PreviousOrdersDataModel {
         let lock = self
 
         dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: true)
+        let _ = observers.map { $0.value?.refreshPreviousOrdersUI(isProcessing: true) }
         let dataTask: URLSessionDataTask = APIManager.shared.fetchOrderDetails(orderId: orderId,
                                                                                completion:
             { [weak self] (data) in
@@ -184,8 +212,10 @@ extension PreviousOrdersDataModel {
             }, failure: { [weak self] (upError) in
                 defer {
                     self?.dataModelDelegate?.handlePreviousOrders(error: upError)
+                    let _ = self?.observers.map { $0.value?.handlePreviousOrders(error: upError) }
                 }
                 self?.dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: false)
+                let _ = self?.observers.map { $0.value?.refreshPreviousOrdersUI(isProcessing: false) }
         })
         
         addOrCancelDataTask(dataTask: dataTask)
@@ -196,6 +226,7 @@ extension PreviousOrdersDataModel {
         collectionView?.reloadData()
         
         dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: false)
+        let _ = observers.map { $0.value?.refreshPreviousOrdersUI(isProcessing: false) }
     }
     
 }

@@ -23,6 +23,10 @@ public class BannersDataModel: UrbanPiperDataModel {
 
     weak public var dataModelDelegate: BannersDataModelDelegate?
 
+    private typealias WeakRefDataModelDelegate = WeakRef<BannersDataModelDelegate>
+    
+    private var observers = [WeakRefDataModelDelegate]()
+
     public var bannersResponse: BannersResponse? {
         didSet {
             tableView?.reloadData()
@@ -55,6 +59,19 @@ public class BannersDataModel: UrbanPiperDataModel {
         
         dataModelDelegate = delegate
     }
+    
+    @objc public func addObserver(delegate: BannersDataModelDelegate) {
+        let weakRefDataModelDelegate: WeakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
+        observers.append(weakRefDataModelDelegate)
+        observers = observers.filter { $0.value != nil }
+    }
+    
+    
+    public func removeObserver(delegate: BannersDataModelDelegate) {
+        guard let index = (observers.index { $0.value === delegate }) else { return }
+        observers.remove(at: index)
+    }
+
 
     public func refreshData(_ isForcedRefresh: Bool = false) {
         guard AppConfigManager.shared.firRemoteConfigDefaults.showBanners else { return }
@@ -128,16 +145,22 @@ extension BannersDataModel {
 extension BannersDataModel {
 
     fileprivate func fetchBannersList() {
+        guard AppConfigManager.shared.firRemoteConfigDefaults.showBanners else { return }
+        
         dataModelDelegate?.refreshBannersUI(isRefreshing: true)
+        let _ = observers.map { $0.value?.refreshBannersUI(isRefreshing: true) }
         let dataTask: URLSessionDataTask = APIManager.shared.fetchBannersList(completion: { [weak self] (data) in
             defer {
                 self?.dataModelDelegate?.refreshBannersUI(isRefreshing: false)
+                let _ = self?.observers.map { $0.value?.refreshBannersUI(isRefreshing: false) }
+
             }
             guard let response = data else { return }
             self?.bannersResponse = response
         }, failure: { [weak self] (upError) in
             defer {
                 self?.dataModelDelegate?.handleBanners(error: upError)
+                let _ = self?.observers.map { $0.value?.handleBanners(error: upError) }
             }
         })
         addOrCancelDataTask(dataTask: dataTask)
