@@ -178,7 +178,7 @@ extension APIManager {
                           deliveryDate: Date,
                           timeSlot: TimeSlot?,
                           deliveryOption: String,
-                          instructions: String = "",
+                          instructions: String,
                           phone: String,
                           bizLocationId: Int,
                           paymentOption: String,
