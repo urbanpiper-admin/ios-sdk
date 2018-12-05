@@ -493,6 +493,7 @@ extension OrderPaymentDataModel {
                                      deliveryDate: deliveryDateTime!,
                                      timeSlot: timeSlotDelivery ? selectedDeliveryTimeSlotOption : nil,
                                      deliveryOption: selectedDeliveryOption.rawValue,
+                                     instructions: instructions,
                                      phone: phone,
                                      bizLocationId: OrderingStoreDataModel.shared.orderingStore!.bizLocationId,
                                      paymentOption: paymentOption.rawValue,
