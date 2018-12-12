@@ -231,7 +231,7 @@ public enum AddressTag: String {
          address1 = aDecoder.decodeObject(forKey: "address_1") as? String
          landmark = aDecoder.decodeObject(forKey: "landmark") as? String
         if landmark == nil {
-            landmark = aDecoder.decodeObject(forKey: "landmark") as? String
+            landmark = aDecoder.decodeObject(forKey: "address_2") as? String
         }
          deliverable = aDecoder.decodeObject(forKey: "deliverable") as? Bool ?? false
          city = aDecoder.decodeObject(forKey: "city") as? String
