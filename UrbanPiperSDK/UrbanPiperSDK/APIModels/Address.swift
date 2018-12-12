@@ -18,7 +18,7 @@ public enum AddressTag: String {
 @objc public class Address : NSObject, NSCoding {
 
 	public var address1 : String!
-	public var address2 : String!
+	public var landmark : String!
     public var deliverable : Bool!
 	@objc public var city : String!
 	public var id : Int!
@@ -43,7 +43,7 @@ public enum AddressTag: String {
         if let string = address1 {
             fullAddress = "\(fullAddress + string)\n"
         }
-        if let string = address2 {
+        if let string = landmark {
             fullAddress = "\(fullAddress + string)\n"
         }
         if let string = subLocality {
@@ -87,7 +87,7 @@ public enum AddressTag: String {
         }
         if let text = subLocalityLevel2 {
             subLocalityArray.append(text)
-            address2 = text
+            landmark = text
         }
         if let text = subLocalityLevel1 {
             subLocalityArray.append(text)
@@ -135,8 +135,8 @@ public enum AddressTag: String {
 //        
 //        address1 = thoroughfare
 //        if let linesString = lines {
-//            if let address2Val = lines?[1] {
-//                address2 = address2Val
+//            if let landmarkVal = lines?[1] {
+//                landmark = landmarkVal
 //            }
 //        }
 //        
@@ -171,11 +171,7 @@ public enum AddressTag: String {
             address1 = dictionary["address_1"] as? String
         }
         
-        if let line2: String = dictionary["line_2"] as? String {
-            address2 = line2
-        } else {
-            address2 = dictionary["address_2"] as? String
-        }
+        landmark = dictionary["landmark"] as? String
         
 		id = dictionary["id"] as? Int
 		pin = dictionary["pin"] as? String
@@ -193,8 +189,8 @@ public enum AddressTag: String {
 //        if address1 != nil{
 //            dictionary["address_1"] = address1
 //        }
-//        if address2 != nil{
-//            dictionary["address_2"] = address2
+//        if landmark != nil{
+//            dictionary["landmark"] = landmark
 //        }
 //        if deliverable != nil{
 //            dictionary["deliverable"] = deliverable
@@ -233,7 +229,10 @@ public enum AddressTag: String {
     @objc required public init(coder aDecoder: NSCoder)
 	{
          address1 = aDecoder.decodeObject(forKey: "address_1") as? String
-         address2 = aDecoder.decodeObject(forKey: "address_2") as? String
+         landmark = aDecoder.decodeObject(forKey: "landmark") as? String
+        if landmark == nil {
+            landmark = aDecoder.decodeObject(forKey: "landmark") as? String
+        }
          deliverable = aDecoder.decodeObject(forKey: "deliverable") as? Bool ?? false
          city = aDecoder.decodeObject(forKey: "city") as? String
          id = aDecoder.decodeObject(forKey: "id") as? Int
@@ -255,8 +254,8 @@ public enum AddressTag: String {
 		if address1 != nil{
 			aCoder.encode(address1, forKey: "address_1")
 		}
-		if address2 != nil{
-			aCoder.encode(address2, forKey: "address_2")
+		if landmark != nil{
+			aCoder.encode(landmark, forKey: "landmark")
 		}
         if deliverable != nil{
             aCoder.encode(deliverable, forKey: "deliverable")

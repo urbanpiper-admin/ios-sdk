@@ -280,14 +280,14 @@ extension APIManager {
                            "biz_id" : AppConfigManager.shared.firRemoteConfigDefaults.bizId,
                            "sub_locality" : address.subLocality,
                            "address_1" : address.address1,
-                           "address_2" : "",
+                           "landmark" : "",
                            "city" : "",
                            "pin" : "",
                            "lat" : Double.zero,
                            "lng" : Double.zero]
         
-        if let address2 = address.address2 {
-            addressDict["address_2"] = address2
+        if let landmark = address.landmark {
+            addressDict["landmark"] = landmark
         }
         
         if let city = address.city {
@@ -356,14 +356,14 @@ extension APIManager {
                            "biz_id" : appId,
                            "sub_locality" : address.subLocality,
                            "address_1" : address.address1,
-                           "address_2" : "",
+                           "landmark" : "",
                            "city" : "",
                            "pin" : "",
                            "lat" : Double.zero,
                            "lng" : Double.zero]
         
-        if let address2 = address.address2 {
-            addressDict["address_2"] = address2
+        if let landmark = address.landmark {
+            addressDict["landmark"] = landmark
         }
         
         if let city = address.city {
