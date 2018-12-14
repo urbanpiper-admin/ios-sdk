@@ -50,6 +50,7 @@ import FirebaseRemoteConfig
 	public private(set) var bizLogoUrl : String!
     public private(set) var bizCountry2LetterCode: String!
 	public private(set) var bizISDCode : String!
+    public private(set) var isdCodes : [[String : String]]!
 	public private(set) var dfltPymntOpt : String!
 	public private(set) var dfltTabToShow : String!
 	public private(set) var disableWalletReload : Bool!
@@ -140,6 +141,8 @@ import FirebaseRemoteConfig
 		bizLogoUrl = remoteConfig["biz_logo_url"].stringValue
         bizCountry2LetterCode = remoteConfig["biz_country_2_letter_code"].stringValue
 		bizISDCode = remoteConfig["biz_isd_code"].stringValue
+        let isdCodesString = remoteConfig["isd_codes"].stringValue
+        isdCodes = isdCodesString?.array as? [[String : String]] ?? []
 		dfltPymntOpt = remoteConfig["dflt_pymnt_opt"].stringValue
 		dfltTabToShow = remoteConfig["dflt_tab_to_show"].stringValue
 		disableWalletReload = remoteConfig["disable_wallet_reload"].boolValue

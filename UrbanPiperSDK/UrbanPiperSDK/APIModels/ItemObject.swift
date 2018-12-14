@@ -39,6 +39,7 @@ import Foundation
     public var isRecommendedItem: Bool = false
     public var isUpsoldItem: Bool = false
     public var isSearchItem: Bool = false
+    public var notes: String?
     
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
@@ -227,6 +228,11 @@ import Foundation
             dictionary["vat_rate"] = vatRate
         }
         dictionary["quantity"] = quantity
+
+        if notes != nil{
+            dictionary["notes"] = notes
+        }
+
         return dictionary
     }
 
@@ -261,6 +267,7 @@ import Foundation
 //        subCategory = aDecoder.decodeObject(forKey: "sub_category") as? ItemCategory
 //        tags = aDecoder.decodeObject(forKey :"tags") as? [ItemTag]
 //         vatRate = aDecoder.decodeObject(forKey: "vat_rate") as? Float
+//         notes = aDecoder.decodeObject(forKey: "notes") as? String
 //
 //    }
 //
@@ -344,6 +351,9 @@ import Foundation
 //        }
 //        if vatRate != nil{
 //            aCoder.encode(vatRate, forKey: "vat_rate")
+//        }
+//        if notes != nil{
+//            aCoder.encode(notes, forKey: "notes")
 //        }
 //
 //    }

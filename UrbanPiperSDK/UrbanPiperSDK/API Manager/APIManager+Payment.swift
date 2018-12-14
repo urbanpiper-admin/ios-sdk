@@ -206,9 +206,22 @@ extension APIManager {
         
         urlRequest.httpMethod = "POST"
         
+        let itemWithInstructionsArray = items.filter { $0.notes != nil && $0.notes!.count > 0 }
+        var instructionsText: String
+        
+        if itemWithInstructionsArray.count > 0 {
+            let itemsInstructionsStringArray = itemWithInstructionsArray.map { "\($0.itemTitle!) : \($0.notes!)" }
+            instructionsText = "\(itemsInstructionsStringArray.joined(separator: ",\n"))\n general instructions: \(instructions))"
+            if instructions.count > 0 {
+                instructionsText = "\(instructionsText)\n general instructions: \(instructions))"
+            }
+        } else {
+            instructionsText = instructions
+        }
+        
         var params: [String: Any] = ["channel": APIManager.channel,
                       "order_type": deliveryOption,
-                      "instructions": instructions,
+                      "instructions": instructionsText,
                       "items": items.map { $0.apiItemDictionary },
                       "payment_option": paymentOption,
                       "phone": phone,
@@ -221,6 +234,8 @@ extension APIManager {
                       "discount_applied": discountApplied,
                       "delivery_charge": deliveryOption == DeliveryOption.pickUp.rawValue ? Decimal.zero : deliveryCharge,
         "order_total": orderTotal] as [String: Any]
+        
+        print("params \(params as AnyObject)")
         
         if applyWalletCredit {
             params["wallet_credit_applicable"] = true

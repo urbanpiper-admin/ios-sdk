@@ -73,6 +73,14 @@ public class CartManager: NSObject {
     @objc public func cartCount(for item: ItemObject) -> Int {
         return cartItems.reduce (0, { $0 + ($1.id == item.id ? $1.quantity : 0) } )
     }
+    
+    public func notesFor(itemId: Int) -> String {
+        return cartItems.filter { $0.id == itemId }.last?.notes ?? ""
+    }
+    
+    public func updateNotesFor(id: Int, notes: String?) {
+        cartItems.filter { $0.id == id }.last?.notes = notes
+    }
 
 }
 
@@ -98,7 +106,7 @@ extension CartManager {
 
 extension CartManager {
 
-    @objc public func add(itemObject: ItemObject, fromDetailScreen: Bool, fromCheckoutScreen: Bool) {
+    @objc public func add(itemObject: ItemObject, notes: String? = nil, fromDetailScreen: Bool, fromCheckoutScreen: Bool) {
         if cartCount == 0 {
             AnalyticsManager.shared.track(event: .cartInit)
         }
@@ -110,6 +118,7 @@ extension CartManager {
         if let item = cartItems.filter({ $0 == itemObject }).last {
             if item.isItemQuantityAvailable(quantity: itemObject.quantity) {
                 item.quantity += itemObject.quantity
+                itemObject.notes = notes
             } else {
                 let upError: UPError = UPError(type: .maxOrderableQuantityAdded(item.currentStock))
                 let _ = cartManagerObservers.map { $0.value?.handleCart(error: upError) }
@@ -117,6 +126,7 @@ extension CartManager {
         } else {
             let object = itemObject.copy() as! ItemObject
             object.quantity = itemObject.quantity
+            object.notes = notes
 
             cartItems.append(object)
         }

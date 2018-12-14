@@ -323,7 +323,8 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
         if let startTime = CartManager.shared.cartPreOrderStartTime {
             filteredSlots = availableTimeSlots.filter { $0.day == dayName && $0.startTime!.currentDateTime! >= startTime }
         } else if Calendar.current.isDateInToday(selectedRequestedDate) {
-            filteredSlots = availableTimeSlots.filter { $0.day == dayName && $0.endTime!.currentDateTime! >= defaultOrderDeliveryDateTime! }
+            guard let defaultDate = defaultOrderDeliveryDateTime else { return filteredSlots }
+            filteredSlots = availableTimeSlots.filter { $0.day == dayName && $0.endTime!.currentDateTime! >= defaultDate }
         } else {
             filteredSlots = availableTimeSlots.filter { $0.day == dayName }
         }
