@@ -35,7 +35,7 @@ public class Store : NSObject, NSCoding{
 	public var sortOrder : Int!
 	public var taxRate : Float!
 	public var temporarilyClosed : Bool!
-	public var timeSlots : [TimeSlot]!
+	public var timeSlots : [TimeSlot]?
     public var distance: Double!
     public var merchantRefId: String!
 
@@ -114,7 +114,13 @@ public class Store : NSObject, NSCoding{
 		sortOrder = dictionary["sort_order"] as? Int ?? 0
 		taxRate = dictionary["tax_rate"] as? Float
 		temporarilyClosed = dictionary["temporarily_closed"] as? Bool
-		timeSlots = dictionary["time_slots"] as? [TimeSlot]
+        if let timeSlotsArray: [[String:Any]] = dictionary["time_slots"] as? [[String:Any]], timeSlotsArray.count > 0 {
+            timeSlots = [TimeSlot]()
+            for dic in timeSlotsArray{
+                let value: TimeSlot = TimeSlot(fromDictionary: dic)
+                timeSlots?.append(value)
+            }
+        }
 	}
 
     /**

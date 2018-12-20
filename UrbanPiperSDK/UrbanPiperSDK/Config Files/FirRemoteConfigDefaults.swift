@@ -60,6 +60,7 @@ import FirebaseRemoteConfig
     public private(set) var showSpecialInstructionTextView : Bool!
     public private(set) var enableItemUpselling : Bool!
     public private(set) var enableFilterSort : Bool!
+    public private(set) var enableFreshChat : Bool!
 	public private(set) var enableItemDirectLoading : Bool!
 	public private(set) var enableSocialLogin : Bool!
 	public private(set) var enableTimeSlots : Bool!
@@ -113,6 +114,9 @@ import FirebaseRemoteConfig
 	public private(set) var timeToElapseForFeebdackSecs : Int!
 	public private(set) var toolbarNoShadow : Bool!
     public private(set) var aboutUsLink : String!
+    public private(set) var freshchatAppId : String!
+    public private(set) var freshchatAppKey : String!
+
 
 
 	/**
@@ -153,6 +157,7 @@ import FirebaseRemoteConfig
         showSpecialInstructionTextView = remoteConfig["show_special_instruction_textview"].boolValue
         enableItemUpselling = remoteConfig["enable_item_upselling"].boolValue
         enableFilterSort = remoteConfig["enable_filter_sort"].boolValue
+        enableFreshChat = remoteConfig["enable_freshchat"].boolValue
 		enableItemDirectLoading = remoteConfig["enable_item_direct_loading"].boolValue
 		enableSocialLogin = remoteConfig["enable_social_login"].boolValue
 		enableTimeSlots = remoteConfig["enable_time_slots"].boolValue
@@ -207,6 +212,8 @@ import FirebaseRemoteConfig
 		timeToElapseForFeebdackSecs = remoteConfig["time_to_elapse_for_feebdack_secs"].numberValue as? Int
 		toolbarNoShadow = remoteConfig["toolbar_no_shadow"].boolValue
         aboutUsLink = remoteConfig["about_us_link"].stringValue
+        freshchatAppId = remoteConfig["freshchat_app_id"].stringValue
+        freshchatAppKey = remoteConfig["freshchat_app_key"].stringValue
 	}
 
 }
