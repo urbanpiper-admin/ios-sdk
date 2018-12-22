@@ -314,7 +314,8 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     
     public var deliverySlotsOptions: [TimeSlot] {
         guard AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots else { return [] }
-        guard let availableTimeSlots = OrderingStoreDataModel.shared.orderingStore?.timeSlots ?? Biz.shared?.timeSlots, availableTimeSlots.count > 0 else { return [] }
+        let storeTimeSlots = OrderingStoreDataModel.shared.orderingStore?.timeSlots
+        guard let availableTimeSlots = storeTimeSlots?.isEmpty == false ? storeTimeSlots : Biz.shared?.timeSlots, availableTimeSlots.count > 0 else { return [] }
         
         let dayName = selectedRequestedDate.dayName
         
