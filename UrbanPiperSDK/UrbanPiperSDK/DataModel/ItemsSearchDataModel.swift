@@ -20,8 +20,6 @@ open class ItemsSearchDataModel: UrbanPiperDataModel {
     
     weak open var dataModelDelegate: ItemsSearchDataModelDelegate?
 
-    public weak var parentViewController: UIViewController!
-
     private var searchKeyword: String = ""
 
     open var itemsSearchResponse: ItemsSearchResponse? {
