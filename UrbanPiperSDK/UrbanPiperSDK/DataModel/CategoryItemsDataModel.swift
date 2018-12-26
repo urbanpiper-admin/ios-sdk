@@ -25,8 +25,6 @@ open class CategoryItemsDataModel: UrbanPiperDataModel {
 
     weak open var dataModelDelegate: CategoryItemsDataModelDelegate?
 
-    public weak var parentViewController: UIViewController!
-
     open var categoryItemsResponse: CategoryItemsResponse? {
         didSet {
             setUpSubCategoriesArray()
