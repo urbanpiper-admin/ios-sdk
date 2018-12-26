@@ -17,7 +17,7 @@ import CoreLocation
 }
 
 @objc public protocol CategoryCellDelegate {
-    func configureCell(_ categoriesObject: Object?)
+    func configureCell(_ categoriesObject: Object?, extras: Extras?)
 }
 
 open class ItemCategoriesDataModel: UrbanPiperDataModel {
@@ -61,7 +61,7 @@ extension ItemCategoriesDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
 
         if let categoryCell: CategoryCellDelegate = cell as? CategoryCellDelegate {
-            categoryCell.configureCell(categoriesListArray?[indexPath.row])
+            categoryCell.configureCell(categoriesListArray?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to CategoryCellDelegate protocol")
         }
@@ -82,7 +82,7 @@ extension ItemCategoriesDataModel {
      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
 
         if let categoryCell: CategoryCellDelegate = cell as? CategoryCellDelegate {
-            categoryCell.configureCell(categoriesListArray?[indexPath.row])
+            categoryCell.configureCell(categoriesListArray?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to CategoryCellDelegate protocol")
         }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 @objc public protocol ItemsSearchDataModelDelegate {
 
@@ -34,6 +35,11 @@ open class ItemsSearchDataModel: UrbanPiperDataModel {
         return itemsSearchResponse?.items
     }
 
+    public override init() {
+        super.init()
+        OrderingStoreDataModel.shared.addObserver(delegate: self)
+    }
+    
     open func refreshData(_ isForcedRefresh: Bool = false) {
         fetchItems(for: searchKeyword)
     }
@@ -55,7 +61,7 @@ extension ItemsSearchDataModel {
             if itemsArray?.last === itemObject, itemsArray!.count < itemsSearchResponse!.meta.totalCount {
                 searchItems(for: searchKeyword, next: itemsSearchResponse?.meta.next)
             }
-            categoryCell.configureCell(itemObject, controller: parentViewController)
+            categoryCell.configureCell(itemObject, extras: extras)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }
@@ -80,7 +86,7 @@ extension ItemsSearchDataModel {
             if itemsArray?.last === itemObject, itemsArray!.count < itemsSearchResponse!.meta.totalCount {
                 searchItems(for: searchKeyword, next: itemsSearchResponse?.meta.next)
             }
-            categoryCell.configureCell(itemObject, controller: parentViewController)
+            categoryCell.configureCell(itemObject, extras: extras)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }
@@ -166,4 +172,18 @@ extension ItemsSearchDataModel {
         refreshData(false)
     }
 
+}
+
+extension ItemsSearchDataModel: OrderingStoreDataModelDelegate {
+    open func update(_ storeResponse: StoreResponse?, _ deliveryLocation: CLLocation?, _ error: UPError?, _ storeUpdated: Bool) {
+        itemsSearchResponse = nil
+        refreshData(true)
+    }
+    
+    open func handleLocationManagerFailure(error: Error?) {
+        
+    }
+    
+    open func didChangeAuthorization(status: CLAuthorizationStatus) {
+    }
 }

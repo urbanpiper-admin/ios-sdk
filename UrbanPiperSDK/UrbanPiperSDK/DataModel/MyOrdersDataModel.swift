@@ -11,7 +11,7 @@ import UIKit
 @objc public protocol OrderCellDelegate {
     func object() -> MyOrder?
     
-    func configureCell(_ myOrder: MyOrder?)
+    func configureCell(_ myOrder: MyOrder?, extras: Extras?)
 }
 
 @objc public protocol MyOrdersDataModelDelegate {
@@ -58,7 +58,7 @@ extension MyOrdersDataModel {
         if let orderCell: OrderCellDelegate = cell as? OrderCellDelegate {
             let myOrder: MyOrder = myOrdersArray[indexPath.row]
             
-            orderCell.configureCell(myOrder)
+            orderCell.configureCell(myOrder, extras: extras)
             if myOrdersArray.last === myOrder, myOrdersArray.count < myOrdersResponse!.meta.totalCount {
                 fetchOrderHistory(next:  myOrdersResponse?.meta.next)
             }
@@ -84,7 +84,7 @@ extension MyOrdersDataModel {
         if let orderCell: OrderCellDelegate = cell as? OrderCellDelegate {
             let myOrder: MyOrder = myOrdersArray[indexPath.row]
             
-            orderCell.configureCell(myOrder)
+            orderCell.configureCell(myOrder, extras: extras)
             if myOrdersArray.last === myOrder, myOrdersArray.count < myOrdersResponse!.meta.totalCount {
                 fetchOrderHistory(next:  myOrdersResponse?.meta.next)
             }

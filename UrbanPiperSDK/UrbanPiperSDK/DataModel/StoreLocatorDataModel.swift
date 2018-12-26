@@ -15,7 +15,7 @@ import UIKit
 }
 
 @objc public protocol StoreLocatorCellDelegate {
-    func configureCell(_ store: Store?)
+    func configureCell(_ store: Store?, extras: Extras?)
 }
 
 public class StoreLocatorDataModel: UrbanPiperDataModel {
@@ -118,7 +118,7 @@ extension StoreLocatorDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
         
         if let placesCell: StoreLocatorCellDelegate = cell as? StoreLocatorCellDelegate {
-            placesCell.configureCell(filteredStoresArray?[indexPath.row])
+            placesCell.configureCell(filteredStoresArray?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to StoreLocatorCellDelegate protocol")
         }
@@ -139,7 +139,7 @@ extension StoreLocatorDataModel {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let placesCell: StoreLocatorCellDelegate = cell as? StoreLocatorCellDelegate {
-            placesCell.configureCell(filteredStoresArray?[indexPath.row])
+            placesCell.configureCell(filteredStoresArray?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to StoreLocatorCellDelegate protocol")
         }

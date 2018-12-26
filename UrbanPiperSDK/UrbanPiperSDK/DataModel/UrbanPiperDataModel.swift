@@ -22,6 +22,8 @@ open class UrbanPiperDataModel: NSObject {
     
     public private(set) var collectionViewCellIdentifier: String!
     
+    public private(set) var extras: Extras?
+    
     public override init() {
         super.init()
 
@@ -39,27 +41,29 @@ open class UrbanPiperDataModel: NSObject {
 
     }
     
-    public convenience init(tableView: UITableView, cellIdentifier: String) {
+    public convenience init(tableView: UITableView, cellIdentifier: String, extras: Extras? = nil) {
         self.init()
         
-        configure(tableView: tableView, cellIdentifier: cellIdentifier)
+        configure(tableView: tableView, cellIdentifier: cellIdentifier, extras: extras)
     }
     
-    public convenience init(collectionView: UICollectionView, cellIdentifier: String) {
+    public convenience init(collectionView: UICollectionView, cellIdentifier: String, extras: Extras?) {
         self.init()
         
-        configure(collectionView: collectionView, cellIdentifier: cellIdentifier)
+        configure(collectionView: collectionView, cellIdentifier: cellIdentifier, extras: extras)
     }
     
-    open func configure(tableView: UITableView, cellIdentifier: String) {
+    open func configure(tableView: UITableView, cellIdentifier: String, extras: Extras? = nil) {
         guard tableView.dequeueReusableCell(withIdentifier: cellIdentifier) != nil else {
             assert(false, "Provide a valid table view cell identifier")
             return
         }
         
+        
         tableViewCellIdentifier = cellIdentifier
         tableView.dataSource = self
         
+        self.extras = extras
         self.tableView = tableView
         
         DispatchQueue.main.async {
@@ -67,10 +71,11 @@ open class UrbanPiperDataModel: NSObject {
         }
     }
     
-    open func configure(collectionView: UICollectionView, cellIdentifier: String) {
+    open func configure(collectionView: UICollectionView, cellIdentifier: String, extras: Extras? = nil) {
         collectionViewCellIdentifier = cellIdentifier
         collectionView.dataSource = self
         
+        self.extras = extras
         self.collectionView = collectionView
         
         DispatchQueue.main.async {

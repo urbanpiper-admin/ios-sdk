@@ -17,7 +17,7 @@ import UIKit
 }
 
 @objc public protocol OfferCellDelegate {
-    func configureCell(_ coupon: Coupon?)
+    func configureCell(_ coupon: Coupon?, extras: Extras?)
     
     func object() -> Coupon?
 }
@@ -124,7 +124,7 @@ extension OffersDataModel {
             if couponCodesArray!.last === coupon, couponCodesArray!.count < offersAPIResponse!.meta.totalCount {
                     availableCoupons(next: offersAPIResponse?.meta.next, isForcedRefresh: true)
                 }
-            couponCell.configureCell(coupon)
+            couponCell.configureCell(coupon, extras: extras)
         } else {
             assert(false, "Cell does not conform to OfferCellDelegate protocol")
         }
@@ -146,7 +146,7 @@ extension OffersDataModel {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let couponCell: OfferCellDelegate = cell as? OfferCellDelegate {
-            couponCell.configureCell(couponCodesArray?[indexPath.row])
+            couponCell.configureCell(couponCodesArray?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to OfferCellDelegate protocol")
         }

@@ -16,7 +16,7 @@ import UIKit
 }
 
 @objc public protocol PlacesCellDelegate {
-    func configureCell(_ placeObject: Prediction?)
+    func configureCell(_ placeObject: Prediction?, extras: Extras?)
 }
 
 public struct PlacesSearchUserDefaultKeys {
@@ -159,7 +159,7 @@ extension PlacesSearchDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
         
         if let placesCell: PlacesCellDelegate = cell as? PlacesCellDelegate {
-            placesCell.configureCell(placesPredictionList?[indexPath.row])
+            placesCell.configureCell(placesPredictionList?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to PlacesCellDelegate protocol")
         }
@@ -189,7 +189,7 @@ extension PlacesSearchDataModel {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let placesCell: PlacesCellDelegate = cell as? PlacesCellDelegate {
-            placesCell.configureCell(placesPredictionList?[indexPath.row])
+            placesCell.configureCell(placesPredictionList?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to PlacesCellDelegate protocol")
         }

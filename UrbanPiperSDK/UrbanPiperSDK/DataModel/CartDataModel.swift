@@ -14,7 +14,7 @@ import UIKit
 }
 
 @objc public protocol CartItemCellDelegate {
-    func configureCell(_ itemObject: ItemObject?)
+    func configureCell(_ itemObject: ItemObject?, extras: Extras?)
 }
 
 open class CartDataModel: UrbanPiperDataModel {
@@ -53,7 +53,7 @@ extension CartDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
 
         if let cartItemCell: CartItemCellDelegate = cell as? CartItemCellDelegate {
-            cartItemCell.configureCell(cartItemsListArray[indexPath.section][indexPath.row])
+            cartItemCell.configureCell(cartItemsListArray[indexPath.section][indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to CartItemCellDelegate protocol")
         }
@@ -74,7 +74,7 @@ extension CartDataModel {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
 
         if let cartItemCell: CartItemCellDelegate = cell as? CartItemCellDelegate {
-            cartItemCell.configureCell(cartItemsListArray[indexPath.section][indexPath.row])
+            cartItemCell.configureCell(cartItemsListArray[indexPath.section][indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to CartItemCellDelegate protocol")
         }

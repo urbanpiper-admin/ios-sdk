@@ -16,7 +16,7 @@ import UIKit
 }
 
 @objc public protocol BannerCellDelegate {
-    func configureCell(_ bannersImage: BannerImage?)
+    func configureCell(_ bannersImage: BannerImage?, extras: Extras?)
 }
 
 public class BannersDataModel: UrbanPiperDataModel {
@@ -90,7 +90,7 @@ extension BannersDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
 
         if let bannerCell: BannerCellDelegate = cell as? BannerCellDelegate {
-            bannerCell.configureCell(bannersListArray?[indexPath.row])
+            bannerCell.configureCell(bannersListArray?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to BannerCellDelegate protocol")
         }
@@ -130,7 +130,7 @@ extension BannersDataModel {
                 image = nil
             }
 
-            bannerCell.configureCell(image)
+            bannerCell.configureCell(image, extras: extras)
         } else {
             assert(false, "Cell does not conform to BannerCellDelegate protocol")
         }

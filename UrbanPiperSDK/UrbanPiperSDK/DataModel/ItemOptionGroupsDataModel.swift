@@ -9,7 +9,7 @@
 import UIKit
 
 @objc public protocol ItemOptionGroupsCellDelegate {
-    func configureCell(_ itemOptionGroup: ItemOptionGroup?)
+    func configureCell(_ itemOptionGroup: ItemOptionGroup?, extras: Extras?)
 }
 
 public class ItemOptionGroupsDataModel: UrbanPiperDataModel {
@@ -36,7 +36,7 @@ extension ItemOptionGroupsDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
 
         if let menuCell: ItemOptionGroupsCellDelegate = cell as? ItemOptionGroupsCellDelegate {
-            menuCell.configureCell(itemOptionGroupsArray?[indexPath.row])
+            menuCell.configureCell(itemOptionGroupsArray?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to ItemOptionGroupsCellDelegate protocol")
         }
@@ -57,7 +57,7 @@ extension ItemOptionGroupsDataModel {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
 
         if let menuCell: ItemOptionGroupsCellDelegate = cell as? ItemOptionGroupsCellDelegate {
-            menuCell.configureCell(itemOptionGroupsArray?[indexPath.row])
+            menuCell.configureCell(itemOptionGroupsArray?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to ItemOptionGroupsCellDelegate protocol")
         }

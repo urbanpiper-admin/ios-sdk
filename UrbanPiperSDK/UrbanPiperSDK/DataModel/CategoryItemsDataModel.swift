@@ -18,7 +18,7 @@ import UIKit
 
 @objc public protocol ItemCellDelegate {
     func object() -> ItemObject?
-    func configureCell(_ itemObject: ItemObject?, controller: UIViewController)
+    func configureCell(_ itemObject: ItemObject?, extras: Extras?)
 }
 
 open class CategoryItemsDataModel: UrbanPiperDataModel {
@@ -153,7 +153,7 @@ extension CategoryItemsDataModel {
                     fetchCategoryItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
                 }
             }
-            categoryCell.configureCell(itemObject, controller: parentViewController)
+            categoryCell.configureCell(itemObject, extras: extras)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }
@@ -175,7 +175,7 @@ extension CategoryItemsDataModel {
      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
 
         if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
-            categoryCell.configureCell(itemsArray?[indexPath.row], controller: parentViewController)
+            categoryCell.configureCell(itemsArray?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }

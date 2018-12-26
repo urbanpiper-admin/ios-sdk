@@ -23,8 +23,6 @@ open class FeaturedItemsDataModel: UrbanPiperDataModel {
     
     private var observers = [WeakRefDataModelDelegate]()
 
-    public weak var parentViewController: UIViewController!
-
     open var itemIds: [Int] = [0]
     public var filterOutItemsAddedToCart: Bool = false
     
@@ -173,7 +171,7 @@ extension FeaturedItemsDataModel {
             if itemsArray?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
                 fetchFeaturedItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
             }
-            categoryCell.configureCell(itemObject, controller: parentViewController)
+            categoryCell.configureCell(itemObject, extras: extras)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }
@@ -195,7 +193,7 @@ extension FeaturedItemsDataModel {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
-            categoryCell.configureCell(itemsArray?[indexPath.row], controller: parentViewController)
+            categoryCell.configureCell(itemsArray?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }

@@ -16,7 +16,7 @@ import UIKit
 }
 
 @objc public protocol NotificationCellDelegate {
-    func configureCell(_ notification: Message?)
+    func configureCell(_ notification: Message?, extras: Extras?)
 }
 
 public class NotificationsDataModel: UrbanPiperDataModel {
@@ -57,7 +57,7 @@ extension NotificationsDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
 
         if let notificationCell: NotificationCellDelegate = cell as? NotificationCellDelegate {
-            notificationCell.configureCell(notificationsListArray?[indexPath.row])
+            notificationCell.configureCell(notificationsListArray?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to NotificationCellDelegate protocol")
         }
@@ -78,7 +78,7 @@ extension NotificationsDataModel {
      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
 
         if let notificationCell: NotificationCellDelegate = cell as? NotificationCellDelegate {
-            notificationCell.configureCell(notificationsListArray?[indexPath.row])
+            notificationCell.configureCell(notificationsListArray?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to NotificationCellDelegate protocol")
         }

@@ -30,9 +30,6 @@ open class PreviousOrdersDataModel: UrbanPiperDataModel {
     
     private var observers = [WeakRefDataModelDelegate]()
     
-    public weak var parentViewController: UIViewController!
-
-    
     open var myOrdersResponse: MyOrdersResponse? {
         didSet {
             guard myOrdersResponse != nil else { return }
@@ -105,7 +102,7 @@ extension PreviousOrdersDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
         
         if let orderCell: OrderCellDelegate = cell as? OrderCellDelegate {
-            orderCell.configureCell(myOrdersArray![indexPath.row])
+            orderCell.configureCell(myOrdersArray![indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to OrderCellDelegate protocol")
         }
@@ -126,7 +123,7 @@ extension PreviousOrdersDataModel {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let orderCell: OrderCellDelegate = cell as? OrderCellDelegate {
-            orderCell.configureCell(myOrdersArray![indexPath.row])
+            orderCell.configureCell(myOrdersArray![indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to OrderCellDelegate protocol")
         }

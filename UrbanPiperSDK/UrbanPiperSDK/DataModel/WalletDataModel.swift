@@ -28,7 +28,7 @@ import UIKit
 }
 
 @objc public protocol TransactionCellDelegate {
-    func configureCell(_ transaction: Transaction?)
+    func configureCell(_ transaction: Transaction?, extras: Extras?)
 }
 
 
@@ -68,7 +68,7 @@ extension WalletDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
         
         if let transactionCell: TransactionCellDelegate = cell as? TransactionCellDelegate {
-            transactionCell.configureCell(transactionsListArray?[indexPath.row])
+            transactionCell.configureCell(transactionsListArray?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to TransactionCellDelegate protocol")
         }
@@ -89,7 +89,7 @@ extension WalletDataModel {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let transactionCell: TransactionCellDelegate = cell as? TransactionCellDelegate {
-            transactionCell.configureCell(transactionsListArray?[indexPath.row])
+            transactionCell.configureCell(transactionsListArray?[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to TransactionCellDelegate protocol")
         }

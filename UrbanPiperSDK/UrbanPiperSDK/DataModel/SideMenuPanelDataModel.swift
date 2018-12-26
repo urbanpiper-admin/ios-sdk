@@ -9,7 +9,7 @@
 import UIKit
 
 @objc public protocol SideMenuPanelCellDelegate {
-    func configureCell(_ sideMenuPanelTabDetail: SideMenuPanelTabDetail)
+    func configureCell(_ sideMenuPanelTabDetail: SideMenuPanelTabDetail, extras: Extras?)
 }
 
 public class SideMenuPanelDataModel: UrbanPiperDataModel {
@@ -56,7 +56,7 @@ extension SideMenuPanelDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
 
         if let menuCell: SideMenuPanelCellDelegate = cell as? SideMenuPanelCellDelegate {
-            menuCell.configureCell(panelDetailArray[indexPath.row])
+            menuCell.configureCell(panelDetailArray[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to SideMenuPanelCellDelegate protocol")
         }
@@ -77,7 +77,7 @@ extension SideMenuPanelDataModel {
        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
 
         if let menuCell: SideMenuPanelCellDelegate = cell as? SideMenuPanelCellDelegate {
-            menuCell.configureCell(panelDetailArray[indexPath.row])
+            menuCell.configureCell(panelDetailArray[indexPath.row], extras: extras)
         } else {
             assert(false, "Cell does not conform to SideMenuPanelCellDelegate protocol")
         }
