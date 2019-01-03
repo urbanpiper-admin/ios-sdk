@@ -62,8 +62,7 @@ extension APIManager {
                             completion: ((CategoryItemsResponse?) -> Void)?,
                             failure: APIFailure?) -> URLSessionDataTask {
 
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
-        var urlString: String = "\(APIManager.baseUrl)/api/v1/order/categories/\(categoryId)/items/?format=json&biz_id=\(appId)"
+        var urlString: String = "\(APIManager.baseUrl)/api/v1/order/categories/\(categoryId)/items/?format=json&biz_id=\(bizId)"
 
         if let id = locationID {
             urlString = "\(urlString)&location_id=\(id)"
@@ -124,8 +123,7 @@ extension APIManager {
                             completion: ((ItemsSearchResponse?) -> Void)?,
                             failure: APIFailure?) -> URLSessionDataTask {
 
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
-        var urlString: String = "\(APIManager.baseUrl)/api/v2/search/items/?keyword=\(keyword)&biz_id=\(appId)"
+        var urlString: String = "\(APIManager.baseUrl)/api/v2/search/items/?keyword=\(keyword)&biz_id=\(bizId)"
         
         if let nextUrlString: String = next {
             urlString = "\(APIManager.baseUrl)\(nextUrlString)"

@@ -113,8 +113,7 @@ extension APIManager {
         var urlRequest: URLRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
                 
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
-        let params: [String: Any] = ["biz_id": appId,
+        let params: [String: Any] = ["biz_id": bizId,
                       "phone": "\(countryCode)\(phoneNumber)"]
 
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
@@ -161,8 +160,7 @@ extension APIManager {
         var urlRequest: URLRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
 
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
-        let params: [String: Any] = ["biz_id": appId,
+        let params: [String: Any] = ["biz_id": bizId,
                       "phone": "\(countryCode)\(phoneNumber)",
                       "token": otp,
                       "new_password1": password,
@@ -198,7 +196,7 @@ extension APIManager {
     }
     
     @objc public func card(urlString: String,
-                    referralParams: [String : Any]? = nil,
+                    referralParams: Referral? = nil,
                     completion: ((CardAPIResponse?) -> Void)?,
                     failure: APIFailure?) -> URLSessionDataTask {
         
@@ -213,7 +211,7 @@ extension APIManager {
         urlRequest.httpMethod = "POST"
         
         if let params = referralParams {
-            urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])            
+            urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: ["referral": params.toDictionary()], options: [])
         }
 
         let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -249,49 +247,25 @@ extension APIManager {
 
 extension APIManager {
     
-    func referralDict() -> [String : Any]? {
-        guard let data: Data = UserDefaults.standard.object(forKey: "referral_dictionary") as? Data,
-            let referralDictionary: [String: Any] = NSKeyedUnarchiver.unarchiveObject(with: data) as? [String: Any],
-            let referralLink: String = referralDictionary["link_to_share"] as? String, referralLink.count > 0,
-            AppConfigManager.shared.firRemoteConfigDefaults.moduleReferral else { return nil }
-        
-        var requestDict: [String : Any] = ["code_link": referralLink] as [String : Any]
-        
-        if let val = referralDictionary["card"] {
-            requestDict["referrer_card"] = val
-        }
-        if let val = referralDictionary["~channel"] {
-            requestDict["channel"] = val
-        }
-        if let val = referralDictionary["link_share_time"] {
-            requestDict["shared_on"] = val
-        }
-        if let val = referralDictionary["~creation_source"] {
-            requestDict["platform"] = val
-        }
-        let referralDict: [String: Any] = ["referral": requestDict]
-        
-        return referralDict
-        
-    }
-    
     @objc public func createUser(user: User,
                           password: String,
+                          referralObject: Referral? = nil,
                           completion: ((CardAPIResponse?) -> Void)?,
                           failure: APIFailure?) -> URLSessionDataTask {
         AnalyticsManager.shared.track(event: .signupStart(phone: user.phone))
-        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_name=\(user.firstName!)&customer_phone=\(user.phoneNumberWithCountryCode!)&email=\(user.email!)&password=\(password)&channel=\(APIManager.channel)"
+        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_name=\(user.firstName!)&customer_phone=\(user.phone!)&email=\(user.email!)&password=\(password)&channel=\(APIManager.channel)"
         
-        return card(urlString: urlString, referralParams: referralDict(), completion: completion, failure: failure)
+        return card(urlString: urlString, referralParams: referralObject, completion: completion, failure: failure)
     }
     
     @objc public func createSocialUser(user: User,
+                                       referralObject: Referral? = nil,
                           completion: ((CardAPIResponse?) -> Void)?,
                           failure: APIFailure?) -> URLSessionDataTask {
         
-        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_name=\(user.firstName!)&customer_phone=\(user.phoneNumberWithCountryCode!)&email=\(user.email!)&password=\(user.accessToken!)&channel=\(APIManager.channel)"
+        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_name=\(user.firstName!)&customer_phone=\(user.phone!)&email=\(user.email!)&password=\(user.accessToken!)&channel=\(APIManager.channel)"
         
-        return card(urlString: urlString, referralParams: referralDict(), completion: completion, failure: failure)
+        return card(urlString: urlString, referralParams: referralObject, completion: completion, failure: failure)
     }
     
 }
@@ -305,7 +279,7 @@ extension APIManager {
                             completion: ((CardAPIResponse?) -> Void)?,
                             failure: APIFailure?) -> URLSessionDataTask {
         
-        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(user.phoneNumberWithCountryCode!)&pin=\(pin)&nopinsend=true"
+        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(user.phone!)&pin=\(pin)&nopinsend=true"
         
         return card(urlString: urlString, completion: completion, failure: failure)
     }
@@ -313,7 +287,7 @@ extension APIManager {
     @objc public func resendOTP(user: User,
                          completion: ((CardAPIResponse?) -> Void)?,
                          failure: APIFailure?) -> URLSessionDataTask {
-        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(user.phoneNumberWithCountryCode!)&pin=resendotp"
+        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(user.phone!)&pin=resendotp"
         
         return card(urlString: urlString, completion: completion, failure: failure)
     }

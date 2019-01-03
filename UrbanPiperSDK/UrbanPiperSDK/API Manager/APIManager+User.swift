@@ -135,9 +135,8 @@ extension APIManager {
         
         urlRequest.httpMethod = "PUT"
         
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
         let params: [String: Any] = ["phone": phone,
-                                   "biz_id": appId,
+                                   "biz_id": bizId,
                                    "old_password": oldPassword,
                                    "new_password1": newPassword,
                                    "new_password2": newPassword]
@@ -180,8 +179,7 @@ extension APIManager {
     @objc public func userSavedAddresses(completion: ((UserAddressesResponse?) -> Void)?,
                          failure: APIFailure?) -> URLSessionDataTask {
         
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/user/address/?biz_id=\(appId)"
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/user/address/?biz_id=\(bizId)"
         
         let url: URL = URL(string: urlString)!
         
@@ -226,8 +224,7 @@ extension APIManager {
         if let id = locationId {
             urlString = "\(urlString)?location_id=\(id)"
         } else {
-            let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
-            urlString = "\(urlString)?biz_id=\(appId)"
+                urlString = "\(urlString)?biz_id=\(bizId)"
         }
         
         let url: URL = URL(string: urlString)!
@@ -277,7 +274,7 @@ extension APIManager {
         urlRequest.httpMethod = "POST"
         
         var addressDict: [String: Any] = ["tag" : address.tag,
-                           "biz_id" : AppConfigManager.shared.firRemoteConfigDefaults.bizId,
+                           "biz_id" : bizId,
                            "sub_locality" : address.subLocality,
                            "address_1" : address.address1,
                            "landmark" : "",
@@ -298,13 +295,8 @@ extension APIManager {
             addressDict["pin"] = pin
         }
         
-        if let lat = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate.latitude {
-            addressDict["lat"] = lat
-        }
-        
-        if let lng = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate.longitude {
-            addressDict["lng"] = lng
-        }
+        addressDict["lat"] = address.lat
+        addressDict["lng"] = address.lng
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: addressDict, options: [])
         
@@ -340,7 +332,6 @@ extension APIManager {
                                     completion: ((AddUpdateAddressResponse?) -> Void)?,
                                     failure: APIFailure?) -> URLSessionDataTask {
         
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/address/"
 
@@ -353,7 +344,7 @@ extension APIManager {
 
         var addressDict: [String: Any] = ["tag": address.tag,
                            "id": address.id!,
-                           "biz_id" : appId,
+                           "biz_id" : bizId,
                            "sub_locality" : address.subLocality,
                            "address_1" : address.address1,
                            "landmark" : "",
@@ -374,14 +365,9 @@ extension APIManager {
             addressDict["pin"] = pin
         }
         
-        if let lat = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate.latitude {
-            addressDict["lat"] = lat
-        }
-        
-        if let lng = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate.longitude {
-            addressDict["lng"] = lng
-        }
-        
+        addressDict["lat"] = address.lat
+        addressDict["lng"] = address.lng
+
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: addressDict, options: [])
         
         let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -415,9 +401,8 @@ extension APIManager {
     @objc public func deleteAddress(address: Address, completion: APISuccess?,
                                     failure: APIFailure?) -> URLSessionDataTask {
         
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
 
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/user/address/\(address.id!)/?biz_id=\(appId)"
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/user/address/\(address.id!)/?biz_id=\(bizId)"
 
         let url: URL = URL(string: urlString)!
         

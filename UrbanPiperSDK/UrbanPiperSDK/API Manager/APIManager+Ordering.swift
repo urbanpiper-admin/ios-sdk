@@ -15,9 +15,8 @@ extension APIManager {
                                    completion: ((CategoriesResponse?) -> Void)?,
                                    failure: APIFailure?) -> URLSessionDataTask {
 
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
 
-        var urlString: String = "\(APIManager.baseUrl)/api/v1/order/categories/?format=json&biz_id=\(appId)"
+        var urlString: String = "\(APIManager.baseUrl)/api/v1/order/categories/?format=json&biz_id=\(bizId)"
 
         if let id = locationID {
             urlString = "\(urlString)&location_id=\(id)"
@@ -84,17 +83,6 @@ extension APIManager {
         guard let feedbackConfig = biz.feedbackConfig, feedbackConfig.count > 0 else { return }
         let responseData = NSKeyedArchiver.archivedData(withRootObject: biz.toDictionary()["feedback_config"]!)
         UserDefaults.standard.set(responseData, forKey: "feedback_config")
-        UserDefaults.standard.synchronize()
-    }
-
-    func saveReferEarnDetail(biz: Biz) {
-        if let referralShareLbl = biz.referralShareLbl, referralShareLbl.count > 0 {
-            UserDefaults.standard.set(referralShareLbl, forKey: "referral_share_lbl")
-        }
-
-        if let referralUILbl = biz.referralUiLbl, referralUILbl.count > 0 {
-            UserDefaults.standard.set(referralUILbl, forKey: "referral_ui_lbl")
-        }
         UserDefaults.standard.synchronize()
     }
 

@@ -68,7 +68,7 @@ extension APIManager {
                     } else {
                         appUser = User(fromDictionary: dictionary)
                         
-                        appUser.countryCode = user.countryCode
+//                        appUser.countryCode = user.countryCode
                         
                         if appUser.phone == nil || appUser.phone.count == 0 {
                             appUser.phone = user.phone
@@ -128,7 +128,7 @@ extension APIManager {
                                 completion: ((User?) -> Void)?,
                                 failure: APIFailure?) -> URLSessionDataTask {
         
-        let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)&action=check_phone&phone=\(user.phoneNumberWithCountryCode!)"
+        let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)&action=check_phone&phone=\(user.phone!)"
         
         return socialLogin(user: user, urlString: urlString, completion: completion, failure: failure)
         
@@ -139,7 +139,7 @@ extension APIManager {
                          completion: ((User?) -> Void)?,
                          failure: APIFailure?) -> URLSessionDataTask {
         
-        let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)&action=verify_otp&phone=\(user.phoneNumberWithCountryCode!)&otp=\(otp)"
+        let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(user.email!)&provider=\(user.provider!.rawValue)&access_token=\(user.accessToken!)&action=verify_otp&phone=\(user.phone!)&otp=\(otp)"
         
         return socialLogin(user: user, urlString: urlString, completion: completion, failure: failure)
         

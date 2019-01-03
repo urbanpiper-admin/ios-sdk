@@ -13,6 +13,50 @@ public enum OnlinePaymentPurpose: String {
     case ordering = "ordering"
 }
 
+public enum PaymentOption: String {
+    case cash = "cash"
+    case prepaid = "prepaid"
+    case paymentGateway = "payment_gateway"
+    case paytm = "paytm"
+    case simpl = "simpl"
+    case paypal = "paypal"
+    case select = "select"
+    
+    public var displayName: String {
+        switch self {
+        case .cash:
+            return "Cash on delivery"
+        case .prepaid:
+            return "Wallet"
+        case .paymentGateway:
+            return "Pay online"
+        case .paytm:
+            return "PAYTM"
+        case .simpl:
+            return "Simpl"
+        case .paypal:
+            return "Paypal"
+        case .select:
+            return "SELECT OPTION"
+        }
+    }
+}
+
+public enum DeliveryOption: String {
+    
+    case delivery = "delivery"
+    case pickUp = "pickup"
+    
+    public var deliveryOptionOffsetTimeSecs: TimeInterval {
+        switch self {
+        case .delivery:
+            return TimeInterval((OrderingStoreDataModel.shared.orderingStore?.deliveryMinOffsetTime ?? Biz.shared!.deliveryMinOffsetTime) / 1000)
+        case .pickUp:
+            return TimeInterval((OrderingStoreDataModel.shared.orderingStore?.pickupMinOffsetTime ?? Biz.shared!.pickupMinOffsetTime) / 1000)
+        }
+    }
+}
+
 extension APIManager {
 
     @objc public func preProcessOrder(bizLocationId: Int,
@@ -23,8 +67,7 @@ extension APIManager {
                                completion: ((OrderPreProcessingResponse?) -> Void)?,
                                failure: APIFailure?) -> URLSessionDataTask {
         
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/order/?format=json&pre_proc=1&biz_id=\(appId)"
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/order/?format=json&pre_proc=1&biz_id=\(bizId)"
         
         let url: URL = URL(string: urlString)!
         
@@ -122,9 +165,8 @@ extension APIManager {
                                       completion: ((OnlinePaymentInitResponse?) -> Void)?,
                                       failure: APIFailure?) -> URLSessionDataTask? {
         
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
         
-        var urlString: String = "\(APIManager.baseUrl)/payments/init/\(appId)/"
+        var urlString: String = "\(APIManager.baseUrl)/payments/init/\(bizId)/"
 
         if purpose == OnlinePaymentPurpose.ordering {
             guard let locationId = bizLocationId else { return nil}
@@ -197,8 +239,7 @@ extension APIManager {
                           completion: (([String: Any]?) -> Void)?,
                           failure: APIFailure?) -> URLSessionDataTask {
         
-        let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/order/?format=json&biz_id=\(appId)"
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/order/?format=json&biz_id=\(bizId)"
         
         let url: URL = URL(string: urlString)!
         
@@ -253,7 +294,7 @@ extension APIManager {
             params["address_lng"] = addressObject.lng
         }
         
-        if let timeSlotObject = timeSlot, AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots {
+        if let timeSlotObject = timeSlot {
             params["time_slot_end"] = timeSlotObject.endTime
             params["time_slot_start"] = timeSlotObject.startTime
         }

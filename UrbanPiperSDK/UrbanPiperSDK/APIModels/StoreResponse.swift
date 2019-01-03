@@ -50,10 +50,10 @@ import Foundation
     */
     @objc required public init(coder aDecoder: NSCoder)
 	{
-        Biz.registerClassName()
-        Biz.registerClassNameWhiteLabel()
-        Store.registerClassName()
-        Store.registerClassNameWhiteLabel()
+//        Biz.registerClassName()
+//        Biz.registerClassNameWhiteLabel()
+//        Store.registerClassName()
+//        Store.registerClassNameWhiteLabel()
         biz = aDecoder.decodeObject(forKey: "biz") as? Biz
         
 //      Remove this code after next release

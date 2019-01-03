@@ -230,7 +230,7 @@ class MixpanelObserver: AnalyticsObserver {
             guard let user = AppUserDataModel.shared.validAppUserData, let bizObject = AppUserDataModel.shared.bizInfo?.objects?.last,
                 let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 else { return }
             let mixpanel = Mixpanel.mainInstance()
-            mixpanel.identify(distinctId: user.phoneNumberWithCountryCode)
+            mixpanel.identify(distinctId: user.phone)
             mixpanel.identify(distinctId: mixpanel.distinctId)
             
             var properties: Properties = ["$email": user.email,

@@ -93,18 +93,7 @@ public class User : NSObject, NSCoding{
         guard let msg = message else { return .invalid }
         return UserStatus(rawValue: msg) ?? .invalid
     }
-    
-    public var countryCode: String = AppConfigManager.shared.firRemoteConfigDefaults.bizISDCode!
-    
-    @objc public var phoneNumberWithCountryCode: String! {
-        guard phone != nil, phone!.count > 0 else { return nil }
-        return phone!
-    }
-    public var phoneNumberWithOutCountryCode: String! {
-        guard let phoneNo = phone else { return ""}
-        return phoneNo.replacingOccurrences(of: countryCode, with: "")
-    }
-    
+        
     public var birthdayDateObject: Date? {
         guard let dateIntVal = birthday else { return nil }
         return Date(timeIntervalSince1970: TimeInterval(dateIntVal / 1000))
@@ -271,7 +260,7 @@ public class User : NSObject, NSCoding{
         }
         
         accessToken = aDecoder.decodeObject(forKey: "accessToken") as? String
-        countryCode = aDecoder.decodeObject(forKey: "countryCode") as! String
+//        countryCode = aDecoder.decodeObject(forKey: "countryCode") as! String
         
         password = aDecoder.decodeObject(forKey: "password") as? String
         
@@ -327,7 +316,7 @@ public class User : NSObject, NSCoding{
             aCoder.encode(accessToken!, forKey: "accessToken")
         }
         
-        aCoder.encode(countryCode, forKey: "countryCode")
+//        aCoder.encode(countryCode, forKey: "countryCode")
         
         if password != nil {
             aCoder.encode(password!, forKey: "password")

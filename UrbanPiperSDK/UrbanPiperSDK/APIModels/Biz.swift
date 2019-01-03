@@ -208,8 +208,6 @@ public enum Language: String {
          contactPhone = aDecoder.decodeObject(forKey: "contact_phone") as? String
          currency = aDecoder.decodeObject(forKey: "currency") as? String
          deliveryMinOffsetTime = aDecoder.decodeObject(forKey: "delivery_min_offset_time") as? Int
-        FeedbackConfig.registerClassName()
-        FeedbackConfig.registerClassNameWhiteLabel()
         feedbackConfig = aDecoder.decodeObject(forKey :"feedback_config") as? [FeedbackConfig]
          gst = aDecoder.decodeObject(forKey: "gst") as? String
          isPickupEnabled = aDecoder.decodeObject(forKey: "is_pickup_enabled") as? Bool ?? false
@@ -228,8 +226,6 @@ public enum Language: String {
          referralShareLbl = aDecoder.decodeObject(forKey: "referral_share_lbl") as? String
          referralUiLbl = aDecoder.decodeObject(forKey: "referral_ui_lbl") as? String
          simplClientId = aDecoder.decodeObject(forKey: "simpl_client_id") as? String
-        TimeSlot.registerClassName()
-        TimeSlot.registerClassNameWhiteLabel()
         timeSlots = aDecoder.decodeObject(forKey :"time_slots") as? [TimeSlot]
          timezone = aDecoder.decodeObject(forKey: "timezone") as? String
          tin = aDecoder.decodeObject(forKey: "tin") as? String

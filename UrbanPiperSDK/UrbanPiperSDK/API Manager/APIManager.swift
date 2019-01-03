@@ -47,11 +47,15 @@ import Foundation
 
     @objc public static private(set) var shared: APIManager!
     
-    var language: Language = .english {
+    var language: Language {
         didSet {
             updateHeaders()
         }
     }
+    
+    let apiUsername: String
+    let apiKey: String
+    let bizId: String
 
     public static let channel: String = "app_ios"
 
@@ -92,27 +96,30 @@ import Foundation
         }
     }
     
-    private typealias WeakRefDataModelDelegate = WeakRef<APIManagerDelegate>
+    private typealias WeakRefDelegate = WeakRef<APIManagerDelegate>
     
-    private var observers = [WeakRefDataModelDelegate]()
+    private var observers = [WeakRefDelegate]()
     
 
-    private init(language: Language) {
-        super.init()
+    private init(language: Language, bizId: String, apiUsername: String, apiKey: String) {
         self.language = language
+        self.bizId = bizId
+        self.apiUsername = apiUsername
+        self.apiKey = apiKey
+        super.init()
         updateHeaders()
         DispatchQueue.main.async {
             self.refreshToken()
         }
     }
     
-    internal class func initializeManager(language: Language) {
-        shared = APIManager(language: language)
+    internal class func initializeManager(language: Language, bizId: String, apiUsername: String, apiKey: String) {
+        shared = APIManager(language: language, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey)
     }
     
     public func addObserver(delegate: APIManagerDelegate) {
-        let weakRefDataModelDelegate: WeakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
-        observers.append(weakRefDataModelDelegate)
+        let weakRefDelegate: WeakRefDelegate = WeakRefDelegate(value: delegate)
+        observers.append(weakRefDelegate)
     }
     
     
@@ -140,9 +147,6 @@ import Foundation
     }
 
     func bizAuth() -> String {
-        let apiUsername: String = AppConfigManager.shared.firRemoteConfigDefaults.apiUsername
-        let apiKey: String = AppConfigManager.shared.firRemoteConfigDefaults.apiKey
-        
         return "apikey \(apiUsername):\(apiKey)"
     }
     
@@ -158,7 +162,7 @@ import Foundation
 
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
         var additionalHeaders: [String : Any] = ["X-App-Src": "ios",
-                                                 "X-Bid": AppConfigManager.shared.firRemoteConfigDefaults.bizId!,
+                                                 "X-Bid": bizId,
                                                  "X-App-Version": version,
                                                  "X-Use-Lang": language.rawValue,
                                                  "Content-Type": "application/json"] as [String : Any]

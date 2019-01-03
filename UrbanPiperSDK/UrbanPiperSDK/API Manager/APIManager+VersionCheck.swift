@@ -10,16 +10,18 @@ import Foundation
 
 extension APIManager {
 
-    @objc public func checkForUpgrade(completion: ((VersionCheckResponse?) -> Void)?,
-                                 failure: APIFailure?) -> URLSessionDataTask? {
-
-        let username: String = AppUserDataModel.shared.validAppUserData?.phoneNumberWithCountryCode ?? "null"
+    @objc public func checkForUpgrade(username: String?,
+                                      completion: ((VersionCheckResponse?) -> Void)?,
+                                      failure: APIFailure?) -> URLSessionDataTask? {
         
         let infoDictionary: [String: Any] = Bundle.main.infoDictionary!
-        guard let appVersion: String = infoDictionary["CFBundleShortVersionString"] as? String,
-            let bizId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId else { return nil }
+        guard let appVersion: String = infoDictionary["CFBundleShortVersionString"] as? String else { return nil }
         
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/app/ios/?user=\(username)&biz_id=\(bizId)&ver=\(appVersion)"
+        var urlString: String = "\(APIManager.baseUrl)/api/v1/app/ios/?biz_id=\(bizId)&ver=\(appVersion)"
+        
+        if let usernameVal = username {
+            urlString = "\(urlString)&user=\(usernameVal)"
+        }
 
         let url: URL = URL(string: urlString)!
 

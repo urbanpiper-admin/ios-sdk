@@ -13,8 +13,6 @@ extension APIManager {
     @objc public func fetchBizInfo(completion: ((BizInfo?) -> Void)?,
                                 failure: APIFailure?) -> URLSessionDataTask {
         
-        let bizId: String = AppConfigManager.shared.firRemoteConfigDefaults.bizId!
-
         let urlString: String = "\(APIManager.baseUrl)/api/v1/userbizinfo/?format=json&biz_id=\(bizId)"
         
         let url: URL = URL(string: urlString)!

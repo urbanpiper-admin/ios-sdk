@@ -1,38 +1,46 @@
 PODS:
-  - AppsFlyerFramework (4.8.5)
-  - Firebase/Core (5.2.0):
-    - Firebase/CoreOnly
-    - FirebaseAnalytics (= 5.0.1)
-  - Firebase/CoreOnly (5.2.0):
-    - FirebaseCore (= 5.0.3)
-  - Firebase/RemoteConfig (5.2.0):
-    - Firebase/Core
-    - FirebaseRemoteConfig (= 3.0.0)
+  - AppsFlyerFramework (4.8.10)
   - FirebaseABTesting (2.0.0):
     - FirebaseCore (~> 5.0)
     - Protobuf (~> 3.5)
-  - FirebaseAnalytics (5.0.1):
-    - FirebaseCore (~> 5.0)
-    - FirebaseInstanceID (~> 3.0)
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+  - FirebaseAnalytics (5.4.0):
+    - FirebaseCore (~> 5.1)
+    - FirebaseInstanceID (~> 3.3)
+    - GoogleAppMeasurement (= 5.4.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
+    - GoogleUtilities/MethodSwizzler (~> 5.2)
+    - GoogleUtilities/Network (~> 5.2)
+    - "GoogleUtilities/NSData+zlib (~> 5.2)"
     - nanopb (~> 0.3)
-  - FirebaseCore (5.0.3):
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
-  - FirebaseInstanceID (3.1.0):
-    - FirebaseCore (~> 5.0)
-  - FirebaseMessaging (3.0.2):
-    - FirebaseCore (~> 5.0)
+  - FirebaseAnalyticsInterop (1.1.0)
+  - FirebaseCore (5.1.10):
+    - GoogleUtilities/Logger (~> 5.2)
+  - FirebaseInstanceID (3.3.0):
+    - FirebaseCore (~> 5.1)
+    - GoogleUtilities/Environment (~> 5.3)
+    - GoogleUtilities/UserDefaults (~> 5.3)
+  - FirebaseMessaging (3.2.2):
+    - FirebaseAnalyticsInterop (~> 1.1)
+    - FirebaseCore (~> 5.1)
     - FirebaseInstanceID (~> 3.0)
-    - GoogleToolboxForMac/Logger (~> 2.1)
+    - GoogleUtilities/Environment (~> 5.2)
+    - GoogleUtilities/Reachability (~> 5.2)
     - Protobuf (~> 3.1)
-  - FirebaseRemoteConfig (3.0.0):
+  - FirebaseRemoteConfig (3.1.0):
     - FirebaseABTesting (~> 2.0)
-    - FirebaseAnalytics (~> 5.0)
-    - FirebaseCore (~> 5.0)
-    - FirebaseInstanceID (~> 3.0)
-    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - FirebaseAnalytics (~> 5.3)
+    - FirebaseCore (~> 5.1)
+    - FirebaseInstanceID (~> 3.3)
+    - GoogleUtilities/Environment (~> 5.2)
+    - "GoogleUtilities/NSData+zlib (~> 5.2)"
     - Protobuf (~> 3.5)
   - GoogleAnalytics (3.17.0)
+  - GoogleAppMeasurement (5.4.0):
+    - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
+    - GoogleUtilities/MethodSwizzler (~> 5.2)
+    - GoogleUtilities/Network (~> 5.2)
+    - "GoogleUtilities/NSData+zlib (~> 5.2)"
+    - nanopb (~> 0.3)
   - GoogleMaps (2.7.0):
     - GoogleMaps/Maps (= 2.7.0)
   - GoogleMaps/Base (2.7.0)
@@ -40,65 +48,89 @@ PODS:
     - GoogleMaps/Base
   - GooglePlaces (2.7.0):
     - GoogleMaps/Base (= 2.7.0)
-  - GoogleToolboxForMac/Defines (2.1.4)
-  - GoogleToolboxForMac/Logger (2.1.4):
-    - GoogleToolboxForMac/Defines (= 2.1.4)
-  - "GoogleToolboxForMac/NSData+zlib (2.1.4)":
-    - GoogleToolboxForMac/Defines (= 2.1.4)
-  - Mixpanel-swift (2.4.2):
-    - Mixpanel-swift/Complete (= 2.4.2)
-  - Mixpanel-swift/Complete (2.4.2)
-  - nanopb (0.3.8):
-    - nanopb/decode (= 0.3.8)
-    - nanopb/encode (= 0.3.8)
-  - nanopb/decode (0.3.8)
-  - nanopb/encode (0.3.8)
-  - Protobuf (3.6.0)
+  - GoogleUtilities/AppDelegateSwizzler (5.3.6):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Network
+  - GoogleUtilities/Environment (5.3.6)
+  - GoogleUtilities/Logger (5.3.6):
+    - GoogleUtilities/Environment
+  - GoogleUtilities/MethodSwizzler (5.3.6):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/Network (5.3.6):
+    - GoogleUtilities/Logger
+    - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Reachability
+  - "GoogleUtilities/NSData+zlib (5.3.6)"
+  - GoogleUtilities/Reachability (5.3.6):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/UserDefaults (5.3.6):
+    - GoogleUtilities/Logger
+  - Mixpanel-swift (2.5.5):
+    - Mixpanel-swift/Complete (= 2.5.5)
+  - Mixpanel-swift/Complete (2.5.5)
+  - nanopb (0.3.901):
+    - nanopb/decode (= 0.3.901)
+    - nanopb/encode (= 0.3.901)
+  - nanopb/decode (0.3.901)
+  - nanopb/encode (0.3.901)
+  - PhoneNumberKit (2.5.0):
+    - PhoneNumberKit/PhoneNumberKitCore (= 2.5.0)
+    - PhoneNumberKit/UIKit (= 2.5.0)
+  - PhoneNumberKit/PhoneNumberKitCore (2.5.0)
+  - PhoneNumberKit/UIKit (2.5.0):
+    - PhoneNumberKit/PhoneNumberKitCore
+  - Protobuf (3.6.1)
 
 DEPENDENCIES:
   - AppsFlyerFramework
-  - Firebase/RemoteConfig
   - FirebaseMessaging
+  - FirebaseRemoteConfig
   - GoogleAnalytics
   - GoogleMaps
   - GooglePlaces
   - Mixpanel-swift
+  - PhoneNumberKit (~> 2.5)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AppsFlyerFramework
-    - Firebase
     - FirebaseABTesting
     - FirebaseAnalytics
+    - FirebaseAnalyticsInterop
     - FirebaseCore
     - FirebaseInstanceID
     - FirebaseMessaging
     - FirebaseRemoteConfig
     - GoogleAnalytics
+    - GoogleAppMeasurement
     - GoogleMaps
     - GooglePlaces
-    - GoogleToolboxForMac
+    - GoogleUtilities
     - Mixpanel-swift
     - nanopb
+    - PhoneNumberKit
     - Protobuf
 
 SPEC CHECKSUMS:
-  AppsFlyerFramework: cf9fdd7367a3871542f46b75b56723395553f951
-  Firebase: 25ed0412036d7d008568d1fb4d2e9d81ea8a0a2c
+  AppsFlyerFramework: 481eafa4f92e3274fa8d04f10108cdad83fd532b
   FirebaseABTesting: 1f50b8d50f5e3469eea54e7463a7b7fe221d1f5e
-  FirebaseAnalytics: b3628aea54c50464c32c393fb2ea032566e7ecc2
-  FirebaseCore: a3c87242451633fff8490183898075ce77d168d2
-  FirebaseInstanceID: 05d779cbb97bd5bd5c51a38a903fc9cfe1b2454a
-  FirebaseMessaging: 6894b8fe0a0cf26c3b13dad729f1131654ae0bdb
-  FirebaseRemoteConfig: 3c57e4644bd6976b671ae0b725cd709f198bd1f5
+  FirebaseAnalytics: c06f9d70577d79074214700a71fd5d39de5550fb
+  FirebaseAnalyticsInterop: e5f21be9af6548372e2f0815834ff909bff395a2
+  FirebaseCore: 35747502d9e8c6ee217385ad04446c7c2aaf9c5c
+  FirebaseInstanceID: e2fa4cb35ef5558c200f7f0ad8a53e212215f93e
+  FirebaseMessaging: b412996f6a09337d232bb3a6676ce4d1f353d024
+  FirebaseRemoteConfig: 7e11c65f0769c09bff6947997c209515058c5318
   GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
+  GoogleAppMeasurement: 98b71f5e04142793729a5ef23e5b96651ff4b70f
   GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
   GooglePlaces: 3d06e6c99654545b4738ce49648745779c25f2ef
-  GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
-  Mixpanel-swift: 63de6f5a14468b8d65e0d62ae250714455e17407
-  nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
-  Protobuf: 0fc0ad8bec688b2a3017a139953e01374fedbd5f
+  GoogleUtilities: 95996bea7c7d9b8fb811b7507669a4a8762f80c7
+  Mixpanel-swift: 92fd02942ef4bf5a1bd0630a88223a417b8c8b39
+  nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  PhoneNumberKit: 32a1cd1e0aa9e950feb01886a22fd7386b8cf903
+  Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
 
-PODFILE CHECKSUM: 225f874eb052115b262889312bf9e0c4e59f5dea
+PODFILE CHECKSUM: 0069f8b090cbf793bcbfc23e794ce507d30a8ebc
 
 COCOAPODS: 1.5.3

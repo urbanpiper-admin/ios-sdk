@@ -1,14 +1,15 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '9.0'
+platform :ios, '10.0'
 
 def common_pods
     pod 'FirebaseMessaging'
-    pod 'Firebase/RemoteConfig'
+    pod 'FirebaseRemoteConfig'
     pod 'GooglePlaces'
     pod 'GoogleMaps'
     pod 'GoogleAnalytics'
     pod 'Mixpanel-swift'
     pod 'AppsFlyerFramework'
+    pod 'PhoneNumberKit', '~> 2.5'
 end
 
 target 'UrbanPiperSDK' do
@@ -16,7 +17,6 @@ target 'UrbanPiperSDK' do
     use_frameworks!
     
     common_pods
-    
 end
 
 target 'UrbanPiperSDK-Example' do

@@ -192,7 +192,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
                 }
             }, failure: nil)
         } else {
-            task = APIManager.shared.login(username: appUser.phoneNumberWithCountryCode, password: appUser.password!, completion: { [weak self] (user) in
+            task = APIManager.shared.login(username: appUser.phone, password: appUser.password!, completion: { [weak self] (user) in
                 if let jwt = user?.jwt, !jwt.tokenExpired {
                     self?.appUserData = user
                 } else if let msg = user?.message, msg == "email_check_failed" {
@@ -438,10 +438,12 @@ extension AppUserDataModel {
     
     public func createAccount(user: User,
                        password: String,
+                       referralObject: Referral?,
                        completion: @escaping CompletionHandler<CardAPIResponse>) {
         let dataTask: URLSessionDataTask = APIManager.shared.createUser(user: user,
-                                     password: password,
-                                     completion: { (cardAPIResponse) in
+                                                                        password: password,
+                                                                        referralObject: referralObject,
+                                                                        completion: { (cardAPIResponse) in
                                         user.message = cardAPIResponse?.message
                                         user.password = password
 
@@ -460,9 +462,9 @@ extension AppUserDataModel {
 
 extension AppUserDataModel {
     
-    public func registerNewSocialAuthUser(user: User!, completion: @escaping CompletionHandler<User>) {
+    public func registerNewSocialAuthUser(user: User!, referralObject: Referral?, completion: @escaping CompletionHandler<User>) {
         AnalyticsManager.shared.track(event: .socialAuthSignupStart(phone: user.phone, platform: user.provider!.rawValue))
-        let dataTask: URLSessionDataTask = APIManager.shared.createSocialUser(user: user, completion: { (cardAPIResponse) in
+        let dataTask: URLSessionDataTask = APIManager.shared.createSocialUser(user: user, referralObject: referralObject, completion: { (cardAPIResponse) in
             user?.message = UserStatus.registrationSuccessfullVerifyOTP.rawValue
             completion(user, nil)
         }) { (error) in
@@ -494,10 +496,10 @@ extension AppUserDataModel {
 
 extension AppUserDataModel {
     
-    public func checkPhoneNumber(user: User, completion: @escaping CompletionHandler<User>) {
+    public func checkPhoneNumber(user: User, referralObject: Referral?, completion: @escaping CompletionHandler<User>) {
         let dataTask: URLSessionDataTask = APIManager.shared.checkPhoneNumber(user: user, completion: { [weak self] (appUser) in
             if let status = appUser?.userStatus, status == .registrationRequired {
-                self?.registerNewSocialAuthUser(user: user, completion: completion)
+                self?.registerNewSocialAuthUser(user: user, referralObject: referralObject, completion: completion)
             } else {
                 completion(appUser, nil)
             }
