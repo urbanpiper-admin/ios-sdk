@@ -154,6 +154,7 @@ public class User : NSObject, NSCoding{
             if let authKey = dictionary["t_key"] as? String {
                 self?.authKey = authKey
             }
+            self?.username = dictionary["username"] as? String
             self?.email = dictionary["email"] as? String
             self?.phone = dictionary["phone"] as? String
             self?.firstName = dictionary["first_name"] as? String
