@@ -142,6 +142,9 @@ public class User : NSObject, NSCoding{
         gender = dictionary["gender"] as? String
         lastName = dictionary["last_name"] as? String
         phone = dictionary["phone"] as? String
+        if username == nil {
+            username = "u_\(phone!)_\(AppConfigManager.shared.firRemoteConfigDefaults.bizId!))"
+        }
     }
     
     public convenience init(jwtToken: String) {
