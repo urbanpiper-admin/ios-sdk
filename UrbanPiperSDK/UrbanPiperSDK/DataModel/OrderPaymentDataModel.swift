@@ -176,12 +176,14 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
     
     public var normalDefaultOrderDeliveryDate: Date? {
-        let paymentOffsetTimeSecs: TimeInterval = selectedDeliveryOption.deliveryOptionOffsetTimeSecs
-        let defaultOffset: TimeInterval = TimeInterval(120)
+        let paymentOffsetTimeSecs: TimeInterval = TimeInterval(120)
+        let defaultOffset: TimeInterval = selectedDeliveryOption.deliveryOptionOffsetTimeSecs
         // around 2 minutes gap to payment
         var normalDeliveryDate: Date? = Date().addingTimeInterval(paymentOffsetTimeSecs + defaultOffset)
+
         let openingDate: Date = OrderingStoreDataModel.shared.orderingStore!.openingDate!
-        let openingDateWithOffset: Date = openingDate.addingTimeInterval(paymentOffsetTimeSecs + defaultOffset)
+        let openingDateWithOffset: Date = openingDate.addingTimeInterval(defaultOffset)
+
         let closingDate: Date = OrderingStoreDataModel.shared.orderingStore!.closingDate!
         let closingDateWithOffset: Date = closingDate.addingTimeInterval(-(paymentOffsetTimeSecs + defaultOffset))
         
@@ -383,7 +385,7 @@ extension OrderPaymentDataModel {
 //                    if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon == code {
 //                        self?.globalCouponApplied = false
 //                    }
-                    let upApiError = UPAPIError(responseObject: applyCouponResponse?.discount.toDictionary())
+                    let upApiError = UPAPIError(responseObject: applyCouponResponse?.discount?.toDictionary())
                     self?.dataModelDelegate?.handleApplyCoupon(code: code, error: upApiError)
                     AnalyticsManager.shared.track(event: .couponFailed(discount: Decimal.zero, couponCode: code, isSuggested: isSuggested, preSelected: preSelected))
                     
@@ -488,7 +490,6 @@ extension OrderPaymentDataModel {
             }, failure: { [weak self] (error) in
                 self?.dataModelDelegate?.placingOrder(isProcessing: false)
                 self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
-                
         })
         
         addOrCancelDataTask(dataTask: dataTask)

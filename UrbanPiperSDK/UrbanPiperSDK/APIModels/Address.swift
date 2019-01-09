@@ -60,10 +60,10 @@ public enum AddressTag: String {
     }
     
     public init(placeDetailsResponse: PlaceDetailsResponse) {
-        lat = placeDetailsResponse.result.geometry.location.lat
-        lng = placeDetailsResponse.result.geometry.location.lng
+        lat = placeDetailsResponse.result!.geometry.location.lat
+        lng = placeDetailsResponse.result!.geometry.location.lng
         
-        let addressComponents = placeDetailsResponse.result.addressComponents
+        let addressComponents = placeDetailsResponse.result!.addressComponents
         
         var subLocalityArray = [String]()
         
@@ -120,7 +120,7 @@ public enum AddressTag: String {
                 let stringWithoutDigit = (addressString.components(separatedBy: NSCharacterSet.decimalDigits).joined(separator: ""))
                 subLocality = stringWithoutDigit.replacingOccurrences(of: " ,", with: ",")
             } else {
-                subLocality = placeDetailsResponse.result.formattedAddress
+                subLocality = placeDetailsResponse.result!.formattedAddress
             }
         } else {
             subLocality = subLocalityArray.joined(separator: ", ")

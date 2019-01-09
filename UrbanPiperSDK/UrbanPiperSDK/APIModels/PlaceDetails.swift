@@ -11,7 +11,7 @@ import Foundation
 public class PlaceDetailsResponse : NSObject{
 
 	public var htmlAttributions : [AnyObject]!
-	public var result : Result!
+	public var result : Result?
 	public var status : String!
 
 
@@ -22,8 +22,12 @@ public class PlaceDetailsResponse : NSObject{
 		htmlAttributions = dictionary["html_attributions"] as? [AnyObject]
 		if let resultData: [String:Any] = dictionary["result"] as? [String:Any]{
 			result = Result(fromDictionary: resultData)
-        } else if let resultsData: [[String:Any]] = dictionary["results"] as? [[String:Any]], let resultData: [String:Any] = resultsData.first {
-            result = Result(fromDictionary: resultData)
+        } else if let resultsData: [[String:Any]] = dictionary["results"] as? [[String:Any]] {
+            for resultData in resultsData {
+                let resultObject = Result(fromDictionary: resultData)
+                guard resultObject.geometry?.location?.lat != nil, resultObject.geometry?.location?.lng != nil else { continue }
+                result = resultObject
+            }
         }
 		status = dictionary["status"] as? String
 	}

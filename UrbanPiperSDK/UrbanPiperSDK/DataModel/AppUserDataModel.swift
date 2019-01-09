@@ -254,7 +254,7 @@ extension AppUserDataModel {
         guard let phoneNo = validAppUserData?.phone else { return }
         let nextUserDataUpdateDate = AppUserDataModel.nextUserDataUpdateDate
         let now: Date = Date()
-        let shouldRefreshUserData = nextUserDataUpdateDate == nil || nextUserDataUpdateDate! <= now || isForcedRefresh
+        let shouldRefreshUserData = isForcedRefresh || nextUserDataUpdateDate == nil || nextUserDataUpdateDate! <= now
         
         guard shouldRefreshUserData else { return }
 

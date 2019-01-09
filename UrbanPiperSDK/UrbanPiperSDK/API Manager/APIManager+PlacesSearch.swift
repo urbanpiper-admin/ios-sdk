@@ -80,11 +80,11 @@ extension APIManager {
                     
                     if placeDetailsResponse.result != nil {
                         address = Address(placeDetailsResponse: placeDetailsResponse)
+                        DispatchQueue.main.async {
+                            completionClosure(address)
+                        }
                     }
                     
-                    DispatchQueue.main.async {
-                        completionClosure(address)
-                    }
                     return
                 }
                 

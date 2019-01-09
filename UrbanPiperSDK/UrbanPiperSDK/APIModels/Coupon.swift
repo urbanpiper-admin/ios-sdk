@@ -13,7 +13,7 @@ public class Coupon : NSObject{
 	public var descriptionField : String!
 	public var redemptionCode : String!
 	public var title : String!
-	public var validUntil : Int!
+	public var validUntil : Int?
 
 
 	/**

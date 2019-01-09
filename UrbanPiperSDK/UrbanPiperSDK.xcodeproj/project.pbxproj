@@ -260,7 +260,6 @@
 		1878275620EA06BD009F57FA /* WalletTransactionResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletTransactionResponse.swift; sourceTree = "<group>"; };
 		1878275720EA06BD009F57FA /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		188E9F8A20EFEEC100980530 /* Double+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Additions.swift"; sourceTree = "<group>"; };
-		18B3C40621D733AD00768401 /* UrbanPiperAPISDK-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "UrbanPiperAPISDK-Info.plist"; path = "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperAPISDK-Info.plist"; sourceTree = "<absolute>"; };
 		18B3C40921D7415A00768401 /* CategoryOptionsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryOptionsResponse.swift; sourceTree = "<group>"; };
 		18B3C40B21D7416400768401 /* JWT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JWT.swift; sourceTree = "<group>"; };
 		18B3C40C21D7416400768401 /* Referral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Referral.swift; sourceTree = "<group>"; };
@@ -669,7 +668,6 @@
 				46E4F720208DAB810045ED21 /* UrbanPiperSDK */,
 				1876202C20EB92040071FA25 /* UrbanPiperSDK-Example */,
 				46E4F71F208DAB810045ED21 /* Products */,
-				18B3C40621D733AD00768401 /* UrbanPiperAPISDK-Info.plist */,
 				AB6E32E65DB405F7E3E6C9E8 /* Pods */,
 				12A5FB4BD957612962FF5CC2 /* Frameworks */,
 			);

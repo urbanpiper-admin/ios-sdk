@@ -112,6 +112,7 @@ public class User : NSObject, NSCoding{
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
+        super.init()
 		authKey = dictionary["authKey"] as? String
 		biz = dictionary["biz"] as? BizInfo
 		email = dictionary["email"] as? String
@@ -125,6 +126,10 @@ public class User : NSObject, NSCoding{
 
         provider = nil
         accessToken = nil
+        
+        if let token = dictionary["token"] as? String {
+            update(fromJWTToken: token)
+        }
 	}
     
     public func update(fromDictionary dictionary: [String: Any]) {
@@ -142,16 +147,19 @@ public class User : NSObject, NSCoding{
     public convenience init(jwtToken: String) {
         self.init()
         update(fromJWTToken: jwtToken)
-        message = UserStatus.valid.rawValue
     }
     
     @discardableResult public func update(fromJWTToken jwtToken: String) -> User {
         jwt = JWT(jwtToken: jwtToken, decodeHandler: { [weak self] (dictionary) in
+            if let authKey = dictionary["t_key"] as? String {
+                self?.authKey = authKey
+            }
             self?.email = dictionary["email"] as? String
             self?.phone = dictionary["phone"] as? String
             self?.firstName = dictionary["first_name"] as? String
             self?.lastName = dictionary["last_name"] as? String
         })
+        message = UserStatus.valid.rawValue
         return self
     }
     

@@ -60,34 +60,32 @@ public class AnalyticsManager: NSObject {
         let manager = AnalyticsManager()
         manager.addObserver(observer: MixpanelObserver())
         manager.addObserver(observer: GAObserver())
-//        manager.addObserver(observer: AppsFlyerObserver())
+        manager.addObserver(observer: AppsFlyerObserver())
+        
         return manager
     }()
     
-    private typealias WeakRefAnalyticsObservers = WeakRef<AnalyticsObserver>
-    
-    private var observers = [WeakRefAnalyticsObservers]()
+    private var observers = [AnalyticsObserver]()
     
     public func addObserver<T: AnalyticsObserver>(observer: T) {
-        let weakRefAnalyticsObservers: WeakRefAnalyticsObservers = WeakRefAnalyticsObservers(value: observer)
-        observers.append(weakRefAnalyticsObservers)
+        observers.append(observer)
+        observer.initializeTracker()
     }
     
     
     public func removeObserver<T: AnalyticsEventObserver>(observer: T) {
-        guard let index = (observers.index { $0.value === observer }) else { return }
+        guard let index = (observers.index { $0 === observer }) else { return }
         observers.remove(at: index)
     }
     
     public func track(event: AnalyticsEvent) {
         #if !DEBUG
-        observers = observers.filter { $0.value != nil }
-        _ = observers.map { $0.value?.track(event: event) }
+        _ = observers.map { $0.track(event: event) }
         #endif
     }
     
-    var sdksInitialized: Bool = false
-    
+//    var sdksInitialized: Bool = false
+//    
 //    public func screenLoginOpened() {
 //        #if !DEBUG
 //        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
