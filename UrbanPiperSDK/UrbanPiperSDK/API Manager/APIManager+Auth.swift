@@ -208,6 +208,8 @@ extension APIManager {
         
         var urlRequest: URLRequest = URLRequest(url: url)
         
+        urlRequest.setValue(bizAuth(), forHTTPHeaderField: "Authorization")
+
         urlRequest.httpMethod = "POST"
         
         if let params = referralParams {

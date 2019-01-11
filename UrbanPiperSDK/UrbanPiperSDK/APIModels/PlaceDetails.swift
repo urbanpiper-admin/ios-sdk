@@ -27,6 +27,7 @@ public class PlaceDetailsResponse : NSObject{
                 let resultObject = Result(fromDictionary: resultData)
                 guard resultObject.geometry?.location?.lat != nil, resultObject.geometry?.location?.lng != nil else { continue }
                 result = resultObject
+                return
             }
         }
 		status = dictionary["status"] as? String

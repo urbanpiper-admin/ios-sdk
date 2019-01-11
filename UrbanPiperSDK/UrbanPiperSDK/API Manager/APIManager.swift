@@ -28,17 +28,17 @@
 import Foundation
 
 @objc public protocol APIManagerDelegate {
-    func forceLogout()
+    @objc optional func forceLogout()
 }
 
 @objc public class APIManager: NSObject {
 
     #if DEBUG
-    public static let baseUrl: String = "https://staging.urbanpiper.com"
+    static let baseUrl: String = "https://staging.urbanpiper.com"
     #elseif RELEASE
-    public static let baseUrl: String = "https://api.urbanpiper.com"
+    static let baseUrl: String = "https://api.urbanpiper.com"
     #else
-    public static let baseUrl: String = "https://api.urbanpiper.com"
+    static let baseUrl: String = "https://api.urbanpiper.com"
     #endif
 
     public typealias APISuccess = () -> Void
@@ -57,7 +57,7 @@ import Foundation
     let apiKey: String
     let bizId: String
 
-    public static let channel: String = "app_ios"
+    static let channel: String = "app_ios"
 
     private static let KeyChainUUIDString: String = "KeyChainUUIDStringKey"
 
@@ -117,31 +117,29 @@ import Foundation
         shared = APIManager(language: language, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey)
     }
     
-    public func addObserver(delegate: APIManagerDelegate) {
+    func addObserver(delegate: APIManagerDelegate) {
         let weakRefDelegate: WeakRefDelegate = WeakRefDelegate(value: delegate)
         observers.append(weakRefDelegate)
     }
     
     
-    public func removeObserver(delegate: APIManagerDelegate) {
+    func removeObserver(delegate: APIManagerDelegate) {
         guard let index = (observers.index { $0.value === delegate }) else { return }
         observers.remove(at: index)
     }
     
-    public func refreshToken() {
+    func refreshToken() {
         guard let jwt = AppUserDataModel.shared.validAppUserData?.jwt else { return }
         guard !jwt.tokenExpired else {
             AppUserDataModel.shared.reset()
-            updateHeaders()
             return
         }
         guard jwt.shouldRefreshToken else { return }
 
-        let task = refreshToken(token: jwt.token, completion: { [weak self] (newToken) in
+        let task = refreshToken(token: jwt.token, completion: { (newToken) in
             guard let token = newToken else { return }
             let user = AppUserDataModel.shared.validAppUserData?.update(fromJWTToken: token)
             AppUserDataModel.shared.appUserData = user
-            self?.updateHeaders()
         }, failure: nil)
         task.resume()
     }
@@ -178,7 +176,7 @@ import Foundation
                              delegateQueue: nil)
     }
     
-    public func handleAPIError(httpStatusCode: Int?, errorCode: Int?, data: Data?, failureClosure: APIFailure?) {
+    func handleAPIError(httpStatusCode: Int?, errorCode: Int?, data: Data?, failureClosure: APIFailure?) {
         guard errorCode == nil || errorCode != NSURLErrorCancelled else { return }
         
         if let code = httpStatusCode,
@@ -186,7 +184,7 @@ import Foundation
             httpStatusCodeObj == .unauthorized, AppUserDataModel.shared.validAppUserData?.jwt != nil {
             
             DispatchQueue.main.async { [weak self] in
-                let _ = self?.observers.map { $0.value?.forceLogout() }
+                let _ = self?.observers.map { $0.value?.forceLogout?() }
             }
             return
         }

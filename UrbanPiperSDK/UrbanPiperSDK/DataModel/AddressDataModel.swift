@@ -166,7 +166,6 @@ extension AddressDataModel {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let addressCell: AddressCellDelegate = cell as? AddressCellDelegate {
-            
             addressCell.configureAddressCell(addressListArray?[indexPath.row])
         } else {
             assert(false, "Cell does not conform to AddressCellDelegate protocol")

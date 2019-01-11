@@ -68,6 +68,7 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
         StoreResponse.registerClassName()
         StoreResponse.registerClassNameUrbanPiperSDK()
         Biz.registerClassName()
+        Biz.registerClassNameWhiteLabel()
         Biz.registerClassNameUrbanPiperSDK()
         Store.registerClassName()
         Store.registerClassNameUrbanPiperSDK()

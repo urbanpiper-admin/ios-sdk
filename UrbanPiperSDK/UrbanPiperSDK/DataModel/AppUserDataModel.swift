@@ -50,7 +50,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
     }
     
     @objc static let userDataUpdateTimeInterval = 10
-    @objc static public var nextUserDataUpdateDate: Date?
+    @objc static var nextUserDataUpdateDate: Date?
         
     private typealias WeakRefDataModelDelegate = WeakRef<AppUserDataModelDelegate>
 
@@ -553,7 +553,7 @@ extension AppUserDataModel {
 
 extension AppUserDataModel: APIManagerDelegate {
     
-    public func forceLogout() {
+    internal func forceLogout() {
         let _ = observers.map { $0.value?.logout() }
     }
     
