@@ -101,7 +101,7 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
                             AnalyticsManager.shared.track(event: .nearestStoreFound(lat: coordinate.latitude, lng: coordinate.longitude, storeName: store.name))
                         }
                         
-                        if store.closingDay || store.isStoreClosed {
+                        if store.closingDay || store.isClosedForOrdering {
                             if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
                                 AnalyticsManager.shared.track(event: .nearestStoreClosed(lat: coordinate.latitude, lng: coordinate.longitude, storeName: store.name))
                             }

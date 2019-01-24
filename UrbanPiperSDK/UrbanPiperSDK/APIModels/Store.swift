@@ -13,7 +13,7 @@ public class Store : NSObject, NSCoding{
 	public var address : String!
 	public var bizLocationId : Int!
 	public var city : String!
-	public var closingDay : Bool!
+	public var closingDay : Bool = false
 	public var closingTime : String!
     public var isPickupEnabled : Bool = false
 	public var deliveryCharge : Decimal!
@@ -34,7 +34,7 @@ public class Store : NSObject, NSCoding{
 	public var pickupMinOffsetTime : Int!
 	public var sortOrder : Int!
 	public var taxRate : Float!
-	public var temporarilyClosed : Bool!
+	public var temporarilyClosed : Bool = false
 	public var timeSlots : [TimeSlot]!
     public var distance: Double!
     public var merchantRefId: String!
@@ -51,7 +51,7 @@ public class Store : NSObject, NSCoding{
 		address = dictionary["address"] as? String
 		bizLocationId = dictionary["biz_location_id"] as? Int ?? dictionary["id"] as? Int
 		city = dictionary["city"] as? String
-		closingDay = dictionary["closing_day"] as? Bool
+		closingDay = dictionary["closing_day"] as? Bool ?? false
 		closingTime = dictionary["closing_time"] as? String
         isPickupEnabled = dictionary["is_pickup_enabled"] as? Bool ?? false
 
@@ -113,7 +113,7 @@ public class Store : NSObject, NSCoding{
 		pickupMinOffsetTime = dictionary["pickup_min_offset_time"] as? Int
 		sortOrder = dictionary["sort_order"] as? Int ?? 0
 		taxRate = dictionary["tax_rate"] as? Float
-		temporarilyClosed = dictionary["temporarily_closed"] as? Bool
+		temporarilyClosed = dictionary["temporarily_closed"] as? Bool ?? false
         timeSlots = [TimeSlot]()
         if let timeSlotsArray: [[String:Any]] = dictionary["time_slots"] as? [[String:Any]], timeSlotsArray.count > 0 {
             for dic in timeSlotsArray{
@@ -139,9 +139,9 @@ public class Store : NSObject, NSCoding{
             dictionary["city"] = city
         }
         dictionary["is_pickup_enabled"] = isPickupEnabled
-        if closingDay != nil{
-            dictionary["closing_day"] = closingDay
-        }
+
+        dictionary["closing_day"] = closingDay
+        
         if closingTime != nil{
             dictionary["closing_time"] = closingTime
         }
@@ -199,9 +199,7 @@ public class Store : NSObject, NSCoding{
         if taxRate != nil{
             dictionary["tax_rate"] = taxRate
         }
-        if temporarilyClosed != nil{
-            dictionary["temporarily_closed"] = temporarilyClosed
-        }
+        dictionary["temporarily_closed"] = temporarilyClosed
         if timeSlots != nil{
             dictionary["time_slots"] = timeSlots
         }
@@ -222,7 +220,7 @@ public class Store : NSObject, NSCoding{
          bizLocationId = aDecoder.decodeObject(forKey: "biz_location_id") as? Int
          city = aDecoder.decodeObject(forKey: "city") as? String
         isPickupEnabled = aDecoder.decodeObject(forKey: "is_pickup_enabled") as? Bool ?? false
-         closingDay = aDecoder.decodeObject(forKey: "closing_day") as? Bool
+         closingDay = aDecoder.decodeObject(forKey: "closing_day") as? Bool ?? false
          closingTime = aDecoder.decodeObject(forKey: "closing_time") as? String
          deliveryCharge = aDecoder.decodeObject(forKey: "delivery_charge") as? Decimal
          deliveryMinOffsetTime = aDecoder.decodeObject(forKey: "delivery_min_offset_time") as? Int
@@ -242,7 +240,7 @@ public class Store : NSObject, NSCoding{
          pickupMinOffsetTime = aDecoder.decodeObject(forKey: "pickup_min_offset_time") as? Int
          sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
          taxRate = aDecoder.decodeObject(forKey: "tax_rate") as? Float
-         temporarilyClosed = aDecoder.decodeObject(forKey: "temporarily_closed") as? Bool
+         temporarilyClosed = aDecoder.decodeObject(forKey: "temporarily_closed") as? Bool ?? false
          timeSlots = aDecoder.decodeObject(forKey: "time_slots") as? [TimeSlot]
         merchantRefId = aDecoder.decodeObject(forKey: "merchant_ref_id") as? String
 
@@ -264,9 +262,7 @@ public class Store : NSObject, NSCoding{
 		if city != nil{
 			aCoder.encode(city, forKey: "city")
 		}
-		if closingDay != nil{
-			aCoder.encode(closingDay, forKey: "closing_day")
-		}
+        aCoder.encode(closingDay, forKey: "closing_day")
 		if closingTime != nil{
 			aCoder.encode(closingTime, forKey: "closing_time")
 		}
@@ -324,9 +320,7 @@ public class Store : NSObject, NSCoding{
 		if taxRate != nil{
 			aCoder.encode(taxRate, forKey: "tax_rate")
 		}
-		if temporarilyClosed != nil{
-			aCoder.encode(temporarilyClosed, forKey: "temporarily_closed")
-		}
+        aCoder.encode(temporarilyClosed, forKey: "temporarily_closed")
 		if timeSlots != nil{
 			aCoder.encode(timeSlots, forKey: "time_slots")
 		}

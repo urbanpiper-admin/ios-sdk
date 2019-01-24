@@ -160,19 +160,23 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     
     lazy public var selectedRequestedTime: Date? = defaultOrderDeliveryDateTime
     
-    lazy public var selectedRequestedDate: Date = defaultOrderDeliveryDateTime ?? Date()
+    lazy public var selectedRequestedDate: Date = Date()
     
     public var deliveryDateTime: Date? {
-        guard let deliveryTime = selectedRequestedTime else { return nil }
-
-        var units: Set<Calendar.Component> = [.day, .month, .year]
-        var comps: DateComponents = Calendar.current.dateComponents(units, from: selectedRequestedDate)
-        let day: Date = Calendar.current.date(from: comps)!
-        
-        units = [.hour, .minute, .second]
-        comps = Calendar.current.dateComponents(units, from: deliveryTime)
-        
-        return Calendar.current.date(byAdding: comps, to: day)!
+        if AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots {
+            return selectedRequestedDate
+        } else {
+            guard let deliveryTime = selectedRequestedTime else { return nil }
+            
+            var units: Set<Calendar.Component> = [.day, .month, .year]
+            var comps: DateComponents = Calendar.current.dateComponents(units, from: selectedRequestedDate)
+            let day: Date = Calendar.current.date(from: comps)!
+            
+            units = [.hour, .minute, .second]
+            comps = Calendar.current.dateComponents(units, from: deliveryTime)
+            
+            return Calendar.current.date(byAdding: comps, to: day)!
+        }
     }
     
     public var normalDefaultOrderDeliveryDate: Date? {
@@ -185,11 +189,11 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
         let openingDateWithOffset: Date = openingDate.addingTimeInterval(defaultOffset)
 
         let closingDate: Date = OrderingStoreDataModel.shared.orderingStore!.closingDate!
-        let closingDateWithOffset: Date = closingDate.addingTimeInterval(-(paymentOffsetTimeSecs + defaultOffset))
+//        let closingDateWithOffset: Date = closingDate.addingTimeInterval(-(paymentOffsetTimeSecs + defaultOffset))
         
         if normalDeliveryDate! < openingDateWithOffset {
             normalDeliveryDate = openingDateWithOffset
-        } else if normalDeliveryDate! > closingDateWithOffset {
+        } else if normalDeliveryDate! > closingDate {
             normalDeliveryDate = nil
         }
         
@@ -197,12 +201,12 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
     
     public var defaultOrderDeliveryDateTime: Date? {
-        guard let normalOrderDDate = normalDefaultOrderDeliveryDate else { return nil }
-        let preOrderDDate = CartManager.shared.cartPreOrderStartTime
-        if let date = preOrderDDate, date > normalOrderDDate {
+        guard let normalOrderDate = normalDefaultOrderDeliveryDate else { return nil }
+        let preOrderDate = CartManager.shared.cartPreOrderStartTime
+        if let date = preOrderDate, date > normalOrderDate {
             return date
         }
-        return normalOrderDDate
+        return normalOrderDate
     }
 
     public var deliveryOptions: [DeliveryOption]? {
@@ -439,7 +443,7 @@ extension OrderPaymentDataModel {
                                      items: CartManager.shared.cartItems,
                                      deliveryDate: deliveryDateTime!,
                                      timeSlot: timeSlotDelivery ? selectedDeliveryTimeSlotOption : nil,
-                                     deliveryOption: selectedDeliveryOption.rawValue,
+                                     deliveryOption: selectedDeliveryOption,
                                      instructions: instructions,
                                      phone: phone,
                                      bizLocationId: OrderingStoreDataModel.shared.orderingStore!.bizLocationId,

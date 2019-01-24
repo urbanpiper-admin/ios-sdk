@@ -215,29 +215,29 @@ extension APIManager {
         return dataTask
     }
     
-    @objc public func placeOrder(address: Address?,
-                          items: [ItemObject],
-                          deliveryDate: Date,
-                          timeSlot: TimeSlot?,
-                          deliveryOption: String,
-                          instructions: String,
-                          phone: String,
-                          bizLocationId: Int,
-                          paymentOption: String,
-                          taxRate: Float,
-                          couponCode: String?,
-                          deliveryCharge: Decimal,
-                          discountApplied: Decimal,
-                          itemTaxes: Decimal,
-                          packagingCharge: Decimal,
-                          orderSubTotal: Decimal,
-                          orderTotal: Decimal,
-                          applyWalletCredit: Bool,
-                          walletCreditApplied: Decimal,
-                          payableAmount: Decimal,
-                          onlinePaymentInitResponse: OnlinePaymentInitResponse?,
-                          completion: (([String: Any]?) -> Void)?,
-                          failure: APIFailure?) -> URLSessionDataTask {
+    public func placeOrder(address: Address?,
+                           items: [ItemObject],
+                           deliveryDate: Date,
+                           timeSlot: TimeSlot?,
+                           deliveryOption: DeliveryOption,
+                           instructions: String,
+                           phone: String,
+                           bizLocationId: Int,
+                           paymentOption: String,
+                           taxRate: Float,
+                           couponCode: String?,
+                           deliveryCharge: Decimal,
+                           discountApplied: Decimal,
+                           itemTaxes: Decimal,
+                           packagingCharge: Decimal,
+                           orderSubTotal: Decimal,
+                           orderTotal: Decimal,
+                           applyWalletCredit: Bool,
+                           walletCreditApplied: Decimal,
+                           payableAmount: Decimal,
+                           onlinePaymentInitResponse: OnlinePaymentInitResponse?,
+                           completion: (([String: Any]?) -> Void)?,
+                           failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/order/?format=json&biz_id=\(bizId)"
         
@@ -260,20 +260,22 @@ extension APIManager {
             instructionsText = instructions
         }
         
+        print("deliveryDate.timeIntervalSince1970 * 1000 \(deliveryDate.timeIntervalSince1970)")
+        
         var params: [String: Any] = ["channel": APIManager.channel,
-                      "order_type": deliveryOption,
+                      "order_type": deliveryOption.rawValue,
                       "instructions": instructionsText,
                       "items": items.map { $0.apiItemDictionary },
                       "payment_option": paymentOption,
                       "phone": phone,
                       "biz_location_id": bizLocationId,
-                      "delivery_datetime": deliveryDate.timeIntervalSince1970 * 1000,
+                      "delivery_datetime": Int(deliveryDate.timeIntervalSince1970 * 1000),
                       "order_subtotal": orderSubTotal,
                       "tax_rate": taxRate,
                       "packaging_charge": packagingCharge,
                       "item_taxes": itemTaxes,
                       "discount_applied": discountApplied,
-                      "delivery_charge": deliveryOption == DeliveryOption.pickUp.rawValue ? Decimal.zero : deliveryCharge,
+                      "delivery_charge": deliveryOption == DeliveryOption.pickUp ? Decimal.zero : deliveryCharge,
         "order_total": orderTotal] as [String: Any]
         
         print("params \(params as AnyObject)")
@@ -288,7 +290,7 @@ extension APIManager {
             params["coupon"] = code
         }
         
-        if let addressObject = address, deliveryOption != DeliveryOption.pickUp.rawValue {
+        if let addressObject = address, deliveryOption != DeliveryOption.pickUp {
             params["address_id"] = addressObject.id
             params["address_lat"] = addressObject.lat
             params["address_lng"] = addressObject.lng

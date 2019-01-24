@@ -100,7 +100,7 @@ import FirebaseRemoteConfig
 	public private(set) var moduleStoreLoc : Bool!
 	public private(set) var moduleWallet : Bool!
     public private(set) var moduleAboutUs : Bool!
-	public private(set) var orderDeliveryOffsetSecs : Int!
+//    private private(set) var orderDeliveryOffsetSecs : Int!
 	public private(set) var orderDetailDeliveryDtMsg : String!
 	public private(set) var orderFeedbackMandatory : Bool!
 	public private(set) var orderTotalAlert : Bool!
@@ -188,8 +188,7 @@ import FirebaseRemoteConfig
 		moduleHelp = remoteConfig["module_help"].boolValue
         moduleHome = remoteConfig["module_home"].boolValue
 		moduleNotifications = remoteConfig["module_notifications"].boolValue
-		moduleOffersV2
-            = remoteConfig["module_offers_v2"].boolValue
+		moduleOffersV2 = remoteConfig["module_offers_v2"].boolValue
 		moduleOrdering = remoteConfig["module_ordering"].boolValue
 		moduleReferral = remoteConfig["module_referral"].boolValue
 		moduleRewards = remoteConfig["module_rewards"].boolValue
@@ -198,7 +197,7 @@ import FirebaseRemoteConfig
 		moduleStoreLoc = remoteConfig["module_store_loc"].boolValue
 		moduleWallet = remoteConfig["module_wallet"].boolValue
         moduleAboutUs = remoteConfig["module_about_us"].boolValue
-		orderDeliveryOffsetSecs = remoteConfig["order_delivery_offset_secs"].numberValue as? Int
+//        orderDeliveryOffsetSecs = remoteConfig["order_delivery_offset_secs"].numberValue as? Int
 		orderDetailDeliveryDtMsg = remoteConfig["order_detail_delivery_dt_msg"].stringValue
 		orderFeedbackMandatory = remoteConfig["order_feedback_mandatory"].boolValue
 		orderTotalAlert = remoteConfig["order_total_alert"].boolValue

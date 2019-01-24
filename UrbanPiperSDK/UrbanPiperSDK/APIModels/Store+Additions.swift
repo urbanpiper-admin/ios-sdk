@@ -11,7 +11,7 @@ import CoreLocation
 
 extension Store {
 
-    public var isStoreClosed: Bool {
+    public var isClosed: Bool {
         if openingTime != nil, closingTime != nil {
             let currentTime: Date = Date()
             if let openingTime = openingDate, let closingTiming = closingDate {
@@ -25,12 +25,13 @@ extension Store {
         }
     }
 
-    @objc public var isStoreOpenForOnlineOrdering: Bool {
-        guard let closingTimeForDelivery = closingDate?.addingTimeInterval(TimeInterval(-AppConfigManager.shared.firRemoteConfigDefaults.orderDeliveryOffsetSecs)) else { return false }
+    @objc public var isClosedForOrdering: Bool {
+        let deliveryOffsetTime = (deliveryMinOffsetTime ?? Biz.shared!.deliveryMinOffsetTime) / 1000
+        guard let closingTimeForDelivery = closingDate?.addingTimeInterval(TimeInterval(-deliveryOffsetTime)) else { return false }
         guard let openingTimeForDelivery = openingDate else { return false }
         
         let now: Date = Date()
-        return now >= openingTimeForDelivery && now <= closingTimeForDelivery
+        return now < openingTimeForDelivery || now > closingTimeForDelivery
     }
     
     public var openingDate: Date? {
