@@ -60,7 +60,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
     
     private static let keychain: UPKeychainWrapper = UPKeychainWrapper(serviceName: Bundle.main.bundleIdentifier!)
     
-    @objc public var appUserData: User? {
+    @objc public internal(set) var appUserData: User? {
         get {
 //            debugPrint(AppUserDataModel.keychain.getAllKeyChainItemsOfClass(kSecClassGenericPassword as String))
             guard let userData = AppUserDataModel.keychain.data(forKey: KeychainAppUserKeys.AppUserKey) else { return nil}
@@ -119,7 +119,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
         }
     }
     
-    @objc public var bizInfo: BizInfo? {
+    @objc public internal(set) var bizInfo: BizInfo? {
         get {
             guard let bizInfoData = AppUserDataModel.keychain.data(forKey: KeychainAppUserKeys.BizInfoKey) else { return nil}
             Meta.registerClassNameWhiteLabel()
@@ -169,7 +169,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
         
     }
     
-    public func addObserver(delegate: AppUserDataModelDelegate) {
+    @objc public func addObserver(delegate: AppUserDataModelDelegate) {
         let weakRefDataModelDelegate: WeakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
         observers.append(weakRefDataModelDelegate)
     }
@@ -184,7 +184,12 @@ public class AppUserDataModel: UrbanPiperDataModel {
         guard let appUser = validAppUserData, appUser.jwt == nil else { return }
         let task: URLSessionDataTask
         if appUser.provider != nil {
-            task = APIManager.shared.checkForUser(user: appUser, completion: { [weak self] (user) in
+            task = APIManager.shared.checkForUser(name: appUser.firstName,
+                                                  email: appUser.email,
+                                                  gender: appUser.gender,
+                                                  socialLoginProvider: appUser.provider!,
+                                                  accessToken: appUser.accessToken!,
+                                                  completion: { [weak self] (user) in
                 if let jwt = user?.jwt, !jwt.tokenExpired {
                     self?.appUserData = user
                 } else if let msg = user?.message, msg == "email_check_failed" {
@@ -234,7 +239,9 @@ public class AppUserDataModel: UrbanPiperDataModel {
         UserDefaults.standard.removeObject(forKey: "payment_options")
 
         UserDefaults.standard.removeObject(forKey: "NextLocationUpdateDate")
-      
+
+        UserDefaults.standard.removeObject(forKey: "authUserResponse")
+
         UserDefaults.standard.removeObject(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey)
         UserDefaults.standard.removeObject(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
         
@@ -278,7 +285,7 @@ extension AppUserDataModel {
         addOrCancelDataTask(dataTask: dataTask)
     }
     
-    public func updateUserInfo(name: String,
+    @objc public func updateUserInfo(name: String,
                                phone: String,
                                email: String,
                                gender: String? = nil,
@@ -287,31 +294,31 @@ extension AppUserDataModel {
         let _ = observers.map { $0.value?.refreshUpdateAppUserUI?(isRefreshing: true) }
         
         let dataTask: URLSessionDataTask = APIManager.shared.updateUserInfo(name: name,
-                                         phone: phone,
-                                         email: email,
-                                         gender: gender,
-                                         anniversary: anniversary,
-                                         birthday: birthday,
-                                         completion: { [weak self] (response) in
-                                            AnalyticsManager.shared.track(event: .profileUpdated(phone: phone, pwdChanged: false))
-                                            guard let dataModel = self, let user = dataModel.appUserData, response != nil else { return }
-                                            dataModel.observers = dataModel.observers.filter { $0.value != nil }
-                                            let _ = dataModel.observers.map { $0.value?.refreshUpdateAppUserUI?(isRefreshing: false) }
-                                            
-                                            user.firstName = name
-                                            user.phone = phone
-                                            user.email = email
-                                            user.gender = gender
-                                            
-                                            if let date = anniversary {
-                                                user.anniversary = Int(date.timeIntervalSince1970 * 1000)
-                                            }
-                                            
-                                            if let date = birthday {
-                                                user.birthday = Int(date.timeIntervalSince1970 * 1000)
-                                            }
-                                            
-                                            dataModel.appUserData = user
+                                                                            phone: phone,
+                                                                            email: email,
+                                                                            gender: gender,
+                                                                            anniversary: anniversary,
+                                                                            birthday: birthday,
+                                                                            completion: { [weak self] (response) in
+                                                                                AnalyticsManager.shared.track(event: .profileUpdated(phone: phone, pwdChanged: false))
+                                                                                guard let dataModel = self, let user = dataModel.appUserData, response != nil else { return }
+                                                                                dataModel.observers = dataModel.observers.filter { $0.value != nil }
+                                                                                let _ = dataModel.observers.map { $0.value?.refreshUpdateAppUserUI?(isRefreshing: false) }
+                                                                                
+                                                                                user.firstName = name
+                                                                                user.phone = phone
+                                                                                user.email = email
+                                                                                user.gender = gender
+                                                                                
+                                                                                if let date = anniversary {
+                                                                                    user.anniversary = Int(date.timeIntervalSince1970 * 1000)
+                                                                                }
+                                                                                
+                                                                                if let date = birthday {
+                                                                                    user.birthday = Int(date.timeIntervalSince1970 * 1000)
+                                                                                }
+                                                                                
+                                                                                dataModel.appUserData = user
 
             }, failure: { [weak self] (upError) in
                 guard let dataModel = self else { return }
@@ -322,7 +329,7 @@ extension AppUserDataModel {
         addOrCancelDataTask(dataTask: dataTask)
     }
     
-    public func updatePassword(phone: String,
+    @objc public func updatePassword(phone: String,
                                oldPassword: String,
                                newPassword: String) {
         
@@ -375,7 +382,9 @@ extension AppUserDataModel {
 
 extension AppUserDataModel {
     
-    public func login(username: String, password: String, completion: @escaping CompletionHandler<User>) {
+    public func login(username: String,
+                      password: String,
+                      completion: @escaping CompletionHandler<User>) {
         let dataTask: URLSessionDataTask = APIManager.shared.login(username: username, password: password, completion: { (appUser) in
             guard let appUserData = appUser else {
                 completion(nil, nil)
@@ -395,10 +404,9 @@ extension AppUserDataModel {
         addOrCancelDataTask(dataTask: dataTask)
     }
     
-    public func forgotPassword(countryCode: String,
-                        phoneNumber: String,
-                        completion: @escaping (Bool, Error?)-> Void) {
-        let dataTask: URLSessionDataTask = APIManager.shared.forgotPassword(countryCode: countryCode, phoneNumber: phoneNumber, completion: { (data) in
+    public func forgotPassword(phone: String,
+                               completion: @escaping (Bool, Error?)-> Void) {
+        let dataTask: URLSessionDataTask = APIManager.shared.forgotPassword(phone: phone, completion: { (data) in
             guard let dictionary: [String: Any] = data, let statusString: String = dictionary["status"] as? String, statusString == "success" else {
                 completion(false, nil)
                 return
@@ -411,15 +419,13 @@ extension AppUserDataModel {
         addOrCancelDataTask(dataTask: dataTask)
     }
     
-    public func resetPassword(countryCode: String,
-                       phoneNumber: String,
-                       otp: String,
-                       password: String,
-                       confirmPassword: String,
-                       completion: @escaping (Bool, Error?)-> Void) {
-        AnalyticsManager.shared.track(event: .passwordReset(phone: phoneNumber))
-        let dataTask: URLSessionDataTask = APIManager.shared.resetPassword(countryCode: countryCode,
-                                        phoneNumber: phoneNumber,
+    public func resetPassword(phone: String,
+                              otp: String,
+                              password: String,
+                              confirmPassword: String,
+                              completion: @escaping (Bool, Error?)-> Void) {
+        AnalyticsManager.shared.track(event: .passwordReset(phone: phone))
+        let dataTask: URLSessionDataTask = APIManager.shared.resetPassword(phone: phone,
                                         otp: otp,
                                         password: password,
                                         confirmPassword: confirmPassword,
@@ -436,16 +442,20 @@ extension AppUserDataModel {
         addOrCancelDataTask(dataTask: dataTask)
     }
     
-    public func createAccount(user: User,
-                       password: String,
-                       referralObject: Referral?,
-                       completion: @escaping CompletionHandler<CardAPIResponse>) {
-        let dataTask: URLSessionDataTask = APIManager.shared.createUser(user: user,
+    public func createAccount(name: String,
+                              phone: String,
+                              email: String,
+                              password: String,
+                              referralObject: Referral?,
+                              completion: @escaping CompletionHandler<CardAPIResponse>) {
+        let dataTask: URLSessionDataTask = APIManager.shared.createUser(name: name,
+                                                                        phone: phone,
+                                                                        email: email,
                                                                         password: password,
                                                                         referralObject: referralObject,
                                                                         completion: { (cardAPIResponse) in
-                                        user.message = cardAPIResponse?.message
-                                        user.password = password
+//                                        user.message = cardAPIResponse?.message
+//                                        user.password = password
 
                                         completion(cardAPIResponse, nil)
 
@@ -462,11 +472,25 @@ extension AppUserDataModel {
 
 extension AppUserDataModel {
     
-    public func registerNewSocialAuthUser(user: User!, referralObject: Referral?, completion: @escaping CompletionHandler<User>) {
-        AnalyticsManager.shared.track(event: .socialAuthSignupStart(phone: user.phone, platform: user.provider!.rawValue))
-        let dataTask: URLSessionDataTask = APIManager.shared.createSocialUser(user: user, referralObject: referralObject, completion: { (cardAPIResponse) in
-            user?.message = UserStatus.registrationSuccessfullVerifyOTP.rawValue
-            completion(user, nil)
+    public func registerNewSocialAuthUser(name: String,
+                                          phone: String,
+                                          email: String,
+                                          gender: String? = nil,
+                                          socialLoginProvider: SocialLoginProvider,
+                                          accessToken: String,
+                                          referralObject: Referral?,
+                                          completion: @escaping CompletionHandler<String>) {
+        AnalyticsManager.shared.track(event: .socialAuthSignupStart(phone: phone, platform: socialLoginProvider.rawValue))
+        let dataTask: URLSessionDataTask = APIManager.shared.createSocialUser(name: name,
+                                                                              phone: phone,
+                                                                              email: email,
+                                                                              gender: gender,
+                                                                              accessToken: accessToken,
+                                                                              referralObject: referralObject,
+                                                                              completion: { (message) in
+//                                                                                let userStatus = UserStatus(rawValue: cardAPIResponse.message)
+//                                                                                user?.message = UserStatus.registrationSuccessfullVerifyOTP.rawValue
+                                                                                completion(message, nil)
         }) { (error) in
             completion(nil, error)
         }
@@ -474,8 +498,18 @@ extension AppUserDataModel {
         addOrCancelDataTask(dataTask: dataTask)
     }
     
-    public func checkForUser(user: User, completion: @escaping CompletionHandler<User>) {
-        let dataTask: URLSessionDataTask = APIManager.shared.checkForUser(user: user, completion: { (appUser) in
+    public func checkForUser(name: String,
+                             email: String,
+                             gender: String?,
+                             socialLoginProvider: SocialLoginProvider,
+                             accessToken: String,
+                             completion: @escaping CompletionHandler<User>) {
+        let dataTask: URLSessionDataTask = APIManager.shared.checkForUser(name: name,
+                                                                          email: email,
+                                                                          gender: gender,
+                                                                          socialLoginProvider: socialLoginProvider,
+                                                                          accessToken: accessToken,
+                                                                          completion: { (appUser) in
 //            if let status = appUser?.userStatus, (status == .registrationRequired) {
 //                self?.registerNewSocialAuthUser(user: user, completion: completion)
 //            } else {
@@ -496,14 +530,22 @@ extension AppUserDataModel {
 
 extension AppUserDataModel {
     
-    public func checkPhoneNumber(user: User, referralObject: Referral?, completion: @escaping CompletionHandler<User>) {
-        let dataTask: URLSessionDataTask = APIManager.shared.checkPhoneNumber(user: user, completion: { [weak self] (appUser) in
-            if let status = appUser?.userStatus, status == .registrationRequired {
-                self?.registerNewSocialAuthUser(user: user, referralObject: referralObject, completion: completion)
-            } else {
-                completion(appUser, nil)
-            }
-        }, failure: { (error) in
+    public func checkPhoneNumber(name: String,
+                                 phone: String,
+                                 email: String,
+                                 gender: String?,
+                                 socialLoginProvider: SocialLoginProvider,
+                                 accessToken: String,
+                                 completion: @escaping CompletionHandler<User>) {
+        let dataTask: URLSessionDataTask = APIManager.shared.checkPhoneNumber(name: name,
+                                                                              phone: phone,
+                                                                              email: email,
+                                                                              gender: gender,
+                                                                              socialLoginProvider: socialLoginProvider,
+                                                                              accessToken: accessToken,
+                                                                              completion: { appUser in
+                                                                                completion(appUser, nil)
+            }, failure: { (error) in
             completion(nil, error)
         })
         
@@ -511,8 +553,10 @@ extension AppUserDataModel {
     }
     
 //  used only when "new_registration_required"
-    public func verifyMobileNumber(user: User, otp: String, completion: @escaping CompletionHandler<CardAPIResponse>) {
-        let dataTask: URLSessionDataTask = APIManager.shared.verifyMobile(user: user, pin: otp, completion: { (cardAPIResponse) in
+    public func verifyMobileNumber(phone: String,
+                                   otp: String,
+                                   completion: @escaping CompletionHandler<CardAPIResponse>) {
+        let dataTask: URLSessionDataTask = APIManager.shared.verifyMobile(phone: phone, pin: otp, completion: { (cardAPIResponse) in
             completion(cardAPIResponse, nil)
         }, failure: { (error) in
             completion(nil, error)
@@ -521,10 +565,13 @@ extension AppUserDataModel {
         addOrCancelDataTask(dataTask: dataTask)
     }
 //  used in all the other cases
-    public func verifyOTP(user: User,
-                   otp: String,
-                   completion: @escaping CompletionHandler<User>) {
-        let dataTask: URLSessionDataTask = APIManager.shared.verifyOTP(user: user, otp: otp, completion: { (appUser) in
+    public func verifyOTP(phone: String,
+                          email: String,
+                          socialLoginProvider: SocialLoginProvider,
+                          accessToken: String,
+                          otp: String,
+                          completion: @escaping CompletionHandler<User>) {
+        let dataTask: URLSessionDataTask = APIManager.shared.verifyOTP(phone: phone, email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken, otp: otp, completion: { (appUser) in
             if let user = appUser, user.jwt != nil {
                 AppUserDataModel.shared.appUserData = user
             }
@@ -536,10 +583,10 @@ extension AppUserDataModel {
         addOrCancelDataTask(dataTask: dataTask)
     }
     
-    public func resendOTP(user: User,
+    public func resendOTP(phone: String,
                    completion: @escaping CompletionHandler<CardAPIResponse>) {
-        AnalyticsManager.shared.track(event: .resendOTP(phone: user.phone))
-        let dataTask: URLSessionDataTask = APIManager.shared.resendOTP(user: user,
+        AnalyticsManager.shared.track(event: .resendOTP(phone: phone))
+        let dataTask: URLSessionDataTask = APIManager.shared.resendOTP(phone: phone,
                                                    completion: { (cardAPIResponse) in
                                                     completion(cardAPIResponse, nil)
         }, failure: { (error) in

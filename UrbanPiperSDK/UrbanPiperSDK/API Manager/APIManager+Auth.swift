@@ -57,10 +57,10 @@ extension APIManager {
     }
     
     @objc public func login(username: String,
-                     password: String,
-                     completion: ((User?) -> Void)?,
-                     failure: APIFailure?) -> URLSessionDataTask {
-        
+                            password: String,
+                            completion: ((User?) -> Void)?,
+                            failure: APIFailure?) -> URLSessionDataTask {
+
         let urlString: String = "\(APIManager.baseUrl)/api/v2/auth/token/"
 
         let url: URL = URL(string: urlString)!
@@ -101,10 +101,9 @@ extension APIManager {
         return dataTask
     }
     
-    @objc public func forgotPassword(countryCode: String,
-                     phoneNumber: String,
-                     completion: (([String: Any]?) -> Void)?,
-                     failure: APIFailure?) -> URLSessionDataTask {
+    @objc public func forgotPassword(phone: String,
+                                     completion: (([String: Any]?) -> Void)?,
+                                     failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/password/token/"
         
@@ -114,7 +113,7 @@ extension APIManager {
         urlRequest.httpMethod = "POST"
                 
         let params: [String: Any] = ["biz_id": bizId,
-                      "phone": "\(countryCode)\(phoneNumber)"]
+                                     "phone": phone]
 
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
@@ -145,13 +144,12 @@ extension APIManager {
         return dataTask
     }
     
-    @objc public func resetPassword(countryCode: String,
-                             phoneNumber: String,
-                             otp: String,
-                             password: String,
-                             confirmPassword: String,
-                             completion: (([String: Any]?) -> Void)?,
-                             failure: APIFailure?) -> URLSessionDataTask {
+    @objc public func resetPassword(phone: String,
+                                    otp: String,
+                                    password: String,
+                                    confirmPassword: String,
+                                    completion: (([String: Any]?) -> Void)?,
+                                    failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/password/"
         
@@ -161,7 +159,7 @@ extension APIManager {
         urlRequest.httpMethod = "POST"
 
         let params: [String: Any] = ["biz_id": bizId,
-                      "phone": "\(countryCode)\(phoneNumber)",
+                      "phone": phone,
                       "token": otp,
                       "new_password1": password,
                       "new_password2": confirmPassword]
@@ -196,9 +194,9 @@ extension APIManager {
     }
     
     @objc public func card(urlString: String,
-                    referralParams: Referral? = nil,
-                    completion: ((CardAPIResponse?) -> Void)?,
-                    failure: APIFailure?) -> URLSessionDataTask {
+                           referralParams: Referral? = nil,
+                           completion: ((CardAPIResponse?) -> Void)?,
+                           failure: APIFailure?) -> URLSessionDataTask {
         
         var cs: CharacterSet = CharacterSet.urlQueryAllowed
         cs.remove(charactersIn: "@+")
@@ -249,25 +247,37 @@ extension APIManager {
 
 extension APIManager {
     
-    @objc public func createUser(user: User,
-                          password: String,
-                          referralObject: Referral? = nil,
-                          completion: ((CardAPIResponse?) -> Void)?,
-                          failure: APIFailure?) -> URLSessionDataTask {
-        AnalyticsManager.shared.track(event: .signupStart(phone: user.phone))
-        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_name=\(user.firstName!)&customer_phone=\(user.phone!)&email=\(user.email!)&password=\(password)&channel=\(APIManager.channel)"
+    @objc public func createUser(name: String,
+                                 phone: String,
+                                 email: String,
+                                 password: String,
+                                 referralObject: Referral? = nil,
+                                 completion: ((CardAPIResponse?) -> Void)?,
+                                 failure: APIFailure?) -> URLSessionDataTask {
+        AnalyticsManager.shared.track(event: .signupStart(phone: phone))
+        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_name=\(name)&customer_phone=\(phone)&email=\(email)&password=\(password)&channel=\(APIManager.channel)"
         
         return card(urlString: urlString, referralParams: referralObject, completion: completion, failure: failure)
     }
     
-    @objc public func createSocialUser(user: User,
+    @objc public func createSocialUser(name: String,
+                                       phone: String,
+                                       email: String,
+                                       gender: String? = nil,
+                                       accessToken: String,
                                        referralObject: Referral? = nil,
-                          completion: ((CardAPIResponse?) -> Void)?,
-                          failure: APIFailure?) -> URLSessionDataTask {
+                                       completion: ((String?) -> Void)?,
+                                       failure: APIFailure?) -> URLSessionDataTask {
         
-        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_name=\(user.firstName!)&customer_phone=\(user.phone!)&email=\(user.email!)&password=\(user.accessToken!)&channel=\(APIManager.channel)"
+        var urlString: String = "\(APIManager.cardBaseUrl)/?customer_name=\(name)&customer_phone=\(phone)&email=\(email)&password=\(accessToken)&channel=\(APIManager.channel)"
         
-        return card(urlString: urlString, referralParams: referralObject, completion: completion, failure: failure)
+        if gender != nil {
+            urlString = "\(urlString)&gender=\(gender!)"
+        }
+        
+        return card(urlString: urlString, referralParams: referralObject, completion: { (cardAPIResponse) in
+            completion?(cardAPIResponse?.message)
+        }, failure: failure)
     }
     
 }
@@ -276,20 +286,20 @@ extension APIManager {
 
 extension APIManager {
     
-    @objc public func verifyMobile(user: User,
-                            pin: String,
-                            completion: ((CardAPIResponse?) -> Void)?,
-                            failure: APIFailure?) -> URLSessionDataTask {
+    @objc public func verifyMobile(phone: String,
+                                   pin: String,
+                                   completion: ((CardAPIResponse?) -> Void)?,
+                                   failure: APIFailure?) -> URLSessionDataTask {
         
-        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(user.phone!)&pin=\(pin)&nopinsend=true"
+        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(phone)&pin=\(pin)&nopinsend=true"
         
         return card(urlString: urlString, completion: completion, failure: failure)
     }
     
-    @objc public func resendOTP(user: User,
-                         completion: ((CardAPIResponse?) -> Void)?,
-                         failure: APIFailure?) -> URLSessionDataTask {
-        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(user.phone!)&pin=resendotp"
+    @objc public func resendOTP(phone: String,
+                                completion: ((CardAPIResponse?) -> Void)?,
+                                failure: APIFailure?) -> URLSessionDataTask {
+        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(phone)&pin=resendotp"
         
         return card(urlString: urlString, completion: completion, failure: failure)
     }

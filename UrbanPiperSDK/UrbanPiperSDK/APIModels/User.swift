@@ -15,7 +15,6 @@ import Foundation
     case otpSent
     case valid
     case invalid
-    case invalidOTP
     
     public typealias RawValue = String
     
@@ -27,7 +26,6 @@ import Foundation
         case "User has successfully been registered and validated": self = .valid
         case "User has successfully been registered.": self = .registrationSuccessfullVerifyOTP
         case "otp_sent": self = .otpSent
-        case "invalid_otp": self = .invalidOTP
         default: self = .invalid
         }
     }
@@ -41,7 +39,6 @@ import Foundation
         case .otpSent: return "otp_sent"
         case .valid: return "User has successfully been registered and validated"
         case .invalid: return "invalid"
-        case .invalidOTP: return "invalid_otp"
         }
     }
 }
