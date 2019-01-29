@@ -47,7 +47,17 @@ public class User : NSObject, NSCoding{
     
     @objc public var firstName : String!
     public var lastName : String!
-    @objc public var username : String!
+    @objc public var username : String? {
+        if var phoneNo = phone {
+            if phoneNo.hasPrefix("+") {
+                phoneNo = String(phoneNo.dropFirst())
+            }
+            return "u_\(phoneNo)_\(APIManager.shared.bizId)"
+//            u_918903464104_35041870
+        } else {
+            return nil
+        }
+    }
     
     @objc public var phone : String!
     @objc public var email : String!
@@ -118,7 +128,7 @@ public class User : NSObject, NSCoding{
 		phone = dictionary["phone"] as? String
 //        success = dictionary["success"] as? Bool ?? false
 		timestamp = dictionary["timestamp"] as? String
-		username = dictionary["username"] as? String
+//        username = dictionary["username"] as? String
         gender = dictionary["gender"] as? String
 
         provider = nil
@@ -139,9 +149,6 @@ public class User : NSObject, NSCoding{
         gender = dictionary["gender"] as? String
         lastName = dictionary["last_name"] as? String
         phone = dictionary["phone"] as? String
-        if username == nil {
-            username = "u_\(phone!)_\(AppConfigManager.shared.firRemoteConfigDefaults.bizId!))"
-        }
     }
     
     public convenience init(jwtToken: String) {
@@ -154,7 +161,7 @@ public class User : NSObject, NSCoding{
             if let authKey = dictionary["t_key"] as? String {
                 self?.authKey = authKey
             }
-            self?.username = dictionary["username"] as? String
+//            self?.username = dictionary["username"] as? String
             self?.email = dictionary["email"] as? String
             self?.phone = dictionary["phone"] as? String
             self?.firstName = dictionary["first_name"] as? String
@@ -261,7 +268,7 @@ public class User : NSObject, NSCoding{
          phone = aDecoder.decodeObject(forKey: "phone") as? String
 //         success = aDecoder.decodeObject(forKey: "success") as? Bool ?? false
          timestamp = aDecoder.decodeObject(forKey: "timestamp") as? String
-         username = aDecoder.decodeObject(forKey: "username") as? String
+//         username = aDecoder.decodeObject(forKey: "username") as? String
         gender = aDecoder.decodeObject(forKey: "gender") as? String
 
         if let providerString: String = aDecoder.decodeObject(forKey: "provider") as? String {
