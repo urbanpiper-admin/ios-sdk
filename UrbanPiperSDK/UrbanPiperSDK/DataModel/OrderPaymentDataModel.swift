@@ -163,20 +163,20 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     lazy public var selectedRequestedDate: Date = Date()
     
     public var deliveryDateTime: Date? {
-        if AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots {
-            return selectedRequestedDate
-        } else {
-            guard let deliveryTime = selectedRequestedTime else { return nil }
-            
-            var units: Set<Calendar.Component> = [.day, .month, .year]
-            var comps: DateComponents = Calendar.current.dateComponents(units, from: selectedRequestedDate)
-            let day: Date = Calendar.current.date(from: comps)!
-            
-            units = [.hour, .minute, .second]
-            comps = Calendar.current.dateComponents(units, from: deliveryTime)
-            
-            return Calendar.current.date(byAdding: comps, to: day)!
+        guard var deliveryTime = selectedRequestedTime else { return nil }
+
+        if let optimalDeliveryTime = defaultOrderDeliveryDateTime, deliveryTime < optimalDeliveryTime {
+            deliveryTime = optimalDeliveryTime
         }
+
+        var units: Set<Calendar.Component> = [.day, .month, .year]
+        var comps: DateComponents = Calendar.current.dateComponents(units, from: selectedRequestedDate)
+        let day: Date = Calendar.current.date(from: comps)!
+
+        units = [.hour, .minute, .second]
+        comps = Calendar.current.dateComponents(units, from: deliveryTime)
+
+        return Calendar.current.date(byAdding: comps, to: day)!
     }
     
     public var normalDefaultOrderDeliveryDate: Date? {
