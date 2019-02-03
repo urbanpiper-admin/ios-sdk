@@ -47,17 +47,16 @@ extension APIManager {
             let errorCode = (error as NSError?)?.code
             let statusCode = (response as? HTTPURLResponse)?.statusCode ?? errorCode
             if let code = statusCode, code == 201 {
-                guard let completionClosure = completion else { return }
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
                     
                     DispatchQueue.main.async {
-                        completionClosure(dictionary)
+                        completion?(dictionary)
                     }
                     return
                 }
                 
                 DispatchQueue.main.async {
-                    completionClosure(nil)
+                    completion?(nil)
                 }
             } else {
                 self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)

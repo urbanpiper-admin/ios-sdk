@@ -73,7 +73,7 @@ extension ItemDetailsDataModel {
                 }
         })
 
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 
     public func likeUnlikeItem(like: Bool) {
@@ -98,7 +98,7 @@ extension ItemDetailsDataModel {
                 }
         })
         
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 
     fileprivate func fetchItemDetails(itemId: Int)  {
@@ -120,7 +120,7 @@ extension ItemDetailsDataModel {
             }
         })
 
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 
 }

@@ -163,7 +163,7 @@ extension BannersDataModel {
                 let _ = self?.observers.map { $0.value?.handleBanners(error: upError) }
             }
         })
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 }
 

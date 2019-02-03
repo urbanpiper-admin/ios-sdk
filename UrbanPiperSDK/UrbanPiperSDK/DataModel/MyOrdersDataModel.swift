@@ -128,7 +128,7 @@ extension MyOrdersDataModel {
             }
         })
         
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 
 }

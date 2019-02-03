@@ -34,7 +34,6 @@ extension APIManager {
             let errorCode = (error as NSError?)?.code
             let statusCode = (response as? HTTPURLResponse)?.statusCode ?? errorCode
             if statusCode == 200 {
-                guard let completionClosure = completion else { return }
 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
                     let categoriesResponse: CategoriesResponse = CategoriesResponse(fromDictionary: dictionary)
@@ -53,13 +52,13 @@ extension APIManager {
 //                    self?.savePaymentOptionsDetail(biz: categoriesResponse.biz)
 
                     DispatchQueue.main.async {
-                        completionClosure(categoriesResponse)
+                        completion?(categoriesResponse)
                     }
                     return
                 }
 
                 DispatchQueue.main.async {
-                    completionClosure(nil)
+                    completion?(nil)
                 }
             } else {
                 self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)

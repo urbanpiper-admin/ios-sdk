@@ -75,7 +75,7 @@ open class OffersDataModel: UrbanPiperDataModel {
                     self?.dataModelDelegate?.handleCoupon(error: upError)
                 }
         })
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
     
 //    public func applyCoupon(code: String,
@@ -104,7 +104,7 @@ open class OffersDataModel: UrbanPiperDataModel {
 //                    self?.dataModelDelegate?.handleCoupon(error: upError)
 //                }
 //        })
-//        addOrCancelDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
 //    }
 
 }

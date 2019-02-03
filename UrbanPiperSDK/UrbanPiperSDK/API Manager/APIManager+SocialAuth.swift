@@ -53,7 +53,6 @@ extension APIManager {
             let errorCode = (error as NSError?)?.code
             let statusCode = (response as? HTTPURLResponse)?.statusCode ?? errorCode
             if statusCode == 200 {
-                guard let completionClosure = completion else { return }
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
                     let appUser: User
@@ -79,13 +78,13 @@ extension APIManager {
                     }
                     
                     DispatchQueue.main.async {
-                        completionClosure(appUser)
+                        completion?(appUser)
                     }
                     return
                 }
                 
                 DispatchQueue.main.async {
-                    completionClosure(nil)
+                    completion?(nil)
                 }
             } else {
                 self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
@@ -102,25 +101,15 @@ extension APIManager {
 
 extension APIManager {
     
-    @objc public func checkForUser(name: String,
-                                   email: String,
-                                   gender: String?,
-                                   socialLoginProvider: SocialLoginProvider,
-                                   accessToken: String,
-                                   completion: ((User?) -> Void)?,
-                                   failure: APIFailure?) -> URLSessionDataTask {
+    @objc internal func checkForUser(email: String,
+                                     socialLoginProvider: SocialLoginProvider,
+                                     accessToken: String,
+                                     completion: ((User?) -> Void)?,
+                                     failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)"
 
-        return socialLogin(urlString: urlString, completion: { user in
-            user?.firstName = name
-            user?.email = email
-            user?.gender = gender
-            user?.provider = socialLoginProvider
-            user?.accessToken = accessToken
-            
-            completion?(user)
-        }, failure: failure)
+        return socialLogin(urlString: urlString, completion: completion, failure: failure)
     }
     
 }
@@ -129,30 +118,20 @@ extension APIManager {
 
 extension APIManager {
     
-    @objc public func checkPhoneNumber(name: String,
-                                       phone: String,
-                                       email: String,
-                                       gender: String?,
-                                       socialLoginProvider: SocialLoginProvider,
-                                       accessToken: String,
-                                       completion: ((User?) -> Void)?,
-                                       failure: APIFailure?) -> URLSessionDataTask {
+    @objc internal func checkPhoneNumber(phone: String,
+                                         email: String,
+                                         socialLoginProvider: SocialLoginProvider,
+                                         accessToken: String,
+                                         completion: ((User?) -> Void)?,
+                                         failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)&action=check_phone&phone=\(phone)"
         
-        return socialLogin(urlString: urlString, completion: { user in
-            user?.firstName = name
-            user?.email = email
-            user?.gender = gender
-            user?.provider = socialLoginProvider
-            user?.accessToken = accessToken
-            
-            completion?(user)
-        }, failure: failure)
+        return socialLogin(urlString: urlString, completion: completion, failure: failure)
         
     }
     
-    @objc public func verifyOTP(phone: String,
+    @objc internal func verifyOTP(phone: String,
                                 email: String,
                                 socialLoginProvider: SocialLoginProvider,
                                 accessToken: String,

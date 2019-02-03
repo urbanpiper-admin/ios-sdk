@@ -26,19 +26,18 @@ extension APIManager {
             let errorCode = (error as NSError?)?.code
             let statusCode = (response as? HTTPURLResponse)?.statusCode ?? errorCode
             if statusCode == 200 {
-                guard let completionClosure = completion else { return }
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
                     let storeLocatorResponse: StoreLocatorResponse = StoreLocatorResponse(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
-                        completionClosure(storeLocatorResponse)
+                        completion?(storeLocatorResponse)
                     }
                     return
                 }
                 
                 DispatchQueue.main.async {
-                    completionClosure(nil)
+                    completion?(nil)
                 }
             } else {
                 self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
@@ -67,19 +66,18 @@ extension APIManager {
             let errorCode = (error as NSError?)?.code
             let statusCode = (response as? HTTPURLResponse)?.statusCode ?? errorCode
             if statusCode == 200 {
-                guard let completionClosure = completion else { return }
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
                     let storeResponse: StoreResponse = StoreResponse(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
-                        completionClosure(storeResponse)
+                        completion?(storeResponse)
                     }
                     return
                 }
                 
                 DispatchQueue.main.async {
-                    completionClosure(nil)
+                    completion?(nil)
                 }
             } else {
                 self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)

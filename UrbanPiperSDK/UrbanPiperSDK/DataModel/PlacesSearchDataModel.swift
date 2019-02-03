@@ -103,7 +103,7 @@ open class PlacesSearchDataModel: UrbanPiperDataModel {
                 self?.keyword = keyword
         })
         
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
     
     public func fetchLocation(for prediction: Prediction, completion: @escaping CoordinatesFetchCompletionBlock) {
@@ -119,7 +119,7 @@ open class PlacesSearchDataModel: UrbanPiperDataModel {
                 completion(nil, upError)
         })
         
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 
     private func store(prediction: Prediction) {

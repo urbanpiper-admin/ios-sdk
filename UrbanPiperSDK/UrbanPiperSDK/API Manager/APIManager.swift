@@ -27,9 +27,9 @@
 
 import Foundation
 
-@objc public protocol APIManagerDelegate {
-    @objc optional func forceLogout()
-}
+public typealias APISuccess = () -> Void
+public typealias APICompletion<T> = (T?) -> Void
+public typealias APIFailure = (UPError?) -> Void
 
 @objc public class APIManager: NSObject {
 
@@ -41,24 +41,22 @@ import Foundation
     static let baseUrl: String = "https://api.urbanpiper.com"
     #endif
 
-    public typealias APISuccess = () -> Void
-    public typealias APICompletion<T> = (T?) -> Void
-    public typealias APIFailure = (UPError?) -> Void
-
     @objc public static private(set) var shared: APIManager!
     
-    var language: Language {
-        didSet {
-            updateHeaders()
-        }
-    }
-    
-    let apiUsername: String
-    let apiKey: String
-    let bizId: String
-
     static let channel: String = "app_ios"
 
+    var language: Language {
+        didSet {
+            updateHeaders(jwt: jwt)
+        }
+    }
+
+    let bizId: String
+    let apiUsername: String
+    let apiKey: String
+    
+    var jwt: JWT?
+    
     private static let KeyChainUUIDString: String = "KeyChainUUIDStringKey"
 
     fileprivate var sessionConfig: URLSessionConfiguration = {
@@ -95,53 +93,19 @@ import Foundation
             return uuidStringVal
         }
     }
-    
-    private typealias WeakRefDelegate = WeakRef<APIManagerDelegate>
-    
-    private var observers = [WeakRefDelegate]()
-    
 
-    private init(language: Language, bizId: String, apiUsername: String, apiKey: String) {
+    private init(language: Language, bizId: String, apiUsername: String, apiKey: String, jwt: JWT?) {
         self.language = language
         self.bizId = bizId
         self.apiUsername = apiUsername
         self.apiKey = apiKey
         super.init()
-        updateHeaders()
-        DispatchQueue.main.async {
-            self.refreshToken()
-        }
+        
+        updateHeaders(jwt: jwt)
     }
     
-    internal class func initializeManager(language: Language, bizId: String, apiUsername: String, apiKey: String) {
-        shared = APIManager(language: language, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey)
-    }
-    
-    func addObserver(delegate: APIManagerDelegate) {
-        let weakRefDelegate: WeakRefDelegate = WeakRefDelegate(value: delegate)
-        observers.append(weakRefDelegate)
-    }
-    
-    
-    func removeObserver(delegate: APIManagerDelegate) {
-        guard let index = (observers.index { $0.value === delegate }) else { return }
-        observers.remove(at: index)
-    }
-    
-    func refreshToken() {
-        guard let jwt = AppUserDataModel.shared.validAppUserData?.jwt else { return }
-        guard !jwt.tokenExpired else {
-            AppUserDataModel.shared.reset()
-            return
-        }
-        guard jwt.shouldRefreshToken else { return }
-
-        let task = refreshToken(token: jwt.token, completion: { (newToken) in
-            guard let token = newToken else { return }
-            let user = AppUserDataModel.shared.validAppUserData?.update(fromJWTToken: token)
-            AppUserDataModel.shared.appUserData = user
-        }, failure: nil)
-        task.resume()
+    internal class func initializeManager(language: Language, bizId: String, apiUsername: String, apiKey: String, jwt: JWT?) {
+        shared = APIManager(language: language, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, jwt: jwt)
     }
 
     func bizAuth() -> String {
@@ -149,15 +113,16 @@ import Foundation
     }
     
     @objc public func authorizationKey() -> String {
-        if let token: String = AppUserDataModel.shared.validAppUserData?.jwt?.token {
+        if let token: String = jwt?.token {
             return "Bearer \(token)"
         } else {
             return bizAuth()
         }
     }
 
-    @objc public func updateHeaders() {
-
+    @objc public func updateHeaders(jwt: JWT?) {
+        self.jwt = jwt
+        
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
         var additionalHeaders: [String : Any] = ["X-App-Src": "ios",
                                                  "X-Bid": bizId,
@@ -181,10 +146,10 @@ import Foundation
         
         if let code = httpStatusCode,
             let httpStatusCodeObj = HTTPStatusCode(rawValue: code),
-            httpStatusCodeObj == .unauthorized, AppUserDataModel.shared.validAppUserData?.jwt != nil {
+            httpStatusCodeObj == .unauthorized, jwt != nil, jwt!.tokenExpired {
             
-            DispatchQueue.main.async { [weak self] in
-                let _ = self?.observers.map { $0.value?.forceLogout?() }
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .upSDKTokenExpired, object: nil)
             }
             return
         }

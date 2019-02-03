@@ -120,7 +120,7 @@ extension ItemCategoriesDataModel {
             }
         })
 
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 }
 

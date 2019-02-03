@@ -140,7 +140,7 @@ extension ItemsSearchDataModel {
                 }
         })
 
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 
 }

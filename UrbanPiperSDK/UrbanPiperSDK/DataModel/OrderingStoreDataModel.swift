@@ -221,7 +221,7 @@ extension OrderingStoreDataModel {
                 }
         })
 
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 }
 

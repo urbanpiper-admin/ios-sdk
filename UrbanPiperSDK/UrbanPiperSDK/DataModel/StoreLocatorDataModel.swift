@@ -70,7 +70,7 @@ public class StoreLocatorDataModel: UrbanPiperDataModel {
                 }
         })
 
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
     
     func sortAndSetResponse(response: StoreLocatorResponse) {

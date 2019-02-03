@@ -148,7 +148,7 @@ extension FeaturedItemsDataModel {
                 }
         })
         
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 }
 

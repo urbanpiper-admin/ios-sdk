@@ -120,7 +120,7 @@ extension FirRemoteConfigDefaults {
             if status == .success {
                 self?.remoteConfig.activateFetched()
                 self?.refreshValues()
-                APIManager.shared.updateHeaders()
+                APIManager.shared.updateHeaders(jwt: AppUserDataModel.shared.validAppUserData?.jwt)
             }
             completion(status)
         })

@@ -235,7 +235,7 @@ extension CategoryItemsDataModel {
             self?.isFetchingCategoryItems = false
         })
 
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
     
     fileprivate func fetchCategoryOptions() {
@@ -252,7 +252,7 @@ extension CategoryItemsDataModel {
                     self?.dataModelDelegate?.handleCategoryItems(error: upError)
                 }
         })
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 }
 

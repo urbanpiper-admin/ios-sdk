@@ -14,7 +14,6 @@ import Foundation
     case registrationSuccessfullVerifyOTP
     case otpSent
     case valid
-    case invalid
     
     public typealias RawValue = String
     
@@ -26,7 +25,8 @@ import Foundation
         case "User has successfully been registered and validated": self = .valid
         case "User has successfully been registered.": self = .registrationSuccessfullVerifyOTP
         case "otp_sent": self = .otpSent
-        default: self = .invalid
+        default:
+            return nil
         }
     }
     
@@ -38,7 +38,6 @@ import Foundation
         case .registrationSuccessfullVerifyOTP: return "User has successfully been registered."
         case .otpSent: return "otp_sent"
         case .valid: return "User has successfully been registered and validated"
-        case .invalid: return "invalid"
         }
     }
 }
@@ -74,7 +73,7 @@ public class User : NSObject, NSCoding{
     
 	public var biz : BizInfo!
     
-	public var message : String!
+    public var message : String?
 //    public var success : Bool!
 	public var timestamp : String!
     public var jwt: JWT!
@@ -84,7 +83,6 @@ public class User : NSObject, NSCoding{
             guard let passwordString: String = password, passwordString.count > 0 else { return }
             accessToken = nil
             provider = nil
-            APIManager.shared.updateHeaders()
         }
     }
     
@@ -96,11 +94,11 @@ public class User : NSObject, NSCoding{
         }
     }
     
-    @objc public var userStatus: UserStatus {
-        guard let msg = message else { return .invalid }
-        return UserStatus(rawValue: msg) ?? .invalid
-    }
-        
+//    @objc public var userStatus: UserStatus {
+//        guard let msg = message else { return .invalid }
+//        return UserStatus(rawValue: msg) ?? .invalid
+//    }
+    
     public var birthdayDateObject: Date? {
         guard let dateIntVal = birthday else { return nil }
         return Date(timeIntervalSince1970: TimeInterval(dateIntVal / 1000))
@@ -118,30 +116,35 @@ public class User : NSObject, NSCoding{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+    public init(fromDictionary dictionary:  [String:Any]){
         super.init()
-		authKey = dictionary["authKey"] as? String
-		biz = dictionary["biz"] as? BizInfo
-		email = dictionary["email"] as? String
-		message = dictionary["message"] as? String ?? ""
-		firstName = dictionary["name"] as? String
-		phone = dictionary["phone"] as? String
+        authKey = dictionary["authKey"] as? String
+        biz = dictionary["biz"] as? BizInfo
+        email = dictionary["email"] as? String
+        message = dictionary["message"] as? String
+        if let fn: String = dictionary["first_name"] as? String {
+            firstName = fn
+        } else {
+            firstName = dictionary["name"] as? String
+        }
+        phone = dictionary["phone"] as? String
 //        success = dictionary["success"] as? Bool ?? false
-		timestamp = dictionary["timestamp"] as? String
+        timestamp = dictionary["timestamp"] as? String
 //        username = dictionary["username"] as? String
         gender = dictionary["gender"] as? String
 
+        password = dictionary["password"] as? String
+
         provider = nil
         accessToken = nil
-        
+
         if let token = dictionary["token"] as? String {
             update(fromJWTToken: token)
         }
-	}
+    }
     
-    public func update(fromDictionary dictionary: [String: Any]) {
+    @discardableResult public func update(fromDictionary dictionary: [String: Any]) -> User? {
         address = dictionary["address"] as? String
-        anniversary = dictionary["anniversary"] as? Int
         birthday = dictionary["birthday"] as? Int
         currentCity = dictionary["current_city"] as? String
         email = dictionary["email"] as? String
@@ -149,6 +152,16 @@ public class User : NSObject, NSCoding{
         gender = dictionary["gender"] as? String
         lastName = dictionary["last_name"] as? String
         phone = dictionary["phone"] as? String
+        
+        if let anniversaryVal = dictionary["anniversary"] as? Int {
+            anniversary = anniversaryVal
+        }
+
+        if let birthdayVal = dictionary["birthday"] as? Int {
+            birthday = birthdayVal
+        }
+
+        return self
     }
     
     public convenience init(jwtToken: String) {
@@ -167,86 +180,86 @@ public class User : NSObject, NSCoding{
             self?.firstName = dictionary["first_name"] as? String
             self?.lastName = dictionary["last_name"] as? String
         })
-        message = UserStatus.valid.rawValue
+//        message = UserStatus.valid.rawValue
         return self
     }
     
-//    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    public func toDictionary() -> [String:Any]
-//    {
-//        var dictionary: [String : Any] = [String:Any]()
-//        if authKey != nil{
-//            dictionary["authKey"] = authKey
-//        }
-//        if biz != nil{
-//            dictionary["biz"] = biz
-//        }
-//        if email != nil{
-//            dictionary["email"] = email
-//        }
-//        if message != nil{
-//            dictionary["message"] = message
-//        }
-//        if phone != nil{
-//            dictionary["phone"] = phone
-//        }
-//        if gender != nil{
-//            dictionary["gender"] = gender
-//        }
+    /**
+     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String : Any] = [String:Any]()
+        if authKey != nil{
+            dictionary["authKey"] = authKey
+        }
+        if biz != nil{
+            dictionary["biz"] = biz
+        }
+        if email != nil{
+            dictionary["email"] = email
+        }
+        if message != nil{
+            dictionary["message"] = message
+        }
+        if phone != nil{
+            dictionary["phone"] = phone
+        }
+        if gender != nil{
+            dictionary["gender"] = gender
+        }
 //        dictionary["success"] = success
-//        if timestamp != nil{
-//            dictionary["timestamp"] = timestamp
-//        }
-//        if username != nil{
-//            dictionary["username"] = username
-//        }
-//        
-//        if provider != nil {
-//            dictionary["provider"] = provider
-//        }
-//        
-//        if accessToken != nil {
-//            dictionary["accessToken"] = accessToken
-//        }
-//        
-//        dictionary["countryCode"] = countryCode
-//        
-//        if password != nil {
-//            dictionary["password"] = password
-//        }
-//        
-//        if address != nil{
-//            dictionary["address"] = address
-//        }
-//        if anniversary != nil{
-//            dictionary["anniversary"] = anniversary
-//        }
+        if timestamp != nil{
+            dictionary["timestamp"] = timestamp
+        }
+        if username != nil{
+            dictionary["username"] = username
+        }
+        
+        if provider != nil {
+            dictionary["provider"] = provider
+        }
+        
+        if accessToken != nil {
+            dictionary["accessToken"] = accessToken
+        }
+        
+        dictionary["countryCode"] = countryCode
+        
+        if password != nil {
+            dictionary["password"] = password
+        }
+        
+        if address != nil{
+            dictionary["address"] = address
+        }
+        if anniversary != nil{
+            dictionary["anniversary"] = anniversary
+        }
 //        if anniversaryDate != nil{
 //            dictionary["anniversary_date"] = anniversaryDate
 //        }
 //        if birthdate != nil{
 //            dictionary["birthdate"] = birthdate
 //        }
-//        if birthday != nil{
-//            dictionary["birthday"] = birthday
-//        }
-//        if currentCity != nil{
-//            dictionary["current_city"] = currentCity
-//        }
-//        if firstName != nil{
-//            dictionary["first_name"] = firstName
-//        }
-//        if lastName != nil{
-//            dictionary["last_name"] = lastName
-//        }
+        if birthday != nil{
+            dictionary["birthday"] = birthday
+        }
+        if currentCity != nil{
+            dictionary["current_city"] = currentCity
+        }
+        if firstName != nil{
+            dictionary["first_name"] = firstName
+        }
+        if lastName != nil{
+            dictionary["last_name"] = lastName
+        }
 //        if jwt != nil{
 //            dictionary["jwt"] = jwt.toDictionary()
 //        }
-//        
-//        return dictionary
-//    }
+        
+        return dictionary
+    }
 
     /**
     * NSCoding required initializer.
@@ -303,9 +316,9 @@ public class User : NSObject, NSCoding{
 		if email != nil{
 			aCoder.encode(email, forKey: "email")
 		}
-		if message != nil{
-			aCoder.encode(message, forKey: "message")
-		}
+        if message != nil{
+            aCoder.encode(message, forKey: "message")
+        }
         if gender != nil{
             aCoder.encode(gender, forKey: "gender")
         }

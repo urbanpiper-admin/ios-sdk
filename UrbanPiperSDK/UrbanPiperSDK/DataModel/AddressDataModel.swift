@@ -199,7 +199,7 @@ extension AddressDataModel {
                     _ = self?.observers.map { $0.value?.handleAddress(error: upError) }
                 }
         })
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
     
     public func addAddress(address: Address) {
@@ -224,7 +224,7 @@ extension AddressDataModel {
                     _ = self?.observers.map { $0.value?.handleAddress(error: upError) }
                 }
         })
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
     
     public func updateAddress(address: Address) {
@@ -253,7 +253,7 @@ extension AddressDataModel {
                     _ = self?.observers.map { $0.value?.handleAddress(error: upError) }
                 }
         })
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
     
     public func deleteAddress(address: Address) {
@@ -271,7 +271,7 @@ extension AddressDataModel {
                     _ = self?.observers.map { $0.value?.handleAddress(error: upError) }
                 }
         })
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 }
 

@@ -339,12 +339,12 @@ extension OrderPaymentDataModel {
                     self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: true, error: upError)
                 }
         })
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
     
     fileprivate func updateUserBizInfo() {
         dataModelDelegate?.refreshWalletUI(true)
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchBizInfo(completion: { [weak self] (info) in
+        AppUserDataModel.shared.updateBizInfo(completion: { [weak self] (info) in
             defer {
                 self?.dataModelDelegate?.refreshWalletUI(false)
             }
@@ -355,7 +355,6 @@ extension OrderPaymentDataModel {
                 self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: upError)
             }
         })
-        addOrCancelDataTask(dataTask: dataTask)
     }
     
     public func applyCoupon(code: String, isSuggested: Bool, preSelected: Bool) {
@@ -405,7 +404,7 @@ extension OrderPaymentDataModel {
 //                    }
                     AnalyticsManager.shared.track(event: .couponFailed(discount: Decimal.zero, couponCode: code, isSuggested: isSuggested, preSelected: preSelected))
                 })
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
     
     public func payOnlineAndPlaceOrder(instructions: String,
@@ -426,8 +425,7 @@ extension OrderPaymentDataModel {
             self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
         })
 
-        guard let task = dataTask else { return }
-        addOrCancelDataTask(dataTask: task)
+        addDataTask(dataTask: dataTask)
     }
         
     public func placeOrder(instructions: String,
@@ -496,7 +494,7 @@ extension OrderPaymentDataModel {
                 self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
         })
         
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
     
 }
@@ -523,7 +521,7 @@ extension OrderPaymentDataModel {
                 self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
         })
         
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
     
 
@@ -537,12 +535,7 @@ extension OrderPaymentDataModel {
 
 extension OrderPaymentDataModel: AppUserDataModelDelegate {
     
-    public func logout() {
-        
-    }
-
-    public func refreshBizInfoUI(isRefreshing: Bool, isFirstUpdate: Bool) {
-        guard !isRefreshing else { return }
+    public func userBizInfoChanged() {
         bizInfo = AppUserDataModel.shared.bizInfo
         dataModelDelegate?.refreshWalletUI(false)
     }

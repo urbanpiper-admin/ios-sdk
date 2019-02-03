@@ -80,15 +80,11 @@ extension PreviousOrdersDataModel: AppUserDataModelDelegate {
     }
     
     
-    public func refreshAppUserUI(isRefreshing: Bool) {
-        if myOrdersArray == nil || myOrdersArray!.count == 0 {
-            refreshData()
-        }
+    public func userInfoChanged() {
+        guard myOrdersArray == nil || myOrdersArray!.count == 0 else { return }
+        refreshData()
     }
     
-    public func handleUserAPI(error: UPError?) {
-        
-    }
 }
 
 //  MARK: UITableView DataSource
@@ -175,7 +171,7 @@ extension PreviousOrdersDataModel {
                 let _ = self?.observers.map { $0.value?.refreshPreviousOrdersUI(isProcessing: false) }
         })
 
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
     
     func fetchAllOrderDetails() {
@@ -215,7 +211,7 @@ extension PreviousOrdersDataModel {
                 let _ = self?.observers.map { $0.value?.refreshPreviousOrdersUI(isProcessing: false) }
         })
         
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
     
     func completedOrderDetailsFetch() {

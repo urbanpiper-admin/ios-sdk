@@ -56,7 +56,7 @@ extension MyOrderDetailsDataModel {
             self?.dataModelDelegate?.refreshOrdersDetailsUI(isProcessing: false)
         })
         
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 
 }

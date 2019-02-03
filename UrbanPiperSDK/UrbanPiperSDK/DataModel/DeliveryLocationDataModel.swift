@@ -167,7 +167,7 @@ extension DeliveryLocationDataModel {
             modelDelegate?.update(nil, nil, error)
         })
         
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
         
 //        GMSGeocoder().reverseGeocodeCoordinate(location.coordinate, completionHandler: { [weak self] (response, error) -> Void in
 //            if let addressObject = response?.firstResult() {

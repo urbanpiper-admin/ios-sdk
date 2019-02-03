@@ -111,7 +111,7 @@ extension WalletDataModel {
             self?.dataModelDelegate?.handleWallet(error: upError)
         })
         
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 
     public func initiateWalletReload(amount: Decimal, paymentOption: PaymentOption = .paymentGateway) {
@@ -140,7 +140,7 @@ extension WalletDataModel {
                 self?.dataModelDelegate?.handleWallet(error: upError)
         });
 
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 
 }
@@ -168,7 +168,7 @@ extension WalletDataModel {
 
         transactionId = nil
 
-        addOrCancelDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
 }
 

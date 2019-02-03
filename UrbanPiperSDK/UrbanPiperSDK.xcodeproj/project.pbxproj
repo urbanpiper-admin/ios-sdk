@@ -57,6 +57,7 @@
 		1878275820EA06BD009F57FA /* WalletTransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1878275620EA06BD009F57FA /* WalletTransactionResponse.swift */; };
 		1878275920EA06BD009F57FA /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1878275720EA06BD009F57FA /* Transaction.swift */; };
 		188E9F8B20EFEEC100980530 /* Double+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188E9F8A20EFEEC100980530 /* Double+Additions.swift */; };
+		18978EE02202E62300189AB4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18978EDF2202E62200189AB4 /* Constants.swift */; };
 		18B3C40A21D7415A00768401 /* CategoryOptionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3C40921D7415A00768401 /* CategoryOptionsResponse.swift */; };
 		18B3C40F21D7416500768401 /* JWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3C40B21D7416400768401 /* JWT.swift */; };
 		18B3C41021D7416500768401 /* Referral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3C40C21D7416400768401 /* Referral.swift */; };
@@ -260,6 +261,7 @@
 		1878275620EA06BD009F57FA /* WalletTransactionResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletTransactionResponse.swift; sourceTree = "<group>"; };
 		1878275720EA06BD009F57FA /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		188E9F8A20EFEEC100980530 /* Double+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Additions.swift"; sourceTree = "<group>"; };
+		18978EDF2202E62200189AB4 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = SOURCE_ROOT; };
 		18B3C40921D7415A00768401 /* CategoryOptionsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryOptionsResponse.swift; sourceTree = "<group>"; };
 		18B3C40B21D7416400768401 /* JWT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JWT.swift; sourceTree = "<group>"; };
 		18B3C40C21D7416400768401 /* Referral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Referral.swift; sourceTree = "<group>"; };
@@ -685,6 +687,7 @@
 		46E4F720208DAB810045ED21 /* UrbanPiperSDK */ = {
 			isa = PBXGroup;
 			children = (
+				18978EDF2202E62200189AB4 /* Constants.swift */,
 				18B3C41C21D9E6EF00768401 /* Locale.swift */,
 				18B3C41921D9E6D800768401 /* Extras.swift */,
 				18B3C41821D9E6D800768401 /* UrbanPiperSDK.swift */,
@@ -1041,6 +1044,7 @@
 				18B3C40A21D7415A00768401 /* CategoryOptionsResponse.swift in Sources */,
 				181F215F2105B76500878E6D /* OrderPayment.swift in Sources */,
 				18B3C41F21D9E71700768401 /* APIManager+Feedback.swift in Sources */,
+				18978EE02202E62300189AB4 /* Constants.swift in Sources */,
 				18B3C40F21D7416500768401 /* JWT.swift in Sources */,
 				4607A9BC208F1E2700128010 /* ItemsSearchDataModel.swift in Sources */,
 				1811F6CA20D4F3AF006FEDE1 /* MyOrderStore.swift in Sources */,
@@ -1295,7 +1299,6 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac",
 					"${BUILT_PRODUCTS_DIR}/Protobuf",
 					"${BUILT_PRODUCTS_DIR}/nanopb",
 					"${BUILT_PRODUCTS_DIR}/Mixpanel-swift",
@@ -1398,8 +1401,6 @@
 					"-framework",
 					"\"UIKit\"",
 					"-framework",
-					"\"GoogleToolboxForMac\"",
-					"-framework",
 					"\"Protobuf\"",
 					"-framework",
 					"\"nanopb\"",
@@ -1454,7 +1455,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac",
 					"${BUILT_PRODUCTS_DIR}/Protobuf",
 					"${BUILT_PRODUCTS_DIR}/nanopb",
 					"${BUILT_PRODUCTS_DIR}/Mixpanel-swift",
@@ -1552,8 +1552,6 @@
 					"\"SystemConfiguration\"",
 					"-framework",
 					"\"UIKit\"",
-					"-framework",
-					"\"GoogleToolboxForMac\"",
 					"-framework",
 					"\"Protobuf\"",
 					"-framework",
@@ -1668,8 +1666,6 @@
 					"-framework",
 					"\"UIKit\"",
 					"-framework",
-					"\"GoogleToolboxForMac\"",
-					"-framework",
 					"\"Protobuf\"",
 					"-framework",
 					"\"nanopb\"",
@@ -1783,8 +1779,6 @@
 					"\"SystemConfiguration\"",
 					"-framework",
 					"\"UIKit\"",
-					"-framework",
-					"\"GoogleToolboxForMac\"",
 					"-framework",
 					"\"Protobuf\"",
 					"-framework",

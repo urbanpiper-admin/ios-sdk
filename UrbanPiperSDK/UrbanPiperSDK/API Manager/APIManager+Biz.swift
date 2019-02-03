@@ -10,7 +10,7 @@ import Foundation
 
 extension APIManager {
     
-    @objc public func fetchBizInfo(completion: ((BizInfo?) -> Void)?,
+    @objc internal func updateBizInfo(completion: ((BizInfo?) -> Void)?,
                                 failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/userbizinfo/?format=json&biz_id=\(bizId)"
@@ -30,8 +30,6 @@ extension APIManager {
                     let bizInfo: BizInfo = BizInfo(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
-                        AppUserDataModel.shared.bizInfo = bizInfo
-                        AnalyticsManager.shared.track(event: .bizInfoUpdated)
                         completion?(bizInfo)
                     }
                     return
