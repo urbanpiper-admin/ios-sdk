@@ -289,7 +289,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
 //    public var globalCouponApplied: Bool = false
     
     public func refreshData(_ isForcedRefresh: Bool = false) {
-        guard AppUserDataModel.shared.validAppUserData != nil else { return }
+        guard UserManager.shared.currentUser != nil else { return }
 
         if isForcedRefresh || bizInfo == nil {
             bizInfo = nil
@@ -307,7 +307,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
         super.init()
 
         refreshData()
-        AppUserDataModel.shared.addObserver(delegate: self)
+        UserManager.shared.addObserver(delegate: self)
     }
 
 }
@@ -344,7 +344,7 @@ extension OrderPaymentDataModel {
     
     fileprivate func updateUserBizInfo() {
         dataModelDelegate?.refreshWalletUI(true)
-        AppUserDataModel.shared.updateBizInfo(completion: { [weak self] (info) in
+        UserManager.shared.updateBizInfo(completion: { [weak self] (info) in
             defer {
                 self?.dataModelDelegate?.refreshWalletUI(false)
             }
@@ -533,10 +533,10 @@ extension OrderPaymentDataModel {
 
 }
 
-extension OrderPaymentDataModel: AppUserDataModelDelegate {
+extension OrderPaymentDataModel: UserManagerDelegate {
     
     public func userBizInfoChanged() {
-        bizInfo = AppUserDataModel.shared.bizInfo
+        bizInfo = UserManager.shared.bizInfo
         dataModelDelegate?.refreshWalletUI(false)
     }
 

@@ -18,7 +18,7 @@ public class SideMenuPanelDataModel: UrbanPiperDataModel {
     public var hideSettingsTabForGuestUser: Bool = false
 
     public var panelDetailArray: [SideMenuPanelTabDetail] {
-        if AppUserDataModel.shared.validAppUserData != nil {
+        if UserManager.shared.currentUser != nil {
             return AppConfigManager.shared.loggedInUserSidePanelTabs.filter { $0.tag != Module.login }
         } else {
             var guestUserTabs = AppConfigManager.shared.guestUserSidePanelTabs

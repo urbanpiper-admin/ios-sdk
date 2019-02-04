@@ -59,7 +59,7 @@ public class ItemDetailsDataModel: UrbanPiperDataModel {
 extension ItemDetailsDataModel {
 
     fileprivate func fetchItemLikes() {
-        guard AppUserDataModel.shared.validAppUserData != nil else { return }
+        guard UserManager.shared.currentUser != nil else { return }
 
         let dataTask: URLSessionDataTask = APIManager.shared.userLikes(completion: { [weak self] (data) in
             defer {

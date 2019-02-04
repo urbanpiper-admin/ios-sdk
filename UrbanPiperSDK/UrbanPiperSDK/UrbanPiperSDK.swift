@@ -13,7 +13,7 @@ public class UrbanPiperSDK: NSObject {
     
     private init(language: Language = .english, bizId: String, apiUsername: String, apiKey: String) {
         super.init()
-        APIManager.initializeManager(language: language, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, jwt: AppUserDataModel.shared.validAppUserData?.jwt)
+        APIManager.initializeManager(language: language, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, jwt: UserManager.shared.currentUser?.jwt)
     }
     
     public class func intialize(language: Language? = .english, bizId: String, apiUsername: String, apiKey: String) {

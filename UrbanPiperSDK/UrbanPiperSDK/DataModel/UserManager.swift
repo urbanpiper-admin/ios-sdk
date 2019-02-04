@@ -1,5 +1,5 @@
 //
-//  AppUserDataModel.swift
+//  UserManager.swift
 //  WhiteLabel
 //
 //  Created by Vidhyadharan Mohanram on 09/01/18.
@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseInstanceID
 
-@objc public protocol AppUserDataModelDelegate {
+@objc public protocol UserManagerDelegate {
     
     @objc optional func userInfoChanged()
     @objc optional func userBizInfoChanged()
@@ -31,24 +31,24 @@ public struct Simpl {
 
 public typealias CompletionHandler<T> = (T?, UPError?) -> Void
 
-public class AppUserDataModel: UrbanPiperDataModel {
+public class UserManager: UrbanPiperDataModel {
 
     private struct KeychainAppUserKeys {
         static let AppUserKey: String = "KeyChainUserDataKey"
         static let BizInfoKey: String = "KeyChainBizInfoKey"
     }
     
-    private typealias WeakRefDataModelDelegate = WeakRef<AppUserDataModelDelegate>
+    private typealias WeakRefDataModelDelegate = WeakRef<UserManagerDelegate>
 
-    @objc public static private(set) var shared: AppUserDataModel = AppUserDataModel()
+    @objc public static private(set) var shared: UserManager = UserManager()
 
     private var observers = [WeakRefDataModelDelegate]()
     
     private static let keychain: UPKeychainWrapper = UPKeychainWrapper(serviceName: Bundle.main.bundleIdentifier!)
     
-    @objc public private(set) var appUserData: User? {
+    @objc public private(set) var currentUser: User? {
         get {
-            guard let userData = AppUserDataModel.keychain.data(forKey: KeychainAppUserKeys.AppUserKey) else { return nil}
+            guard let userData = UserManager.keychain.data(forKey: KeychainAppUserKeys.AppUserKey) else { return nil}
             Meta.registerClassNameWhiteLabel()
             Meta.registerClassNameUrbanPiperSDK()
             BizObject.registerClassNameWhiteLabel()
@@ -63,7 +63,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
         }
         set {
             defer {
-                APIManager.shared.updateHeaders(jwt: validAppUserData?.jwt)
+                APIManager.shared.updateHeaders(jwt: currentUser?.jwt)
                 
                 DispatchQueue.main.async { [weak self] in
                     if newValue != nil {
@@ -75,18 +75,18 @@ public class AppUserDataModel: UrbanPiperDataModel {
             }
             
             if let user = newValue {
-                if appUserData == nil {
+                if currentUser == nil {
                     defer {
                         refreshUserData()
                     }
                 }
                 
                 let userData: Data = NSKeyedArchiver.archivedData(withRootObject: user)
-                AppUserDataModel.keychain.set(userData, forKey: KeychainAppUserKeys.AppUserKey)
+                UserManager.keychain.set(userData, forKey: KeychainAppUserKeys.AppUserKey)
                 observers = observers.filter { $0.value != nil }
                 let _ = observers.map { $0.value?.userInfoChanged?() }
             } else {
-                AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
+                UserManager.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
                 URLCache.shared.removeAllCachedResponses()
                 
                 let cookieStore = HTTPCookieStorage.shared
@@ -102,7 +102,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
     
     @objc public private(set) var bizInfo: BizInfo? {
         get {
-            guard let bizInfoData = AppUserDataModel.keychain.data(forKey: KeychainAppUserKeys.BizInfoKey) else { return nil}
+            guard let bizInfoData = UserManager.keychain.data(forKey: KeychainAppUserKeys.BizInfoKey) else { return nil}
             Meta.registerClassNameWhiteLabel()
             Meta.registerClassNameUrbanPiperSDK()
             BizObject.registerClassNameWhiteLabel()
@@ -118,28 +118,31 @@ public class AppUserDataModel: UrbanPiperDataModel {
         }
         set {
             guard let info = newValue else {
-                AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.BizInfoKey)
+                UserManager.keychain.removeObject(forKey: KeychainAppUserKeys.BizInfoKey)
                 observers = observers.filter { $0.value != nil }
                 let _ = observers.map { $0.value?.userBizInfoChanged?() }
                 return
             }
             
             let bizInfoData: Data = NSKeyedArchiver.archivedData(withRootObject: info)
-            AppUserDataModel.keychain.set(bizInfoData, forKey: KeychainAppUserKeys.BizInfoKey)
+            UserManager.keychain.set(bizInfoData, forKey: KeychainAppUserKeys.BizInfoKey)
             
             observers = observers.filter { $0.value != nil }
             let _ = observers.map { $0.value?.userBizInfoChanged?() }
         }
     }
     
-    @objc public var validAppUserData: User? {
-//        guard let user = appUserData, user.userStatus == .valid else { return nil }
-        return appUserData
-    }
-        
     public override init() {
         super.init()
 
+        if !UserDefaults.standard.bool(forKey: Constants.isNotFirstLaunchKey) {
+            // Remove Keychain items here
+            
+            // Update the flag indicator
+            UserDefaults.standard.set(true, forKey: Constants.isNotFirstLaunchKey)
+            logout()
+        }
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.logout),
                                                name: .upSDKTokenExpired, object: nil)
@@ -152,19 +155,19 @@ public class AppUserDataModel: UrbanPiperDataModel {
         
     }
     
-    @objc public func addObserver(delegate: AppUserDataModelDelegate) {
+    @objc public func addObserver(delegate: UserManagerDelegate) {
         let weakRefDataModelDelegate: WeakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
         observers.append(weakRefDataModelDelegate)
     }
     
     
-    public func removeObserver(delegate: AppUserDataModelDelegate) {
+    public func removeObserver(delegate: UserManagerDelegate) {
         guard let index = (observers.index { $0.value === delegate }) else { return }
         observers.remove(at: index)
     }
     
     func loginUserWithJWT() {
-        guard let appUser = validAppUserData, appUser.jwt == nil else {
+        guard let appUser = currentUser, appUser.jwt == nil else {
             refreshToken()
             return
         }
@@ -177,7 +180,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
                                                   completion:
                 { [weak self] (user) in
                     guard user?.jwt != nil else { return }
-                    self?.appUserData = user
+                    self?.currentUser = user
                     
                 }, failure: { [weak self] error in
                     guard let msg = error?.errorMessage, msg == "email_check_failed" else { return }
@@ -186,7 +189,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
         } else {
             dataTask = APIManager.shared.login(username: appUser.phone, password: appUser.password!, completion: { [weak self] (user) in
                 guard user?.jwt != nil else { return }
-                self?.appUserData = user
+                self?.currentUser = user
             }, failure: { [weak self] error in
                 guard let msg = error?.errorMessage, msg == "email_check_failed" else { return }
                 self?.logout()
@@ -196,7 +199,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
     }
     
     func refreshToken() {
-        guard let jwt = validAppUserData?.jwt else { return }
+        guard let jwt = currentUser?.jwt else { return }
         guard !jwt.tokenExpired else {
             NotificationCenter.default.post(name: .upSDKTokenExpired, object: nil)
             return
@@ -205,14 +208,14 @@ public class AppUserDataModel: UrbanPiperDataModel {
         
         let dataTask = APIManager.shared.refreshToken(token: jwt.token, completion: { [weak self] (newToken) in
             guard let token = newToken else { return }
-            let user = self?.validAppUserData?.update(fromJWTToken: token)
-            self?.appUserData = user
+            let user = self?.currentUser?.update(fromJWTToken: token)
+            self?.currentUser = user
         }, failure: nil)
         addDataTask(dataTask: dataTask)
     }
     
     @objc public func logout() {
-        if let user = AppUserDataModel.shared.validAppUserData {
+        if let user = UserManager.shared.currentUser {
             AnalyticsManager.shared.track(event: .logout(phone: user.phone))
         }
 
@@ -226,8 +229,8 @@ public class AppUserDataModel: UrbanPiperDataModel {
         OrderingStoreDataModel.shared.nearestStoreResponse = nil
         UserDefaults.standard.removeObject(forKey: "defaultAddress")
 
-        AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
-        AppUserDataModel.keychain.removeObject(forKey: KeychainAppUserKeys.BizInfoKey)
+        UserManager.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
+        UserManager.keychain.removeObject(forKey: KeychainAppUserKeys.BizInfoKey)
 
         APIManager.shared.lastRegisteredFCMToken = nil
         
@@ -248,7 +251,7 @@ public class AppUserDataModel: UrbanPiperDataModel {
         UserDefaults.standard.removeObject(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey)
         UserDefaults.standard.removeObject(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
         
-        appUserData = nil
+        currentUser = nil
         bizInfo = nil        
     }
     
@@ -256,11 +259,11 @@ public class AppUserDataModel: UrbanPiperDataModel {
 
 //  MARK: API Calls
 
-extension AppUserDataModel {
+extension UserManager {
     
     @objc public func refreshUserData(completion: (([String: Any]?) -> Void)? = nil,
                                       failure: APIFailure? = nil) {
-        guard let phoneNo = validAppUserData?.phone else {
+        guard let phoneNo = currentUser?.phone else {
             failure?(nil)
             return
         }
@@ -268,8 +271,8 @@ extension AppUserDataModel {
         let dataTask: URLSessionDataTask = APIManager.shared.refreshUserData(phone: phoneNo, completion: { [weak self] (response) in
             guard let responseObject = response else { return }
             
-            let user = self?.validAppUserData?.update(fromDictionary: responseObject)
-            self?.appUserData = user
+            let user = self?.currentUser?.update(fromDictionary: responseObject)
+            self?.currentUser = user
             
             completion?(response)
         }, failure: failure)
@@ -295,8 +298,8 @@ extension AppUserDataModel {
                                                                                 AnalyticsManager.shared.track(event: .profileUpdated(phone: phone, pwdChanged: false))
                                                                                 guard let responseObject = response else { return }
 
-                                                                                let user = self?.validAppUserData?.update(fromDictionary: responseObject)
-                                                                                self?.appUserData = user
+                                                                                let user = self?.currentUser?.update(fromDictionary: responseObject)
+                                                                                self?.currentUser = user
 
                                                                                 completion?(response)
             }, failure: failure)
@@ -322,7 +325,7 @@ extension AppUserDataModel {
     }
     
     @objc public func updateBizInfo(completion: ((BizInfo?) -> Void)? = nil, failure: APIFailure? = nil) {
-        guard validAppUserData != nil else {
+        guard currentUser != nil else {
             failure?(nil)
             return
         }
@@ -340,7 +343,7 @@ extension AppUserDataModel {
 
 //  MARK: FCM
 
-extension AppUserDataModel {
+extension UserManager {
     
     public func registerForFCMMessaging() {
         InstanceID.instanceID().instanceID(handler: { (result, error) in
@@ -358,7 +361,7 @@ extension AppUserDataModel {
 
 //  MARK: Normal Auth
 
-extension AppUserDataModel {
+extension UserManager {
     
     public func login(username: String,
                       password: String,
@@ -366,7 +369,7 @@ extension AppUserDataModel {
                       failure: @escaping APIFailure) {
         let dataTask: URLSessionDataTask = APIManager.shared.login(username: username, password: password, completion: { [weak self] (appUser) in
             if appUser?.jwt != nil {
-                self?.appUserData = appUser
+                self?.currentUser = appUser
                 AnalyticsManager.shared.track(event: .loginSuccess(phone: username))
             } else {
                 AnalyticsManager.shared.track(event: .loginFailed(phone: username))
@@ -446,7 +449,7 @@ extension AppUserDataModel {
 
 //  MARK: Social Auth
 
-extension AppUserDataModel {
+extension UserManager {
     
     public func registerNewSocialAuthUser(name: String,
                                           phone: String,
@@ -488,7 +491,7 @@ extension AppUserDataModel {
 //                                                                                self?.registerNewSocialAuthUser(user: user, completion: completion)
 //                                                                            } else {
                                                                                 if let user = appUser, user.jwt != nil {
-                                                                                    self?.appUserData = user
+                                                                                    self?.currentUser = user
                                                                                 }
                                                                                 completion(appUser)
 //                                                                            }
@@ -502,7 +505,7 @@ extension AppUserDataModel {
 
 //  MARK: Mobile Verification
 
-extension AppUserDataModel {
+extension UserManager {
     
     public func checkPhoneNumber(phone: String,
                                  email: String,
@@ -551,7 +554,7 @@ extension AppUserDataModel {
                                                                        otp: otp,
                                                                        completion: { [weak self] (appUser) in
                                                                         if let user = appUser, user.jwt != nil {
-                                                                            self?.appUserData = user
+                                                                            self?.currentUser = user
                                                                         }
                                                                         completion(appUser)
             }, failure: { (error) in
@@ -579,7 +582,7 @@ extension AppUserDataModel {
 
 //  App State Management
 
-extension AppUserDataModel {
+extension UserManager {
     
     @objc open override func appWillEnterForeground() {
         loginUserWithJWT()
@@ -591,7 +594,7 @@ extension AppUserDataModel {
 
 //  Reachability
 
-extension AppUserDataModel {
+extension UserManager {
     
     @objc open override func networkIsAvailable() {
         loginUserWithJWT()

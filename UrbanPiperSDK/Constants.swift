@@ -7,8 +7,16 @@
 
 import UIKit
 
+internal class Constants {
+
+    internal static let isNotFirstLaunchKey: String = "IsNotFirstLaunchKey"
+
+}
+
+
 public extension NSNotification.Name {
     
     public static let upSDKTokenExpired = NSNotification.Name("upsdk-token-expired")
-
+    
 }
+

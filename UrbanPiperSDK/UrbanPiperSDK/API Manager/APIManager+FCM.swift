@@ -17,7 +17,7 @@ extension APIManager {
     
     var lastRegisteredFCMToken: String? {
         get {
-            if AppUserDataModel.shared.validAppUserData != nil {
+            if UserManager.shared.currentUser != nil {
                 return UserDefaults.standard.string(forKey: UserDefaultsFCMKeys.UserBizFCMTokenKey)
             } else {
                 return UserDefaults.standard.string(forKey: UserDefaultsFCMKeys.BizFCMTokenKey)
@@ -25,7 +25,7 @@ extension APIManager {
         }
         set {
             if let token = newValue {
-                if AppUserDataModel.shared.validAppUserData != nil {
+                if UserManager.shared.currentUser != nil {
                     UserDefaults.standard.set(token, forKey: UserDefaultsFCMKeys.UserBizFCMTokenKey)
                 } else {
                     UserDefaults.standard.set(token, forKey: UserDefaultsFCMKeys.BizFCMTokenKey)
@@ -89,7 +89,7 @@ extension APIManager {
     @objc public func unRegisterForFCMMessaging(completion: (([String: Any]?) -> Void)?,
                                          failure: APIFailure?) -> URLSessionDataTask? {
         let oldToken = UserDefaults.standard.string(forKey: UserDefaultsFCMKeys.UserBizFCMTokenKey)
-        guard AppUserDataModel.shared.validAppUserData == nil, oldToken != nil else {
+        guard UserManager.shared.currentUser == nil, oldToken != nil else {
             completion?(nil)
             return nil
         }

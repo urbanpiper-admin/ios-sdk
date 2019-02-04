@@ -49,7 +49,7 @@ open class PreviousOrdersDataModel: UrbanPiperDataModel {
     public override init() {
         super.init()
         
-        AppUserDataModel.shared.addObserver(delegate: self)
+        UserManager.shared.addObserver(delegate: self)
     }
     
     @objc public func addObserver(delegate: PreviousOrdersDataModelDelegate) {
@@ -74,7 +74,7 @@ open class PreviousOrdersDataModel: UrbanPiperDataModel {
     }
 }
 
-extension PreviousOrdersDataModel: AppUserDataModelDelegate {
+extension PreviousOrdersDataModel: UserManagerDelegate {
     public func logout() {
         
     }
@@ -134,7 +134,7 @@ extension PreviousOrdersDataModel {
 extension PreviousOrdersDataModel {
     
     public func fetchOrderHistory() {
-        guard AppUserDataModel.shared.validAppUserData != nil else {
+        guard UserManager.shared.currentUser != nil else {
             myOrdersResponse = nil
             dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: false)
             let _ = observers.map { $0.value?.refreshPreviousOrdersUI(isProcessing: false) }

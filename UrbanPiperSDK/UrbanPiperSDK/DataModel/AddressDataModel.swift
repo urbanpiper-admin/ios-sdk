@@ -181,7 +181,7 @@ extension AddressDataModel {
 extension AddressDataModel {
     
     fileprivate func fetchAddressList() {
-        guard AppUserDataModel.shared.validAppUserData != nil else { return }
+        guard UserManager.shared.currentUser != nil else { return }
         userAddressesResponse = nil
         addressListArray = nil
         deliverableAddressListArray = nil

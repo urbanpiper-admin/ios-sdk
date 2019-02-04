@@ -73,7 +73,7 @@ public class User : NSObject, NSCoding{
     
 	public var biz : BizInfo!
     
-    public var message : String?
+    @objc public var message : String?
 //    public var success : Bool!
 	public var timestamp : String!
     public var jwt: JWT!
@@ -116,7 +116,7 @@ public class User : NSObject, NSCoding{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-    public init(fromDictionary dictionary:  [String:Any]){
+    @objc public init(fromDictionary dictionary:  [String:Any]){
         super.init()
         authKey = dictionary["authKey"] as? String
         biz = dictionary["biz"] as? BizInfo

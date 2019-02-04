@@ -58,6 +58,7 @@
 		1878275920EA06BD009F57FA /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1878275720EA06BD009F57FA /* Transaction.swift */; };
 		188E9F8B20EFEEC100980530 /* Double+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188E9F8A20EFEEC100980530 /* Double+Additions.swift */; };
 		18978EE02202E62300189AB4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18978EDF2202E62200189AB4 /* Constants.swift */; };
+		189F85C82207D55C004B1C3E /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189F85C72207D55C004B1C3E /* UserManager.swift */; };
 		18B3C40A21D7415A00768401 /* CategoryOptionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3C40921D7415A00768401 /* CategoryOptionsResponse.swift */; };
 		18B3C40F21D7416500768401 /* JWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3C40B21D7416400768401 /* JWT.swift */; };
 		18B3C41021D7416500768401 /* Referral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3C40C21D7416400768401 /* Referral.swift */; };
@@ -106,7 +107,6 @@
 		4607A9BF208F1E2700128010 /* UrbanPiperDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A94E208F1E2600128010 /* UrbanPiperDataModel.swift */; };
 		4607A9C0208F1E2700128010 /* BannersDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A94F208F1E2600128010 /* BannersDataModel.swift */; };
 		4607A9C1208F1E2700128010 /* NotificationsDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A950208F1E2600128010 /* NotificationsDataModel.swift */; };
-		4607A9C2208F1E2700128010 /* AppUserDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A951208F1E2600128010 /* AppUserDataModel.swift */; };
 		4607A9C3208F1E2700128010 /* SideMenuPanelDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A952208F1E2600128010 /* SideMenuPanelDataModel.swift */; };
 		4607A9C4208F1E2700128010 /* GooglePlacesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A954208F1E2700128010 /* GooglePlacesResponse.swift */; };
 		4607A9C5208F1E2700128010 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A955208F1E2700128010 /* Geometry.swift */; };
@@ -262,6 +262,7 @@
 		1878275720EA06BD009F57FA /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		188E9F8A20EFEEC100980530 /* Double+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Additions.swift"; sourceTree = "<group>"; };
 		18978EDF2202E62200189AB4 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = SOURCE_ROOT; };
+		189F85C72207D55C004B1C3E /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		18B3C40921D7415A00768401 /* CategoryOptionsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryOptionsResponse.swift; sourceTree = "<group>"; };
 		18B3C40B21D7416400768401 /* JWT.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JWT.swift; sourceTree = "<group>"; };
 		18B3C40C21D7416400768401 /* Referral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Referral.swift; sourceTree = "<group>"; };
@@ -310,7 +311,6 @@
 		4607A94E208F1E2600128010 /* UrbanPiperDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrbanPiperDataModel.swift; sourceTree = "<group>"; };
 		4607A94F208F1E2600128010 /* BannersDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannersDataModel.swift; sourceTree = "<group>"; };
 		4607A950208F1E2600128010 /* NotificationsDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsDataModel.swift; sourceTree = "<group>"; };
-		4607A951208F1E2600128010 /* AppUserDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppUserDataModel.swift; sourceTree = "<group>"; };
 		4607A952208F1E2600128010 /* SideMenuPanelDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuPanelDataModel.swift; sourceTree = "<group>"; };
 		4607A954208F1E2700128010 /* GooglePlacesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GooglePlacesResponse.swift; sourceTree = "<group>"; };
 		4607A955208F1E2700128010 /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
@@ -497,6 +497,7 @@
 		4607A93E208F1E2600128010 /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
+				189F85C72207D55C004B1C3E /* UserManager.swift */,
 				181F21672105B78100878E6D /* FeaturedItemsDataModel.swift */,
 				181F21692105B78200878E6D /* MyOrderDetailsDataModel.swift */,
 				181F21662105B78100878E6D /* OffersDataModel.swift */,
@@ -517,7 +518,6 @@
 				4607A94F208F1E2600128010 /* BannersDataModel.swift */,
 				4655D8AA20BBF0BE00F96DEF /* AddressDataModel.swift */,
 				4607A950208F1E2600128010 /* NotificationsDataModel.swift */,
-				4607A951208F1E2600128010 /* AppUserDataModel.swift */,
 				4607A952208F1E2600128010 /* SideMenuPanelDataModel.swift */,
 				4623571A20D0FB5B0077F2F1 /* WalletDataModel.swift */,
 				463981D220D2507300336F7D /* MyOrdersDataModel.swift */,
@@ -1049,7 +1049,6 @@
 				4607A9BC208F1E2700128010 /* ItemsSearchDataModel.swift in Sources */,
 				1811F6CA20D4F3AF006FEDE1 /* MyOrderStore.swift in Sources */,
 				188E9F8B20EFEEC100980530 /* Double+Additions.swift in Sources */,
-				4607A9C2208F1E2700128010 /* AppUserDataModel.swift in Sources */,
 				4607A9EC208F1E2700128010 /* UserLikesResponse.swift in Sources */,
 				463A529020C5346F0099E162 /* AddAddressResponse.swift in Sources */,
 				4607A9C0208F1E2700128010 /* BannersDataModel.swift in Sources */,
@@ -1148,6 +1147,7 @@
 				4607A9A6208F1E2700128010 /* APIManager+PlacesSearch.swift in Sources */,
 				4607A9C8208F1E2700128010 /* ItemsSearchResponse.swift in Sources */,
 				46CE3FC9208F655A0022475F /* NSCoding+Additions.swift in Sources */,
+				189F85C82207D55C004B1C3E /* UserManager.swift in Sources */,
 				181F21642105B76500878E6D /* Customer.swift in Sources */,
 				4607A9D3208F1E2700128010 /* Order.swift in Sources */,
 				4607A9C7208F1E2700128010 /* Store+Additions.swift in Sources */,
