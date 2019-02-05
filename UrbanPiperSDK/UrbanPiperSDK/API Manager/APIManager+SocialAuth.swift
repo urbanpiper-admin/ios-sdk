@@ -34,9 +34,9 @@ extension APIManager {
 
     static let socialLoginBaseUrl: String = "\(APIManager.baseUrl)/api/v2/social_auth/me"
 
-    @objc public func socialLogin(urlString: String,
-                                  completion: ((User?) -> Void)?,
-                                  failure: APIFailure?) -> URLSessionDataTask {
+    @objc public func request(urlString: String,
+                              completion: ((User?) -> Void)?,
+                              failure: APIFailure?) -> URLSessionDataTask {
         
         var cs: CharacterSet = CharacterSet.urlQueryAllowed
         cs.remove(charactersIn: "@+")
@@ -50,9 +50,8 @@ extension APIManager {
         
         let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
-            let errorCode = (error as NSError?)?.code
-            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? errorCode
-            if statusCode == 200 {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode
+            if let code = statusCode, code == 200 {
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
                     let appUser: User
@@ -87,6 +86,7 @@ extension APIManager {
                     completion?(nil)
                 }
             } else {
+                let errorCode = (error as NSError?)?.code
                 self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
             }
             
@@ -101,15 +101,15 @@ extension APIManager {
 
 extension APIManager {
     
-    @objc internal func checkForUser(email: String,
-                                     socialLoginProvider: SocialLoginProvider,
-                                     accessToken: String,
-                                     completion: ((User?) -> Void)?,
-                                     failure: APIFailure?) -> URLSessionDataTask {
+    @objc internal func socialLogin(email: String,
+                                    socialLoginProvider: SocialLoginProvider,
+                                    accessToken: String,
+                                    completion: ((User?) -> Void)?,
+                                    failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)"
 
-        return socialLogin(urlString: urlString, completion: completion, failure: failure)
+        return request(urlString: urlString, completion: completion, failure: failure)
     }
     
 }
@@ -118,7 +118,7 @@ extension APIManager {
 
 extension APIManager {
     
-    @objc internal func checkPhoneNumber(phone: String,
+    @objc internal func verifyPhone(phone: String,
                                          email: String,
                                          socialLoginProvider: SocialLoginProvider,
                                          accessToken: String,
@@ -127,11 +127,11 @@ extension APIManager {
         
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)&action=check_phone&phone=\(phone)"
         
-        return socialLogin(urlString: urlString, completion: completion, failure: failure)
+        return request(urlString: urlString, completion: completion, failure: failure)
         
     }
     
-    @objc internal func verifyOTP(phone: String,
+    @objc internal func verifySocialOTP(phone: String,
                                 email: String,
                                 socialLoginProvider: SocialLoginProvider,
                                 accessToken: String,
@@ -141,7 +141,7 @@ extension APIManager {
         
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)&action=verify_otp&phone=\(phone)&otp=\(otp)"
         
-        return socialLogin(urlString: urlString, completion: completion, failure: failure)
+        return request(urlString: urlString, completion: completion, failure: failure)
         
     }
     

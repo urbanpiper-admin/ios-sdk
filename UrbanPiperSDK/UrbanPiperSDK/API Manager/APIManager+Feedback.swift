@@ -16,7 +16,7 @@ extension APIManager {
                                      choiceText: String?,
                                      comments: String?,
                                      completion: (([String : Any]?) -> Void)?,
-                                     failure: APIFailure?) -> URLSessionDataTask? {
+                                     failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/feedback/"
         
@@ -44,8 +44,7 @@ extension APIManager {
         
         let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
-            let errorCode = (error as NSError?)?.code
-            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? errorCode
+            let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 201 {
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
                     
@@ -59,6 +58,7 @@ extension APIManager {
                     completion?(nil)
                 }
             } else {
+                let errorCode = (error as NSError?)?.code
                 self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
             }
             

@@ -141,17 +141,58 @@ public typealias APIFailure = (UPError?) -> Void
                              delegateQueue: nil)
     }
     
+    func apiRequest<T>(urlRequest: URLRequest,
+                       responseParser: @escaping ([String : Any]) -> T?,
+                       completion: APICompletion<T>?,
+                       failure: APIFailure?) -> URLSessionDataTask? {
+        
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                let upError = UPAPIError(httpStatusCode: nil, errorCode: (error as NSError?)?.code, data: data, responseObject: nil)
+                failure?(upError)
+                return
+            }
+            
+            guard 200 ... 204 ~= httpResponse.statusCode else {
+                if let hasTokenExpired = self?.jwt?.tokenExpired, hasTokenExpired, httpResponse.statusCode == 401 {
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: .upSDKTokenExpired, object: nil)
+                    }
+                }
+                
+                let upError = UPAPIError(httpStatusCode: nil, errorCode: (error as NSError?)?.code, data: data, responseObject: nil)
+                failure?(upError)
+                return
+            }
+            
+            guard let responseData = data,
+                let jsonObject: Any = try? JSONSerialization.jsonObject(with: responseData, options: []),
+                let dictionary: [String: Any] = jsonObject as? [String: Any] else {
+                completion?(nil)
+                return
+            }
+            
+            guard let result = responseParser(dictionary) else {
+                let upError = UPError(type: .responseParseError)
+                failure?(upError)
+                return
+            }
+            
+            completion?(result)
+        }
+        
+        return dataTask
+
+    }
+    
     func handleAPIError(httpStatusCode: Int?, errorCode: Int?, data: Data?, failureClosure: APIFailure?) {
         guard errorCode == nil || errorCode != NSURLErrorCancelled else { return }
         
-        if let code = httpStatusCode,
-            let httpStatusCodeObj = HTTPStatusCode(rawValue: code),
-            httpStatusCodeObj == .unauthorized, jwt != nil, jwt!.tokenExpired {
-            
+        if let code = httpStatusCode, code == 401, jwt != nil, jwt!.tokenExpired {
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: .upSDKTokenExpired, object: nil)
             }
-            return
         }
         
         if let closure = failureClosure {

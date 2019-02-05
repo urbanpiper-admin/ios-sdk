@@ -344,7 +344,7 @@ extension OrderPaymentDataModel {
     
     fileprivate func updateUserBizInfo() {
         dataModelDelegate?.refreshWalletUI(true)
-        UserManager.shared.updateBizInfo(completion: { [weak self] (info) in
+        UserManager.shared.updateUserBizInfo(completion: { [weak self] (info) in
             defer {
                 self?.dataModelDelegate?.refreshWalletUI(false)
             }

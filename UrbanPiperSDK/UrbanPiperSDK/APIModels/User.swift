@@ -75,7 +75,7 @@ public class User : NSObject, NSCoding{
     
     @objc public var message : String?
 //    public var success : Bool!
-	public var timestamp : String!
+	internal var timestamp : String!
     public var jwt: JWT!
 
     @objc public var password: String? {

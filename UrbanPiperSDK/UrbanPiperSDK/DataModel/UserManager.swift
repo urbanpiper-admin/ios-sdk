@@ -64,14 +64,6 @@ public class UserManager: UrbanPiperDataModel {
         set {
             defer {
                 APIManager.shared.updateHeaders(jwt: currentUser?.jwt)
-                
-                DispatchQueue.main.async { [weak self] in
-                    if newValue != nil {
-                        self?.registerForFCMMessaging()
-                    } else {
-                        self?.unRegisterForFCMMessaging()
-                    }
-                }
             }
             
             if let user = newValue {
@@ -174,10 +166,10 @@ public class UserManager: UrbanPiperDataModel {
         
         let dataTask: URLSessionDataTask
         if appUser.provider != nil {
-            dataTask = APIManager.shared.checkForUser(email: appUser.email,
-                                                  socialLoginProvider: appUser.provider!,
-                                                  accessToken: appUser.accessToken!,
-                                                  completion:
+            dataTask = APIManager.shared.socialLogin(email: appUser.email,
+                                                     socialLoginProvider: appUser.provider!,
+                                                     accessToken: appUser.accessToken!,
+                                                     completion:
                 { [weak self] (user) in
                     guard user?.jwt != nil else { return }
                     self?.currentUser = user
@@ -195,7 +187,7 @@ public class UserManager: UrbanPiperDataModel {
                 self?.logout()
             })
         }
-        super.addDataTask(dataTask: dataTask)
+        addDataTask(dataTask: dataTask)
     }
     
     func refreshToken() {
@@ -211,6 +203,7 @@ public class UserManager: UrbanPiperDataModel {
             let user = self?.currentUser?.update(fromJWTToken: token)
             self?.currentUser = user
         }, failure: nil)
+        
         addDataTask(dataTask: dataTask)
     }
     
@@ -231,8 +224,6 @@ public class UserManager: UrbanPiperDataModel {
 
         UserManager.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
         UserManager.keychain.removeObject(forKey: KeychainAppUserKeys.BizInfoKey)
-
-        APIManager.shared.lastRegisteredFCMToken = nil
         
         AddressDataModel.shared.userAddressesResponse = nil
         
@@ -261,11 +252,11 @@ public class UserManager: UrbanPiperDataModel {
 
 extension UserManager {
     
-    @objc public func refreshUserData(completion: (([String: Any]?) -> Void)? = nil,
-                                      failure: APIFailure? = nil) {
+    @objc @discardableResult public func refreshUserData(completion: (([String: Any]?) -> Void)? = nil,
+                                      failure: APIFailure? = nil) -> URLSessionDataTask? {
         guard let phoneNo = currentUser?.phone else {
             failure?(nil)
-            return
+            return nil
         }
         
         let dataTask: URLSessionDataTask = APIManager.shared.refreshUserData(phone: phoneNo, completion: { [weak self] (response) in
@@ -278,16 +269,17 @@ extension UserManager {
         }, failure: failure)
         
         addDataTask(dataTask: dataTask)
+        return dataTask
     }
     
-    @objc public func updateUserInfo(name: String,
+    @objc @discardableResult public func updateUserInfo(name: String,
                                phone: String,
                                email: String,
                                gender: String? = nil,
                                anniversary: Date? = nil,
                                birthday: Date? = nil,
                                completion: (([String: Any]?) -> Void)?,
-                               failure: APIFailure?) {
+                               failure: APIFailure?) -> URLSessionDataTask {
         let dataTask: URLSessionDataTask = APIManager.shared.updateUserInfo(name: name,
                                                                             phone: phone,
                                                                             email: email,
@@ -305,15 +297,16 @@ extension UserManager {
             }, failure: failure)
         
         addDataTask(dataTask: dataTask)
+        return dataTask
     }
     
-    @objc public func updatePassword(phone: String,
+    @objc @discardableResult public func changePassword(phone: String,
                                oldPassword: String,
                                newPassword: String,
                                completion: (([String: Any]?) -> Void)?,
-                               failure: APIFailure?) {
-        
-        let dataTask: URLSessionDataTask = APIManager.shared.updatePassword(phone: phone,
+                               failure: APIFailure?) -> URLSessionDataTask? {
+        guard currentUser != nil else { return nil }
+        let dataTask: URLSessionDataTask = APIManager.shared.changePassword(phone: phone,
                                          oldPassword: oldPassword,
                                          newPassword: newPassword,
                                          completion: { (response) in
@@ -322,21 +315,20 @@ extension UserManager {
             }, failure: failure)
         
         addDataTask(dataTask: dataTask)
+        return dataTask
     }
     
-    @objc public func updateBizInfo(completion: ((BizInfo?) -> Void)? = nil, failure: APIFailure? = nil) {
-        guard currentUser != nil else {
-            failure?(nil)
-            return
-        }
+    @objc @discardableResult public func updateUserBizInfo(completion: ((BizInfo?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
+        guard currentUser != nil else { return nil }
         
-        let dataTask: URLSessionDataTask = APIManager.shared.updateBizInfo(completion: { [weak self] (info) in
+        let dataTask: URLSessionDataTask = APIManager.shared.updateUserBizInfo(completion: { [weak self] (info) in
             self?.bizInfo = info
             AnalyticsManager.shared.track(event: .bizInfoUpdated)
             completion?(info)
         }, failure: failure)
         
         addDataTask(dataTask: dataTask)
+        return dataTask
     }
     
 }
@@ -345,17 +337,18 @@ extension UserManager {
 
 extension UserManager {
     
-    public func registerForFCMMessaging() {
-        InstanceID.instanceID().instanceID(handler: { (result, error) in
-            guard let fcmToken = result?.token else { return }
-            guard let dataTask: URLSessionDataTask = APIManager.shared.registerForFCMMessaging(token: fcmToken, completion: nil, failure: nil) else { return }
-            self.addDataTask(dataTask: dataTask)
-        })
+    @discardableResult public func registerForFCMMessaging(token: String, completion: (([String : Any]?) -> Void)? = nil,
+        failure: APIFailure? = nil) -> URLSessionDataTask {
+        let dataTask: URLSessionDataTask = APIManager.shared.registerForFCMMessaging(token: token, completion: nil, failure: nil)
+        addDataTask(dataTask: dataTask)
+        return dataTask
     }
     
-    public func unRegisterForFCMMessaging() {
-        guard let dataTask: URLSessionDataTask = APIManager.shared.unRegisterForFCMMessaging(completion: nil, failure: nil) else { return }
+    @discardableResult public func unRegisterForFCMMessaging(token: String, completion: (([String: Any]?) -> Void)? = nil,
+                                                             failure: APIFailure? = nil) -> URLSessionDataTask {
+        let dataTask: URLSessionDataTask = APIManager.shared.unRegisterForFCMMessaging(token: token, completion: nil, failure: nil)
         addDataTask(dataTask: dataTask)
+        return dataTask
     }
 }
 
@@ -363,10 +356,10 @@ extension UserManager {
 
 extension UserManager {
     
-    public func login(username: String,
+    @discardableResult public func login(username: String,
                       password: String,
                       completion: @escaping ((User?) -> Void),
-                      failure: @escaping APIFailure) {
+                      failure: @escaping APIFailure) -> URLSessionDataTask {
         let dataTask: URLSessionDataTask = APIManager.shared.login(username: username, password: password, completion: { [weak self] (appUser) in
             if appUser?.jwt != nil {
                 self?.currentUser = appUser
@@ -380,54 +373,60 @@ extension UserManager {
         }
         
         addDataTask(dataTask: dataTask)
+        return dataTask
     }
     
-    public func forgotPassword(phone: String,
-                               completion: @escaping (Bool, Error?)-> Void) {
+    @discardableResult public func forgotPassword(phone: String,
+                               completion: @escaping ((Bool) -> Void),
+                               failure: @escaping APIFailure) -> URLSessionDataTask {
         let dataTask: URLSessionDataTask = APIManager.shared.forgotPassword(phone: phone, completion: { (data) in
             guard let dictionary: [String: Any] = data, let statusString: String = dictionary["status"] as? String, statusString == "success" else {
-                completion(false, nil)
+                completion(false)
                 return
             }
-            completion(true, nil)
+            completion(true)
         }) { (error) in
-            completion(false, error)
+            failure(error)
         }
         
         addDataTask(dataTask: dataTask)
+        return dataTask
     }
     
-    public func resetPassword(phone: String,
+    @discardableResult public func resetPassword(phone: String,
                               otp: String,
                               password: String,
                               confirmPassword: String,
-                              completion: @escaping (Bool, Error?)-> Void) {
+                              completion: @escaping ((Bool)-> Void),
+                              failure: @escaping APIFailure) -> URLSessionDataTask {
         AnalyticsManager.shared.track(event: .passwordReset(phone: phone))
         let dataTask: URLSessionDataTask = APIManager.shared.resetPassword(phone: phone,
-                                        otp: otp,
-                                        password: password,
-                                        confirmPassword: confirmPassword,
-                                        completion: { (data) in
-                                            guard let dictionary: [String: Any] = data, let statusString: String = dictionary["status"] as? String, statusString == "success" else {
-                                                completion(false, nil)
-                                                return
-                                            }
-                                            completion(true, nil)
+                                                                           otp: otp,
+                                                                           password: password,
+                                                                           confirmPassword: confirmPassword,
+                                                                           completion:
+            { (data) in
+                guard let dictionary: [String: Any] = data, let statusString: String = dictionary["status"] as? String, statusString == "success" else {
+                    completion(false)
+                    return
+                }
+                completion(true)
         }) { (error) in
-            completion(false, error)
+            failure(error)
         }
         
         addDataTask(dataTask: dataTask)
+        return dataTask
     }
     
-    public func createUser(name: String,
+    @discardableResult public func registerUser(name: String,
                               phone: String,
                               email: String,
                               password: String,
                               referralObject: Referral?,
                               completion: @escaping (CardAPIResponse?) -> Void,
-                              failure: @escaping APIFailure) {
-        let dataTask: URLSessionDataTask = APIManager.shared.createUser(name: name,
+                              failure: @escaping APIFailure) -> URLSessionDataTask {
+        let dataTask: URLSessionDataTask = APIManager.shared.registerUser(name: name,
                                                                         phone: phone,
                                                                         email: email,
                                                                         password: password,
@@ -443,6 +442,7 @@ extension UserManager {
         }
         
         addDataTask(dataTask: dataTask)
+        return dataTask
     }
     
 }
@@ -451,7 +451,7 @@ extension UserManager {
 
 extension UserManager {
     
-    public func registerNewSocialAuthUser(name: String,
+    @discardableResult public func registerSocialUser(name: String,
                                           phone: String,
                                           email: String,
                                           gender: String? = nil,
@@ -459,7 +459,7 @@ extension UserManager {
                                           accessToken: String,
                                           referralObject: Referral?,
                                           completion: @escaping ((CardAPIResponse?) -> Void),
-                                          failure: @escaping APIFailure) {
+                                          failure: @escaping APIFailure) -> URLSessionDataTask {
         AnalyticsManager.shared.track(event: .socialAuthSignupStart(phone: phone, platform: socialLoginProvider.rawValue))
         let dataTask: URLSessionDataTask = APIManager.shared.createSocialUser(name: name,
                                                                               phone: phone,
@@ -476,29 +476,32 @@ extension UserManager {
         }
         
         addDataTask(dataTask: dataTask)
+        return dataTask
     }
     
-    public func checkForUser(email: String,
-                             socialLoginProvider: SocialLoginProvider,
-                             accessToken: String,
-                             completion: @escaping ((User?) -> Void),
-                             failure: @escaping APIFailure) {
-        let dataTask: URLSessionDataTask = APIManager.shared.checkForUser(email: email,
+    @discardableResult public func socialLogin(email: String,
+                            socialLoginProvider: SocialLoginProvider,
+                            accessToken: String,
+                            completion: @escaping ((User?) -> Void),
+                            failure: @escaping APIFailure) -> URLSessionDataTask {
+        let dataTask: URLSessionDataTask = APIManager.shared.socialLogin(email: email,
                                                                           socialLoginProvider: socialLoginProvider,
                                                                           accessToken: accessToken,
-                                                                          completion: { [weak self] (appUser) in
-//                                                                            if let status = appUser?.userStatus, (status == .registrationRequired) {
-//                                                                                self?.registerNewSocialAuthUser(user: user, completion: completion)
-//                                                                            } else {
-                                                                                if let user = appUser, user.jwt != nil {
-                                                                                    self?.currentUser = user
-                                                                                }
-                                                                                completion(appUser)
-//                                                                            }
+                                                                          completion:
+            { [weak self] (appUser) in
+//                if let status = appUser?.userStatus, (status == .registrationRequired) {
+//                    self?.registerSocialUser(user: user, completion: completion)
+//                } else {
+                    if let user = appUser, user.jwt != nil {
+                        self?.currentUser = user
+                    }
+                    completion(appUser)
+//                }
         }, failure: { (error) in
             failure(error)
         })
         addDataTask(dataTask: dataTask)
+        return dataTask
     }
 }
 
@@ -507,13 +510,13 @@ extension UserManager {
 
 extension UserManager {
     
-    public func checkPhoneNumber(phone: String,
+   @discardableResult public func verifyPhone(phone: String,
                                  email: String,
                                  socialLoginProvider: SocialLoginProvider,
                                  accessToken: String,
                                  completion: @escaping ((User?) -> Void),
-                                 failure: @escaping APIFailure) {
-        let dataTask: URLSessionDataTask = APIManager.shared.checkPhoneNumber(phone: phone,
+                                 failure: @escaping APIFailure) -> URLSessionDataTask {
+        let dataTask: URLSessionDataTask = APIManager.shared.verifyPhone(phone: phone,
                                                                               email: email,
                                                                               socialLoginProvider: socialLoginProvider,
                                                                               accessToken: accessToken,
@@ -524,13 +527,14 @@ extension UserManager {
         })
         
         addDataTask(dataTask: dataTask)
+        return dataTask
     }
     
 //  used only when "new_registration_required"
-    public func verifyMobileNumber(phone: String,
+    @discardableResult public func verifyPhone(_ phone: String,
                                    otp: String,
                                    completion: @escaping ((CardAPIResponse?) -> Void),
-                                   failure: @escaping APIFailure) {
+                                   failure: @escaping APIFailure) -> URLSessionDataTask {
         let dataTask: URLSessionDataTask = APIManager.shared.verifyMobile(phone: phone, pin: otp, completion: { (cardAPIResponse) in
             completion(cardAPIResponse)
         }, failure: { (error) in
@@ -538,16 +542,17 @@ extension UserManager {
         })
         
         addDataTask(dataTask: dataTask)
+        return dataTask
     }
 //  used in all the other cases
-    public func verifyOTP(phone: String,
+    @discardableResult public func verifySocialOTP(phone: String,
                           email: String,
                           socialLoginProvider: SocialLoginProvider,
                           accessToken: String,
                           otp: String,
                           completion: @escaping ((User?) -> Void),
-                          failure: @escaping APIFailure) {
-        let dataTask: URLSessionDataTask = APIManager.shared.verifyOTP(phone: phone,
+                          failure: @escaping APIFailure) -> URLSessionDataTask {
+        let dataTask: URLSessionDataTask = APIManager.shared.verifySocialOTP(phone: phone,
                                                                        email: email,
                                                                        socialLoginProvider: socialLoginProvider,
                                                                        accessToken: accessToken,
@@ -562,11 +567,12 @@ extension UserManager {
         })
 
         addDataTask(dataTask: dataTask)
+        return dataTask
     }
     
-    public func resendOTP(phone: String,
+    @discardableResult public func resendOTP(phone: String,
                    completion: @escaping ((CardAPIResponse?) -> Void),
-                   failure: @escaping APIFailure) {
+                   failure: @escaping APIFailure) -> URLSessionDataTask {
         AnalyticsManager.shared.track(event: .resendOTP(phone: phone))
         let dataTask: URLSessionDataTask = APIManager.shared.resendOTP(phone: phone,
                                                    completion: { (cardAPIResponse) in
@@ -576,6 +582,7 @@ extension UserManager {
         })
         
         addDataTask(dataTask: dataTask)
+        return dataTask
     }
     
 }
