@@ -22,7 +22,12 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> [String: Any]? in
+            return dictionary
+        }, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -45,7 +50,7 @@ extension APIManager {
             
         }
         
-        return dataTask
+        return dataTask*/
     }
 
     @objc public func updateUserInfo(name: String,
@@ -85,7 +90,12 @@ extension APIManager {
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> [String: Any]? in
+            return dictionary
+        }, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -116,7 +126,7 @@ extension APIManager {
             }
         }
         
-        return dataTask
+        return dataTask*/
     }
     
     @objc public func changePassword(phone: String,
@@ -141,7 +151,12 @@ extension APIManager {
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> [String: Any]? in
+            return dictionary
+        }, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -170,7 +185,7 @@ extension APIManager {
             }
         }
         
-        return dataTask
+        return dataTask*/
     }
     
     @objc public func userSavedAddresses(completion: ((UserAddressesResponse?) -> Void)?,
@@ -184,7 +199,12 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> UserAddressesResponse? in
+            return UserAddressesResponse(fromDictionary: dictionary)
+        }, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -208,7 +228,7 @@ extension APIManager {
             
         }
         
-        return dataTask
+        return dataTask*/
     }
     
     public func userSavedDeliverableAddresses(locationId: Int?,
@@ -229,7 +249,12 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> UserAddressesResponse? in
+            return UserAddressesResponse(fromDictionary: dictionary)
+        }, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -253,7 +278,7 @@ extension APIManager {
             
         }
         
-        return dataTask
+        return dataTask*/
     }
     
     @objc public func addAddress(address: Address,
@@ -295,7 +320,12 @@ extension APIManager {
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: addressDict, options: [])
         
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> AddUpdateAddressResponse? in
+            return AddUpdateAddressResponse(fromDictionary: dictionary)
+        }, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -319,7 +349,7 @@ extension APIManager {
             
         }
         
-        return dataTask
+        return dataTask*/
     }
     
     @objc public func updateAddress(address: Address,
@@ -364,7 +394,12 @@ extension APIManager {
 
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: addressDict, options: [])
         
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> AddUpdateAddressResponse? in
+            return AddUpdateAddressResponse(fromDictionary: dictionary)
+        }, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -388,10 +423,11 @@ extension APIManager {
             
         }
         
-        return dataTask
+        return dataTask*/
     }
     
-    @objc public func deleteAddress(address: Address, completion: APISuccess?,
+    @objc public func deleteAddress(address: Address,
+                                    completion: ((GenericResponse?) -> Void)?,
                                     failure: APIFailure?) -> URLSessionDataTask {
         
 
@@ -403,7 +439,10 @@ extension APIManager {
         
         urlRequest.httpMethod = "DELETE"
         
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: nil, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -417,6 +456,6 @@ extension APIManager {
             
         }
         
-        return dataTask
+        return dataTask*/
     }
 }

@@ -64,19 +64,26 @@ public class UserManager: UrbanPiperDataModel {
         set {
             defer {
                 APIManager.shared.updateHeaders(jwt: currentUser?.jwt)
+                
+                DispatchQueue.main.async { [weak self] in
+                    guard let manager = self else { return }
+                    manager.observers = manager.observers.filter { $0.value != nil }
+                    let _ = manager.observers.map { $0.value?.userInfoChanged?() }
+                }
             }
             
             if let user = newValue {
                 if currentUser == nil {
                     defer {
-                        refreshUserData()
+                        DispatchQueue.main.async { [weak self] in
+                            self?.refreshUserData()
+                            self?.updateUserBizInfo()
+                        }
                     }
                 }
                 
                 let userData: Data = NSKeyedArchiver.archivedData(withRootObject: user)
                 UserManager.keychain.set(userData, forKey: KeychainAppUserKeys.AppUserKey)
-                observers = observers.filter { $0.value != nil }
-                let _ = observers.map { $0.value?.userInfoChanged?() }
             } else {
                 UserManager.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
                 URLCache.shared.removeAllCachedResponses()
@@ -85,9 +92,6 @@ public class UserManager: UrbanPiperDataModel {
                 for cookie in cookieStore.cookies ?? [] {
                     cookieStore.deleteCookie(cookie)
                 }
-                observers = observers.filter { $0.value != nil }
-                let _ = observers.map { $0.value?.userInfoChanged?() }
-                return
             }
         }
     }

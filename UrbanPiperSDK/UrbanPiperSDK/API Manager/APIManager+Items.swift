@@ -25,7 +25,12 @@ extension APIManager {
         
         urlRequest.setValue(bizAuth(), forHTTPHeaderField: "Authorization")
 
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> CategoryOptionsResponse? in
+            return CategoryOptionsResponse(fromDictionary: dictionary)
+        }, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -49,7 +54,7 @@ extension APIManager {
             
         }
         
-        return dataTask
+        return dataTask*/
     }
 
     func fetchCategoryItems(categoryId: Int,
@@ -88,7 +93,12 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
 
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> CategoryItemsResponse? in
+            return CategoryItemsResponse(fromDictionary: dictionary)
+        }, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
 
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -112,7 +122,7 @@ extension APIManager {
 
         }
 
-        return dataTask
+        return dataTask*/
     }
 
     func fetchCategoryItems(for keyword: String,
@@ -139,7 +149,12 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
 
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> ItemsSearchResponse? in
+            return ItemsSearchResponse(fromDictionary: dictionary)
+        }, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
 
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -162,7 +177,7 @@ extension APIManager {
 
         }
 
-        return dataTask
+        return dataTask*/
     }
 
     func fetchItemDetails(itemId: Int,
@@ -187,7 +202,12 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
 
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> ItemObject? in
+            return ItemObject(fromDictionary: dictionary)
+        }, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
 
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -211,7 +231,7 @@ extension APIManager {
 
         }
 
-        return dataTask
+        return dataTask*/
     }
 
 }

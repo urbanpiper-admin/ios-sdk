@@ -78,27 +78,49 @@ extension ItemDetailsDataModel {
 
     public func likeUnlikeItem(like: Bool) {
         guard let itemDetails = item, let userLikes = userLikesResponse else { return }
-
-        let dataTask: URLSessionDataTask = APIManager.shared.likeUnlikeItem(itemId: itemDetails.id,
-                                                        like: like, completion: { [weak self] (data) in
-                                                            if let likeCount = self?.item?.likes {
-                                                                if like {
-                                                                    self?.item?.likes = likeCount + 1
-                                                                    AnalyticsManager.shared.track(event: .itemLiked(itemTitle: itemDetails.itemTitle))
-                                                                } else {
-                                                                    self?.item?.likes = likeCount - 1
-                                                                    AnalyticsManager.shared.track(event: .itemUnliked(itemTitle: itemDetails.itemTitle))
-                                                                }
-                                                            }
-                                                            self?.fetchItemLikes()
-            }, failure: { [weak self] (upError) in
-                defer {
-                    self?.dataModelDelegate?.refreshItemDetailsUI()
-                    self?.dataModelDelegate?.handleItemDetails(error: upError)
-                }
-        })
-        
-        addDataTask(dataTask: dataTask)
+        if like {
+            let dataTask: URLSessionDataTask = APIManager.shared.likeItem(itemId: itemDetails.id,
+                                                                          completion:
+                { [weak self] (data) in
+                    if let likeCount = self?.item?.likes {
+                        if like {
+                            self?.item?.likes = likeCount + 1
+                            AnalyticsManager.shared.track(event: .itemLiked(itemTitle: itemDetails.itemTitle))
+                        } else {
+                            self?.item?.likes = likeCount - 1
+                            AnalyticsManager.shared.track(event: .itemUnliked(itemTitle: itemDetails.itemTitle))
+                        }
+                    }
+                    self?.fetchItemLikes()
+                }, failure: { [weak self] (upError) in
+                    defer {
+                        self?.dataModelDelegate?.refreshItemDetailsUI()
+                        self?.dataModelDelegate?.handleItemDetails(error: upError)
+                    }
+            })
+            addDataTask(dataTask: dataTask)
+        } else {
+            let dataTask: URLSessionDataTask = APIManager.shared.unlikeItem(itemId: itemDetails.id,
+                                                                                completion:
+                { [weak self] (data) in
+                    if let likeCount = self?.item?.likes {
+                        if like {
+                            self?.item?.likes = likeCount + 1
+                            AnalyticsManager.shared.track(event: .itemLiked(itemTitle: itemDetails.itemTitle))
+                        } else {
+                            self?.item?.likes = likeCount - 1
+                            AnalyticsManager.shared.track(event: .itemUnliked(itemTitle: itemDetails.itemTitle))
+                        }
+                    }
+                    self?.fetchItemLikes()
+                }, failure: { [weak self] (upError) in
+                    defer {
+                        self?.dataModelDelegate?.refreshItemDetailsUI()
+                        self?.dataModelDelegate?.handleItemDetails(error: upError)
+                    }
+            })
+            addDataTask(dataTask: dataTask)
+        }        
     }
 
     fileprivate func fetchItemDetails(itemId: Int)  {

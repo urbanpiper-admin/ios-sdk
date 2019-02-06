@@ -24,7 +24,12 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> PlaceDetailsResponse? in
+            return PlaceDetailsResponse(fromDictionary: dictionary)
+        }, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -48,7 +53,7 @@ extension APIManager {
             
         }
         
-        return dataTask
+        return dataTask*/
     }
     
     @objc public func reverseGeoCode(lat: Double,
@@ -66,7 +71,12 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> Address? in
+            return Address(fromDictionary: dictionary)
+        }, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -95,7 +105,7 @@ extension APIManager {
             
         }
         
-        return dataTask
+        return dataTask*/
     }
     
     @objc public func fetchPlaces(for keyword: String,
@@ -121,7 +131,12 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GooglePlacesResponse? in
+            return GooglePlacesResponse(fromDictionary: dictionary)
+        }, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -145,7 +160,7 @@ extension APIManager {
             
         }
         
-        return dataTask
+        return dataTask*/
     }
     
 }

@@ -29,7 +29,12 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
 
-        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> VersionCheckResponse? in
+            return VersionCheckResponse(fromDictionary: dictionary)
+        }, completion: completion, failure: failure)!
+        
+        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
 
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
@@ -53,7 +58,7 @@ extension APIManager {
 
         }
         
-        return dataTask
+        return dataTask*/
     }
 
 }

@@ -48,10 +48,6 @@ public class BannersDataModel: UrbanPiperDataModel {
 
     public override init() {
         super.init()
-
-        DispatchQueue.main.async {
-            self.refreshData()
-        }
     }
     
     public convenience init(delegate: BannersDataModelDelegate) {

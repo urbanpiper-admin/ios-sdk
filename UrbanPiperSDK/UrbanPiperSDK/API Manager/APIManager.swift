@@ -27,7 +27,7 @@
 
 import Foundation
 
-public typealias APISuccess = () -> Void
+//public typealias APISuccess = () -> Void
 public typealias APICompletion<T> = (T?) -> Void
 public typealias APIFailure = (UPError?) -> Void
 
@@ -142,7 +142,7 @@ public typealias APIFailure = (UPError?) -> Void
     }
     
     func apiRequest<T>(urlRequest: URLRequest,
-                       responseParser: @escaping ([String : Any]) -> T?,
+                       responseParser: (([String : Any]) -> T?)?,
                        completion: APICompletion<T>?,
                        failure: APIFailure?) -> URLSessionDataTask? {
         
@@ -150,7 +150,9 @@ public typealias APIFailure = (UPError?) -> Void
             
             guard let httpResponse = response as? HTTPURLResponse else {
                 let upError = UPAPIError(httpStatusCode: nil, errorCode: (error as NSError?)?.code, data: data, responseObject: nil)
-                failure?(upError)
+                DispatchQueue.main.async {
+                    failure?(upError)
+                }
                 return
             }
             
@@ -162,24 +164,33 @@ public typealias APIFailure = (UPError?) -> Void
                 }
                 
                 let upError = UPAPIError(httpStatusCode: nil, errorCode: (error as NSError?)?.code, data: data, responseObject: nil)
-                failure?(upError)
+                DispatchQueue.main.async {
+                    failure?(upError)
+                }
                 return
             }
             
             guard let responseData = data,
                 let jsonObject: Any = try? JSONSerialization.jsonObject(with: responseData, options: []),
-                let dictionary: [String: Any] = jsonObject as? [String: Any] else {
-                completion?(nil)
+                let dictionary: [String: Any] = jsonObject as? [String: Any],
+                responseParser != nil else {
+                    DispatchQueue.main.async {
+                        completion?(nil)
+                    }
                 return
             }
             
-            guard let result = responseParser(dictionary) else {
+            guard let result = responseParser?(dictionary) else {
                 let upError = UPError(type: .responseParseError)
-                failure?(upError)
+                DispatchQueue.main.async {
+                    failure?(upError)
+                }
                 return
             }
             
-            completion?(result)
+            DispatchQueue.main.async {
+                completion?(result)
+            }
         }
         
         return dataTask

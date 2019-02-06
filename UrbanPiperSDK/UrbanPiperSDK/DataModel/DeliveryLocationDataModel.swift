@@ -96,8 +96,8 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
                     }
                 }
             } else {
-                if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate {
-                    AnalyticsManager.shared.track(event: .noStoreNearby(lat: coordinate.latitude, lng: coordinate.longitude, addressString: address.addressString!))
+                if let coordinate = DeliveryLocationDataModel.shared.deliveryLocation?.coordinate, let deliveryAddress = DeliveryLocationDataModel.shared.deliveryAddress?.addressString {
+                    AnalyticsManager.shared.track(event: .noStoreNearby(lat: coordinate.latitude, lng: coordinate.longitude, addressString: deliveryAddress))
                 }
             }
 
