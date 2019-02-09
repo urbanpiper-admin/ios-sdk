@@ -74,11 +74,11 @@ PODS:
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
-  - PhoneNumberKit (2.5.0):
-    - PhoneNumberKit/PhoneNumberKitCore (= 2.5.0)
-    - PhoneNumberKit/UIKit (= 2.5.0)
-  - PhoneNumberKit/PhoneNumberKitCore (2.5.0)
-  - PhoneNumberKit/UIKit (2.5.0):
+  - PhoneNumberKit (2.5.1):
+    - PhoneNumberKit/PhoneNumberKitCore (= 2.5.1)
+    - PhoneNumberKit/UIKit (= 2.5.1)
+  - PhoneNumberKit/PhoneNumberKitCore (2.5.1)
+  - PhoneNumberKit/UIKit (2.5.1):
     - PhoneNumberKit/PhoneNumberKitCore
   - Protobuf (3.6.1)
 
@@ -128,7 +128,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 111a012f4c3a29c9e7c954c082fafd6ee3c999c0
   Mixpanel-swift: d4de197db883e9dbba162fee6751db5e7766971b
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
-  PhoneNumberKit: 32a1cd1e0aa9e950feb01886a22fd7386b8cf903
+  PhoneNumberKit: 87f03605453ca0f8b8e76083228ab729395f9004
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
 
 PODFILE CHECKSUM: 0069f8b090cbf793bcbfc23e794ce507d30a8ebc
