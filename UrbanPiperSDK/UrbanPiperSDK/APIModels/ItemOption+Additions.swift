@@ -120,7 +120,7 @@ extension ItemOption {
 extension ItemOption {
     
     public func equitableCheckDictionary() -> [String: Any] {
-        var dictionary: [String : Any] = [String:Any]()
+        var dictionary: [String: Any] = [String:Any]()
 //        if currentStock != nil{
 //            dictionary["current_stock"] = currentStock
 //        }

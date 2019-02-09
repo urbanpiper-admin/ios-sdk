@@ -11,7 +11,7 @@ import Foundation
 public class OrderPreProcessingResponse : NSObject{
 
 	public var order : Order!
-    public var discount : Decimal?
+//    public var discount : Decimal?
 
 
 	/**
@@ -22,14 +22,14 @@ public class OrderPreProcessingResponse : NSObject{
 			order = Order(fromDictionary: orderData)
 		}
         
-        let priceVal = dictionary["discount"]
-        if let val: Decimal = priceVal as? Decimal {
-            discount = val
-        } else if let val: Double = priceVal as? Double {
-            discount = Decimal(val).rounded
-        } else {
-            discount = Decimal.zero
-        }
+//        let priceVal = dictionary["discount"]
+//        if let val: Decimal = priceVal as? Decimal {
+//            discount = val
+//        } else if let val: Double = priceVal as? Double {
+//            discount = Decimal(val).rounded
+//        } else {
+//            discount = Decimal.zero
+//        }
 	}
 
 //    /**
@@ -37,7 +37,7 @@ public class OrderPreProcessingResponse : NSObject{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if order != nil{
 //            dictionary["order"] = order.toDictionary()
 //        }

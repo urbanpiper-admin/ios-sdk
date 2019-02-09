@@ -35,7 +35,7 @@ extension APIManager {
     static let socialLoginBaseUrl: String = "\(APIManager.baseUrl)/api/v2/social_auth/me"
 
     @objc public func request(urlString: String,
-                              completion: ((User?) -> Void)?,
+                              completion: ((socialLoginResponse?) -> Void)?,
                               failure: APIFailure?) -> URLSessionDataTask {
         
         var cs: CharacterSet = CharacterSet.urlQueryAllowed
@@ -49,8 +49,8 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> User? in
-            return User(fromDictionary: dictionary)
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> socialLoginResponse? in
+            return socialLoginResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -109,7 +109,7 @@ extension APIManager {
     @objc internal func socialLogin(email: String,
                                     socialLoginProvider: SocialLoginProvider,
                                     accessToken: String,
-                                    completion: ((User?) -> Void)?,
+                                    completion: ((socialLoginResponse?) -> Void)?,
                                     failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)"
@@ -127,7 +127,7 @@ extension APIManager {
                                          email: String,
                                          socialLoginProvider: SocialLoginProvider,
                                          accessToken: String,
-                                         completion: ((User?) -> Void)?,
+                                         completion: ((socialLoginResponse?) -> Void)?,
                                          failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)&action=check_phone&phone=\(phone)"
@@ -141,7 +141,7 @@ extension APIManager {
                                 socialLoginProvider: SocialLoginProvider,
                                 accessToken: String,
                                 otp: String,
-                                completion: ((User?) -> Void)?,
+                                completion: ((socialLoginResponse?) -> Void)?,
                                 failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)&action=verify_otp&phone=\(phone)&otp=\(otp)"

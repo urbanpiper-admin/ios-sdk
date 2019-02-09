@@ -80,7 +80,7 @@ extension APIManager {
                       "order_type": deliveryOption,
                       "channel": APIManager.channel,
                       "items": items.map { $0.apiItemDictionary },
-                      "order_total": orderTotal] as [String : Any]
+                      "order_total": orderTotal] as [String: Any]
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
@@ -248,7 +248,7 @@ extension APIManager {
                            walletCreditApplied: Decimal,
                            payableAmount: Decimal,
                            onlinePaymentInitResponse: OnlinePaymentInitResponse?,
-                           completion: (([String: Any]?) -> Void)?,
+                           completion: ((OrderResponse?) -> Void)?,
                            failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/order/?format=json&biz_id=\(bizId)"
@@ -321,8 +321,8 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> [String: Any]? in
-            return dictionary
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> OrderResponse? in
+            return OrderResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -353,7 +353,7 @@ extension APIManager {
     @objc public func verifyPayment(pid: String,
                              orderId: String,
                              transactionId: String,
-        completion: (([String: Any]?) -> Void)?,
+        completion: ((OrderVerifyTxnResponse?) -> Void)?,
                            failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/payments/callback/\(transactionId)/?gateway_txn_id=\(pid)&pid=\(orderId)"
@@ -365,8 +365,8 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> [String: Any]? in
-            return dictionary
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> OrderVerifyTxnResponse? in
+            return OrderVerifyTxnResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in

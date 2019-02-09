@@ -55,7 +55,7 @@ public class OnlinePaymentData : NSObject{
      */
     public func toDictionary() -> [String:Any]
     {
-        var dictionary: [String : Any] = [String:Any]()
+        var dictionary: [String: Any] = [String:Any]()
         if key != nil{
             dictionary["key"] = key
         }

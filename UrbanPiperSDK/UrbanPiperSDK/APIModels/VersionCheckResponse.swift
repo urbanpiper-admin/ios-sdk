@@ -31,7 +31,7 @@ public class VersionCheckResponse : NSObject{
 //     */
 //    func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if forceUpdate != nil{
 //            dictionary["force_update"] = forceUpdate
 //        }

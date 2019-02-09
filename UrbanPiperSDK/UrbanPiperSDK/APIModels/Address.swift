@@ -185,7 +185,7 @@ public enum AddressTag: String {
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if address1 != nil{
 //            dictionary["address_1"] = address1
 //        }

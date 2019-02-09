@@ -33,7 +33,7 @@ public class Referral: NSObject {
      * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
     public func toDictionary() -> [String:Any] {
-        var dictionary: [String : Any] = [String:Any]()
+        var dictionary: [String: Any] = [String:Any]()
         
         if codeLink != nil{
             dictionary["code_link"] = codeLink

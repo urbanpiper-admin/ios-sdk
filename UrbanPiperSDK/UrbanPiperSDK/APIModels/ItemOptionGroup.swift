@@ -50,7 +50,7 @@ public class ItemOptionGroup : NSObject {
      */
     public func toDictionary() -> [String:Any]
     {
-        var dictionary: [String : Any] = [String:Any]()
+        var dictionary: [String: Any] = [String:Any]()
         if descriptionField != nil{
             dictionary["description"] = descriptionField
         }

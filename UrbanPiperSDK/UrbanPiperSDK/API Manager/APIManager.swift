@@ -124,11 +124,11 @@ public typealias APIFailure = (UPError?) -> Void
         self.jwt = jwt
         
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        var additionalHeaders: [String : Any] = ["X-App-Src": "ios",
+        var additionalHeaders: [String: Any] = ["X-App-Src": "ios",
                                                  "X-Bid": bizId,
                                                  "X-App-Version": version,
                                                  "X-Use-Lang": language.rawValue,
-                                                 "Content-Type": "application/json"] as [String : Any]
+                                                 "Content-Type": "application/json"] as [String: Any]
 
         additionalHeaders["Accept-Encoding"] = "gzip"
         
@@ -142,7 +142,7 @@ public typealias APIFailure = (UPError?) -> Void
     }
     
     func apiRequest<T>(urlRequest: URLRequest,
-                       responseParser: (([String : Any]) -> T?)?,
+                       responseParser: (([String: Any]) -> T?)?,
                        completion: APICompletion<T>?,
                        failure: APIFailure?) -> URLSessionDataTask? {
         

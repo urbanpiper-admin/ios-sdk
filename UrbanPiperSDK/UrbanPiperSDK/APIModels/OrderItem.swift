@@ -105,7 +105,7 @@ public class OrderItem : NSObject{
      */
     public func toDictionary() -> [String:Any]
     {
-        var dictionary: [String : Any] = [String:Any]()
+        var dictionary: [String: Any] = [String:Any]()
         if category != nil{
             dictionary["category"] = category.toDictionary()
         }

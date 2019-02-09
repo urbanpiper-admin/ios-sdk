@@ -33,7 +33,7 @@ public class ItemMeta : NSObject{
      */
     public func toDictionary() -> [String:Any]
     {
-        var dictionary: [String : Any] = [String:Any]()
+        var dictionary: [String: Any] = [String:Any]()
         if limit != nil{
             dictionary["limit"] = limit
         }

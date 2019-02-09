@@ -76,7 +76,7 @@ public class User : NSObject, NSCoding{
     @objc public var message : String?
 //    public var success : Bool!
 	internal var timestamp : String!
-    public var jwt: JWT!
+    internal var jwt: JWT!
 
     @objc public var password: String? {
         didSet {
@@ -189,7 +189,7 @@ public class User : NSObject, NSCoding{
      */
     public func toDictionary() -> [String:Any]
     {
-        var dictionary: [String : Any] = [String:Any]()
+        var dictionary: [String: Any] = [String:Any]()
         if authKey != nil{
             dictionary["authKey"] = authKey
         }

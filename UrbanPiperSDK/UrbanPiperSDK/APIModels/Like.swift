@@ -26,7 +26,7 @@ public class Like : NSObject{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if item != nil{
 //            dictionary["item"] = item.toDictionary()
 //        }

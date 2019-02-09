@@ -31,7 +31,7 @@ public class UserAddressesResponse : NSObject{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if addresses != nil{
 //            var dictionaryElements: [[String:Any]] = [[String:Any]]()
 //            for addressesElement in addresses {

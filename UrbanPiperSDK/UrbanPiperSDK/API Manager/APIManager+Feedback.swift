@@ -15,7 +15,7 @@ extension APIManager {
                                      orderId: String,
                                      choiceText: String?,
                                      comments: String?,
-                                     completion: (([String : Any]?) -> Void)?,
+                                     completion: ((GenericResponse?) -> Void)?,
                                      failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/feedback/"
@@ -43,8 +43,8 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> [String : Any]? in
-            return dictionary
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GenericResponse? in
+            return GenericResponse(fromDictionary: dictionary) ?? GenericResponse.init()
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in

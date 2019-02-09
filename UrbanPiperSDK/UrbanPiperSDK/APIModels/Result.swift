@@ -67,7 +67,7 @@ public class Result : NSObject{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if addressComponents != nil{
 //            var dictionaryElements: [[String:Any]] = [[String:Any]]()
 //            for addressComponentsElement in addressComponents {

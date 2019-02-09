@@ -53,7 +53,7 @@ public class ReorderResponse : NSObject{
 //     */
 //    func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if bizLocation != nil{
 //            dictionary["biz_location"] = bizLocation.toDictionary()
 //        }

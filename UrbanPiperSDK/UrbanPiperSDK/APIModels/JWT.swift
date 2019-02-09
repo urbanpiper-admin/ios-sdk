@@ -68,7 +68,7 @@ public class JWT: NSObject, NSCoding {
     }
     
 //    public func toDictionary() -> [String:Any] {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if exp != nil{
 //            dictionary["exp"] = exp
 //        }

@@ -35,7 +35,7 @@ public class BannersResponse : NSObject{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if images != nil{
 //            var dictionaryElements: [[String:Any]] = [[String:Any]]()
 //            for imagesElement in images {

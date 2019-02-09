@@ -45,7 +45,7 @@ public class Message : NSObject{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if bannerImg != nil{
 //            dictionary["banner_img"] = bannerImg
 //        }

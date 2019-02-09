@@ -32,8 +32,8 @@ public class CartManager: NSObject {
 
     @objc public var couponCodeToApply: String?
     
-    public var lastOrder: [String : Any]? = {
-       return UserDefaults.standard.value(forKey: "lastOrderKey") as? [String : Any]
+    public var lastOrder: [String: Any]? = {
+       return UserDefaults.standard.value(forKey: "lastOrderKey") as? [String: Any]
     }()
     {
         didSet {

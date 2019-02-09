@@ -27,7 +27,7 @@ public class MyOrderOption : NSObject{
 //     */
 //    func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if id != nil{
 //            dictionary["id"] = id
 //        }

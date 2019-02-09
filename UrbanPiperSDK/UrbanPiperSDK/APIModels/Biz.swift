@@ -114,7 +114,7 @@ public enum Language: String {
 	 */
 	public func toDictionary() -> [String:Any]
 	{
-		var dictionary: [String : Any] = [String:Any]()
+		var dictionary: [String: Any] = [String:Any]()
 		if contactPhone != nil{
 			dictionary["contact_phone"] = contactPhone
 		}

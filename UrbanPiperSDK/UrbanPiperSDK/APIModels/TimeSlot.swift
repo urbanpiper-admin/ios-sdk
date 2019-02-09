@@ -29,7 +29,7 @@ public class TimeSlot : NSObject, NSCoding{
 	 */
 	public func toDictionary() -> [String:Any]
 	{
-		var dictionary: [String : Any] = [String:Any]()
+		var dictionary: [String: Any] = [String:Any]()
 		if day != nil{
 			dictionary["day"] = day
 		}

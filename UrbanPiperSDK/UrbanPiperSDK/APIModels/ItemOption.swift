@@ -58,7 +58,7 @@ public class ItemOption : NSObject {
      */
     public func toDictionary() -> [String:Any]
     {
-        var dictionary: [String : Any] = [String:Any]()
+        var dictionary: [String: Any] = [String:Any]()
         if currentStock != nil{
             dictionary["current_stock"] = currentStock
         }

@@ -29,7 +29,7 @@ public class AddressComponent : NSObject{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if longName != nil{
 //            dictionary["long_name"] = longName
 //        }

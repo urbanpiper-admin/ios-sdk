@@ -62,7 +62,7 @@ extension APIManager {
     
     @objc internal func login(username: String,
                             password: String,
-                            completion: ((User?) -> Void)?,
+                            completion: ((LoginResponse?) -> Void)?,
                             failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v2/auth/token/"
@@ -79,8 +79,8 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> User? in
-            return User(fromDictionary: dictionary)
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> LoginResponse? in
+            return LoginResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -115,7 +115,7 @@ extension APIManager {
     }
     
     @objc internal func forgotPassword(phone: String,
-                                     completion: (([String: Any]?) -> Void)?,
+                                     completion: ((GenericResponse?) -> Void)?,
                                      failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/password/token/"
@@ -131,8 +131,8 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> [String : Any]? in
-            return dictionary
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GenericResponse? in
+            return GenericResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -165,7 +165,7 @@ extension APIManager {
                                     otp: String,
                                     password: String,
                                     confirmPassword: String,
-                                    completion: (([String: Any]?) -> Void)?,
+                                    completion: ((GenericResponse?) -> Void)?,
                                     failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/password/"
@@ -184,8 +184,8 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> [String : Any]? in
-            return dictionary
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GenericResponse? in
+            return GenericResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -216,7 +216,7 @@ extension APIManager {
     
     @objc internal func card(urlString: String,
                            referralParams: Referral? = nil,
-                           completion: ((CardAPIResponse?) -> Void)?,
+                           completion: ((RegistrationResponse?) -> Void)?,
                            failure: APIFailure?) -> URLSessionDataTask {
         
         var cs: CharacterSet = CharacterSet.urlQueryAllowed
@@ -236,8 +236,8 @@ extension APIManager {
         }
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> CardAPIResponse? in
-            return CardAPIResponse(fromDictionary: dictionary)
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> RegistrationResponse? in
+            return RegistrationResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -245,10 +245,10 @@ extension APIManager {
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, (code == 200 || code == 201) {
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let cardAPIResponse: CardAPIResponse = CardAPIResponse(fromDictionary: dictionary)
+                    let registrationResponse: RegistrationResponse = RegistrationResponse(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
-                        completion?(cardAPIResponse)
+                        completion?(registrationResponse)
                     }
                     return
                 }
@@ -277,7 +277,7 @@ extension APIManager {
                                  email: String,
                                  password: String,
                                  referralObject: Referral? = nil,
-                                 completion: ((CardAPIResponse?) -> Void)?,
+                                 completion: ((RegistrationResponse?) -> Void)?,
                                  failure: APIFailure?) -> URLSessionDataTask {
         AnalyticsManager.shared.track(event: .signupStart(phone: phone))
         let urlString: String = "\(APIManager.cardBaseUrl)/?customer_name=\(name)&customer_phone=\(phone)&email=\(email)&password=\(password)&channel=\(APIManager.channel)"
@@ -291,7 +291,7 @@ extension APIManager {
                                        gender: String? = nil,
                                        accessToken: String,
                                        referralObject: Referral? = nil,
-                                       completion: ((CardAPIResponse?) -> Void)?,
+                                       completion: ((RegistrationResponse?) -> Void)?,
                                        failure: APIFailure?) -> URLSessionDataTask {
         
         var urlString: String = "\(APIManager.cardBaseUrl)/?customer_name=\(name)&customer_phone=\(phone)&email=\(email)&password=\(accessToken)&channel=\(APIManager.channel)"
@@ -311,7 +311,7 @@ extension APIManager {
     
     @objc internal func verifyMobile(phone: String,
                                    pin: String,
-                                   completion: ((CardAPIResponse?) -> Void)?,
+                                   completion: ((RegistrationResponse?) -> Void)?,
                                    failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(phone)&pin=\(pin)&nopinsend=true"
@@ -320,7 +320,7 @@ extension APIManager {
     }
     
     @objc internal func resendOTP(phone: String,
-                                completion: ((CardAPIResponse?) -> Void)?,
+                                completion: ((RegistrationResponse?) -> Void)?,
                                 failure: APIFailure?) -> URLSessionDataTask {
         let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(phone)&pin=resendotp"
         

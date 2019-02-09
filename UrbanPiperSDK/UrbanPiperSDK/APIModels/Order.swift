@@ -10,38 +10,39 @@ import Foundation
 
 public class Order : NSObject{
 
+    public var orderType : String!
+    public var cartItems : [AnyObject]!
+    public var items : [OrderItem]!
+    public var orderSubtotal : Decimal!
+    public var packagingCharge : Decimal!
+    public var itemTaxes : Decimal!
+    public var discount : Discount!
+    public var discountApplied : Int!
+    public var deliveryCharge : Decimal!
+    public var payableAmount : Decimal!
+    public var walletCreditApplicable: Bool?
+    public var walletCreditApplied : Decimal!
 	public var addressId : Int!
 	public var addressLat : Float!
 	public var addressLng : Float!
+    
 	public var bizLocationId : Int!
-	public var cartItems : [AnyObject]!
 	public var channel : String!
 	public var charges : [OrderCharges]!
 	public var combos : [AnyObject]!
-	public var deliveryCharge : Decimal!
 	public var deliveryDatetime : Int!
-    public var discount : Discount!
-	public var discountApplied : Int!
 	public var itemLevelTotalCharges : Decimal!
 	public var itemLevelTotalTaxes : Float!
-	public var itemTaxes : Decimal!
-	public var items : [OrderItem]!
 	public var orderLevelTotalCharges : Decimal!
 	public var orderLevelTotalTaxes : Float!
-	public var orderSubtotal : Decimal!
 	//public var orderTotal : Decimal!
-	public var orderType : String!
-	public var payableAmount : Decimal!
-    public var walletCreditApplicable: Bool?
-    public var walletCreditApplied : Decimal!
-    public var packagingCharge : Decimal!
 	public var paymentModes : [String]!
 	public var paymentOption : String!
 	public var taxes : [AnyObject]!
     public var taxRate : Float!
 	public var totalWeight : Int!
 
-
+/* store, order response, instructions, payment option, phone, delivery date, delivery time, coupon code, selected timeslot, payment transaction id */
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
@@ -177,7 +178,7 @@ public class Order : NSObject{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if addressId != nil{
 //            dictionary["address_id"] = addressId
 //        }

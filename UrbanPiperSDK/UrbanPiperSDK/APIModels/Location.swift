@@ -27,7 +27,7 @@ public class Location : NSObject{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if lat != nil{
 //            dictionary["lat"] = lat
 //        }

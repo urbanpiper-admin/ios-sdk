@@ -85,7 +85,7 @@ open class UPKeychainWrapper {
     }
     
     open func accessibilityOfKey(_ key: String) -> UPKeychainItemAccessibility? {
-        var keychainQueryDictionary: [String : Any] = setupKeychainQueryDictionary(forKey: key)
+        var keychainQueryDictionary: [String: Any] = setupKeychainQueryDictionary(forKey: key)
         
         // Remove accessibility attribute
         keychainQueryDictionary.removeValue(forKey: SecAttrAccessible)
@@ -204,7 +204,7 @@ open class UPKeychainWrapper {
     /// - parameter withAccessibility: Optional accessibility to use when retrieving the keychain item.
     /// - returns: The Data object associated with the key if it exists. If no data exists, returns nil.
     open func data(forKey key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> Data? {
-        var keychainQueryDictionary: [String : Any] = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
+        var keychainQueryDictionary: [String: Any] = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
         
         // Limit search results to one
         keychainQueryDictionary[SecMatchLimit] = kSecMatchLimitOne
@@ -226,7 +226,7 @@ open class UPKeychainWrapper {
     /// - parameter withAccessibility: Optional accessibility to use when retrieving the keychain item.
     /// - returns: The persistent data reference object associated with the key if it exists. If no data exists, returns nil.
     open func dataRef(forKey key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> Data? {
-        var keychainQueryDictionary: [String : Any] = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
+        var keychainQueryDictionary: [String: Any] = setupKeychainQueryDictionary(forKey: key, withAccessibility: accessibility)
         
         // Limit search results to one
         keychainQueryDictionary[SecMatchLimit] = kSecMatchLimitOne

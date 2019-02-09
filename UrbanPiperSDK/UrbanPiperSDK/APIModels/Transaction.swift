@@ -56,7 +56,7 @@ public class Transaction : NSObject{
 //     */
 //    func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if billNumber != nil{
 //            dictionary["bill_number"] = billNumber
 //        }

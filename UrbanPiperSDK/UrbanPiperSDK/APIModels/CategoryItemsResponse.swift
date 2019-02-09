@@ -39,7 +39,7 @@ public class CategoryItemsResponse : NSObject, NSCopying{
      */
     public func toDictionary() -> [String:Any]
     {
-        var dictionary: [String : Any] = [String:Any]()
+        var dictionary: [String: Any] = [String:Any]()
         if combos != nil{
             dictionary["combos"] = combos
         }

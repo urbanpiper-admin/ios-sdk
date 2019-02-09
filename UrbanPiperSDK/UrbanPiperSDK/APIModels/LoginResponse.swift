@@ -1,5 +1,5 @@
 //
-//	AuthSuccessResponse.swift
+//	LoginResponse.swift
 //
 //	Create by Vidhyadharan Mohanram on 11/1/2018
 //	Copyright © 2018. All rights reserved.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class AuthSuccessResponse : NSObject{//}, NSCoding {
+public class LoginResponse : NSObject{//}, NSCoding {
     
     @objc public var message : String?
 
@@ -30,7 +30,7 @@ public class AuthSuccessResponse : NSObject{//}, NSCoding {
      */
     public func toDictionary() -> [String:Any]
     {
-        var dictionary: [String : Any] = [String:Any]()
+        var dictionary: [String: Any] = [String:Any]()
         if message != nil{
             dictionary["message"] = message
         }

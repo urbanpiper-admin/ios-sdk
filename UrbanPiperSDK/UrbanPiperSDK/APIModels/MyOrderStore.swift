@@ -27,7 +27,7 @@ public class MyOrderStore : NSObject{
 //     */
 //    func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if bizLocationId != nil{
 //            dictionary["biz_location_id"] = bizLocationId
 //        }

@@ -88,7 +88,7 @@ extension ItemOptionGroup {
 extension ItemOptionGroup {
     
     public func equitableCheckDictionary() -> [String: Any] {
-        var dictionary: [String : Any] = [String:Any]()
+        var dictionary: [String: Any] = [String:Any]()
 //        if isDefault != nil{
 //            dictionary["is_default"] = isDefault
 //        }

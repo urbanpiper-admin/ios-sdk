@@ -43,7 +43,7 @@ public class Object : NSObject{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if comboCount != nil{
 //            dictionary["combo_count"] = comboCount
 //        }

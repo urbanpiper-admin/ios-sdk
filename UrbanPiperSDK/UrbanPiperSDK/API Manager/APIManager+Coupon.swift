@@ -70,9 +70,9 @@ extension APIManager {
                                     "order_type": deliveryOption,
                                     "channel": APIManager.channel,
                                     "items": items,
-                                    "apply_wallet_credit": applyWalletCredit] as [String : Any]
+                                    "apply_wallet_credit": applyWalletCredit] as [String: Any]
         
-        let params: [String : Any] = ["order": order] as [String : Any]
+        let params: [String: Any] = ["order": order] as [String: Any]
         
         var urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/\(coupon)/"
         urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!

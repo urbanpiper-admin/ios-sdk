@@ -37,7 +37,7 @@ public class ItemTag : NSObject{
      */
     public func toDictionary() -> [String:Any]
     {
-        var dictionary: [String : Any] = [String:Any]()
+        var dictionary: [String: Any] = [String:Any]()
         if id != nil{
             dictionary["id"] = id
         }

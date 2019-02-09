@@ -153,13 +153,14 @@ extension WalletDataModel {
         let dataTask: URLSessionDataTask = APIManager.shared.verifyPayment(pid: paymentId,
                                                        orderId: OnlinePaymentPurpose.reload.rawValue,
                                                        transactionId: transactionId!,
-                                                       completion: { [weak self] (responseDict) in
+                                                       completion: { [weak self] (response) in
                                                         self?.dataModelDelegate?.verifyingWalletReloadTransaction(isProcessing: false)
-                                                        if let status: String = responseDict?["status"] as? String, status == "3" {
+                                                        if let status: String = response?.status, status == "3" {
                                                             self?.dataModelDelegate?.updateUserBizInfoBalance()
                                                         } else {
-                                                            let apiError: UPAPIError? = UPAPIError(responseObject: responseDict)
-                                                            self?.dataModelDelegate?.handleWallet(error: apiError)
+                                                            let upError: UPError = UPError(type: .paymentFailure("There appears to have been some error in processing your transaction. Please try placing the order again. If you believe the payment has been made, please don\'t worry since we\'ll have it refunded, once we get a confirmation."))
+
+                                                            self?.dataModelDelegate?.handleWallet(error: upError)
                                                         }
             }, failure: { [weak self] (error) in
                 self?.dataModelDelegate?.verifyingWalletReloadTransaction(isProcessing: false)

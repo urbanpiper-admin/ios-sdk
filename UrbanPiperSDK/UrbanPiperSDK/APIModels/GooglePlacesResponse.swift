@@ -33,7 +33,7 @@ public class GooglePlacesResponse : NSObject{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if predictions != nil{
 //            var dictionaryElements: [[String:Any]] = [[String:Any]]()
 //            for predictionsElement in predictions {

@@ -35,7 +35,7 @@ public class BizInfo : NSObject, NSCoding{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if meta != nil{
 //            dictionary["meta"] = meta.toDictionary()
 //        }

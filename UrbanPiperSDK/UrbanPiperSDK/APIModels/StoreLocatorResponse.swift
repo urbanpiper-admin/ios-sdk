@@ -35,7 +35,7 @@ public class StoreLocatorResponse : NSObject{
 //     */
 //    func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if biz != nil{
 //            dictionary["biz"] = biz.toDictionary()
 //        }

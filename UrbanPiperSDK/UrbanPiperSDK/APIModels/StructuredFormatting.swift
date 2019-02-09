@@ -35,7 +35,7 @@ public class StructuredFormatting : NSObject, NSCoding{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if mainText != nil{
 //            dictionary["main_text"] = mainText
 //        }

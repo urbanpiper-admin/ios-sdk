@@ -86,7 +86,7 @@ extension ItemObject: NSCopying {
     }
 
     @objc public var apiItemDictionary: [String: Any] {
-        var itemDictionary: [String : Any] = discountCouponApiItemDictionary
+        var itemDictionary: [String: Any] = discountCouponApiItemDictionary
 
         if let options: [[String: Int]] = optionsToRemove {
             itemDictionary["options_to_remove"] = options
@@ -134,7 +134,7 @@ extension ItemObject {
     }
 
     public func equitableCheckDictionary() -> [String: Any] {
-        var dictionary: [String : Any] = [String:Any]()
+        var dictionary: [String: Any] = [String:Any]()
 //        if category != nil{
 //            dictionary["category"] = category.equitableCheckDictionary()
 //        }

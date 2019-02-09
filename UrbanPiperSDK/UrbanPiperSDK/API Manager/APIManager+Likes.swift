@@ -54,7 +54,7 @@ extension APIManager {
     }
 
     @objc public func likeItem(itemId: Int,
-                              completion: (([String: Any]?) -> Void)?,
+                              completion: ((GenericResponse?) -> Void)?,
                               failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/item/\(itemId)/like/"
@@ -64,8 +64,8 @@ extension APIManager {
         var urlRequest: URLRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> [String: Any]? in
-            return dictionary
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GenericResponse? in
+            return GenericResponse(fromDictionary: dictionary) ?? GenericResponse.init()
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -95,7 +95,7 @@ extension APIManager {
     }
     
     @objc public func unlikeItem(itemId: Int,
-                                 completion: (([String: Any]?) -> Void)?,
+                                 completion: ((GenericResponse?) -> Void)?,
                                 failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/item/\(itemId)/like/"
@@ -105,8 +105,8 @@ extension APIManager {
         var urlRequest: URLRequest = URLRequest(url: url)
         urlRequest.httpMethod = "DELETE"
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> [String: Any]? in
-            return dictionary
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GenericResponse? in
+            return GenericResponse(fromDictionary: dictionary) ?? GenericResponse.init()
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in

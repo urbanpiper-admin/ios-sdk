@@ -27,7 +27,7 @@ public class AddUpdateAddressResponse : NSObject{
 //     */
 //    func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if addressId != nil{
 //            dictionary["address_id"] = addressId
 //        }

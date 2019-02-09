@@ -33,7 +33,7 @@ public class FeedbackConfig : NSObject, NSCoding{
 	 */
 	public func toDictionary() -> [String:Any]
 	{
-		var dictionary: [String : Any] = [String:Any]()
+		var dictionary: [String: Any] = [String:Any]()
 		if choices != nil{
             var dictionaryElements: [[String:Any]] = [[String:Any]]()
 			for choicesElement in choices {

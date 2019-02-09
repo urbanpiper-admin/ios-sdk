@@ -11,7 +11,7 @@ import Foundation
 extension APIManager {
     
     @objc public func refreshUserData(phone: String,
-                                      completion: (([String: Any]?) -> Void)?,
+                                      completion: ((UserInfoResponse?) -> Void)?,
                                       failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/profile/?customer_phone=\(phone)"
@@ -23,8 +23,8 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> [String: Any]? in
-            return dictionary
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> UserInfoResponse? in
+            return UserInfoResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -59,7 +59,7 @@ extension APIManager {
                                      gender: String? = nil,
                                      anniversary: Date? = nil,
                                      birthday: Date? = nil,
-                                     completion: (([String: Any]?) -> Void)?,
+                                     completion: ((UserInfoUpdateResponse?) -> Void)?,
                                      failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/profile/?customer_phone=\(phone)"
@@ -72,7 +72,7 @@ extension APIManager {
         
         var userInfo: [String: Any] = ["email": email,
                         "phone": phone,
-                        "first_name": name] as [String : Any]
+                        "first_name": name] as [String: Any]
         
         if let string = gender {
             userInfo["gender"] = string
@@ -91,8 +91,8 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> [String: Any]? in
-            return dictionary
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> UserInfoUpdateResponse? in
+            return UserInfoUpdateResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -132,7 +132,7 @@ extension APIManager {
     @objc public func changePassword(phone: String,
                                      oldPassword: String,
                                      newPassword: String,
-                                     completion: (([String: Any]?) -> Void)?,
+                                     completion: ((GenericResponse?) -> Void)?,
                                      failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/password/"
@@ -152,8 +152,8 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> [String: Any]? in
-            return dictionary
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GenericResponse? in
+            return GenericResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in

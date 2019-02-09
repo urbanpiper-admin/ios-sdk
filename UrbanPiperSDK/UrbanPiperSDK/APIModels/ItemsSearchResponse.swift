@@ -36,7 +36,7 @@ public class ItemsSearchResponse : NSObject{
      */
     public func toDictionary() -> [String:Any]
     {
-        var dictionary: [String : Any] = [String:Any]()
+        var dictionary: [String: Any] = [String:Any]()
         if items != nil{
             var dictionaryElements: [[String:Any]] = [[String:Any]]()
             for itemsElement in items {

@@ -38,7 +38,7 @@ public class PlaceDetailsResponse : NSObject{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if htmlAttributions != nil{
 //            dictionary["html_attributions"] = htmlAttributions
 //        }

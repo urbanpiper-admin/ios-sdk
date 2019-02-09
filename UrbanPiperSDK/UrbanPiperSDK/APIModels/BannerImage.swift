@@ -33,7 +33,7 @@ public class BannerImage : NSObject{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if created != nil{
 //            dictionary["created"] = created
 //        }

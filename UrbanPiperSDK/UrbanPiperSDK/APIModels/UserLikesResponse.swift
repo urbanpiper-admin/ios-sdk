@@ -32,7 +32,7 @@ public class UserLikesResponse : NSObject{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if likes != nil{
 //            var dictionaryElements: [[String:Any]] = [[String:Any]]()
 //            for likesElement in likes {

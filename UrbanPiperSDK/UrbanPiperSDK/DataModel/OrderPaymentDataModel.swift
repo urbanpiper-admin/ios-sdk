@@ -28,9 +28,9 @@ public enum PaymentGateway: String {
 
     func initiatePayTMWebOnlinePayment(orderId: String, onlinePaymentInitResponse: OnlinePaymentInitResponse)
     
-    func initiateRazorOnlinePayment(orderId: String, phone: String, responseDict: [String: Any], onlinePaymentInitResponse: OnlinePaymentInitResponse)
+    func initiateRazorOnlinePayment(orderId: String, phone: String, responseDict: OrderResponse?, onlinePaymentInitResponse: OnlinePaymentInitResponse)
     
-    func initiatePaytabsOnlinePayment(orderId: String, phone: String, responseDict: [String: Any], onlinePaymentInitResponse: OnlinePaymentInitResponse)
+    func initiatePaytabsOnlinePayment(orderId: String, phone: String, responseDict: OrderResponse?, onlinePaymentInitResponse: OnlinePaymentInitResponse)
     
     func initiateSimplPayment(orderId: String, phone: String, transactionId: String)
     
@@ -107,7 +107,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
     
     public var discountPrice: Decimal? {
-        return applyCouponResponse?.discount.value ?? orderPreProcessingResponse?.discount ?? OrderingStoreDataModel.shared.orderingStore?.discount
+        return applyCouponResponse?.discount.value ?? orderPreProcessingResponse?.order.discount?.value ?? OrderingStoreDataModel.shared.orderingStore?.discount
     }
 
     public var itemsTotalPrice: Decimal {
@@ -363,7 +363,7 @@ extension OrderPaymentDataModel {
                          "order_type": selectedDeliveryOption.rawValue,
                          "channel": APIManager.channel,
                          "items": CartManager.shared.cartItems.map { $0.discountCouponApiItemDictionary },
-                         "apply_wallet_credit": applyWalletCredits] as [String : Any]
+                         "apply_wallet_credit": applyWalletCredits] as [String: Any]
         
         dataModelDelegate?.refreshApplyCouponUI(true, code: code)
         let dataTask: URLSessionDataTask = APIManager.shared.applyCoupon(code: code,
@@ -458,36 +458,29 @@ extension OrderPaymentDataModel {
                                      walletCreditApplied: orderPreProcessingResponse?.order.walletCreditApplied ?? Decimal.zero,
                                      payableAmount: itemsTotalPrice,
                                      onlinePaymentInitResponse: onlinePaymentInitResponse,
-                                     completion: { [weak self] (responseDict) in
+                                     completion: { [weak self] (response) in
                                         self?.dataModelDelegate?.placingOrder(isProcessing: false)
-                                        guard let orderId = responseDict?["order_id"] else {
-                                            let error: UPAPIError? = UPAPIError(responseObject: responseDict)
+                                        guard let orderId = response?.orderId, let status = response?.status, status == "success" else {
+                                            let error: UPAPIError? = UPAPIError(responseObject: response?.toDictionary())
                                             self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
                                             return
                                         }
-                                        let orderIdString: String = "\(orderId)"
                                         
-                                        guard orderIdString.count > 0 else {
-                                            let error: UPAPIError? = UPAPIError(responseObject: responseDict)
-                                            self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
-                                            return
-                                        }
-
                                         if paymentOption == .paymentGateway {
                                             let paymentGateway = PaymentGateway(rawValue: Biz.shared!.pgProvider)!
                                             switch paymentGateway {
                                             case .razorpay:
-                                                self?.dataModelDelegate?.initiateRazorOnlinePayment(orderId: orderIdString, phone: phone, responseDict: responseDict!, onlinePaymentInitResponse: onlinePaymentInitResponse!)
+                                                self?.dataModelDelegate?.initiateRazorOnlinePayment(orderId: orderId, phone: phone, responseDict: response, onlinePaymentInitResponse: onlinePaymentInitResponse!)
                                             case .paytabs:
-                                                self?.dataModelDelegate?.initiatePaytabsOnlinePayment(orderId: orderIdString, phone: phone, responseDict: responseDict!, onlinePaymentInitResponse: onlinePaymentInitResponse!)
+                                                self?.dataModelDelegate?.initiatePaytabsOnlinePayment(orderId: orderId, phone: phone, responseDict: response, onlinePaymentInitResponse: onlinePaymentInitResponse!)
                                             }
                                         } else if paymentOption == .paytm {
-                                            self?.dataModelDelegate?.initiatePayTMWebOnlinePayment(orderId: orderIdString, onlinePaymentInitResponse: onlinePaymentInitResponse!)
+                                            self?.dataModelDelegate?.initiatePayTMWebOnlinePayment(orderId: orderId, onlinePaymentInitResponse: onlinePaymentInitResponse!)
                                         } else if paymentOption == .simpl {
-                                            self?.dataModelDelegate?.initiateSimplPayment(orderId: orderIdString, phone: phone, transactionId: onlinePaymentInitResponse!.transactionId)
+                                            self?.dataModelDelegate?.initiateSimplPayment(orderId: orderId, phone: phone, transactionId: onlinePaymentInitResponse!.transactionId)
                                         } else {
-                                            self?.orderPlacedTracking(orderId: orderIdString, phone: phone)
-                                            self?.dataModelDelegate?.showOrderConfirmationAlert(orderId: orderIdString)
+                                            self?.orderPlacedTracking(orderId: orderId, phone: phone)
+                                            self?.dataModelDelegate?.showOrderConfirmationAlert(orderId: orderId)
                                         }
             }, failure: { [weak self] (error) in
                 self?.dataModelDelegate?.placingOrder(isProcessing: false)
@@ -508,13 +501,14 @@ extension OrderPaymentDataModel {
         let dataTask: URLSessionDataTask = APIManager.shared.verifyPayment(pid: paymentId,
                                                        orderId: orderId,
                                                        transactionId: transactionId,
-                                                       completion: { [weak self] (responseDict) in
+                                                       completion: { [weak self] (response) in
                                                         self?.dataModelDelegate?.verifyingTransaction(isProcessing: false)
-                                                        if let status: String = responseDict?["status"] as? String, status == "3" {
+                                                        if let status: String = response?.status, status == "3" {
                                                             self?.dataModelDelegate?.showOrderConfirmationAlert(orderId: orderId)
                                                         } else {
-                                                            let apiError: UPAPIError? = UPAPIError(responseObject: responseDict)
-                                                            self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: apiError)
+                                                            let upError: UPError = UPError(type: .paymentFailure("There appears to have been some error in processing your transaction. Please try placing the order again. If you believe the payment has been made, please don\'t worry since we\'ll have it refunded, once we get a confirmation."))
+                                                            self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false,
+                                                                                                        error: upError)
                                                         }
             }, failure: { [weak self] (error) in
                 self?.dataModelDelegate?.verifyingTransaction(isProcessing: false)

@@ -69,7 +69,7 @@ public class BizLocation : NSObject{
 //     */
 //    func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
+//        var dictionary: [String: Any] = [String:Any]()
 //        if address != nil{
 //            dictionary["address"] = address
 //        }
