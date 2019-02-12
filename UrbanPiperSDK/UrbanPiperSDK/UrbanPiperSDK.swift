@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 public class UrbanPiperSDK: NSObject {
 
@@ -49,6 +50,14 @@ public extension UrbanPiperSDK {
     func logout() {
         UserManager.shared.logout()
     }
+    
+    @discardableResult public func login(username: String, password: String, completion: @escaping ((LoginResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return UserManager.shared.login(username: username, password: password, completion: completion, failure: failure)
+    }
+    
+    @discardableResult public func socialLogin(email: String, socialLoginProvider: SocialLoginProvider, accessToken: String, completion: @escaping ((socialLoginResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return UserManager.shared.socialLogin(email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken, completion: completion, failure: failure)
+    }
         
     @discardableResult public func refreshUserData(completion: ((UserInfoResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
         return UserManager.shared.refreshUserData(completion: completion, failure: failure)
@@ -86,21 +95,24 @@ public extension UrbanPiperSDK {
         return APIManager.shared.fetchWalletTransactions(completion: completion, failure: failure)
     }
 
-}
-
-//  MARK: Login
-
-extension UrbanPiperSDK {
-    
-    @discardableResult public func login(username: String, password: String, completion: @escaping ((LoginResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return UserManager.shared.login(username: username, password: password, completion: completion, failure: failure)
-    }
-    
-    @discardableResult public func socialLogin(email: String, socialLoginProvider: SocialLoginProvider, accessToken: String, completion: @escaping ((socialLoginResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return UserManager.shared.socialLogin(email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken, completion: completion, failure: failure)
+    @discardableResult public func getPastOrders(completion: ((MyOrdersResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.fetchOrderHistory(completion: completion, failure: failure)
     }
 
+    @discardableResult public func getOrderDetails(orderId: Int, completion: ((MyOrderDetailsResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.fetchOrderDetails(orderId: orderId, completion: completion, failure: failure)
+    }
+
+    @discardableResult public func redeemReward(rewardId: Int, completion: ((RedeemRewardResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.redeemReward(rewardId: rewardId, completion: completion, failure: failure)
+    }
+    
+    @discardableResult public func getNotifications(completion: ((NotificationsResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.fetchNotificationsList(completion: completion, failure: failure)
+    }
+
 }
+
 
 //  MARK: FCM
 
@@ -115,5 +127,26 @@ extension UrbanPiperSDK {
                                                              failure: APIFailure? = nil) -> URLSessionDataTask {
         return APIManager.shared.unRegisterForFCMMessaging(token: token, completion: completion, failure: failure)
     }
+    
+    @discardableResult public func getNearestStore(lat: CLLocationDegrees, lng: CLLocationDegrees, completion: @escaping ((StoreResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.fetchNearestStore(CLLocationCoordinate2DMake(lat, lng), completion: completion, failure: failure)
+    }
+    
+    @discardableResult public func getAllStores(completion: @escaping ((StoreLocatorResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.fetchAllStores(completion: completion, failure: failure)
+    }
+    
+    @discardableResult public func getRewards(completion: @escaping ((RewardsResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.getRewards(completion: completion, failure: failure)
+    }
+    
+    @discardableResult public func getCoupons(completion: @escaping ((OffersAPIResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.availableCoupons(next: nil, completion: completion, failure: failure)
+    }
+    
+    @discardableResult public func getBanners(completion: @escaping ((BannersResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.fetchBannersList(completion: completion, failure: failure)
+    }
+    
 }
 
