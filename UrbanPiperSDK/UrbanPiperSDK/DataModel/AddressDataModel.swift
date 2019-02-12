@@ -258,7 +258,7 @@ extension AddressDataModel {
     
     public func deleteAddress(address: Address) {
         _ = observers.map { $0.value?.refreshDeleteAddressUI(isRefreshing: true) }
-        let dataTask: URLSessionDataTask = APIManager.shared.deleteAddress(address: address, completion: { [weak self] _ in
+        let dataTask: URLSessionDataTask = APIManager.shared.deleteAddress(addressId: address.id, completion: { [weak self] _ in
             var addressesResponse = self?.userAddressesResponse
             
             addressesResponse?.addresses = self?.addressListArray?.filter { $0.id != address.id }

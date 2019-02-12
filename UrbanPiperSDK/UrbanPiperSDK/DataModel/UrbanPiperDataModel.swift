@@ -92,7 +92,6 @@ open class UrbanPiperDataModel: NSObject {
         cleanDataTasksArray()
         guard let task = dataTask else { return }
         dataTasks.append(WeakRefURLSessionDataTask(value: task))
-        task.resume()
     }
 
     open func cleanDataTasksArray() {

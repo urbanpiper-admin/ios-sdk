@@ -309,7 +309,7 @@ extension APIManager {
 
 extension APIManager {
     
-    @objc internal func verifyMobile(phone: String,
+    @objc internal func verifyRegOTP(phone: String,
                                    pin: String,
                                    completion: ((RegistrationResponse?) -> Void)?,
                                    failure: APIFailure?) -> URLSessionDataTask {

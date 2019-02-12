@@ -16,6 +16,7 @@ public class ItemOption : NSObject {
 	public var id : Int!
 	public var imageUrl : String!
 	public var price : Decimal!
+    public var recommended : Bool = false
 	public var sortOrder : Int!
 	public var title : String!
 	public var nestedOptionGroups : [ItemOptionGroup]!
@@ -40,6 +41,7 @@ public class ItemOption : NSObject {
             price = Decimal.zero
         }
 
+        recommended = dictionary["recommended"] as? Bool ?? false
 		sortOrder = dictionary["sort_order"] as? Int ?? 0
 		title = dictionary["title"] as? String
 		nestedOptionGroups = [ItemOptionGroup]()
@@ -77,6 +79,7 @@ public class ItemOption : NSObject {
         if price != nil{
             dictionary["price"] = price
         }
+        dictionary["recommended"] = recommended
         if sortOrder != nil{
             dictionary["sort_order"] = sortOrder
         }
@@ -105,6 +108,7 @@ public class ItemOption : NSObject {
 //         foodType = aDecoder.decodeObject(forKey: "food_type") as? String
 //         id = aDecoder.decodeObject(forKey: "id") as? Int
 //         imageUrl = aDecoder.decodeObject(forKey: "image_url") as? String
+//         recommended = aDecoder.decodeObject(forKey: "recommended") as? Bool ?? false
 //         price = aDecoder.decodeObject(forKey: "price") as? Decimal
 //         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
 //         title = aDecoder.decodeObject(forKey: "title") as? String
@@ -136,6 +140,7 @@ public class ItemOption : NSObject {
 //        if price != nil{
 //            aCoder.encode(price, forKey: "price")
 //        }
+//        aCoder.encode(recommended, forKey: "recommended")
 //        if sortOrder != nil{
 //            aCoder.encode(sortOrder, forKey: "sort_order")
 //        }

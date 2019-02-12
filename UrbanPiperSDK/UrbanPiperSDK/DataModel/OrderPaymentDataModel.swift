@@ -530,7 +530,7 @@ extension OrderPaymentDataModel {
 extension OrderPaymentDataModel: UserManagerDelegate {
     
     public func userBizInfoChanged() {
-        bizInfo = UserManager.shared.bizInfo
+        bizInfo = UserManager.shared.currentUser?.biz
         dataModelDelegate?.refreshWalletUI(false)
     }
 

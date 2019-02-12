@@ -193,29 +193,30 @@ public typealias APIFailure = (UPError?) -> Void
             }
         }
         
+        dataTask.resume()
         return dataTask
 
     }
     
-    func handleAPIError(httpStatusCode: Int?, errorCode: Int?, data: Data?, failureClosure: APIFailure?) {
-        guard errorCode == nil || errorCode != NSURLErrorCancelled else { return }
-        
-        if let code = httpStatusCode, code == 401, jwt != nil, jwt!.tokenExpired {
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: .upSDKTokenExpired, object: nil)
-            }
-        }
-        
-        if let closure = failureClosure {
-            DispatchQueue.main.async {
-                if let apiError: UPAPIError = UPAPIError(httpStatusCode: httpStatusCode, errorCode: errorCode, data: data) {
-                    closure(apiError as UPError)
-                } else {
-                    closure(nil)
-                }
-            }
-        }
-    }
+//    func handleAPIError(httpStatusCode: Int?, errorCode: Int?, data: Data?, failureClosure: APIFailure?) {
+//        guard errorCode == nil || errorCode != NSURLErrorCancelled else { return }
+//        
+//        if let code = httpStatusCode, code == 401, jwt != nil, jwt!.tokenExpired {
+//            DispatchQueue.main.async {
+//                NotificationCenter.default.post(name: .upSDKTokenExpired, object: nil)
+//            }
+//        }
+//        
+//        if let closure = failureClosure {
+//            DispatchQueue.main.async {
+//                if let apiError: UPAPIError = UPAPIError(httpStatusCode: httpStatusCode, errorCode: errorCode, data: data) {
+//                    closure(apiError as UPError)
+//                } else {
+//                    closure(nil)
+//                }
+//            }
+//        }
+//    }
 
 }
 

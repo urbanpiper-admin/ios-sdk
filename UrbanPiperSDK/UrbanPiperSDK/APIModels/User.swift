@@ -71,7 +71,7 @@ public class User : NSObject, NSCoding{
 
 	@objc public var authKey : String!
     
-	public var biz : BizInfo!
+	@objc public var biz : BizInfo!
     
     @objc public var message : String?
 //    public var success : Bool!

@@ -58,6 +58,14 @@
 		1878275920EA06BD009F57FA /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1878275720EA06BD009F57FA /* Transaction.swift */; };
 		188886B6220DCBDB0001FE72 /* UserInfoUpdateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886B5220DCBDB0001FE72 /* UserInfoUpdateResponse.swift */; };
 		188886BE220E9DA50001FE72 /* UserInfoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886BD220E9DA50001FE72 /* UserInfoResponse.swift */; };
+		188886E4220F39EC0001FE72 /* RegistrationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886E3220F39EC0001FE72 /* RegistrationBuilder.swift */; };
+		188886E6220F3AA10001FE72 /* SocialRegBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886E5220F3AA10001FE72 /* SocialRegBuilder.swift */; };
+		188886E8220F47C30001FE72 /* ResetPasswordBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886E7220F47C30001FE72 /* ResetPasswordBuilder.swift */; };
+		188886EA220F48150001FE72 /* CheckoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886E9220F48150001FE72 /* CheckoutBuilder.swift */; };
+		188886F822114E8D0001FE72 /* OrderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886F622114E8D0001FE72 /* OrderResponse.swift */; };
+		188886F922114E8D0001FE72 /* OrderVerifyTxnResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886F722114E8D0001FE72 /* OrderVerifyTxnResponse.swift */; };
+		188886FB22114F790001FE72 /* ItemBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886FA22114F790001FE72 /* ItemBuilder.swift */; };
+		188886FD22114FDC0001FE72 /* CartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886FC22114FDC0001FE72 /* CartItem.swift */; };
 		188E9F8B20EFEEC100980530 /* Double+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188E9F8A20EFEEC100980530 /* Double+Additions.swift */; };
 		18978EE02202E62300189AB4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18978EDF2202E62200189AB4 /* Constants.swift */; };
 		189F85C82207D55C004B1C3E /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189F85C72207D55C004B1C3E /* UserManager.swift */; };
@@ -267,6 +275,14 @@
 		1878275720EA06BD009F57FA /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		188886B5220DCBDB0001FE72 /* UserInfoUpdateResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoUpdateResponse.swift; sourceTree = "<group>"; };
 		188886BD220E9DA50001FE72 /* UserInfoResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoResponse.swift; sourceTree = "<group>"; };
+		188886E3220F39EC0001FE72 /* RegistrationBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationBuilder.swift; sourceTree = "<group>"; };
+		188886E5220F3AA10001FE72 /* SocialRegBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialRegBuilder.swift; sourceTree = "<group>"; };
+		188886E7220F47C30001FE72 /* ResetPasswordBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordBuilder.swift; sourceTree = "<group>"; };
+		188886E9220F48150001FE72 /* CheckoutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutBuilder.swift; sourceTree = "<group>"; };
+		188886F622114E8D0001FE72 /* OrderResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderResponse.swift; sourceTree = "<group>"; };
+		188886F722114E8D0001FE72 /* OrderVerifyTxnResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderVerifyTxnResponse.swift; sourceTree = "<group>"; };
+		188886FA22114F790001FE72 /* ItemBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemBuilder.swift; sourceTree = "<group>"; };
+		188886FC22114FDC0001FE72 /* CartItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItem.swift; sourceTree = "<group>"; };
 		188E9F8A20EFEEC100980530 /* Double+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Additions.swift"; sourceTree = "<group>"; };
 		18978EDF2202E62200189AB4 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = SOURCE_ROOT; };
 		189F85C72207D55C004B1C3E /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
@@ -457,6 +473,18 @@
 			path = "UrbanPiperSDK-Example";
 			sourceTree = "<group>";
 		};
+		188886E2220F39D50001FE72 /* Builders */ = {
+			isa = PBXGroup;
+			children = (
+				188886E3220F39EC0001FE72 /* RegistrationBuilder.swift */,
+				188886E5220F3AA10001FE72 /* SocialRegBuilder.swift */,
+				188886E7220F47C30001FE72 /* ResetPasswordBuilder.swift */,
+				188886E9220F48150001FE72 /* CheckoutBuilder.swift */,
+				188886FA22114F790001FE72 /* ItemBuilder.swift */,
+			);
+			path = Builders;
+			sourceTree = "<group>";
+		};
 		4607A91D208F1E2600128010 /* Custom Class */ = {
 			isa = PBXGroup;
 			children = (
@@ -538,6 +566,8 @@
 		4607A953208F1E2700128010 /* APIModels */ = {
 			isa = PBXGroup;
 			children = (
+				188886F622114E8D0001FE72 /* OrderResponse.swift */,
+				188886F722114E8D0001FE72 /* OrderVerifyTxnResponse.swift */,
 				188886BD220E9DA50001FE72 /* UserInfoResponse.swift */,
 				188886B5220DCBDB0001FE72 /* UserInfoUpdateResponse.swift */,
 				189F85D7220AC7D2004B1C3E /* SocialAuthResponse.swift */,
@@ -628,6 +658,7 @@
 				4607A96E208F1E2700128010 /* Viewport.swift */,
 				1878275620EA06BD009F57FA /* WalletTransactionResponse.swift */,
 				189F85CD220AA85E004B1C3E /* GenericResponse.swift */,
+				188886FC22114FDC0001FE72 /* CartItem.swift */,
 			);
 			path = APIModels;
 			sourceTree = "<group>";
@@ -702,6 +733,7 @@
 		46E4F720208DAB810045ED21 /* UrbanPiperSDK */ = {
 			isa = PBXGroup;
 			children = (
+				188886E2220F39D50001FE72 /* Builders */,
 				18978EDF2202E62200189AB4 /* Constants.swift */,
 				18B3C41C21D9E6EF00768401 /* Locale.swift */,
 				18B3C41921D9E6D800768401 /* Extras.swift */,
@@ -1012,6 +1044,7 @@
 				4607A9F3208F1E2800128010 /* TimeSlot.swift in Sources */,
 				4607A9A3208F1E2700128010 /* APIManager+FCM.swift in Sources */,
 				4607A9C9208F1E2700128010 /* BizInfo.swift in Sources */,
+				188886E8220F47C30001FE72 /* ResetPasswordBuilder.swift in Sources */,
 				4607A9DD208F1E2700128010 /* NotificationsResponse.swift in Sources */,
 				18B3C42521D9E72400768401 /* AppsFlyerObserver.swift in Sources */,
 				4607A9B7208F1E2700128010 /* OrderPaymentDataModel.swift in Sources */,
@@ -1047,6 +1080,7 @@
 				18B3C41121D7416500768401 /* Filter.swift in Sources */,
 				4607A9AB208F1E2700128010 /* APIManager+Biz.swift in Sources */,
 				46E3ACFB208DBA3E00DC43A2 /* UPReachability.swift in Sources */,
+				188886FB22114F790001FE72 /* ItemBuilder.swift in Sources */,
 				4607A9CA208F1E2700128010 /* CategoriesResponse.swift in Sources */,
 				4607A9FB208F1E2800128010 /* Choice.swift in Sources */,
 				18B3C43221DA2D7D00768401 /* User+Additions.swift in Sources */,
@@ -1067,6 +1101,7 @@
 				188E9F8B20EFEEC100980530 /* Double+Additions.swift in Sources */,
 				4607A9EC208F1E2700128010 /* UserLikesResponse.swift in Sources */,
 				463A529020C5346F0099E162 /* AddAddressResponse.swift in Sources */,
+				188886F822114E8D0001FE72 /* OrderResponse.swift in Sources */,
 				4607A9C0208F1E2700128010 /* BannersDataModel.swift in Sources */,
 				4607A9DC208F1E2700128010 /* User.swift in Sources */,
 				4607A9CB208F1E2700128010 /* ItemOptionGroup.swift in Sources */,
@@ -1078,6 +1113,7 @@
 				4607A9D5208F1E2700128010 /* AddressComponent.swift in Sources */,
 				4607A9F1208F1E2800128010 /* Biz.swift in Sources */,
 				4607A9DA208F1E2700128010 /* Meta.swift in Sources */,
+				188886E6220F3AA10001FE72 /* SocialRegBuilder.swift in Sources */,
 				4607A9AC208F1E2700128010 /* FirRemoteConfigDefaultsExtension.swift in Sources */,
 				4607A9EA208F1E2700128010 /* Term.swift in Sources */,
 				4607A9B4208F1E2700128010 /* CartDataModel.swift in Sources */,
@@ -1090,6 +1126,7 @@
 				1876202620EB915A0071FA25 /* APIManager+Wallet.swift in Sources */,
 				188886B6220DCBDB0001FE72 /* UserInfoUpdateResponse.swift in Sources */,
 				4607A9EE208F1E2800128010 /* Store.swift in Sources */,
+				188886E4220F39EC0001FE72 /* RegistrationBuilder.swift in Sources */,
 				4607A9C1208F1E2700128010 /* NotificationsDataModel.swift in Sources */,
 				4607A9A7208F1E2700128010 /* APIManager+User.swift in Sources */,
 				46A3447720977E8F004C0B67 /* VersionCheckResponse.swift in Sources */,
@@ -1110,11 +1147,13 @@
 				181F215E2105B76500878E6D /* OrderDetails.swift in Sources */,
 				1811F6C720D4F3AF006FEDE1 /* MyOrderMeta.swift in Sources */,
 				4607A9B2208F1E2700128010 /* CategoryItemsDataModel.swift in Sources */,
+				188886F922114E8D0001FE72 /* OrderVerifyTxnResponse.swift in Sources */,
 				18B3C41D21D9E6EF00768401 /* Locale.swift in Sources */,
 				1811F6CC20D4F3AF006FEDE1 /* MyOrderItem.swift in Sources */,
 				4607A9E9208F1E2700128010 /* BannersResponse.swift in Sources */,
 				4607A9A0208F1E2700128010 /* APIManager.swift in Sources */,
 				18B3C42621D9E72400768401 /* AnalyticsObserver.swift in Sources */,
+				188886EA220F48150001FE72 /* CheckoutBuilder.swift in Sources */,
 				463981D320D2507300336F7D /* MyOrdersDataModel.swift in Sources */,
 				4607A9F5208F1E2800128010 /* Object.swift in Sources */,
 				46CE3FC4208F655A0022475F /* Decimal+Additions.swift in Sources */,
@@ -1144,6 +1183,7 @@
 				4607A9E5208F1E2700128010 /* Item+Additions.swift in Sources */,
 				18B3C42721D9E72400768401 /* MixpanelObserver.swift in Sources */,
 				4607A9BE208F1E2700128010 /* LocationManagerDataModel.swift in Sources */,
+				188886FD22114FDC0001FE72 /* CartItem.swift in Sources */,
 				4607A9C4208F1E2700128010 /* GooglePlacesResponse.swift in Sources */,
 				4607A9D2208F1E2700128010 /* CategoryItemsResponse.swift in Sources */,
 				4607A9B3208F1E2700128010 /* ItemDetailsDataModel.swift in Sources */,

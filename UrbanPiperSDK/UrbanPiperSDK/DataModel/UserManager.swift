@@ -35,7 +35,6 @@ public class UserManager: UrbanPiperDataModel {
 
     private struct KeychainAppUserKeys {
         static let AppUserKey: String = "KeyChainUserDataKey"
-        static let BizInfoKey: String = "KeyChainBizInfoKey"
     }
     
     private typealias WeakRefDataModelDelegate = WeakRef<UserManagerDelegate>
@@ -93,38 +92,6 @@ public class UserManager: UrbanPiperDataModel {
                     cookieStore.deleteCookie(cookie)
                 }
             }
-        }
-    }
-    
-    @objc public private(set) var bizInfo: BizInfo? {
-        get {
-            guard let bizInfoData = UserManager.keychain.data(forKey: KeychainAppUserKeys.BizInfoKey) else { return nil}
-            Meta.registerClassNameWhiteLabel()
-            Meta.registerClassNameUrbanPiperSDK()
-            BizObject.registerClassNameWhiteLabel()
-            BizObject.registerClassNameUrbanPiperSDK()
-            BizInfo.registerClassNameUrbanPiperSDK()
-            
-            BizInfo.registerClassName()
-            BizInfo.registerClassNameWhiteLabel()
-
-            let obj = NSKeyedUnarchiver.unarchiveObject(with: bizInfoData)
-            guard let bizInfo: BizInfo = obj as? BizInfo else { return nil }
-            return bizInfo
-        }
-        set {
-            guard let info = newValue else {
-                UserManager.keychain.removeObject(forKey: KeychainAppUserKeys.BizInfoKey)
-                observers = observers.filter { $0.value != nil }
-                let _ = observers.map { $0.value?.userBizInfoChanged?() }
-                return
-            }
-            
-            let bizInfoData: Data = NSKeyedArchiver.archivedData(withRootObject: info)
-            UserManager.keychain.set(bizInfoData, forKey: KeychainAppUserKeys.BizInfoKey)
-            
-            observers = observers.filter { $0.value != nil }
-            let _ = observers.map { $0.value?.userBizInfoChanged?() }
         }
     }
     
@@ -231,7 +198,7 @@ public class UserManager: UrbanPiperDataModel {
         UserDefaults.standard.removeObject(forKey: "defaultAddress")
 
         UserManager.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
-        UserManager.keychain.removeObject(forKey: KeychainAppUserKeys.BizInfoKey)
+        UserManager.keychain.removeObject(forKey: "KeyChainBizInfoKey")
         
         AddressDataModel.shared.userAddressesResponse = nil
         
@@ -251,7 +218,6 @@ public class UserManager: UrbanPiperDataModel {
         UserDefaults.standard.removeObject(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
         
         currentUser = nil
-        bizInfo = nil        
     }
     
 }
@@ -344,7 +310,9 @@ extension UserManager {
         guard currentUser != nil else { return nil }
         
         let dataTask: URLSessionDataTask = APIManager.shared.updateUserBizInfo(completion: { [weak self] (info) in
-            self?.bizInfo = info
+            let user = self?.currentUser
+            user?.biz = info
+            self?.currentUser = user
             AnalyticsManager.shared.track(event: .bizInfoUpdated)
             completion?(info)
         }, failure: failure)
@@ -359,14 +327,14 @@ extension UserManager {
 
 extension UserManager {
     
-    @discardableResult public func registerForFCMMessaging(token: String, completion: (([String: Any]?) -> Void)? = nil,
+    @discardableResult public func registerForFCMMessaging(token: String, completion: ((GenericResponse?) -> Void)? = nil,
         failure: APIFailure? = nil) -> URLSessionDataTask {
         let dataTask: URLSessionDataTask = APIManager.shared.registerForFCMMessaging(token: token, completion: nil, failure: nil)
         addDataTask(dataTask: dataTask)
         return dataTask
     }
     
-    @discardableResult public func unRegisterForFCMMessaging(token: String, completion: (([String: Any]?) -> Void)? = nil,
+    @discardableResult public func unRegisterForFCMMessaging(token: String, completion: ((GenericResponse??) -> Void)? = nil,
                                                              failure: APIFailure? = nil) -> URLSessionDataTask {
         let dataTask: URLSessionDataTask = APIManager.shared.unRegisterForFCMMessaging(token: token, completion: nil, failure: nil)
         addDataTask(dataTask: dataTask)
@@ -545,11 +513,11 @@ extension UserManager {
     }
     
 //  used only when "new_registration_required"
-    @discardableResult public func verifyPhone(_ phone: String,
+    @discardableResult public func verifyRegOTP(phone: String,
                                    otp: String,
                                    completion: @escaping ((RegistrationResponse?) -> Void),
                                    failure: @escaping APIFailure) -> URLSessionDataTask {
-        let dataTask: URLSessionDataTask = APIManager.shared.verifyMobile(phone: phone, pin: otp, completion: { (registrationResponse) in
+        let dataTask: URLSessionDataTask = APIManager.shared.verifyRegOTP(phone: phone, pin: otp, completion: { (registrationResponse) in
             completion(registrationResponse)
         }, failure: { (error) in
             failure(error)

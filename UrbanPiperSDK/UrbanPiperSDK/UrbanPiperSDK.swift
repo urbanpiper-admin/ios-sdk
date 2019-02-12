@@ -29,15 +29,27 @@ public class UrbanPiperSDK: NSObject {
 //  MARK: User Methods
 
 public extension UrbanPiperSDK {
+    
+    func startRegistration(phone: String) -> RegistrationBuilder {
+        return RegistrationBuilder(phone: phone)
+    }
+    
+    func startSocialRegistration() -> SocialRegBuilder {
+        return SocialRegBuilder()
+    }
+    
+    func startPasswordReset() -> ResetPasswordBuilder {
+        return ResetPasswordBuilder()
+    }
 
     func getUser() -> User? {
         return UserManager.shared.currentUser
     }
     
-    func getUserBizInfo() -> BizInfo? {
-        return UserManager.shared.bizInfo
+    func logout() {
+        UserManager.shared.logout()
     }
-    
+        
     @discardableResult public func refreshUserData(completion: ((UserInfoResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
         return UserManager.shared.refreshUserData(completion: completion, failure: failure)
     }
@@ -52,6 +64,26 @@ public extension UrbanPiperSDK {
     
     @discardableResult public func updateUserBizInfo(completion: ((BizInfo?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
         return UserManager.shared.updateUserBizInfo(completion: completion, failure: failure)
+    }
+    
+    @discardableResult public func getDeliverableAddresses(locationId: Int, completion: ((UserAddressesResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.userSavedDeliverableAddresses(locationId: locationId, completion: completion, failure: failure)
+    }
+
+    @discardableResult public func addAddress(address: Address, completion: ((AddUpdateAddressResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.addAddress(address: address, completion: completion, failure: failure)
+    }
+    
+    @discardableResult public func updateAddress(address: Address, completion: ((AddUpdateAddressResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.updateAddress(address: address, completion: completion, failure: failure)
+    }
+    
+    @discardableResult public func deleteAddress(addressId: Int, completion: ((GenericResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.deleteAddress(addressId: addressId, completion: completion, failure: failure)
+    }
+    
+    @discardableResult public func getWalletTransactions(addressId: Int, completion: ((WalletTransactionResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.fetchWalletTransactions(completion: completion, failure: failure)
     }
 
 }
@@ -70,69 +102,18 @@ extension UrbanPiperSDK {
 
 }
 
-
-//  MARK: Account Creation
-
-extension UrbanPiperSDK {
- 
-    @discardableResult public func registerUser(name: String, phone: String, email: String, password: String, referralObject: Referral?, completion: @escaping (RegistrationResponse?) -> Void, failure: @escaping APIFailure) -> URLSessionDataTask {
-        return UserManager.shared.registerUser(name: name, phone: phone, email: email, password: password, referralObject: referralObject, completion: completion, failure: failure)
-    }
-    
-    @discardableResult public func registerSocialUser(name: String, phone: String, email: String, gender: String?, socialLoginProvider: SocialLoginProvider, accessToken: String, referralObject: Referral?, completion: @escaping ((RegistrationResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return UserManager.shared.registerSocialUser(name: name, phone: phone, email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken, referralObject: referralObject, completion: completion, failure: failure)
-    }
-
-    @discardableResult public func verifyPhone(phone: String, email: String, socialLoginProvider: SocialLoginProvider, accessToken: String, completion: @escaping ((socialLoginResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return UserManager.shared.verifyPhone(phone: phone, email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken, completion: completion, failure: failure)
-    }
-
-}
-
-//  MARK: Registration OTP
-
-extension UrbanPiperSDK {
-    
-    @discardableResult public func verifyPhone(_ phone: String, otp: String, completion: @escaping ((RegistrationResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return UserManager.shared.verifyPhone(phone, otp: otp, completion: completion, failure: failure)
-    }
-    
-    @discardableResult public func verifySocialOTP(phone: String, email: String, socialLoginProvider: SocialLoginProvider, accessToken: String, otp: String, completion: @escaping ((socialLoginResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return UserManager.shared.verifySocialOTP(phone: phone, email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken, otp: otp, completion: completion, failure: failure)
-    }
-    
-    @discardableResult public func resendOTP(phone: String, completion: @escaping ((RegistrationResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return UserManager.shared.resendOTP(phone: phone, completion: completion, failure: failure)
-    }
-    
-}
-
-//  MARK: Forgot Password
-
-extension UrbanPiperSDK {
-    
-    @discardableResult public func forgotPassword(phone: String, completion: @escaping (GenericResponse?) -> Void, failure: @escaping APIFailure) -> URLSessionDataTask {
-        return UserManager.shared.forgotPassword(phone: phone, completion: completion, failure: failure)
-    }
-    
-    @discardableResult public func resetPassword(phone: String, otp: String, password: String, confirmPassword: String, completion: @escaping ((GenericResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return UserManager.shared.resetPassword(phone: phone, otp: otp, password: password, confirmPassword: confirmPassword, completion: completion, failure: failure)
-    }
-    
-}
-
 //  MARK: FCM
 
 extension UrbanPiperSDK {
     
-    @discardableResult public func registerForFCMMessaging(token: String, completion: (([String: Any]?) -> Void)? = nil,
+    @discardableResult public func registerForFCMMessaging(token: String, completion: ((GenericResponse?) -> Void)? = nil,
                                                            failure: APIFailure? = nil) -> URLSessionDataTask {
-        return UserManager.shared.registerForFCMMessaging(token: token, completion: completion, failure: failure)
+        return APIManager.shared.registerForFCMMessaging(token: token, completion: completion, failure: failure)
     }
     
-    @discardableResult public func unRegisterForFCMMessaging(token: String, completion: (([String: Any]?) -> Void)? = nil,
+    @discardableResult public func unRegisterForFCMMessaging(token: String, completion: ((GenericResponse?) -> Void)? = nil,
                                                              failure: APIFailure? = nil) -> URLSessionDataTask {
-        return UserManager.shared.unRegisterForFCMMessaging(token: token, completion: completion, failure: failure)
+        return APIManager.shared.unRegisterForFCMMessaging(token: token, completion: completion, failure: failure)
     }
 }
 

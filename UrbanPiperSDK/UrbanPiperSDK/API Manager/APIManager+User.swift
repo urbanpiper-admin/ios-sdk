@@ -426,12 +426,12 @@ extension APIManager {
         return dataTask*/
     }
     
-    @objc public func deleteAddress(address: Address,
+    @objc public func deleteAddress(addressId: Int,
                                     completion: ((GenericResponse?) -> Void)?,
                                     failure: APIFailure?) -> URLSessionDataTask {
         
 
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/user/address/\(address.id!)/?biz_id=\(bizId)"
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/user/address/\(addressId)/?biz_id=\(bizId)"
 
         let url: URL = URL(string: urlString)!
         

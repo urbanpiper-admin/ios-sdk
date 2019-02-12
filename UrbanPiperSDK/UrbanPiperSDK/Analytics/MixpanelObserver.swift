@@ -227,7 +227,7 @@ class MixpanelObserver: AnalyticsObserver {
                                                        "username": phone,
                                                        "social_auth": platform])
         case .bizInfoUpdated:
-            guard let user = UserManager.shared.currentUser, let bizObject = UserManager.shared.bizInfo?.objects?.last,
+            guard let user = UserManager.shared.currentUser, let bizObject = user.biz?.objects?.last,
                 let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 else { return }
             let mixpanel = Mixpanel.mainInstance()
             mixpanel.identify(distinctId: user.phone)
