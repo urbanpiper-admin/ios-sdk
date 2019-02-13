@@ -196,8 +196,8 @@ extension CategoryItemsDataModel {
                                                             locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
                                                             sortKey: selectedSortOption,
                                                             filterOptions: selectedFilterOptions,
-                                                            isForcedRefresh: isForcedRefresh,
-                                                            next: next,
+//                                                            isForcedRefresh: isForcedRefresh,
+//                                                            next: next,
                                                             completion: { [weak self] (data) in
                                                                 self?.isFetchingCategoryItems = false
                                                                 self?.categoryOptionsApplied = true

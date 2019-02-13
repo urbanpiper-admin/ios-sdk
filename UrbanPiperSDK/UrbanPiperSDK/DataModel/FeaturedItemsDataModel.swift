@@ -94,7 +94,7 @@ open class FeaturedItemsDataModel: UrbanPiperDataModel {
 
 extension FeaturedItemsDataModel {
     
-    fileprivate func fetchFeaturedItems(isForcedRefresh: Bool, next: String? = nil) {
+    fileprivate func fetchFeaturedItems(isForcedRefresh: Bool, offset: Int = 0) {
         if let itemId = itemIds.last, itemId == 0, !AppConfigManager.shared.firRemoteConfigDefaults.showFeaturedItems {
             dataModelDelegate?.handleFeaturedItems(error: nil)
             let _ = observers.map { $0.value?.handleFeaturedItems(error: nil) }
@@ -110,10 +110,10 @@ extension FeaturedItemsDataModel {
         let _ = observers.map { $0.value?.refreshFeaturedItemsUI(true) }
         let dataTask: URLSessionDataTask = APIManager.shared.featuredItems(itemIds: itemIds,
                                                                              locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
-                                                                           next: next,
+                                                                           offset: offset,
                                                                            completion: { [weak self] (data) in
                                                                             guard let response = data else { return }
-                                                                            if next == nil {
+                                                                            if offset == 0 {
                                                                                 if response.objects.count > 1 {
                                                                                     response.objects.sort { (obj1, obj2) in
                                                                                         guard obj1.currentStock != 0 else { return false }
@@ -169,7 +169,7 @@ extension FeaturedItemsDataModel {
         if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
             let itemObject: ItemObject = itemsArray![indexPath.row]
             if itemsArray?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
-                fetchFeaturedItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
+                fetchFeaturedItems(isForcedRefresh: true, offset: itemsArray!.count)
             }
             categoryCell.configureCell(itemObject, extras: extras)
         } else {
@@ -245,7 +245,7 @@ extension FeaturedItemsDataModel {
         
         guard let itemObject: ItemObject = (collectionView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
         if itemsArray?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
-            fetchFeaturedItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
+            fetchFeaturedItems(isForcedRefresh: true, offset: itemsArray!.count)
         }
     }
     
@@ -265,7 +265,7 @@ extension FeaturedItemsDataModel {
         
         guard let itemObject: ItemObject = (collectionView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
         if itemsArray?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
-            fetchFeaturedItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
+            fetchFeaturedItems(isForcedRefresh: true, offset: itemsArray!.count)
         }
     }
     

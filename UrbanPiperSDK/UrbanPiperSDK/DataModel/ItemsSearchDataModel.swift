@@ -57,7 +57,7 @@ extension ItemsSearchDataModel {
         if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
             let itemObject: ItemObject = itemsArray![indexPath.row]
             if itemsArray?.last === itemObject, itemsArray!.count < itemsSearchResponse!.meta.totalCount {
-                searchItems(for: searchKeyword, next: itemsSearchResponse?.meta.next)
+                searchItems(for: searchKeyword, offset: itemsArray!.count)
             }
             categoryCell.configureCell(itemObject, extras: extras)
         } else {
@@ -82,7 +82,7 @@ extension ItemsSearchDataModel {
         if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
             let itemObject: ItemObject = itemsArray![indexPath.row]
             if itemsArray?.last === itemObject, itemsArray!.count < itemsSearchResponse!.meta.totalCount {
-                searchItems(for: searchKeyword, next: itemsSearchResponse?.meta.next)
+                searchItems(for: searchKeyword, offset: itemsArray!.count)
             }
             categoryCell.configureCell(itemObject, extras: extras)
         } else {
@@ -116,15 +116,15 @@ extension ItemsSearchDataModel {
     }
     
     @objc private func searchItems(for keyword: String) {
-        searchItems(for: keyword, next: nil)
+        searchItems(for: keyword)
     }
 
-    private func searchItems(for keyword: String, next: String? = nil) {
+    private func searchItems(for keyword: String, offset: Int = 0) {
         dataModelDelegate?.refreshItemsSearchUI(true)
         searchKeyword = keyword
         let dataTask: URLSessionDataTask = APIManager.shared.fetchCategoryItems(for: keyword,
-                                                                                next: next,
                                                                                 locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
+                                                                                offset: offset,
                                                                                 completion:
             { [weak self] (data) in
                 defer {

@@ -10,15 +10,12 @@ import Foundation
 
 extension APIManager {
     
-    @objc public func availableCoupons(next: String?,
-                                       completion: ((OffersAPIResponse?) -> Void)?,
-                                       failure: APIFailure?) -> URLSessionDataTask {
-        
-        var urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/"
-        
-        if let nextUrlString: String = next {
-            urlString = "\(APIManager.baseUrl)\(nextUrlString)"
-        }
+    func availableCoupons(offset: Int = 0,
+                          limit: Int = Constants.fetchLimit,
+                          completion: ((OffersAPIResponse?) -> Void)?,
+                          failure: APIFailure?) -> URLSessionDataTask {
+
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/?offset=\(offset)&limit=\(limit)"
 
         let url: URL = URL(string: urlString)!
         

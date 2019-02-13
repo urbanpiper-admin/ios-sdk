@@ -11,13 +11,10 @@ import Foundation
 extension APIManager {
 
     @objc public func checkForUpgrade(username: String?,
+                                      version: String,
                                       completion: ((VersionCheckResponse?) -> Void)?,
                                       failure: APIFailure?) -> URLSessionDataTask {
-        
-        let infoDictionary: [String: Any] = Bundle.main.infoDictionary!
-        let appVersion: String = infoDictionary["CFBundleShortVersionString"] as! String
-        
-        var urlString: String = "\(APIManager.baseUrl)/api/v1/app/ios/?biz_id=\(bizId)&ver=\(appVersion)"
+        var urlString: String = "\(APIManager.baseUrl)/api/v1/app/ios/?biz_id=\(bizId)&ver=\(version)"
         
         if let usernameVal = username {
             urlString = "\(urlString)&user=\(usernameVal)"

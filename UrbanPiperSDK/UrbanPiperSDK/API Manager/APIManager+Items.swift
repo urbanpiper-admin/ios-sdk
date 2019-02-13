@@ -59,14 +59,16 @@ extension APIManager {
 
     func fetchCategoryItems(categoryId: Int,
                             locationID: Int?,
-                            sortKey: String?,
-                            filterOptions: [FilterOption]?,
-                            isForcedRefresh: Bool,
-                            next: String?,
+                            offset: Int = 0,
+                            limit: Int = Constants.fetchLimit,
+                            sortKey: String? = nil,
+                            filterOptions: [FilterOption]? = nil,
+//                            isForcedRefresh: Bool,
+//                            next: String?,
                             completion: ((CategoryItemsResponse?) -> Void)?,
                             failure: APIFailure?) -> URLSessionDataTask {
 
-        var urlString: String = "\(APIManager.baseUrl)/api/v1/order/categories/\(categoryId)/items/?format=json&biz_id=\(bizId)"
+        var urlString: String = "\(APIManager.baseUrl)/api/v1/order/categories/\(categoryId)/items/?format=json&offset=\(offset)&limit=\(limit)&biz_id=\(bizId)"
 
         if let id = locationID {
             urlString = "\(urlString)&location_id=\(id)"
@@ -82,14 +84,14 @@ extension APIManager {
             urlString = "\(urlString)&filter_by=\(filterKeysString)"
         }
         
-        if let nextUrlString: String = next {
-            urlString = "\(APIManager.baseUrl)\(nextUrlString)"
-        }
+//        if let nextUrlString: String = next {
+//            urlString = "\(APIManager.baseUrl)\(nextUrlString)"
+//        }
 
         let url: URL = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
 
-        var urlRequest: URLRequest = URLRequest(url: url,
-                                                cachePolicy: isForcedRefresh ? .reloadIgnoringLocalAndRemoteCacheData : .useProtocolCachePolicy)
+        var urlRequest: URLRequest = URLRequest(url: url)
+//        , cachePolicy: isForcedRefresh ? .reloadIgnoringLocalAndRemoteCacheData : .useProtocolCachePolicy)
 
         urlRequest.httpMethod = "GET"
 
@@ -126,16 +128,17 @@ extension APIManager {
     }
 
     func fetchCategoryItems(for keyword: String,
-                            next: String? = nil,
                             locationID: Int?,
+                            offset: Int = 0,
+                            limit: Int = Constants.fetchLimit,
                             completion: ((ItemsSearchResponse?) -> Void)?,
                             failure: APIFailure?) -> URLSessionDataTask {
 
-        var urlString: String = "\(APIManager.baseUrl)/api/v2/search/items/?keyword=\(keyword)&biz_id=\(bizId)"
+        var urlString: String = "\(APIManager.baseUrl)/api/v2/search/items/?keyword=\(keyword)&offset=\(offset)&limit=\(limit)&biz_id=\(bizId)"
         
-        if let nextUrlString: String = next {
-            urlString = "\(APIManager.baseUrl)\(nextUrlString)"
-        }
+//        if let nextUrlString: String = next {
+//            urlString = "\(APIManager.baseUrl)\(nextUrlString)"
+//        }
         
         urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
 

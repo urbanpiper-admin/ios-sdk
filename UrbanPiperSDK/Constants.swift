@@ -7,10 +7,11 @@
 
 import UIKit
 
-internal class Constants {
+struct Constants {
 
-    internal static let isNotFirstLaunchKey: String = "IsNotFirstLaunchKey"
+    static let isNotFirstLaunchKey: String = "IsNotFirstLaunchKey"
 
+    static let fetchLimit: Int = 20
 }
 
 

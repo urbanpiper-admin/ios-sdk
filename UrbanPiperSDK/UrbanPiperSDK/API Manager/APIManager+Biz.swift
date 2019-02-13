@@ -10,7 +10,7 @@ import Foundation
 
 extension APIManager {
     
-    @objc internal func updateUserBizInfo(completion: ((BizInfo?) -> Void)?,
+    @objc internal func refreshUserBizInfo(completion: ((BizInfo?) -> Void)?,
                                 failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/userbizinfo/?format=json&biz_id=\(bizId)"

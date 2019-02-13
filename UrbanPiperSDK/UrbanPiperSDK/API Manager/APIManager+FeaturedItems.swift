@@ -9,21 +9,22 @@ import UIKit
 
 extension APIManager {
 
-    public func featuredItems(itemIds: [Int] = [0],
-                              locationID: Int?,
-                              next: String?,
-                              completion: ((CategoryItemsResponse?) -> Void)?,
-                              failure: APIFailure?) -> URLSessionDataTask {
+    func featuredItems(itemIds: [Int] = [0],
+                       locationID: Int?,
+                       offset: Int = 0,
+                       limit: Int = Constants.fetchLimit,
+                       completion: ((CategoryItemsResponse?) -> Void)?,
+                       failure: APIFailure?) -> URLSessionDataTask {
         let itemIdsString = itemIds.map { "\($0)" }.joined(separator: ",")
-        var urlString: String = "\(APIManager.baseUrl)/api/v2/items/\(itemIdsString)/recommendations/"
+        var urlString: String = "\(APIManager.baseUrl)/api/v2/items/\(itemIdsString)/recommendations/?offset=\(offset)&limit=\(limit)"
         
         if let id = locationID {
-            urlString = "\(urlString)?location_id=\(id)"
+            urlString = "\(urlString)&location_id=\(id)"
         }
         
-        if let nextUrlString: String = next {
-            urlString = "\(APIManager.baseUrl)\(nextUrlString)"
-        }
+//        if let nextUrlString: String = next {
+//            urlString = "\(APIManager.baseUrl)\(nextUrlString)"
+//        }
         
         let url: URL = URL(string: urlString)!
         

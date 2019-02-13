@@ -75,8 +75,8 @@ public class UserManager: UrbanPiperDataModel {
                 if currentUser == nil {
                     defer {
                         DispatchQueue.main.async { [weak self] in
-                            self?.refreshUserData()
-                            self?.updateUserBizInfo()
+                            self?.refreshUserInfo()
+                            self?.refreshUserBizInfo()
                         }
                     }
                 }
@@ -226,7 +226,7 @@ public class UserManager: UrbanPiperDataModel {
 
 extension UserManager {
     
-    @objc @discardableResult public func refreshUserData(completion: ((UserInfoResponse?) -> Void)? = nil,
+    @objc @discardableResult public func refreshUserInfo(completion: ((UserInfoResponse?) -> Void)? = nil,
                                       failure: APIFailure? = nil) -> URLSessionDataTask? {
         guard let phoneNo = currentUser?.phone else {
             failure?(nil)
@@ -306,10 +306,10 @@ extension UserManager {
         return dataTask
     }
     
-    @objc @discardableResult public func updateUserBizInfo(completion: ((BizInfo?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
+    @objc @discardableResult public func refreshUserBizInfo(completion: ((BizInfo?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
         guard currentUser != nil else { return nil }
         
-        let dataTask: URLSessionDataTask = APIManager.shared.updateUserBizInfo(completion: { [weak self] (info) in
+        let dataTask: URLSessionDataTask = APIManager.shared.refreshUserBizInfo(completion: { [weak self] (info) in
             let user = self?.currentUser
             user?.biz = info
             self?.currentUser = user

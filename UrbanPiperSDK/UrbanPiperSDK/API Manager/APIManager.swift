@@ -44,6 +44,7 @@ public typealias APIFailure = (UPError?) -> Void
     @objc public static private(set) var shared: APIManager!
     
     static let channel: String = "app_ios"
+    static let fetchLimit: Int = 20
 
     var language: Language {
         didSet {
@@ -93,7 +94,7 @@ public typealias APIFailure = (UPError?) -> Void
             return uuidStringVal
         }
     }
-
+    
     private init(language: Language, bizId: String, apiUsername: String, apiKey: String, jwt: JWT?) {
         self.language = language
         self.bizId = bizId

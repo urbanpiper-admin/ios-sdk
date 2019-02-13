@@ -10,7 +10,9 @@ import Foundation
 
 extension APIManager {
 
-    @objc public func userLikes(completion: ((UserLikesResponse?) -> Void)?,
+    @objc func userLikes(offset: Int = 0,
+                         limit: Int = Constants.fetchLimit,
+                         completion: ((UserLikesResponse?) -> Void)?,
                          failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/item/likes/"

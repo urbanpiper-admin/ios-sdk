@@ -49,26 +49,27 @@ open class OffersDataModel: UrbanPiperDataModel {
     }
 
     
-    public func availableCoupons(next: String? = nil, isForcedRefresh: Bool = false) {
+    public func availableCoupons(offset: Int = 0, isForcedRefresh: Bool = false) {
         guard isForcedRefresh || (!isForcedRefresh && offersAPIResponse == nil) else { return }
         dataModelDelegate?.refreshCouponUI(true)
-        let dataTask: URLSessionDataTask = APIManager.shared.availableCoupons(next: next,
-                                                                         completion: { [weak self] (offersAPIResponse) in
-                                                                            defer {
-                                                                                self?.dataModelDelegate?.refreshCouponUI(false)
-                                                                            }
-                                                                            guard let response = offersAPIResponse else { return }
-
-                                                                            if next == nil {
-                                                                                self?.offersAPIResponse = offersAPIResponse
-                                                                            } else {
-                                                                                let currentOffersAPIResponse = self?.offersAPIResponse
-                                                                                
-                                                                                currentOffersAPIResponse?.coupons.append(contentsOf: response.coupons)
-                                                                                currentOffersAPIResponse?.meta = response.meta
-                                                                                
-                                                                                self?.offersAPIResponse = currentOffersAPIResponse
-                                                                            }
+        let dataTask: URLSessionDataTask = APIManager.shared.availableCoupons(offset: offset,
+                                                                              completion:
+            { [weak self] (offersAPIResponse) in
+                defer {
+                    self?.dataModelDelegate?.refreshCouponUI(false)
+                }
+                guard let response = offersAPIResponse else { return }
+                
+                if offset == 0 {
+                    self?.offersAPIResponse = offersAPIResponse
+                } else {
+                    let currentOffersAPIResponse = self?.offersAPIResponse
+                    
+                    currentOffersAPIResponse?.coupons.append(contentsOf: response.coupons)
+                    currentOffersAPIResponse?.meta = response.meta
+                    
+                    self?.offersAPIResponse = currentOffersAPIResponse
+                }
             }, failure: { [weak self] (upError) in
                 defer {
                     self?.dataModelDelegate?.refreshCouponUI(false)
@@ -122,8 +123,8 @@ extension OffersDataModel {
         if let couponCell: OfferCellDelegate = cell as? OfferCellDelegate {
             let coupon: Coupon = couponCodesArray![indexPath.row]
             if couponCodesArray!.last === coupon, couponCodesArray!.count < offersAPIResponse!.meta.totalCount {
-                    availableCoupons(next: offersAPIResponse?.meta.next, isForcedRefresh: true)
-                }
+                availableCoupons(offset: couponCodesArray!.count, isForcedRefresh: true)
+            }
             couponCell.configureCell(coupon, extras: extras)
         } else {
             assert(false, "Cell does not conform to OfferCellDelegate protocol")
@@ -166,7 +167,7 @@ extension OffersDataModel {
         
         guard let coupon: Coupon = (tableView?.visibleCells.last as? OfferCellDelegate)?.object() else { return }
         if couponCodesArray?.last === coupon, couponCodesArray!.count < offersAPIResponse!.meta.totalCount {
-            availableCoupons(next: offersAPIResponse?.meta.next)
+            availableCoupons(offset: couponCodesArray!.count)
         }
     }
     
@@ -187,7 +188,7 @@ extension OffersDataModel {
         
         guard let coupon: Coupon = (tableView?.visibleCells.last as? OfferCellDelegate)?.object() else { return }
         if couponCodesArray?.last === coupon, couponCodesArray!.count < offersAPIResponse!.meta.totalCount {
-            availableCoupons(next: offersAPIResponse?.meta.next)
+            availableCoupons(offset: couponCodesArray!.count)
         }
     }
     
