@@ -192,7 +192,7 @@ extension CategoryItemsDataModel {
         guard !isFetchingCategoryItems else { return }
         dataModelDelegate?.refreshCategoryItemsUI(true)
         isFetchingCategoryItems = true
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchCategoryItems(categoryId: categoryObject.id,
+        let dataTask: URLSessionDataTask = APIManager.shared.getCategoryItems(categoryId: categoryObject.id,
                                                             locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
                                                             sortKey: selectedSortOption,
                                                             filterOptions: selectedFilterOptions,
@@ -241,7 +241,7 @@ extension CategoryItemsDataModel {
     fileprivate func fetchCategoryOptions() {
         guard categoryOptionsResponse == nil else { return }
         dataModelDelegate?.refreshFilterSortUI(true)
-        let dataTask = APIManager.shared.fetchCategoryOptions(id: categoryObject.id, completion: { [weak self] (data) in
+        let dataTask = APIManager.shared.getFilterAndSortOptions(id: categoryObject.id, completion: { [weak self] (data) in
             defer {
                 self?.dataModelDelegate?.refreshFilterSortUI(false)
             }

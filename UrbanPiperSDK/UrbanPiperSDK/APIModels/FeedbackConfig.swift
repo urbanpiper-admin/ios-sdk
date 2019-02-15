@@ -53,8 +53,7 @@ public class FeedbackConfig : NSObject, NSCoding{
     */
     @objc required public init(coder aDecoder: NSCoder)
 	{
-        Choice.registerClassName()
-        Choice.registerClassNameWhiteLabel()
+        Choice.registerClass()
          choices = aDecoder.decodeObject(forKey :"choices") as? [Choice]
          type = aDecoder.decodeObject(forKey: "type") as? String
 

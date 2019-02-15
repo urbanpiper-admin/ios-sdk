@@ -10,7 +10,7 @@ import Foundation
 
 extension APIManager {
     
-    func availableCoupons(offset: Int = 0,
+    func getOffers(offset: Int = 0,
                           limit: Int = Constants.fetchLimit,
                           completion: ((OffersAPIResponse?) -> Void)?,
                           failure: APIFailure?) -> URLSessionDataTask {

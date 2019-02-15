@@ -104,7 +104,7 @@ extension WalletDataModel {
     public func fetchWalletTransactions() {
         dataModelDelegate?.fetchingWalletTransactions(isRefreshing: true)
         
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchWalletTransactions(completion: { [weak self] (response) in
+        let dataTask: URLSessionDataTask = APIManager.shared.getWalletTransactions(completion: { [weak self] (response) in
             self?.walletTransactionResponse = response
             self?.dataModelDelegate?.fetchingWalletTransactions(isRefreshing: false)
         }, failure: { [weak self] (upError) in

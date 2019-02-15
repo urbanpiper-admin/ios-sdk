@@ -8,10 +8,10 @@
 import Foundation
 
 
-public class MyOrdersResponse : NSObject{
+public class PastOrdersResponse : NSObject{
 
 	public var meta : Meta!
-	public var orders : [MyOrder]!
+	public var orders : [PastOrder]!
 
 
 	/**
@@ -21,10 +21,10 @@ public class MyOrdersResponse : NSObject{
 		if let metaData = dictionary["meta"] as? [String:Any]{
 			meta = Meta(fromDictionary: metaData)
 		}
-		orders = [MyOrder]()
+		orders = [PastOrder]()
 		if let ordersArray = dictionary["orders"] as? [[String:Any]]{
 			for dic in ordersArray{
-				let value = MyOrder(fromDictionary: dic)
+				let value = PastOrder(fromDictionary: dic)
 				orders.append(value)
 			}
 		}

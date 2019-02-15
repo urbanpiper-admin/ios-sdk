@@ -65,21 +65,12 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
 
     @objc public var nearestStoreResponse: StoreResponse? = {
         guard let storeResponseData: Data = UserDefaults.standard.object(forKey: OrderingStoreUserDefaultKeys.nearestStoreResponseKey) as? Data else { return nil }
-        StoreResponse.registerClassName()
-        StoreResponse.registerClassNameUrbanPiperSDK()
-        Biz.registerClassName()
-        Biz.registerClassNameWhiteLabel()
-        Biz.registerClassNameUrbanPiperSDK()
-        Store.registerClassName()
-        Store.registerClassNameUrbanPiperSDK()
-        FeedbackConfig.registerClassName()
-        FeedbackConfig.registerClassNameWhiteLabel()
-        FeedbackConfig.registerClassNameUrbanPiperSDK()
-        TimeSlot.registerClassName()
-        TimeSlot.registerClassNameWhiteLabel()
-        TimeSlot.registerClassNameUrbanPiperSDK()
-        Choice.registerClassName()
-        Choice.registerClassNameUrbanPiperSDK()
+        StoreResponse.registerClass()
+        Biz.registerClass()
+        Store.registerClass()
+        FeedbackConfig.registerClass()
+        TimeSlot.registerClass()
+        Choice.registerClass()
 
 
         guard let storeResponse: StoreResponse = NSKeyedUnarchiver.unarchiveObject(with: storeResponseData) as? StoreResponse else { return nil }
@@ -196,7 +187,7 @@ extension OrderingStoreDataModel {
         
         _ = observers.map { $0.value?.update(nil, location, nil, false) }
         
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchNearestStore(location.coordinate, completion: { [weak self] (data) in
+        let dataTask: URLSessionDataTask = APIManager.shared.getNearestStore(location.coordinate, completion: { [weak self] (data) in
             defer {
                 self?.deliveryOption = .delivery
                 

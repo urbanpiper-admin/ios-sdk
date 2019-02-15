@@ -122,7 +122,7 @@ extension ItemsSearchDataModel {
     private func searchItems(for keyword: String, offset: Int = 0) {
         dataModelDelegate?.refreshItemsSearchUI(true)
         searchKeyword = keyword
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchCategoryItems(for: keyword,
+        let dataTask: URLSessionDataTask = APIManager.shared.searchItems(query: keyword,
                                                                                 locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
                                                                                 offset: offset,
                                                                                 completion:

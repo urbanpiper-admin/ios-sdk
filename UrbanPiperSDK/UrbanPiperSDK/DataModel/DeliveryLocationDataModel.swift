@@ -67,8 +67,8 @@ public class DeliveryLocationDataModel: UrbanPiperDataModel {
     
     @objc public var deliveryAddress: Address? = {
         guard let addressData: Data = UserDefaults.standard.object(forKey: LocationUserDefaultKeys.deliveryAddress) as? Data else { return nil }
-        OrderDeliveryAddress.registerClassName()
-        Address.registerClassName()
+        OrderDeliveryAddress.registerClass()
+        Address.registerClass()
         guard let orderDeliveryAddress: Address = NSKeyedUnarchiver.unarchiveObject(with: addressData) as? Address else { return nil }
         return orderDeliveryAddress
         }()

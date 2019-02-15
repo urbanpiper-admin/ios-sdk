@@ -108,7 +108,7 @@ extension FeaturedItemsDataModel {
         guard isForcedRefresh || (!isForcedRefresh && categoryItemsResponse == nil) else { return }
         dataModelDelegate?.refreshFeaturedItemsUI(true)
         let _ = observers.map { $0.value?.refreshFeaturedItemsUI(true) }
-        let dataTask: URLSessionDataTask = APIManager.shared.featuredItems(itemIds: itemIds,
+        let dataTask: URLSessionDataTask = APIManager.shared.getFeaturedItems(itemIds: itemIds,
                                                                              locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
                                                                            offset: offset,
                                                                            completion: { [weak self] (data) in

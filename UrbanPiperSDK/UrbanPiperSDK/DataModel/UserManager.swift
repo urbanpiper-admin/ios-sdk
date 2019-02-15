@@ -48,14 +48,15 @@ public class UserManager: UrbanPiperDataModel {
     @objc public private(set) var currentUser: User? {
         get {
             guard let userData = UserManager.keychain.data(forKey: KeychainAppUserKeys.AppUserKey) else { return nil}
-            Meta.registerClassNameWhiteLabel()
-            Meta.registerClassNameUrbanPiperSDK()
-            BizObject.registerClassNameWhiteLabel()
-            BizObject.registerClassNameUrbanPiperSDK()
-            BizInfo.registerClassNameWhiteLabel()
-            BizInfo.registerClassNameUrbanPiperSDK()
 
-            User.registerClassName()
+            User.registerClass()
+            Meta.registerClass()
+            UserBizInfo.registerClass()
+            UserBizInfo.registerClass(name: "UserBizInfo")
+            UserBizInfoResponse.registerClass()
+            UserBizInfoResponse.registerClass(name: "BizInfo")
+            JWT.registerClass()
+            
             let obj = NSKeyedUnarchiver.unarchiveObject(with: userData)
             guard let user: User = obj as? User else { return nil }
             return user
@@ -306,12 +307,12 @@ extension UserManager {
         return dataTask
     }
     
-    @objc @discardableResult public func refreshUserBizInfo(completion: ((BizInfo?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
+    @objc @discardableResult public func refreshUserBizInfo(completion: ((UserBizInfoResponse?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
         guard currentUser != nil else { return nil }
         
         let dataTask: URLSessionDataTask = APIManager.shared.refreshUserBizInfo(completion: { [weak self] (info) in
             let user = self?.currentUser
-            user?.biz = info
+            user?.userBizInfoResponse = info
             self?.currentUser = user
             AnalyticsManager.shared.track(event: .bizInfoUpdated)
             completion?(info)
@@ -329,7 +330,7 @@ extension UserManager {
     
     @discardableResult public func registerForFCMMessaging(token: String, completion: ((GenericResponse?) -> Void)? = nil,
         failure: APIFailure? = nil) -> URLSessionDataTask {
-        let dataTask: URLSessionDataTask = APIManager.shared.registerForFCMMessaging(token: token, completion: nil, failure: nil)
+        let dataTask: URLSessionDataTask = APIManager.shared.registerForFCMToken(token: token, completion: nil, failure: nil)
         addDataTask(dataTask: dataTask)
         return dataTask
     }

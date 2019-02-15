@@ -169,7 +169,7 @@ class MixpanelObserver: AnalyticsObserver {
                                             "reorder": isReorder,
                                             "taxes": NSDecimalNumber(decimal: orderPaymentDataModel.itemTaxes ?? Decimal.zero).doubleValue,
                                             "wallet_credit_applied": orderPaymentDataModel.applyWalletCredits,
-                                            "wallet_credit_amt": (orderPaymentDataModel.bizInfo?.objects?.first?.balance ?? NSDecimalNumber.zero).doubleValue,
+                                            "wallet_credit_amt": (orderPaymentDataModel.bizInfo?.userBizInfos?.first?.balance ?? NSDecimalNumber.zero).doubleValue,
                                             "is_pickup": orderPaymentDataModel.selectedDeliveryOption == .pickUp,
                                             "payment_mode": orderPaymentDataModel.selectedPaymentOption.rawValue])
         case .reorderInit:
@@ -227,33 +227,33 @@ class MixpanelObserver: AnalyticsObserver {
                                                        "username": phone,
                                                        "social_auth": platform])
         case .bizInfoUpdated:
-            guard let user = UserManager.shared.currentUser, let bizObject = user.biz?.objects?.last,
+            guard let user = UserManager.shared.currentUser, let userBizInfo = user.userBizInfoResponse?.userBizInfos?.last,
                 let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 else { return }
             let mixpanel = Mixpanel.mainInstance()
             mixpanel.identify(distinctId: user.phone)
             mixpanel.identify(distinctId: mixpanel.distinctId)
             
             var properties: Properties = ["$email": user.email,
-                                          "balance": bizObject.balance.doubleValue,
+                                          "balance": userBizInfo.balance.doubleValue,
                                           "$name": user.firstName] as [String : MixpanelType]
             
-            if let val = bizObject.lastOrderDateString {
+            if let val = userBizInfo.lastOrderDateString {
                 properties["last_order_dt"] = val
             }
             
-            if let val = bizObject.cardNumbers.first {
+            if let val = userBizInfo.cardNumbers.first {
                 properties["cardNumber"] = val
             }
             
-            if let val = bizObject.totalOrderValue {
+            if let val = userBizInfo.totalOrderValue {
                 properties["total_order_value"] = val
             }
             
-            if let val = bizObject.numOfOrders {
+            if let val = userBizInfo.numOfOrders {
                 properties["num_of_orders"] = val
             }
             
-            if let val = bizObject.daysSinceLastOrder {
+            if let val = userBizInfo.daysSinceLastOrder {
                 properties["days_since_last_order"] = val
             }
             

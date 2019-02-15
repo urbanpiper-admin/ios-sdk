@@ -10,7 +10,7 @@ import Foundation
 
 extension APIManager {
     
-    func fetchCategoryOptions(id: Int,
+    func getFilterAndSortOptions(id: Int,
                             completion: ((CategoryOptionsResponse?) -> Void)?,
                             failure: APIFailure?) -> URLSessionDataTask {
         
@@ -57,7 +57,7 @@ extension APIManager {
         return dataTask*/
     }
 
-    func fetchCategoryItems(categoryId: Int,
+    func getCategoryItems(categoryId: Int,
                             locationID: Int?,
                             offset: Int = 0,
                             limit: Int = Constants.fetchLimit,
@@ -127,14 +127,14 @@ extension APIManager {
         return dataTask*/
     }
 
-    func fetchCategoryItems(for keyword: String,
+    func searchItems(query: String,
                             locationID: Int?,
                             offset: Int = 0,
                             limit: Int = Constants.fetchLimit,
                             completion: ((ItemsSearchResponse?) -> Void)?,
                             failure: APIFailure?) -> URLSessionDataTask {
 
-        var urlString: String = "\(APIManager.baseUrl)/api/v2/search/items/?keyword=\(keyword)&offset=\(offset)&limit=\(limit)&biz_id=\(bizId)"
+        var urlString: String = "\(APIManager.baseUrl)/api/v2/search/items/?keyword=\(query)&offset=\(offset)&limit=\(limit)&biz_id=\(bizId)"
         
 //        if let nextUrlString: String = next {
 //            urlString = "\(APIManager.baseUrl)\(nextUrlString)"
@@ -183,7 +183,7 @@ extension APIManager {
         return dataTask*/
     }
 
-    func fetchItemDetails(itemId: Int,
+    func getItemDetails(itemId: Int,
                           locationID: Int?,
                           completion: ((ItemObject?) -> Void)?,
                           failure: APIFailure?) -> URLSessionDataTask {

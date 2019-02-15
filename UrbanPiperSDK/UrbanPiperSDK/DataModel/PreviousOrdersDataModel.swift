@@ -30,14 +30,14 @@ open class PreviousOrdersDataModel: UrbanPiperDataModel {
     
     private var observers = [WeakRefDataModelDelegate]()
     
-    open var myOrdersResponse: MyOrdersResponse? {
+    open var myOrdersResponse: PastOrdersResponse? {
         didSet {
             guard myOrdersResponse != nil else { return }
             fetchAllOrderDetails()
         }
     }
     
-    public var myOrdersArray: [MyOrder]? {
+    public var myOrdersArray: [PastOrder]? {
         return myOrdersResponse?.orders
     }
     
@@ -143,7 +143,7 @@ extension PreviousOrdersDataModel {
         
         dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: true)
         let _ = observers.map { $0.value?.refreshPreviousOrdersUI(isProcessing: true) }
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchOrderHistory(completion:
+        let dataTask: URLSessionDataTask = APIManager.shared.getOrderHistory(completion:
             { [weak self] (data) in
                 guard let response = data else {
                     self?.dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: false)
@@ -180,7 +180,7 @@ extension PreviousOrdersDataModel {
             let _ = observers.map { $0.value?.refreshPreviousOrdersUI(isProcessing: false) }
             return
         }
-        for myOrder: MyOrder in myOrdersArray! {
+        for myOrder: PastOrder in myOrdersArray! {
             fetchOrderDetails(orderId: myOrder.id)
         }
     }
@@ -190,12 +190,12 @@ extension PreviousOrdersDataModel {
 
         dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: true)
         let _ = observers.map { $0.value?.refreshPreviousOrdersUI(isProcessing: true) }
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchOrderDetails(orderId: orderId,
+        let dataTask: URLSessionDataTask = APIManager.shared.getPastOrderDetails(orderId: orderId,
                                                                                completion:
             { [weak self] (data) in
                 guard let response = data else { return }
                 objc_sync_enter(lock)
-                let order: MyOrder? = self?.myOrdersArray?.filter ({ $0.id == response.order.details.id }).last
+                let order: PastOrder? = self?.myOrdersArray?.filter ({ $0.id == response.order.details.id }).last
                 order?.myOrderDetailsResponse = response
                 if let completed: Bool = self?.isOrderDetailsFetchCompleted, completed {
                     self?.completedOrderDetailsFetch()

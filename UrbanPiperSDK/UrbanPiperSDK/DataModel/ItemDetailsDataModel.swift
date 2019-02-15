@@ -124,7 +124,7 @@ extension ItemDetailsDataModel {
     }
 
     fileprivate func fetchItemDetails(itemId: Int)  {
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchItemDetails(itemId: itemId,
+        let dataTask: URLSessionDataTask = APIManager.shared.getItemDetails(itemId: itemId,
                                                           locationID: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
                                                           completion: { [weak self] (data) in
             defer {

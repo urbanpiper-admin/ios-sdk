@@ -8,10 +8,10 @@
 import Foundation
 
 
-public class BizInfo : NSObject, NSCoding{
+public class UserBizInfoResponse : NSObject, NSCoding{
 
 	public var meta : Meta!
-	@objc public var objects : [BizObject]!
+	@objc public var userBizInfos : [UserBizInfo]!
 
 
 	/**
@@ -21,33 +21,33 @@ public class BizInfo : NSObject, NSCoding{
 		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
 			meta = Meta(fromDictionary: metaData)
 		}
-		objects = [BizObject]()
+		userBizInfos = [UserBizInfo]()
 		if let objectsArray: [[String:Any]] = dictionary["objects"] as? [[String:Any]]{
 			for dic in objectsArray{
-				let value: BizObject = BizObject(fromDictionary: dic)
-				objects.append(value)
+				let value: UserBizInfo = UserBizInfo(fromDictionary: dic)
+				userBizInfos.append(value)
 			}
 		}
 	}
 
-//    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    public func toDictionary() -> [String:Any]
-//    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if meta != nil{
-//            dictionary["meta"] = meta.toDictionary()
-//        }
-//        if objects != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
-//            for objectsElement in objects {
-//                dictionaryElements.append(objectsElement.toDictionary())
-//            }
-//            dictionary["objects"] = dictionaryElements
-//        }
-//        return dictionary
-//    }
+    /**
+     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String: Any] = [String:Any]()
+        if meta != nil{
+            dictionary["meta"] = meta.toDictionary()
+        }
+        if userBizInfos != nil{
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            for userBizInfo in userBizInfos {
+                dictionaryElements.append(userBizInfo.toDictionary())
+            }
+            dictionary["objects"] = dictionaryElements
+        }
+        return dictionary
+    }
 
     /**
     * NSCoding required initializer.
@@ -56,7 +56,7 @@ public class BizInfo : NSObject, NSCoding{
     @objc required public init(coder aDecoder: NSCoder)
 	{
         meta = aDecoder.decodeObject(forKey: "meta") as? Meta
-        objects = aDecoder.decodeObject(forKey: "objects") as? [BizObject]
+        userBizInfos = aDecoder.decodeObject(forKey: "objects") as? [UserBizInfo]
     }
 
     /**
@@ -68,8 +68,8 @@ public class BizInfo : NSObject, NSCoding{
 		if meta != nil{
 			aCoder.encode(meta, forKey: "meta")
 		}
-		if objects != nil{
-			aCoder.encode(objects, forKey: "objects")
+		if userBizInfos != nil{
+			aCoder.encode(userBizInfos, forKey: "objects")
 		}
 
 	}

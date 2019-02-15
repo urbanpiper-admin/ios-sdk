@@ -9,21 +9,24 @@
 import UIKit
 
 extension NSCoding {
-    static func registerClassName() {
-        let fullClassName: String = NSStringFromClass(self)
+    static func registerClass(name: String? = nil) {
+        let fullClassName: String = name ?? NSStringFromClass(self)
         let className: String = fullClassName.components(separatedBy: ".").last!
         NSKeyedArchiver.setClassName(className, for: self)
         NSKeyedUnarchiver.setClass(self, forClassName: className)
+        
+        registerClassNameWhiteLabel(name: name)
+        registerClassNameUrbanPiperSDK(name: name)
     }
     
-    static func registerClassNameWhiteLabel() {
-        let className: String = NSStringFromClass(self).components(separatedBy: ".").last!
+    private static func registerClassNameWhiteLabel(name: String? = nil) {
+        let className: String = name ?? NSStringFromClass(self).components(separatedBy: ".").last!
         let fullClassName: String = "WhiteLabel.\(className)"
         NSKeyedUnarchiver.setClass(self, forClassName: fullClassName)
     }
     
-    static func registerClassNameUrbanPiperSDK() {
-        let className: String = NSStringFromClass(self).components(separatedBy: ".").last!
+    private static func registerClassNameUrbanPiperSDK(name: String? = nil) {
+        let className: String = name ?? NSStringFromClass(self).components(separatedBy: ".").last!
         let fullClassName: String = "UrbanPiperSDK.\(className)"
         NSKeyedUnarchiver.setClass(self, forClassName: fullClassName)
     }

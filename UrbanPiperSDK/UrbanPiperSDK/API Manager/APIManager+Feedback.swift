@@ -10,7 +10,6 @@ import UIKit
 extension APIManager {
     
     @objc public func submitFeedback(name: String,
-                                     bizId: String,
                                      rating: Double,
                                      orderId: String,
                                      choiceText: String?,

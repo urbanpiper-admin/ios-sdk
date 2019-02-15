@@ -10,7 +10,7 @@ import Foundation
 
 extension APIManager {
 
-    @objc public func checkForUpgrade(username: String?,
+    @objc public func checkAppVersion(username: String?,
                                       version: String,
                                       completion: ((VersionCheckResponse?) -> Void)?,
                                       failure: APIFailure?) -> URLSessionDataTask {

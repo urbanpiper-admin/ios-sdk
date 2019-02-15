@@ -10,9 +10,9 @@ import Foundation
 
 extension APIManager {
 
-    public func fetchOrderHistory(limit: Int? = nil,
+    public func getOrderHistory(limit: Int? = nil,
                                   next: String? = nil,
-                                  completion: ((MyOrdersResponse?) -> Void)?,
+                                  completion: ((PastOrdersResponse?) -> Void)?,
                                   failure: APIFailure?) -> URLSessionDataTask {
 
         var urlString: String = "\(APIManager.baseUrl)/api/v2/orders/"
@@ -30,8 +30,8 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> MyOrdersResponse? in
-            return MyOrdersResponse(fromDictionary: dictionary)
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> PastOrdersResponse? in
+            return PastOrdersResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -60,8 +60,8 @@ extension APIManager {
         return dataTask*/
     }
     
-    @objc public func fetchOrderDetails(orderId: Int,
-                                  completion: ((MyOrderDetailsResponse?) -> Void)?,
+    @objc public func getPastOrderDetails(orderId: Int,
+                                  completion: ((PastOrderDetailsResponse?) -> Void)?,
                                   failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/orders/\(orderId)/"
@@ -73,8 +73,8 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> MyOrderDetailsResponse? in
-            return MyOrderDetailsResponse(fromDictionary: dictionary)
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> PastOrderDetailsResponse? in
+            return PastOrderDetailsResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -82,7 +82,7 @@ extension APIManager {
             let statusCode = (response as? HTTPURLResponse)?.statusCode
             if let code = statusCode, code == 200 {
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let myOrderDetailsResponse: MyOrderDetailsResponse = MyOrderDetailsResponse(fromDictionary: dictionary)
+                    let myOrderDetailsResponse: PastOrderDetailsResponse = PastOrderDetailsResponse(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
                         completion?(myOrderDetailsResponse)

@@ -10,7 +10,7 @@ import Foundation
 
 extension APIManager {
 
-    func fetchCategoriesList(locationId: Int?,
+    func getCategories(locationId: Int?,
                              offset: Int = 0,
                              limit: Int = Constants.fetchLimit,
 //                             isForceRefresh: Bool,

@@ -9,9 +9,9 @@
 import UIKit
 
 @objc public protocol OrderCellDelegate {
-    func object() -> MyOrder?
+    func object() -> PastOrder?
     
-    func configureCell(_ myOrder: MyOrder?, extras: Extras?)
+    func configureCell(_ myOrder: PastOrder?, extras: Extras?)
 }
 
 @objc public protocol MyOrdersDataModelDelegate {
@@ -29,14 +29,14 @@ open class MyOrdersDataModel: UrbanPiperDataModel {
         }
     }
 
-    open var myOrdersResponse: MyOrdersResponse? {
+    open var myOrdersResponse: PastOrdersResponse? {
         didSet {
             tableView?.reloadData()
             collectionView?.reloadData()
         }
     }
     
-    public var myOrdersArray: [MyOrder] {
+    public var myOrdersArray: [PastOrder] {
         return myOrdersResponse?.orders ?? []
     }
 
@@ -56,7 +56,7 @@ extension MyOrdersDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
         
         if let orderCell: OrderCellDelegate = cell as? OrderCellDelegate {
-            let myOrder: MyOrder = myOrdersArray[indexPath.row]
+            let myOrder: PastOrder = myOrdersArray[indexPath.row]
             
             orderCell.configureCell(myOrder, extras: extras)
             if myOrdersArray.last === myOrder, myOrdersArray.count < myOrdersResponse!.meta.totalCount {
@@ -82,7 +82,7 @@ extension MyOrdersDataModel {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
         
         if let orderCell: OrderCellDelegate = cell as? OrderCellDelegate {
-            let myOrder: MyOrder = myOrdersArray[indexPath.row]
+            let myOrder: PastOrder = myOrdersArray[indexPath.row]
             
             orderCell.configureCell(myOrder, extras: extras)
             if myOrdersArray.last === myOrder, myOrdersArray.count < myOrdersResponse!.meta.totalCount {
@@ -104,7 +104,7 @@ extension MyOrdersDataModel {
     public func fetchOrderHistory(next: String? = nil) {
 
         dataModelDelegate?.refreshMyOrdersUI(isProcessing: true)
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchOrderHistory(next: next,
+        let dataTask: URLSessionDataTask = APIManager.shared.getOrderHistory(next: next,
                                                                                completion:
             { [weak self] (data) in
                 defer {
@@ -142,7 +142,7 @@ extension MyOrdersDataModel {
             refreshData()
         }
         
-        guard let myOrder: MyOrder = (tableView?.visibleCells.last as? OrderCellDelegate)?.object() else { return }
+        guard let myOrder: PastOrder = (tableView?.visibleCells.last as? OrderCellDelegate)?.object() else { return }
         if myOrdersArray.last === myOrder, myOrdersArray.count < myOrdersResponse!.meta.totalCount {
             fetchOrderHistory(next: myOrdersResponse?.meta.next)
         }
@@ -164,7 +164,7 @@ extension MyOrdersDataModel {
             refreshData()
         }
         
-        guard let myOrder: MyOrder = (tableView?.visibleCells.last as? OrderCellDelegate)?.object() else { return }
+        guard let myOrder: PastOrder = (tableView?.visibleCells.last as? OrderCellDelegate)?.object() else { return }
         if myOrdersArray.last === myOrder, myOrdersArray.count < myOrdersResponse!.meta.totalCount {
             fetchOrderHistory(next: myOrdersResponse?.meta.next)
         }

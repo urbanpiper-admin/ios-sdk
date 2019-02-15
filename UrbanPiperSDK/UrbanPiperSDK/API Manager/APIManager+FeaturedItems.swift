@@ -9,7 +9,7 @@ import UIKit
 
 extension APIManager {
 
-    func featuredItems(itemIds: [Int] = [0],
+    func getFeaturedItems(itemIds: [Int] = [0],
                        locationID: Int?,
                        offset: Int = 0,
                        limit: Int = Constants.fetchLimit,

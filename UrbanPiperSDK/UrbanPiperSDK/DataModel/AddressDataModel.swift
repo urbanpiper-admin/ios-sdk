@@ -74,14 +74,12 @@ public class AddressDataModel: UrbanPiperDataModel {
     public var defaultDeliveryAddress: Address? {
         get {
             if let defaultAddressData: Data = UserDefaults.standard.object(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey) as? Data {
-                Address.registerClassName()
+                Address.registerClass()
                 guard let address: Address = NSKeyedUnarchiver.unarchiveObject(with: defaultAddressData) as? Address else { return nil }
                 return address
             } else if let defaultAddressData: Data = UserDefaults.standard.object(forKey: "DefaultAddressDefaultsKey") as? Data {
                 UserDefaults.standard.removeObject(forKey: "DefaultAddressDefaultsKey")
-                Address.registerClassName()
-                Address.registerClassNameWhiteLabel()
-                Address.registerClassNameUrbanPiperSDK()
+                Address.registerClass()
                 guard let address: Address = NSKeyedUnarchiver.unarchiveObject(with: defaultAddressData) as? Address else { return nil }
                 UserDefaults.standard.set(defaultAddressData, forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
                 return address
@@ -187,7 +185,7 @@ extension AddressDataModel {
         deliverableAddressListArray = nil
         unDeliverableAddressListArray = nil
         _ = observers.map { $0.value?.refreshDeliveryAddressUI(isRefreshing: true) }
-        let dataTask: URLSessionDataTask = APIManager.shared.userSavedDeliverableAddresses(locationId: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
+        let dataTask: URLSessionDataTask = APIManager.shared.getDeliverableAddresses(locationId: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
                                                                                            completion: { [weak self] (data) in
             defer {
                 _ = self?.observers.map { $0.value?.refreshDeliveryAddressUI(isRefreshing: false) }

@@ -10,7 +10,7 @@ import Foundation
 
 @objc public class OrderDetails : NSObject{
 
-	@objc public var details : MyOrder!
+	@objc public var details : PastOrder!
 	@objc public var items : [ItemObject]!
 	public var nextState : AnyObject!
 	public var nextStates : [String]!
@@ -24,7 +24,7 @@ import Foundation
 	 */
 	init(fromDictionary dictionary: [String:Any]){
 		if let detailsData = dictionary["details"] as? [String:Any]{
-			details = MyOrder(fromDictionary: detailsData)
+			details = PastOrder(fromDictionary: detailsData)
 		}
 		items = [ItemObject]()
 		if let itemsArray = dictionary["items"] as? [[String:Any]]{

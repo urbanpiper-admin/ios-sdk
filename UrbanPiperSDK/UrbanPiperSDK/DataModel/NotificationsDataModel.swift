@@ -94,7 +94,7 @@ extension NotificationsDataModel {
 
     fileprivate func fetchNotificationsList(isForcedRefresh: Bool) {
         dataModelDelegate?.refreshNotificationsUI(true)
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchNotificationsList(completion: { [weak self] (data) in
+        let dataTask: URLSessionDataTask = APIManager.shared.getNotifications(completion: { [weak self] (data) in
             defer {
                 self?.dataModelDelegate?.refreshNotificationsUI(false)
             }

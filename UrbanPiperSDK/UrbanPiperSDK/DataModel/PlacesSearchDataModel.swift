@@ -48,14 +48,11 @@ open class PlacesSearchDataModel: UrbanPiperDataModel {
     
     private static var recentSearcesResponse: GooglePlacesResponse? {
         guard let selectedPlacesData: Data = UserDefaults.standard.object(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey) as? Data else { return nil }
-        StructuredFormatting.registerClassNameWhiteLabel()
-        StructuredFormatting.registerClassNameUrbanPiperSDK()
-        MatchedSubstring.registerClassNameWhiteLabel()
-        MatchedSubstring.registerClassNameUrbanPiperSDK()
-        Term.registerClassNameWhiteLabel()
-        Term.registerClassNameUrbanPiperSDK()
         
-        Prediction.registerClassName()
+        Prediction.registerClass()
+        MatchedSubstring.registerClass()
+        StructuredFormatting.registerClass()
+        Term.registerClass()
         
         guard let selectedPlacesArray: [Prediction] = NSKeyedUnarchiver.unarchiveObject(with: selectedPlacesData) as? [Prediction] else { return nil }
         let response: GooglePlacesResponse = GooglePlacesResponse(fromDictionary: [:])

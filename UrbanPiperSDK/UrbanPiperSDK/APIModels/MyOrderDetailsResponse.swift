@@ -1,5 +1,5 @@
 //
-//	MyOrderDetailsResponse.swift
+//	PastOrderDetailsResponse.swift
 //
 //	Create by Vidhyadharan Mohanram on 18/7/2018
 //	Copyright © 2018. All rights reserved.
@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class MyOrderDetailsResponse : NSObject{
+public class PastOrderDetailsResponse : NSObject{
 
 	@objc public var customer : Customer!
 	@objc public var order : OrderDetails!

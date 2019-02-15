@@ -36,7 +36,7 @@ public extension UrbanPiperSDK {
     }
 
     func startRegistration(phone: String) -> RegistrationBuilder {
-        return RegistrationBuilder(phone: phone)
+        return RegistrationBuilder()
     }
     
     func startSocialRegistration() -> SocialRegBuilder {
@@ -55,7 +55,8 @@ public extension UrbanPiperSDK {
         return UserManager.shared.login(username: username, password: password, completion: completion, failure: failure)
     }
     
-    @discardableResult public func socialLogin(email: String, socialLoginProvider: SocialLoginProvider, accessToken: String, completion: @escaping ((socialLoginResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult public func socialLogin(email: String, socialLoginProvider: SocialLoginProvider, accessToken: String,
+                                               completion: @escaping ((socialLoginResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
         return UserManager.shared.socialLogin(email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken, completion: completion, failure: failure)
     }
         
@@ -63,11 +64,12 @@ public extension UrbanPiperSDK {
         return UserManager.shared.refreshUserInfo(completion: completion, failure: failure)
     }
 
-    @discardableResult public func refreshUserBizInfo(completion: ((BizInfo?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
+    @discardableResult public func refreshUserBizInfo(completion: ((UserBizInfoResponse?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
         return UserManager.shared.refreshUserBizInfo(completion: completion, failure: failure)
     }
 
-    @discardableResult public func updateUserInfo(name: String, phone: String, email: String, gender: String?, anniversary: Date?, birthday: Date?, completion: ((UserInfoUpdateResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask {
+    @discardableResult public func updateUserInfo(name: String, phone: String, email: String, gender: String?, anniversary: Date?, birthday: Date?,
+                                                  completion: ((UserInfoUpdateResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask {
         return UserManager.shared.updateUserInfo(name: name, phone: phone, email: email, gender: gender, completion: completion, failure: failure)
     }
     
@@ -76,7 +78,7 @@ public extension UrbanPiperSDK {
     }
     
     @discardableResult public func getDeliverableAddresses(locationId: Int, completion: ((UserAddressesResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.userSavedDeliverableAddresses(locationId: locationId, completion: completion, failure: failure)
+        return APIManager.shared.getDeliverableAddresses(locationId: locationId, completion: completion, failure: failure)
     }
 
     @discardableResult public func addAddress(address: Address, completion: ((AddUpdateAddressResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
@@ -92,15 +94,15 @@ public extension UrbanPiperSDK {
     }
     
     @discardableResult public func getWalletTransactions(addressId: Int, completion: ((WalletTransactionResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.fetchWalletTransactions(completion: completion, failure: failure)
+        return APIManager.shared.getWalletTransactions(completion: completion, failure: failure)
     }
 
-    @discardableResult public func getPastOrders(completion: ((MyOrdersResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.fetchOrderHistory(completion: completion, failure: failure)
+    @discardableResult public func getPastOrders(completion: ((PastOrdersResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.getOrderHistory(completion: completion, failure: failure)
     }
 
-    @discardableResult public func getOrderDetails(orderId: Int, completion: ((MyOrderDetailsResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.fetchOrderDetails(orderId: orderId, completion: completion, failure: failure)
+    @discardableResult public func getPastOrderDetails(orderId: Int, completion: ((PastOrderDetailsResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.getPastOrderDetails(orderId: orderId, completion: completion, failure: failure)
     }
 
     @discardableResult public func redeemReward(rewardId: Int, completion: ((RedeemRewardResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
@@ -108,7 +110,24 @@ public extension UrbanPiperSDK {
     }
     
     @discardableResult public func getNotifications(completion: ((NotificationsResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.fetchNotificationsList(completion: completion, failure: failure)
+        return APIManager.shared.getNotifications(completion: completion, failure: failure)
+    }
+
+    @discardableResult public func submitFeedback(name: String, orderId: String, rating: Double, choiceText: String?, comments: String?,
+                                                  completion: ((GenericResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.submitFeedback(name: name, rating: rating, orderId: orderId, choiceText: choiceText, comments: comments, completion: completion, failure: failure)
+    }
+
+    @discardableResult public func getItemLikes(offset: Int = 0, limit: Int? = nil, completion: @escaping ((UserLikesResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.userLikes(offset: offset, limit: limit ?? Constants.fetchLimit, completion: completion, failure: failure)
+    }
+    
+    @discardableResult public func likeItem(itemId: Int, completion: @escaping ((GenericResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.likeItem(itemId: itemId, completion: completion, failure: failure)
+    }
+    
+    @discardableResult public func unlikeItem(itemId: Int, completion: @escaping ((GenericResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.unlikeItem(itemId: itemId, completion: completion, failure: failure)
     }
 
 }
@@ -118,33 +137,22 @@ public extension UrbanPiperSDK {
 
 extension UrbanPiperSDK {
     
-    @discardableResult public func registerForFCMMessaging(token: String, completion: ((GenericResponse?) -> Void)? = nil,
-                                                           failure: APIFailure? = nil) -> URLSessionDataTask {
-        return APIManager.shared.registerForFCMMessaging(token: token, completion: completion, failure: failure)
+    @discardableResult public func registerForFCMToken(token: String, completion: ((GenericResponse?) -> Void)? = nil,
+                                                  failure: APIFailure? = nil) -> URLSessionDataTask {
+        return APIManager.shared.registerForFCMToken(token: token, completion: completion, failure: failure)
     }
     
-    @discardableResult public func checkForUpdate(version: String, completion: ((VersionCheckResponse?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask {
-        return APIManager.shared.checkForUpgrade(username: UserManager.shared.currentUser?.username, version: version, completion: completion, failure: failure)
+    @discardableResult public func checkAppVersion(version: String, completion: ((VersionCheckResponse?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask {
+        return APIManager.shared.checkAppVersion(username: UserManager.shared.currentUser?.username, version: version, completion: completion, failure: failure)
     }
     
-    @discardableResult public func getNearestStore(lat: CLLocationDegrees, lng: CLLocationDegrees, completion: @escaping ((StoreResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.fetchNearestStore(CLLocationCoordinate2DMake(lat, lng), completion: completion, failure: failure)
+    @discardableResult public func getNearestStore(lat: CLLocationDegrees, lng: CLLocationDegrees,
+                                                   completion: @escaping ((StoreResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.getNearestStore(CLLocationCoordinate2DMake(lat, lng), completion: completion, failure: failure)
     }
     
     @discardableResult public func getAllStores(completion: @escaping ((StoreLocatorResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.fetchAllStores(completion: completion, failure: failure)
-    }
-    
-    @discardableResult public func getRewards(completion: @escaping ((RewardsResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.getRewards(completion: completion, failure: failure)
-    }
-    
-    @discardableResult public func getCoupons(offset: Int = 0, limit: Int? = nil, completion: @escaping ((OffersAPIResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.availableCoupons(offset: offset, limit: limit ?? Constants.fetchLimit, completion: completion, failure: failure)
-    }
-    
-    @discardableResult public func getBanners(completion: @escaping ((BannersResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.fetchBannersList(completion: completion, failure: failure)
+        return APIManager.shared.getAllStores(completion: completion, failure: failure)
     }
     
 }
@@ -155,42 +163,48 @@ extension UrbanPiperSDK {
 extension UrbanPiperSDK {
     
     @discardableResult public func getCategories(locationId: Int?, offset: Int = 0, limit: Int? = nil, completion: @escaping ((CategoriesResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.fetchCategoriesList(locationId: locationId, completion: completion, failure: failure)
+        return APIManager.shared.getCategories(locationId: locationId, completion: completion, failure: failure)
     }
     
     @discardableResult public func getCategoryItems(categoryId: Int, locationId: Int?, offset: Int = 0, limit: Int? = nil, completion: @escaping ((CategoryItemsResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.fetchCategoryItems(categoryId: categoryId, locationID: locationId, completion: completion, failure: failure)
+        return APIManager.shared.getCategoryItems(categoryId: categoryId, locationID: locationId, completion: completion, failure: failure)
     }
 
     @discardableResult public func searchItems(query: String, locationId: Int?, offset: Int = 0, limit: Int? = nil, completion: @escaping ((ItemsSearchResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.fetchCategoryItems(for: query, locationID: locationId, offset: offset, limit: limit ?? Constants.fetchLimit, completion: completion, failure: failure)
+        return APIManager.shared.searchItems(query: query, locationID: locationId, offset: offset, limit: limit ?? Constants.fetchLimit, completion: completion, failure: failure)
     }
     
     @discardableResult public func getFilterAndSortOptions(categoryid: Int, completion: @escaping ((CategoryOptionsResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.fetchCategoryOptions(id: categoryid, completion: completion, failure:failure)
+        return APIManager.shared.getFilterAndSortOptions(id: categoryid, completion: completion, failure:failure)
     }
 
     @discardableResult public func getItemDetails(itemId: Int, locationId: Int, completion: @escaping ((ItemObject?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.fetchItemDetails(itemId: itemId, locationID: locationId, completion: completion, failure: failure)
+        return APIManager.shared.getItemDetails(itemId: itemId, locationID: locationId, completion: completion, failure: failure)
     }
     
-    @discardableResult public func getItemLikes(offset: Int = 0, limit: Int? = nil, completion: @escaping ((UserLikesResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.userLikes(offset: offset, limit: limit ?? Constants.fetchLimit, completion: completion, failure: failure)
-    }
-
-    @discardableResult public func likeItem(itemId: Int, completion: @escaping ((GenericResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.likeItem(itemId: itemId, completion: completion, failure: failure)
-    }
-    
-    @discardableResult public func unlikeItem(itemId: Int, completion: @escaping ((GenericResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.unlikeItem(itemId: itemId, completion: completion, failure: failure)
-    }
-
     @discardableResult public func getFeaturedItems(locationId: Int, completion: @escaping ((CategoryItemsResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.featuredItems(locationID: locationId, completion: completion, failure: failure)
+        return APIManager.shared.getFeaturedItems(locationID: locationId, completion: completion, failure: failure)
     }
     
     @discardableResult public func getAssociatedItems(itemId: Int, locationId: Int, completion: @escaping ((CategoryItemsResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.featuredItems(itemIds: [itemId], locationID: locationId, completion: completion, failure: failure)
+        return APIManager.shared.getFeaturedItems(itemIds: [itemId], locationID: locationId, completion: completion, failure: failure)
     }
+}
+
+//  MARK: Promotions
+
+extension UrbanPiperSDK {
+    
+    @discardableResult public func getRewards(completion: @escaping ((RewardsResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.getRewards(completion: completion, failure: failure)
+    }
+    
+    @discardableResult public func getOffers(offset: Int = 0, limit: Int? = nil, completion: @escaping ((OffersAPIResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.getOffers(offset: offset, limit: limit ?? Constants.fetchLimit, completion: completion, failure: failure)
+    }
+    
+    @discardableResult public func getBanners(completion: @escaping ((BannersResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.getBanners(completion: completion, failure: failure)
+    }
+    
 }

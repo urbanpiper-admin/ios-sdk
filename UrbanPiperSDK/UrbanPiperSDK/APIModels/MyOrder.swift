@@ -56,7 +56,7 @@ public enum OrderStatus: String {
     
 }
 
-@objc public class MyOrder : NSObject{
+@objc public class PastOrder : NSObject{
 
 	public var address : String!
 	public var bizLocationId : Int!
@@ -86,7 +86,7 @@ public enum OrderStatus: String {
 	public var taxes : [AnyObject]!
 	public var totalCharges : Float!
 	public var totalTaxes : Decimal!
-    public var myOrderDetailsResponse: MyOrderDetailsResponse?
+    public var myOrderDetailsResponse: PastOrderDetailsResponse?
 
 
     @objc public var orderSubTotalString: String {

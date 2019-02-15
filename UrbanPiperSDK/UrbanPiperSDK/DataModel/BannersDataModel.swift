@@ -145,7 +145,7 @@ extension BannersDataModel {
         
         dataModelDelegate?.refreshBannersUI(isRefreshing: true)
         let _ = observers.map { $0.value?.refreshBannersUI(isRefreshing: true) }
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchBannersList(completion: { [weak self] (data) in
+        let dataTask: URLSessionDataTask = APIManager.shared.getBanners(completion: { [weak self] (data) in
             defer {
                 self?.dataModelDelegate?.refreshBannersUI(isRefreshing: false)
                 let _ = self?.observers.map { $0.value?.refreshBannersUI(isRefreshing: false) }

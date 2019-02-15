@@ -71,7 +71,7 @@ public class User : NSObject, NSCoding{
 
 	@objc public var authKey : String!
     
-	@objc public var biz : BizInfo!
+	@objc public var userBizInfoResponse : UserBizInfoResponse!
     
     @objc public var message : String?
 //    public var success : Bool!
@@ -119,7 +119,9 @@ public class User : NSObject, NSCoding{
     @objc public init(fromDictionary dictionary:  [String:Any]){
         super.init()
         authKey = dictionary["authKey"] as? String
-        biz = dictionary["biz"] as? BizInfo
+        if let userBizInfoResponseData = dictionary["biz"] as? [String:Any]{
+            userBizInfoResponse = UserBizInfoResponse(fromDictionary: userBizInfoResponseData)
+        }
         email = dictionary["email"] as? String
         message = dictionary["message"] as? String
         if let fn: String = dictionary["first_name"] as? String {
@@ -193,8 +195,8 @@ public class User : NSObject, NSCoding{
         if authKey != nil{
             dictionary["authKey"] = authKey
         }
-        if biz != nil{
-            dictionary["biz"] = biz
+        if userBizInfoResponse != nil{
+            dictionary["biz"] = userBizInfoResponse.toDictionary()
         }
         if email != nil{
             dictionary["email"] = email
@@ -275,7 +277,7 @@ public class User : NSObject, NSCoding{
         }
 
          authKey = aDecoder.decodeObject(forKey: "authKey") as? String
-        biz = aDecoder.decodeObject(forKey: "biz") as? BizInfo
+        userBizInfoResponse = aDecoder.decodeObject(forKey: "biz") as? UserBizInfoResponse
         email = aDecoder.decodeObject(forKey: "email") as? String
          message = aDecoder.decodeObject(forKey: "message") as? String
          phone = aDecoder.decodeObject(forKey: "phone") as? String
@@ -310,8 +312,8 @@ public class User : NSObject, NSCoding{
 		if authKey != nil{
 			aCoder.encode(authKey, forKey: "authKey")
 		}
-		if biz != nil{
-			aCoder.encode(biz, forKey: "biz")
+		if userBizInfoResponse != nil{
+			aCoder.encode(userBizInfoResponse, forKey: "biz")
 		}
 		if email != nil{
 			aCoder.encode(email, forKey: "email")

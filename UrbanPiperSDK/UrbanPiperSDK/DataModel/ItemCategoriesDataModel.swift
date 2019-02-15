@@ -102,7 +102,7 @@ extension ItemCategoriesDataModel {
         guard categoriesListArray == nil || categoriesListArray!.count == 0 || isForcedRefresh else { return }
 
         dataModelDelegate?.refreshItemCategoriesUI(true)
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchCategoriesList(locationId: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
+        let dataTask: URLSessionDataTask = APIManager.shared.getCategories(locationId: OrderingStoreDataModel.shared.orderingStore?.bizLocationId,
                                                                                  completion:
             { [weak self] (data) in
                 defer {

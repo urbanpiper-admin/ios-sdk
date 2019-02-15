@@ -1,5 +1,5 @@
 //
-//	BizObject.swift
+//	UserBizInfo.swift
 //
 //	Create by Vidhyadharan Mohanram on 17/1/2018
 //	Copyright © 2018. All rights reserved.
@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class BizObject : NSObject, NSCoding{
+public class UserBizInfo : NSObject, NSCoding{
 
 	public var addresses : [AnyObject]!
 	@objc public var balance : NSDecimalNumber = NSDecimalNumber.zero
@@ -61,52 +61,52 @@ public class BizObject : NSObject, NSCoding{
         lastUpdatedDateString = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .short)
 	}
 
-//    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    public func toDictionary() -> [String:Any]
-//    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if addresses != nil{
-//            dictionary["addresses"] = addresses
-//        }
-//        dictionary["balance"] = balance
-//        if bizId != nil{
-//            dictionary["biz_id"] = bizId
-//        }
-//        if cardNumbers != nil{
-//            dictionary["card_numbers"] = cardNumbers
-//        }
-//        if daysSinceLastOrder != nil{
-//            dictionary["days_since_last_order"] = daysSinceLastOrder
-//        }
-//        if id != nil{
-//            dictionary["id"] = id
-//        }
-//        if lastOrderDt != nil{
-//            dictionary["last_order_dt"] = lastOrderDt
-//        }
-//        if name != nil{
-//            dictionary["name"] = name
-//        }
-//        if lastUpdatedDateString != nil{
-//            dictionary["lastUpdatedDateString"] = lastUpdatedDateString
-//        }
-//        if numOfOrders != nil{
-//            dictionary["num_of_orders"] = numOfOrders
-//        }
-//        if phone != nil{
-//            dictionary["phone"] = phone
-//        }
-//        dictionary["points"] = points
-//        if signupDt != nil{
-//            dictionary["signup_dt"] = signupDt
-//        }
-//        if totalOrderValue != nil{
-//            dictionary["total_order_value"] = totalOrderValue
-//        }
-//        return dictionary
-//    }
+    /**
+     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String: Any] = [String:Any]()
+        if addresses != nil{
+            dictionary["addresses"] = addresses
+        }
+        dictionary["balance"] = balance
+        if bizId != nil{
+            dictionary["biz_id"] = bizId
+        }
+        if cardNumbers != nil{
+            dictionary["card_numbers"] = cardNumbers
+        }
+        if daysSinceLastOrder != nil{
+            dictionary["days_since_last_order"] = daysSinceLastOrder
+        }
+        if id != nil{
+            dictionary["id"] = id
+        }
+        if lastOrderDt != nil{
+            dictionary["last_order_dt"] = lastOrderDt
+        }
+        if name != nil{
+            dictionary["name"] = name
+        }
+        if lastUpdatedDateString != nil{
+            dictionary["lastUpdatedDateString"] = lastUpdatedDateString
+        }
+        if numOfOrders != nil{
+            dictionary["num_of_orders"] = numOfOrders
+        }
+        if phone != nil{
+            dictionary["phone"] = phone
+        }
+        dictionary["points"] = points
+        if signupDt != nil{
+            dictionary["signup_dt"] = signupDt
+        }
+        if totalOrderValue != nil{
+            dictionary["total_order_value"] = totalOrderValue
+        }
+        return dictionary
+    }
 
     /**
     * NSCoding required initializer.

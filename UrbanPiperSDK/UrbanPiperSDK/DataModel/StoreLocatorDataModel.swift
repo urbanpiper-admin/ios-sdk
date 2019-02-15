@@ -55,7 +55,7 @@ public class StoreLocatorDataModel: UrbanPiperDataModel {
     
     public func fetchStores() {
         dataModelDelegate?.refreshStoreLocatorUI(true)
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchAllStores(completion: { [weak self] (storeLocatorResponse) in
+        let dataTask: URLSessionDataTask = APIManager.shared.getAllStores(completion: { [weak self] (storeLocatorResponse) in
             defer {
                 self?.dataModelDelegate?.refreshStoreLocatorUI(false)
             }

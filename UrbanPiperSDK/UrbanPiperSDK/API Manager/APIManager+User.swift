@@ -231,7 +231,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    public func userSavedDeliverableAddresses(locationId: Int?,
+    public func getDeliverableAddresses(locationId: Int?,
                                                     completion: ((UserAddressesResponse?) -> Void)?,
                                                     failure: APIFailure?) -> URLSessionDataTask {
         

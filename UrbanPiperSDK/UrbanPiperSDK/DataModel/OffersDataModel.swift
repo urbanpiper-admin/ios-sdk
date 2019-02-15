@@ -52,7 +52,7 @@ open class OffersDataModel: UrbanPiperDataModel {
     public func availableCoupons(offset: Int = 0, isForcedRefresh: Bool = false) {
         guard isForcedRefresh || (!isForcedRefresh && offersAPIResponse == nil) else { return }
         dataModelDelegate?.refreshCouponUI(true)
-        let dataTask: URLSessionDataTask = APIManager.shared.availableCoupons(offset: offset,
+        let dataTask: URLSessionDataTask = APIManager.shared.getOffers(offset: offset,
                                                                               completion:
             { [weak self] (offersAPIResponse) in
                 defer {

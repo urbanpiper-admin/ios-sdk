@@ -26,7 +26,7 @@ open class MyOrderDetailsDataModel: UrbanPiperDataModel {
         }
     }
 
-    open var myOrderDetailsResponse: MyOrderDetailsResponse?
+    open var myOrderDetailsResponse: PastOrderDetailsResponse?
     
     func refreshData() {
         fetchOrderDetails()
@@ -41,7 +41,7 @@ extension MyOrderDetailsDataModel {
         guard orderId != nil else { return }
 
         dataModelDelegate?.refreshOrdersDetailsUI(isProcessing: true)
-        let dataTask: URLSessionDataTask = APIManager.shared.fetchOrderDetails(orderId: orderId!,
+        let dataTask: URLSessionDataTask = APIManager.shared.getPastOrderDetails(orderId: orderId!,
                                                                                completion:
             { [weak self] (data) in
                 defer {

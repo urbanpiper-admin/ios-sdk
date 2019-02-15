@@ -67,7 +67,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
         }
     }
     
-    public var bizInfo: BizInfo? {
+    public var bizInfo: UserBizInfoResponse? {
         didSet {
             guard oldValue == nil && bizInfo != nil else { return }
             selectedDeliveryOption = defaultDeliveryOption
@@ -77,7 +77,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     public var deliveryAddress: Address?
 //    {
 //        guard let defaultAddressData: Data = UserDefaults.standard.object(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey) as? Data else { return nil }
-//            Address.registerClassName()
+//            Address.registerClass()
 //        guard let address: Address = NSKeyedUnarchiver.unarchiveObject(with: defaultAddressData) as? Address else { return nil }
 //        return address
 //    }
@@ -530,7 +530,7 @@ extension OrderPaymentDataModel {
 extension OrderPaymentDataModel: UserManagerDelegate {
     
     public func userBizInfoChanged() {
-        bizInfo = UserManager.shared.currentUser?.biz
+        bizInfo = UserManager.shared.currentUser?.userBizInfoResponse
         dataModelDelegate?.refreshWalletUI(false)
     }
 
