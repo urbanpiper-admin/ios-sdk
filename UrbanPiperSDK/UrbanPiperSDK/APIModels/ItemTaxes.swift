@@ -12,7 +12,7 @@ public class ItemTaxes : NSObject{
 
 	public var rate : Float!
 	public var title : String!
-	public var value : Float!
+	public var value : Decimal!
 
 
 	/**
@@ -21,8 +21,17 @@ public class ItemTaxes : NSObject{
 	public init(fromDictionary dictionary:  [String:Any]){
 		rate = dictionary["rate"] as? Float
 		title = dictionary["title"] as? String
-		value = dictionary["value"] as? Float
-	}
+        
+        if let val: Decimal = dictionary["value"] as? Decimal {
+            value = val
+        } else if let val: Double = dictionary["value"] as? Double {
+            value = Decimal(val).rounded
+        } else if let val: Float = dictionary["value"] as? Float {
+            value = Decimal(Double(val)).rounded
+        } else {
+            value = Decimal.zero
+        }
+    }
 
     /**
      * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property

@@ -22,7 +22,7 @@ public class UserBizInfo : NSObject, NSCoding{
 	public var phone : String!
 	@objc public var points : NSNumber = NSNumber(integerLiteral: 0)
 	public var signupDt : Int!
-	public var totalOrderValue : Float!
+	public var totalOrderValue : Decimal!
     @objc public var lastUpdatedDateString: String?
     public var lastOrderDateString: String? {
         if let val = lastOrderDt {
@@ -57,7 +57,17 @@ public class UserBizInfo : NSObject, NSCoding{
 		phone = dictionary["phone"] as? String
 		points = dictionary["points"] as? NSNumber ?? NSNumber(integerLiteral: 0)
 		signupDt = dictionary["signup_dt"] as? Int
-		totalOrderValue = dictionary["total_order_value"] as? Float
+        
+        if let val: Decimal = dictionary["total_order_value"] as? Decimal {
+            totalOrderValue = val
+        } else if let val: Double = dictionary["total_order_value"] as? Double {
+            totalOrderValue = Decimal(val).rounded
+        } else if let val: Float = dictionary["total_order_value"] as? Float {
+            totalOrderValue = Decimal(Double(val)).rounded
+        } else {
+            totalOrderValue = Decimal.zero
+        }
+        
         lastUpdatedDateString = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .short)
 	}
 
@@ -127,7 +137,7 @@ public class UserBizInfo : NSObject, NSCoding{
          phone = aDecoder.decodeObject(forKey: "phone") as? String
         points = aDecoder.decodeObject(forKey: "points") as? NSNumber ?? NSNumber(integerLiteral: 0)
          signupDt = aDecoder.decodeObject(forKey: "signup_dt") as? Int
-         totalOrderValue = aDecoder.decodeObject(forKey: "total_order_value") as? Float
+         totalOrderValue = aDecoder.decodeObject(forKey: "total_order_value") as? Decimal
 
 	}
 

@@ -15,22 +15,22 @@ public class BizLocation : NSObject{
 	public var city : String!
 	public var closingDay : Bool!
 	public var closingTime : AnyObject!
-	public var deliveryCharge : Float!
+//    public var deliveryCharge : Float!
 	public var deliveryMinOffsetTime : Int!
 	public var hideStoreName : Bool!
 	public var lat : Double!
 	public var lng : Double!
-	public var minOrderTotal : Float!
+//    public var minOrderTotal : Float!
 	public var name : String!
 	public var onCloseMsg : String!
 	public var onSelectMsg : AnyObject!
 	public var openingTime : AnyObject!
-	public var packagingCharge : Float!
+//    public var packagingCharge : Float!
 	public var pgKey : String!
 	public var phone : String!
 	public var pickupMinOffsetTime : Int!
 	public var sortOrder : Int!
-	public var taxRate : Float!
+//    public var taxRate : Float!
 	public var temporarilyClosed : Bool!
 	public var timeSlots : [AnyObject]!
 
@@ -44,22 +44,22 @@ public class BizLocation : NSObject{
 		city = dictionary["city"] as? String
 		closingDay = dictionary["closing_day"] as? Bool
 		closingTime = dictionary["closing_time"] as AnyObject
-		deliveryCharge = dictionary["delivery_charge"] as? Float
+//        deliveryCharge = dictionary["delivery_charge"] as? Float
 		deliveryMinOffsetTime = dictionary["delivery_min_offset_time"] as? Int
 		hideStoreName = dictionary["hide_store_name"] as? Bool
 		lat = dictionary["lat"] as? Double
 		lng = dictionary["lng"] as? Double
-		minOrderTotal = dictionary["min_order_total"] as? Float
+//        minOrderTotal = dictionary["min_order_total"] as? Float
 		name = dictionary["name"] as? String
 		onCloseMsg = dictionary["on_close_msg"] as? String
 		onSelectMsg = dictionary["on_select_msg"] as AnyObject
 		openingTime = dictionary["opening_time"] as AnyObject
-		packagingCharge = dictionary["packaging_charge"] as? Float
+//        packagingCharge = dictionary["packaging_charge"] as? Float
 		pgKey = dictionary["pg_key"] as? String
 		phone = dictionary["phone"] as? String
 		pickupMinOffsetTime = dictionary["pickup_min_offset_time"] as? Int
 		sortOrder = dictionary["sort_order"] as? Int
-		taxRate = dictionary["tax_rate"] as? Float
+//        taxRate = dictionary["tax_rate"] as? Float
 		temporarilyClosed = dictionary["temporarily_closed"] as? Bool
 		timeSlots = dictionary["time_slots"] as? [AnyObject]
 	}

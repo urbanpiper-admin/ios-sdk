@@ -31,7 +31,7 @@ public class OrderItem : NSObject{
 	public var tags : [AnyObject]!
 	public var taxPercentage : Float!
 	public var taxes : [ItemTaxes]!
-	public var totalCharge : Float!
+//    public var totalCharge : Float!
 	public var totalTax : Float!
 	public var weight : Int!
 
@@ -95,7 +95,7 @@ public class OrderItem : NSObject{
 				taxes.append(value)
 			}
 		}
-		totalCharge = dictionary["total_charge"] as? Float
+//        totalCharge = dictionary["total_charge"] as? Float
 		totalTax = dictionary["total_tax"] as? Float
 		weight = dictionary["weight"] as? Int
 	}
@@ -181,9 +181,9 @@ public class OrderItem : NSObject{
             }
             dictionary["taxes"] = dictionaryElements
         }
-        if totalCharge != nil{
-            dictionary["total_charge"] = totalCharge
-        }
+//        if totalCharge != nil{
+//            dictionary["total_charge"] = totalCharge
+//        }
         if totalTax != nil{
             dictionary["total_tax"] = totalTax
         }

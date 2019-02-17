@@ -70,11 +70,11 @@ public enum OrderStatus: String {
 	public var discount : Decimal!
 	@objc public var id : Int = 0
 	public var instructions : String!
-	public var itemLevelTotalCharges : Float!
-	public var itemLevelTotalTaxes : Float!
+//    public var itemLevelTotalCharges : Float!
+//    public var itemLevelTotalTaxes : Float!
 	@objc public var merchantRefId : Int = 0
-	public var orderLevelTotalCharges : Float!
-	public var orderLevelTotalTaxes : Float!
+//    public var orderLevelTotalCharges : Float!
+//    public var orderLevelTotalTaxes : Float!
 	@objc public var orderState : String!
 	public var orderSubtotal : Decimal!
 	public var orderTotal : Decimal!
@@ -82,7 +82,7 @@ public enum OrderStatus: String {
 	public var paymentOption : String!
 	@objc public var phone : String!
 	public var taxAmt : Decimal!
-	public var taxRate : Float!
+//    public var taxRate : Float!
 	public var taxes : [AnyObject]!
 	public var totalCharges : Float!
 	public var totalTaxes : Decimal!
@@ -161,8 +161,8 @@ public enum OrderStatus: String {
 
         id = dictionary["id"] as? Int ?? 0
 		instructions = dictionary["instructions"] as? String
-		itemLevelTotalCharges = dictionary["item_level_total_charges"] as? Float
-		itemLevelTotalTaxes = dictionary["item_level_total_taxes"] as? Float
+//        itemLevelTotalCharges = dictionary["item_level_total_charges"] as? Float
+//        itemLevelTotalTaxes = dictionary["item_level_total_taxes"] as? Float
         
         if let refId: String = dictionary["merchant_ref_id"] as? String {
             merchantRefId = Int(refId) ?? 0
@@ -170,8 +170,8 @@ public enum OrderStatus: String {
             merchantRefId = dictionary["merchant_ref_id"] as? Int ?? 0
         }
         
-		orderLevelTotalCharges = dictionary["order_level_total_charges"] as? Float
-		orderLevelTotalTaxes = dictionary["order_level_total_taxes"] as? Float
+//        orderLevelTotalCharges = dictionary["order_level_total_charges"] as? Float
+//        orderLevelTotalTaxes = dictionary["order_level_total_taxes"] as? Float
 		orderState = dictionary["order_state"] as? String
 
         var priceVal: Any = dictionary["order_subtotal"] as Any
@@ -205,7 +205,7 @@ public enum OrderStatus: String {
             taxAmt = Decimal.zero
         }
         
-		taxRate = dictionary["tax_rate"] as? Float
+//        taxRate = dictionary["tax_rate"] as? Float
 		taxes = dictionary["taxes"] as? [AnyObject]
 		totalCharges = dictionary["total_charges"] as? Float
         
@@ -259,19 +259,19 @@ public enum OrderStatus: String {
 		if instructions != nil{
 			dictionary["instructions"] = instructions
 		}
-		if itemLevelTotalCharges != nil{
-			dictionary["item_level_total_charges"] = itemLevelTotalCharges
-		}
-		if itemLevelTotalTaxes != nil{
-			dictionary["item_level_total_taxes"] = itemLevelTotalTaxes
-		}
+//        if itemLevelTotalCharges != nil{
+//            dictionary["item_level_total_charges"] = itemLevelTotalCharges
+//        }
+//        if itemLevelTotalTaxes != nil{
+//            dictionary["item_level_total_taxes"] = itemLevelTotalTaxes
+//        }
         dictionary["merchant_ref_id"] = merchantRefId
-		if orderLevelTotalCharges != nil{
-			dictionary["order_level_total_charges"] = orderLevelTotalCharges
-		}
-		if orderLevelTotalTaxes != nil{
-			dictionary["order_level_total_taxes"] = orderLevelTotalTaxes
-		}
+//        if orderLevelTotalCharges != nil{
+//            dictionary["order_level_total_charges"] = orderLevelTotalCharges
+//        }
+//        if orderLevelTotalTaxes != nil{
+//            dictionary["order_level_total_taxes"] = orderLevelTotalTaxes
+//        }
 		if orderState != nil{
 			dictionary["order_state"] = orderState
 		}
@@ -293,9 +293,9 @@ public enum OrderStatus: String {
 		if taxAmt != nil{
 			dictionary["tax_amt"] = taxAmt
 		}
-		if taxRate != nil{
-			dictionary["tax_rate"] = taxRate
-		}
+//        if taxRate != nil{
+//            dictionary["tax_rate"] = taxRate
+//        }
 		if taxes != nil{
 			dictionary["taxes"] = taxes
 		}

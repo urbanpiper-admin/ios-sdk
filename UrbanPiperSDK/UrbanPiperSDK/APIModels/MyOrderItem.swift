@@ -17,9 +17,9 @@ public class MyOrderItem : NSObject{
 	public var optionsToRemove : [AnyObject]!
 	public var price : Decimal!
 	public var quantity : Int!
-	public var srvcTaxRate : Float!
+//    public var srvcTaxRate : Float!
 	public var title : String!
-	public var vatRate : Float!
+//    public var vatRate : Float!
 
 
 	/**
@@ -47,9 +47,9 @@ public class MyOrderItem : NSObject{
         }
         
 		quantity = dictionary["quantity"] as? Int
-		srvcTaxRate = dictionary["srvc_tax_rate"] as? Float
+//        srvcTaxRate = dictionary["srvc_tax_rate"] as? Float
 		title = dictionary["title"] as? String
-		vatRate = dictionary["vat_rate"] as? Float
+//        vatRate = dictionary["vat_rate"] as? Float
 	}
 
 //    /**

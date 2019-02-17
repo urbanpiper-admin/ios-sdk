@@ -38,7 +38,7 @@ public enum Language: String {
 	public var gst : String!
 	public var isPickupEnabled : Bool = false
 	public var minOrderTotal : Decimal!
-	public var minimumWalletCreditThreshold : Float!
+//    public var minimumWalletCreditThreshold : Float!
 	public var msgNearestStoreClosed : String!
 	public var msgNoStoresNearby : String!
 	public var msgStoreClosedTemporary : String!
@@ -83,7 +83,7 @@ public enum Language: String {
             minOrderTotal = Decimal.zero
         }
         
-		minimumWalletCreditThreshold = dictionary["minimum_wallet_credit_threshold"] as? Float
+//        minimumWalletCreditThreshold = dictionary["minimum_wallet_credit_threshold"] as? Float
 		msgNearestStoreClosed = dictionary["msg_nearest_store_closed"] as? String
 		msgNoStoresNearby = dictionary["msg_no_stores_nearby"] as? String
 		msgStoreClosedTemporary = dictionary["msg_store_closed_temporary"] as? String
@@ -138,9 +138,9 @@ public enum Language: String {
 		if minOrderTotal != nil{
 			dictionary["min_order_total"] = minOrderTotal
 		}
-		if minimumWalletCreditThreshold != nil{
-			dictionary["minimum_wallet_credit_threshold"] = minimumWalletCreditThreshold
-		}
+//        if minimumWalletCreditThreshold != nil{
+//            dictionary["minimum_wallet_credit_threshold"] = minimumWalletCreditThreshold
+//        }
 		if msgNearestStoreClosed != nil{
 			dictionary["msg_nearest_store_closed"] = msgNearestStoreClosed
 		}
@@ -212,7 +212,7 @@ public enum Language: String {
          gst = aDecoder.decodeObject(forKey: "gst") as? String
          isPickupEnabled = aDecoder.decodeObject(forKey: "is_pickup_enabled") as? Bool ?? false
          minOrderTotal = aDecoder.decodeObject(forKey: "min_order_total") as? Decimal
-         minimumWalletCreditThreshold = aDecoder.decodeObject(forKey: "minimum_wallet_credit_threshold") as? Float
+//         minimumWalletCreditThreshold = aDecoder.decodeObject(forKey: "minimum_wallet_credit_threshold") as? Float
          msgNearestStoreClosed = aDecoder.decodeObject(forKey: "msg_nearest_store_closed") as? String
          msgNoStoresNearby = aDecoder.decodeObject(forKey: "msg_no_stores_nearby") as? String
          msgStoreClosedTemporary = aDecoder.decodeObject(forKey: "msg_store_closed_temporary") as? String
@@ -258,9 +258,9 @@ public enum Language: String {
 		if minOrderTotal != nil{
 			aCoder.encode(minOrderTotal, forKey: "min_order_total")
 		}
-		if minimumWalletCreditThreshold != nil{
-			aCoder.encode(minimumWalletCreditThreshold, forKey: "minimum_wallet_credit_threshold")
-		}
+//        if minimumWalletCreditThreshold != nil{
+//            aCoder.encode(minimumWalletCreditThreshold, forKey: "minimum_wallet_credit_threshold")
+//        }
 		if msgNearestStoreClosed != nil{
 			aCoder.encode(msgNearestStoreClosed, forKey: "msg_nearest_store_closed")
 		}

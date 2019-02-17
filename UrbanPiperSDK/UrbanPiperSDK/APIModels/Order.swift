@@ -32,9 +32,9 @@ public class Order : NSObject{
 	public var combos : [AnyObject]!
 	public var deliveryDatetime : Int!
 	public var itemLevelTotalCharges : Decimal!
-	public var itemLevelTotalTaxes : Float!
+//    public var itemLevelTotalTaxes : Float!
 	public var orderLevelTotalCharges : Decimal!
-	public var orderLevelTotalTaxes : Float!
+//    public var orderLevelTotalTaxes : Float!
 	//public var orderTotal : Decimal!
 	public var paymentModes : [String]!
 	public var paymentOption : String!
@@ -96,7 +96,7 @@ public class Order : NSObject{
             itemLevelTotalCharges = Decimal.zero
         }
         
-		itemLevelTotalTaxes = dictionary["item_level_total_taxes"] as? Float
+//        itemLevelTotalTaxes = dictionary["item_level_total_taxes"] as? Float
         
         priceVal = dictionary["item_taxes"]
         if let val: Decimal = priceVal as? Decimal {
@@ -124,7 +124,7 @@ public class Order : NSObject{
             orderLevelTotalCharges = Decimal.zero
         }
         
-		orderLevelTotalTaxes = dictionary["order_level_total_taxes"] as? Float
+//        orderLevelTotalTaxes = dictionary["order_level_total_taxes"] as? Float
         
         priceVal = dictionary["order_subtotal"]
         if let val: Decimal = priceVal as? Decimal {

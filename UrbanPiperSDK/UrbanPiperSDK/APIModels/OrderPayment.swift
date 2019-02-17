@@ -10,18 +10,27 @@ import Foundation
 
 @objc public class OrderPayment : NSObject{
 
-	public var amount : Float!
+	public var amount : Decimal!
 	@objc public var option : String!
-	public var srvrTrxId : AnyObject!
+	public var srvrTrxId : String!
 
 
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	init(fromDictionary dictionary: [String:Any]){
-		amount = dictionary["amount"] as? Float
+        if let val: Decimal = dictionary["amount"] as? Decimal {
+            amount = val
+        } else if let val: Double = dictionary["amount"] as? Double {
+            amount = Decimal(val).rounded
+        } else if let val: Float = dictionary["amount"] as? Float {
+            amount = Decimal(Double(val)).rounded
+        } else {
+            amount = Decimal.zero
+        }
+        
 		option = dictionary["option"] as? String
-		srvrTrxId = dictionary["srvr_trx_id"] as AnyObject
+		srvrTrxId = dictionary["srvr_trx_id"] as? String
 	}
 
 	/**

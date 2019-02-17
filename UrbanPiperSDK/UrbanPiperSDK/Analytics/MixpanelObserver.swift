@@ -246,7 +246,8 @@ class MixpanelObserver: AnalyticsObserver {
             }
             
             if let val = userBizInfo.totalOrderValue {
-                properties["total_order_value"] = val
+                let decimalNumber = val as NSDecimalNumber
+                properties["total_order_value"] = decimalNumber.floatValue
             }
             
             if let val = userBizInfo.numOfOrders {

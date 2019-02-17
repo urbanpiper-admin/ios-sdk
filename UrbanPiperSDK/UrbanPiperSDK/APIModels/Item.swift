@@ -27,14 +27,14 @@ import Foundation
     public var orderOptionsToAdd : [ItemOption]!
     public var orderOptionsToRemove : [ItemOption]!
 	public var priceDescriptor : String!
-	public var serviceTaxRate : Float!
+//    public var serviceTaxRate : Float!
     public var preOrderStartTime : Int?
     public var preOrderEndTime : Int?
 	public var slug : String!
 	public var sortOrder : Int!
     public var subCategory : ItemCategory!
 	public var tags : [ItemTag]!
-	public var vatRate : Float!
+//    public var vatRate : Float!
     @objc public var quantity: Int = 0
     public var isRecommendedItem: Bool = false
     public var isUpsoldItem: Bool = false
@@ -111,7 +111,7 @@ import Foundation
         }
 
         priceDescriptor = dictionary["price_descriptor"] as? String
-		serviceTaxRate = dictionary["service_tax_rate"] as? Float
+//        serviceTaxRate = dictionary["service_tax_rate"] as? Float
         preOrderStartTime = dictionary["pre_order_start_time"] as? Int
         preOrderEndTime = dictionary["pre_order_end_time"] as? Int
 		slug = dictionary["slug"] as? String
@@ -126,7 +126,7 @@ import Foundation
                 tags.append(value)
             }
         }
-		vatRate = dictionary["vat_rate"] as? Float
+//        vatRate = dictionary["vat_rate"] as? Float
         quantity = dictionary["quantity"] as? Int ?? 0
 	}
 
@@ -199,9 +199,9 @@ import Foundation
         if priceDescriptor != nil{
             dictionary["price_descriptor"] = priceDescriptor
         }
-        if serviceTaxRate != nil{
-            dictionary["service_tax_rate"] = serviceTaxRate
-        }
+//        if serviceTaxRate != nil{
+//            dictionary["service_tax_rate"] = serviceTaxRate
+//        }
         if preOrderStartTime != nil{
             dictionary["pre_order_start_time"] = preOrderStartTime
         }
@@ -224,9 +224,9 @@ import Foundation
             }
             dictionary["tags"] = dictionaryElements
         }
-        if vatRate != nil{
-            dictionary["vat_rate"] = vatRate
-        }
+//        if vatRate != nil{
+//            dictionary["vat_rate"] = vatRate
+//        }
         dictionary["quantity"] = quantity
 
         if notes != nil{

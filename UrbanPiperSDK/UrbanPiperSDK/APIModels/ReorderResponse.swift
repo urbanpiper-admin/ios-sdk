@@ -11,13 +11,13 @@ import Foundation
 public class ReorderResponse : NSObject{
 
 	public var bizLocation : BizLocation!
-	public var deliveryCharge : Float!
+//    public var deliveryCharge : Float!
 	public var itemsAvailable : [Item]!
 	public var itemsNotAvailable : [Item]!
-	public var orderItemTaxes : Float!
-	public var orderSubtotal : Float!
-	public var orderTotal : Float!
-	public var packagingCharge : Float!
+//    public var orderItemTaxes : Float!
+//    public var orderSubtotal : Float!
+//    public var orderTotal : Float!
+//    public var packagingCharge : Float!
 
 
 	/**
@@ -27,7 +27,7 @@ public class ReorderResponse : NSObject{
 		if let bizLocationData: [String:Any] = dictionary["biz_location"] as? [String:Any]{
 			bizLocation = BizLocation(fromDictionary: bizLocationData)
 		}
-		deliveryCharge = dictionary["delivery_charge"] as? Float
+//        deliveryCharge = dictionary["delivery_charge"] as? Float
 		itemsAvailable = [Item]()
 		if let itemsAvailableArray: [[String:Any]] = dictionary["items_available"] as? [[String:Any]]{
 			for dic in itemsAvailableArray{
@@ -42,10 +42,10 @@ public class ReorderResponse : NSObject{
                 itemsNotAvailable.append(value)
             }
         }
-		orderItemTaxes = dictionary["order_item_taxes"] as? Float
-		orderSubtotal = dictionary["order_subtotal"] as? Float
-		orderTotal = dictionary["order_total"] as? Float
-		packagingCharge = dictionary["packaging_charge"] as? Float
+//        orderItemTaxes = dictionary["order_item_taxes"] as? Float
+//        orderSubtotal = dictionary["order_subtotal"] as? Float
+//        orderTotal = dictionary["order_total"] as? Float
+//        packagingCharge = dictionary["packaging_charge"] as? Float
 	}
 
 //    /**
