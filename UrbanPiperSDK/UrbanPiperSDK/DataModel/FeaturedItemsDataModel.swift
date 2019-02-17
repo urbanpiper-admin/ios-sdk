@@ -43,7 +43,7 @@ open class FeaturedItemsDataModel: UrbanPiperDataModel {
         }
     }
     
-    open var itemsArray: [ItemObject]? {
+    open var itemsArray: [Item]? {
         return categoryItemsResponse?.objects
     }
     
@@ -75,8 +75,8 @@ open class FeaturedItemsDataModel: UrbanPiperDataModel {
         
         if let categoryResponse = fullCategoryItemsResponse?.copy() as? CategoryItemsResponse {
             
-            let filteredObjects = categoryResponse.objects.filter({ (itemObject) -> Bool in
-                guard cartItemIds.filter({ itemObject.id == $0 }).last == nil else { return false }
+            let filteredObjects = categoryResponse.objects.filter({ (item) -> Bool in
+                guard cartItemIds.filter({ item.id == $0 }).last == nil else { return false }
                 return true
             })
             
@@ -167,11 +167,11 @@ extension FeaturedItemsDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
         
         if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
-            let itemObject: ItemObject = itemsArray![indexPath.row]
-            if itemsArray?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
+            let item: Item = itemsArray![indexPath.row]
+            if itemsArray?.last === item, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
                 fetchFeaturedItems(isForcedRefresh: true, offset: itemsArray!.count)
             }
-            categoryCell.configureCell(itemObject, extras: extras)
+            categoryCell.configureCell(item, extras: extras)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }
@@ -243,8 +243,8 @@ extension FeaturedItemsDataModel {
         guard itemsArray == nil || itemsArray!.count == 0 else { return }
         refreshData(false)
         
-        guard let itemObject: ItemObject = (collectionView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
-        if itemsArray?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
+        guard let item: Item = (collectionView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
+        if itemsArray?.last === item, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
             fetchFeaturedItems(isForcedRefresh: true, offset: itemsArray!.count)
         }
     }
@@ -263,8 +263,8 @@ extension FeaturedItemsDataModel {
         guard itemsArray == nil || itemsArray!.count == 0 else { return }
         refreshData(false)
         
-        guard let itemObject: ItemObject = (collectionView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
-        if itemsArray?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
+        guard let item: Item = (collectionView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
+        if itemsArray?.last === item, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
             fetchFeaturedItems(isForcedRefresh: true, offset: itemsArray!.count)
         }
     }

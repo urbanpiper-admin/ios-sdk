@@ -178,7 +178,7 @@ extension UrbanPiperSDK {
         return APIManager.shared.getFilterAndSortOptions(id: categoryid, completion: completion, failure:failure)
     }
 
-    @discardableResult public func getItemDetails(itemId: Int, locationId: Int, completion: @escaping ((ItemObject?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult public func getItemDetails(itemId: Int, locationId: Int, completion: @escaping ((Item?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
         return APIManager.shared.getItemDetails(itemId: itemId, locationID: locationId, completion: completion, failure: failure)
     }
     

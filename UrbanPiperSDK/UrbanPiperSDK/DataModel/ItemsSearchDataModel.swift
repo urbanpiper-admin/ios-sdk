@@ -29,7 +29,7 @@ open class ItemsSearchDataModel: UrbanPiperDataModel {
         }
     }
 
-    open var itemsArray: [ItemObject]? {
+    open var itemsArray: [Item]? {
         return itemsSearchResponse?.items
     }
 
@@ -55,11 +55,11 @@ extension ItemsSearchDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
 
         if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
-            let itemObject: ItemObject = itemsArray![indexPath.row]
-            if itemsArray?.last === itemObject, itemsArray!.count < itemsSearchResponse!.meta.totalCount {
+            let item: Item = itemsArray![indexPath.row]
+            if itemsArray?.last === item, itemsArray!.count < itemsSearchResponse!.meta.totalCount {
                 searchItems(for: searchKeyword, offset: itemsArray!.count)
             }
-            categoryCell.configureCell(itemObject, extras: extras)
+            categoryCell.configureCell(item, extras: extras)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }
@@ -80,11 +80,11 @@ extension ItemsSearchDataModel {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewCellIdentifier!, for: indexPath)
 
         if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
-            let itemObject: ItemObject = itemsArray![indexPath.row]
-            if itemsArray?.last === itemObject, itemsArray!.count < itemsSearchResponse!.meta.totalCount {
+            let item: Item = itemsArray![indexPath.row]
+            if itemsArray?.last === item, itemsArray!.count < itemsSearchResponse!.meta.totalCount {
                 searchItems(for: searchKeyword, offset: itemsArray!.count)
             }
-            categoryCell.configureCell(itemObject, extras: extras)
+            categoryCell.configureCell(item, extras: extras)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }

@@ -7,7 +7,7 @@ import Foundation
 
 public class Like : NSObject{
 
-	public var item : ItemObject!
+	public var item : Item!
 	public var likedOn : Int!
 
 
@@ -16,7 +16,7 @@ public class Like : NSObject{
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
 		if let itemData: [String:Any] = dictionary["item"] as? [String:Any]{
-			item = ItemObject(fromDictionary: itemData)
+			item = Item(fromDictionary: itemData)
 		}
 		likedOn = dictionary["liked_on"] as? Int
 	}
@@ -42,7 +42,7 @@ public class Like : NSObject{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         item = aDecoder.decodeObject(forKey: "item") as? ItemObject
+//         item = aDecoder.decodeObject(forKey: "item") as? Item
 //         likedOn = aDecoder.decodeObject(forKey: "liked_on") as? Int
 //
 //    }

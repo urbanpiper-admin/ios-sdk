@@ -17,8 +17,8 @@ import UIKit
 }
 
 @objc public protocol ItemCellDelegate {
-    func object() -> ItemObject?
-    func configureCell(_ itemObject: ItemObject?, extras: Extras?)
+    func object() -> Item?
+    func configureCell(_ item: Item?, extras: Extras?)
 }
 
 open class CategoryItemsDataModel: UrbanPiperDataModel {
@@ -36,7 +36,7 @@ open class CategoryItemsDataModel: UrbanPiperDataModel {
         }
     }
 
-    open var itemsArray: [ItemObject]? {
+    open var itemsArray: [Item]? {
         return categoryItemsResponse?.objects
     }
 
@@ -46,7 +46,7 @@ open class CategoryItemsDataModel: UrbanPiperDataModel {
         }
     }
 
-    open var subCategoriesArray: [[ItemObject]]?
+    open var subCategoriesArray: [[Item]]?
     
     public var categoryOptionsResponse: CategoryOptionsResponse?
     
@@ -60,16 +60,16 @@ open class CategoryItemsDataModel: UrbanPiperDataModel {
 
     open func setUpSubCategoriesArray() {
         if let objects = categoryItemsResponse?.objects {
-            let subCategoriesItems: [ItemObject] = objects.filter { $0.subCategory != nil }
+            let subCategoriesItems: [Item] = objects.filter { $0.subCategory != nil }
 
             let keys = subCategoriesItems.compactMap { $0.subCategory.name }
             let tempSet: Set<String> = Set<String>(keys)
             let uniqueKeys: Array = Array(tempSet)
 
-            var subCategoriesArray = [[ItemObject]]()
+            var subCategoriesArray = [[Item]]()
 
             for key in uniqueKeys {
-                var itemsArray: [ItemObject] = subCategoriesItems.filter { $0.subCategory.name == key }
+                var itemsArray: [Item] = subCategoriesItems.filter { $0.subCategory.name == key }
                 guard itemsArray.count > 0 else { return }
                 if itemsArray.count > 1 {
                     itemsArray.sort { (obj1, obj2) in
@@ -89,7 +89,7 @@ open class CategoryItemsDataModel: UrbanPiperDataModel {
                     self.subCategoriesArray = subCategoriesArray.sorted { $0.first!.subCategory.sortOrder < $1.first!.subCategory.sortOrder }
                 }
                 
-                var genericItems: [ItemObject] = objects.filter { $0.subCategory == nil }
+                var genericItems: [Item] = objects.filter { $0.subCategory == nil }
                 if genericItems.count > 0 {
                     if genericItems.count > 1 {
                         genericItems.sort { (obj1, obj2) in
@@ -139,19 +139,19 @@ extension CategoryItemsDataModel {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier!, for: indexPath)
 
         if let categoryCell: ItemCellDelegate = cell as? ItemCellDelegate {
-            let itemObject: ItemObject
+            let item: Item
             if let subCategoriesArray = subCategoriesArray {
-                itemObject = subCategoriesArray[indexPath.section][indexPath.row]
-                if subCategoriesArray.last?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
+                item = subCategoriesArray[indexPath.section][indexPath.row]
+                if subCategoriesArray.last?.last === item, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
                     fetchCategoryItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
                 }
             } else {
-                itemObject = itemsArray![indexPath.row]
-                if itemsArray?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
+                item = itemsArray![indexPath.row]
+                if itemsArray?.last === item, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
                     fetchCategoryItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
                 }
             }
-            categoryCell.configureCell(itemObject, extras: extras)
+            categoryCell.configureCell(item, extras: extras)
         } else {
             assert(false, "Cell does not conform to ItemCellDelegate protocol")
         }
@@ -269,13 +269,13 @@ extension CategoryItemsDataModel {
             refreshData(false)
         }
         
-        guard let itemObject: ItemObject = (tableView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
+        guard let item: Item = (tableView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
         if let subCategoriesArray = subCategoriesArray {
-            if subCategoriesArray.last?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
+            if subCategoriesArray.last?.last === item, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
                 fetchCategoryItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
             }
         } else {
-            if itemsArray?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
+            if itemsArray?.last === item, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
                 fetchCategoryItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
             }
         }
@@ -301,13 +301,13 @@ extension CategoryItemsDataModel {
             return
         }
 
-        guard let itemObject: ItemObject = (tableView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
+        guard let item: Item = (tableView?.visibleCells.last as? ItemCellDelegate)?.object() else { return }
         if let subCategoriesArray = subCategoriesArray {
-            if subCategoriesArray.last?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
+            if subCategoriesArray.last?.last === item, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
                 fetchCategoryItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
             }
         } else {
-            if itemsArray?.last === itemObject, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
+            if itemsArray?.last === item, itemsArray!.count < categoryItemsResponse!.meta.totalCount {
                 fetchCategoryItems(isForcedRefresh: true, next: categoryItemsResponse?.meta.next)
             }
         }

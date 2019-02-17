@@ -10,7 +10,7 @@ import Foundation
 
 public class ItemsSearchResponse : NSObject{
 
-	public var items : [ItemObject]!
+	public var items : [Item]!
     public var meta : Meta!
 
 
@@ -18,10 +18,10 @@ public class ItemsSearchResponse : NSObject{
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	public init(fromDictionary dictionary:  [String:Any]){
-		items = [ItemObject]()
+		items = [Item]()
 		if let itemsArray: [[String:Any]] = dictionary["items"] as? [[String:Any]]{
 			for dic in itemsArray{
-				let value: ItemObject = ItemObject(fromDictionary: dic)
+				let value: Item = Item(fromDictionary: dic)
                 value.isSearchItem = true
 				items.append(value)
 			}
@@ -56,7 +56,7 @@ public class ItemsSearchResponse : NSObject{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         items = aDecoder.decodeObject(forKey :"items") as? [ItemObject]
+//         items = aDecoder.decodeObject(forKey :"items") as? [Item]
 //         meta = aDecoder.decodeObject(forKey: "meta") as? Meta
 //    }
 //

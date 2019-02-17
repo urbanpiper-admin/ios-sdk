@@ -1,5 +1,5 @@
 //
-//	ItemObject.swift
+//	Item.swift
 //
 //	Create by Vidhyadharan Mohanram on 11/12/2017
 //	Copyright © 2017. All rights reserved.
@@ -8,7 +8,7 @@
 import Foundation
 
 
-@objc public class ItemObject : NSObject{
+@objc public class Item : NSObject{
 
 	public var category : ItemCategory!
 	public var currentStock : Int!

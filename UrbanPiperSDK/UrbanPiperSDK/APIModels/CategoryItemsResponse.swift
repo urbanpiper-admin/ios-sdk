@@ -12,7 +12,7 @@ public class CategoryItemsResponse : NSObject, NSCopying{
 
 	public var combos : [AnyObject]!
 	public var meta : ItemMeta!
-	public var objects : [ItemObject]!
+	public var objects : [Item]!
 
 
 	/**
@@ -23,10 +23,10 @@ public class CategoryItemsResponse : NSObject, NSCopying{
 		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
 			meta = ItemMeta(fromDictionary: metaData)
 		}
-		objects = [ItemObject]()
+		objects = [Item]()
 		if let objectsArray: [[String:Any]] = dictionary["objects"] as? [[String:Any]]{
 			for dic in objectsArray{
-				let value: ItemObject = ItemObject(fromDictionary: dic)
+				let value: Item = Item(fromDictionary: dic)
                 value.isUpsoldItem = isUpsoldItems
                 value.isRecommendedItem = isRecommendedItems
 				objects.append(value)
@@ -67,7 +67,7 @@ public class CategoryItemsResponse : NSObject, NSCopying{
 //    {
 //         combos = aDecoder.decodeObject(forKey: "combos") as? [AnyObject]
 //         meta = aDecoder.decodeObject(forKey: "meta") as? ItemMeta
-//         objects = aDecoder.decodeObject(forKey :"objects") as? [ItemObject]
+//         objects = aDecoder.decodeObject(forKey :"objects") as? [Item]
 //
 //    }
 //

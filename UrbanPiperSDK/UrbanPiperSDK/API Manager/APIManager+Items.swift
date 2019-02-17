@@ -185,7 +185,7 @@ extension APIManager {
 
     func getItemDetails(itemId: Int,
                           locationID: Int?,
-                          completion: ((ItemObject?) -> Void)?,
+                          completion: ((Item?) -> Void)?,
                           failure: APIFailure?) -> URLSessionDataTask {
 
         var urlString: String = "\(APIManager.baseUrl)/api/v1/items/\(itemId)/"
@@ -206,8 +206,8 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> ItemObject? in
-            return ItemObject(fromDictionary: dictionary)
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> Item? in
+            return Item(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -216,7 +216,7 @@ extension APIManager {
             if let code = statusCode, code == 200 {
 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let item: ItemObject = ItemObject(fromDictionary: dictionary)
+                    let item: Item = Item(fromDictionary: dictionary)
 
                     DispatchQueue.main.async {
                         completion?(item)

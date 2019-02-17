@@ -35,9 +35,9 @@ public enum AnalyticsEvent {
     case referralSent(phone: String, shareChannel: String?, shareLink: String?);
     case logout(phone: String);
     case cartInit;
-    case addToCart(item: ItemObject, checkoutPageItemAdd: Bool, itemDetailsPageItemAdd: Bool);
-    case removeFromCart(item: ItemObject);
-    case productClicked(item: ItemObject);
+    case addToCart(item: Item, checkoutPageItemAdd: Bool, itemDetailsPageItemAdd: Bool);
+    case removeFromCart(item: Item);
+    case productClicked(item: Item);
     case purchaseCompleted(orderID: String, orderPaymentDataModel: OrderPaymentDataModel, isReorder: Bool);
     case reorderInit(amount: Decimal);
     case itemLiked(itemTitle: String);
@@ -252,8 +252,8 @@ public class AnalyticsManager: NSObject {
 //        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
 //            var itemsDictionaryArray = [[String: Any]]()
 //            
-//            for itemObject in CartManager.shared.cartItems {
-//                itemsDictionaryArray.append(itemObject.toDictionary())
+//            for item in CartManager.shared.cartItems {
+//                itemsDictionaryArray.append(item.toDictionary())
 //            }
 //            Mixpanel.mainInstance().track(event: "cart_confirmed",
 //                                          properties: ["items" : itemsDictionaryArray])
@@ -1002,14 +1002,14 @@ public class AnalyticsManager: NSObject {
 //        //        In the wallet screen, a user might reload or make a purchase using the wallet in-store. To detect an offline action with the wallet, we need to rely on the wallet data refreshed from the server. If the wallet balance from the server is more than that in the app, it was a "reload". If the balance from server is smaller, it was a "purchase".
 //    }
 //
-//    public func itemDetailsDisplayed(itemObject: ItemObject) {
+//    public func itemDetailsDisplayed(item: Item) {
 //        #if !DEBUG
 //        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
 //            
 //            let product: GAIEcommerceProduct = GAIEcommerceProduct()
-//            product.setId("\(itemObject.id)")
-//            product.setName(itemObject.itemTitle)
-//            product.setCategory(itemObject.category.name)
+//            product.setId("\(item.id)")
+//            product.setName(item.itemTitle)
+//            product.setCategory(item.category.name)
 //            
 //            let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
 //            productAction.setAction(kGAIPADetail)
@@ -1023,25 +1023,25 @@ public class AnalyticsManager: NSObject {
 //        
 //        if let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() {
 //            tracker.trackEvent(AFEventContentView,
-//                               withValues: [AFEventParamContentId: itemObject.id,
-//                                            AFEventParamPrice: itemObject.totalAmount,
+//                               withValues: [AFEventParamContentId: item.id,
+//                                            AFEventParamPrice: item.totalAmount,
 //                                            AFEventParamContentType: "item_view",
-//                                            AFEventParamContent: itemObject.itemTitle,
+//                                            AFEventParamContent: item.itemTitle,
 //                                            AFEventParamCurrency: "INR"])
 //        }
 //        #endif
 //    }
 //    
-//    public func itemAddedToCart(itemObject: ItemObject) {
+//    public func itemAddedToCart(item: Item) {
 //        #if !DEBUG
 //        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
 //            
 //            let product: GAIEcommerceProduct = GAIEcommerceProduct()
-//            product.setId("\(itemObject.id!)")
-//            product.setName(itemObject.itemTitle)
-//            product.setQuantity(itemObject.quantity as NSNumber)
-//            product.setPrice(itemObject.totalAmount as NSNumber)
-//            product.setCategory(itemObject.category.name)
+//            product.setId("\(item.id!)")
+//            product.setName(item.itemTitle)
+//            product.setQuantity(item.quantity as NSNumber)
+//            product.setPrice(item.totalAmount as NSNumber)
+//            product.setCategory(item.category.name)
 //            
 //            let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
 //            productAction.setAction(kGAIPAAdd)
@@ -1055,24 +1055,24 @@ public class AnalyticsManager: NSObject {
 //        
 //        if let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() {
 //            tracker.trackEvent(AFEventAddToCart,
-//                               withValues: [AFEventParamContentId: itemObject.id,
-//                                            AFEventParamPrice: itemObject.totalAmount,
-//                                            AFEventParamQuantity : itemObject.quantity,
+//                               withValues: [AFEventParamContentId: item.id,
+//                                            AFEventParamPrice: item.totalAmount,
+//                                            AFEventParamQuantity : item.quantity,
 //                                            AFEventParamCurrency: "INR"])
 //        }
 //        #endif
 //    }
 //    
-//    public func itemRemovedFromCart(itemObject: ItemObject) {
+//    public func itemRemovedFromCart(item: Item) {
 //        #if !DEBUG
 //        if let tracker: GAITracker = GAI.sharedInstance().defaultTracker {
 //            
 //            let product: GAIEcommerceProduct = GAIEcommerceProduct()
-//            product.setId("\(itemObject.id!)")
-//            product.setName(itemObject.itemTitle)
-//            product.setQuantity(itemObject.quantity as NSNumber)
-//            product.setPrice(itemObject.totalAmount as NSNumber)
-//            product.setCategory(itemObject.category.name)
+//            product.setId("\(item.id!)")
+//            product.setName(item.itemTitle)
+//            product.setQuantity(item.quantity as NSNumber)
+//            product.setPrice(item.totalAmount as NSNumber)
+//            product.setCategory(item.category.name)
 //            
 //            let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
 //            productAction.setAction(kGAIPARemove)

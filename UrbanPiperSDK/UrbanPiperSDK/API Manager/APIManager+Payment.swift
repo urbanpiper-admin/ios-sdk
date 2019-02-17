@@ -62,7 +62,7 @@ extension APIManager {
     @objc public func preProcessOrder(bizLocationId: Int,
                                applyWalletCredit: Bool,
                                deliveryOption: String,
-                               items: [ItemObject],
+                               items: [Item],
                                orderTotal: Decimal,
                                completion: ((OrderPreProcessingResponse?) -> Void)?,
                                failure: APIFailure?) -> URLSessionDataTask {
@@ -228,7 +228,7 @@ extension APIManager {
     }
     
     public func placeOrder(address: Address?,
-                           items: [ItemObject],
+                           items: [Item],
                            deliveryDate: Date,
                            timeSlot: TimeSlot?,
                            deliveryOption: DeliveryOption,

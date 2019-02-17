@@ -26,7 +26,7 @@ public class ItemDetailsDataModel: UrbanPiperDataModel {
         }
     }
 
-    public var item: ItemObject?
+    public var item: Item?
     public var userLikesResponse: UserLikesResponse?
 
     private override init() {

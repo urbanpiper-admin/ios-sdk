@@ -12,8 +12,8 @@ public class ReorderResponse : NSObject{
 
 	public var bizLocation : BizLocation!
 	public var deliveryCharge : Float!
-	public var itemsAvailable : [ItemObject]!
-	public var itemsNotAvailable : [ItemObject]!
+	public var itemsAvailable : [Item]!
+	public var itemsNotAvailable : [Item]!
 	public var orderItemTaxes : Float!
 	public var orderSubtotal : Float!
 	public var orderTotal : Float!
@@ -28,17 +28,17 @@ public class ReorderResponse : NSObject{
 			bizLocation = BizLocation(fromDictionary: bizLocationData)
 		}
 		deliveryCharge = dictionary["delivery_charge"] as? Float
-		itemsAvailable = [ItemObject]()
+		itemsAvailable = [Item]()
 		if let itemsAvailableArray: [[String:Any]] = dictionary["items_available"] as? [[String:Any]]{
 			for dic in itemsAvailableArray{
-				let value: ItemObject = ItemObject(historicalOrderItemDictionary: dic)
+				let value: Item = Item(historicalOrderItemDictionary: dic)
 				itemsAvailable.append(value)
 			}
 		}
-        itemsNotAvailable = [ItemObject]()
+        itemsNotAvailable = [Item]()
         if let itemsNotAvailableArray: [[String:Any]] = dictionary["items_not_available"] as? [[String:Any]]{
             for dic in itemsNotAvailableArray{
-                let value: ItemObject = ItemObject(fromDictionary: dic)
+                let value: Item = Item(fromDictionary: dic)
                 itemsNotAvailable.append(value)
             }
         }
@@ -93,8 +93,8 @@ public class ReorderResponse : NSObject{
 //    {
 //         bizLocation = aDecoder.decodeObject(forKey: "biz_location") as? BizLocation
 //         deliveryCharge = aDecoder.decodeObject(forKey: "delivery_charge") as? Float
-//         itemsAvailable = aDecoder.decodeObject(forKey :"items_available") as? [ItemObject]
-//         itemsNotAvailable = aDecoder.decodeObject(forKey: "items_not_available") as? [ItemObject]
+//         itemsAvailable = aDecoder.decodeObject(forKey :"items_available") as? [Item]
+//         itemsNotAvailable = aDecoder.decodeObject(forKey: "items_not_available") as? [Item]
 //         orderItemTaxes = aDecoder.decodeObject(forKey: "order_item_taxes") as? Float
 //         orderSubtotal = aDecoder.decodeObject(forKey: "order_subtotal") as? Float
 //         orderTotal = aDecoder.decodeObject(forKey: "order_total") as? Float

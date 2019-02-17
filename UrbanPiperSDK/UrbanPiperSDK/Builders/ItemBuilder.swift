@@ -10,12 +10,12 @@ import UIKit
 
 public class ItemBuilder: NSObject {
     
-    internal let item: ItemObject
+    internal let item: Item
     
     var itemsToAdd: [ItemOption] = []
     internal var itemsToRemove: [ItemOption] = []
 
-    public init(item: ItemObject) {
+    public init(item: Item) {
         self.item = item
     }
         
