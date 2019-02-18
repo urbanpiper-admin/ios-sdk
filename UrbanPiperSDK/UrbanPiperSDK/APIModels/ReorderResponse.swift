@@ -48,28 +48,28 @@ public class ReorderResponse : NSObject{
 //        packagingCharge = dictionary["packaging_charge"] as? Float
 	}
 
-//    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    func toDictionary() -> [String:Any]
-//    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if bizLocation != nil{
-//            dictionary["biz_location"] = bizLocation.toDictionary()
-//        }
+    /**
+     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    @objc public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String: Any] = [String:Any]()
+        if bizLocation != nil{
+            dictionary["biz_location"] = bizLocation.toDictionary()
+        }
 //        if deliveryCharge != nil{
 //            dictionary["delivery_charge"] = deliveryCharge
 //        }
-//        if itemsAvailable != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
-//            for itemsAvailableElement in itemsAvailable {
-//                dictionaryElements.append(itemsAvailableElement.toDictionary())
-//            }
-//            dictionary["items_available"] = dictionaryElements
-//        }
-//        if itemsNotAvailable != nil{
-//            dictionary["items_not_available"] = itemsNotAvailable
-//        }
+        if itemsAvailable != nil{
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            for itemsAvailableElement in itemsAvailable {
+                dictionaryElements.append(itemsAvailableElement.toDictionary())
+            }
+            dictionary["items_available"] = dictionaryElements
+        }
+        if itemsNotAvailable != nil{
+            dictionary["items_not_available"] = itemsNotAvailable
+        }
 //        if orderItemTaxes != nil{
 //            dictionary["order_item_taxes"] = orderItemTaxes
 //        }
@@ -82,9 +82,9 @@ public class ReorderResponse : NSObject{
 //        if packagingCharge != nil{
 //            dictionary["packaging_charge"] = packagingCharge
 //        }
-//        return dictionary
-//    }
-//
+        return dictionary
+    }
+
 //    /**
 //    * NSCoding required initializer.
 //    * Fills the data from the passed decoder

@@ -22,5 +22,19 @@ public class OrderVerifyTxnResponse: NSObject {
         pid = dictionary["pid"] as? String
         status = dictionary["status"] as? String
     }
-    
+
+    @objc public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String: Any] = [String:Any]()
+        if txnId != nil{
+            dictionary["txn_id"] = txnId
+        }
+        if pid != nil{
+            dictionary["pid"] = pid
+        }
+        if status != nil{
+            dictionary["status"] = status
+        }
+        return dictionary
+    }
 }

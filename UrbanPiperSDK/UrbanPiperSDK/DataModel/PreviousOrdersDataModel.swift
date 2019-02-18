@@ -143,7 +143,7 @@ extension PreviousOrdersDataModel {
         
         dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: true)
         let _ = observers.map { $0.value?.refreshPreviousOrdersUI(isProcessing: true) }
-        let dataTask: URLSessionDataTask = APIManager.shared.getOrderHistory(completion:
+        let dataTask: URLSessionDataTask = APIManager.shared.getPastOrders(completion:
             { [weak self] (data) in
                 guard let response = data else {
                     self?.dataModelDelegate?.refreshPreviousOrdersUI(isProcessing: false)

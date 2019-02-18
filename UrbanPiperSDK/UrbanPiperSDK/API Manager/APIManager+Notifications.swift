@@ -10,7 +10,7 @@ import Foundation
 
 extension APIManager {
 
-    @objc public func getNotifications(completion: ((NotificationsResponse?) -> Void)?,
+    @objc internal func getNotifications(completion: ((NotificationsResponse?) -> Void)?,
                                       failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/ub/notifications/?channel__in=app_notification,all"

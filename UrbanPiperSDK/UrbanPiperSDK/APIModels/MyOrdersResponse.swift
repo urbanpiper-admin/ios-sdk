@@ -11,7 +11,7 @@ import Foundation
 public class PastOrdersResponse : NSObject{
 
 	public var meta : Meta!
-	public var orders : [PastOrder]!
+	@objc public var orders : [PastOrder]!
 
 
 	/**
@@ -30,10 +30,10 @@ public class PastOrdersResponse : NSObject{
 		}
 	}
 
-/*	/**
+	/**
 	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
-	func toDictionary() -> [String:Any]
+	@objc public func toDictionary() -> [String:Any]
 	{
 		var dictionary = [String:Any]()
 		if meta != nil{
@@ -49,7 +49,7 @@ public class PastOrdersResponse : NSObject{
 		return dictionary
 	}
 
-    /**
+/*    /**
     * NSCoding required initializer.
     * Fills the data from the passed decoder
     */

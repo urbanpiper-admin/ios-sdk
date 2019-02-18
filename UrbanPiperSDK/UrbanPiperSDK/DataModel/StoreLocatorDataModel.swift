@@ -22,16 +22,16 @@ public class StoreLocatorDataModel: UrbanPiperDataModel {
     
     weak public var dataModelDelegate: StoreLocatorDataModelDelegate?
     
-    public var storeLocatorResponse: StoreLocatorResponse? {
+    public var storeListResponse: StoreListResponse? {
         didSet {
-            filteredStoresArray = storeLocatorResponse?.stores
+            filteredStoresArray = storeListResponse?.stores
             tableView?.reloadData()
             collectionView?.reloadData()
         }
     }
     
     public var storesListArray: [Store]? {
-        return storeLocatorResponse?.stores
+        return storeListResponse?.stores
     }
     
     public var filteredStoresArray: [Store]? {
@@ -55,12 +55,12 @@ public class StoreLocatorDataModel: UrbanPiperDataModel {
     
     public func fetchStores() {
         dataModelDelegate?.refreshStoreLocatorUI(true)
-        let dataTask: URLSessionDataTask = APIManager.shared.getAllStores(completion: { [weak self] (storeLocatorResponse) in
+        let dataTask: URLSessionDataTask = APIManager.shared.getAllStores(completion: { [weak self] (storeListResponse) in
             defer {
                 self?.dataModelDelegate?.refreshStoreLocatorUI(false)
             }
-            guard let response = storeLocatorResponse else {
-                self?.storeLocatorResponse = nil
+            guard let response = storeListResponse else {
+                self?.storeListResponse = nil
                 return
             }
             self?.sortAndSetResponse(response: response)
@@ -73,7 +73,7 @@ public class StoreLocatorDataModel: UrbanPiperDataModel {
         addDataTask(dataTask: dataTask)
     }
     
-    func sortAndSetResponse(response: StoreLocatorResponse) {
+    func sortAndSetResponse(response: StoreListResponse) {
         
         if let userLocation = LocationManagerDataModel.shared.currentUserLocation, response.stores != nil {
             for store in response.stores {
@@ -87,7 +87,7 @@ public class StoreLocatorDataModel: UrbanPiperDataModel {
             }
         }
         
-        storeLocatorResponse = response
+        storeListResponse = response
     }
     
     public func filterStores(key: String) {

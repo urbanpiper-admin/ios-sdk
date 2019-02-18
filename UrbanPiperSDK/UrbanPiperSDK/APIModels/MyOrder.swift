@@ -58,7 +58,7 @@ public enum OrderStatus: String {
 
 @objc public class PastOrder : NSObject{
 
-	public var address : String!
+	@objc public var address : String!
 	public var bizLocationId : Int!
 	public var channel : String!
 	public var charges : [Charge]!
@@ -79,7 +79,7 @@ public enum OrderStatus: String {
 	public var orderSubtotal : Decimal!
 	public var orderTotal : Decimal!
 	public var orderType : String!
-	public var paymentOption : String!
+	@objc public var paymentOption : String!
 	@objc public var phone : String!
 	public var taxAmt : Decimal!
 //    public var taxRate : Float!

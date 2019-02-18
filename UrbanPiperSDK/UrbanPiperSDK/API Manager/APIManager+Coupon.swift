@@ -55,7 +55,7 @@ extension APIManager {
         return dataTask*/
     }
 
-    @objc public func apply(coupon: String,
+    @discardableResult @objc public func apply(coupon: String,
                      storeLocationId: Int,
                      deliveryOption: String,
                      items: [[String: Any]],

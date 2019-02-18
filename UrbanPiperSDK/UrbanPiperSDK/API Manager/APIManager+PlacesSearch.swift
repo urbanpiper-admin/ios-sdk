@@ -10,7 +10,7 @@ import Foundation
 
 extension APIManager {
     
-    @objc public func fetchCoordinates(from placeId: String,
+    @objc internal func fetchCoordinates(from placeId: String,
                                 completion: ((PlaceDetailsResponse?) -> Void)?,
                                 failure: APIFailure?) -> URLSessionDataTask {
         let placesAPIKey: String = AppConfigManager.shared.firRemoteConfigDefaults.googlePlacesApiKey!
@@ -56,7 +56,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    @objc public func reverseGeoCode(lat: Double,
+    @discardableResult @objc public func reverseGeoCode(lat: Double,
                                      lng: Double,
                                        completion: ((Address?) -> Void)?,
                                        failure: APIFailure?) -> URLSessionDataTask {
@@ -108,7 +108,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    @objc public func fetchPlaces(for keyword: String,
+    @objc internal func fetchPlaces(for keyword: String,
                                   completion: ((GooglePlacesResponse?) -> Void)?,
                                   failure: APIFailure?) -> URLSessionDataTask {
         

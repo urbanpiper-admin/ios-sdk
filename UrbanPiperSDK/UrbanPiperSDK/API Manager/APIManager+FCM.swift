@@ -10,7 +10,7 @@ import Foundation
 
 extension APIManager {
     
-    @objc public func registerForFCMToken(token: String,
+    @objc internal func registerForFCMToken(token: String,
                                        completion: ((GenericResponse?) -> Void)?,
                                        failure: APIFailure?) -> URLSessionDataTask {
         let urlString: String = "\(APIManager.baseUrl)/api/v1/device/fcm/"
@@ -57,7 +57,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    @objc public func unRegisterForFCMMessaging(token: String,
+    @objc internal func unRegisterForFCMMessaging(token: String,
                                                 completion: ((GenericResponse?) -> Void)?,
                                                 failure: APIFailure?) -> URLSessionDataTask {
         

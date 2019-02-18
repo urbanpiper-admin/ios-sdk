@@ -9,7 +9,7 @@ import UIKit
 
 extension APIManager {
     
-    @objc public func submitFeedback(name: String,
+    @objc internal func submitFeedback(name: String,
                                      rating: Double,
                                      orderId: String,
                                      choiceText: String?,

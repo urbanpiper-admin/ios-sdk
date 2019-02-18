@@ -104,7 +104,7 @@ extension MyOrdersDataModel {
     public func fetchOrderHistory(next: String? = nil) {
 
         dataModelDelegate?.refreshMyOrdersUI(isProcessing: true)
-        let dataTask: URLSessionDataTask = APIManager.shared.getOrderHistory(next: next,
+        let dataTask: URLSessionDataTask = APIManager.shared.getPastOrders(next: next,
                                                                                completion:
             { [weak self] (data) in
                 defer {

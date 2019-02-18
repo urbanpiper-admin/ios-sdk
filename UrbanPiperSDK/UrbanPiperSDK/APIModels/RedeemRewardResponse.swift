@@ -24,6 +24,32 @@ public class RedeemRewardResponse: NSObject {
         ptsRemaining = dictionary["ptsRemaining"] as? Int
         redemptionCode = dictionary["redemption_code"] as? String
         status = dictionary["status"] as? String
-        status = dictionary["status"] as? String
+        message = dictionary["message"] as? String
+    }
+    
+    @objc public func toDictionary() -> [String:Any] {
+        var dictionary: [String: Any] = [String:Any]()
+        
+        if expiresIn != nil{
+            dictionary["expires_in"] = expiresIn
+        }
+        
+        if ptsRemaining != nil{
+            dictionary["ptsRemaining"] = ptsRemaining
+        }
+        
+        if redemptionCode != nil{
+            dictionary["redemption_code"] = redemptionCode
+        }
+        
+        if status != nil{
+            dictionary["status"] = status
+        }
+        
+        if message != nil{
+            dictionary["message"] = message
+        }
+        
+        return dictionary
     }
 }

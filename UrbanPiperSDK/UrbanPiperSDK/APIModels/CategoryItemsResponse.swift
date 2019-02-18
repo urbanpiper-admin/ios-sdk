@@ -10,8 +10,8 @@ import Foundation
 
 public class CategoryItemsResponse : NSObject, NSCopying{
 
-	public var combos : [AnyObject]!
-	public var meta : ItemMeta!
+//    public var combos : [AnyObject]!
+	public var meta : Meta!
 	public var objects : [Item]!
 
 
@@ -19,9 +19,9 @@ public class CategoryItemsResponse : NSObject, NSCopying{
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
     public init(fromDictionary dictionary:  [String:Any], isUpsoldItems: Bool = false, isRecommendedItems: Bool = false){
-		combos = dictionary["combos"] as? [AnyObject]
+//        combos = dictionary["combos"] as? [AnyObject]
 		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
-			meta = ItemMeta(fromDictionary: metaData)
+			meta = Meta(fromDictionary: metaData)
 		}
 		objects = [Item]()
 		if let objectsArray: [[String:Any]] = dictionary["objects"] as? [[String:Any]]{
@@ -40,9 +40,9 @@ public class CategoryItemsResponse : NSObject, NSCopying{
     public func toDictionary() -> [String:Any]
     {
         var dictionary: [String: Any] = [String:Any]()
-        if combos != nil{
-            dictionary["combos"] = combos
-        }
+//        if combos != nil{
+//            dictionary["combos"] = combos
+//        }
         if meta != nil{
             dictionary["meta"] = meta.toDictionary()
         }
@@ -66,7 +66,7 @@ public class CategoryItemsResponse : NSObject, NSCopying{
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
 //         combos = aDecoder.decodeObject(forKey: "combos") as? [AnyObject]
-//         meta = aDecoder.decodeObject(forKey: "meta") as? ItemMeta
+//         meta = aDecoder.decodeObject(forKey: "meta") as? Meta
 //         objects = aDecoder.decodeObject(forKey :"objects") as? [Item]
 //
 //    }

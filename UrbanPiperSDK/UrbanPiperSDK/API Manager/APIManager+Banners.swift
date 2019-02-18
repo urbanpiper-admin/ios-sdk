@@ -10,7 +10,7 @@ import Foundation
 
 extension APIManager {
 
-    @objc public func getBanners(completion: ((BannersResponse?) -> Void)?,
+    @objc internal func getBanners(completion: ((BannersResponse?) -> Void)?,
                                 failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/galleries/?type=app_banner"

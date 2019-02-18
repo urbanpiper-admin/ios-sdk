@@ -10,7 +10,23 @@ import Foundation
 
 extension APIManager {
 
-    public func getOrderHistory(limit: Int? = nil,
+    internal func getHistory(completion: (([String : Any]?) -> Void)?,
+                             failure: APIFailure?) -> URLSessionDataTask {
+        
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/user/history/?format=json&biz_id=\(bizId)&type=order"
+        
+        let url: URL = URL(string: urlString)!
+        
+        var urlRequest: URLRequest = URLRequest(url: url)
+        
+        urlRequest.httpMethod = "GET"
+        
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> [String: Any]? in
+            return dictionary
+        }, completion: completion, failure: failure)!
+    }
+    
+    internal func getPastOrders(limit: Int? = nil,
                                   next: String? = nil,
                                   completion: ((PastOrdersResponse?) -> Void)?,
                                   failure: APIFailure?) -> URLSessionDataTask {
@@ -28,7 +44,6 @@ extension APIManager {
         var urlRequest: URLRequest = URLRequest(url: url)
 
         urlRequest.httpMethod = "GET"
-
         
         return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> PastOrdersResponse? in
             return PastOrdersResponse(fromDictionary: dictionary)
@@ -60,7 +75,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    @objc public func getPastOrderDetails(orderId: Int,
+    @objc internal func getPastOrderDetails(orderId: Int,
                                   completion: ((PastOrderDetailsResponse?) -> Void)?,
                                   failure: APIFailure?) -> URLSessionDataTask {
         

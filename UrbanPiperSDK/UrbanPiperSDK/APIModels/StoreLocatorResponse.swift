@@ -1,5 +1,5 @@
 //
-//	StoreLocatorResponse.swift
+//	StoreListResponse.swift
 //
 //	Create by Vidhyadharan Mohanram on 4/7/2018
 //	Copyright © 2018. All rights reserved.
@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class StoreLocatorResponse : NSObject{
+public class StoreListResponse : NSObject{
 
 	public var biz : Biz!
 	public var stores : [Store]!
@@ -30,25 +30,25 @@ public class StoreLocatorResponse : NSObject{
 		}
 	}
 
-//    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    func toDictionary() -> [String:Any]
-//    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if biz != nil{
-//            dictionary["biz"] = biz.toDictionary()
-//        }
-//        if stores != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
-//            for storesElement in stores {
-//                dictionaryElements.append(storesElement.toDictionary())
-//            }
-//            dictionary["stores"] = dictionaryElements
-//        }
-//        return dictionary
-//    }
-//
+    /**
+     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    @objc public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String: Any] = [String:Any]()
+        if biz != nil{
+            dictionary["biz"] = biz.toDictionary()
+        }
+        if stores != nil{
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            for storesElement in stores {
+                dictionaryElements.append(storesElement.toDictionary())
+            }
+            dictionary["stores"] = dictionaryElements
+        }
+        return dictionary
+    }
+
 //    /**
 //    * NSCoding required initializer.
 //    * Fills the data from the passed decoder

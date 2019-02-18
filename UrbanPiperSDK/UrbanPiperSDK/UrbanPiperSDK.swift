@@ -60,7 +60,7 @@ public extension UrbanPiperSDK {
         return UserManager.shared.socialLogin(email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken, completion: completion, failure: failure)
     }
         
-    @discardableResult public func refreshUserInfo(completion: ((UserInfoResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
+    @discardableResult @objc public func refreshUserInfo(completion: ((UserInfoResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
         return UserManager.shared.refreshUserInfo(completion: completion, failure: failure)
     }
 
@@ -68,8 +68,8 @@ public extension UrbanPiperSDK {
         return UserManager.shared.refreshUserBizInfo(completion: completion, failure: failure)
     }
 
-    @discardableResult public func updateUserInfo(name: String, phone: String, email: String, gender: String?, anniversary: Date?, birthday: Date?,
-                                                  completion: ((UserInfoUpdateResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask {
+    @discardableResult @objc public func updateUserInfo(name: String, phone: String, email: String, gender: String?, anniversary: Date?, birthday: Date?,
+                                                        completion: ((UserInfoUpdateResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask {
         return UserManager.shared.updateUserInfo(name: name, phone: phone, email: email, gender: gender, completion: completion, failure: failure)
     }
     
@@ -77,11 +77,11 @@ public extension UrbanPiperSDK {
         return UserManager.shared.changePassword(phone: phone, oldPassword: oldPassword, newPassword: newPassword, completion: completion, failure: failure)
     }
     
-    @discardableResult public func getDeliverableAddresses(locationId: Int, completion: ((UserAddressesResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult @objc public func getDeliverableAddresses(locationId: Int, completion: ((UserAddressesResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
         return APIManager.shared.getDeliverableAddresses(locationId: locationId, completion: completion, failure: failure)
     }
 
-    @discardableResult public func addAddress(address: Address, completion: ((AddUpdateAddressResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult @objc public func addAddress(address: Address, completion: ((AddUpdateAddressResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
         return APIManager.shared.addAddress(address: address, completion: completion, failure: failure)
     }
     
@@ -89,23 +89,23 @@ public extension UrbanPiperSDK {
         return APIManager.shared.updateAddress(address: address, completion: completion, failure: failure)
     }
     
-    @discardableResult public func deleteAddress(addressId: Int, completion: ((GenericResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult @objc public func deleteAddress(addressId: Int, completion: ((GenericResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
         return APIManager.shared.deleteAddress(addressId: addressId, completion: completion, failure: failure)
     }
     
     @discardableResult public func getWalletTransactions(addressId: Int, completion: ((WalletTransactionResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
         return APIManager.shared.getWalletTransactions(completion: completion, failure: failure)
     }
-
-    @discardableResult public func getPastOrders(completion: ((PastOrdersResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.getOrderHistory(completion: completion, failure: failure)
+    
+    @discardableResult @objc public func getPastOrders(completion: ((PastOrdersResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.getPastOrders(completion: completion, failure: failure)
     }
 
-    @discardableResult public func getPastOrderDetails(orderId: Int, completion: ((PastOrderDetailsResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult @objc public func getPastOrderDetails(orderId: Int, completion: ((PastOrderDetailsResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
         return APIManager.shared.getPastOrderDetails(orderId: orderId, completion: completion, failure: failure)
     }
 
-    @discardableResult public func redeemReward(rewardId: Int, completion: ((RedeemRewardResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult @objc public func redeemReward(rewardId: Int, completion: ((RedeemRewardResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
         return APIManager.shared.redeemReward(rewardId: rewardId, completion: completion, failure: failure)
     }
     
@@ -113,7 +113,7 @@ public extension UrbanPiperSDK {
         return APIManager.shared.getNotifications(completion: completion, failure: failure)
     }
 
-    @discardableResult public func submitFeedback(name: String, orderId: String, rating: Double, choiceText: String?, comments: String?,
+    @discardableResult @objc public func submitFeedback(name: String, orderId: String, rating: Double, choiceText: String?, comments: String?,
                                                   completion: ((GenericResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
         return APIManager.shared.submitFeedback(name: name, rating: rating, orderId: orderId, choiceText: choiceText, comments: comments, completion: completion, failure: failure)
     }
@@ -151,7 +151,7 @@ extension UrbanPiperSDK {
         return APIManager.shared.getNearestStore(CLLocationCoordinate2DMake(lat, lng), completion: completion, failure: failure)
     }
     
-    @discardableResult public func getAllStores(completion: @escaping ((StoreLocatorResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult @objc public func getAllStores(completion: @escaping ((StoreListResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
         return APIManager.shared.getAllStores(completion: completion, failure: failure)
     }
     
@@ -195,7 +195,7 @@ extension UrbanPiperSDK {
 
 extension UrbanPiperSDK {
     
-    @discardableResult public func getRewards(completion: @escaping ((RewardsResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult @objc public func getRewards(completion: @escaping ((RewardsResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
         return APIManager.shared.getRewards(completion: completion, failure: failure)
     }
     
@@ -207,4 +207,29 @@ extension UrbanPiperSDK {
         return APIManager.shared.getBanners(completion: completion, failure: failure)
     }
     
+}
+
+//  MARK: Cart
+
+extension UrbanPiperSDK {
+    
+    @discardableResult @objc public func reorder(orderId: Int, userLocation: CLLocationCoordinate2D, locationId: Int,
+                                                 completion: @escaping ((ReorderResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.reorder(orderId: orderId, userLocation: userLocation, bizLocationId: locationId, completion: completion, failure: failure)
+    }
+    
+    @discardableResult @objc public func initiateOnlineWalletReload(totalAmount: Decimal,
+                                                              completion: ((OnlinePaymentInitResponse?) -> Void)?,
+                                                              failure: APIFailure?) -> URLSessionDataTask? {
+        let paymentOption = PaymentOption.paymentGateway
+        let purpose = OnlinePaymentPurpose.reload
+        return APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption, purpose: purpose, totalAmount: totalAmount, bizLocationId: nil, completion: completion, failure: failure)
+    }
+    
+
+    @discardableResult @objc public func verifyPayment(pid: String,
+                                                       transactionId: String,
+                                                       completion: @escaping ((OrderVerifyTxnResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.verifyPayment(pid: pid, orderId: OnlinePaymentPurpose.reload.rawValue, transactionId: transactionId, completion: completion, failure: failure)
+    }
 }

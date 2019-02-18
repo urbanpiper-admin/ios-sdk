@@ -17,4 +17,16 @@ public class UserInfoUpdateResponse: NSObject {
         msg = dictionary["msg"] as? String
         success = dictionary["success"] as? Bool ?? false
     }
+    
+    @objc public func toDictionary() -> [String: Any] {
+        var dictionary: [String: Any] = [String:Any]()
+
+        if msg != nil {
+            dictionary["msg"] = msg
+        }
+        
+        dictionary["success"] = success
+        
+        return dictionary
+    }
 }

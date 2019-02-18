@@ -148,7 +148,7 @@ public enum AddressTag: String {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	@objc public init(fromDictionary dictionary:  [String:Any]){
 		city = dictionary["city"] as? String
 
          deliverable = dictionary["deliverable"] as? Bool ?? false
@@ -180,47 +180,43 @@ public enum AddressTag: String {
 		tag = dictionary["tag"] as? String ?? AddressTag.other.rawValue
 	}
 
-//    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    public func toDictionary() -> [String:Any]
-//    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if address1 != nil{
-//            dictionary["address_1"] = address1
-//        }
-//        if landmark != nil{
-//            dictionary["landmark"] = landmark
-//        }
-//        if deliverable != nil{
-//            dictionary["deliverable"] = deliverable
-//        }
-//        if city != nil{
-//            dictionary["city"] = city
-//        }
-//        if id != nil{
-//            dictionary["id"] = id
-//        }
-//        if lat != nil{
-//            dictionary["lat"] = lat
-//        }
-//        if lng != nil{
-//            dictionary["lng"] = lng
-//        }
-//        if pin != nil{
-//            dictionary["pin"] = pin
-//        }
-//        if podId != nil{
-//            dictionary["pod_id"] = podId
-//        }
-//        if subLocality != nil{
-//            dictionary["sub_locality"] = subLocality
-//        }
-//        if tag != nil{
-//            dictionary["tag"] = tag
-//        }
-//        return dictionary
-//    }
+    /**
+     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String: Any] = [String:Any]()
+        if address1 != nil{
+            dictionary["address_1"] = address1
+        }
+        if landmark != nil{
+            dictionary["landmark"] = landmark
+        }
+        if deliverable != nil{
+            dictionary["deliverable"] = deliverable
+        }
+        if city != nil{
+            dictionary["city"] = city
+        }
+        if id != nil{
+            dictionary["id"] = id
+        }
+        dictionary["lat"] = lat
+        dictionary["lng"] = lng
+        if pin != nil{
+            dictionary["pin"] = pin
+        }
+        if podId != nil{
+            dictionary["pod_id"] = podId
+        }
+        if subLocality != nil{
+            dictionary["sub_locality"] = subLocality
+        }
+        if tag != nil{
+            dictionary["tag"] = tag
+        }
+        return dictionary
+    }
 
     /**
     * NSCoding required initializer.

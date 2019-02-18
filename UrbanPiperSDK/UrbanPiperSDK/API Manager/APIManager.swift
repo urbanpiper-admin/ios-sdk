@@ -113,7 +113,7 @@ public typealias APIFailure = (UPError?) -> Void
         return "apikey \(apiUsername):\(apiKey)"
     }
     
-    @objc public func authorizationKey() -> String {
+    @objc internal func authorizationKey() -> String {
         if let token: String = jwt?.token {
             return "Bearer \(token)"
         } else {
@@ -121,7 +121,7 @@ public typealias APIFailure = (UPError?) -> Void
         }
     }
 
-    @objc public func updateHeaders(jwt: JWT?) {
+    @objc internal func updateHeaders(jwt: JWT?) {
         self.jwt = jwt
         
         let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String

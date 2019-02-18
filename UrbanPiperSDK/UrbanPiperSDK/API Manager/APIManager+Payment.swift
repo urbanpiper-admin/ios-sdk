@@ -59,7 +59,7 @@ public enum DeliveryOption: String {
 
 extension APIManager {
 
-    @objc public func preProcessOrder(bizLocationId: Int,
+    @objc internal func preProcessOrder(bizLocationId: Int,
                                applyWalletCredit: Bool,
                                deliveryOption: String,
                                items: [Item],
@@ -116,7 +116,7 @@ extension APIManager {
         return dataTask*/
     }
 
-    @objc public func applyCoupon(code: String,
+    @objc internal func applyCoupon(code: String,
                            orderData: [String: Any],
                            completion: ((Order?) -> Void)?,
                            failure: APIFailure?) -> URLSessionDataTask {
@@ -166,7 +166,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    public func initiateOnlinePayment(paymentOption: PaymentOption,
+    internal func initiateOnlinePayment(paymentOption: PaymentOption,
                                       purpose: OnlinePaymentPurpose,
                                       totalAmount: Decimal,
                                       bizLocationId: Int?,
@@ -227,7 +227,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    public func placeOrder(address: Address?,
+    internal func placeOrder(address: Address?,
                            items: [Item],
                            deliveryDate: Date,
                            timeSlot: TimeSlot?,
@@ -350,7 +350,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    @objc public func verifyPayment(pid: String,
+    @objc internal func verifyPayment(pid: String,
                              orderId: String,
                              transactionId: String,
         completion: ((OrderVerifyTxnResponse?) -> Void)?,

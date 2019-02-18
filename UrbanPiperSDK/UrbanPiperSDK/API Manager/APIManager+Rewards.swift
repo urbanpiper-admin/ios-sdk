@@ -9,7 +9,7 @@ import UIKit
 
 extension APIManager {
     
-    public func getRewards(completion: ((RewardsResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask {
+    internal func getRewards(completion: ((RewardsResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask {
         let urlString: String = "\(APIManager.baseUrl)/api/v2/rewards/"
 
         let url: URL = URL(string: urlString)!
@@ -24,7 +24,7 @@ extension APIManager {
         }, completion: completion, failure: failure)!
     }
 
-    public func redeemReward(rewardId: Int, completion: ((RedeemRewardResponse?) -> Void)?,
+    internal func redeemReward(rewardId: Int, completion: ((RedeemRewardResponse?) -> Void)?,
                                               failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/rewards/\(rewardId)/redeem/"

@@ -10,7 +10,7 @@ import Foundation
 
 extension APIManager {
     
-    @objc public func refreshUserData(phone: String,
+    @objc internal func refreshUserData(phone: String,
                                       completion: ((UserInfoResponse?) -> Void)?,
                                       failure: APIFailure?) -> URLSessionDataTask {
         
@@ -53,7 +53,7 @@ extension APIManager {
         return dataTask*/
     }
 
-    @objc public func updateUserInfo(name: String,
+    @objc internal func updateUserInfo(name: String,
                                      phone: String,
                                      email: String,
                                      gender: String? = nil,
@@ -129,7 +129,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    @objc public func changePassword(phone: String,
+    @objc internal func changePassword(phone: String,
                                      oldPassword: String,
                                      newPassword: String,
                                      completion: ((GenericResponse?) -> Void)?,
@@ -188,7 +188,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    @objc public func userSavedAddresses(completion: ((UserAddressesResponse?) -> Void)?,
+    @objc internal func getSavedAddresses(completion: ((UserAddressesResponse?) -> Void)?,
                          failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/address/?biz_id=\(bizId)"
@@ -231,16 +231,16 @@ extension APIManager {
         return dataTask*/
     }
     
-    public func getDeliverableAddresses(locationId: Int?,
-                                                    completion: ((UserAddressesResponse?) -> Void)?,
-                                                    failure: APIFailure?) -> URLSessionDataTask {
+    internal func getDeliverableAddresses(locationId: Int?,
+                                          completion: ((UserAddressesResponse?) -> Void)?,
+                                          failure: APIFailure?) -> URLSessionDataTask {
         
         var urlString: String = "\(APIManager.baseUrl)/api/v1/user/address/"
 
         if let id = locationId {
             urlString = "\(urlString)?location_id=\(id)"
         } else {
-                urlString = "\(urlString)?biz_id=\(bizId)"
+            urlString = "\(urlString)?biz_id=\(bizId)"
         }
         
         let url: URL = URL(string: urlString)!
@@ -281,7 +281,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    @objc public func addAddress(address: Address,
+    @objc internal func addAddress(address: Address,
                                  completion: ((AddUpdateAddressResponse?) -> Void)?,
                                  failure: APIFailure?) -> URLSessionDataTask {
         
@@ -352,7 +352,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    @objc public func updateAddress(address: Address,
+    @objc internal func updateAddress(address: Address,
                                     completion: ((AddUpdateAddressResponse?) -> Void)?,
                                     failure: APIFailure?) -> URLSessionDataTask {
         
@@ -426,7 +426,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    @objc public func deleteAddress(addressId: Int,
+    @objc internal func deleteAddress(addressId: Int,
                                     completion: ((GenericResponse?) -> Void)?,
                                     failure: APIFailure?) -> URLSessionDataTask {
         

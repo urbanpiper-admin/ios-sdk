@@ -13,6 +13,7 @@ import UIKit
     @objc public var status: String? = "success"
     public var message: String?
     public var errorMessage: String?
+    internal var msg: String?
     
     
     internal override init() {
@@ -28,6 +29,25 @@ import UIKit
         status = dictionary?["status"] as? String
         message = dictionary?["message"] as? String
         errorMessage = dictionary?["error_message"] as? String
+        msg = dictionary?["msg"] as? String
     }
 
+    @objc public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String: Any] = [String:Any]()
+        if status != nil{
+            dictionary["status"] = status
+        }
+        if message != nil{
+            dictionary["message"] = message
+        }
+        if errorMessage != nil{
+            dictionary["error_message"] = errorMessage
+        }
+        if msg != nil{
+            dictionary["msg"] = msg
+        }
+        return dictionary
+    }
+    
 }

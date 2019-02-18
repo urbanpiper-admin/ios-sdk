@@ -55,7 +55,7 @@ extension APIManager {
         return dataTask*/
     }
 
-    @objc public func likeItem(itemId: Int,
+    @objc internal func likeItem(itemId: Int,
                               completion: ((GenericResponse?) -> Void)?,
                               failure: APIFailure?) -> URLSessionDataTask {
 
@@ -96,7 +96,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    @objc public func unlikeItem(itemId: Int,
+    @objc internal func unlikeItem(itemId: Int,
                                  completion: ((GenericResponse?) -> Void)?,
                                 failure: APIFailure?) -> URLSessionDataTask {
         

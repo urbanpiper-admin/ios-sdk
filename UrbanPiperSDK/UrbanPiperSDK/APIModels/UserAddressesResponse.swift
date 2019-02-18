@@ -26,22 +26,22 @@ public class UserAddressesResponse : NSObject{
 		}
 	}
 
-//    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    public func toDictionary() -> [String:Any]
-//    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if addresses != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
-//            for addressesElement in addresses {
-//                dictionaryElements.append(addressesElement.toDictionary())
-//            }
-//            dictionary["addresses"] = dictionaryElements
-//        }
-//        return dictionary
-//    }
-//
+    /**
+     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    @objc public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String: Any] = [String:Any]()
+        if addresses != nil{
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            for addressesElement in addresses {
+                dictionaryElements.append(addressesElement.toDictionary())
+            }
+            dictionary["addresses"] = dictionaryElements
+        }
+        return dictionary
+    }
+
 //    /**
 //    * NSCoding required initializer.
 //    * Fills the data from the passed decoder

@@ -10,7 +10,7 @@ import CoreLocation
 
 extension APIManager {
     
-    @objc public func getAllStores(completion: ((StoreLocatorResponse?) -> Void)?,
+    @objc internal func getAllStores(completion: ((StoreListResponse?) -> Void)?,
                                      failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/stores/?format=json&biz_id=\(bizId)&all=1"
@@ -22,8 +22,8 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> StoreLocatorResponse? in
-            return StoreLocatorResponse(fromDictionary: dictionary)
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> StoreListResponse? in
+            return StoreListResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -32,10 +32,10 @@ extension APIManager {
             if let code = statusCode, code == 200 {
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let storeLocatorResponse: StoreLocatorResponse = StoreLocatorResponse(fromDictionary: dictionary)
+                    let storeListResponse: StoreListResponse = StoreListResponse(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
-                        completion?(storeLocatorResponse)
+                        completion?(storeListResponse)
                     }
                     return
                 }
@@ -53,7 +53,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    @objc public func getNearestStore(_ coordinates: CLLocationCoordinate2D,
+    @objc internal func getNearestStore(_ coordinates: CLLocationCoordinate2D,
                                         completion: ((StoreResponse?) -> Void)?,
                                         failure: APIFailure?) -> URLSessionDataTask {
         

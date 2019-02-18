@@ -9,7 +9,7 @@ import Foundation
 
 extension APIManager {
 
-    @objc public func getWalletTransactions(completion: ((WalletTransactionResponse?) -> Void)?,
+    @objc internal func getWalletTransactions(completion: ((WalletTransactionResponse?) -> Void)?,
                                               failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/ub/wallet/transactions/"

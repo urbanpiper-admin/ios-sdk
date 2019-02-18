@@ -34,7 +34,7 @@ extension APIManager {
 
     static let socialLoginBaseUrl: String = "\(APIManager.baseUrl)/api/v2/social_auth/me"
 
-    @objc public func request(urlString: String,
+    @objc internal func request(urlString: String,
                               completion: ((socialLoginResponse?) -> Void)?,
                               failure: APIFailure?) -> URLSessionDataTask {
         
