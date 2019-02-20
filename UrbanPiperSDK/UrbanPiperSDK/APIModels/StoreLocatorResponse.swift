@@ -25,6 +25,7 @@ public class StoreListResponse : NSObject{
 		if let storesArray = dictionary["stores"] as? [[String:Any]]{
 			for dic in storesArray{
 				let value = Store(fromDictionary: dic)
+                guard !value.hideStoreName else { continue }
 				stores.append(value)
 			}
 		}

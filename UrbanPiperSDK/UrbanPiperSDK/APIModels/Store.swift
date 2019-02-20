@@ -15,7 +15,7 @@ public class Store : NSObject, NSCoding{
 	public var city : String!
 	public var closingDay : Bool = false
 	public var closingTime : String!
-    public var isPickupEnabled : Bool = false
+    public var isPickupEnabled : Bool!
 	public var deliveryCharge : Decimal!
 	public var deliveryMinOffsetTime : Int!
     public var discount : Decimal!
@@ -53,7 +53,7 @@ public class Store : NSObject, NSCoding{
 		city = dictionary["city"] as? String
 		closingDay = dictionary["closing_day"] as? Bool ?? false
 		closingTime = dictionary["closing_time"] as? String
-        isPickupEnabled = dictionary["is_pickup_enabled"] as? Bool ?? false
+        isPickupEnabled = dictionary["is_pickup_enabled"] as? Bool
 
         var priceVal: Any? = dictionary["delivery_charge"]
         if let val: Decimal = priceVal as? Decimal {
