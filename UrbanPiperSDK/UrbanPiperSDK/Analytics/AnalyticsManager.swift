@@ -35,8 +35,8 @@ public enum AnalyticsEvent {
     case referralSent(phone: String, shareChannel: String?, shareLink: String?);
     case logout(phone: String);
     case cartInit;
-    case addToCart(item: Item, checkoutPageItemAdd: Bool, itemDetailsPageItemAdd: Bool);
-    case removeFromCart(item: Item);
+    case addToCart(item: CartItem, checkoutPageItemAdd: Bool, itemDetailsPageItemAdd: Bool);
+    case removeFromCart(item: CartItem);
     case productClicked(item: Item);
     case purchaseCompleted(orderID: String, orderPaymentDataModel: OrderPaymentDataModel, isReorder: Bool);
     case reorderInit(amount: Decimal);

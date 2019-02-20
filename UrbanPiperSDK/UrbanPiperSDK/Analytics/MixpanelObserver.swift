@@ -141,20 +141,20 @@ class MixpanelObserver: AnalyticsObserver {
         case .cartInit:
             guard let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 else { return }
             Mixpanel.mainInstance().track(event: "ppr-cart-init")
-        case .addToCart(let item, let checkoutPageItemAdd, let itemDetailsPageItemAdd):
+        case .addToCart(let cartItem, let checkoutPageItemAdd, let itemDetailsPageItemAdd):
             guard let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 else { return }
             Mixpanel.mainInstance().track(event: "ppr-add-to-cart",
-                                          properties: ["item_title": item.itemTitle,
-                                                       "qty": item.quantity,
-                                                       "is_recommended": item.isRecommendedItem,
-                                                       "is_upsold": item.isUpsoldItem,
-                                                       "from_search": item.isSearchItem,
+                                          properties: ["item_title": cartItem.itemTitle,
+                                                       "qty": cartItem.quantity,
+                                                       "is_recommended": cartItem.isRecommendedItem,
+                                                       "is_upsold": cartItem.isUpsoldItem,
+                                                       "from_search": cartItem.isSearchItem,
                                                        "from_detail_scr": itemDetailsPageItemAdd,
                                                        "from_checkout": checkoutPageItemAdd])
-        case .removeFromCart(let item):
+        case .removeFromCart(let cartItem):
             guard let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 else { return }
             Mixpanel.mainInstance().track(event: "ppr-remove-from-cart",
-                                          properties: ["item_title": item.itemTitle])
+                                          properties: ["item_title": cartItem.itemTitle])
         case .productClicked(let item):
             guard let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 else { return }
             Mixpanel.mainInstance().track(event: "ppr-item-view-details",

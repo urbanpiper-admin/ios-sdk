@@ -17,7 +17,7 @@ extension ItemOptionGroup {
     }
 
     public var isSingleSelectionGroup: Bool {
-        return minSelectable == SelectionQuantity.one
+        return minSelectable == SelectionQuantity.one || maxSelectable == SelectionQuantity.one
     }
 
     public var isMultipleSelectionGroup: Bool {

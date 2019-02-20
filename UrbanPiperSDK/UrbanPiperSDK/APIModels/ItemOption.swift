@@ -86,13 +86,13 @@ public class ItemOption : NSObject {
         if title != nil{
             dictionary["title"] = title
         }
-        if nestedOptionGroups != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
-            for nestedOptionGroupsElement in nestedOptionGroups {
-                dictionaryElements.append(nestedOptionGroupsElement.toDictionary())
-            }
-            dictionary["nested_option_groups"] = dictionaryElements
-        }
+//        if nestedOptionGroups != nil{
+//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//            for nestedOptionGroupsElement in nestedOptionGroups {
+//                dictionaryElements.append(nestedOptionGroupsElement.toDictionary())
+//            }
+//            dictionary["nested_option_groups"] = dictionaryElements
+//        }
         dictionary["quantity"] = quantity
         return dictionary
     }

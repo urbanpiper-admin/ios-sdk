@@ -22,18 +22,27 @@ class AppsFlyerObserver: AnalyticsObserver {
         case .appLaunch(_):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
             tracker.trackAppLaunch()
-        case .addToCart(let item, _, _):
+        case .addToCart(let cartItem, _, _):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
             tracker.trackEvent(AFEventAddToCart,
-                               withValues: [AFEventParamContentId: item.id,
-                                            AFEventParamPrice: item.totalAmount,
-                                            AFEventParamQuantity : item.quantity,
+                               withValues: [AFEventParamContentId: cartItem.id,
+                                            AFEventParamPrice: cartItem.totalAmount,
+                                            AFEventParamQuantity : cartItem.quantity,
                                             AFEventParamCurrency: "INR"])
         case .productClicked(let item):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
+            let itemPrice: Decimal
+            if let price = item.itemPrice, price != 0 {
+                itemPrice = price
+            } else if let options: [ItemOption] = item.optionGroups?.first?.options, let optionPrice: Decimal = ((options.compactMap { $0.price }).sorted { $0 < $1 }).first, optionPrice > 0 {
+                itemPrice = optionPrice
+            } else {
+                itemPrice = Decimal.zero
+            }
+            
             tracker.trackEvent(AFEventContentView,
                                withValues: [AFEventParamContentId: item.id,
-                                            AFEventParamPrice: item.totalAmount,
+                                            AFEventParamPrice: itemPrice,
                                             AFEventParamContentType: "item_view",
                                             AFEventParamContent: item.itemTitle,
                                             AFEventParamCurrency: "INR"])

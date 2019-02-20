@@ -157,14 +157,14 @@ class GAObserver: AnalyticsObserver {
                                                                                         label: "logout",
                                                                                         value: 0).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
-        case .addToCart(let item, _, _):
+        case .addToCart(let cartItem, _, _):
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
             let product: GAIEcommerceProduct = GAIEcommerceProduct()
-            product.setId("\(item.id!)")
-            product.setName(item.itemTitle)
-            product.setQuantity(item.quantity as NSNumber)
-            product.setPrice(item.totalAmount as NSNumber)
-            product.setCategory(item.category.name)
+            product.setId("\(cartItem.id!)")
+            product.setName(cartItem.itemTitle)
+            product.setQuantity(cartItem.quantity as NSNumber)
+            product.setPrice(cartItem.totalAmount as NSNumber)
+            product.setCategory(cartItem.category.name)
             
             let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
             productAction.setAction(kGAIPAAdd)
@@ -174,14 +174,14 @@ class GAObserver: AnalyticsObserver {
             screenBuilder.setProductAction(productAction)
             
             tracker.send((screenBuilder.build() as! [AnyHashable : Any]))
-        case .removeFromCart(let item):
+        case .removeFromCart(let cartItem):
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
             let product: GAIEcommerceProduct = GAIEcommerceProduct()
-            product.setId("\(item.id!)")
-            product.setName(item.itemTitle)
-            product.setQuantity(item.quantity as NSNumber)
-            product.setPrice(item.totalAmount as NSNumber)
-            product.setCategory(item.category.name)
+            product.setId("\(cartItem.id!)")
+            product.setName(cartItem.itemTitle)
+            product.setQuantity(cartItem.quantity as NSNumber)
+            product.setPrice(cartItem.totalAmount as NSNumber)
+            product.setCategory(cartItem.category.name)
             
             let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
             productAction.setAction(kGAIPARemove)

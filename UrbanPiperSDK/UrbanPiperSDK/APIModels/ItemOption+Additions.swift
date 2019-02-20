@@ -11,12 +11,8 @@ import Foundation
 extension ItemOption {
 
     public var totalAmount: Decimal {
-        var totalAmount: Decimal = Decimal.zero
-        
-        if let priceVal: Decimal = price, quantity > 0 {
-            totalAmount = priceVal
-        }
-        
+        var totalAmount: Decimal = price
+                
         if let nestedOptionGroups: [ItemOptionGroup] = nestedOptionGroups, nestedOptionGroups.count > 0 {
             for optionGroup: ItemOptionGroup in nestedOptionGroups {
                 for item: ItemOption in optionGroup.options {

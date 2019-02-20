@@ -49,6 +49,7 @@
 		18374E0A2219CC2600BFCB86 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18374E062219CC2600BFCB86 /* Item.swift */; };
 		18374E0B2219CC2600BFCB86 /* RewardsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18374E072219CC2600BFCB86 /* RewardsResponse.swift */; };
 		18374E0D2219CC3F00BFCB86 /* APIManager+Rewards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18374E0C2219CC3F00BFCB86 /* APIManager+Rewards.swift */; };
+		18374E0F221AC49300BFCB86 /* CartItemBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18374E0E221AC49300BFCB86 /* CartItemBuilder.swift */; };
 		187185BC20DA0C4F004AE018 /* BizLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187185B920DA0C4E004AE018 /* BizLocation.swift */; };
 		187185BE20DA0C4F004AE018 /* ReorderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187185BB20DA0C4F004AE018 /* ReorderResponse.swift */; };
 		1876202620EB915A0071FA25 /* APIManager+Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1876202520EB91590071FA25 /* APIManager+Wallet.swift */; };
@@ -69,7 +70,7 @@
 		188886EA220F48150001FE72 /* CheckoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886E9220F48150001FE72 /* CheckoutBuilder.swift */; };
 		188886F822114E8D0001FE72 /* OrderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886F622114E8D0001FE72 /* OrderResponse.swift */; };
 		188886F922114E8D0001FE72 /* OrderVerifyTxnResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886F722114E8D0001FE72 /* OrderVerifyTxnResponse.swift */; };
-		188886FB22114F790001FE72 /* ItemBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886FA22114F790001FE72 /* ItemBuilder.swift */; };
+		188886FB22114F790001FE72 /* ItemOptionBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886FA22114F790001FE72 /* ItemOptionBuilder.swift */; };
 		188886FD22114FDC0001FE72 /* CartItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188886FC22114FDC0001FE72 /* CartItem.swift */; };
 		188E9F8B20EFEEC100980530 /* Double+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188E9F8A20EFEEC100980530 /* Double+Additions.swift */; };
 		18978EE02202E62300189AB4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18978EDF2202E62200189AB4 /* Constants.swift */; };
@@ -268,6 +269,7 @@
 		18374E062219CC2600BFCB86 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		18374E072219CC2600BFCB86 /* RewardsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsResponse.swift; sourceTree = "<group>"; };
 		18374E0C2219CC3F00BFCB86 /* APIManager+Rewards.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Rewards.swift"; sourceTree = "<group>"; };
+		18374E0E221AC49300BFCB86 /* CartItemBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItemBuilder.swift; sourceTree = "<group>"; };
 		187185B920DA0C4E004AE018 /* BizLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BizLocation.swift; sourceTree = "<group>"; };
 		187185BB20DA0C4F004AE018 /* ReorderResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReorderResponse.swift; sourceTree = "<group>"; };
 		1876202520EB91590071FA25 /* APIManager+Wallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Wallet.swift"; sourceTree = "<group>"; };
@@ -288,7 +290,7 @@
 		188886E9220F48150001FE72 /* CheckoutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutBuilder.swift; sourceTree = "<group>"; };
 		188886F622114E8D0001FE72 /* OrderResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderResponse.swift; sourceTree = "<group>"; };
 		188886F722114E8D0001FE72 /* OrderVerifyTxnResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderVerifyTxnResponse.swift; sourceTree = "<group>"; };
-		188886FA22114F790001FE72 /* ItemBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemBuilder.swift; sourceTree = "<group>"; };
+		188886FA22114F790001FE72 /* ItemOptionBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemOptionBuilder.swift; sourceTree = "<group>"; };
 		188886FC22114FDC0001FE72 /* CartItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItem.swift; sourceTree = "<group>"; };
 		188E9F8A20EFEEC100980530 /* Double+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Additions.swift"; sourceTree = "<group>"; };
 		18978EDF2202E62200189AB4 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = UrbanPiperSDK/Constants.swift; sourceTree = SOURCE_ROOT; };
@@ -484,7 +486,8 @@
 				188886E5220F3AA10001FE72 /* SocialRegBuilder.swift */,
 				188886E7220F47C30001FE72 /* ResetPasswordBuilder.swift */,
 				188886E9220F48150001FE72 /* CheckoutBuilder.swift */,
-				188886FA22114F790001FE72 /* ItemBuilder.swift */,
+				188886FA22114F790001FE72 /* ItemOptionBuilder.swift */,
+				18374E0E221AC49300BFCB86 /* CartItemBuilder.swift */,
 			);
 			path = Builders;
 			sourceTree = "<group>";
@@ -1088,7 +1091,7 @@
 				18B3C41121D7416500768401 /* Filter.swift in Sources */,
 				4607A9AB208F1E2700128010 /* APIManager+Biz.swift in Sources */,
 				46E3ACFB208DBA3E00DC43A2 /* UPReachability.swift in Sources */,
-				188886FB22114F790001FE72 /* ItemBuilder.swift in Sources */,
+				188886FB22114F790001FE72 /* ItemOptionBuilder.swift in Sources */,
 				4607A9CA208F1E2700128010 /* CategoriesResponse.swift in Sources */,
 				4607A9FB208F1E2800128010 /* Choice.swift in Sources */,
 				18B3C43221DA2D7D00768401 /* User+Additions.swift in Sources */,
@@ -1125,6 +1128,7 @@
 				4607A9EA208F1E2700128010 /* Term.swift in Sources */,
 				4607A9B4208F1E2700128010 /* CartDataModel.swift in Sources */,
 				4607A993208F1E2700128010 /* WeakRef.swift in Sources */,
+				18374E0F221AC49300BFCB86 /* CartItemBuilder.swift in Sources */,
 				1878275820EA06BD009F57FA /* WalletTransactionResponse.swift in Sources */,
 				181F216B2105B78300878E6D /* FeaturedItemsDataModel.swift in Sources */,
 				4607A9F9208F1E2800128010 /* TimeSlot+Additions.swift in Sources */,

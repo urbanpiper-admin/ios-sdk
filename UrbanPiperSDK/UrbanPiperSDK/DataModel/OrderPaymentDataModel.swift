@@ -322,7 +322,7 @@ extension OrderPaymentDataModel {
         let dataTask: URLSessionDataTask = APIManager.shared.preProcessOrder(bizLocationId: OrderingStoreDataModel.shared.orderingStore!.bizLocationId,
                                                          applyWalletCredit: applyWalletCredits,
                                                          deliveryOption: selectedDeliveryOption.rawValue,
-                                                         items: CartManager.shared.cartItems,
+                                                         cartItems: CartManager.shared.cartItems,
                                                          orderTotal: itemsTotalPrice,
                                                          completion:
             { [weak self] (orderPreProcessingResponse) in
@@ -362,7 +362,7 @@ extension OrderPaymentDataModel {
         let orderDict: [String: Any] = ["biz_location_id": OrderingStoreDataModel.shared.orderingStore!.bizLocationId,
                          "order_type": selectedDeliveryOption.rawValue,
                          "channel": APIManager.channel,
-                         "items": CartManager.shared.cartItems.map { $0.discountCouponApiItemDictionary },
+                         "items": CartManager.shared.cartItems.map { $0.toDictionary() },
                          "apply_wallet_credit": applyWalletCredits] as [String: Any]
         
         dataModelDelegate?.refreshApplyCouponUI(true, code: code)
@@ -438,7 +438,7 @@ extension OrderPaymentDataModel {
         
         let paymentOption = selectedPaymentOption
         let dataTask: URLSessionDataTask = APIManager.shared.placeOrder(address: selectedDeliveryOption != .pickUp ? deliveryAddress : nil,
-                                     items: CartManager.shared.cartItems,
+                                     cartItems: CartManager.shared.cartItems,
                                      deliveryDate: deliveryDateTime!,
                                      timeSlot: timeSlotDelivery ? selectedDeliveryTimeSlotOption : nil,
                                      deliveryOption: selectedDeliveryOption,

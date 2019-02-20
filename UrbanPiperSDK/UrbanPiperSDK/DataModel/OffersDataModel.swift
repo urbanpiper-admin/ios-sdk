@@ -86,7 +86,7 @@ open class OffersDataModel: UrbanPiperDataModel {
 //        let orderDict: [String: Any] = ["biz_location_id": OrderingStoreDataModel.shared.orderingStore!.bizLocationId,
 //                                        "order_type": deliveryOption.rawValue,
 //                                        "channel": APIManager.channel,
-//                                        "items": CartManager.shared.cartItems.map { $0.discountCouponApiItemDictionary },
+//                                        "items": CartManager.shared.cartItems.map { $0.apiItemDictionary },
 //                                        "apply_wallet_credit": applyWalletCredits] as [String: Any]
 //
 //        dataModelDelegate?.refreshApplyCouponUI(true)

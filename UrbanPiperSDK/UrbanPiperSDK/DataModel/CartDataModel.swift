@@ -14,14 +14,14 @@ import UIKit
 }
 
 @objc public protocol CartItemCellDelegate {
-    func configureCell(_ item: Item?, extras: Extras?)
+    func configureCell(_ cartItem: CartItem?, extras: Extras?)
 }
 
 open class CartDataModel: UrbanPiperDataModel {
 
     weak open var dataModelDelegate: CartDataModelDelegate?
 
-    open var cartItemsListArray: [[Item]] = CartManager.shared.groupedCartItems
+    open var cartItemsListArray: [[CartItem]] = CartManager.shared.groupedCartItems
 
     public override init() {
         super.init()

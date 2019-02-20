@@ -22,9 +22,9 @@ public class CartManager: NSObject {
     private typealias WeakRefCartManagerDelegate = WeakRef<CartManagerDelegate>
     private var cartManagerObservers: [WeakRefCartManagerDelegate] = [WeakRefCartManagerDelegate]()
 
-    @objc public var cartItems = [Item]()
+    @objc public var cartItems = [CartItem]()
 
-    public var groupedCartItems: [[Item]] {
+    public var groupedCartItems: [[CartItem]] {
         return Array(Dictionary(grouping:cartItems){$0.category.id ?? 0}.values)
     }
     
@@ -70,8 +70,8 @@ public class CartManager: NSObject {
         return Date(timeIntervalSince1970: TimeInterval(earliestTime / 1000))
     }
 
-    @objc public func cartCount(for item: Item) -> Int {
-        return cartItems.reduce (0, { $0 + ($1.id == item.id ? $1.quantity : 0) } )
+    @objc public func cartCount(for itemId: Int) -> Int {
+        return cartItems.reduce (0, { $0 + ($1.id == itemId ? $1.quantity : 0) } )
     }
     
     public func notesFor(itemId: Int) -> String {
@@ -106,45 +106,45 @@ extension CartManager {
 
 extension CartManager {
 
-    @objc public func add(item: Item, notes: String? = nil, fromDetailScreen: Bool, fromCheckoutScreen: Bool) {
+    @objc public func add(cartItem: CartItem, notes: String? = nil, fromDetailScreen: Bool, fromCheckoutScreen: Bool) {
         if cartCount == 0 {
             AnalyticsManager.shared.track(event: .cartInit)
         }
 
-        AnalyticsManager.shared.track(event: .addToCart(item: item,
+        AnalyticsManager.shared.track(event: .addToCart(item: cartItem,
                                                         checkoutPageItemAdd: fromCheckoutScreen,
                                                         itemDetailsPageItemAdd: fromDetailScreen))
         
-        if let item = cartItems.filter({ $0 == item }).last {
-            if item.isItemQuantityAvailable(quantity: item.quantity) {
-                item.quantity += item.quantity
+        if let item = cartItems.filter({ $0 == cartItem }).last {
+            if item.isItemQuantityAvailable(quantity: 1) {
+                item.quantity += 1
                 item.notes = notes
             } else {
-                let upError: UPError = UPError(type: .maxOrderableQuantityAdded(item.currentStock))
+                let upError: UPError = UPError(type: .maxOrderableQuantityAdded(cartItem.currentStock))
                 let _ = cartManagerObservers.map { $0.value?.handleCart(error: upError) }
             }
         } else {
-            let object = item.copy() as! Item
-            object.quantity = item.quantity
-            object.notes = notes
+            cartItem.quantity = 1
+            cartItem.notes = notes
 
-            cartItems.append(object)
+            cartItems.append(cartItem)
         }
         
         let _ = cartManagerObservers.map { $0.value?.refreshCartUI() }
     }
 
-    public func remove(item: Item) {
-        AnalyticsManager.shared.track(event: .removeFromCart(item: item))
+    public func remove(itemId: Int) {
+        guard let cartItem = cartItems.filter({ $0.id == itemId }).last else { return }
         
-        guard let item = cartItems.filter({ $0.id == item.id }).last else { return }
-        item.quantity -= item.quantity
+        AnalyticsManager.shared.track(event: .removeFromCart(item: cartItem))
+        
+        cartItem.quantity -= 1
 
-        guard item.quantity == 0 else {
+        guard cartItem.quantity == 0 else {
             let _ = cartManagerObservers.map { $0.value?.refreshCartUI() }
             return
         }
-        guard let index = cartItems.index(of: item) else {
+        guard let index = cartItems.index(of: cartItem) else {
             let _ = cartManagerObservers.map { $0.value?.refreshCartUI() }
             return
         }

@@ -62,7 +62,7 @@ extension APIManager {
     @objc internal func preProcessOrder(bizLocationId: Int,
                                applyWalletCredit: Bool,
                                deliveryOption: String,
-                               items: [Item],
+                               cartItems: [CartItem],
                                orderTotal: Decimal,
                                completion: ((OrderPreProcessingResponse?) -> Void)?,
                                failure: APIFailure?) -> URLSessionDataTask {
@@ -79,7 +79,7 @@ extension APIManager {
                       "apply_wallet_credit": applyWalletCredit,
                       "order_type": deliveryOption,
                       "channel": APIManager.channel,
-                      "items": items.map { $0.apiItemDictionary },
+                      "items": cartItems.map { $0.toDictionary() },
                       "order_total": orderTotal] as [String: Any]
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
@@ -228,7 +228,7 @@ extension APIManager {
     }
     
     internal func placeOrder(address: Address?,
-                           items: [Item],
+                           cartItems: [CartItem],
                            deliveryDate: Date,
                            timeSlot: TimeSlot?,
                            deliveryOption: DeliveryOption,
@@ -259,7 +259,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "POST"
         
-        let itemWithInstructionsArray = items.filter { $0.notes != nil && $0.notes!.count > 0 }
+        let itemWithInstructionsArray = cartItems.filter { $0.notes != nil && $0.notes!.count > 0 }
         var instructionsText: String
         
         if itemWithInstructionsArray.count > 0 {
@@ -277,7 +277,7 @@ extension APIManager {
         var params: [String: Any] = ["channel": APIManager.channel,
                       "order_type": deliveryOption.rawValue,
                       "instructions": instructionsText,
-                      "items": items.map { $0.apiItemDictionary },
+                      "items": cartItems.map { $0.toDictionary() },
                       "payment_option": paymentOption,
                       "phone": phone,
                       "biz_location_id": bizLocationId,

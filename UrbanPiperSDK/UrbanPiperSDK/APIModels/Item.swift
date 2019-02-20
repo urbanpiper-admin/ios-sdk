@@ -35,7 +35,7 @@ import Foundation
     public var subCategory : ItemCategory!
 	public var tags : [ItemTag]!
 //    public var vatRate : Float!
-    @objc public var quantity: Int = 0
+    @objc public internal(set) var quantity: Int = 0
     public var isRecommendedItem: Bool = false
     public var isUpsoldItem: Bool = false
     public var isSearchItem: Bool = false
