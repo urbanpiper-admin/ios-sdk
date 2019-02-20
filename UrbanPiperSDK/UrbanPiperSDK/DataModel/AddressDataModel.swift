@@ -128,7 +128,6 @@ public class AddressDataModel: UrbanPiperDataModel {
 
     
     public func refreshData(_ isForcedRefresh: Bool = false) {
-        guard OrderingStoreDataModel.shared.deliveryOption == .delivery else { return }
         fetchAddressList()
     }
     

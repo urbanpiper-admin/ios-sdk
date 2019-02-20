@@ -98,11 +98,23 @@ public enum OrderStatus: String {
     }
     
     public var packagingCharge: Decimal? {
-        return charges.filter({ $0.title == "Packaging charge" }).last?.value
+        var charge = charges.filter({ $0.title == "Packaging charge" }).last?.value
+        
+        if charge == nil {
+            charge = charges.filter({ $0.title == "Packaging charges" }).last?.value
+        }
+        
+        return charge
     }
     
     public var deliveryCharge: Decimal? {
-        return charges.filter({ $0.title == "Delivery charge" }).last?.value
+        var charge = charges.filter({ $0.title == "Delivery charge" }).last?.value
+        
+        if charge == nil {
+            charge = charges.filter({ $0.title == "Delivery charges" }).last?.value
+        }
+        
+        return charge
     }
     
     @objc public var discountDecimalNumber: NSDecimalNumber? {
