@@ -61,7 +61,7 @@ public enum OrderStatus: String {
 	@objc public var address : String!
 	public var bizLocationId : Int!
 	public var channel : String!
-	public var charges : [Charge]!
+	public var charges : [OrderCharges]!
 	@objc public var coupon : String!
 	@objc public var created : Int = 0
 	public var customerName : String!
@@ -150,10 +150,10 @@ public enum OrderStatus: String {
 		address = dictionary["address"] as? String
 		bizLocationId = dictionary["biz_location_id"] as? Int
 		channel = dictionary["channel"] as? String
-		charges = [Charge]()
+		charges = [OrderCharges]()
 		if let chargesArray = dictionary["charges"] as? [[String:Any]]{
 			for dic in chargesArray{
-				let value = Charge(fromDictionary: dic)
+				let value = OrderCharges(fromDictionary: dic)
 				charges.append(value)
 			}
 		}

@@ -12,15 +12,14 @@ import Foundation
 
 	public var category : ItemCategory!
 	public var currentStock : Int!
-	public var extras : [AnyObject]!
+//    public var extras : [AnyObject]!
 	public var foodType : String!
-	public var fulfillmentModes : [String]!
+//    public var fulfillmentModes : [String]!
 	public var id : Int!
 	public var imageLandscapeUrl : String!
 	public var imageUrl : String!
 	public var itemDesc : String!
 	public var itemPrice : Decimal!
-    public var total : Decimal!
 	public var itemTitle : String!
 	public var likes : Int!
 	public var optionGroups : [ItemOptionGroup]!
@@ -32,9 +31,12 @@ import Foundation
     public var preOrderEndTime : Int?
 	public var slug : String!
 	public var sortOrder : Int!
-    public var subCategory : ItemCategory!
-	public var tags : [ItemTag]!
+    public var subCategory : ItemCategory?
+//    public var tags : [ItemTag]!
 //    public var vatRate : Float!
+    
+//    public var total : Decimal!
+
     @objc public internal(set) var quantity: Int = 0
     public var isRecommendedItem: Bool = false
     public var isUpsoldItem: Bool = false
@@ -57,9 +59,9 @@ import Foundation
             category = ItemCategory(fromDictionary: categoryData)
         }
 		currentStock = dictionary["current_stock"] as? Int ?? 0
-		extras = dictionary["extras"] as? [AnyObject]
+//        extras = dictionary["extras"] as? [AnyObject]
 		foodType = dictionary["food_type"] as? String
-		fulfillmentModes = dictionary["fulfillment_modes"] as? [String]
+//        fulfillmentModes = dictionary["fulfillment_modes"] as? [String]
 		id = dictionary["id"] as? Int
 		imageLandscapeUrl = dictionary["image_landscape_url"] as? String
 		imageUrl = dictionary["image_url"] as? String
@@ -74,14 +76,14 @@ import Foundation
             itemPrice = Decimal.zero
         }
         
-        priceVal = dictionary["total"] as Any
-        if let val: Decimal = priceVal as? Decimal {
-            total = val
-        } else if let val: Double = priceVal as? Double {
-            total = Decimal(val).rounded
-        } else {
-            total = Decimal.zero
-        }
+//        priceVal = dictionary["total"] as Any
+//        if let val: Decimal = priceVal as? Decimal {
+//            total = val
+//        } else if let val: Double = priceVal as? Double {
+//            total = Decimal(val).rounded
+//        } else {
+//            total = Decimal.zero
+//        }
 
 		itemTitle = dictionary["item_title"] as? String ?? dictionary["title"] as? String
 		likes = dictionary["likes"] as? Int ?? 0
@@ -119,13 +121,13 @@ import Foundation
         if let subCategoryData: [String:Any] = dictionary["sub_category"] as? [String:Any]{
             subCategory = ItemCategory(fromDictionary: subCategoryData)
         }
-        tags = [ItemTag]()
-        if let tagsArray: [[String:Any]] = dictionary["tags"] as? [[String:Any]]{
-            for dic in tagsArray{
-                let value: ItemTag = ItemTag(fromDictionary: dic)
-                tags.append(value)
-            }
-        }
+//        tags = [ItemTag]()
+//        if let tagsArray: [[String:Any]] = dictionary["tags"] as? [[String:Any]]{
+//            for dic in tagsArray{
+//                let value: ItemTag = ItemTag(fromDictionary: dic)
+//                tags.append(value)
+//            }
+//        }
 //        vatRate = dictionary["vat_rate"] as? Float
         quantity = dictionary["quantity"] as? Int ?? 0
 	}
@@ -142,15 +144,15 @@ import Foundation
         if currentStock != nil{
             dictionary["current_stock"] = currentStock
         }
-        if extras != nil{
-            dictionary["extras"] = extras
-        }
+//        if extras != nil{
+//            dictionary["extras"] = extras
+//        }
         if foodType != nil{
             dictionary["food_type"] = foodType
         }
-        if fulfillmentModes != nil{
-            dictionary["fulfillment_modes"] = fulfillmentModes
-        }
+//        if fulfillmentModes != nil{
+//            dictionary["fulfillment_modes"] = fulfillmentModes
+//        }
         if id != nil{
             dictionary["id"] = id
         }
@@ -166,9 +168,9 @@ import Foundation
         if itemPrice != nil{
             dictionary["item_price"] = itemPrice
         }
-        if total != nil{
-            dictionary["total"] = total
-        }
+//        if total != nil{
+//            dictionary["total"] = total
+//        }
         if itemTitle != nil{
             dictionary["item_title"] = itemTitle
         }
@@ -215,15 +217,15 @@ import Foundation
             dictionary["sort_order"] = sortOrder
         }
         if subCategory != nil{
-            dictionary["sub_category"] = subCategory.toDictionary()
+            dictionary["sub_category"] = subCategory!.toDictionary()
         }
-        if tags != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
-            for tagsElement in tags {
-                dictionaryElements.append(tagsElement.toDictionary())
-            }
-            dictionary["tags"] = dictionaryElements
-        }
+//        if tags != nil{
+//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//            for tagsElement in tags {
+//                dictionaryElements.append(tagsElement.toDictionary())
+//            }
+//            dictionary["tags"] = dictionaryElements
+//        }
 //        if vatRate != nil{
 //            dictionary["vat_rate"] = vatRate
 //        }

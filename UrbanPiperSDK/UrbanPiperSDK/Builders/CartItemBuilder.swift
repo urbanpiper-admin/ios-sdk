@@ -21,10 +21,7 @@ import UIKit
     public var totalAmount: Decimal {
         var totalAmount: Decimal = item.itemPrice ?? Decimal.zero
         if let builder = optionBuilder {
-            let optionsToAdd = builder.optionsToAdd
-            for option in optionsToAdd {
-                totalAmount += option.totalAmount
-            }
+            totalAmount += builder.totalAmount
         }
         return totalAmount
     }

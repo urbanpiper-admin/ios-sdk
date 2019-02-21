@@ -18,7 +18,7 @@ public class ItemOption : NSObject {
 	public var price : Decimal!
     public var recommended : Bool = false
 	public var sortOrder : Int!
-	public var title : String!
+	@objc public var title : String!
 	public var nestedOptionGroups : [ItemOptionGroup]!
     public var quantity: Int = 0
 
@@ -154,4 +154,51 @@ public class ItemOption : NSObject {
 //    }
 
 }
+
+extension ItemOption {
+    
+    public func equitableCheckDictionary() -> [String: Any] {
+        var dictionary: [String: Any] = [String:Any]()
+        //        if currentStock != nil{
+        //            dictionary["current_stock"] = currentStock
+        //        }
+        if id != nil{
+            dictionary["id"] = id
+        }
+        //        if price != nil{
+        //            dictionary["price"] = price
+        //        }
+        //        if title != nil{
+        //            dictionary["title"] = title
+        //        }
+        //        dictionary["quantity"] = quantity
+        if nestedOptionGroups != nil{
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            for nestedOptionGroupsElement in nestedOptionGroups {
+                dictionaryElements.append(nestedOptionGroupsElement.equitableCheckDictionary())
+            }
+            dictionary["nested_option_groups"] = dictionaryElements
+        }
+        return dictionary
+    }
+    
+    static public func == (lhs: ItemOption, rhs: ItemOption) -> Bool {
+        let lhsDictionary = lhs.equitableCheckDictionary()
+        let rhsDictionary = rhs.equitableCheckDictionary()
+        
+        return NSDictionary(dictionary: lhsDictionary).isEqual(to: rhsDictionary)
+        
+        //        return lhs.currentStock == rhs.currentStock  &&
+        //            lhs.descriptionField == rhs.descriptionField  &&
+        //            lhs.foodType == rhs.foodType  &&
+        //            lhs.id == rhs.id  &&
+        //            lhs.imageUrl == rhs.imageUrl  &&
+        //            lhs.price == rhs.price  &&
+        //            lhs.sortOrder == rhs.sortOrder  &&
+        //            lhs.title  == rhs.title  &&
+        //            lhs.nestedOptionGroups == rhs.nestedOptionGroups &&
+        //            lhs.quantity  == rhs.quantity
+    }
+}
+
 

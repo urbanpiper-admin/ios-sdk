@@ -43,10 +43,10 @@ public enum PaymentGateway: String {
 
 public class OrderPaymentDataModel: UrbanPiperDataModel {
         
-    public var orderPreProcessingResponse: OrderPreProcessingResponse? {
+    public var preProcessOrderResponse: PreProcessOrderResponse? {
         didSet {
-            guard orderPreProcessingResponse != nil else { return }
-            applyWalletCredits = orderPreProcessingResponse?.order.walletCreditApplicable ?? false
+            guard preProcessOrderResponse != nil else { return }
+            applyWalletCredits = preProcessOrderResponse?.order.walletCreditApplicable ?? false
             
             if selectedPaymentOption == .select, selectedPaymentOption != defaultPaymentOption {
                 selectedPaymentOption = defaultPaymentOption
@@ -91,7 +91,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     weak public var dataModelDelegate: OrderPaymentDataModelDelegate?
     
     public var orderResponse: Order? {
-        return applyCouponResponse ?? orderPreProcessingResponse?.order
+        return applyCouponResponse ?? preProcessOrderResponse?.order
     }
     
     public var itemsPrice: Decimal {
@@ -107,7 +107,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
     
     public var discountPrice: Decimal? {
-        return applyCouponResponse?.discount.value ?? orderPreProcessingResponse?.order.discount?.value ?? OrderingStoreDataModel.shared.orderingStore?.discount
+        return applyCouponResponse?.discount?.value ?? preProcessOrderResponse?.order.discount?.value ?? OrderingStoreDataModel.shared.orderingStore?.discount
     }
 
     public var itemsTotalPrice: Decimal {
@@ -226,7 +226,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     public var phoneNumber: String?
     
     public var paymentOptions: [PaymentOption]? {
-        guard let paymentsStringArray = orderPreProcessingResponse?.order.paymentModes else { return nil }
+        guard let paymentsStringArray = preProcessOrderResponse?.order.paymentModes else { return nil }
         
         var paymentArray: [PaymentOption] = paymentsStringArray.compactMap { PaymentOption(rawValue: $0) }
         
@@ -296,8 +296,8 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
             updateUserBizInfo()
         }
 
-        if isForcedRefresh || orderPreProcessingResponse == nil || (selectedDeliveryOption == .pickUp && deliveryCharge > Decimal.zero) {
-            orderPreProcessingResponse = nil
+        if isForcedRefresh || preProcessOrderResponse == nil || (selectedDeliveryOption == .pickUp && deliveryCharge > Decimal.zero) {
+            preProcessOrderResponse = nil
             preProcessOrder()
         }
 
@@ -325,14 +325,14 @@ extension OrderPaymentDataModel {
                                                          cartItems: CartManager.shared.cartItems,
                                                          orderTotal: itemsTotalPrice,
                                                          completion:
-            { [weak self] (orderPreProcessingResponse) in
+            { [weak self] (preProcessOrderResponse) in
                 defer {
                     self?.dataModelDelegate?.refreshPreProcessingUI(false)
                 }
-                if let order = orderPreProcessingResponse?.order, self?.orderPreProcessingResponse == nil {
+                if let order = preProcessOrderResponse?.order, self?.preProcessOrderResponse == nil {
                     AnalyticsManager.shared.track(event: .checkoutInit(payableAmt: order.payableAmount, walletCreditsApplied: order.walletCreditApplicable ?? false))
                 }
-                self?.orderPreProcessingResponse = orderPreProcessingResponse
+                self?.preProcessOrderResponse = preProcessOrderResponse
             }, failure: { [weak self] (upError) in
                 defer {
                     self?.dataModelDelegate?.refreshPreProcessingUI(false)
@@ -455,7 +455,7 @@ extension OrderPaymentDataModel {
                                      orderSubTotal: itemsPrice,
                                      orderTotal: itemsTotalPrice,
                                      applyWalletCredit: applyWalletCredits,
-                                     walletCreditApplied: orderPreProcessingResponse?.order.walletCreditApplied ?? Decimal.zero,
+                                     walletCreditApplied: preProcessOrderResponse?.order.walletCreditApplied ?? Decimal.zero,
                                      payableAmount: itemsTotalPrice,
                                      onlinePaymentInitResponse: onlinePaymentInitResponse,
                                      completion: { [weak self] (response) in

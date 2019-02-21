@@ -46,7 +46,7 @@ public class ItemOptionBuilder: NSObject {
         self.optionGroups = itemOption.nestedOptionGroups
     }
 
-    internal init(optionGroups: [ItemOptionGroup]) {
+    @objc public init(optionGroups: [ItemOptionGroup]) {
         self.itemOption = nil
         self.optionGroups = optionGroups
     }
@@ -96,6 +96,14 @@ public class ItemOptionBuilder: NSObject {
         return options
     }
     
+    public var totalAmount: Decimal {
+        var totalAmount: Decimal = Decimal.zero
+        for option in optionsToAdd {
+            totalAmount += option.totalAmount
+        }
+        return totalAmount
+    }
+    
     var descriptionText: String? {
         var descriptionArray: [String] = []
         
@@ -125,13 +133,13 @@ public class ItemOptionBuilder: NSObject {
         
     public func add(groupId: Int, option: ItemOption, optionGroupHandler: ((ItemOptionBuilder?, UPError?) -> Void)? = nil) {
         guard let optionGroup = optionGroups.filter ({ $0.id == groupId}).last else {
-            optionGroupHandler?(nil, UPError(type: .unknown))
+            optionGroupHandler?(nil, UPError(type: .invalidGroupId))
             return
         }
         
         if let options = option.nestedOptionGroups, options.count > 0 {
             guard optionGroup.options.filter ({ $0.id == option.id }).last != nil else {
-                optionGroupHandler?(nil, UPError(type: .unknown))
+                optionGroupHandler?(nil, UPError(type: .invalidOption))
                 return
             }
             

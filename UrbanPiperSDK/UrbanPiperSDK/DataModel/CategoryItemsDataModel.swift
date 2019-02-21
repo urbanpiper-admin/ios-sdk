@@ -62,14 +62,14 @@ open class CategoryItemsDataModel: UrbanPiperDataModel {
         if let objects = categoryItemsResponse?.objects {
             let subCategoriesItems: [Item] = objects.filter { $0.subCategory != nil }
 
-            let keys = subCategoriesItems.compactMap { $0.subCategory.name }
+            let keys = subCategoriesItems.compactMap { $0.subCategory?.name }
             let tempSet: Set<String> = Set<String>(keys)
             let uniqueKeys: Array = Array(tempSet)
 
             var subCategoriesArray = [[Item]]()
 
             for key in uniqueKeys {
-                var itemsArray: [Item] = subCategoriesItems.filter { $0.subCategory.name == key }
+                var itemsArray: [Item] = subCategoriesItems.filter { $0.subCategory?.name == key }
                 guard itemsArray.count > 0 else { return }
                 if itemsArray.count > 1 {
                     itemsArray.sort { (obj1, obj2) in
@@ -86,7 +86,7 @@ open class CategoryItemsDataModel: UrbanPiperDataModel {
                 if subCategoriesArray.count == 1 {
                     self.subCategoriesArray = subCategoriesArray
                 } else {
-                    self.subCategoriesArray = subCategoriesArray.sorted { $0.first!.subCategory.sortOrder < $1.first!.subCategory.sortOrder }
+                    self.subCategoriesArray = subCategoriesArray.sorted { $0.first!.subCategory!.sortOrder < $1.first!.subCategory!.sortOrder }
                 }
                 
                 var genericItems: [Item] = objects.filter { $0.subCategory == nil }

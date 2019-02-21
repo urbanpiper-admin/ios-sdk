@@ -13,7 +13,8 @@ public class OrderItem : NSObject{
 	public var category : ItemCategory!
 	public var charges : [AnyObject]!
 	public var currentStock : Int!
-	public var extras : [AnyObject]!
+//    public var extras : [AnyObject]!
+    public var discount: Decimal?
 	public var foodType : String!
 	public var id : Int!
 	public var imageLandscapeUrl : String!
@@ -26,10 +27,12 @@ public class OrderItem : NSObject{
     public var optionsToRemove : [ItemOption]!
 //    public var price : Decimal!
 	public var quantity : Int!
-	public var slug : String!
+//    public var slug : String!
 	public var sortOrder : Int!
-	public var tags : [AnyObject]!
+    public var subCategory : ItemCategory!
+//    public var tags : [AnyObject]!
 	public var taxPercentage : Float!
+    public var toBeDiscounted: Bool = false
 	public var taxes : [ItemTaxes]!
 //    public var totalCharge : Float!
 	public var totalTax : Float!
@@ -45,7 +48,16 @@ public class OrderItem : NSObject{
 		}
 		charges = dictionary["charges"] as? [AnyObject]
 		currentStock = dictionary["current_stock"] as? Int
-		extras = dictionary["extras"] as? [AnyObject]
+//        extras = dictionary["extras"] as? [AnyObject]
+        if let val: Decimal = dictionary["discount"] as? Decimal {
+            discount = val
+        } else if let val: Double = dictionary["discount"] as? Double {
+            discount = Decimal(val).rounded
+        } else if let val: Float = dictionary["discount"] as? Float {
+            discount = Decimal(Double(val)).rounded
+        } else {
+            discount = Decimal.zero
+        }
 		foodType = dictionary["food_type"] as? String
 		id = dictionary["id"] as? Int
 		imageLandscapeUrl = dictionary["image_landscape_url"] as? String
@@ -84,10 +96,14 @@ public class OrderItem : NSObject{
 //            price = Decimal.zero
 //        }
         quantity = dictionary["quantity"] as? Int
-		slug = dictionary["slug"] as? String
+//        slug = dictionary["slug"] as? String
 		sortOrder = dictionary["sort_order"] as? Int ?? 0
-		tags = dictionary["tags"] as? [AnyObject]
+        if let categoryData: [String:Any] = dictionary["sub_category"] as? [String:Any]{
+            subCategory = ItemCategory(fromDictionary: categoryData)
+        }
+//        tags = dictionary["tags"] as? [AnyObject]
 		taxPercentage = dictionary["tax_percentage"] as? Float
+        toBeDiscounted = dictionary["to_be_discounted"] as? Bool ?? false
 		taxes = [ItemTaxes]()
 		if let taxesArray: [[String:Any]] = dictionary["taxes"] as? [[String:Any]]{
 			for dic in taxesArray{
@@ -115,8 +131,11 @@ public class OrderItem : NSObject{
         if currentStock != nil{
             dictionary["current_stock"] = currentStock
         }
-        if extras != nil{
-            dictionary["extras"] = extras
+//        if extras != nil{
+//            dictionary["extras"] = extras
+//        }
+        if discount != nil {
+            dictionary["discount"] = discount!
         }
         if foodType != nil{
             dictionary["food_type"] = foodType
@@ -162,18 +181,22 @@ public class OrderItem : NSObject{
         if quantity != nil{
             dictionary["quantity"] = quantity
         }
-        if slug != nil{
-            dictionary["slug"] = slug
-        }
+//        if slug != nil{
+//            dictionary["slug"] = slug
+//        }
         if sortOrder != nil{
             dictionary["sort_order"] = sortOrder
         }
-        if tags != nil{
-            dictionary["tags"] = tags
+        if subCategory != nil{
+            dictionary["sub_category"] = subCategory.toDictionary()
         }
+//        if tags != nil{
+//            dictionary["tags"] = tags
+//        }
         if taxPercentage != nil{
             dictionary["tax_percentage"] = taxPercentage
         }
+        dictionary["to_be_discounted"] = toBeDiscounted
         if taxes != nil{
             var dictionaryElements: [[String:Any]] = [[String:Any]]()
             for taxesElement in taxes {

@@ -1,5 +1,5 @@
 //
-//	OrderPreProcessingResponse.swift
+//	PreProcessOrderResponse.swift
 //
 //	Create by Vidhyadharan Mohanram on 24/1/2018
 //	Copyright © 2018. All rights reserved.
@@ -8,10 +8,13 @@
 import Foundation
 
 
-public class OrderPreProcessingResponse : NSObject{
+public class PreProcessOrderResponse : NSObject{
 
 	public var order : Order!
 //    public var discount : Decimal?
+    public var notification : String?
+    public var status : String?
+    public var message : String?
 
 
 	/**
@@ -22,6 +25,10 @@ public class OrderPreProcessingResponse : NSObject{
 			order = Order(fromDictionary: orderData)
 		}
         
+        notification = dictionary["notification"] as? String
+        status = dictionary["status"] as? String
+        message = dictionary["message"] as? String
+
 //        let priceVal = dictionary["discount"]
 //        if let val: Decimal = priceVal as? Decimal {
 //            discount = val

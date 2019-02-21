@@ -58,6 +58,20 @@ extension ItemOption {
         return false
     }
 
+    internal var reorderOptionsToAdd: [ItemOption] {
+        var reorderOptionsToAdd = [ItemOption]()
+        
+        if let optionGroups = nestedOptionGroups, optionGroups.count > 0 {
+            for optionGroup in nestedOptionGroups {
+                reorderOptionsToAdd.append(contentsOf: optionGroup.reorderOptionsToAdd)
+            }
+        } else {
+            reorderOptionsToAdd.append(self)
+        }
+        
+        return reorderOptionsToAdd
+    }
+    
     public var optionsToAdd: [[String : Int]] {
         var options: [[String : Int]] = [[String : Int]]()
 
@@ -111,50 +125,4 @@ extension ItemOption {
         }
     }
 
-}
-
-extension ItemOption {
-    
-    public func equitableCheckDictionary() -> [String: Any] {
-        var dictionary: [String: Any] = [String:Any]()
-//        if currentStock != nil{
-//            dictionary["current_stock"] = currentStock
-//        }
-        if id != nil{
-            dictionary["id"] = id
-        }
-//        if price != nil{
-//            dictionary["price"] = price
-//        }
-//        if title != nil{
-//            dictionary["title"] = title
-//        }
-//        dictionary["quantity"] = quantity
-        if nestedOptionGroups != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
-            for nestedOptionGroupsElement in nestedOptionGroups {
-                dictionaryElements.append(nestedOptionGroupsElement.equitableCheckDictionary())
-            }
-            dictionary["nested_option_groups"] = dictionaryElements
-        }
-        return dictionary
-    }
-    
-    static public func == (lhs: ItemOption, rhs: ItemOption) -> Bool {
-        let lhsDictionary = lhs.equitableCheckDictionary()
-        let rhsDictionary = rhs.equitableCheckDictionary()
-        
-        return NSDictionary(dictionary: lhsDictionary).isEqual(to: rhsDictionary)
-
-//        return lhs.currentStock == rhs.currentStock  &&
-//            lhs.descriptionField == rhs.descriptionField  &&
-//            lhs.foodType == rhs.foodType  &&
-//            lhs.id == rhs.id  &&
-//            lhs.imageUrl == rhs.imageUrl  &&
-//            lhs.price == rhs.price  &&
-//            lhs.sortOrder == rhs.sortOrder  &&
-//            lhs.title  == rhs.title  &&
-//            lhs.nestedOptionGroups == rhs.nestedOptionGroups &&
-//            lhs.quantity  == rhs.quantity
-    }
 }

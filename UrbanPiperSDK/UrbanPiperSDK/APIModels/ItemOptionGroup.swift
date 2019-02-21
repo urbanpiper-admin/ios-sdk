@@ -135,3 +135,38 @@ public class ItemOptionGroup : NSObject {
 }
 
 
+extension ItemOptionGroup {
+    
+    public func equitableCheckDictionary() -> [String: Any] {
+        var dictionary: [String: Any] = [String:Any]()
+        //        if isDefault != nil{
+        //            dictionary["is_default"] = isDefault
+        //        }
+        if options != nil{
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            for optionsElement in options {
+                guard optionsElement.quantity > 0 else { continue }
+                dictionaryElements.append(optionsElement.equitableCheckDictionary())
+            }
+            dictionary["options"] = dictionaryElements
+        }
+        
+        return dictionary
+    }
+    
+    static public func == (lhs: ItemOptionGroup, rhs: ItemOptionGroup) -> Bool {
+        let lhsDictionary = lhs.equitableCheckDictionary()
+        let rhsDictionary = rhs.equitableCheckDictionary()
+        
+        return NSDictionary(dictionary: lhsDictionary).isEqual(to: rhsDictionary)
+        
+        //        return lhs.descriptionField == rhs.descriptionField &&
+        //            lhs.id == rhs.id &&
+        //            lhs.isDefault == rhs.isDefault &&
+        //            lhs.maxSelectable == rhs.maxSelectable &&
+        //            lhs.minSelectable == rhs.minSelectable &&
+        //            lhs.options == rhs.options &&
+        //            lhs.sortOrder == rhs.sortOrder &&
+        //            lhs.title == rhs.title
+    }
+}

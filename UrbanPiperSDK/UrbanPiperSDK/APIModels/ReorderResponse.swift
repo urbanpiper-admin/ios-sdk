@@ -12,8 +12,8 @@ public class ReorderResponse : NSObject{
 
 	public var bizLocation : BizLocation!
 //    public var deliveryCharge : Float!
-	public var itemsAvailable : [Item]!
-	public var itemsNotAvailable : [Item]!
+	@objc public var itemsAvailable : [ReorderItem]!
+	@objc public var itemsNotAvailable : [ReorderItem]!
 //    public var orderItemTaxes : Float!
 //    public var orderSubtotal : Float!
 //    public var orderTotal : Float!
@@ -28,17 +28,17 @@ public class ReorderResponse : NSObject{
 			bizLocation = BizLocation(fromDictionary: bizLocationData)
 		}
 //        deliveryCharge = dictionary["delivery_charge"] as? Float
-		itemsAvailable = [Item]()
+		itemsAvailable = [ReorderItem]()
 		if let itemsAvailableArray: [[String:Any]] = dictionary["items_available"] as? [[String:Any]]{
 			for dic in itemsAvailableArray{
-				let value: Item = Item(historicalOrderItemDictionary: dic)
+				let value: ReorderItem = ReorderItem(fromDictionary: dic)
 				itemsAvailable.append(value)
 			}
 		}
-        itemsNotAvailable = [Item]()
+        itemsNotAvailable = [ReorderItem]()
         if let itemsNotAvailableArray: [[String:Any]] = dictionary["items_not_available"] as? [[String:Any]]{
             for dic in itemsNotAvailableArray{
-                let value: Item = Item(fromDictionary: dic)
+                let value: ReorderItem = ReorderItem(fromDictionary: dic)
                 itemsNotAvailable.append(value)
             }
         }

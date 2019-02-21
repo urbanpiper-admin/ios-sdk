@@ -10,31 +10,30 @@ import UIKit
 
 public class CartItem: NSObject {
 
-    private var item: Item
     private var optionBuilder: ItemOptionBuilder?
-    public private(set) var optionsToAdd: [ItemOption]
-    private var optionsToRemove: [ItemOption]
+    public private(set) var optionsToAdd: [ItemOption] = []
+    private var optionsToRemove: [ItemOption] = []
     
     public var category : ItemCategory!
     public var currentStock : Int!
-    public var extras : [AnyObject]!
-    public var foodType : String!
+//    public var extras : [AnyObject]!
+//    public var foodType : String!
     public var id : Int!
     public var imageLandscapeUrl : String!
     public var imageUrl : String!
-    public var itemDesc : String!
+//    public var itemDesc : String!
     public var itemPrice : Decimal!
     public var itemTitle : String!
-    public var likes : Int!
-    var optionGroups : [ItemOptionGroup]!
-    public var priceDescriptor : String!
+//    public var likes : Int!
+//    var optionGroups : [ItemOptionGroup]!
+//    public var priceDescriptor : String!
 //    var serviceTaxRate : Float!
     public var preOrderStartTime : Int?
     public var preOrderEndTime : Int?
     public var slug : String!
     public var sortOrder : Int!
-    public var subCategory : ItemCategory!
-    public var tags : [ItemTag]!
+//    public var subCategory : ItemCategory!
+//    public var tags : [ItemTag]!
     
     var isRecommendedItem: Bool = false
     var isUpsoldItem: Bool = false
@@ -55,47 +54,69 @@ public class CartItem: NSObject {
     }
     
     public var descriptionText: String? {
-        return optionBuilder?.descriptionText
+        let descriptionText = optionBuilder?.descriptionText
+        guard descriptionText == nil else { return descriptionText }
+        guard let optionsText = orderOptionsText else { return nil }
+        return "• \(optionsText)"
     }
     
-    public var orderOptionsText: String? {
-        let sortedOptions = optionsToAdd.sorted { $0.sortOrder < $1.sortOrder }
+    internal var orderOptionsText: String? {
+        let sortedOptions = optionsToAdd.sorted { $0.title.count > $1.title.count }
         
         let descriptionArray: [String] = sortedOptions.compactMap { $0.title }
         guard descriptionArray.count > 0 else { return nil }
-        return descriptionArray.joined(separator: "\n")
+        return descriptionArray.joined(separator: ", ")
+    }
+    
+    @objc public init(reorderItem: ReorderItem) {
+
+        self.currentStock = reorderItem.currentStock
+        self.id = reorderItem.id
+        self.imageLandscapeUrl = reorderItem.imageLandscapeUrl
+        self.imageUrl = reorderItem.imageUrl
+        self.itemPrice = reorderItem.itemPrice
+        self.itemTitle = reorderItem.itemTitle
+        self.quantity = reorderItem.quantity
+//        self.serviceTaxRate = reorderItem.serviceTaxRate
+//        self.vatRate = reorderItem.vatRate
+        self.category = reorderItem.category
+//        self.itemCategory = reorderItem.itemCategory
+        
+//        self.optionGroups = reorderItem.optionGroups
+        self.preOrderStartTime = reorderItem.preOrderStartTime
+        self.preOrderEndTime = reorderItem.preOrderEndTime
+        
+        for group in reorderItem.optionGroups {
+            self.optionsToAdd.append(contentsOf: group.reorderOptionsToAdd)
+        }
+        
     }
 
     
-    internal init(item: Item, optionBuilder: ItemOptionBuilder?) {
-        self.item = item
+    @objc public init(item: Item, optionBuilder: ItemOptionBuilder?) {
         self.optionBuilder = optionBuilder
         
         self.category = item.category
         self.currentStock = item.currentStock
-        self.extras = item.extras
-        self.foodType = item.foodType
+//        self.extras = item.extras
+//        self.foodType = item.foodType
         self.id = item.id
         self.imageLandscapeUrl = item.imageLandscapeUrl
         self.imageUrl = item.imageUrl
-        self.itemDesc = item.itemDesc
+//        self.itemDesc = item.itemDesc
         
-        if let price = item.itemPrice, price > Decimal.zero {
-            self.itemPrice = item.itemPrice ?? item.total
-        } else {
-            self.itemPrice = item.total ?? Decimal.zero
-        }
+        self.itemPrice = item.itemPrice ?? Decimal.zero
         
         self.itemTitle = item.itemTitle
-        self.likes = item.likes
-        self.optionGroups = item.optionGroups
-        self.priceDescriptor = item.priceDescriptor
+//        self.likes = item.likes
+//        self.optionGroups = item.optionGroups
+//        self.priceDescriptor = item.priceDescriptor
         self.preOrderStartTime = item.preOrderStartTime
         self.preOrderEndTime = item.preOrderEndTime
         self.slug = item.slug
         self.sortOrder = item.sortOrder
-        self.subCategory = item.subCategory
-        self.tags = item.tags
+//        self.subCategory = item.subCategory
+//        self.tags = item.tags
         
         self.isRecommendedItem = item.isRecommendedItem
         self.isUpsoldItem = item.isUpsoldItem
@@ -117,12 +138,12 @@ public class CartItem: NSObject {
         if currentStock != nil{
             dictionary["current_stock"] = currentStock
         }
-        if extras != nil{
-            dictionary["extras"] = extras
-        }
-        if foodType != nil{
-            dictionary["food_type"] = foodType
-        }
+//        if extras != nil{
+//            dictionary["extras"] = extras
+//        }
+//        if foodType != nil{
+//            dictionary["food_type"] = foodType
+//        }
         if id != nil{
             dictionary["id"] = id
         }
@@ -132,18 +153,18 @@ public class CartItem: NSObject {
         if imageUrl != nil{
             dictionary["image_url"] = imageUrl
         }
-        if itemDesc != nil{
-            dictionary["item_desc"] = itemDesc
-        }
+//        if itemDesc != nil{
+//            dictionary["item_desc"] = itemDesc
+//        }
         if itemPrice != nil{
             dictionary["item_price"] = itemPrice
         }
         if itemTitle != nil{
             dictionary["item_title"] = itemTitle
         }
-        if likes != nil{
-            dictionary["likes"] = likes
-        }
+//        if likes != nil{
+//            dictionary["likes"] = likes
+//        }
         if optionsToAdd.count > 0{
             var dictionaryElements: [[String:Any]] = [[String:Any]]()
             for orderOptionsToAddElement in optionsToAdd {
@@ -160,9 +181,9 @@ public class CartItem: NSObject {
             }
             dictionary["options_to_remove"] = dictionaryElements
         }
-        if priceDescriptor != nil{
-            dictionary["price_descriptor"] = priceDescriptor
-        }
+//        if priceDescriptor != nil{
+//            dictionary["price_descriptor"] = priceDescriptor
+//        }
 //        if serviceTaxRate != nil{
 //            dictionary["service_tax_rate"] = serviceTaxRate
 //        }
@@ -178,16 +199,16 @@ public class CartItem: NSObject {
         if sortOrder != nil{
             dictionary["sort_order"] = sortOrder
         }
-        if subCategory != nil{
-            dictionary["sub_category"] = subCategory.toDictionary()
-        }
-        if tags != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
-            for tagsElement in tags {
-                dictionaryElements.append(tagsElement.toDictionary())
-            }
-            dictionary["tags"] = dictionaryElements
-        }
+//        if subCategory != nil{
+//            dictionary["sub_category"] = subCategory.toDictionary()
+//        }
+//        if tags != nil{
+//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//            for tagsElement in tags {
+//                dictionaryElements.append(tagsElement.toDictionary())
+//            }
+//            dictionary["tags"] = dictionaryElements
+//        }
 //        if vatRate != nil{
 //            dictionary["vat_rate"] = vatRate
 //        }
@@ -223,14 +244,14 @@ public class CartItem: NSObject {
         if optionsToAdd.count > 0{
             var dictionaryElements: [[String:Any]] = [[String:Any]]()
             for orderOptionsToAddElement in optionsToAdd {
-                dictionaryElements.append(orderOptionsToAddElement.toDictionary())
+                dictionaryElements.append(orderOptionsToAddElement.equitableCheckDictionary())
             }
             dictionary["options_to_add"] = dictionaryElements
         }
         if optionsToRemove.count > 0 {
             var dictionaryElements: [[String:Any]] = [[String:Any]]()
             for orderOptionsToRemoveElement in optionsToRemove {
-                dictionaryElements.append(orderOptionsToRemoveElement.toDictionary())
+                dictionaryElements.append(orderOptionsToRemoveElement.equitableCheckDictionary())
             }
             dictionary["options_to_remove"] = dictionaryElements
         }

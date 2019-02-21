@@ -64,7 +64,7 @@ extension APIManager {
                                deliveryOption: String,
                                cartItems: [CartItem],
                                orderTotal: Decimal,
-                               completion: ((OrderPreProcessingResponse?) -> Void)?,
+                               completion: ((PreProcessOrderResponse?) -> Void)?,
                                failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/order/?format=json&pre_proc=1&biz_id=\(bizId)"
@@ -85,8 +85,8 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> OrderPreProcessingResponse? in
-            return OrderPreProcessingResponse(fromDictionary: dictionary)
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> PreProcessOrderResponse? in
+            return PreProcessOrderResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -95,10 +95,10 @@ extension APIManager {
             if let code = statusCode, code == 200 {
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let orderPreProcessingResponse: OrderPreProcessingResponse = OrderPreProcessingResponse(fromDictionary: dictionary)
+                    let preProcessOrderResponse: PreProcessOrderResponse = PreProcessOrderResponse(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
-                        completion?(orderPreProcessingResponse)
+                        completion?(preProcessOrderResponse)
                     }
                     return
                 }

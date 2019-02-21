@@ -16,7 +16,7 @@ public class Order : NSObject{
     public var orderSubtotal : Decimal!
     public var packagingCharge : Decimal!
     public var itemTaxes : Decimal!
-    public var discount : Discount!
+    public var discount : Discount?
     public var discountApplied : Int!
     public var deliveryCharge : Decimal!
     public var payableAmount : Decimal!
@@ -36,7 +36,7 @@ public class Order : NSObject{
 	public var orderLevelTotalCharges : Decimal!
 //    public var orderLevelTotalTaxes : Float!
 	//public var orderTotal : Decimal!
-	public var paymentModes : [String]!
+	public var paymentModes : [String]?
 	public var paymentOption : String!
 	public var taxes : [AnyObject]!
     public var taxRate : Float!

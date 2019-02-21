@@ -11,7 +11,7 @@ import Foundation
 @objc public class OrderDetails : NSObject{
 
 	@objc public var details : PastOrder!
-	@objc public var items : [Item]!
+	@objc public var items : [PastOrderItem]!
 	public var nextState : AnyObject!
 	public var nextStates : [String]!
 	@objc public var payment : [OrderPayment]!
@@ -26,10 +26,10 @@ import Foundation
 		if let detailsData = dictionary["details"] as? [String:Any]{
 			details = PastOrder(fromDictionary: detailsData)
 		}
-		items = [Item]()
+		items = [PastOrderItem]()
 		if let itemsArray = dictionary["items"] as? [[String:Any]]{
 			for dic in itemsArray{
-				let value = Item(fromDictionary: dic)
+				let value = PastOrderItem(fromDictionary: dic)
 				items.append(value)
 			}
 		}

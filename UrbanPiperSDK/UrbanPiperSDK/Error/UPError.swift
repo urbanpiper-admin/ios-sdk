@@ -100,6 +100,8 @@ public enum ErrorType {
     case responseParseError
     case multiPartEncodingError
     case paymentFailure(String)
+    case invalidGroupId
+    case invalidOption
 }
 
 @objc public class UPError: NSError {
@@ -149,6 +151,10 @@ public enum ErrorType {
         case .responseParseError:
             return "Error"
         case .paymentFailure(_):
+            return "Error"
+        case .invalidGroupId:
+            return "Error"
+        case .invalidOption:
             return "Error"
         }
     }
@@ -209,6 +215,10 @@ public enum ErrorType {
             return "Unable to parse data"
         case .paymentFailure(let errorText):
             return errorText
+        case .invalidGroupId:
+            return "Provided group id is not associated with the current itembuilder groups"
+        case .invalidOption:
+            return "Provided option id is not associated with the current itembuilder group options"
         }
     }
     
