@@ -20,7 +20,7 @@ public class ItemOption : NSObject {
 	public var sortOrder : Int!
 	@objc public var title : String!
 	public var nestedOptionGroups : [ItemOptionGroup]!
-    public var quantity: Int = 0
+    internal var quantity: Int = 0
 
 
 	/**

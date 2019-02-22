@@ -48,7 +48,7 @@ public class CartItem: NSObject {
     public var totalAmount: Decimal {
         var totalAmount: Decimal = itemPrice ?? Decimal.zero
         for item in optionsToAdd {
-            totalAmount += item.totalAmount
+            totalAmount += item.price
         }
         return totalAmount
     }

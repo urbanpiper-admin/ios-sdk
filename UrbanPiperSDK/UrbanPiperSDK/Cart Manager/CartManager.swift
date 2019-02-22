@@ -106,7 +106,7 @@ extension CartManager {
 
 extension CartManager {
 
-    @objc public func add(cartItem: CartItem, notes: String? = nil, fromDetailScreen: Bool, fromCheckoutScreen: Bool) {
+    @objc public func add(cartItem: CartItem, quantity: Int = 1, notes: String? = nil, fromDetailScreen: Bool = false, fromCheckoutScreen: Bool = false) {
         if cartCount == 0 {
             AnalyticsManager.shared.track(event: .cartInit)
         }
@@ -116,8 +116,8 @@ extension CartManager {
                                                         itemDetailsPageItemAdd: fromDetailScreen))
         
         if let item = cartItems.filter({ $0 == cartItem }).last {
-            if item.isItemQuantityAvailable(quantity: 1) {
-                item.quantity += 1
+            if item.isItemQuantityAvailable(quantity: quantity) {
+                item.quantity += quantity
                 item.notes = notes
             } else {
                 let upError: UPError = UPError(type: .maxOrderableQuantityAdded(cartItem.currentStock))
@@ -133,14 +133,14 @@ extension CartManager {
         let _ = cartManagerObservers.map { $0.value?.refreshCartUI() }
     }
 
-    public func remove(itemId: Int) {
+    public func remove(itemId: Int, quantity: Int = 1) {
         guard let cartItem = cartItems.filter({ $0.id == itemId }).last else { return }
         
         AnalyticsManager.shared.track(event: .removeFromCart(item: cartItem))
         
-        cartItem.quantity -= 1
+        cartItem.quantity -= quantity
 
-        guard cartItem.quantity == 0 else {
+        guard cartItem.quantity <= 0 else {
             let _ = cartManagerObservers.map { $0.value?.refreshCartUI() }
             return
         }

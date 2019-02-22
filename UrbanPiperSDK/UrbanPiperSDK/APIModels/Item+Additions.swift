@@ -35,8 +35,8 @@ extension Item {
         return true
     }
 
-//}
-//
+}
+
 //extension Item: NSCopying {
 //    
 //    public var totalAmount: Decimal {
@@ -67,17 +67,17 @@ extension Item {
 //        }).count > 0
 //        //        return optionGroups.filter { $0.options != nil && $0.options.filter { $0.nestedOptionGroups != nil && $0.nestedOptionGroups.count > 0 }.count > 0 }.count > 0
 //    }
-    
-    public var isValidCartItem: Bool {
-        var isValidItem : Bool = true
-        
-        for group in optionGroups {
-            isValidItem = isValidItem && group.isValidCartOptionGroup
-        }
-        
-        return isValidItem
-    }
-    
+//
+//    public var isValidCartItem: Bool {
+//        var isValidItem : Bool = true
+//
+//        for group in optionGroups {
+//            isValidItem = isValidItem && group.isValidCartOptionGroup
+//        }
+//
+//        return isValidItem
+//    }
+//
 //    public var descriptionText: String? {
 //        let descriptionArray: [String] = optionGroups.compactMap { $0.descriptionText }
 //        guard descriptionArray.count > 0 else { return nil }
@@ -137,23 +137,23 @@ extension Item {
 //
 //        return itemDictionary
 //    }
-    
-    @objc public convenience init(historicalOrderItemDictionary dictionary: [String: Any]) {
-        self.init(fromDictionary: dictionary)
-        
-        optionGroups = [ItemOptionGroup]()
-        if let optionGroupsArray: [[String:Any]] = dictionary["option_groups"] as? [[String:Any]]{
-            for dic in optionGroupsArray{
-                let value = ItemOptionGroup.init(historicalOrderItemOptionGroup: dic)
-                optionGroups.append(value)
-            }
-        }
-        
-        quantity = dictionary["quantity"] as? Int ?? 0
-    }
-    
-}
-
+//    
+//    @objc public convenience init(historicalOrderItemDictionary dictionary: [String: Any]) {
+//        self.init(fromDictionary: dictionary)
+//        
+//        optionGroups = [ItemOptionGroup]()
+//        if let optionGroupsArray: [[String:Any]] = dictionary["option_groups"] as? [[String:Any]]{
+//            for dic in optionGroupsArray{
+//                let value = ItemOptionGroup.init(historicalOrderItemOptionGroup: dic)
+//                optionGroups.append(value)
+//            }
+//        }
+//        
+//        quantity = dictionary["quantity"] as? Int ?? 0
+//    }
+//    
+//}
+//
 //extension Item {
 //
 //    public func copy(with zone: NSZone? = nil) -> Any {

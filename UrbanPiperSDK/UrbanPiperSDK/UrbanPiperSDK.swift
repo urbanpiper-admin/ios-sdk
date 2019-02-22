@@ -31,23 +31,23 @@ public class UrbanPiperSDK: NSObject {
 
 public extension UrbanPiperSDK {
 
-    func getUser() -> User? {
+    public func getUser() -> User? {
         return UserManager.shared.currentUser
     }
 
-    func startRegistration(phone: String) -> RegistrationBuilder {
+    public func startRegistration() -> RegistrationBuilder {
         return RegistrationBuilder()
     }
     
-    func startSocialRegistration() -> SocialRegBuilder {
+    public func startSocialRegistration() -> SocialRegBuilder {
         return SocialRegBuilder()
     }
     
-    func startPasswordReset() -> ResetPasswordBuilder {
+    public func startPasswordReset() -> ResetPasswordBuilder {
         return ResetPasswordBuilder()
     }
     
-    func logout() {
+    public func logout() {
         UserManager.shared.logout()
     }
     
@@ -212,6 +212,30 @@ extension UrbanPiperSDK {
 //  MARK: Cart
 
 extension UrbanPiperSDK {
+    
+    public func startCheckout() -> CheckoutBuilder {
+        return CheckoutBuilder()
+    }
+    
+    public func cartValue() -> Decimal {
+        return CartManager.shared.cartValue
+    }
+    
+    public func addItemToCart(cartItem: CartItem, quantity: Int) {
+        CartManager.shared.add(cartItem: cartItem, quantity: quantity)
+    }
+    
+    public func removeItemFromCart(itemId: Int, quantity: Int) {
+        CartManager.shared.remove(itemId: itemId, quantity: quantity)
+    }
+    
+    public func clearCart() {
+        CartManager.shared.clearCart()
+    }
+    
+    public func getRelatedItemsForCart(itemIds: [Int], locationId: Int, completion: ((CategoryItemsResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask {
+        return APIManager.shared.getFeaturedItems(itemIds: itemIds, locationID: locationId, completion: completion, failure: failure)
+    }
     
     @discardableResult @objc public func reorder(orderId: Int, userLocation: CLLocationCoordinate2D, locationId: Int,
                                                  completion: @escaping ((ReorderResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
