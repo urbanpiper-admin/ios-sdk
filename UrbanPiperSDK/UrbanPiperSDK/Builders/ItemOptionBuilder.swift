@@ -16,9 +16,9 @@ public class ItemOptionBuilder: NSObject {
     
     public let optionGroups: [ItemOptionGroup]
 
-    internal var selectedNestedOptions: [Int : ItemOptionBuilder] = [:]
+    internal private(set) var selectedNestedOptions: [Int : ItemOptionBuilder] = [:]
     
-    internal var itemsToAdd: [Int: [ItemOption]] = [:]
+    internal private(set) var itemsToAdd: [Int: [ItemOption]] = [:]
     
     public var isValidOptionGroup: Bool {
         var isValidItem : Bool = true
@@ -32,7 +32,6 @@ public class ItemOptionBuilder: NSObject {
     }
     
     public func isOptionGroupValid(group : ItemOptionGroup) -> Bool {
-        print("option group \(group.toDictionary() as AnyObject)")
         var isValidItem : Bool = group.minSelectable == 0
         
         if let groupOptionBuilder = selectedNestedOptions[group.id] {
@@ -46,8 +45,6 @@ public class ItemOptionBuilder: NSObject {
             } else if group.isSingleSelectionGroup {
                 isValidItem = itemOptionsCount == 1
             }
-            
-            print("option group isValidItem \(isValidItem)")
         }
         return isValidItem
     }
@@ -107,6 +104,7 @@ public class ItemOptionBuilder: NSObject {
         return options
     }
     
+//  MARK: Move it to an seperate extension file
     public var totalAmount: Decimal {
         var totalAmount: Decimal = Decimal.zero
         for option in optionsToAdd {
@@ -115,6 +113,7 @@ public class ItemOptionBuilder: NSObject {
         return totalAmount
     }
     
+//  MARK: Move it to an seperate extension file
     var descriptionText: String? {
         var descriptionArray: [String] = []
         

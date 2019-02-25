@@ -46,12 +46,12 @@ class AppsFlyerObserver: AnalyticsObserver {
                                             AFEventParamContentType: "item_view",
                                             AFEventParamContent: item.itemTitle,
                                             AFEventParamCurrency: "INR"])
-        case .purchaseCompleted(_, let orderPaymentDataModel, _):
+        case .purchaseCompleted(_,_,let checkoutBuilder, _):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
             tracker.trackEvent(AFEventPurchase,
                                withValues: [AFEventParamContentId: "",
                                             AFEventParamContentType: "",
-                                            AFEventParamRevenue: orderPaymentDataModel.itemsTotalPrice,
+                                            AFEventParamRevenue: checkoutBuilder.order?.payableAmount ?? Decimal.zero,
                                             AFEventParamCurrency: "INR"])
             break
         case .checkoutInit:

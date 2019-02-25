@@ -38,7 +38,7 @@ public enum AnalyticsEvent {
     case addToCart(item: CartItem, checkoutPageItemAdd: Bool, itemDetailsPageItemAdd: Bool);
     case removeFromCart(item: CartItem);
     case productClicked(item: Item);
-    case purchaseCompleted(orderID: String, orderPaymentDataModel: OrderPaymentDataModel, isReorder: Bool);
+    case purchaseCompleted(orderID: String, userWalletBalance: Decimal, checkoutBuilder: CheckoutBuilder, isReorder: Bool);
     case reorderInit(amount: Decimal);
     case itemLiked(itemTitle: String);
     case itemUnliked(itemTitle: String);

@@ -206,12 +206,12 @@ class GAObserver: AnalyticsObserver {
             screenBuilder.setProductAction(productAction)
             
             tracker.send((screenBuilder.build() as! [AnyHashable : Any]))
-        case .purchaseCompleted(let orderID, let orderPaymentDataModel, _):
-            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
+        case .purchaseCompleted(let orderID,_,let checkoutBuilder, _):
+            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker, let paymentOption = checkoutBuilder.paymentOption else { return }
             let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
                                                                                         action: "purchase",
                                                                                         label: "success",
-                                                                                        value: orderPaymentDataModel.itemsTotalPrice as NSNumber).build() as! [AnyHashable : Any]
+                                                                                        value: (checkoutBuilder.order?.payableAmount ?? Decimal.zero) as NSNumber).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
             
             let eventBuilder = GAIDictionaryBuilder.createEvent(withCategory: nil, action: nil, label: nil, value: nil)!
@@ -220,29 +220,26 @@ class GAObserver: AnalyticsObserver {
             productAction.setAction(kGAIPAPurchase)
             productAction.setTransactionId(orderID)
             productAction.setAffiliation("UrbanPiper")
-            productAction.setRevenue(NSDecimalNumber(decimal: orderPaymentDataModel.itemsTotalPrice))
-            productAction.setTax(NSDecimalNumber(decimal: orderPaymentDataModel.itemTaxes ?? Decimal.zero))
+            productAction.setRevenue(NSDecimalNumber(decimal: checkoutBuilder.order?.payableAmount ?? Decimal.zero))
+            productAction.setTax(NSDecimalNumber(decimal: checkoutBuilder.order?.itemTaxes ?? Decimal.zero))
             
-            let deliveryCharge = orderPaymentDataModel.selectedDeliveryOption == .pickUp ? Decimal.zero : orderPaymentDataModel.deliveryCharge
+            let deliveryCharge = checkoutBuilder.deliveryOption == .pickUp ? Decimal.zero : checkoutBuilder.order?.deliveryCharge ?? Decimal.zero
             productAction.setShipping(NSDecimalNumber(decimal: deliveryCharge))
-            productAction.setCheckoutOption(orderPaymentDataModel.selectedPaymentOption.rawValue)
+            productAction.setCheckoutOption(paymentOption.rawValue)
             
-            let couponCode = orderPaymentDataModel.applyCouponResponse != nil ? orderPaymentDataModel.couponCode : nil
-            productAction.setCouponCode(couponCode)
+            productAction.setCouponCode(checkoutBuilder.couponCode)
             
-            if let items = orderPaymentDataModel.orderResponse?.items {
-                for item in items {
-                    let product: GAIEcommerceProduct = GAIEcommerceProduct()
-                    product.setId("\(item.id!)")
-                    product.setName(item.itemTitle)
-                    product.setQuantity(NSNumber(value: item.quantity))
-                    product.setPrice(NSDecimalNumber(decimal: item.itemPrice))
-                    product.setCategory(item.category.name)
-                    
-                    eventBuilder.add(product)
-                }
+            for item in checkoutBuilder.cartItems {
+                let product: GAIEcommerceProduct = GAIEcommerceProduct()
+                product.setId("\(item.id!)")
+                product.setName(item.itemTitle)
+                product.setQuantity(NSNumber(value: item.quantity))
+                product.setPrice(NSDecimalNumber(decimal: item.itemPrice))
+                product.setCategory(item.category.name)
+                
+                eventBuilder.add(product)
             }
-            
+
             eventBuilder.setProductAction(productAction)
             tracker.send((eventBuilder.build() as! [AnyHashable : Any]))
         case .reorderInit(let amount):

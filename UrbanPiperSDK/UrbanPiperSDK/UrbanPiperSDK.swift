@@ -130,6 +130,20 @@ public extension UrbanPiperSDK {
         return APIManager.shared.unlikeItem(itemId: itemId, completion: completion, failure: failure)
     }
 
+    @discardableResult @objc public func initWalletReload(amount: Decimal,
+                                                          completion: ((PaymentInitResponse?) -> Void)?,
+                                                          failure: APIFailure?) -> URLSessionDataTask? {
+        let paymentOption = PaymentOption.paymentGateway
+        let purpose = OnlinePaymentPurpose.reload
+        return APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption, purpose: purpose, totalAmount: amount, bizLocationId: nil, completion: completion, failure: failure)
+    }
+    
+    @discardableResult @objc public func verifyWalletReload(pid: String,
+                                                       transactionId: String,
+                                                       completion: @escaping ((OrderVerifyTxnResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+        return APIManager.shared.verifyPayment(pid: pid, orderId: OnlinePaymentPurpose.reload.rawValue, transactionId: transactionId, completion: completion, failure: failure)
+    }
+
 }
 
 
@@ -217,6 +231,10 @@ extension UrbanPiperSDK {
         return CheckoutBuilder()
     }
     
+    public func cartItems() -> [CartItem] {
+        return CartManager.shared.cartItems
+    }
+    
     public func cartValue() -> Decimal {
         return CartManager.shared.cartValue
     }
@@ -233,7 +251,7 @@ extension UrbanPiperSDK {
         CartManager.shared.clearCart()
     }
     
-    public func getRelatedItemsForCart(itemIds: [Int], locationId: Int, completion: ((CategoryItemsResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask {
+    @discardableResult public func getRelatedItemsForCart(itemIds: [Int], locationId: Int, completion: ((CategoryItemsResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask {
         return APIManager.shared.getFeaturedItems(itemIds: itemIds, locationID: locationId, completion: completion, failure: failure)
     }
     
@@ -242,18 +260,14 @@ extension UrbanPiperSDK {
         return APIManager.shared.reorder(orderId: orderId, userLocation: userLocation, bizLocationId: locationId, completion: completion, failure: failure)
     }
     
-    @discardableResult @objc public func initiateOnlineWalletReload(totalAmount: Decimal,
-                                                              completion: ((OnlinePaymentInitResponse?) -> Void)?,
-                                                              failure: APIFailure?) -> URLSessionDataTask? {
-        let paymentOption = PaymentOption.paymentGateway
-        let purpose = OnlinePaymentPurpose.reload
-        return APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption, purpose: purpose, totalAmount: totalAmount, bizLocationId: nil, completion: completion, failure: failure)
-    }
-    
-
-    @discardableResult @objc public func verifyPayment(pid: String,
-                                                       transactionId: String,
-                                                       completion: @escaping ((OrderVerifyTxnResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.verifyPayment(pid: pid, orderId: OnlinePaymentPurpose.reload.rawValue, transactionId: transactionId, completion: completion, failure: failure)
+    @discardableResult @objc public func submitFeedback(name: String,
+                                                        rating: Double,
+                                                        orderId: String,
+                                                        choiceText: String?,
+                                                        comments: String?,
+                                                        completion: ((GenericResponse?) -> Void)?,
+                                                        failure: APIFailure?) -> URLSessionDataTask {
+        
+        return APIManager.shared.submitFeedback(name: name, rating: rating, orderId: orderId, choiceText: choiceText, comments: comments, completion: completion, failure: failure)
     }
 }

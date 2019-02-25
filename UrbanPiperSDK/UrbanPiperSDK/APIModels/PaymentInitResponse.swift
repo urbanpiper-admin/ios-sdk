@@ -1,5 +1,5 @@
 //
-//	OnlinePaymentInitResponse.swift
+//	PaymentInitResponse.swift
 //
 //	Create by Vidhyadharan Mohanram on 1/2/2018
 //	Copyright © 2018. All rights reserved.
@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class OnlinePaymentInitResponse : NSObject{
+public class PaymentInitResponse : NSObject{
 
 	public var data : OnlinePaymentData!
 	public var message : String!

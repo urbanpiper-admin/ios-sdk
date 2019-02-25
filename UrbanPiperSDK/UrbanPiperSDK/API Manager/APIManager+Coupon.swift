@@ -55,18 +55,18 @@ extension APIManager {
         return dataTask*/
     }
 
-    @discardableResult @objc public func apply(coupon: String,
+    @discardableResult internal func apply(coupon: String,
                      storeLocationId: Int,
-                     deliveryOption: String,
-                     items: [[String: Any]],
+                     deliveryOption: DeliveryOption,
+                     cartItems: [CartItem],
                      applyWalletCredit: Bool,
                      completion: ((Order?) -> Void)?,
                         failure: APIFailure?) -> URLSessionDataTask {
 
         let order: [String: Any] = ["biz_location_id": storeLocationId,
-                                    "order_type": deliveryOption,
+                                    "order_type": deliveryOption.rawValue,
                                     "channel": APIManager.channel,
-                                    "items": items,
+                                    "items": cartItems.map { $0.toDictionary() },
                                     "apply_wallet_credit": applyWalletCredit] as [String: Any]
         
         let params: [String: Any] = ["order": order] as [String: Any]

@@ -33,7 +33,7 @@ import Foundation
         imageLandscapeUrl = dictionary["image_landscape_url"] as? String
         imageUrl = dictionary["image_url"] as? String
      
-        var priceVal: Any = dictionary["item_price"] ?? Decimal.zero
+        let priceVal: Any = dictionary["item_price"] ?? Decimal.zero
         if let val: Decimal = priceVal as? Decimal {
             itemPrice = val
         } else if let val: Double = priceVal as? Double {

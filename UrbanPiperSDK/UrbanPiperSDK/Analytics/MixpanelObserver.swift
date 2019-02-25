@@ -159,19 +159,19 @@ class MixpanelObserver: AnalyticsObserver {
             guard let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 else { return }
             Mixpanel.mainInstance().track(event: "ppr-item-view-details",
                                           properties: ["item_title": item.itemTitle])
-        case .purchaseCompleted(_, let orderPaymentDataModel, let isReorder):
-            guard let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 else { return }
+        case .purchaseCompleted(_, let userWalletBalance, let checkoutBuilder, let isReorder):
+            guard let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, let paymentOption = checkoutBuilder.paymentOption, token.count > 0 else { return }
             Mixpanel.mainInstance().track(event: "ppr-order-placed",
-                                          properties: ["payable_amt": NSDecimalNumber(decimal: orderPaymentDataModel.itemsTotalPrice).doubleValue,
-                                            "discount": NSDecimalNumber(decimal: orderPaymentDataModel.orderResponse?.discount?.value ?? Decimal.zero).doubleValue,
-                                            "coupon": orderPaymentDataModel.couponCode ?? "NA",
+                                          properties: ["payable_amt": NSDecimalNumber(decimal: checkoutBuilder.order?.payableAmount ?? Decimal.zero).doubleValue,
+                                            "discount": NSDecimalNumber(decimal: checkoutBuilder.order?.discount?.value ?? Decimal.zero).doubleValue,
+                                            "coupon": checkoutBuilder.couponCode ?? "NA",
                                             "interval_of_day": Date.currentHourRangeString,
                                             "reorder": isReorder,
-                                            "taxes": NSDecimalNumber(decimal: orderPaymentDataModel.itemTaxes ?? Decimal.zero).doubleValue,
-                                            "wallet_credit_applied": orderPaymentDataModel.applyWalletCredits,
-                                            "wallet_credit_amt": (orderPaymentDataModel.bizInfo?.userBizInfos?.first?.balance ?? NSDecimalNumber.zero).doubleValue,
-                                            "is_pickup": orderPaymentDataModel.selectedDeliveryOption == .pickUp,
-                                            "payment_mode": orderPaymentDataModel.selectedPaymentOption.rawValue])
+                                            "taxes": NSDecimalNumber(decimal: checkoutBuilder.order?.itemTaxes ?? Decimal.zero).doubleValue,
+                                            "wallet_credit_applied": checkoutBuilder.useWalletCredits,
+                                            "wallet_credit_amt": NSDecimalNumber(decimal: userWalletBalance ?? Decimal.zero).doubleValue,
+                                            "is_pickup": checkoutBuilder.deliveryOption == .pickUp,
+                                            "payment_mode": paymentOption.rawValue])
         case .reorderInit:
             guard let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0 else { return }
             Mixpanel.mainInstance().track(event: "ppr-reorder-init")

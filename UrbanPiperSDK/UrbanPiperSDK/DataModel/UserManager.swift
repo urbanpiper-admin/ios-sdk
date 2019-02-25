@@ -81,9 +81,8 @@ public class UserManager: UrbanPiperDataModel {
                         }
                     }
                 }
-                
-                let userData: Data = NSKeyedArchiver.archivedData(withRootObject: user)
-                UserManager.keychain.set(userData, forKey: KeychainAppUserKeys.AppUserKey)
+
+                saveToKeyChain(user: user)
             } else {
                 UserManager.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
                 URLCache.shared.removeAllCachedResponses()
@@ -94,6 +93,11 @@ public class UserManager: UrbanPiperDataModel {
                 }
             }
         }
+    }
+    
+    func saveToKeyChain(user: User) {
+        let userData: Data = NSKeyedArchiver.archivedData(withRootObject: user)
+        UserManager.keychain.set(userData, forKey: KeychainAppUserKeys.AppUserKey)
     }
     
     public override init() {
@@ -311,10 +315,12 @@ extension UserManager {
         guard currentUser != nil else { return nil }
         
         let dataTask: URLSessionDataTask = APIManager.shared.refreshUserBizInfo(completion: { [weak self] (info) in
-            let user = self?.currentUser
-            user?.userBizInfoResponse = info
-            self?.currentUser = user
+            guard let user = self?.currentUser else { return }
+            user.userBizInfoResponse = info
+            
+            self?.saveToKeyChain(user: user)
             AnalyticsManager.shared.track(event: .bizInfoUpdated)
+            let _ = self?.observers.map { $0.value?.userBizInfoChanged?() }
             completion?(info)
         }, failure: failure)
         

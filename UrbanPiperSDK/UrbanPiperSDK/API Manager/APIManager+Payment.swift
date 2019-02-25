@@ -59,9 +59,9 @@ public enum DeliveryOption: String {
 
 extension APIManager {
 
-    @objc internal func preProcessOrder(bizLocationId: Int,
+    internal func preProcessOrder(bizLocationId: Int,
                                applyWalletCredit: Bool,
-                               deliveryOption: String,
+                               deliveryOption: DeliveryOption,
                                cartItems: [CartItem],
                                orderTotal: Decimal,
                                completion: ((PreProcessOrderResponse?) -> Void)?,
@@ -77,7 +77,7 @@ extension APIManager {
         
         let params: [String: Any] = ["biz_location_id": bizLocationId,
                       "apply_wallet_credit": applyWalletCredit,
-                      "order_type": deliveryOption,
+                      "order_type": deliveryOption.rawValue,
                       "channel": APIManager.channel,
                       "items": cartItems.map { $0.toDictionary() },
                       "order_total": orderTotal] as [String: Any]
@@ -116,61 +116,61 @@ extension APIManager {
         return dataTask*/
     }
 
-    @objc internal func applyCoupon(code: String,
-                           orderData: [String: Any],
-                           completion: ((Order?) -> Void)?,
-                           failure: APIFailure?) -> URLSessionDataTask {
-        
-        var urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/\(code)/"
-        urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        
-        let url: URL = URL(string: urlString)!
-        
-        var urlRequest: URLRequest = URLRequest(url: url)
-        
-        urlRequest.httpMethod = "POST"
-        
-        let params: [String: Any] = ["order": orderData]
-        
-        urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
-        
-        
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> Order? in
-            return Order(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-                
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let applyCouponResponse: Order = Order(fromDictionary: dictionary)
-                    
-                    DispatchQueue.main.async {
-                        completion?(applyCouponResponse)
-                    }
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-            
-        }
-        
-        return dataTask*/
-    }
+//    @objc internal func applyCoupon(code: String,
+//                           orderData: [String: Any],
+//                           completion: ((Order?) -> Void)?,
+//                           failure: APIFailure?) -> URLSessionDataTask {
+//        
+//        var urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/\(code)/"
+//        urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+//        
+//        let url: URL = URL(string: urlString)!
+//        
+//        var urlRequest: URLRequest = URLRequest(url: url)
+//        
+//        urlRequest.httpMethod = "POST"
+//        
+//        let params: [String: Any] = ["order": orderData]
+//        
+//        urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+//        
+//        
+//        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> Order? in
+//            return Order(fromDictionary: dictionary)
+//        }, completion: completion, failure: failure)!
+//        
+//        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+//            
+//            let statusCode = (response as? HTTPURLResponse)?.statusCode
+//            if let code = statusCode, code == 200 {
+//                
+//                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
+//                    let applyCouponResponse: Order = Order(fromDictionary: dictionary)
+//                    
+//                    DispatchQueue.main.async {
+//                        completion?(applyCouponResponse)
+//                    }
+//                    return
+//                }
+//                
+//                DispatchQueue.main.async {
+//                    completion?(nil)
+//                }
+//            } else {
+//                let errorCode = (error as NSError?)?.code
+//                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
+//            }
+//            
+//        }
+//        
+//        return dataTask*/
+//    }
     
     internal func initiateOnlinePayment(paymentOption: PaymentOption,
                                       purpose: OnlinePaymentPurpose,
                                       totalAmount: Decimal,
                                       bizLocationId: Int?,
-                                      completion: ((OnlinePaymentInitResponse?) -> Void)?,
+                                      completion: ((PaymentInitResponse?) -> Void)?,
                                       failure: APIFailure?) -> URLSessionDataTask? {
         
         
@@ -196,8 +196,8 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> OnlinePaymentInitResponse? in
-            return OnlinePaymentInitResponse(fromDictionary: dictionary)
+        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> PaymentInitResponse? in
+            return PaymentInitResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -206,10 +206,10 @@ extension APIManager {
             if let code = statusCode, code == 200 {
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let onlinePaymentInitResponse: OnlinePaymentInitResponse = OnlinePaymentInitResponse(fromDictionary: dictionary)
+                    let paymentInitResponse: PaymentInitResponse = PaymentInitResponse(fromDictionary: dictionary)
                     
                     DispatchQueue.main.async {
-                        completion?(onlinePaymentInitResponse)
+                        completion?(paymentInitResponse)
                     }
                     return
                 }
@@ -235,7 +235,7 @@ extension APIManager {
                            instructions: String,
                            phone: String,
                            bizLocationId: Int,
-                           paymentOption: String,
+                           paymentOption: PaymentOption,
                            taxRate: Float,
                            couponCode: String?,
                            deliveryCharge: Decimal,
@@ -247,7 +247,7 @@ extension APIManager {
                            applyWalletCredit: Bool,
                            walletCreditApplied: Decimal,
                            payableAmount: Decimal,
-                           onlinePaymentInitResponse: OnlinePaymentInitResponse?,
+                           paymentInitResponse: PaymentInitResponse?,
                            completion: ((OrderResponse?) -> Void)?,
                            failure: APIFailure?) -> URLSessionDataTask {
         
@@ -278,7 +278,7 @@ extension APIManager {
                       "order_type": deliveryOption.rawValue,
                       "instructions": instructionsText,
                       "items": cartItems.map { $0.toDictionary() },
-                      "payment_option": paymentOption,
+                      "payment_option": paymentOption.rawValue,
                       "phone": phone,
                       "biz_location_id": bizLocationId,
                       "delivery_datetime": Int(deliveryDate.timeIntervalSince1970 * 1000),
@@ -313,7 +313,7 @@ extension APIManager {
             params["time_slot_start"] = timeSlotObject.startTime
         }
         
-        if let trxId = onlinePaymentInitResponse?.transactionId {
+        if let trxId = paymentInitResponse?.transactionId {
             params["payment_server_trx_id"] = trxId
             params["state"] = "awaiting_payment"
         }

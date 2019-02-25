@@ -26,11 +26,11 @@ public enum PaymentGateway: String {
     
     func verifyingTransaction(isProcessing: Bool)
 
-    func initiatePayTMWebOnlinePayment(orderId: String, onlinePaymentInitResponse: OnlinePaymentInitResponse)
+    func initiatePayTMWebOnlinePayment(orderId: String, paymentInitResponse: PaymentInitResponse)
     
-    func initiateRazorOnlinePayment(orderId: String, phone: String, responseDict: OrderResponse?, onlinePaymentInitResponse: OnlinePaymentInitResponse)
+    func initiateRazorOnlinePayment(orderId: String, phone: String, responseDict: OrderResponse?, paymentInitResponse: PaymentInitResponse)
     
-    func initiatePaytabsOnlinePayment(orderId: String, phone: String, responseDict: OrderResponse?, onlinePaymentInitResponse: OnlinePaymentInitResponse)
+    func initiatePaytabsOnlinePayment(orderId: String, phone: String, responseDict: OrderResponse?, paymentInitResponse: PaymentInitResponse)
     
     func initiateSimplPayment(orderId: String, phone: String, transactionId: String)
     
@@ -42,35 +42,37 @@ public enum PaymentGateway: String {
 }
 
 public class OrderPaymentDataModel: UrbanPiperDataModel {
+    
+    public var checkoutBuilder: CheckoutBuilder = UrbanPiperSDK.shared.startCheckout()
         
-    public var preProcessOrderResponse: PreProcessOrderResponse? {
-        didSet {
-            guard preProcessOrderResponse != nil else { return }
-            applyWalletCredits = preProcessOrderResponse?.order.walletCreditApplicable ?? false
-            
-            if selectedPaymentOption == .select, selectedPaymentOption != defaultPaymentOption {
-                selectedPaymentOption = defaultPaymentOption
-            }
-            
-            if applyCouponResponse != nil && couponCode != nil {
-                let code = couponCode!
-                let isSuggested = isSuggestedCoupon
-                DispatchQueue.main.async { [weak self] in
-                    self?.applyCoupon(code: code, isSuggested: isSuggested, preSelected: code == CartManager.shared.couponCodeToApply)
-                    self?.couponCode = nil
-                    self?.applyCouponResponse = nil
-                }
-            } else {
-                couponCode = nil
-                applyCouponResponse = nil
-            }
-        }
-    }
+//    public var preProcessOrderResponse: PreProcessOrderResponse? {
+//        didSet {
+//            guard preProcessOrderResponse != nil else { return }
+//            applyWalletCredits = preProcessOrderResponse?.order.walletCreditApplicable ?? false
+//
+//            if selectedPaymentOption == .select, selectedPaymentOption != defaultPaymentOption {
+//                selectedPaymentOption = defaultPaymentOption
+//            }
+//
+//            if applyCouponResponse != nil && couponCode != nil {
+//                let code = couponCode!
+//                let isSuggested = isSuggestedCoupon
+//                DispatchQueue.main.async { [weak self] in
+//                    self?.applyCoupon(code: code, isSuggested: isSuggested, preSelected: code == CartManager.shared.couponCodeToApply)
+//                    self?.couponCode = nil
+//                    self?.applyCouponResponse = nil
+//                }
+//            } else {
+//                couponCode = nil
+//                applyCouponResponse = nil
+//            }
+//        }
+//    }
     
     public var bizInfo: UserBizInfoResponse? {
         didSet {
             guard oldValue == nil && bizInfo != nil else { return }
-            selectedDeliveryOption = defaultDeliveryOption
+            selectedDeliveryOption = OrderingStoreDataModel.shared.deliveryOption// defaultDeliveryOption
         }
     }
     
@@ -82,49 +84,47 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
 //        return address
 //    }
 
-    public var couponCode: String?
+//    public var couponCode: String?
     public var isSuggestedCoupon: Bool = false
-    public var applyCouponResponse: Order?
+//    public var applyCouponResponse: Order?
     
     public var applyWalletCredits: Bool = AppConfigManager.shared.firRemoteConfigDefaults.applyWalletCredits
 
     weak public var dataModelDelegate: OrderPaymentDataModelDelegate?
     
     public var orderResponse: Order? {
-        return applyCouponResponse ?? preProcessOrderResponse?.order
+        return checkoutBuilder.order
     }
     
-    public var itemsPrice: Decimal {
-        return orderResponse?.orderSubtotal ?? CartManager.shared.cartValue
-    }
-    
-    public var deliveryCharge: Decimal {
-        return orderResponse?.deliveryCharge ?? OrderingStoreDataModel.shared.orderingStore?.deliveryCharge ?? Decimal.zero
-    }
-    
-    public var packagingCharge: Decimal? {
-        return orderResponse?.packagingCharge ?? OrderingStoreDataModel.shared.orderingStore?.packagingCharge
-    }
-    
-    public var discountPrice: Decimal? {
-        return applyCouponResponse?.discount?.value ?? preProcessOrderResponse?.order.discount?.value ?? OrderingStoreDataModel.shared.orderingStore?.discount
-    }
+//    public var itemsPrice: Decimal {
+//        return orderResponse?.orderSubtotal ?? CartManager.shared.cartValue
+//    }
+//    
+//    public var deliveryCharge: Decimal {
+//        return orderResponse?.deliveryCharge ?? OrderingStoreDataModel.shared.orderingStore?.deliveryCharge ?? Decimal.zero
+//    }
+//    
+//    public var packagingCharge: Decimal? {
+//        return orderResponse?.packagingCharge ?? OrderingStoreDataModel.shared.orderingStore?.packagingCharge
+//    }
+//    
+//    public var discountPrice: Decimal? {
+//        return applyCouponResponse?.discount?.value ?? preProcessOrderResponse?.order.discount?.value ?? OrderingStoreDataModel.shared.orderingStore?.discount
+//    }
+//
+//    public var itemsTotalPrice: Decimal {
+//        return checkoutBuilder.order?.payableAmount ?? CartManager.shared.cartValue
+//    }
+//
+//    public var itemTaxes: Decimal? {
+//        return orderResponse?.itemTaxes ?? OrderingStoreDataModel.shared.orderingStore?.itemTaxes
+//    }
+//    
+//    public var taxRate: Float {
+//        return orderResponse?.taxRate ?? OrderingStoreDataModel.shared.orderingStore?.taxRate ?? 0
+//    }
 
-    public var itemsTotalPrice: Decimal {
-        return orderResponse?.payableAmount ?? CartManager.shared.cartValue
-    }
-    
-    public var itemTaxes: Decimal? {
-        return orderResponse?.itemTaxes ?? OrderingStoreDataModel.shared.orderingStore?.itemTaxes
-    }
-    
-    public var taxRate: Float {
-        return orderResponse?.taxRate ?? OrderingStoreDataModel.shared.orderingStore?.taxRate ?? 0
-    }
-
-    lazy public var selectedPaymentOption: PaymentOption = {
-        return defaultPaymentOption
-    }()
+    public var selectedPaymentOption: PaymentOption = .select
     
     private var defaultPaymentOption: PaymentOption {
 //        if let option: Bool = AppConfigManager.shared.firRemoteConfigDefaults.forcePaymentOptSel, option {
@@ -138,20 +138,20 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     }
     
     lazy public var selectedDeliveryOption: DeliveryOption = {
-        return defaultDeliveryOption
+        return OrderingStoreDataModel.shared.deliveryOption// defaultDeliveryOption
     }()
     
-    private var defaultDeliveryOption: DeliveryOption {
-        switch OrderingStoreDataModel.shared.deliveryOption {
-        case .delivery:
-            if let deliveryOption = deliveryOptions?.first {
-                return deliveryOption
-            }
-            return .delivery
-        case .pickUp:
-            return .pickUp
-        }
-    }
+//    private var defaultDeliveryOption: DeliveryOption {
+//        switch OrderingStoreDataModel.shared.deliveryOption {
+//        case .delivery:
+//            if let deliveryOption = deliveryOptions?.first {
+//                return deliveryOption
+//            }
+//            return .delivery
+//        case .pickUp:
+//            return .pickUp
+//        }
+//    }
     
     lazy public var selectedDeliveryTimeSlotOption: TimeSlot? = {
         guard let deliveryTimeSlotOption = deliverySlotsOptions.first else { return nil }
@@ -226,9 +226,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     public var phoneNumber: String?
     
     public var paymentOptions: [PaymentOption]? {
-        guard let paymentsStringArray = preProcessOrderResponse?.order.paymentModes else { return nil }
-        
-        var paymentArray: [PaymentOption] = paymentsStringArray.compactMap { PaymentOption(rawValue: $0) }
+        guard var paymentArray = checkoutBuilder.getPaymentModes else { return nil }
         
         // Removing wallet option
         if !AppConfigManager.shared.firRemoteConfigDefaults.moduleWallet {
@@ -288,16 +286,18 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     
 //    public var globalCouponApplied: Bool = false
     
-    public func refreshData(_ isForcedRefresh: Bool = false) {
+    public func refreshData() {
         guard UserManager.shared.currentUser != nil else { return }
 
-        if isForcedRefresh || bizInfo == nil {
+//        if isForcedRefresh ||
+            if bizInfo == nil {
             bizInfo = nil
             updateUserBizInfo()
         }
 
-        if isForcedRefresh || preProcessOrderResponse == nil || (selectedDeliveryOption == .pickUp && deliveryCharge > Decimal.zero) {
-            preProcessOrderResponse = nil
+//        if isForcedRefresh ||
+            if checkoutBuilder.order == nil || (selectedDeliveryOption == .pickUp && (checkoutBuilder.order?.deliveryCharge ?? Decimal.zero) > Decimal.zero) {
+//            preProcessOrderResponse = nil
             preProcessOrder()
         }
 
@@ -318,21 +318,40 @@ extension OrderPaymentDataModel {
     
     public func preProcessOrder() {
         dataModelDelegate?.refreshPreProcessingUI(true)
+        
+        let isFirstPreProcessingCall: Bool = checkoutBuilder.order == nil
                 
-        let dataTask: URLSessionDataTask = APIManager.shared.preProcessOrder(bizLocationId: OrderingStoreDataModel.shared.orderingStore!.bizLocationId,
-                                                         applyWalletCredit: applyWalletCredits,
-                                                         deliveryOption: selectedDeliveryOption.rawValue,
-                                                         cartItems: CartManager.shared.cartItems,
-                                                         orderTotal: itemsTotalPrice,
-                                                         completion:
+        let dataTask: URLSessionDataTask = checkoutBuilder.validateCart(store: OrderingStoreDataModel.shared.orderingStore!,
+                                                                        useWalletCredits: applyWalletCredits,
+                                                                        deliveryOption: selectedDeliveryOption,
+                                                                        cartItems: CartManager.shared.cartItems,
+                                                                        orderTotal: CartManager.shared.cartValue,
+                                                                        completion:
             { [weak self] (preProcessOrderResponse) in
                 defer {
                     self?.dataModelDelegate?.refreshPreProcessingUI(false)
                 }
-                if let order = preProcessOrderResponse?.order, self?.preProcessOrderResponse == nil {
+                guard let order = preProcessOrderResponse?.order else { return }
+                if isFirstPreProcessingCall {
                     AnalyticsManager.shared.track(event: .checkoutInit(payableAmt: order.payableAmount, walletCreditsApplied: order.walletCreditApplicable ?? false))
                 }
-                self?.preProcessOrderResponse = preProcessOrderResponse
+
+                self?.applyWalletCredits = preProcessOrderResponse?.order.walletCreditApplicable ?? false
+                
+                if  let defaultPaymentOption = self?.defaultPaymentOption, self?.selectedPaymentOption == nil {
+                    self?.selectedPaymentOption = defaultPaymentOption
+                }
+                if let currentPaymentOption = self?.selectedPaymentOption, let defaultPaymentOption = self?.defaultPaymentOption,
+                    currentPaymentOption == .select, currentPaymentOption != defaultPaymentOption {
+                    self?.selectedPaymentOption = defaultPaymentOption
+                }
+                
+                guard let code = self?.checkoutBuilder.couponCode, let isSuggested = self?.isSuggestedCoupon, let preSelected = CartManager.shared.couponCodeToApply else { return }
+                DispatchQueue.main.async { [weak self] in
+                    self?.applyCoupon(code: code, isSuggested: isSuggested, preSelected: code == CartManager.shared.couponCodeToApply)
+                    self?.checkoutBuilder.clearCoupon()
+//                    self?.applyCouponResponse = nil
+                }
             }, failure: { [weak self] (upError) in
                 defer {
                     self?.dataModelDelegate?.refreshPreProcessingUI(false)
@@ -359,16 +378,18 @@ extension OrderPaymentDataModel {
     
     public func applyCoupon(code: String, isSuggested: Bool, preSelected: Bool) {
         guard code.count > 0 else { return }
-        let orderDict: [String: Any] = ["biz_location_id": OrderingStoreDataModel.shared.orderingStore!.bizLocationId,
-                         "order_type": selectedDeliveryOption.rawValue,
-                         "channel": APIManager.channel,
-                         "items": CartManager.shared.cartItems.map { $0.toDictionary() },
-                         "apply_wallet_credit": applyWalletCredits] as [String: Any]
+//        let orderDict: [String: Any] = ["biz_location_id": OrderingStoreDataModel.shared.orderingStore!.bizLocationId,
+//                         "order_type": selectedDeliveryOption.rawValue,
+//                         "channel": APIManager.channel,
+//                         "items": CartManager.shared.cartItems.map { $0.toDictionary() },
+//                         "apply_wallet_credit": applyWalletCredits] as [String: Any]
         
         dataModelDelegate?.refreshApplyCouponUI(true, code: code)
-        let dataTask: URLSessionDataTask = APIManager.shared.applyCoupon(code: code,
-                                                     orderData: orderDict,
-                                                     completion:
+        let dataTask: URLSessionDataTask? = checkoutBuilder.validateCoupon(code: code,
+                                                                          deliveryOption: selectedDeliveryOption,
+                                                                          cartItems: CartManager.shared.cartItems,
+                                                                          useWalletCredits: applyWalletCredits,
+                                                                          completion:
             { [weak self] (applyCouponResponse) in
                 if let discount = applyCouponResponse?.discount, discount.success {
 //                    if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon == code {
@@ -378,8 +399,8 @@ extension OrderPaymentDataModel {
 //                    }
 
 
-                    self?.applyCouponResponse = applyCouponResponse
-                    self?.couponCode = code
+//                    self?.applyCouponResponse = applyCouponResponse
+//                    self?.couponCode = code
                     self?.isSuggestedCoupon = isSuggested
                     self?.dataModelDelegate?.refreshApplyCouponUI(false, code: code)
                     
@@ -409,85 +430,73 @@ extension OrderPaymentDataModel {
     
     public func payOnlineAndPlaceOrder(instructions: String,
                                 phone: String) {
-        dataModelDelegate?.initiatingPayment(isProcessing: true)
         let paymentOption = selectedPaymentOption
-        let dataTask: URLSessionDataTask? = APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption,
-                                                               purpose: OnlinePaymentPurpose.ordering,
-                                                               totalAmount: itemsTotalPrice,
-                                                               bizLocationId: OrderingStoreDataModel.shared.orderingStore!.bizLocationId,
-                                                               completion: { [weak self] (onlinePaymentInitResponse) in
-                                                                self?.dataModelDelegate?.initiatingPayment(isProcessing: false)
-                                                                if paymentOption == .paymentGateway || paymentOption == .paytm || paymentOption == .simpl {
-                                                                    self?.placeOrder(instructions: instructions, phone: phone, onlinePaymentInitResponse: onlinePaymentInitResponse)
-                                                                }
+        let dataTask: URLSessionDataTask? = checkoutBuilder.initPayment(paymentOption: paymentOption,
+                                                                        completion:
+            { [weak self] (paymentInitResponse) in
+                self?.dataModelDelegate?.initiatingPayment(isProcessing: false)
+                if paymentOption == .paymentGateway || paymentOption == .paytm || paymentOption == .simpl {
+                    self?.placeOrder(instructions: instructions, phone: phone, paymentInitResponse: paymentInitResponse)
+                }
         }, failure: { [weak self] (error) in
             self?.dataModelDelegate?.initiatingPayment(isProcessing: false)
             self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
         })
 
         addDataTask(dataTask: dataTask)
+        
+        guard dataTask == nil else { return }
+        dataModelDelegate?.initiatingPayment(isProcessing: true)
     }
         
     public func placeOrder(instructions: String,
                     phone: String,
-                    onlinePaymentInitResponse: OnlinePaymentInitResponse? = nil) {
-        
-        dataModelDelegate?.placingOrder(isProcessing: true)
+                    paymentInitResponse: PaymentInitResponse? = nil) {
         
         let timeSlotDelivery: Bool = AppConfigManager.shared.firRemoteConfigDefaults.enableTimeSlots
         
         let paymentOption = selectedPaymentOption
-        let dataTask: URLSessionDataTask = APIManager.shared.placeOrder(address: selectedDeliveryOption != .pickUp ? deliveryAddress : nil,
-                                     cartItems: CartManager.shared.cartItems,
-                                     deliveryDate: deliveryDateTime!,
-                                     timeSlot: timeSlotDelivery ? selectedDeliveryTimeSlotOption : nil,
-                                     deliveryOption: selectedDeliveryOption,
-                                     instructions: instructions,
-                                     phone: phone,
-                                     bizLocationId: OrderingStoreDataModel.shared.orderingStore!.bizLocationId,
-                                     paymentOption: paymentOption.rawValue,
-                                     taxRate: taxRate,
-                                     couponCode: couponCode,
-                                     deliveryCharge: deliveryCharge,
-                                     discountApplied: discountPrice ?? 0,
-                                     itemTaxes: itemTaxes ?? 0,
-                                     packagingCharge: packagingCharge ?? 0,
-                                     orderSubTotal: itemsPrice,
-                                     orderTotal: itemsTotalPrice,
-                                     applyWalletCredit: applyWalletCredits,
-                                     walletCreditApplied: preProcessOrderResponse?.order.walletCreditApplied ?? Decimal.zero,
-                                     payableAmount: itemsTotalPrice,
-                                     onlinePaymentInitResponse: onlinePaymentInitResponse,
-                                     completion: { [weak self] (response) in
-                                        self?.dataModelDelegate?.placingOrder(isProcessing: false)
-                                        guard let orderId = response?.orderId, let status = response?.status, status == "success" else {
-                                            let error: UPAPIError? = UPAPIError(responseObject: response?.toDictionary())
-                                            self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
-                                            return
-                                        }
-                                        
-                                        if paymentOption == .paymentGateway {
-                                            let paymentGateway = PaymentGateway(rawValue: Biz.shared!.pgProvider)!
-                                            switch paymentGateway {
-                                            case .razorpay:
-                                                self?.dataModelDelegate?.initiateRazorOnlinePayment(orderId: orderId, phone: phone, responseDict: response, onlinePaymentInitResponse: onlinePaymentInitResponse!)
-                                            case .paytabs:
-                                                self?.dataModelDelegate?.initiatePaytabsOnlinePayment(orderId: orderId, phone: phone, responseDict: response, onlinePaymentInitResponse: onlinePaymentInitResponse!)
-                                            }
-                                        } else if paymentOption == .paytm {
-                                            self?.dataModelDelegate?.initiatePayTMWebOnlinePayment(orderId: orderId, onlinePaymentInitResponse: onlinePaymentInitResponse!)
-                                        } else if paymentOption == .simpl {
-                                            self?.dataModelDelegate?.initiateSimplPayment(orderId: orderId, phone: phone, transactionId: onlinePaymentInitResponse!.transactionId)
-                                        } else {
-                                            self?.orderPlacedTracking(orderId: orderId, phone: phone)
-                                            self?.dataModelDelegate?.showOrderConfirmationAlert(orderId: orderId)
-                                        }
+        let dataTask: URLSessionDataTask? = checkoutBuilder.placeOrder(address: selectedDeliveryOption != .pickUp ? deliveryAddress : nil,
+                                                                       deliveryDate: selectedRequestedDate,
+                                                                       deliveryTime: selectedRequestedTime!,
+                                                                       timeSlot: timeSlotDelivery ? selectedDeliveryTimeSlotOption : nil,
+                                                                       paymentOption: paymentOption,
+                                                                       instructions: instructions,
+                                                                       phone: phone,
+                                                                       completion:
+            { [weak self] (response) in
+                self?.dataModelDelegate?.placingOrder(isProcessing: false)
+                guard let orderId = response?.orderId, let status = response?.status, status == "success" else {
+                    let error: UPAPIError? = UPAPIError(responseObject: response?.toDictionary())
+                    self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
+                    return
+                }
+                
+                if paymentOption == .paymentGateway {
+                    let paymentGateway = PaymentGateway(rawValue: Biz.shared!.pgProvider)!
+                    switch paymentGateway {
+                    case .razorpay:
+                        self?.dataModelDelegate?.initiateRazorOnlinePayment(orderId: orderId, phone: phone, responseDict: response, paymentInitResponse: paymentInitResponse!)
+                    case .paytabs:
+                        self?.dataModelDelegate?.initiatePaytabsOnlinePayment(orderId: orderId, phone: phone, responseDict: response, paymentInitResponse: paymentInitResponse!)
+                    }
+                } else if paymentOption == .paytm {
+                    self?.dataModelDelegate?.initiatePayTMWebOnlinePayment(orderId: orderId, paymentInitResponse: paymentInitResponse!)
+                } else if paymentOption == .simpl {
+                    self?.dataModelDelegate?.initiateSimplPayment(orderId: orderId, phone: phone, transactionId: paymentInitResponse!.transactionId)
+                } else {
+                    self?.orderPlacedTracking(orderId: orderId, phone: phone)
+                    self?.dataModelDelegate?.showOrderConfirmationAlert(orderId: orderId)
+                }
             }, failure: { [weak self] (error) in
                 self?.dataModelDelegate?.placingOrder(isProcessing: false)
                 self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
         })
         
         addDataTask(dataTask: dataTask)
+        
+        guard dataTask == nil else { return }
+        dataModelDelegate?.placingOrder(isProcessing: true)
     }
     
 }
@@ -498,18 +507,17 @@ extension OrderPaymentDataModel {
         dataModelDelegate?.verifyingTransaction(isProcessing: true)
         orderPlacedTracking(orderId: orderId, phone: phone)
 
-        let dataTask: URLSessionDataTask = APIManager.shared.verifyPayment(pid: paymentId,
-                                                       orderId: orderId,
-                                                       transactionId: transactionId,
-                                                       completion: { [weak self] (response) in
-                                                        self?.dataModelDelegate?.verifyingTransaction(isProcessing: false)
-                                                        if let status: String = response?.status, status == "3" {
-                                                            self?.dataModelDelegate?.showOrderConfirmationAlert(orderId: orderId)
-                                                        } else {
-                                                            let upError: UPError = UPError(type: .paymentFailure("There appears to have been some error in processing your transaction. Please try placing the order again. If you believe the payment has been made, please don\'t worry since we\'ll have it refunded, once we get a confirmation."))
-                                                            self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false,
-                                                                                                        error: upError)
-                                                        }
+        let dataTask: URLSessionDataTask? = checkoutBuilder.verifyPayment(pid: paymentId,
+                                                                         completion:
+            { [weak self] (response) in
+                self?.dataModelDelegate?.verifyingTransaction(isProcessing: false)
+                if let status: String = response?.status, status == "3" {
+                    self?.dataModelDelegate?.showOrderConfirmationAlert(orderId: orderId)
+                } else {
+                    let upError: UPError = UPError(type: .paymentFailure("There appears to have been some error in processing your transaction. Please try placing the order again. If you believe the payment has been made, please don\'t worry since we\'ll have it refunded, once we get a confirmation."))
+                    self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false,
+                                                                error: upError)
+                }
             }, failure: { [weak self] (error) in
                 self?.dataModelDelegate?.verifyingTransaction(isProcessing: false)
                 self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
@@ -520,8 +528,41 @@ extension OrderPaymentDataModel {
     
 
     public func orderPlacedTracking(orderId: String, phone: String) {
+//        orderPaymentDataModel.itemsTotalPrice as NSNumber).build() as! [AnyHashable : Any]
+//        tracker.send(eventDictionary)
+//
+//        let eventBuilder = GAIDictionaryBuilder.createEvent(withCategory: nil, action: nil, label: nil, value: nil)!
+//
+//        let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
+//        productAction.setAction(kGAIPAPurchase)
+//        productAction.setTransactionId(orderID)
+//        productAction.setAffiliation("UrbanPiper")
+//        productAction.setRevenue(NSDecimalNumber(decimal: orderPaymentDataModel.itemsTotalPrice))
+//        productAction.setTax(NSDecimalNumber(decimal: orderPaymentDataModel.itemTaxes ?? Decimal.zero))
+//
+//        let deliveryCharge = orderPaymentDataModel.selectedDeliveryOption == .pickUp ? Decimal.zero : orderPaymentDataModel.deliveryCharge
+//        productAction.setShipping(NSDecimalNumber(decimal: deliveryCharge))
+//        productAction.setCheckoutOption(orderPaymentDataModel.selectedPaymentOption.rawValue)
+//
+//        let couponCode = orderPaymentDataModel.applyCouponResponse != nil ? orderPaymentDataModel.couponCode : nil
+//        productAction.setCouponCode(couponCode)
+//
+//        if let items = orderPaymentDataModel.orderResponse?.items {
+//            for item in items {
+//                let product: GAIEcommerceProduct = GAIEcommerceProduct()
+//                product.setId("\(item.id!)")
+//                product.setName(item.itemTitle)
+//                product.setQuantity(NSNumber(value: item.quantity))
+//                product.setPrice(NSDecimalNumber(decimal: item.itemPrice))
+//                product.setCategory(item.category.name)
+//
+//                eventBuilder.add(product)
+//            }
+//        }
+        
         AnalyticsManager.shared.track(event: .purchaseCompleted(orderID: orderId,
-                                                                orderPaymentDataModel: self,
+                                                                userWalletBalance: bizInfo?.userBizInfos.last?.balance.decimalValue ?? Decimal.zero,
+                                                                checkoutBuilder: checkoutBuilder,
                                                                 isReorder: CartManager.shared.isReorder))
     }
 

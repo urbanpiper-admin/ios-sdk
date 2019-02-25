@@ -67,7 +67,7 @@ import Foundation
 		imageUrl = dictionary["image_url"] as? String
 		itemDesc = dictionary["item_desc"] as? String
 
-        var priceVal: Any = dictionary["item_price"] ?? dictionary["price"] as Any
+        let priceVal: Any = dictionary["item_price"] ?? dictionary["price"] as Any
         if let val: Decimal = priceVal as? Decimal {
             itemPrice = val
         } else if let val: Double = priceVal as? Double {

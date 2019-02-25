@@ -16,9 +16,9 @@ import UIKit
 
     func verifyingWalletReloadTransaction(isProcessing: Bool)
 
-    func initiatePayTMWebWalletReload(onlinePaymentInitResponse: OnlinePaymentInitResponse)
+    func initiatePayTMWebWalletReload(paymentInitResponse: PaymentInitResponse)
 
-    func initiateRazorWalletReload(onlinePaymentInitResponse: OnlinePaymentInitResponse)
+    func initiateRazorWalletReload(paymentInitResponse: PaymentInitResponse)
 
     func initiateSimplWalletReload(transactionId: String)
 
@@ -124,16 +124,16 @@ extension WalletDataModel {
                                                                purpose: .reload,
                                                                totalAmount: amount,
                                                                bizLocationId: nil,
-                                                               completion: { [weak self] (onlinePaymentInitResponse) in
+                                                               completion: { [weak self] (paymentInitResponse) in
                                                                 self?.dataModelDelegate?.initiatingWalletReload(isProcessing: false)
 
-                                                                self?.transactionId = onlinePaymentInitResponse!.transactionId
+                                                                self?.transactionId = paymentInitResponse!.transactionId
                                                                 if paymentOption == .paymentGateway {
-                                                                    self?.dataModelDelegate?.initiateRazorWalletReload(onlinePaymentInitResponse: onlinePaymentInitResponse!)
+                                                                    self?.dataModelDelegate?.initiateRazorWalletReload(paymentInitResponse: paymentInitResponse!)
                                                                 } else if paymentOption == .paytm {
-                                                                    self?.dataModelDelegate?.initiatePayTMWebWalletReload(onlinePaymentInitResponse: onlinePaymentInitResponse!)
+                                                                    self?.dataModelDelegate?.initiatePayTMWebWalletReload(paymentInitResponse: paymentInitResponse!)
                                                                 } else if paymentOption == .simpl {
-                                                                    self?.dataModelDelegate?.initiateSimplWalletReload(transactionId: onlinePaymentInitResponse!.transactionId)
+                                                                    self?.dataModelDelegate?.initiateSimplWalletReload(transactionId: paymentInitResponse!.transactionId)
                                                                 }
             }, failure: { [weak self] (upError) in
                 self?.dataModelDelegate?.initiatingWalletReload(isProcessing: false)
