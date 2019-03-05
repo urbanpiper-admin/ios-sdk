@@ -95,13 +95,12 @@ public enum ErrorType {
     case invalidPincode
     case invalidOtpCode(Int)
     case noInternetError
-    case maxItemOptionsSelected(Int)
     case apiError
     case responseParseError
     case multiPartEncodingError
     case paymentFailure(String)
-    case invalidGroupId
-    case invalidOption
+//    case invalidGroupId
+//    case invalidOption
 }
 
 @objc public class UPError: NSError {
@@ -134,8 +133,6 @@ public enum ErrorType {
             return "Error"
         case .invalidEmail:
             return "Error"
-        case .maxItemOptionsSelected(_):
-            return ""
         case .invalidPassword(_):
             return "Error"
         case .noInternetError:
@@ -152,10 +149,10 @@ public enum ErrorType {
             return "Error"
         case .paymentFailure(_):
             return "Error"
-        case .invalidGroupId:
-            return "Error"
-        case .invalidOption:
-            return "Error"
+//        case .invalidGroupId:
+//            return "Error"
+//        case .invalidOption:
+//            return "Error"
         }
     }
     
@@ -185,8 +182,6 @@ public enum ErrorType {
             return "Invalid otp code"
         case .invalidEmail:
             return "Invalid email"
-        case .maxItemOptionsSelected(let maxCount):
-            return "You can add a maximum of \(maxCount) items in this section"
         case .invalidPassword(let minChar):
             return "Enter a minimum of \(minChar) characters"
         case .noInternetError:
@@ -215,10 +210,10 @@ public enum ErrorType {
             return "Unable to parse data"
         case .paymentFailure(let errorText):
             return errorText
-        case .invalidGroupId:
-            return "Provided group id is not associated with the current itembuilder groups"
-        case .invalidOption:
-            return "Provided option id is not associated with the current itembuilder group options"
+//        case .invalidGroupId:
+//            return "Provided group id is not associated with the current itembuilder groups"
+//        case .invalidOption:
+//            return "Provided option id is not associated with the current itembuilder group options"
         }
     }
     

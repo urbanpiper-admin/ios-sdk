@@ -7,6 +7,11 @@
 
 import UIKit
 
+public enum ItemOptionBuilderError: Error {
+    case invalid(group: ItemOptionGroup)
+    case maxItemOptionsSelected(Int)
+}
+
 struct Constants {
 
     static let isNotFirstLaunchKey: String = "IsNotFirstLaunchKey"

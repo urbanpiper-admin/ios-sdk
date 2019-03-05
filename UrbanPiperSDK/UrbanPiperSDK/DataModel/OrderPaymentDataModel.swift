@@ -306,7 +306,6 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     public override init() {
         super.init()
 
-        refreshData()
         UserManager.shared.addObserver(delegate: self)
     }
 
@@ -386,9 +385,6 @@ extension OrderPaymentDataModel {
         
         dataModelDelegate?.refreshApplyCouponUI(true, code: code)
         let dataTask: URLSessionDataTask? = checkoutBuilder.validateCoupon(code: code,
-                                                                          deliveryOption: selectedDeliveryOption,
-                                                                          cartItems: CartManager.shared.cartItems,
-                                                                          useWalletCredits: applyWalletCredits,
                                                                           completion:
             { [weak self] (applyCouponResponse) in
                 if let discount = applyCouponResponse?.discount, discount.success {

@@ -20,9 +20,9 @@ public class CheckoutBuilder: NSObject {
     public var couponCode: String?
 
     
-    internal var preProcessOrderResponse: PreProcessOrderResponse? {
+    internal var validateCartResponse: PreProcessOrderResponse? {
         didSet {
-            guard preProcessOrderResponse == nil else { return }
+            guard validateCartResponse == nil else { return }
             validateCouponResponse = nil
         }
     }
@@ -50,19 +50,23 @@ public class CheckoutBuilder: NSObject {
     }
 
     public var getPaymentModes: [PaymentOption]? {
-        guard let paymentModesStringArray = preProcessOrderResponse?.order.paymentModes else { return nil }
+        assert(validateCartResponse != nil, "validateCartResponse is nil, call validateCart method first")
+        guard let paymentModesStringArray = validateCartResponse?.order.paymentModes else { return nil }
         var paymentArray: [PaymentOption] = paymentModesStringArray.compactMap { PaymentOption(rawValue: $0) }
         return paymentArray
     }
 
     public var order: Order? {
-        return validateCouponResponse ?? preProcessOrderResponse?.order
+        return validateCouponResponse ?? validateCartResponse?.order
     }
 
     
     
-    @discardableResult public func validateCart(store: Store, useWalletCredits: Bool,
-                                                deliveryOption: DeliveryOption, cartItems: [CartItem], orderTotal: Decimal,
+    @discardableResult public func validateCart(store: Store,
+                                                useWalletCredits: Bool,
+                                                deliveryOption: DeliveryOption,
+                                                cartItems: [CartItem],
+                                                orderTotal: Decimal,
                                                 completion: ((PreProcessOrderResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask {
         self.store = nil
         self.useWalletCredits = nil
@@ -70,7 +74,7 @@ public class CheckoutBuilder: NSObject {
         self.cartItems = nil
         self.orderTotal = nil
         
-        preProcessOrderResponse = nil
+        validateCartResponse = nil
         
         self.clearCoupon()
 
@@ -87,20 +91,20 @@ public class CheckoutBuilder: NSObject {
                 self?.cartItems = cartItems
                 self?.orderTotal = orderTotal
                 
-                self?.preProcessOrderResponse = preProcessOrderResponse
+                self?.validateCartResponse = preProcessOrderResponse
                 completion?(preProcessOrderResponse)
         }, failure: failure)
     }
     
     @discardableResult public func validateCoupon(code: String,
-                                                  deliveryOption: DeliveryOption,
-                                                  cartItems: [CartItem],
-                                                  useWalletCredits: Bool,
                                                   completion: ((Order?) -> Void)?,
                                                   failure: APIFailure?) -> URLSessionDataTask? {
+        assert(validateCartResponse != nil, "validateCartResponse is nil, call validateCart method first")
+        guard validateCartResponse != nil else { return nil }
+        
         validateCouponResponse = nil
         
-        guard preProcessOrderResponse != nil else { return nil }
+        guard validateCartResponse != nil else { return nil }
         let currentCartItemCount: Int = self.cartItems?.reduce (0, { $0 + $1.quantity } ) ?? 0
         
         let newCartItemCount: Int = cartItems.reduce (0, { $0 + $1.quantity } )
@@ -114,10 +118,6 @@ public class CheckoutBuilder: NSObject {
                                        applyWalletCredit: useWalletCredits,
                                        completion:
             { [weak self] (validateCouponResponse) in
-                self?.useWalletCredits = useWalletCredits
-                self?.deliveryOption = deliveryOption
-                self?.cartItems = cartItems
-                
                 self?.validateCouponResponse = validateCouponResponse
                 self?.couponCode = code
                 completion?(validateCouponResponse)
@@ -132,6 +132,12 @@ public class CheckoutBuilder: NSObject {
     @discardableResult public func initPayment(paymentOption: PaymentOption,
                                                completion: ((PaymentInitResponse?) -> Void)?,
                                                failure: APIFailure?) -> URLSessionDataTask? {
+        assert(validateCartResponse != nil, "validateCartResponse is nil, call validateCart method first")
+        guard validateCartResponse != nil else { return nil }
+
+        assert(paymentOption == .cash, "For cash payment option initPayment call is not needed, the placeOrder method can be called directly")
+        guard paymentOption != .cash else { return nil}
+        
         paymentInitResponse = nil
         
         guard let payableAmount = order?.payableAmount else { return nil }
@@ -169,16 +175,21 @@ public class CheckoutBuilder: NSObject {
                                               phone: String,
                                               completion: ((OrderResponse?) -> Void)?,
                                               failure: APIFailure?) -> URLSessionDataTask? {
-        orderResponse = nil
+        assert(validateCartResponse != nil, "validateCartResponse is nil, call validateCart method first")
+        guard validateCartResponse != nil else { return nil }
         
         if let paymentInitPaymentOption = self.paymentOption, paymentInitPaymentOption != paymentOption, paymentOption != .cash {
+            assert(paymentInitResponse != nil, "payment option passed differs from the payment option passed in the initPayment method, to change payment option please call init payment again with the new payment option")
             return nil
         } else if paymentOption == .cash {
             self.paymentOption = nil
             self.paymentInitResponse = nil
         } else if paymentInitResponse == nil {
+            assert(paymentInitResponse != nil, "paymentInitResponse is nil, call initPayment method first")
             return nil
         }
+        
+        orderResponse = nil
         
         guard paymentOption == .cash || paymentInitResponse != nil else { return nil }
         return APIManager.shared.placeOrder(address: deliveryOption != .pickUp ? address : nil,
@@ -212,6 +223,12 @@ public class CheckoutBuilder: NSObject {
     
     @discardableResult @objc public func verifyPayment(pid: String,
                                                        completion: @escaping ((OrderVerifyTxnResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask? {
+        assert(orderResponse != nil, "orderResponse is nil, call placeOrder method first")
+        guard orderResponse != nil else { return nil }
+
+        assert(paymentOption! == .paymentGateway, "verify payment method should be called only for the paymentGateway paymentOption")
+        guard paymentOption! == .paymentGateway else { return nil }
+
         guard let orderId = orderResponse?.orderId, let transactionId = paymentInitResponse?.transactionId else { return nil }
         return APIManager.shared.verifyPayment(pid: pid, orderId: orderId, transactionId: transactionId, completion: completion, failure: failure)
     }

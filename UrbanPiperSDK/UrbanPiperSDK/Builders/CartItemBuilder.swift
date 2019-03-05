@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc public class CartItemBuilder: NSObject {
+@objc private class CartItemBuilder: NSObject {
 
     public let item: Item
     
@@ -30,7 +30,7 @@ import UIKit
         if optionBuilder != nil {
             return optionBuilder
         } else if item.optionGroups != nil, item.optionGroups.count > 0 {
-            let itemOptionBuilder = ItemOptionBuilder(optionGroups: item.optionGroups)
+            let itemOptionBuilder = ItemOptionBuilder(item: item)
             
             optionBuilder = itemOptionBuilder
         } else {
@@ -41,10 +41,16 @@ import UIKit
 
     
     @objc public func build() throws -> CartItem {
-        if optionBuilder != nil, !(optionBuilder!.isValidOptionGroup) {
+        if optionBuilder != nil, !(optionBuilder!.isValidOptionGroup.0) {
             throw UPError(type: .unknown)
         }
-        return CartItem(item: item, optionBuilder: optionBuilder)
+        
+        do {
+            let optionsToAdd = try optionBuilder?.build()
+            return CartItem(item: item, optionBuilder: optionBuilder!)
+        } catch (let error) {
+            throw error
+        }
     }
     
     

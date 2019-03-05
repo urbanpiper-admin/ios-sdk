@@ -27,6 +27,12 @@ public class ItemOptionGroup : NSObject {
 		isDefault = dictionary["is_default"] as? Bool
 		maxSelectable = dictionary["max_selectable"] as? Int
 		minSelectable = dictionary["min_selectable"] as? Int
+//        if maxSelectable < 0 {
+//            maxSelectable = 1
+//        }
+//        if minSelectable < 0 {
+//            minSelectable = 1
+//        }
 		options = [ItemOption]()
 		if let optionsArray: [[String:Any]] = dictionary["options"] as? [[String:Any]]{
 			for dic in optionsArray{

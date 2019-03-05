@@ -93,9 +93,7 @@ public class CartItem: NSObject {
     }
 
     
-    @objc public init(item: Item, optionBuilder: ItemOptionBuilder?) {
-        self.optionBuilder = optionBuilder
-        
+    @objc public init(item: Item) {
         self.category = item.category
         self.currentStock = item.currentStock
 //        self.extras = item.extras
@@ -124,8 +122,17 @@ public class CartItem: NSObject {
         
         self.quantity = item.quantity
         
-        self.optionsToAdd = optionBuilder?.optionsToAdd ?? item.orderOptionsToAdd ?? []
-        self.optionsToRemove = optionBuilder?.optionsToRemove ?? item.orderOptionsToRemove ?? []
+        self.optionsToAdd = item.orderOptionsToAdd ?? []
+        self.optionsToRemove = item.orderOptionsToRemove ?? []
+    }
+    
+    convenience init(item: Item, optionBuilder: ItemOptionBuilder) {
+        self.init(item: item)
+
+        self.optionBuilder = optionBuilder
+
+        self.optionsToAdd = optionBuilder.optionsToAdd
+        self.optionsToRemove = optionBuilder.optionsToRemove
     }
     
     public func toDictionary() -> [String:Any]
