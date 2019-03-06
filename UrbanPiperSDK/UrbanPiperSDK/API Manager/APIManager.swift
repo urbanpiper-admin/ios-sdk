@@ -148,9 +148,8 @@ public typealias APIFailure = (UPError?) -> Void
                        failure: APIFailure?) -> URLSessionDataTask? {
         
         let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-            
             guard let httpResponse = response as? HTTPURLResponse else {
-                let upError = UPAPIError(httpStatusCode: nil, errorCode: (error as NSError?)?.code, data: data, responseObject: nil)
+                let upError = UPError(data: data, response: response, error: error)
                 DispatchQueue.main.async {
                     failure?(upError)
                 }
@@ -164,9 +163,16 @@ public typealias APIFailure = (UPError?) -> Void
                     }
                 }
                 
-                let upError = UPAPIError(httpStatusCode: nil, errorCode: (error as NSError?)?.code, data: data, responseObject: nil)
+                let upError = UPError(data: data, response: response, error: error)
                 DispatchQueue.main.async {
                     failure?(upError)
+                }
+                return
+            }
+            
+            guard httpResponse.statusCode != 204 else {
+                DispatchQueue.main.async {
+                    completion?(nil)
                 }
                 return
             }
@@ -175,14 +181,15 @@ public typealias APIFailure = (UPError?) -> Void
                 let jsonObject: Any = try? JSONSerialization.jsonObject(with: responseData, options: []),
                 let dictionary: [String: Any] = jsonObject as? [String: Any],
                 responseParser != nil else {
+                    let upError = UPError(data: data, response: response, error: error)
                     DispatchQueue.main.async {
-                        completion?(nil)
+                        failure?(upError)
                     }
                 return
             }
             
             guard let result = responseParser?(dictionary) else {
-                let upError = UPError(type: .responseParseError)
+                let upError = UPError(type: .responseParseError, data: data, response: response, error: error)
                 DispatchQueue.main.async {
                     failure?(upError)
                 }
@@ -210,7 +217,7 @@ public typealias APIFailure = (UPError?) -> Void
 //        
 //        if let closure = failureClosure {
 //            DispatchQueue.main.async {
-//                if let apiError: UPAPIError = UPAPIError(httpStatusCode: httpStatusCode, errorCode: errorCode, data: data) {
+//                if let apiError: UPError = UPError(type: .apiError, httpStatusCode: httpStatusCode, errorCode: errorCode, data: data) {
 //                    closure(apiError as UPError)
 //                } else {
 //                    closure(nil)

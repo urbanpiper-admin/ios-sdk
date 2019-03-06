@@ -14,7 +14,10 @@ extension String {
         guard let data: Data = data(using: String.Encoding.utf8) else { return nil }
         
         do {
-            guard let json: [[String: AnyObject]] = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: AnyObject]] else { throw UPError(type: .unknown) }
+            guard let json: [[String: AnyObject]] = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: AnyObject]] else {
+                throw UPError(type: .responseParseError, data: data, response: nil, error: nil)
+            }
+            
             return json
         } catch {
             return nil

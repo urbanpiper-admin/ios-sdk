@@ -35,8 +35,10 @@ public enum PaymentGateway: String {
     func initiateSimplPayment(orderId: String, phone: String, transactionId: String)
     
     func showOrderConfirmationAlert(orderId: String)
-    
-    func handleOrderPayment(isOrderPaymentError: Bool, error: UPError?)
+
+    func showOrderFailureAlert()
+
+    func handleOrderPayment(isPreProcessingError: Bool, error: UPError?)
     
     func handleApplyCoupon(code: String, error: UPError?)
 }
@@ -354,7 +356,7 @@ extension OrderPaymentDataModel {
             }, failure: { [weak self] (upError) in
                 defer {
                     self?.dataModelDelegate?.refreshPreProcessingUI(false)
-                    self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: true, error: upError)
+                    self?.dataModelDelegate?.handleOrderPayment(isPreProcessingError: true, error: upError)
                 }
         })
         addDataTask(dataTask: dataTask)
@@ -370,7 +372,7 @@ extension OrderPaymentDataModel {
         }, failure: { [weak self] (upError) in
             defer {
                 self?.dataModelDelegate?.refreshWalletUI(false)
-                self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: upError)
+                self?.dataModelDelegate?.handleOrderPayment(isPreProcessingError: false, error: upError)
             }
         })
     }
@@ -405,8 +407,11 @@ extension OrderPaymentDataModel {
 //                    if let globalCoupon = CartManager.shared.couponCodeToApply, globalCoupon == code {
 //                        self?.globalCouponApplied = false
 //                    }
-                    let upApiError = UPAPIError(responseObject: applyCouponResponse?.discount?.toDictionary())
-                    self?.dataModelDelegate?.handleApplyCoupon(code: code, error: upApiError)
+                    let dictionary = applyCouponResponse?.discount?.toDictionary()
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary, options: [])
+
+                    let upError = UPError(data: data, response: nil, error: nil)
+                    self?.dataModelDelegate?.handleApplyCoupon(code: code, error: upError)
                     AnalyticsManager.shared.track(event: .couponFailed(discount: Decimal.zero, couponCode: code, isSuggested: isSuggested, preSelected: preSelected))
                     
                 }
@@ -436,7 +441,7 @@ extension OrderPaymentDataModel {
                 }
         }, failure: { [weak self] (error) in
             self?.dataModelDelegate?.initiatingPayment(isProcessing: false)
-            self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
+            self?.dataModelDelegate?.handleOrderPayment(isPreProcessingError: false, error: error)
         })
 
         addDataTask(dataTask: dataTask)
@@ -463,8 +468,12 @@ extension OrderPaymentDataModel {
             { [weak self] (response) in
                 self?.dataModelDelegate?.placingOrder(isProcessing: false)
                 guard let orderId = response?.orderId, let status = response?.status, status == "success" else {
-                    let error: UPAPIError? = UPAPIError(responseObject: response?.toDictionary())
-                    self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
+                    let dictionary = response?.toDictionary()
+                    let data = try? JSONSerialization.data(withJSONObject: dictionary, options: [])
+                    
+                    let upError = UPError(data: data, response: nil, error: nil)
+                    
+                    self?.dataModelDelegate?.handleOrderPayment(isPreProcessingError: false, error: upError)
                     return
                 }
                 
@@ -486,7 +495,7 @@ extension OrderPaymentDataModel {
                 }
             }, failure: { [weak self] (error) in
                 self?.dataModelDelegate?.placingOrder(isProcessing: false)
-                self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
+                self?.dataModelDelegate?.handleOrderPayment(isPreProcessingError: false, error: error)
         })
         
         addDataTask(dataTask: dataTask)
@@ -510,13 +519,11 @@ extension OrderPaymentDataModel {
                 if let status: String = response?.status, status == "3" {
                     self?.dataModelDelegate?.showOrderConfirmationAlert(orderId: orderId)
                 } else {
-                    let upError: UPError = UPError(type: .paymentFailure("There appears to have been some error in processing your transaction. Please try placing the order again. If you believe the payment has been made, please don\'t worry since we\'ll have it refunded, once we get a confirmation."))
-                    self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false,
-                                                                error: upError)
+                    self?.dataModelDelegate?.showOrderFailureAlert()
                 }
             }, failure: { [weak self] (error) in
                 self?.dataModelDelegate?.verifyingTransaction(isProcessing: false)
-                self?.dataModelDelegate?.handleOrderPayment(isOrderPaymentError: false, error: error)
+                self?.dataModelDelegate?.handleOrderPayment(isPreProcessingError: false, error: error)
         })
         
         addDataTask(dataTask: dataTask)

@@ -110,7 +110,7 @@ extension APIManager {
                         return
                     } else {
                         DispatchQueue.main.async {
-                            let apiError: UPAPIError? = UPAPIError(responseObject: dictionary)!
+                            let apiError: UPError? = UPError(responseObject: dictionary)!
                             failure?(apiError)
                         }
                     }
@@ -170,7 +170,7 @@ extension APIManager {
                         return
                     } else {
                         DispatchQueue.main.async {
-                            let apiError: UPAPIError? = UPAPIError(responseObject: dictionary)!
+                            let apiError: UPError? = UPError(responseObject: dictionary)!
                             failure?(apiError)
                         }
                     }

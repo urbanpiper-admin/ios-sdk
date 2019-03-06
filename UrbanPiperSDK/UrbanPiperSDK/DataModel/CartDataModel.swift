@@ -10,7 +10,7 @@ import UIKit
 
 @objc public protocol CartDataModelDelegate {
     func refreshCartUI()
-    func handleCart(error: UPError?)
+//    func handleCart(error: CartError?)
 }
 
 @objc public protocol CartItemCellDelegate {
@@ -86,8 +86,8 @@ extension CartDataModel {
 
 extension CartDataModel: CartManagerDelegate {
 
-    open func handleCart(error: UPError?) {
-        dataModelDelegate?.handleCart(error: error)
+    open func handleCart(error: CartError?) {
+//        dataModelDelegate?.handleCart(error: error)
     }
 
     open func refreshCartUI() {

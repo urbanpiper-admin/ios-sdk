@@ -11,7 +11,7 @@ import UIKit
 @objc public protocol CartManagerDelegate {
 
     func refreshCartUI()
-    func handleCart(error: UPError?)
+//    func handleCart(error: CartError?)
 
 }
 
@@ -106,7 +106,7 @@ extension CartManager {
 
 extension CartManager {
 
-    @objc public func add(cartItem: CartItem, quantity: Int = 1, notes: String? = nil, fromDetailScreen: Bool = false, fromCheckoutScreen: Bool = false) {
+    @objc public func add(cartItem: CartItem, quantity: Int, notes: String? = nil, fromDetailScreen: Bool = false, fromCheckoutScreen: Bool = false) throws {
         if cartCount == 0 {
             AnalyticsManager.shared.track(event: .cartInit)
         }
@@ -120,8 +120,9 @@ extension CartManager {
                 item.quantity += quantity
                 item.notes = notes
             } else {
-                let upError: UPError = UPError(type: .maxOrderableQuantityAdded(cartItem.currentStock))
-                let _ = cartManagerObservers.map { $0.value?.handleCart(error: upError) }
+                let error = CartError.maxOrderableQuantityAdded(cartItem.currentStock)
+                throw error
+//                let _ = cartManagerObservers.map { $0.value?.handleCart(error: upError) }
             }
         } else {
             cartItem.quantity = 1
@@ -133,7 +134,7 @@ extension CartManager {
         let _ = cartManagerObservers.map { $0.value?.refreshCartUI() }
     }
 
-    public func remove(itemId: Int, quantity: Int = 1) {
+    public func remove(itemId: Int, quantity: Int) {
         guard let cartItem = cartItems.filter({ $0.id == itemId }).last else { return }
         
         AnalyticsManager.shared.track(event: .removeFromCart(item: cartItem))

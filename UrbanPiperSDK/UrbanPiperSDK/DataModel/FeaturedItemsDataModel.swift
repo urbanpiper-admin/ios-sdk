@@ -230,7 +230,7 @@ extension FeaturedItemsDataModel: CartManagerDelegate {
         categoryItemsResponse = filteredCategoryItemsResponse()
     }
     
-    public func handleCart(error: UPError?) {
+    public func handleCart(error: CartError?) {
     }
     
 }

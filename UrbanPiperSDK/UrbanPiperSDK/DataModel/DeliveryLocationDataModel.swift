@@ -160,7 +160,7 @@ extension DeliveryLocationDataModel {
                 self?.deliveryAddress = deliveryAddress
                 modelDelegate?.update(location, deliveryAddress, nil)
             } else {
-                let upError = UPError(type: .apiError)
+                let upError = UPError(data: nil, response: nil, error: nil)
                 modelDelegate?.update(nil, nil, upError)
             }            
         }, failure: { (error) in
@@ -180,7 +180,7 @@ extension DeliveryLocationDataModel {
 //                self?.deliveryAddress = deliveryAddress
 //                modelDelegate?.update(location, deliveryAddress, nil)
 //            } else {
-//                let apiError: UPAPIError? = UPAPIError(error: error, data: nil)
+//                let apiError: UPError? = UPError(error: error, data: nil)
 //
 //                modelDelegate?.update(nil, nil, apiError)
 //            }

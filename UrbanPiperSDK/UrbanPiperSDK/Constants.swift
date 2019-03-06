@@ -12,6 +12,10 @@ public enum ItemOptionBuilderError: Error {
     case maxItemOptionsSelected(Int)
 }
 
+public enum CartError: Error {
+    case maxOrderableQuantityAdded(Int)
+}
+
 struct Constants {
 
     static let isNotFirstLaunchKey: String = "IsNotFirstLaunchKey"

@@ -40,18 +40,18 @@ import UIKit
     }
 
     
-    @objc public func build() throws -> CartItem {
-        if optionBuilder != nil, !(optionBuilder!.isValidOptionGroup.0) {
-            throw UPError(type: .unknown)
-        }
-        
-        do {
-            let optionsToAdd = try optionBuilder?.build()
-            return CartItem(item: item, optionBuilder: optionBuilder!)
-        } catch (let error) {
-            throw error
-        }
-    }
+//    @objc public func build() throws -> CartItem {
+//        if optionBuilder != nil, !(optionBuilder!.isValidOptionGroup.0) {
+//            throw UPError(type: .unknown)
+//        }
+//        
+//        do {
+//            let optionsToAdd = try optionBuilder?.build()
+//            return CartItem(item: item, optionBuilder: optionBuilder!)
+//        } catch (let error) {
+//            throw error
+//        }
+//    }
     
     
 }

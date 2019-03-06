@@ -19,7 +19,7 @@ import Foundation
     public var optionGroups : [ItemOptionGroup]!
     public var preOrderStartTime : Int?
     public var preOrderEndTime : Int?
-    public var quantity : Int!
+    @objc public var quantity : Int = 0
     public var serviceTaxRate : Int!
     public var vatRate : Int!
 
@@ -43,7 +43,7 @@ import Foundation
         }
         
         itemTitle = dictionary["item_title"] as? String
-        quantity = dictionary["quantity"] as? Int
+        quantity = dictionary["quantity"] as? Int ?? 0
         serviceTaxRate = dictionary["service_tax_rate"] as? Int
         vatRate = dictionary["vat_rate"] as? Int
         if let categoryData = dictionary["category"] as? [String:Any]{
@@ -134,7 +134,7 @@ import Foundation
         itemPrice = aDecoder.decodeObject(forKey: "item_price") as? Decimal
         itemTitle = aDecoder.decodeObject(forKey: "item_title") as? String
         optionGroups = aDecoder.decodeObject(forKey: "option_groups") as? [ItemOptionGroup]
-        quantity = aDecoder.decodeObject(forKey: "quantity") as? Int
+        quantity = aDecoder.decodeObject(forKey: "quantity") as? Int ?? 0
         serviceTaxRate = aDecoder.decodeObject(forKey: "service_tax_rate") as? Int
         vatRate = aDecoder.decodeObject(forKey: "vat_rate") as? Int
         

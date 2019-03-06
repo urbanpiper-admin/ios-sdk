@@ -23,6 +23,8 @@ import UIKit
     func initiateSimplWalletReload(transactionId: String)
 
     func updateUserBizInfoBalance()
+    
+    func showWalletReloadFailureAlert()
 
     func handleWallet(error: UPError?)
 }
@@ -158,9 +160,7 @@ extension WalletDataModel {
                                                         if let status: String = response?.status, status == "3" {
                                                             self?.dataModelDelegate?.updateUserBizInfoBalance()
                                                         } else {
-                                                            let upError: UPError = UPError(type: .paymentFailure("There appears to have been some error in processing your transaction. Please try placing the order again. If you believe the payment has been made, please don\'t worry since we\'ll have it refunded, once we get a confirmation."))
-
-                                                            self?.dataModelDelegate?.handleWallet(error: upError)
+                                                            self?.dataModelDelegate?.showWalletReloadFailureAlert()
                                                         }
             }, failure: { [weak self] (error) in
                 self?.dataModelDelegate?.verifyingWalletReloadTransaction(isProcessing: false)

@@ -239,8 +239,12 @@ extension UrbanPiperSDK {
         return CartManager.shared.cartValue
     }
     
-    public func addItemToCart(cartItem: CartItem, quantity: Int) {
-        CartManager.shared.add(cartItem: cartItem, quantity: quantity)
+    public func addItemToCart(cartItem: CartItem, quantity: Int) throws {
+        do {
+            try CartManager.shared.add(cartItem: cartItem, quantity: quantity)
+        } catch {
+            throw error
+        }
     }
     
     public func removeItemFromCart(itemId: Int, quantity: Int) {
