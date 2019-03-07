@@ -30,7 +30,7 @@ public class Result : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		addressComponents = [AddressComponent]()
 		if let addressComponentsArray: [[String:Any]] = dictionary["address_components"] as? [[String:Any]]{
 			for dic in addressComponentsArray{

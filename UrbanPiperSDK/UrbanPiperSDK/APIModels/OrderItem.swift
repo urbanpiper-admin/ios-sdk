@@ -42,7 +42,7 @@ public class OrderItem : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		if let categoryData: [String:Any] = dictionary["category"] as? [String:Any]{
 			category = ItemCategory(fromDictionary: categoryData)
 		}

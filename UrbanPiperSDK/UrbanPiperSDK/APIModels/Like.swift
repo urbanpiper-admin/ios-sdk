@@ -14,7 +14,7 @@ public class Like : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		if let itemData: [String:Any] = dictionary["item"] as? [String:Any]{
 			item = Item(fromDictionary: itemData)
 		}

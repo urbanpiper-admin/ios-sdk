@@ -23,7 +23,7 @@ public class Prediction : NSObject, NSCoding{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		descriptionField = dictionary["description"] as? String
 		id = dictionary["id"] as? String
 		matchedSubstrings = [MatchedSubstring]()

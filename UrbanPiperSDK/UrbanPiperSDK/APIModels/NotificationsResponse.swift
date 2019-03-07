@@ -14,7 +14,7 @@ public class NotificationsResponse : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		messages = [Message]()
 		if let messagesArray: [[String:Any]] = dictionary["messages"] as? [[String:Any]]{
 			for dic in messagesArray{

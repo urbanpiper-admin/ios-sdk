@@ -18,7 +18,7 @@ public class ItemKeyValue : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		id = dictionary["id"] as? Int
 		key = dictionary["key"] as? String
 		value = dictionary["value"] as? String

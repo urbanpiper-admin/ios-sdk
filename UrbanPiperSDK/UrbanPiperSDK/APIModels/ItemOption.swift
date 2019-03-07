@@ -26,7 +26,7 @@ public class ItemOption : NSObject {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		currentStock = dictionary["current_stock"] as? Int
 		descriptionField = dictionary["description"] as? String
 		foodType = dictionary["food_type"] as? String

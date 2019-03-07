@@ -18,7 +18,7 @@ public class PlaceDetailsResponse : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		htmlAttributions = dictionary["html_attributions"] as? [AnyObject]
 		if let resultData: [String:Any] = dictionary["result"] as? [String:Any]{
 			result = Result(fromDictionary: resultData)

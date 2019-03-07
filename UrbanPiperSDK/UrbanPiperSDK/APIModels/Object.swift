@@ -25,7 +25,7 @@ public class Object : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		comboCount = dictionary["combo_count"] as? Int
 		descriptionField = dictionary["description"] as? String
 		id = dictionary["id"] as? Int

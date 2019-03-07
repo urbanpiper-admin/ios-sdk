@@ -18,7 +18,7 @@ public class ItemTaxes : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		rate = dictionary["rate"] as? Float
 		title = dictionary["title"] as? String
         

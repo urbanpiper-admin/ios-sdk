@@ -117,7 +117,7 @@ public class User : NSObject, NSCoding{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-    @objc public init(fromDictionary dictionary:  [String:Any]){
+    @objc internal init(fromDictionary dictionary:  [String:Any]){
         super.init()
         authKey = dictionary["authKey"] as? String
         if let userBizInfoResponseData = dictionary["biz"] as? [String:Any]{

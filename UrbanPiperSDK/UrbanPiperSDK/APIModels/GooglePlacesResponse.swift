@@ -17,7 +17,7 @@ public class GooglePlacesResponse : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		predictions = [Prediction]()
 		if let predictionsArray: [[String:Any]] = dictionary["predictions"] as? [[String:Any]]{
 			for dic in predictionsArray{

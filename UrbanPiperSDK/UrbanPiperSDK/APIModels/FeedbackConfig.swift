@@ -17,7 +17,7 @@ public class FeedbackConfig : NSObject, NSCoding{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		choices = [Choice]()
 		if let choicesArray: [[String:Any]] = dictionary["choices"] as? [[String:Any]]{
 			for dic in choicesArray{

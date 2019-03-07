@@ -17,7 +17,7 @@ public class Viewport : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		if let northeastData: [String:Any] = dictionary["northeast"] as? [String:Any]{
 			northeast = Location(fromDictionary: northeastData)
 		}

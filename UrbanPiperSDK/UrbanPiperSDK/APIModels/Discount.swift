@@ -18,7 +18,7 @@ public class Discount : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		msg = dictionary["msg"] as? String
 		success = dictionary["success"] as? Bool
         

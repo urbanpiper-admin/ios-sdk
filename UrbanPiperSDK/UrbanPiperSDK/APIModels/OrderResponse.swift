@@ -18,7 +18,7 @@ public class OrderResponse: NSObject {
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    public init(fromDictionary dictionary:  [String:Any]){
+    internal init(fromDictionary dictionary:  [String:Any]){
         status = dictionary["status"] as? String
         message = dictionary["message"] as? String
         errorDetails = dictionary["error_details"] as? [String: Any]

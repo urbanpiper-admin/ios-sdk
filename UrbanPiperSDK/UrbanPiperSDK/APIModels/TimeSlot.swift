@@ -18,7 +18,7 @@ public class TimeSlot : NSObject, NSCoding{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		day = dictionary["day"] as? String
 		endTime = dictionary["end_time"] as? String
 		startTime = dictionary["start_time"] as? String

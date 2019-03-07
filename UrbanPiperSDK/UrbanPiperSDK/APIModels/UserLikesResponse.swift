@@ -14,7 +14,7 @@ public class UserLikesResponse : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		likes = [Like]()
 		if let likesArray: [[String:Any]] = dictionary["likes"] as? [[String:Any]]{
 			for dic in likesArray{

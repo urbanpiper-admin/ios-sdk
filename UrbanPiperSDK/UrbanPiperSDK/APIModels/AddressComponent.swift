@@ -18,7 +18,7 @@ public class AddressComponent : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		longName = dictionary["long_name"] as? String
 		shortName = dictionary["short_name"] as? String
 		types = dictionary["types"] as? [String]

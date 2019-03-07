@@ -20,7 +20,7 @@ public class PreProcessOrderResponse : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		if let orderData: [String:Any] = dictionary["order"] as? [String:Any]{
 			order = Order(fromDictionary: orderData)
 		}

@@ -46,7 +46,7 @@ public class Order : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		addressId = dictionary["address_id"] as? Int
 		addressLat = dictionary["address_lat"] as? Float
 		addressLng = dictionary["address_lng"] as? Float

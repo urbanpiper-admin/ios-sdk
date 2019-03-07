@@ -148,7 +148,7 @@ public enum AddressTag: String {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	@objc public init(fromDictionary dictionary:  [String:Any]){
+	@objc internal init(fromDictionary dictionary:  [String:Any]){
 		city = dictionary["city"] as? String
 
          deliverable = dictionary["deliverable"] as? Bool
@@ -192,8 +192,13 @@ public enum AddressTag: String {
 //        self.tag = tag.rawValue
 //    }
     
-    public init (id: Int? = nil, address1: String, landmark: String, city: String, lat: CLLocationDegrees,
+    @objc public convenience init(address1: String, landmark: String, city: String, lat: CLLocationDegrees,
                  lng: CLLocationDegrees, pin: String, subLocality: String, tag: String) {
+        self.init(address1: address1, landmark: landmark, city: city, lat: lat, lng: lng, pin: pin, subLocality: subLocality, tag: tag)
+    }
+    
+    public init(id: Int? = nil, address1: String, landmark: String, city: String, lat: CLLocationDegrees,
+                lng: CLLocationDegrees, pin: String, subLocality: String, tag: String) {
         
         self.id = id
         self.address1 = address1

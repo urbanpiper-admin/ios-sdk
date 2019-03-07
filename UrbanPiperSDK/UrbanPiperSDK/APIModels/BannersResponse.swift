@@ -17,7 +17,7 @@ public class BannersResponse : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		images = [BannerImage]()
 		if let imagesArray: [[String:Any]] = dictionary["images"] as? [[String:Any]]{
 			for dic in imagesArray{

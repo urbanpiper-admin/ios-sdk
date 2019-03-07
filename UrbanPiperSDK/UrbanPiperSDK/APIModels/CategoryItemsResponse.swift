@@ -18,7 +18,7 @@ public class CategoryItemsResponse : NSObject, NSCopying{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-    public init(fromDictionary dictionary:  [String:Any], isUpsoldItems: Bool = false, isRecommendedItems: Bool = false){
+    internal init(fromDictionary dictionary:  [String:Any], isUpsoldItems: Bool = false, isRecommendedItems: Bool = false){
 //        combos = dictionary["combos"] as? [AnyObject]
 		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
 			meta = Meta(fromDictionary: metaData)

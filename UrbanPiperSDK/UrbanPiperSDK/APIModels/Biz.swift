@@ -61,7 +61,7 @@ public enum Language: String {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		contactPhone = dictionary["contact_phone"] as? String
 		currency = dictionary["currency"] as? String
 		deliveryMinOffsetTime = dictionary["delivery_min_offset_time"] as? Int

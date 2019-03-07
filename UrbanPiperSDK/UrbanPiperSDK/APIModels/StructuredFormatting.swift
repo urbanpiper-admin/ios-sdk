@@ -18,7 +18,7 @@ public class StructuredFormatting : NSObject, NSCoding{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		mainText = dictionary["main_text"] as? String
 		mainTextMatchedSubstrings = [MatchedSubstring]()
 		if let mainTextMatchedSubstringsArray: [[String:Any]] = dictionary["main_text_matched_substrings"] as? [[String:Any]]{

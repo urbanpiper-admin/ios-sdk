@@ -19,7 +19,7 @@ public class ItemTag : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		id = dictionary["id"] as? Int
 		title = dictionary["title"] as? String
 		group = dictionary["group"] as? String

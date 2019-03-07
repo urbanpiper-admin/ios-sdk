@@ -36,7 +36,7 @@ public class UserBizInfo : NSObject, NSCoding{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		addresses = dictionary["addresses"] as? [AnyObject]
         
         if let val: Decimal = dictionary["balance"] as? Decimal {

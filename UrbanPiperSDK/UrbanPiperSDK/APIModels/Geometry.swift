@@ -17,7 +17,7 @@ public class Geometry : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		if let locationData: [String:Any] = dictionary["location"] as? [String:Any]{
 			location = Location(fromDictionary: locationData)
 		}

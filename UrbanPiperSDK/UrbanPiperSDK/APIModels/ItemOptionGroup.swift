@@ -21,7 +21,7 @@ public class ItemOptionGroup : NSObject {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		descriptionField = dictionary["description"] as? String
 		id = dictionary["id"] as? Int
 		isDefault = dictionary["is_default"] as? Bool

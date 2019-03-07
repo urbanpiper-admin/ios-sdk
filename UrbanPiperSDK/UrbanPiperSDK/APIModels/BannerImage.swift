@@ -20,7 +20,7 @@ public class BannerImage : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		created = dictionary["created"] as? String
 		id = dictionary["id"] as? Int
 		image = dictionary["image"] as? String

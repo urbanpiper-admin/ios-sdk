@@ -35,7 +35,7 @@ public class OnlinePaymentData : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
         key = dictionary["key"] as? String
 		cALLBACKURL = dictionary["CALLBACK_URL"] as? String
 		cHANNELID = dictionary["CHANNEL_ID"] as? String

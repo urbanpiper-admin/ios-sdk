@@ -45,7 +45,7 @@ public class Store : NSObject, NSCoding{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
         merchantRefId = dictionary["merchant_ref_id"] as? String
 		address = dictionary["address"] as? String
 		bizLocationId = dictionary["biz_location_id"] as? Int ?? dictionary["id"] as? Int

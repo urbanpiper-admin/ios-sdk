@@ -107,7 +107,7 @@ public class SideMenuPanelTabDetail : NSObject {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		loginMandatory = dictionary["loginMandatory"] as? Bool ?? false
 		tabImage = dictionary["tabImage"] as? String
 		tabSelectedIcon = dictionary["tabSelectedIcon"] as? String

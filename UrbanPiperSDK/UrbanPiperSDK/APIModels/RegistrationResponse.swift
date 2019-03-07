@@ -28,7 +28,7 @@ public class RegistrationResponse : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 //        approvalCode = dictionary["approval_code"] as? String
 //        authKey = dictionary["auth_key"] as? String
 //        cardNumber = dictionary["card_number"] as? String

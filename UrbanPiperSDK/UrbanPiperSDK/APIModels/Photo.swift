@@ -19,7 +19,7 @@ public class Photo : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		height = dictionary["height"] as? Int
 		htmlAttributions = dictionary["html_attributions"] as? [String]
 		photoReference = dictionary["photo_reference"] as? String

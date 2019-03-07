@@ -18,7 +18,7 @@ public class Choice : NSObject, NSCoding{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		id = dictionary["id"] as? Int
 		sortOrder = dictionary["sort_order"] as? Int ?? 0
 		text = dictionary["text"] as? String

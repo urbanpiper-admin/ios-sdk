@@ -16,7 +16,7 @@ public class UserAddressesResponse : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		addresses = [Address]()
 		if let addressesArray: [[String:Any]] = dictionary["addresses"] as? [[String:Any]]{
 			for dic in addressesArray{

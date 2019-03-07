@@ -20,7 +20,7 @@ public class PaymentInitResponse : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		if let dataData: [String:Any] = dictionary["data"] as? [String:Any]{
 			data = OnlinePaymentData(fromDictionary: dataData)
 		}

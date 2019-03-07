@@ -17,7 +17,7 @@ public class Location : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		lat = dictionary["lat"] as? Double
 		lng = dictionary["lng"] as? Double
 	}

@@ -17,7 +17,7 @@ public class ItemsSearchResponse : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		items = [Item]()
 		if let itemsArray: [[String:Any]] = dictionary["items"] as? [[String:Any]]{
 			for dic in itemsArray{

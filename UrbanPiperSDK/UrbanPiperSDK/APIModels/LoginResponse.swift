@@ -18,7 +18,7 @@ public class LoginResponse : NSObject{//}, NSCoding {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-    @objc public init(fromDictionary dictionary:  [String:Any]){
+    @objc internal init(fromDictionary dictionary:  [String:Any]){
         super.init()
         message = dictionary["message"] as? String
         status = dictionary["status"] as? String

@@ -18,7 +18,7 @@ public class ItemExtra : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	public init(fromDictionary dictionary:  [String:Any]){
+	internal init(fromDictionary dictionary:  [String:Any]){
 		id = dictionary["id"] as? Int
 		keyValues = [ItemKeyValue]()
 		if let keyValuesArray: [[String:Any]] = dictionary["key_values"] as? [[String:Any]]{
