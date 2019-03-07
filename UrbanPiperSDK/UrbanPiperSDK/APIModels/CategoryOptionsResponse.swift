@@ -10,8 +10,8 @@ import Foundation
 
 public class CategoryOptionsResponse : NSObject {
 
-	public var filters : [Filter]!
-	public var sortBy : [String]!
+	public private(set)  var filters : [Filter]!
+	public private(set)  var sortBy : [String]!
 
 
 	/**

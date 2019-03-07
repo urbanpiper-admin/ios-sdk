@@ -10,10 +10,10 @@ import Foundation
 
 public class VersionCheckResponse : NSObject{
 
-    public var forceUpdate : Bool!
-	public var latestVersion : String!
-	public var releaseDate : Int!
-	public var url : String!
+    public private(set)  var forceUpdate : Bool!
+	public private(set)  var latestVersion : String!
+	public private(set)  var releaseDate : Int!
+	public private(set)  var url : String!
 
 
 	/**

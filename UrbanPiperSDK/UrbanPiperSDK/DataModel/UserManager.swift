@@ -142,7 +142,7 @@ public class UserManager: UrbanPiperDataModel {
             return
         }
         
-        let dataTask: URLSessionDataTask
+        let dataTask: URLSessionDataTask?
         if appUser.provider != nil {
             dataTask = APIManager.shared.socialLogin(email: appUser.email,
                                                      socialLoginProvider: appUser.provider!,
@@ -158,14 +158,16 @@ public class UserManager: UrbanPiperDataModel {
                     self?.logout()
             })
         } else {
-            dataTask = APIManager.shared.login(username: appUser.phone, password: appUser.password!, completion: { [weak self] (loginResponse) in
-                guard let token = loginResponse?.token else { return }
-                let user = User(jwtToken: token)
-                self?.currentUser = user
-            }, failure: { [weak self] error in
-                guard let msg = error?.errorMessage, msg == "email_check_failed" else { return }
-                self?.logout()
-            })
+            dataTask = nil
+            logout()
+//            dataTask = APIManager.shared.login(username: appUser.phone, password: appUser.password!, completion: { [weak self] (loginResponse) in
+//                guard let token = loginResponse?.token else { return }
+//                let user = User(jwtToken: token)
+//                self?.currentUser = user
+//            }, failure: { [weak self] error in
+//                guard let msg = error?.errorMessage, msg == "email_check_failed" else { return }
+//                self?.logout()
+//            })
         }
         addDataTask(dataTask: dataTask)
     }

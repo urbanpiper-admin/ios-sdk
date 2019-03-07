@@ -10,7 +10,7 @@ import Foundation
 
 public class UserAddressesResponse : NSObject{
 
-	public var addresses : [Address]!
+	public internal(set)  var addresses : [Address]!
 
 
 	/**

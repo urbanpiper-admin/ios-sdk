@@ -8,20 +8,20 @@ import Foundation
 
 @objc public class ReorderItem : NSObject, NSCoding{
 
-    public var category : ItemCategory!
-    public var currentStock : Int!
-    public var id : Int!
-    public var imageLandscapeUrl : String!
-    public var imageUrl : String!
-    public var itemCategory : ItemCategory!
-    public var itemPrice : Decimal!
-    @objc public var itemTitle : String!
-    public var optionGroups : [ItemOptionGroup]!
-    public var preOrderStartTime : Int?
-    public var preOrderEndTime : Int?
-    @objc public var quantity : Int = 0
-    public var serviceTaxRate : Int!
-    public var vatRate : Int!
+    public private(set)  var category : ItemCategory!
+    public private(set)  var currentStock : Int!
+    public private(set)  var id : Int!
+    public private(set)  var imageLandscapeUrl : String!
+    public private(set)  var imageUrl : String!
+    public private(set)  var itemCategory : ItemCategory!
+    public private(set)  var itemPrice : Decimal!
+    @objc public private(set)  var itemTitle : String!
+    public private(set)  var optionGroups : [ItemOptionGroup]!
+    public private(set)  var preOrderStartTime : Int?
+    public private(set)  var preOrderEndTime : Int?
+    @objc public private(set)  var quantity : Int = 0
+    public private(set)  var serviceTaxRate : Int!
+    public private(set)  var vatRate : Int!
 
 
     /**

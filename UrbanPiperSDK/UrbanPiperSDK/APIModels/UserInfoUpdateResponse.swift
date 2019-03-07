@@ -9,8 +9,8 @@ import UIKit
 
 public class UserInfoUpdateResponse: NSObject {
 
-    public var msg: String?
-    public var success: Bool = false
+    public private(set)  var msg: String?
+    public private(set)  var success: Bool = false
 
         
     init(fromDictionary dictionary: [String:Any]) {

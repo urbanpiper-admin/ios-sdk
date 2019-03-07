@@ -44,8 +44,8 @@ import Foundation
 
 public class User : NSObject, NSCoding{
     
-    @objc public var firstName : String!
-    public var lastName : String!
+    @objc public internal(set)  var firstName : String!
+    public private(set)  var lastName : String!
     @objc public var username : String? {
         if var phoneNo = phone {
             if phoneNo.hasPrefix("+") {
@@ -58,41 +58,42 @@ public class User : NSObject, NSCoding{
         }
     }
     
-    @objc public var phone : String!
-    @objc public var email : String!
+    @objc public internal(set)  var phone : String!
+    @objc public internal(set)  var email : String!
     
-    @objc public var gender : String?
+    @objc public internal(set)  var gender : String?
     
-    public var anniversary : Int!
-    public var birthday : Int!
+    public internal(set)  var anniversary : Int!
+    public internal(set)  var birthday : Int!
     
-    public var currentCity : String!
-    public var address : String!
+    public private(set)  var currentCity : String!
+    public private(set)  var address : String!
 
-	@objc public var authKey : String!
+	@objc public private(set)  var authKey : String!
     
-	@objc public var userBizInfoResponse : UserBizInfoResponse!
+	@objc public internal(set)  var userBizInfoResponse : UserBizInfoResponse!
     
-    @objc public var message : String?
-//    public var success : Bool!
+    @objc public private(set)  var message : String?
+//    public private(set)  var success : Bool!
 	internal var timestamp : String!
     internal var jwt: JWT!
 
-    @objc public var password: String? {
-        didSet {
-            guard let passwordString: String = password, passwordString.count > 0 else { return }
-            accessToken = nil
-            provider = nil
-        }
-    }
+//    @objc public private(set)  var password: String? {
+//        didSet {
+//            guard let passwordString: String = password, passwordString.count > 0 else { return }
+//            accessToken = nil
+//            provider = nil
+//        }
+//    }
     
-    public var provider: SocialLoginProvider?
-    public var accessToken: String? {
-        didSet {
-            guard let token = accessToken, token.count > 0 else { return }
-            password = nil
-        }
-    }
+    public private(set)  var provider: SocialLoginProvider?
+    public private(set)  var accessToken: String?
+//    {
+//        didSet {
+//            guard let token = accessToken, token.count > 0 else { return }
+//            password = nil
+//        }
+//    }
     
 //    @objc public var userStatus: UserStatus {
 //        guard let msg = message else { return .invalid }
@@ -109,7 +110,7 @@ public class User : NSObject, NSCoding{
         return Date(timeIntervalSince1970: TimeInterval(anniversaryIntVal / 1000))
     }
 
-    public override init() {
+    private override init() {
         
     }
     
@@ -135,7 +136,7 @@ public class User : NSObject, NSCoding{
 //        username = dictionary["username"] as? String
         gender = dictionary["gender"] as? String
 
-        password = dictionary["password"] as? String
+//        password = dictionary["password"] as? String
 
         provider = nil
         accessToken = nil
@@ -228,9 +229,9 @@ public class User : NSObject, NSCoding{
         
         dictionary["countryCode"] = countryCode
         
-        if password != nil {
-            dictionary["password"] = password
-        }
+//        if password != nil {
+//            dictionary["password"] = password
+//        }
         
         if address != nil{
             dictionary["address"] = address
@@ -293,7 +294,7 @@ public class User : NSObject, NSCoding{
         accessToken = aDecoder.decodeObject(forKey: "accessToken") as? String
 //        countryCode = aDecoder.decodeObject(forKey: "countryCode") as! String
         
-        password = aDecoder.decodeObject(forKey: "password") as? String
+//        password = aDecoder.decodeObject(forKey: "password") as? String
         
         address = aDecoder.decodeObject(forKey: "address") as? String
         anniversary = aDecoder.decodeObject(forKey: "anniversary") as? Int
@@ -349,9 +350,9 @@ public class User : NSObject, NSCoding{
         
 //        aCoder.encode(countryCode, forKey: "countryCode")
         
-        if password != nil {
-            aCoder.encode(password!, forKey: "password")
-        }
+//        if password != nil {
+//            aCoder.encode(password!, forKey: "password")
+//        }
         
         if address != nil{
             aCoder.encode(address, forKey: "address")

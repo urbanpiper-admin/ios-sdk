@@ -10,8 +10,8 @@ import Foundation
 
 public class GooglePlacesResponse : NSObject{
 
-	public var predictions : [Prediction]!
-	public var status : String!
+	public internal(set)  var predictions : [Prediction]!
+	public private(set)  var status : String!
 
 
 	/**

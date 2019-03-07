@@ -58,35 +58,35 @@ public enum OrderStatus: String {
 
 @objc public class PastOrder : NSObject{
 
-	@objc public var address : String!
-	public var bizLocationId : Int!
-	public var channel : String!
-	public var charges : [OrderCharges]!
-	@objc public var coupon : String!
-	@objc public var created : Int = 0
-	public var customerName : String!
-	public var deliveryAddressRef : Int!
-	@objc public var deliveryDatetime : Int = 0
-	public var discount : Decimal!
-	@objc public var id : Int = 0
-	public var instructions : String!
-//    public var itemLevelTotalCharges : Float!
-//    public var itemLevelTotalTaxes : Float!
-	@objc public var merchantRefId : Int = 0
-//    public var orderLevelTotalCharges : Float!
-//    public var orderLevelTotalTaxes : Float!
-	@objc public var orderState : String!
-	public var orderSubtotal : Decimal!
-	public var orderTotal : Decimal!
-	public var orderType : String!
-	@objc public var paymentOption : String!
-	@objc public var phone : String!
-	public var taxAmt : Decimal!
-//    public var taxRate : Float!
-	public var taxes : [AnyObject]!
-	public var totalCharges : Float!
-	public var totalTaxes : Decimal!
-    public var myOrderDetailsResponse: PastOrderDetailsResponse?
+	@objc public private(set)  var address : String!
+	public private(set)  var bizLocationId : Int!
+	public private(set)  var channel : String!
+	public private(set)  var charges : [OrderCharges]!
+	@objc public private(set)  var coupon : String!
+	@objc public private(set)  var created : Int = 0
+	public private(set)  var customerName : String!
+	public private(set)  var deliveryAddressRef : Int!
+	@objc public private(set)  var deliveryDatetime : Int = 0
+	public private(set)  var discount : Decimal!
+	@objc public private(set)  var id : Int = 0
+	public private(set)  var instructions : String!
+//    public private(set)  var itemLevelTotalCharges : Float!
+//    public private(set)  var itemLevelTotalTaxes : Float!
+	@objc public private(set)  var merchantRefId : Int = 0
+//    public private(set)  var orderLevelTotalCharges : Float!
+//    public private(set)  var orderLevelTotalTaxes : Float!
+	@objc public private(set)  var orderState : String!
+	public private(set)  var orderSubtotal : Decimal!
+	public private(set)  var orderTotal : Decimal!
+	public private(set)  var orderType : String!
+	@objc public private(set)  var paymentOption : String!
+	@objc public private(set)  var phone : String!
+	public private(set)  var taxAmt : Decimal!
+//    public private(set)  var taxRate : Float!
+	public private(set)  var taxes : [AnyObject]!
+	public private(set)  var totalCharges : Float!
+	public private(set)  var totalTaxes : Decimal!
+    public internal(set)  var myOrderDetailsResponse: PastOrderDetailsResponse?
 
 
     @objc public var orderSubTotalString: String {

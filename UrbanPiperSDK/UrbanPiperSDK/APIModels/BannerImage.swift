@@ -10,11 +10,11 @@ import Foundation
 
 public class BannerImage : NSObject{
 
-	public var created : String!
-	public var id : Int!
-	public var image : String!
-	public var imgType : String!
-	public var markups : String!
+	public private(set)  var created : String!
+	public private(set)  var id : Int!
+	public private(set)  var image : String!
+	public private(set)  var imgType : String!
+	public private(set)  var markups : String!
 
 
 	/**

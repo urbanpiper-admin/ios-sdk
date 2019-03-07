@@ -7,8 +7,8 @@ import Foundation
 
 public class Like : NSObject{
 
-	public var item : Item!
-	public var likedOn : Int!
+	public private(set)  var item : Item!
+	public private(set)  var likedOn : Int!
 
 
 	/**

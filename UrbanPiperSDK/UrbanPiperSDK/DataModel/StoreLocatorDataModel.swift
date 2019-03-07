@@ -76,12 +76,9 @@ public class StoreLocatorDataModel: UrbanPiperDataModel {
     func sortAndSetResponse(response: StoreListResponse) {
         
         if let userLocation = LocationManagerDataModel.shared.currentUserLocation, response.stores != nil {
-            for store in response.stores {
-                store.distance = store.distanceFrom(location: userLocation)
-            }
             response.stores?.sort { (store1, store2) -> Bool in
-                guard let distance1 = store1.distance else { return false }
-                guard let distance2 = store2.distance else { return true }
+                guard let distance1 = store1.distanceFrom(location: userLocation) else { return false }
+                guard let distance2 = store2.distanceFrom(location: userLocation) else { return true }
                 
                 return distance1 < distance2
             }

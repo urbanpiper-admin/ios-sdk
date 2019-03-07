@@ -10,37 +10,37 @@ import Foundation
 
 public class Order : NSObject{
 
-    public var orderType : String!
-    public var cartItems : [AnyObject]!
-    public var items : [OrderItem]!
-    public var orderSubtotal : Decimal!
-    public var packagingCharge : Decimal!
-    public var itemTaxes : Decimal!
-    public var discount : Discount?
-    public var discountApplied : Int!
-    public var deliveryCharge : Decimal!
-    public var payableAmount : Decimal!
-    public var walletCreditApplicable: Bool?
-    public var walletCreditApplied : Decimal!
-	public var addressId : Int!
-	public var addressLat : Float!
-	public var addressLng : Float!
+    public private(set)  var orderType : String!
+    public private(set)  var cartItems : [AnyObject]!
+    public private(set)  var items : [OrderItem]!
+    public private(set)  var orderSubtotal : Decimal!
+    public private(set)  var packagingCharge : Decimal!
+    public private(set)  var itemTaxes : Decimal!
+    public private(set)  var discount : Discount?
+    public private(set)  var discountApplied : Int!
+    public private(set)  var deliveryCharge : Decimal!
+    public private(set)  var payableAmount : Decimal!
+    public private(set)  var walletCreditApplicable: Bool?
+    public private(set)  var walletCreditApplied : Decimal!
+	public private(set)  var addressId : Int!
+	public private(set)  var addressLat : Float!
+	public private(set)  var addressLng : Float!
     
-	public var bizLocationId : Int!
-	public var channel : String!
-	public var charges : [OrderCharges]!
-	public var combos : [AnyObject]!
-	public var deliveryDatetime : Int!
-	public var itemLevelTotalCharges : Decimal!
-//    public var itemLevelTotalTaxes : Float!
-	public var orderLevelTotalCharges : Decimal!
-//    public var orderLevelTotalTaxes : Float!
-	//public var orderTotal : Decimal!
-	public var paymentModes : [String]?
-	public var paymentOption : String!
-	public var taxes : [AnyObject]!
-    public var taxRate : Float!
-	public var totalWeight : Int!
+	public private(set)  var bizLocationId : Int!
+	public private(set)  var channel : String!
+	public private(set)  var charges : [OrderCharges]!
+	public private(set)  var combos : [AnyObject]!
+	public private(set)  var deliveryDatetime : Int!
+	public private(set)  var itemLevelTotalCharges : Decimal!
+//    public private(set)  var itemLevelTotalTaxes : Float!
+	public private(set)  var orderLevelTotalCharges : Decimal!
+//    public private(set)  var orderLevelTotalTaxes : Float!
+	//public private(set)  var orderTotal : Decimal!
+	public private(set)  var paymentModes : [String]?
+	public private(set)  var paymentOption : String!
+	public private(set)  var taxes : [AnyObject]!
+    public private(set)  var taxRate : Float!
+	public private(set)  var totalWeight : Int!
 
 /* store, order response, instructions, payment option, phone, delivery date, delivery time, coupon code, selected timeslot, payment transaction id */
 	/**

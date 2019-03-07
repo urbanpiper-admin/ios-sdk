@@ -10,8 +10,8 @@ import Foundation
 
 public class PastOrdersResponse : NSObject{
 
-	public var meta : Meta!
-	@objc public var orders : [PastOrder]!
+	public internal(set)  var meta : Meta!
+	@objc public internal(set)  var orders : [PastOrder]!
 
 
 	/**

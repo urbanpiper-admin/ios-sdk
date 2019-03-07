@@ -7,8 +7,8 @@ import Foundation
 
 public class NotificationsResponse : NSObject{
 
-	public var messages : [Message]!
-	public var meta : Meta!
+	public private(set)  var messages : [Message]!
+	public private(set)  var meta : Meta!
 
 
 	/**

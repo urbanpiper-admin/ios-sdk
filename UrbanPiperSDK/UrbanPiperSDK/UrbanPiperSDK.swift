@@ -82,7 +82,12 @@ public extension UrbanPiperSDK {
     }
 
     @discardableResult @objc public func addAddress(address: Address, completion: ((AddUpdateAddressResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.addAddress(address: address, completion: completion, failure: failure)
+        return APIManager.shared.addAddress(address: address, completion: { (addUpdateAddressResponse) in
+            let newAddress = address
+            newAddress.id = addUpdateAddressResponse?.addressId
+            AddressDataModel.shared.userAddressesResponse?.addresses.insert(address, at: 0)
+            completion?(addUpdateAddressResponse)
+        }, failure: failure)
     }
     
     @discardableResult public func updateAddress(address: Address, completion: ((AddUpdateAddressResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
@@ -90,7 +95,12 @@ public extension UrbanPiperSDK {
     }
     
     @discardableResult @objc public func deleteAddress(addressId: Int, completion: ((GenericResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.deleteAddress(addressId: addressId, completion: completion, failure: failure)
+        return APIManager.shared.deleteAddress(addressId: addressId, completion: { (genericResponse) in
+            if let addresses = AddressDataModel.shared.userAddressesResponse?.addresses {
+                AddressDataModel.shared.userAddressesResponse?.addresses = addresses.filter { $0.id != addressId }
+            }
+            completion?(genericResponse)
+        }, failure: failure)
     }
     
     @discardableResult public func getWalletTransactions(addressId: Int, completion: ((WalletTransactionResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask {

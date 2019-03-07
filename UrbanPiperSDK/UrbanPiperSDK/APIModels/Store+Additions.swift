@@ -49,7 +49,7 @@ extension Store {
         return CLLocationCoordinate2DMake(CLLocationDegrees(latVal), CLLocationDegrees(lngVal))
     }
     
-    public func distanceFrom(location: CLLocation) -> Double? {
+    internal func distanceFrom(location: CLLocation) -> Double? {
         guard let latVal = lat, let lngVal = lng, latVal != 0, lngVal != 0 else { return nil }
         let storeLocation = CLLocation(latitude: CLLocationDegrees(latVal), longitude: CLLocationDegrees(lngVal))
         return CLLocationDistance(storeLocation.distance(from: location) / 1000)

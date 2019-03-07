@@ -10,11 +10,11 @@ import Foundation
 
 public class MyOrderMeta : NSObject{
 
-	public var limit : Int!
-	public var next : String!
-	public var offset : Int!
-	public var previous : AnyObject!
-	public var totalCount : Int!
+	public private(set)  var limit : Int!
+	public private(set)  var next : String!
+	public private(set)  var offset : Int!
+	public private(set)  var previous : AnyObject!
+	public private(set)  var totalCount : Int!
 
 
 	/**

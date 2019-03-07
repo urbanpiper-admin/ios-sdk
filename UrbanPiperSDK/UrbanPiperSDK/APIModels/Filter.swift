@@ -10,8 +10,8 @@ import Foundation
 
 public class Filter : NSObject {
 
-	public var filterOptions : [FilterOption]!
-	public var group : String!
+	public private(set)  var filterOptions : [FilterOption]!
+	public private(set)  var group : String!
 
 
 	/**

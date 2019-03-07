@@ -9,9 +9,9 @@ import Foundation
 
 public class LoginResponse : NSObject{//}, NSCoding {
     
-    @objc public var message : String?
+    @objc public private(set)  var message : String?
 
-    public var status: String?
+    public private(set)  var status: String?
 
     internal var token: String?
 

@@ -7,11 +7,11 @@ import Foundation
 
 public class Meta : NSObject, NSCoding{
 
-	public var limit : Int!
-	public var next : String!
-	public var offset : Int!
-	public var previous : String!
-	public var totalCount : Int!
+	public private(set)  var limit : Int!
+	public private(set)  var next : String!
+	public private(set)  var offset : Int!
+	public private(set)  var previous : String!
+	public private(set)  var totalCount : Int!
 
 
 	/**

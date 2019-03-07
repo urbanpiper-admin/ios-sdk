@@ -14,18 +14,18 @@ public enum PaymentType: String {
 
 public class OnlinePaymentData : NSObject{
 
-	public var cALLBACKURL : String!
-	public var cHANNELID : String!
-	public var cHECKSUMHASH : String!
-	public var cUSTID : String!
-	public var iNDUSTRYTYPEID : String!
-	public var mID : String!
-	public var oRDERID : String!
-	public var tXNAMOUNT : String!
-	public var wEBSITE : String!
-	public var paymentUrl : String!
-	public var type : String!
-    public var key : String!
+	public private(set)  var cALLBACKURL : String!
+	public private(set)  var cHANNELID : String!
+	public private(set)  var cHECKSUMHASH : String!
+	public private(set)  var cUSTID : String!
+	public private(set)  var iNDUSTRYTYPEID : String!
+	public private(set)  var mID : String!
+	public private(set)  var oRDERID : String!
+	public private(set)  var tXNAMOUNT : String!
+	public private(set)  var wEBSITE : String!
+	public private(set)  var paymentUrl : String!
+	public private(set)  var type : String!
+    public private(set)  var key : String!
     
     public var paymentType: PaymentType {
         return PaymentType(rawValue: type)!

@@ -10,8 +10,8 @@ import Foundation
 
 public class MyOrderOption : NSObject{
 
-	public var id : Int!
-	public var title : String!
+	public private(set)  var id : Int!
+	public private(set)  var title : String!
 
 
 	/**

@@ -16,14 +16,14 @@ public enum MessageType: String {
 
 public class Message : NSObject{
 
-	public var bannerImg : String!
-	public var body : String!
-	public var channel : String!
-	public var created : Int!
-	public var id : Int!
-	public var target : AnyObject!
-	public var title : String!
-	public var type : String!
+	public private(set)  var bannerImg : String!
+	public private(set)  var body : String!
+	public private(set)  var channel : String!
+	public private(set)  var created : Int!
+	public private(set)  var id : Int!
+	public private(set)  var target : AnyObject!
+	public private(set)  var title : String!
+	public private(set)  var type : String!
 
 
 	/**

@@ -17,17 +17,17 @@ public enum AddressTag: String {
 
 @objc public class Address : NSObject, NSCoding {
 
-	public var address1 : String!
-	public var landmark : String!
-    public var deliverable : Bool!
-	@objc public var city : String!
-	public var id : Int!
-    @objc public var lat : CLLocationDegrees = 0
-    @objc public var lng : CLLocationDegrees = 0
-	@objc public var pin : String!
-	public var podId : Int!
-	@objc public var subLocality : String!
-	@objc public var tag : String!
+	public private(set)  var address1 : String!
+	public private(set)  var landmark : String!
+    public internal(set)  var deliverable : Bool?
+	@objc public private(set)  var city : String!
+	public internal(set)  var id : Int!
+    @objc public private(set)  var lat : CLLocationDegrees = 0
+    @objc public private(set)  var lng : CLLocationDegrees = 0
+	@objc public private(set)  var pin : String!
+	public private(set)  var podId : Int!
+	@objc public private(set)  var subLocality : String!
+	@objc public private(set)  var tag : String!
     
     public var addressTag: AddressTag {
         guard let tagString: String = tag, let addressTagVal: AddressTag = AddressTag(rawValue: tagString.lowercased()) else { return .other }
@@ -151,7 +151,7 @@ public enum AddressTag: String {
 	@objc public init(fromDictionary dictionary:  [String:Any]){
 		city = dictionary["city"] as? String
 
-         deliverable = dictionary["deliverable"] as? Bool ?? false
+         deliverable = dictionary["deliverable"] as? Bool
 
         if let latitude: Double = dictionary["latitude"] as? Double {
             lat = latitude
@@ -179,6 +179,32 @@ public enum AddressTag: String {
 		subLocality = dictionary["sub_locality"] as? String
 		tag = dictionary["tag"] as? String ?? AddressTag.other.rawValue
 	}
+    
+//    public init(address1: String, landmark: String, city: String, lat: CLLocationDegrees,
+//                lng: CLLocationDegrees, pin: String, subLocality: String, tag: AddressTag) {
+//        self.address1 = address1
+//        self.landmark = landmark
+//        self.city = city
+//        self.lat = lat
+//        self.lng = lng
+//        self.pin = pin
+//        self.subLocality = subLocality
+//        self.tag = tag.rawValue
+//    }
+    
+    public init (id: Int? = nil, address1: String, landmark: String, city: String, lat: CLLocationDegrees,
+                 lng: CLLocationDegrees, pin: String, subLocality: String, tag: String) {
+        
+        self.id = id
+        self.address1 = address1
+        self.landmark = landmark
+        self.city = city
+        self.lat = lat
+        self.lng = lng
+        self.pin = pin
+        self.subLocality = subLocality
+        self.tag = tag
+    }
 
     /**
      * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -229,7 +255,7 @@ public enum AddressTag: String {
         if landmark == nil {
             landmark = aDecoder.decodeObject(forKey: "address_2") as? String
         }
-         deliverable = aDecoder.decodeObject(forKey: "deliverable") as? Bool ?? false
+         deliverable = aDecoder.decodeObject(forKey: "deliverable") as? Bool
          city = aDecoder.decodeObject(forKey: "city") as? String
          id = aDecoder.decodeObject(forKey: "id") as? Int
          lat = aDecoder.decodeObject(forKey: "lat") as? Double ?? Double.zero

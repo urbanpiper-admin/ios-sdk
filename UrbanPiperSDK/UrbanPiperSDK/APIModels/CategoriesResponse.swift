@@ -11,9 +11,9 @@ import Foundation
 @objc public class CategoriesResponse : NSObject{
 
 	private var biz : Biz!
-	public var clearCache : Bool!
-	public var meta : Meta!
-    public var objects : [Object]!
+	public private(set)  var clearCache : Bool!
+	public private(set)  var meta : Meta!
+    public internal(set)  var objects : [Object]!
 
 
 	/**

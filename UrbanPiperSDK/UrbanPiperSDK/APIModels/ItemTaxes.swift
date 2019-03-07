@@ -10,9 +10,9 @@ import Foundation
 
 public class ItemTaxes : NSObject{
 
-	public var rate : Float!
-	public var title : String!
-	public var value : Decimal!
+	public private(set)  var rate : Float!
+	public private(set)  var title : String!
+	public private(set)  var value : Decimal!
 
 
 	/**

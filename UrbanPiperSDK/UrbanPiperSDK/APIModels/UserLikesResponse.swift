@@ -7,8 +7,8 @@ import Foundation
 
 public class UserLikesResponse : NSObject{
 
-	public var likes : [Like]!
-	public var meta : Meta!
+	public private(set)  var likes : [Like]!
+	public private(set)  var meta : Meta!
 
 
 	/**

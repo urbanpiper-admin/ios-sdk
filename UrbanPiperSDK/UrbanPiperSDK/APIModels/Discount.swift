@@ -10,9 +10,9 @@ import Foundation
 
 public class Discount : NSObject{
 
-	public var msg : String!
-	public var success : Bool!
-	public var value : Decimal!
+	public private(set)  var msg : String!
+	public private(set)  var success : Bool!
+	public private(set)  var value : Decimal!
 
 
 	/**

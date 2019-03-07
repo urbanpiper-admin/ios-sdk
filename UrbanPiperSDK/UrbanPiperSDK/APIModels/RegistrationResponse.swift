@@ -10,19 +10,19 @@ import Foundation
 
 public class RegistrationResponse : NSObject{
 
-//    public var approvalCode : String!
-//    public var authKey : String!
-//    public var cardNumber : String!
-//    public var customerEmail : String!
-//    public var customerName : String!
-//    public var customerPhone : String!
-	public var message : String!
-//    public var points : Float!
-//    public var prepaidBalance : Float!
-	public var result : String!
-	public var success : Bool!
-//    public var timestamp : String!
-//    public var totalBalance : Float!
+//    public private(set)  var approvalCode : String!
+//    public private(set)  var authKey : String!
+//    public private(set)  var cardNumber : String!
+//    public private(set)  var customerEmail : String!
+//    public private(set)  var customerName : String!
+//    public private(set)  var customerPhone : String!
+	public private(set)  var message : String!
+//    public private(set)  var points : Float!
+//    public private(set)  var prepaidBalance : Float!
+	public private(set)  var result : String!
+	public private(set)  var success : Bool!
+//    public private(set)  var timestamp : String!
+//    public private(set)  var totalBalance : Float!
 
 
 	/**

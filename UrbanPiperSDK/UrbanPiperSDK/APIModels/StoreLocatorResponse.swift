@@ -10,8 +10,8 @@ import Foundation
 
 public class StoreListResponse : NSObject{
 
-	public var biz : Biz!
-	public var stores : [Store]!
+	public private(set)  var biz : Biz!
+	public internal(set)  var stores : [Store]!
 
 
 	/**

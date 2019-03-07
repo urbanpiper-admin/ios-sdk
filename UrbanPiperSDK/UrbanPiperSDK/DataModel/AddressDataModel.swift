@@ -59,8 +59,8 @@ public class AddressDataModel: UrbanPiperDataModel {
             }
             
             addressListArray = userAddressesResponse?.addresses
-            deliverableAddressListArray = userAddressesResponse?.addresses.filter { $0.deliverable }
-            unDeliverableAddressListArray = userAddressesResponse?.addresses.filter { !$0.deliverable }
+            deliverableAddressListArray = userAddressesResponse?.addresses.filter { $0.deliverable != nil && $0.deliverable! }
+            unDeliverableAddressListArray = userAddressesResponse?.addresses.filter { $0.deliverable != nil && !$0.deliverable! }
             
             tableView?.reloadData()
             collectionView?.reloadData()

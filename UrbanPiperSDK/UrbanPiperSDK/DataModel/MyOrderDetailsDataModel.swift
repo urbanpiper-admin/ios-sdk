@@ -26,7 +26,7 @@ open class MyOrderDetailsDataModel: UrbanPiperDataModel {
         }
     }
 
-    open var myOrderDetailsResponse: PastOrderDetailsResponse?
+    public private(set) var myOrderDetailsResponse: PastOrderDetailsResponse?
     
     func refreshData() {
         fetchOrderDetails()

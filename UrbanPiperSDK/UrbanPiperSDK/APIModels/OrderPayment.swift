@@ -10,9 +10,9 @@ import Foundation
 
 @objc public class OrderPayment : NSObject{
 
-	public var amount : Decimal!
-	@objc public var option : String!
-	public var srvrTrxId : String!
+	public private(set)  var amount : Decimal!
+	@objc public private(set)  var option : String!
+	public private(set)  var srvrTrxId : String!
 
 
 	/**
