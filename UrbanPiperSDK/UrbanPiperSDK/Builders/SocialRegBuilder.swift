@@ -42,7 +42,13 @@ public class SocialRegBuilder: NSObject {
 
     @discardableResult public func registerSocialUser(completion: @escaping ((RegistrationResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
         assert(verifyPhoneResponse != nil, "verifyPhone method should be called first")
-        return UserManager.shared.registerSocialUser(name: name!, phone: phone!, email: email!, socialLoginProvider: provider!, accessToken: providerAccessToken!, referralObject: nil, completion: { [weak self] (response) in
+        
+        var referralObject: Referral? = nil
+        if let responseData: Data = UserDefaults.standard.object(forKey: "referral dictionary") as? Data, let referralParams = NSKeyedUnarchiver.unarchiveObject(with: responseData) as? Referral {
+            referralObject = referralParams
+        }
+
+        return UserManager.shared.registerSocialUser(name: name!, phone: phone!, email: email!, socialLoginProvider: provider!, accessToken: providerAccessToken!, referralObject: referralObject, completion: { [weak self] (response) in
             self?.registrationResponse = response
             completion(response)
             }, failure: failure)

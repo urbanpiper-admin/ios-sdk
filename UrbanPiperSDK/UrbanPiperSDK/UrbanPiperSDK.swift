@@ -31,7 +31,7 @@ public class UrbanPiperSDK: NSObject {
 
 public extension UrbanPiperSDK {
 
-    public func getUser() -> User? {
+    @objc public func getUser() -> User? {
         return UserManager.shared.currentUser
     }
 
@@ -64,7 +64,7 @@ public extension UrbanPiperSDK {
         return UserManager.shared.refreshUserInfo(completion: completion, failure: failure)
     }
 
-    @discardableResult public func refreshUserBizInfo(completion: ((UserBizInfoResponse?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
+    @objc @discardableResult public func refreshUserBizInfo(completion: ((UserBizInfoResponse?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
         return UserManager.shared.refreshUserBizInfo(completion: completion, failure: failure)
     }
 
@@ -73,7 +73,7 @@ public extension UrbanPiperSDK {
         return UserManager.shared.updateUserInfo(name: name, phone: phone, email: email, gender: gender, completion: completion, failure: failure)
     }
     
-    @discardableResult public func changePassword(phone: String, oldPassword: String, newPassword: String, completion: ((GenericResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
+    @objc @discardableResult public func changePassword(phone: String, oldPassword: String, newPassword: String, completion: ((GenericResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
         return UserManager.shared.changePassword(phone: phone, oldPassword: oldPassword, newPassword: newPassword, completion: completion, failure: failure)
     }
     

@@ -55,7 +55,9 @@ struct Constants {
 public extension NSNotification.Name {
     
     public static let upSDKTokenExpired = NSNotification.Name("upsdk-token-expired")
-    public static let cartChanged = NSNotification.Name("cart_changed")
+    public static let cartChanged = NSNotification.Name("cart-changed")
+    public static let userInfoChanged = NSNotification.Name("user-info-changed")
+    public static let userBizInfoChanged = NSNotification.Name("user-biz-info-changed")
 
 }
 

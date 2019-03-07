@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseInstanceID
 
-@objc public protocol UserManagerDelegate {
+@objc internal protocol UserManagerDelegate {
     
     @objc optional func userInfoChanged()
     @objc optional func userBizInfoChanged()
@@ -29,9 +29,9 @@ public struct Simpl {
     }
 }
 
-public typealias CompletionHandler<T> = (T?, UPError?) -> Void
+internal typealias CompletionHandler<T> = (T?, UPError?) -> Void
 
-public class UserManager: UrbanPiperDataModel {
+internal class UserManager: UrbanPiperDataModel {
 
     private struct KeychainAppUserKeys {
         static let AppUserKey: String = "KeyChainUserDataKey"
@@ -39,13 +39,13 @@ public class UserManager: UrbanPiperDataModel {
     
     private typealias WeakRefDataModelDelegate = WeakRef<UserManagerDelegate>
 
-    @objc public static private(set) var shared: UserManager = UserManager()
+    @objc internal static private(set) var shared: UserManager = UserManager()
 
     private var observers = [WeakRefDataModelDelegate]()
     
     private static let keychain: UPKeychainWrapper = UPKeychainWrapper(serviceName: Bundle.main.bundleIdentifier!)
     
-    @objc public private(set) var currentUser: User? {
+    @objc internal private(set) var currentUser: User? {
         get {
             guard let userData = UserManager.keychain.data(forKey: KeychainAppUserKeys.AppUserKey) else { return nil}
 
@@ -100,7 +100,7 @@ public class UserManager: UrbanPiperDataModel {
         UserManager.keychain.set(userData, forKey: KeychainAppUserKeys.AppUserKey)
     }
     
-    public override init() {
+    internal override init() {
         super.init()
 
         NotificationCenter.default.addObserver(self,
@@ -124,13 +124,13 @@ public class UserManager: UrbanPiperDataModel {
         
     }
     
-    @objc public func addObserver(delegate: UserManagerDelegate) {
+    @objc internal func addObserver(delegate: UserManagerDelegate) {
         let weakRefDataModelDelegate: WeakRefDataModelDelegate = WeakRefDataModelDelegate(value: delegate)
         observers.append(weakRefDataModelDelegate)
     }
     
     
-    public func removeObserver(delegate: UserManagerDelegate) {
+    internal func removeObserver(delegate: UserManagerDelegate) {
         guard let index = (observers.index { $0.value === delegate }) else { return }
         observers.remove(at: index)
     }
@@ -189,7 +189,7 @@ public class UserManager: UrbanPiperDataModel {
         addDataTask(dataTask: dataTask)
     }
     
-    @objc public func logout() {
+    @objc internal func logout() {
         if let user = UserManager.shared.currentUser, user.phone != nil {
             AnalyticsManager.shared.track(event: .logout(phone: user.phone))
         }
@@ -233,7 +233,7 @@ public class UserManager: UrbanPiperDataModel {
 
 extension UserManager {
     
-    @objc @discardableResult public func refreshUserInfo(completion: ((UserInfoResponse?) -> Void)? = nil,
+    @objc @discardableResult internal func refreshUserInfo(completion: ((UserInfoResponse?) -> Void)? = nil,
                                       failure: APIFailure? = nil) -> URLSessionDataTask? {
         guard let phoneNo = currentUser?.phone else {
             failure?(nil)
@@ -253,7 +253,7 @@ extension UserManager {
         return dataTask
     }
     
-    @objc @discardableResult public func updateUserInfo(name: String,
+    @objc @discardableResult internal func updateUserInfo(name: String,
                                                         phone: String,
                                                         email: String,
                                                         gender: String? = nil,
@@ -295,7 +295,7 @@ extension UserManager {
         return dataTask
     }
     
-    @objc @discardableResult public func changePassword(phone: String,
+    @objc @discardableResult internal func changePassword(phone: String,
                                oldPassword: String,
                                newPassword: String,
                                completion: ((GenericResponse?) -> Void)?,
@@ -313,7 +313,7 @@ extension UserManager {
         return dataTask
     }
     
-    @objc @discardableResult public func refreshUserBizInfo(completion: ((UserBizInfoResponse?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
+    @objc @discardableResult internal func refreshUserBizInfo(completion: ((UserBizInfoResponse?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
         guard currentUser != nil else { return nil }
         
         let dataTask: URLSessionDataTask = APIManager.shared.refreshUserBizInfo(completion: { [weak self] (info) in
@@ -336,14 +336,14 @@ extension UserManager {
 
 extension UserManager {
     
-    @discardableResult public func registerForFCMMessaging(token: String, completion: ((GenericResponse?) -> Void)? = nil,
+    @discardableResult internal func registerForFCMMessaging(token: String, completion: ((GenericResponse?) -> Void)? = nil,
         failure: APIFailure? = nil) -> URLSessionDataTask {
         let dataTask: URLSessionDataTask = APIManager.shared.registerForFCMToken(token: token, completion: nil, failure: nil)
         addDataTask(dataTask: dataTask)
         return dataTask
     }
     
-    @discardableResult public func unRegisterForFCMMessaging(token: String, completion: ((GenericResponse??) -> Void)? = nil,
+    @discardableResult internal func unRegisterForFCMMessaging(token: String, completion: ((GenericResponse??) -> Void)? = nil,
                                                              failure: APIFailure? = nil) -> URLSessionDataTask {
         let dataTask: URLSessionDataTask = APIManager.shared.unRegisterForFCMMessaging(token: token, completion: nil, failure: nil)
         addDataTask(dataTask: dataTask)
@@ -355,7 +355,7 @@ extension UserManager {
 
 extension UserManager {
     
-    @discardableResult public func login(username: String,
+    @discardableResult internal func login(username: String,
                       password: String,
                       completion: @escaping ((LoginResponse?) -> Void),
                       failure: @escaping APIFailure) -> URLSessionDataTask {
@@ -377,7 +377,7 @@ extension UserManager {
         return dataTask
     }
     
-    @discardableResult public func forgotPassword(phone: String,
+    @discardableResult internal func forgotPassword(phone: String,
                                completion: @escaping ((GenericResponse?) -> Void),
                                failure: @escaping APIFailure) -> URLSessionDataTask {
         let dataTask: URLSessionDataTask = APIManager.shared.forgotPassword(phone: phone, completion: { (genericResponse) in
@@ -390,7 +390,7 @@ extension UserManager {
         return dataTask
     }
     
-    @discardableResult public func resetPassword(phone: String,
+    @discardableResult internal func resetPassword(phone: String,
                               otp: String,
                               password: String,
                               confirmPassword: String,
@@ -412,7 +412,7 @@ extension UserManager {
         return dataTask
     }
     
-    @discardableResult public func registerUser(name: String,
+    @discardableResult internal func registerUser(name: String,
                               phone: String,
                               email: String,
                               password: String,
@@ -444,7 +444,7 @@ extension UserManager {
 
 extension UserManager {
     
-    @discardableResult public func registerSocialUser(name: String,
+    @discardableResult internal func registerSocialUser(name: String,
                                           phone: String,
                                           email: String,
                                           gender: String? = nil,
@@ -472,7 +472,7 @@ extension UserManager {
         return dataTask
     }
     
-    @discardableResult public func socialLogin(email: String,
+    @discardableResult internal func socialLogin(email: String,
                             socialLoginProvider: SocialLoginProvider,
                             accessToken: String,
                             completion: @escaping ((socialLoginResponse?) -> Void),
@@ -504,7 +504,7 @@ extension UserManager {
 
 extension UserManager {
     
-   @discardableResult public func verifyPhone(phone: String,
+   @discardableResult internal func verifyPhone(phone: String,
                                  email: String,
                                  socialLoginProvider: SocialLoginProvider,
                                  accessToken: String,
@@ -522,7 +522,7 @@ extension UserManager {
     }
     
 //  used only when "new_registration_required"
-    @discardableResult public func verifyRegOTP(phone: String,
+    @discardableResult internal func verifyRegOTP(phone: String,
                                    otp: String,
                                    completion: @escaping ((RegistrationResponse?) -> Void),
                                    failure: @escaping APIFailure) -> URLSessionDataTask {
@@ -536,7 +536,7 @@ extension UserManager {
         return dataTask
     }
 //  used in all the other cases
-    @discardableResult public func verifySocialOTP(phone: String,
+    @discardableResult internal func verifySocialOTP(phone: String,
                           email: String,
                           socialLoginProvider: SocialLoginProvider,
                           accessToken: String,
@@ -562,7 +562,7 @@ extension UserManager {
         return dataTask
     }
     
-    @discardableResult public func resendOTP(phone: String,
+    @discardableResult internal func resendOTP(phone: String,
                    completion: @escaping ((RegistrationResponse?) -> Void),
                    failure: @escaping APIFailure) -> URLSessionDataTask {
         AnalyticsManager.shared.track(event: .resendOTP(phone: phone))
