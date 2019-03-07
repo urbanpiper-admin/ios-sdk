@@ -56,10 +56,10 @@ extension APIManager {
         return dataTask*/
     }
     
-    @discardableResult @objc public func reverseGeoCode(lat: Double,
-                                     lng: Double,
-                                       completion: ((Address?) -> Void)?,
-                                       failure: APIFailure?) -> URLSessionDataTask {
+    @discardableResult @objc internal func reverseGeoCode(lat: Double,
+                                                          lng: Double,
+                                                          completion: ((Address?) -> Void)?,
+                                                          failure: APIFailure?) -> URLSessionDataTask {
         let placesAPIKey: String = AppConfigManager.shared.firRemoteConfigDefaults.googlePlacesApiKey!
         
         var urlString: String = "https://maps.googleapis.com/maps/api/geocode/json?latlng=\(lat),\(lng)&key=\(placesAPIKey)"

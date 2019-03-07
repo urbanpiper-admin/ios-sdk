@@ -26,7 +26,8 @@ open class CartDataModel: UrbanPiperDataModel {
     public override init() {
         super.init()
 
-        CartManager.addObserver(delegate: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshCartUI), name: NSNotification.Name.cartChanged, object: nil)
+//        CartManager.addObserver(delegate: self)
     }
 
     open func refreshData() {
@@ -90,7 +91,7 @@ extension CartDataModel: CartManagerDelegate {
 //        dataModelDelegate?.handleCart(error: error)
     }
 
-    open func refreshCartUI() {
+    @objc open func refreshCartUI() {
         refreshData()
     }
 

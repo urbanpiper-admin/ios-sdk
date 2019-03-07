@@ -53,8 +53,9 @@ open class FeaturedItemsDataModel: UrbanPiperDataModel {
     
     public override init() {
         super.init()
-        
-        CartManager.addObserver(delegate: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshCartUI), name: NSNotification.Name.cartChanged, object: nil)
+
+//        CartManager.addObserver(delegate: self)
         OrderingStoreDataModel.shared.addObserver(delegate: self)
     }
     
@@ -71,7 +72,7 @@ open class FeaturedItemsDataModel: UrbanPiperDataModel {
     }
 
     func filteredCategoryItemsResponse() -> CategoryItemsResponse? {
-        let cartItemIds = CartManager.shared.cartItemIds
+        let cartItemIds = UrbanPiperSDK.shared.cartItems().map { $0.id }
         
         if let categoryResponse = fullCategoryItemsResponse?.copy() as? CategoryItemsResponse {
             
@@ -225,7 +226,7 @@ extension FeaturedItemsDataModel: OrderingStoreDataModelDelegate {
 
 extension FeaturedItemsDataModel: CartManagerDelegate {
     
-    public func refreshCartUI() {
+    @objc public func refreshCartUI() {
         guard filterOutItemsAddedToCart else { return }
         categoryItemsResponse = filteredCategoryItemsResponse()
     }

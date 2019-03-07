@@ -207,7 +207,9 @@ extension APIManager {
 
         
         return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> Item? in
-            return Item(fromDictionary: dictionary)
+            let item = Item(fromDictionary: dictionary)
+            item.isItemDetailsItem = true
+            return item
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in

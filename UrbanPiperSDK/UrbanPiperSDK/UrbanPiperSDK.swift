@@ -235,13 +235,17 @@ extension UrbanPiperSDK {
         return CartManager.shared.cartItems
     }
     
-    public func cartValue() -> Decimal {
+    public func getItemCountFor(itemId: Int) -> Int {
+        return CartManager.shared.cartCount(for: itemId)
+    }
+    
+    @objc public func cartValue() -> Decimal {
         return CartManager.shared.cartValue
     }
     
-    public func addItemToCart(cartItem: CartItem, quantity: Int) throws {
+    @objc public func addItemToCart(cartItem: CartItem, quantity: Int, notes: String? = nil) throws {
         do {
-            try CartManager.shared.add(cartItem: cartItem, quantity: quantity)
+            try CartManager.shared.add(cartItem: cartItem, quantity: quantity, notes: notes)
         } catch {
             throw error
         }
@@ -251,7 +255,7 @@ extension UrbanPiperSDK {
         CartManager.shared.remove(itemId: itemId, quantity: quantity)
     }
     
-    public func clearCart() {
+    @objc public func clearCart() {
         CartManager.shared.clearCart()
     }
     

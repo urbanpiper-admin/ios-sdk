@@ -41,6 +41,9 @@ import Foundation
     public var isRecommendedItem: Bool = false
     public var isUpsoldItem: Bool = false
     public var isSearchItem: Bool = false
+    
+    public var isItemDetailsItem: Bool = false
+
     public var notes: String?
     
 	/**

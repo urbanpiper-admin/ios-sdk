@@ -227,6 +227,8 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
 
     public var phoneNumber: String?
     
+    public var couponCodeToApply: String?
+    
     public var paymentOptions: [PaymentOption]? {
         guard var paymentArray = checkoutBuilder.getPaymentModes else { return nil }
         
@@ -347,9 +349,9 @@ extension OrderPaymentDataModel {
                     self?.selectedPaymentOption = defaultPaymentOption
                 }
                 
-                guard let code = self?.checkoutBuilder.couponCode, let isSuggested = self?.isSuggestedCoupon, let preSelected = CartManager.shared.couponCodeToApply else { return }
+                guard let code = self?.checkoutBuilder.couponCode, let isSuggested = self?.isSuggestedCoupon, let preSelected = self?.couponCodeToApply else { return }
                 DispatchQueue.main.async { [weak self] in
-                    self?.applyCoupon(code: code, isSuggested: isSuggested, preSelected: code == CartManager.shared.couponCodeToApply)
+                    self?.applyCoupon(code: code, isSuggested: isSuggested, preSelected: code == preSelected)
                     self?.checkoutBuilder.clearCoupon()
 //                    self?.applyCouponResponse = nil
                 }

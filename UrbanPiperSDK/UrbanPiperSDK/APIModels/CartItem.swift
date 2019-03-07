@@ -38,6 +38,8 @@ public class CartItem: NSObject {
     var isRecommendedItem: Bool = false
     var isUpsoldItem: Bool = false
     var isSearchItem: Bool = false
+    var isItemDetailsItem: Bool = false
+    internal var isReorder: Bool = false
 
 //    var vatRate : Float!
     
@@ -90,6 +92,7 @@ public class CartItem: NSObject {
             self.optionsToAdd.append(contentsOf: group.reorderOptionsToAdd)
         }
         
+        isReorder = true
     }
 
     
@@ -119,6 +122,7 @@ public class CartItem: NSObject {
         self.isRecommendedItem = item.isRecommendedItem
         self.isUpsoldItem = item.isUpsoldItem
         self.isSearchItem = item.isSearchItem
+        self.isItemDetailsItem = item.isItemDetailsItem
         
         self.quantity = item.quantity
         

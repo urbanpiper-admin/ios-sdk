@@ -7,6 +7,34 @@
 
 import UIKit
 
+public typealias APICompletion<T> = (T?) -> Void
+public typealias APIFailure = (UPError?) -> Void
+
+public enum SocialLoginProvider: String {
+    case google = "google"
+    case facebook = "facebook"
+}
+
+public enum OnlinePaymentPurpose: String {
+    case reload = "reload"
+    case ordering = "ordering"
+}
+
+public enum PaymentOption: String {
+    case cash = "cash"
+    case prepaid = "prepaid"
+    case paymentGateway = "payment_gateway"
+    case paytm = "paytm"
+    case simpl = "simpl"
+    case paypal = "paypal"
+    case select = "select"
+}
+
+public enum DeliveryOption: String {
+    case delivery = "delivery"
+    case pickUp = "pickup"
+}
+
 public enum ItemOptionBuilderError: Error {
     case invalid(group: ItemOptionGroup)
     case maxItemOptionsSelected(Int)
@@ -27,6 +55,7 @@ struct Constants {
 public extension NSNotification.Name {
     
     public static let upSDKTokenExpired = NSNotification.Name("upsdk-token-expired")
-    
+    public static let cartChanged = NSNotification.Name("cart_changed")
+
 }
 

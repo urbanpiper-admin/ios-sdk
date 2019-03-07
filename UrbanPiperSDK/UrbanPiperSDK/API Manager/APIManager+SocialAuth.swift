@@ -8,28 +8,6 @@
 
 import Foundation
 
-@objc public enum SocialLoginProvider: Int, RawRepresentable {
-    case google
-    case facebook
-    
-    public typealias RawValue = String
-
-    public init?(rawValue: RawValue) {
-        switch rawValue {
-        case "google": self = .google
-        case "facebook": self = .facebook
-        default: return nil
-        }
-    }
-    
-    public var rawValue: RawValue {
-        switch self {
-        case .google: return "google"
-        case .facebook: return "facebook"
-        }
-    }
-}
-
 extension APIManager {
 
     static let socialLoginBaseUrl: String = "\(APIManager.baseUrl)/api/v2/social_auth/me"
@@ -106,11 +84,11 @@ extension APIManager {
 
 extension APIManager {
     
-    @objc internal func socialLogin(email: String,
-                                    socialLoginProvider: SocialLoginProvider,
-                                    accessToken: String,
-                                    completion: ((socialLoginResponse?) -> Void)?,
-                                    failure: APIFailure?) -> URLSessionDataTask {
+    internal func socialLogin(email: String,
+                              socialLoginProvider: SocialLoginProvider,
+                                accessToken: String,
+                                completion: ((socialLoginResponse?) -> Void)?,
+                                failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)"
 
@@ -123,12 +101,12 @@ extension APIManager {
 
 extension APIManager {
     
-    @objc internal func verifyPhone(phone: String,
-                                         email: String,
-                                         socialLoginProvider: SocialLoginProvider,
-                                         accessToken: String,
-                                         completion: ((socialLoginResponse?) -> Void)?,
-                                         failure: APIFailure?) -> URLSessionDataTask {
+    internal func verifyPhone(phone: String,
+                              email: String,
+                              socialLoginProvider: SocialLoginProvider,
+                              accessToken: String,
+                              completion: ((socialLoginResponse?) -> Void)?,
+                              failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.socialLoginBaseUrl)/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)&action=check_phone&phone=\(phone)"
         
@@ -136,7 +114,7 @@ extension APIManager {
         
     }
     
-    @objc internal func verifySocialOTP(phone: String,
+    internal func verifySocialOTP(phone: String,
                                 email: String,
                                 socialLoginProvider: SocialLoginProvider,
                                 accessToken: String,

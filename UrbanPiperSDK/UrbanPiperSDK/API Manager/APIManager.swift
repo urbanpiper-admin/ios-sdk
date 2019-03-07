@@ -27,11 +27,7 @@
 
 import Foundation
 
-//public typealias APISuccess = () -> Void
-public typealias APICompletion<T> = (T?) -> Void
-public typealias APIFailure = (UPError?) -> Void
-
-@objc public class APIManager: NSObject {
+@objc internal class APIManager: NSObject {
 
     #if DEBUG
     static let baseUrl: String = "https://staging.urbanpiper.com"
@@ -41,7 +37,7 @@ public typealias APIFailure = (UPError?) -> Void
     static let baseUrl: String = "https://api.urbanpiper.com"
     #endif
 
-    @objc public static private(set) var shared: APIManager!
+    @objc internal static private(set) var shared: APIManager!
     
     static let channel: String = "app_ios"
     static let fetchLimit: Int = 20

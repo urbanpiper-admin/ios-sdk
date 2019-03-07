@@ -8,55 +8,6 @@
 
 import Foundation
 
-public enum OnlinePaymentPurpose: String {
-    case reload = "reload"
-    case ordering = "ordering"
-}
-
-public enum PaymentOption: String {
-    case cash = "cash"
-    case prepaid = "prepaid"
-    case paymentGateway = "payment_gateway"
-    case paytm = "paytm"
-    case simpl = "simpl"
-    case paypal = "paypal"
-    case select = "select"
-    
-    public var displayName: String {
-        switch self {
-        case .cash:
-            return "Cash on delivery"
-        case .prepaid:
-            return "Wallet"
-        case .paymentGateway:
-            return "Pay online"
-        case .paytm:
-            return "PAYTM"
-        case .simpl:
-            return "Simpl"
-        case .paypal:
-            return "Paypal"
-        case .select:
-            return "SELECT OPTION"
-        }
-    }
-}
-
-public enum DeliveryOption: String {
-    
-    case delivery = "delivery"
-    case pickUp = "pickup"
-    
-    public var deliveryOptionOffsetTimeSecs: TimeInterval {
-        switch self {
-        case .delivery:
-            return TimeInterval((OrderingStoreDataModel.shared.orderingStore?.deliveryMinOffsetTime ?? Biz.shared!.deliveryMinOffsetTime) / 1000)
-        case .pickUp:
-            return TimeInterval((OrderingStoreDataModel.shared.orderingStore?.pickupMinOffsetTime ?? Biz.shared!.pickupMinOffsetTime) / 1000)
-        }
-    }
-}
-
 extension APIManager {
 
     internal func preProcessOrder(bizLocationId: Int,

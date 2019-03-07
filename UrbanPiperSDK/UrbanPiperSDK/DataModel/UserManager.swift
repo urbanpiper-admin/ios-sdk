@@ -193,8 +193,8 @@ public class UserManager: UrbanPiperDataModel {
         }
 
         CartManager.shared.clearCart()
-        CartManager.shared.lastOrder = nil
-        CartManager.shared.couponCodeToApply = nil
+//        CartManager.shared.lastOrder = nil
+//        CartManager.shared.couponCodeToApply = nil
 
         DeliveryLocationDataModel.shared.deliveryLocation = nil
         DeliveryLocationDataModel.shared.deliveryAddress = nil

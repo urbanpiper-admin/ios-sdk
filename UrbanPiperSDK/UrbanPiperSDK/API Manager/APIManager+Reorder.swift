@@ -11,7 +11,7 @@ import CoreLocation
 
 extension APIManager {
 
-    public func reorder(orderId: Int,
+    internal func reorder(orderId: Int,
                         userLocation: CLLocationCoordinate2D?,
                         bizLocationId: Int?,
                         completion: ((ReorderResponse?) -> Void)?,
