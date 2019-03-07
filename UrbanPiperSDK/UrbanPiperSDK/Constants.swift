@@ -7,6 +7,10 @@
 
 import UIKit
 
+public enum SDKEvent {
+    case sessionExpired
+}
+
 public typealias APICompletion<T> = (T?) -> Void
 public typealias APIFailure = (UPError?) -> Void
 
@@ -54,7 +58,7 @@ struct Constants {
 
 public extension NSNotification.Name {
     
-    public static let upSDKTokenExpired = NSNotification.Name("upsdk-token-expired")
+    public static let sessionExpired = NSNotification.Name("session-expired")
     public static let cartChanged = NSNotification.Name("cart-changed")
     public static let userInfoChanged = NSNotification.Name("user-info-changed")
     public static let userBizInfoChanged = NSNotification.Name("user-biz-info-changed")

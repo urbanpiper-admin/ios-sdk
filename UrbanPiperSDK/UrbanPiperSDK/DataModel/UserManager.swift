@@ -105,7 +105,7 @@ internal class UserManager: UrbanPiperDataModel {
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.logout),
-                                               name: .upSDKTokenExpired, object: nil)
+                                               name: .sessionExpired, object: nil)
 
         if !UserDefaults.standard.bool(forKey: Constants.isNotFirstLaunchKey) {
             // Remove Keychain items here
@@ -175,7 +175,8 @@ internal class UserManager: UrbanPiperDataModel {
     func refreshToken() {
         guard let jwt = currentUser?.jwt else { return }
         guard !jwt.tokenExpired else {
-            NotificationCenter.default.post(name: .upSDKTokenExpired, object: nil)
+            NotificationCenter.default.post(name: .sessionExpired, object: nil)
+            UrbanPiperSDK.shared.callback(.sessionExpired)
             return
         }
         guard jwt.shouldRefreshToken else { return }

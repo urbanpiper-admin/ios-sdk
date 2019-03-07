@@ -11,14 +11,16 @@ import CoreLocation
 public class UrbanPiperSDK: NSObject {
 
     @objc public static private(set) var shared: UrbanPiperSDK!
+    internal var callback:  (SDKEvent) -> Void
     
-    private init(language: Language = .english, bizId: String, apiUsername: String, apiKey: String) {
+    private init(language: Language = .english, bizId: String, apiUsername: String, apiKey: String, callback: @escaping (SDKEvent) -> Void) {
+        self.callback = callback
         super.init()
         APIManager.initializeManager(language: language, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, jwt: UserManager.shared.currentUser?.jwt)
     }
     
-    public class func intialize(language: Language? = .english, bizId: String, apiUsername: String, apiKey: String) {
-        shared = UrbanPiperSDK(language: language!, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey)
+    public class func intialize(language: Language? = .english, bizId: String, apiUsername: String, apiKey: String, callback: @escaping (SDKEvent) -> Void) {
+        shared = UrbanPiperSDK(language: language!, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, callback: callback)
     }
     
     public func change(language: Language) {

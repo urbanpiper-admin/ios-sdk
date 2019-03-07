@@ -155,7 +155,8 @@ import Foundation
             guard 200 ... 204 ~= httpResponse.statusCode else {
                 if let hasTokenExpired = self?.jwt?.tokenExpired, hasTokenExpired, httpResponse.statusCode == 401 {
                     DispatchQueue.main.async {
-                        NotificationCenter.default.post(name: .upSDKTokenExpired, object: nil)
+                        NotificationCenter.default.post(name: .sessionExpired, object: nil)
+                        UrbanPiperSDK.shared.callback(.sessionExpired)
                     }
                 }
                 
@@ -207,7 +208,8 @@ import Foundation
 //        
 //        if let code = httpStatusCode, code == 401, jwt != nil, jwt!.tokenExpired {
 //            DispatchQueue.main.async {
-//                NotificationCenter.default.post(name: .upSDKTokenExpired, object: nil)
+//                NotificationCenter.default.post(name: .sessionExpired, object: nil)
+//                UrbanPiperSDK.shared.callback("token expired")
 //            }
 //        }
 //        
