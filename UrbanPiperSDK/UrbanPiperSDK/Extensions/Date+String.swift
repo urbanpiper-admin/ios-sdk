@@ -11,13 +11,8 @@ import UIKit
 //  MARK: Locale
 
 extension Date {
-    
-    static public var nextMinuteSecondsLeft: TimeInterval {
-        let seconds = Calendar.current.component(Calendar.Component.second, from: Date())
-        return TimeInterval(60 - seconds)
-    }
-    
-    static public var currentHourRangeString: String {
+        
+    static internal var currentHourRangeString: String {
         let hour = Calendar.current.component(Calendar.Component.hour, from: Date())
         return "\(hour):00 - \(hour + 1):00"
     }
@@ -31,45 +26,23 @@ extension Date {
         return formatter
     }()
     
-//  MARK: Time
+    //  MARK: Time
     
-    public var hhmmaString: String {
+    internal var hhmmaString: String {
         Date.localeDateToStringFormatter.dateFormat = "hh:mm a"
         return Date.localeDateToStringFormatter.string(from: self)
     }
-    
-    public var yyyymmddString: String {
+
+    internal var yyyymmddString: String {
         Date.localeDateToStringFormatter.dateFormat = "yyyy-MM-dd"
         return Date.localeDateToStringFormatter.string(from: self)
     }
-    
-    public var hhmmaddMMMyyyyString: String {
-        Date.localeDateToStringFormatter.dateFormat = "hh:mm a, dd MMM yyyy";
-        return Date.localeDateToStringFormatter.string(from: self)
-    }
-    
+        
 //  MARK: Date
     
-    public var ddMMMString: String {
-        Date.localeDateToStringFormatter.dateFormat = "dd MMM"
-        return Date.localeDateToStringFormatter.string(from: self)
-    }
-    
-    public var ddMMMyyyyString: String {
-        Date.localeDateToStringFormatter.dateFormat = "dd MMM, yyyy"
-        return Date.localeDateToStringFormatter.string(from: self)
-    }
-    
-    public var dayName: String {
+    internal var dayName: String {
         Date.localeDateToStringFormatter.dateFormat = "EEEE"
         return Date.localeDateToStringFormatter.string(from: self)
     }
     
-//  MARK: Time
-    
-    public var orderedTimeString: String {
-        Date.localeDateToStringFormatter.dateFormat = "dd LLL, yyyy (hh:mm a)";
-        return Date.localeDateToStringFormatter.string(from: self)
-    }
-        
 }

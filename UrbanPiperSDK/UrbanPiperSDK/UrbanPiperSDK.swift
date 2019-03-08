@@ -26,6 +26,10 @@ public class UrbanPiperSDK: NSObject {
     public func change(language: Language) {
         APIManager.shared.language = language
     }
+    
+    public func currentLanguage() -> Language {
+        return APIManager.shared.language
+    }
 
 }
 
