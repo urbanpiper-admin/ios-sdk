@@ -60,7 +60,7 @@ extension APIManager {
         return dataTask*/
     }
     
-    @objc internal func login(username: String,
+    @objc internal func login(phone: String,
                             password: String,
                             completion: ((LoginResponse?) -> Void)?,
                             failure: APIFailure?) -> URLSessionDataTask {
@@ -73,7 +73,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "POST"
 
-        let params: [String: Any] = ["username": username,
+        let params: [String: Any] = ["username": phone,
                                      "pass": password]
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])

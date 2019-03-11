@@ -161,7 +161,7 @@ internal class UserManager: UrbanPiperDataModel {
         } else {
             dataTask = nil
             logout()
-//            dataTask = APIManager.shared.login(username: appUser.phone, password: appUser.password!, completion: { [weak self] (loginResponse) in
+//            dataTask = APIManager.shared.login(phone: appUser.phone, password: appUser.password!, completion: { [weak self] (loginResponse) in
 //                guard let token = loginResponse?.token else { return }
 //                let user = User(jwtToken: token)
 //                self?.currentUser = user
@@ -259,7 +259,7 @@ extension UserManager {
                                                         phone: String,
                                                         email: String,
                                                         gender: String? = nil,
-                                                        anniversary: Date? = nil,
+                                                        aniversary: Date? = nil,
                                                         birthday: Date? = nil,
                                                         completion: ((UserInfoUpdateResponse?) -> Void)?,
                                                         failure: APIFailure?) -> URLSessionDataTask? {
@@ -267,7 +267,7 @@ extension UserManager {
                                                                             phone: phone,
                                                                             email: email,
                                                                             gender: gender,
-                                                                            anniversary: anniversary,
+                                                                            aniversary: aniversary,
                                                                             birthday: birthday,
                                                                             completion:
             { [weak self] (response) in
@@ -282,8 +282,8 @@ extension UserManager {
                 if gender != nil {
                     user?.gender = gender
                 }
-                if anniversary != nil {
-                    user?.anniversary = Int(anniversary!.timeIntervalSince1970 * 1000)
+                if aniversary != nil {
+                    user?.anniversary = Int(aniversary!.timeIntervalSince1970 * 1000)
                 }
                 if birthday != nil {
                     user?.birthday = Int(birthday!.timeIntervalSince1970 * 1000)
@@ -359,27 +359,27 @@ extension UserManager {
 
 extension UserManager {
     
-    @discardableResult internal func login(username: String,
+    @discardableResult internal func login(phone: String,
                       password: String,
                       completion: @escaping ((LoginResponse?) -> Void),
                       failure: @escaping APIFailure) -> URLSessionDataTask {
-        let dataTask: URLSessionDataTask = APIManager.shared.login(username: username, password: password, completion: { [weak self] (loginResponse) in
+        let dataTask: URLSessionDataTask = APIManager.shared.login(phone: phone, password: password, completion: { [weak self] (loginResponse) in
             if let token = loginResponse?.token {
                 let user = User(jwtToken: token)
                 if user.phoneVerified {
                     self?.currentUser = user
-                    AnalyticsManager.shared.track(event: .loginSuccess(phone: username))
+                    AnalyticsManager.shared.track(event: .loginSuccess(phone: phone))
                 } else {
                     loginResponse?.status = "error"
                     loginResponse?.message = UserStatus.verifyPhoneNumber.rawValue
                     loginResponse?.token = nil
                 }
             } else {
-                AnalyticsManager.shared.track(event: .loginFailed(phone: username))
+                AnalyticsManager.shared.track(event: .loginFailed(phone: phone))
             }
             completion(loginResponse)
         }) { (error) in
-            AnalyticsManager.shared.track(event: .loginFailed(phone: username))
+            AnalyticsManager.shared.track(event: .loginFailed(phone: phone))
             failure(error)
         }
         

@@ -72,7 +72,7 @@ open class FeaturedItemsDataModel: UrbanPiperDataModel {
     }
 
     func filteredCategoryItemsResponse() -> CategoryItemsResponse? {
-        let cartItemIds = UrbanPiperSDK.sharedInstance().cartItems().map { $0.id }
+        let cartItemIds = UrbanPiperSDK.sharedInstance().getCartItems().map { $0.id }
         
         if let categoryResponse = fullCategoryItemsResponse?.copy() as? CategoryItemsResponse {
             

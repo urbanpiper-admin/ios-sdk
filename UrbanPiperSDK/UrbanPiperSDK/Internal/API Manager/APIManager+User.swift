@@ -57,7 +57,7 @@ extension APIManager {
                                      phone: String,
                                      email: String,
                                      gender: String? = nil,
-                                     anniversary: Date? = nil,
+                                     aniversary: Date? = nil,
                                      birthday: Date? = nil,
                                      completion: ((UserInfoUpdateResponse?) -> Void)?,
                                      failure: APIFailure?) -> URLSessionDataTask {
@@ -82,8 +82,9 @@ extension APIManager {
             userInfo["birthday"] = date.timeIntervalSince1970 * 1000
         }
         
-        if let date = anniversary {
+        if let date = aniversary {
             userInfo["anniversary"] = date.timeIntervalSince1970 * 1000
+            userInfo["aniversary"] = date.timeIntervalSince1970 * 1000
         }
         
         let params: [String: Any] = ["user_data": userInfo]

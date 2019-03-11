@@ -157,7 +157,7 @@ public class ItemOption : NSObject {
 
 extension ItemOption {
     
-    public func equitableCheckDictionary() -> [String: Any] {
+    internal func equitableCheckDictionary() -> [String: Any] {
         var dictionary: [String: Any] = [String:Any]()
         //        if currentStock != nil{
         //            dictionary["current_stock"] = currentStock
@@ -182,7 +182,7 @@ extension ItemOption {
         return dictionary
     }
     
-    static public func == (lhs: ItemOption, rhs: ItemOption) -> Bool {
+    static internal func == (lhs: ItemOption, rhs: ItemOption) -> Bool {
         let lhsDictionary = lhs.equitableCheckDictionary()
         let rhsDictionary = rhs.equitableCheckDictionary()
         

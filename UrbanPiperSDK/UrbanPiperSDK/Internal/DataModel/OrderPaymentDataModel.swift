@@ -234,7 +234,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     public var couponCodeToApply: String?
     
     public var paymentOptions: [PaymentOption]? {
-        guard var paymentArray = checkoutBuilder.getPaymentModes else { return nil }
+        guard var paymentArray = checkoutBuilder.getPaymentModes() else { return nil }
         
         // Removing wallet option
         if !AppConfigManager.shared.firRemoteConfigDefaults.moduleWallet {

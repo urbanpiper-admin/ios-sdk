@@ -9,9 +9,9 @@ import UIKit
 
 /// Events that should be handled by the SDK client, the event are passed to the client via the callback of the SDK initializer
 ///
-/// - sessionExpired: Indicates that the current users session has expired and the user is being logged out
+/// - sessionExpired: Indicates that the current user's session has expired and the user is being logged out
 public enum SDKEvent {
-    /// - sessionExpired: Indicates that the current users session has expired and the user is being logged out
+    /// - sessionExpired: Indicates that the current user's session has expired and the user is being logged out
     case sessionExpired
 }
 
@@ -74,12 +74,12 @@ public enum DeliveryOption: String {
     case pickUp = "pickup"
 }
 
-/// Errors thrown by the 'ItemOptionBuilder'
+/// Errors thrown by the `ItemOptionBuilder`
 ///
-/// - invalid: This error is thrown by the build funtion if ItemOptions are not added as specified by the minSelectable and maxSelectable variables in the ItemOptionGroup
+/// - invalid: This error is thrown by the build function if ItemOptions are not added as specified by the minSelectable and maxSelectable variables in the ItemOptionGroup
 /// - maxItemOptionsSelected: This error is thrown by the addOption function when a item option is added to a group beyond maxSelectable variable in the ItemOptionGroup
 public enum ItemOptionBuilderError: Error {
-    /// - invalid: This error is thrown by the build funtion if ItemOptions are not added as specified by the minSelectable and maxSelectable variables in the ItemOptionGroup
+    /// - invalid: This error is thrown by the build function if ItemOptions are not added as specified by the minSelectable and maxSelectable variables in the ItemOptionGroup
     case invalid(group: ItemOptionGroup)
     /// - maxItemOptionsSelected: This error is thrown by the addOption function when a item option is added to a group beyond maxSelectable variable in the ItemOptionGroup
     case maxItemOptionsSelected(Int)
@@ -87,9 +87,9 @@ public enum ItemOptionBuilderError: Error {
 
 /// Error thrown by Cart
 ///
-/// - maxOrderableQuantityAdded: This error is thrown by the addItem function in UrbanPiperSDK when an item is added beyond the vairable value currentStock in 'Item'
+/// - maxOrderableQuantityAdded: This error is thrown by the addItem function in UrbanPiperSDK when an item is added beyond the vairable value currentStock in `Item`
 public enum CartError: Error {
-    /// - maxOrderableQuantityAdded: This error is thrown by the addItem function in UrbanPiperSDK when an item is added beyond the vairable value currentStock in 'Item'
+    /// - maxOrderableQuantityAdded: This error is thrown by the addItem function in UrbanPiperSDK when an item is added beyond the vairable value currentStock in `Item`
     case maxOrderableQuantityAdded(Int)
 }
 
@@ -103,7 +103,7 @@ struct Constants {
 
 public extension NSNotification.Name {
     
-    /// Notification posted when the users session has expired
+    /// Notification posted when the user's session has expired
     public static let sessionExpired = NSNotification.Name("session-expired")
     /// Notification posted when the cart changes
     public static let cartChanged = NSNotification.Name("cart-changed")

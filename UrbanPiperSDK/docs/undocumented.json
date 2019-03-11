@@ -1,6 +1,1307 @@
 {
   "warnings": [
-
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/AddAddressResponse.swift",
+      "line": 11,
+      "symbol": "AddUpdateAddressResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/AddAddressResponse.swift",
+      "line": 13,
+      "symbol": "AddUpdateAddressResponse.addressId",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/AddAddressResponse.swift",
+      "line": 14,
+      "symbol": "AddUpdateAddressResponse.msg",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/BannersResponse.swift",
+      "line": 11,
+      "symbol": "BannersResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/BannersResponse.swift",
+      "line": 13,
+      "symbol": "BannersResponse.images",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/BannersResponse.swift",
+      "line": 14,
+      "symbol": "BannersResponse.meta",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/CategoriesResponse.swift",
+      "line": 11,
+      "symbol": "CategoriesResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/CategoriesResponse.swift",
+      "line": 14,
+      "symbol": "CategoriesResponse.clearCache",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/CategoriesResponse.swift",
+      "line": 15,
+      "symbol": "CategoriesResponse.meta",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/CategoriesResponse.swift",
+      "line": 16,
+      "symbol": "CategoriesResponse.objects",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/CategoryItemsResponse.swift",
+      "line": 11,
+      "symbol": "CategoryItemsResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/CategoryItemsResponse.swift",
+      "line": 14,
+      "symbol": "CategoryItemsResponse.meta",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/CategoryItemsResponse.swift",
+      "line": 15,
+      "symbol": "CategoryItemsResponse.objects",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/CategoryItemsResponse.swift",
+      "line": 59,
+      "symbol": "CategoryItemsResponse.copy(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/CategoryOptionsResponse.swift",
+      "line": 11,
+      "symbol": "CategoryOptionsResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/CategoryOptionsResponse.swift",
+      "line": 13,
+      "symbol": "CategoryOptionsResponse.filters",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/CategoryOptionsResponse.swift",
+      "line": 14,
+      "symbol": "CategoryOptionsResponse.sortBy",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/GenericResponse.swift",
+      "line": 11,
+      "symbol": "GenericResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/GenericResponse.swift",
+      "line": 13,
+      "symbol": "GenericResponse.status",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/GenericResponse.swift",
+      "line": 14,
+      "symbol": "GenericResponse.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/GenericResponse.swift",
+      "line": 15,
+      "symbol": "GenericResponse.errorMessage",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/GenericResponse.swift",
+      "line": 37,
+      "symbol": "GenericResponse.toDictionary()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/GooglePlacesResponse.swift",
+      "line": 11,
+      "symbol": "GooglePlacesResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/GooglePlacesResponse.swift",
+      "line": 13,
+      "symbol": "GooglePlacesResponse.predictions",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/GooglePlacesResponse.swift",
+      "line": 14,
+      "symbol": "GooglePlacesResponse.status",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 11,
+      "symbol": "Item",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 13,
+      "symbol": "Item.category",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 14,
+      "symbol": "Item.currentStock",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 16,
+      "symbol": "Item.foodType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 18,
+      "symbol": "Item.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 19,
+      "symbol": "Item.imageLandscapeUrl",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 20,
+      "symbol": "Item.imageUrl",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 21,
+      "symbol": "Item.itemDesc",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 22,
+      "symbol": "Item.itemPrice",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 23,
+      "symbol": "Item.itemTitle",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 24,
+      "symbol": "Item.likes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 25,
+      "symbol": "Item.optionGroups",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 26,
+      "symbol": "Item.orderOptionsToAdd",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 27,
+      "symbol": "Item.orderOptionsToRemove",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 28,
+      "symbol": "Item.priceDescriptor",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 30,
+      "symbol": "Item.preOrderStartTime",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 31,
+      "symbol": "Item.preOrderEndTime",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 32,
+      "symbol": "Item.slug",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 33,
+      "symbol": "Item.sortOrder",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 34,
+      "symbol": "Item.subCategory",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 40,
+      "symbol": "Item.quantity",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 41,
+      "symbol": "Item.isRecommendedItem",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 42,
+      "symbol": "Item.isUpsoldItem",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 43,
+      "symbol": "Item.isSearchItem",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 45,
+      "symbol": "Item.isItemDetailsItem",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Item.swift",
+      "line": 47,
+      "symbol": "Item.notes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ItemOptionGroup.swift",
+      "line": 10,
+      "symbol": "ItemOptionGroup",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ItemOptionGroup.swift",
+      "line": 12,
+      "symbol": "ItemOptionGroup.descriptionField",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ItemOptionGroup.swift",
+      "line": 13,
+      "symbol": "ItemOptionGroup.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ItemOptionGroup.swift",
+      "line": 14,
+      "symbol": "ItemOptionGroup.isDefault",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ItemOptionGroup.swift",
+      "line": 15,
+      "symbol": "ItemOptionGroup.maxSelectable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ItemOptionGroup.swift",
+      "line": 16,
+      "symbol": "ItemOptionGroup.minSelectable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ItemOptionGroup.swift",
+      "line": 17,
+      "symbol": "ItemOptionGroup.options",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ItemOptionGroup.swift",
+      "line": 18,
+      "symbol": "ItemOptionGroup.sortOrder",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ItemOptionGroup.swift",
+      "line": 19,
+      "symbol": "ItemOptionGroup.title",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ItemsSearchResponse.swift",
+      "line": 11,
+      "symbol": "ItemsSearchResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ItemsSearchResponse.swift",
+      "line": 13,
+      "symbol": "ItemsSearchResponse.items",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ItemsSearchResponse.swift",
+      "line": 14,
+      "symbol": "ItemsSearchResponse.meta",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/LoginResponse.swift",
+      "line": 10,
+      "symbol": "LoginResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/LoginResponse.swift",
+      "line": 12,
+      "symbol": "LoginResponse.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/LoginResponse.swift",
+      "line": 14,
+      "symbol": "LoginResponse.status",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/MyOrderDetailsResponse.swift",
+      "line": 11,
+      "symbol": "PastOrderDetailsResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/MyOrderDetailsResponse.swift",
+      "line": 13,
+      "symbol": "PastOrderDetailsResponse.customer",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/MyOrderDetailsResponse.swift",
+      "line": 14,
+      "symbol": "PastOrderDetailsResponse.order",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/MyOrdersResponse.swift",
+      "line": 11,
+      "symbol": "PastOrdersResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/MyOrdersResponse.swift",
+      "line": 13,
+      "symbol": "PastOrdersResponse.meta",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/MyOrdersResponse.swift",
+      "line": 14,
+      "symbol": "PastOrdersResponse.orders",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/NotificationsResponse.swift",
+      "line": 8,
+      "symbol": "NotificationsResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/NotificationsResponse.swift",
+      "line": 10,
+      "symbol": "NotificationsResponse.messages",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/NotificationsResponse.swift",
+      "line": 11,
+      "symbol": "NotificationsResponse.meta",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/OffersAPIResponse.swift",
+      "line": 11,
+      "symbol": "OffersAPIResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/OffersAPIResponse.swift",
+      "line": 13,
+      "symbol": "OffersAPIResponse.coupons",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/OffersAPIResponse.swift",
+      "line": 14,
+      "symbol": "OffersAPIResponse.meta",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 11,
+      "symbol": "Order",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 13,
+      "symbol": "Order.orderType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 14,
+      "symbol": "Order.cartItems",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 15,
+      "symbol": "Order.items",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 16,
+      "symbol": "Order.orderSubtotal",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 17,
+      "symbol": "Order.packagingCharge",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 18,
+      "symbol": "Order.itemTaxes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 19,
+      "symbol": "Order.discount",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 20,
+      "symbol": "Order.discountApplied",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 21,
+      "symbol": "Order.deliveryCharge",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 22,
+      "symbol": "Order.payableAmount",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 23,
+      "symbol": "Order.walletCreditApplicable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 24,
+      "symbol": "Order.walletCreditApplied",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 25,
+      "symbol": "Order.addressId",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 26,
+      "symbol": "Order.addressLat",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 27,
+      "symbol": "Order.addressLng",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 29,
+      "symbol": "Order.bizLocationId",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 30,
+      "symbol": "Order.channel",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 31,
+      "symbol": "Order.charges",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 32,
+      "symbol": "Order.combos",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 33,
+      "symbol": "Order.deliveryDatetime",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 34,
+      "symbol": "Order.itemLevelTotalCharges",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 36,
+      "symbol": "Order.orderLevelTotalCharges",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 39,
+      "symbol": "Order.paymentModes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 40,
+      "symbol": "Order.paymentOption",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 41,
+      "symbol": "Order.taxes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 42,
+      "symbol": "Order.taxRate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/Order.swift",
+      "line": 43,
+      "symbol": "Order.totalWeight",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/OrderResponse.swift",
+      "line": 10,
+      "symbol": "OrderResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/OrderResponse.swift",
+      "line": 12,
+      "symbol": "OrderResponse.status",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/OrderResponse.swift",
+      "line": 13,
+      "symbol": "OrderResponse.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/OrderResponse.swift",
+      "line": 14,
+      "symbol": "OrderResponse.errorDetails",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/OrderResponse.swift",
+      "line": 15,
+      "symbol": "OrderResponse.orderId",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/OrderVerifyTxnResponse.swift",
+      "line": 10,
+      "symbol": "OrderVerifyTxnResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/OrderVerifyTxnResponse.swift",
+      "line": 12,
+      "symbol": "OrderVerifyTxnResponse.txnId",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/OrderVerifyTxnResponse.swift",
+      "line": 13,
+      "symbol": "OrderVerifyTxnResponse.pid",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/OrderVerifyTxnResponse.swift",
+      "line": 14,
+      "symbol": "OrderVerifyTxnResponse.status",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/OrderVerifyTxnResponse.swift",
+      "line": 26,
+      "symbol": "OrderVerifyTxnResponse.toDictionary()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/PaymentInitResponse.swift",
+      "line": 11,
+      "symbol": "PaymentInitResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/PaymentInitResponse.swift",
+      "line": 13,
+      "symbol": "PaymentInitResponse.data",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/PaymentInitResponse.swift",
+      "line": 14,
+      "symbol": "PaymentInitResponse.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/PaymentInitResponse.swift",
+      "line": 15,
+      "symbol": "PaymentInitResponse.success",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/PaymentInitResponse.swift",
+      "line": 16,
+      "symbol": "PaymentInitResponse.transactionId",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/PaymentInitResponse.swift",
+      "line": 17,
+      "symbol": "PaymentInitResponse.url",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/PreProcessOrderResponse.swift",
+      "line": 11,
+      "symbol": "PreProcessOrderResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/PreProcessOrderResponse.swift",
+      "line": 13,
+      "symbol": "PreProcessOrderResponse.order",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/PreProcessOrderResponse.swift",
+      "line": 15,
+      "symbol": "PreProcessOrderResponse.notification",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/PreProcessOrderResponse.swift",
+      "line": 16,
+      "symbol": "PreProcessOrderResponse.status",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/PreProcessOrderResponse.swift",
+      "line": 17,
+      "symbol": "PreProcessOrderResponse.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RedeemRewardResponse.swift",
+      "line": 10,
+      "symbol": "RedeemRewardResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RedeemRewardResponse.swift",
+      "line": 12,
+      "symbol": "RedeemRewardResponse.expiresIn",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RedeemRewardResponse.swift",
+      "line": 13,
+      "symbol": "RedeemRewardResponse.ptsRemaining",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RedeemRewardResponse.swift",
+      "line": 14,
+      "symbol": "RedeemRewardResponse.redemptionCode",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RedeemRewardResponse.swift",
+      "line": 15,
+      "symbol": "RedeemRewardResponse.status",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RedeemRewardResponse.swift",
+      "line": 16,
+      "symbol": "RedeemRewardResponse.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RedeemRewardResponse.swift",
+      "line": 30,
+      "symbol": "RedeemRewardResponse.toDictionary()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RegistrationResponse.swift",
+      "line": 11,
+      "symbol": "RegistrationResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RegistrationResponse.swift",
+      "line": 19,
+      "symbol": "RegistrationResponse.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RegistrationResponse.swift",
+      "line": 22,
+      "symbol": "RegistrationResponse.result",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RegistrationResponse.swift",
+      "line": 23,
+      "symbol": "RegistrationResponse.success",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ReorderResponse.swift",
+      "line": 11,
+      "symbol": "ReorderResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ReorderResponse.swift",
+      "line": 13,
+      "symbol": "ReorderResponse.bizLocation",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ReorderResponse.swift",
+      "line": 15,
+      "symbol": "ReorderResponse.itemsAvailable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/ReorderResponse.swift",
+      "line": 16,
+      "symbol": "ReorderResponse.itemsNotAvailable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RewardsResponse.swift",
+      "line": 9,
+      "symbol": "RewardsResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RewardsResponse.swift",
+      "line": 11,
+      "symbol": "RewardsResponse.claimed",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RewardsResponse.swift",
+      "line": 12,
+      "symbol": "RewardsResponse.locked",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RewardsResponse.swift",
+      "line": 13,
+      "symbol": "RewardsResponse.meta",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RewardsResponse.swift",
+      "line": 14,
+      "symbol": "RewardsResponse.redeemed",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/RewardsResponse.swift",
+      "line": 15,
+      "symbol": "RewardsResponse.unlocked",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/SocialAuthResponse.swift",
+      "line": 9,
+      "symbol": "SocialLoginResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/SocialAuthResponse.swift",
+      "line": 14,
+      "symbol": "SocialLoginResponse.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/SocialAuthResponse.swift",
+      "line": 17,
+      "symbol": "SocialLoginResponse.success",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/StoreLocatorResponse.swift",
+      "line": 11,
+      "symbol": "StoreListResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/StoreLocatorResponse.swift",
+      "line": 13,
+      "symbol": "StoreListResponse.biz",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/StoreLocatorResponse.swift",
+      "line": 14,
+      "symbol": "StoreListResponse.stores",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/StoreResponse.swift",
+      "line": 11,
+      "symbol": "StoreResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/StoreResponse.swift",
+      "line": 13,
+      "symbol": "StoreResponse.biz",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/StoreResponse.swift",
+      "line": 14,
+      "symbol": "StoreResponse.store",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserAddressesResponse.swift",
+      "line": 11,
+      "symbol": "UserAddressesResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserAddressesResponse.swift",
+      "line": 13,
+      "symbol": "UserAddressesResponse.addresses",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoResponse.swift",
+      "line": 10,
+      "symbol": "UserInfoResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoResponse.swift",
+      "line": 12,
+      "symbol": "UserInfoResponse.phone",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoResponse.swift",
+      "line": 13,
+      "symbol": "UserInfoResponse.firstName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoResponse.swift",
+      "line": 14,
+      "symbol": "UserInfoResponse.email",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoResponse.swift",
+      "line": 16,
+      "symbol": "UserInfoResponse.lastName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoResponse.swift",
+      "line": 17,
+      "symbol": "UserInfoResponse.gender",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoResponse.swift",
+      "line": 18,
+      "symbol": "UserInfoResponse.currentCity",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoResponse.swift",
+      "line": 19,
+      "symbol": "UserInfoResponse.birthday",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoResponse.swift",
+      "line": 20,
+      "symbol": "UserInfoResponse.anniversary",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoResponse.swift",
+      "line": 21,
+      "symbol": "UserInfoResponse.birthdayDate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoResponse.swift",
+      "line": 22,
+      "symbol": "UserInfoResponse.anniversaryDate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoResponse.swift",
+      "line": 23,
+      "symbol": "UserInfoResponse.address",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoUpdateResponse.swift",
+      "line": 10,
+      "symbol": "UserInfoUpdateResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoUpdateResponse.swift",
+      "line": 12,
+      "symbol": "UserInfoUpdateResponse.msg",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoUpdateResponse.swift",
+      "line": 13,
+      "symbol": "UserInfoUpdateResponse.success",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserInfoUpdateResponse.swift",
+      "line": 21,
+      "symbol": "UserInfoUpdateResponse.toDictionary()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserLikesResponse.swift",
+      "line": 8,
+      "symbol": "UserLikesResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserLikesResponse.swift",
+      "line": 10,
+      "symbol": "UserLikesResponse.likes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/UserLikesResponse.swift",
+      "line": 11,
+      "symbol": "UserLikesResponse.meta",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/VersionCheckResponse.swift",
+      "line": 11,
+      "symbol": "VersionCheckResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/VersionCheckResponse.swift",
+      "line": 13,
+      "symbol": "VersionCheckResponse.forceUpdate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/VersionCheckResponse.swift",
+      "line": 14,
+      "symbol": "VersionCheckResponse.latestVersion",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/VersionCheckResponse.swift",
+      "line": 15,
+      "symbol": "VersionCheckResponse.releaseDate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/VersionCheckResponse.swift",
+      "line": 16,
+      "symbol": "VersionCheckResponse.url",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/WalletTransactionResponse.swift",
+      "line": 11,
+      "symbol": "WalletTransactionResponse",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/WalletTransactionResponse.swift",
+      "line": 13,
+      "symbol": "WalletTransactionResponse.meta",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK/UrbanPiperSDK/APIModels/WalletTransactionResponse.swift",
+      "line": 14,
+      "symbol": "WalletTransactionResponse.transactions",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    }
   ],
   "source_directory": "/Users/Vid/Developer/ios-sdk/UrbanPiperSDK"
 }

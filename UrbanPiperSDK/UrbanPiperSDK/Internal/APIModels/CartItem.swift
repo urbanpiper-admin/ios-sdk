@@ -241,7 +241,7 @@ public class CartItem: NSObject {
         return true
     }
     
-    public func equitableCheckDictionary() -> [String: Any] {
+    internal func equitableCheckDictionary() -> [String: Any] {
         var dictionary: [String: Any] = [String:Any]()
 //        if category != nil{
 //            dictionary["category"] = category.equitableCheckDictionary()
@@ -279,7 +279,7 @@ public class CartItem: NSObject {
         return dictionary
     }
     
-    static public func == (lhs: CartItem, rhs: CartItem) -> Bool {
+    static internal func == (lhs: CartItem, rhs: CartItem) -> Bool {
         guard lhs.id == rhs.id, lhs.itemTitle == rhs.itemTitle else { return false }
         let lhsDictionary = lhs.equitableCheckDictionary()
         let rhsDictionary = rhs.equitableCheckDictionary()

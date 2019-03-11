@@ -89,7 +89,7 @@ public class ItemCategory : NSObject{
 }
 
 extension ItemCategory {
-    static public func == (lhs: ItemCategory, rhs: ItemCategory) -> Bool {
+    static internal func == (lhs: ItemCategory, rhs: ItemCategory) -> Bool {
             return lhs.id  == rhs.id  &&
                 lhs.name  == rhs.name &&
                 lhs.sortOrder  == rhs.sortOrder

@@ -143,7 +143,7 @@ public class ItemOptionGroup : NSObject {
 
 extension ItemOptionGroup {
     
-    public func equitableCheckDictionary() -> [String: Any] {
+    internal func equitableCheckDictionary() -> [String: Any] {
         var dictionary: [String: Any] = [String:Any]()
         //        if isDefault != nil{
         //            dictionary["is_default"] = isDefault
@@ -160,7 +160,7 @@ extension ItemOptionGroup {
         return dictionary
     }
     
-    static public func == (lhs: ItemOptionGroup, rhs: ItemOptionGroup) -> Bool {
+    static internal func == (lhs: ItemOptionGroup, rhs: ItemOptionGroup) -> Bool {
         let lhsDictionary = lhs.equitableCheckDictionary()
         let rhsDictionary = rhs.equitableCheckDictionary()
         

@@ -162,7 +162,7 @@ extension Item {
 //        return Item(fromDictionary: dictionary)
 //    }
 //
-//    public func equitableCheckDictionary() -> [String: Any] {
+//    internal func equitableCheckDictionary() -> [String: Any] {
 //        var dictionary: [String: Any] = [String:Any]()
 //        //        if category != nil{
 //        //            dictionary["category"] = category.equitableCheckDictionary()
@@ -186,7 +186,7 @@ extension Item {
 //        return dictionary
 //    }
 //
-//    static public func == (lhs: Item, rhs: Item) -> Bool {
+//    static internal func == (lhs: Item, rhs: Item) -> Bool {
 //        guard lhs.id == rhs.id, lhs.itemTitle == rhs.itemTitle else { return false }
 //        let lhsDictionary = lhs.equitableCheckDictionary()
 //        let rhsDictionary = rhs.equitableCheckDictionary()

@@ -8,11 +8,14 @@
 import UIKit
 
 /// A helper class that contains the related api's to place an order. The api's have to be called in the following order.
-/// - validateCart(store:userWalletCredits:deliveryOption:cartItems:orderTotal:completion:failure), calling this function nils out the validateCouponResponse, paymentInitResponse variables
-/// - validateCoupon(code:completion:failure:) call this funtion to apply the coupon, this call can be skipped if no coupon is applied, calling this funtion nils out the paymentInitResponse Variable
-/// - initPayment(paymentOption) returns you details on the payment option selected, for payment option cash on delivery this function does not need to be called, the placeOrder function can be called directly
-/// - placeOrder(address:deliveryDate:deliveryTime:timeSlot:paymentOption:instructions:phone:completion:failure:) places the order if there are not errors in the provided data
-/// - verifyPayment(pid:) if the selected option is a payment gateway call this function to verify the payment transaction, for other payment options this function can be skipped
+///
+/// CheckoutBuilder is initialized by calling `UrbanPiperSDK.startCheckout(...)`.
+///
+/// - `validateCart(...)` calling this function invalidates the previous calls to `validateCoupon(...)`, and `initPayment(...)`, the response values of both the calls should be discarded
+/// - `validateCoupon(...)`, call this function to apply a coupon, this call can be skipped if no coupon is applied, calling this function invalidates the previous calls to `initPayment(...)`, the response values of the call should be discarded
+/// - `initPayment(...)`, returns you details on the payment option selected, for payment option cash on delivery this api call can be skipped and the placeOrder function can be called directly
+/// - `placeOrder(...)`, places the order if there are no errors in the provided data
+/// - `verifyPayment(...)`, if the selected option is a payment gateway call this function to verify the payment transaction, for other payment options this function can be skipped
 
 public class CheckoutBuilder: NSObject {
     
@@ -61,9 +64,9 @@ public class CheckoutBuilder: NSObject {
     
     internal var paymentModes: [PaymentOption]?
 
-    /// Returns a list of payment options supported by the business, the validateCart function has to be called atleast once to return the payment options
-    public var getPaymentModes: [PaymentOption]? {
-        assert(paymentModes != nil, "call validateCart function to retrive the supported payment options")
+    /// Returns a list of payment options supported by the business, the `validateCart(...)`, API has to be called atleast once to return the payment options
+    public func getPaymentModes() -> [PaymentOption]? {
+        assert(paymentModes != nil, "call validateCart function to retrieve the supported payment options")
         guard let modes = paymentModes else { return nil }
         return modes
     }
@@ -74,17 +77,17 @@ public class CheckoutBuilder: NSObject {
 
     
     
-    /// Use this function to validate the items in cart, get the supported payments options, get order details such as taxes, delivery charges, payment charges etc.
+    /// API call to validate the items in cart, get the supported payments options, get order details such as taxes, delivery charges, payment charges etc.
     ///
     /// - Parameters:
-    ///   - store: the store at which the order is to placed
-    ///   - useWalletCredits: setting this variable as true enable spilt payment where on part of the payment can be made using the users wallet amount and the rest from the payment option.
-    ///   - deliveryOption: the delivery option selected by the user
-    ///   - cartItems: the user added items from the cart
-    ///   - orderTotal: the total value of the cart
-    ///   - completion: success callback with PreProcessOrderResponse which contains order details like taxes, delivery charges, payment charges etc.
-    ///   - failure: failure callback with UPError object, the UPError object contains the data from the api
-    /// - Returns: Return an instance of URLSessionDataTask
+    ///   - store: The store at which the order is to placed
+    ///   - useWalletCredits: Setting this variable as true enables spilt payment where one part of the payment can be made using the user's wallet amount and the rest from the selected payment option.
+    ///   - deliveryOption: The delivery option selected by the user
+    ///   - cartItems: The user added items from the cart
+    ///   - orderTotal: The total value of the cart
+    ///   - completion: `APICompletion` with `PreProcessOrderResponse` which contains order details like taxes, delivery charges, payment charges etc.
+    ///   - failure: `APIFailure` closure with `UPError`
+    /// - Returns: An instance of URLSessionDataTask
     @discardableResult public func validateCart(store: Store,
                                                 useWalletCredits: Bool,
                                                 deliveryOption: DeliveryOption,
@@ -122,13 +125,13 @@ public class CheckoutBuilder: NSObject {
         }, failure: failure)
     }
     
-    /// Apply a coupon to the cart items using this function, the coupon code can either be a code from the getCoupons api call or a code entered by the user
+    /// Apply a coupon to the cart items using this function, the coupon code can either be a code from the `UrbanPiperSDK.getOffers(...)`, api call or a code entered by the user
     ///
     /// - Parameters:
-    ///   - code: the coupon code to apply
-    ///   - completion: success callback with Order object which contains order details and the discount applied to the cart
-    ///   - failure: failure callback with UPError object, the UPError object contains the data from the api
-    /// - Returns: Return an instance of URLSessionDataTask
+    ///   - code: The coupon code to apply
+    ///   - completion: `APICompletion` with `Order` object which contains order details and the discount applied to the cart
+    ///   - failure: `APIFailure` closure with `UPError`
+    /// - Returns: An instance of URLSessionDataTask
     @discardableResult public func validateCoupon(code: String,
                                                   completion: ((Order?) -> Void)?,
                                                   failure: APIFailure?) -> URLSessionDataTask? {
@@ -151,18 +154,18 @@ public class CheckoutBuilder: NSObject {
             }, failure: failure)
     }
     
-    /// call this funtion when the clear the applied coupon
+    /// call this function to clear the applied coupon
     public func clearCoupon() {
         validateCouponResponse = nil
         couponCode = nil
     }
 
-    /// Call this function to initialize a payment in the urbanpiper server before performing a payment for all the payment options except Cash On Delivery, for COD you can skip this function and call directly the place order function
+    /// API call to initialize a payment in the urbanpiper server before performing a payment for all the payment options except Cash On Delivery, for COD you can skip this function and call directly the `placeOrder(...)`, API
     ///
     /// - Parameters:
-    ///   - paymentOption: payment option selected by the user
-    ///   - completion: success callck with PaymentInitResponse containing details on the payment option selected, for payment option cash on delivery this function does not need to be called, the placeOrder function can be called directly
-    ///   - failure: failure callback with UPError object, the UPError object contains the data from the api
+    ///   - paymentOption: Payment option selected by the user
+    ///   - completion: `APICompletion` with `PaymentInitResponse` containing details on the payment option selected
+    ///   - failure: `APIFailure` closure with `UPError`
     @discardableResult public func initPayment(paymentOption: PaymentOption,
                                                completion: ((PaymentInitResponse?) -> Void)?,
                                                failure: APIFailure?) -> URLSessionDataTask? {
@@ -206,19 +209,19 @@ public class CheckoutBuilder: NSObject {
         return Calendar.current.date(byAdding: comps, to: day)!
     }
     
-    /// API call to  place the order in urbanpiper server
+    /// API call to place the order in urbanpiper server
     ///
     /// - Parameters:
-    ///   - address: Optional. an address object from the users saved addresses, can be set to nil for pick up delivery option
-    ///   - deliveryDate: the date of the order delivery
-    ///   - deliveryTime: the time of the order delivery
-    ///   - timeSlot: Optional. the user selected timeSlot, the available timeSlots for a store is available either in the nearest store object if set on a store by store level or the biz object returned in the nearest store api call
-    ///   - paymentOption: the payment option selected by the user, the payment option needs to be the same as the one passed in the initPayment call if payment option is not cash on delivery
-    ///   - instructions: the instruction to be added to the order
-    ///   - phone: the phone number of the user
-    ///   - completion: success callback with OrderResponse containing the order id and the order status etc
-    ///   - failure: failure callback with UPError object, the UPError object contains the data from the api
-    /// - Returns: Return an instance of URLSessionDataTask
+    ///   - address: Optional. An address object from the user's saved addresses, can be set to nil for `DeliveryOption.pickUp`
+    ///   - deliveryDate: The date of the order delivery
+    ///   - deliveryTime: The time of the order delivery
+    ///   - timeSlot: Optional. The user selected timeSlot, the available timeSlots for a store is returned either in the nearest store object if set on a store by store level or the biz object returned in the nearest store api call
+    ///   - paymentOption: The payment option selected by the user, the payment option needs to be the same as the one passed in the initPayment call if payment option is not cash on delivery
+    ///   - instructions: The instructions to be added to the order
+    ///   - phone: The phone number of the user
+    ///   - completion: `APICompletion` with `OrderResponse` containing the order id, order status etc
+    ///   - failure: `APIFailure` closure with `UPError`
+    /// - Returns: An instance of URLSessionDataTask
     @discardableResult public func placeOrder(address: Address?,
                                               deliveryDate: Date,
                                               deliveryTime: Date,
@@ -277,13 +280,13 @@ public class CheckoutBuilder: NSObject {
         }, failure: failure)
     }
     
-    /// API call the verify the payment transaction with the UrbanPiper server for payment gateway payment option
+    /// API call the verify the payment transaction with the UrbanPiper server for `PaymentOption.paymentGateway`
     ///
     /// - Parameters:
-    ///   - pid: the payment id from the payment gateway
-    ///   - completion: success callback with OrderVerifyTxnResponse
-    ///   - failure: failure callback with UPError object, the UPError object contains the data from the api
-    /// - Returns: Return an instance of URLSessionDataTask
+    ///   - pid: The payment id from the payment gateway response
+    ///   - completion: `APICompletion` with `OrderVerifyTxnResponse`
+    ///   - failure: `APIFailure` closure with `UPError`
+    /// - Returns: An instance of URLSessionDataTask
     @discardableResult @objc public func verifyPayment(pid: String,
                                                        completion: @escaping ((OrderVerifyTxnResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(UrbanPiperSDK.shared.getUser() != nil, "The user has to logged in to call this function")
