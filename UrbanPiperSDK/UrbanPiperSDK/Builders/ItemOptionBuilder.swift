@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// ItemOptionBuilder is a helper class to create a cartItem with item options.
 public class ItemOptionBuilder: NSObject {
     
     fileprivate var selectedNestedOptions: [Int : ItemOptionBuilder] = [:]
@@ -122,9 +123,9 @@ public class ItemOptionBuilder: NSObject {
         return descriptionArray.joined(separator: "\n")
     }
     
-    public let item: Item?
+    internal let item: Item?
     
-//  MARK: Move it to an seperate extension file
+    /// the current total value of the item with the added options
     public var totalAmount: Decimal {
         var totalAmount: Decimal = item?.itemPrice ?? Decimal.zero
         for option in optionsToAdd {
@@ -133,6 +134,9 @@ public class ItemOptionBuilder: NSObject {
         return totalAmount
     }
     
+    /// The initializer takes the item as a parameter
+    ///
+    /// - Parameter item: a item that contains nested options
     @objc public init?(item: Item) {
         guard item.optionGroups != nil, item.optionGroups.count > 0 else { return nil }
         self.item = item
@@ -152,6 +156,10 @@ public class ItemOptionBuilder: NSObject {
 
 extension ItemOptionBuilder {
     
+    /// Funtion returns a list of itemoptions that where added for a given group id
+    ///
+    /// - Parameter groupId: the group id to filter the selected itemoptions
+    /// - Returns: Returns an list of ItemOption that belong to the passed in group id
     public func selectedOptionsFor(groupId: Int) -> [ItemOption] {
         var options: [ItemOption] = []
         
@@ -178,6 +186,12 @@ extension ItemOptionBuilder {
     }
         
 //    public func addOption(groupId: Int, option: ItemOption, optionGroupHandler: ((ItemOptionBuilder?, UPError?) -> Void)? = nil) {
+    /// Function to add an item option to the ItemOptionBuilder
+    ///
+    /// - Parameters:
+    ///   - groupId: the gorup id to which the ItemOption belongs to
+    ///   - option: the itemOption that is to added to the ItemOptionBuilder
+    /// - Throws: throws an error if the added item option count for a group exceeds that of the specified maxSelectable value of the group
     public func addOption(groupId: Int, option: ItemOption) throws {
 
         guard let optionGroup = optionGroups.filter ({ $0.id == groupId}).last else {
@@ -234,6 +248,11 @@ extension ItemOptionBuilder {
         }
     }
     
+    /// Funtion to remove a itemoption from ItemOptionBuilder
+    ///
+    /// - Parameters:
+    ///   - groupId: the group id to which the item option belongs to
+    ///   - option: the item option to be removed from the ItemOptionBuilder
     public func removeOption(groupId: Int, option: ItemOption) {
         guard let _ = optionGroups.filter ({ $0.id == groupId}).last else {
             for (_, itemOptionBuilder) in selectedNestedOptions {
@@ -255,6 +274,10 @@ extension ItemOptionBuilder {
         }
     }
     
+    /// Build function validates if the ItemOptions have been added according to the values specified by the minSelectable and maxSelectable variables in the ItemOptionGroup
+    ///
+    /// - Returns: Returns an CartItem that can be added to the Cart if ItemOptions are added as specified
+    /// - Throws: throws an error with the first group having an invalid number of option addition to the ItemOptionBuilder
     public func build() throws -> CartItem {
         let result = isValidOptionGroup
         

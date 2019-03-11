@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CheckoutBuilder Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/CheckoutBuilder" class="dashAnchor"></a>
+
+    <a title="CheckoutBuilder Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          UrbanPiperSDK Docs
+        </a>
+         (100% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">UrbanPiperSDK Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      CheckoutBuilder Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CheckoutBuilder.html">CheckoutBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ItemOptionBuilder.html">ItemOptionBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/RegistrationBuilder.html">RegistrationBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ResetPasswordBuilder.html">ResetPasswordBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SocialRegBuilder.html">SocialRegBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/UPError.html">UPError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/UrbanPiperSDK.html">UrbanPiperSDK</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/CartError.html">CartError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DeliveryOption.html">DeliveryOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ItemOptionBuilderError.html">ItemOptionBuilderError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/PaymentOption.html">PaymentOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SDKEvent.html">SDKEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SocialLoginProvider.html">SocialLoginProvider</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/NSNotification.html">NSNotification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/NSNotification/Name.html">– Name</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13UrbanPiperSDK13APICompletiona">APICompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13UrbanPiperSDK10APIFailurea">APIFailure</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>CheckoutBuilder</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">CheckoutBuilder</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>A helper class that contains the related api&rsquo;s to place an order. The api&rsquo;s have to be called in the following order.</p>
+
+<ul>
+<li>validateCart(store:userWalletCredits:deliveryOption:cartItems:orderTotal:completion:failure), calling this function nils out the validateCouponResponse, paymentInitResponse variables</li>
+<li>validateCoupon(code:completion:failure:) call this funtion to apply the coupon, this call can be skipped if no coupon is applied, calling this funtion nils out the paymentInitResponse Variable</li>
+<li>initPayment(paymentOption) returns you details on the payment option selected, for payment option cash on delivery this function does not need to be called, the placeOrder function can be called directly</li>
+<li>placeOrder(address:deliveryDate:deliveryTime:timeSlot:paymentOption:instructions:phone:completion:failure:) places the order if there are not errors in the provided data</li>
+<li>verifyPayment(pid:) if the selected option is a payment gateway call this function to verify the payment transaction, for other payment options this function can be skipped</li>
+</ul>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13UrbanPiperSDK15CheckoutBuilderC15getPaymentModesSayAA0G6OptionOGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/getPaymentModes" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13UrbanPiperSDK15CheckoutBuilderC15getPaymentModesSayAA0G6OptionOGSgvp">getPaymentModes</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a list of payment options supported by the business, the validateCart function has to be called atleast once to return the payment options</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">getPaymentModes</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Enums/PaymentOption.html">PaymentOption</a></span><span class="p">]?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13UrbanPiperSDK15CheckoutBuilderC12validateCart5store16useWalletCredits14deliveryOption9cartItems10orderTotal10completion7failureSo20NSURLSessionDataTaskCSgAA5StoreC_SbAA08DeliveryM0OSayAA0G4ItemCGSo9NSDecimalayAA23PreProcessOrderResponseCSgcSgyAA7UPErrorCSgcSgtF"></a>
+                    <a name="//apple_ref/swift/Method/validateCart(store:useWalletCredits:deliveryOption:cartItems:orderTotal:completion:failure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13UrbanPiperSDK15CheckoutBuilderC12validateCart5store16useWalletCredits14deliveryOption9cartItems10orderTotal10completion7failureSo20NSURLSessionDataTaskCSgAA5StoreC_SbAA08DeliveryM0OSayAA0G4ItemCGSo9NSDecimalayAA23PreProcessOrderResponseCSgcSgyAA7UPErrorCSgcSgtF">validateCart(store:useWalletCredits:deliveryOption:cartItems:orderTotal:completion:failure:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Use this function to validate the items in cart, get the supported payments options, get order details such as taxes, delivery charges, payment charges etc.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">validateCart</span><span class="p">(</span><span class="nv">store</span><span class="p">:</span> <span class="kt">Store</span><span class="p">,</span>
+                         <span class="nv">useWalletCredits</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span>
+                         <span class="nv">deliveryOption</span><span class="p">:</span> <span class="kt"><a href="../Enums/DeliveryOption.html">DeliveryOption</a></span><span class="p">,</span>
+                         <span class="nv">cartItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">CartItem</span><span class="p">],</span>
+                         <span class="nv">orderTotal</span><span class="p">:</span> <span class="kt">Decimal</span><span class="p">,</span>
+                         <span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt">PreProcessOrderResponse</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:13UrbanPiperSDK10APIFailurea">APIFailure</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>store</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the store at which the order is to placed</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>useWalletCredits</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>setting this variable as true enable spilt payment where on part of the payment can be made using the users wallet amount and the rest from the payment option.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>deliveryOption</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the delivery option selected by the user</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>cartItems</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the user added items from the cart</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>orderTotal</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the total value of the cart</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>success callback with PreProcessOrderResponse which contains order details like taxes, delivery charges, payment charges etc.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>failure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>failure callback with UPError object, the UPError object contains the data from the api</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Return an instance of URLSessionDataTask</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13UrbanPiperSDK15CheckoutBuilderC14validateCoupon4code10completion7failureSo20NSURLSessionDataTaskCSgSS_yAA5OrderCSgcSgyAA7UPErrorCSgcSgtF"></a>
+                    <a name="//apple_ref/swift/Method/validateCoupon(code:completion:failure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13UrbanPiperSDK15CheckoutBuilderC14validateCoupon4code10completion7failureSo20NSURLSessionDataTaskCSgSS_yAA5OrderCSgcSgyAA7UPErrorCSgcSgtF">validateCoupon(code:completion:failure:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Apply a coupon to the cart items using this function, the coupon code can either be a code from the getCoupons api call or a code entered by the user</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">validateCoupon</span><span class="p">(</span><span class="nv">code</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                           <span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt">Order</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?,</span>
+                           <span class="nv">failure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:13UrbanPiperSDK10APIFailurea">APIFailure</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>code</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the coupon code to apply</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>success callback with Order object which contains order details and the discount applied to the cart</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>failure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>failure callback with UPError object, the UPError object contains the data from the api</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Return an instance of URLSessionDataTask</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13UrbanPiperSDK15CheckoutBuilderC11clearCouponyyF"></a>
+                    <a name="//apple_ref/swift/Method/clearCoupon()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13UrbanPiperSDK15CheckoutBuilderC11clearCouponyyF">clearCoupon()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>call this funtion when the clear the applied coupon</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">clearCoupon</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13UrbanPiperSDK15CheckoutBuilderC11initPayment13paymentOption10completion7failureSo20NSURLSessionDataTaskCSgAA0gI0O_yAA0G12InitResponseCSgcSgyAA7UPErrorCSgcSgtF"></a>
+                    <a name="//apple_ref/swift/Method/initPayment(paymentOption:completion:failure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13UrbanPiperSDK15CheckoutBuilderC11initPayment13paymentOption10completion7failureSo20NSURLSessionDataTaskCSgAA0gI0O_yAA0G12InitResponseCSgcSgyAA7UPErrorCSgcSgtF">initPayment(paymentOption:completion:failure:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Call this function to initialize a payment in the urbanpiper server before performing a payment for all the payment options except Cash On Delivery, for COD you can skip this function and call directly the place order function</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">initPayment</span><span class="p">(</span><span class="nv">paymentOption</span><span class="p">:</span> <span class="kt"><a href="../Enums/PaymentOption.html">PaymentOption</a></span><span class="p">,</span>
+                        <span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt">PaymentInitResponse</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?,</span>
+                        <span class="nv">failure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:13UrbanPiperSDK10APIFailurea">APIFailure</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>paymentOption</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>payment option selected by the user</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>success callck with PaymentInitResponse containing details on the payment option selected, for payment option cash on delivery this function does not need to be called, the placeOrder function can be called directly</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>failure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>failure callback with UPError object, the UPError object contains the data from the api</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13UrbanPiperSDK15CheckoutBuilderC10placeOrder7address12deliveryDate0I4Time8timeSlot13paymentOption12instructions5phone10completion7failureSo20NSURLSessionDataTaskCSgAA7AddressCSg_10Foundation0J0VAvA0kM0CSgAA07PaymentO0OS2SyAA0G8ResponseCSgcSgyAA7UPErrorCSgcSgtF"></a>
+                    <a name="//apple_ref/swift/Method/placeOrder(address:deliveryDate:deliveryTime:timeSlot:paymentOption:instructions:phone:completion:failure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13UrbanPiperSDK15CheckoutBuilderC10placeOrder7address12deliveryDate0I4Time8timeSlot13paymentOption12instructions5phone10completion7failureSo20NSURLSessionDataTaskCSgAA7AddressCSg_10Foundation0J0VAvA0kM0CSgAA07PaymentO0OS2SyAA0G8ResponseCSgcSgyAA7UPErrorCSgcSgtF">placeOrder(address:deliveryDate:deliveryTime:timeSlot:paymentOption:instructions:phone:completion:failure:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>API call to  place the order in urbanpiper server</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">placeOrder</span><span class="p">(</span><span class="nv">address</span><span class="p">:</span> <span class="kt">Address</span><span class="p">?,</span>
+                       <span class="nv">deliveryDate</span><span class="p">:</span> <span class="kt">Date</span><span class="p">,</span>
+                       <span class="nv">deliveryTime</span><span class="p">:</span> <span class="kt">Date</span><span class="p">,</span>
+                       <span class="nv">timeSlot</span><span class="p">:</span> <span class="kt">TimeSlot</span><span class="p">?,</span>
+                       <span class="nv">paymentOption</span><span class="p">:</span> <span class="kt"><a href="../Enums/PaymentOption.html">PaymentOption</a></span><span class="p">,</span>
+                       <span class="nv">instructions</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                       <span class="nv">phone</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                       <span class="nv">completion</span><span class="p">:</span> <span class="p">((</span><span class="kt">OrderResponse</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?,</span>
+                       <span class="nv">failure</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:13UrbanPiperSDK10APIFailurea">APIFailure</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>address</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. an address object from the users saved addresses, can be set to nil for pick up delivery option</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>deliveryDate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the date of the order delivery</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>deliveryTime</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the time of the order delivery</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>timeSlot</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. the user selected timeSlot, the available timeSlots for a store is available either in the nearest store object if set on a store by store level or the biz object returned in the nearest store api call</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>paymentOption</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the payment option selected by the user, the payment option needs to be the same as the one passed in the initPayment call if payment option is not cash on delivery</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>instructions</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the instruction to be added to the order</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>phone</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the phone number of the user</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>success callback with OrderResponse containing the order id and the order status etc</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>failure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>failure callback with UPError object, the UPError object contains the data from the api</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Return an instance of URLSessionDataTask</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@UrbanPiperSDK@objc(cs)CheckoutBuilder(im)verifyPaymentWithPid:completion:failure:"></a>
+                    <a name="//apple_ref/swift/Method/verifyPayment(pid:completion:failure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@UrbanPiperSDK@objc(cs)CheckoutBuilder(im)verifyPaymentWithPid:completion:failure:">verifyPayment(pid:completion:failure:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>API call the verify the payment transaction with the UrbanPiper server for payment gateway payment option</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">verifyPayment</span><span class="p">(</span><span class="nv">pid</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                          <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">((</span><span class="kt">OrderVerifyTxnResponse</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">),</span> <span class="nv">failure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:13UrbanPiperSDK10APIFailurea">APIFailure</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>pid</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the payment id from the payment gateway</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>success callback with OrderVerifyTxnResponse</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>failure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>failure callback with UPError object, the UPError object contains the data from the api</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Return an instance of URLSessionDataTask</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2019 <a class="link" href="https://urbanpiper.com" target="_blank" rel="external">UrbanPiper</a>. All rights reserved. (Last updated: 2019-03-11)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>

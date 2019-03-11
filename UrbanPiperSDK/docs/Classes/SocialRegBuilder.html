@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>SocialRegBuilder Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/SocialRegBuilder" class="dashAnchor"></a>
+
+    <a title="SocialRegBuilder Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          UrbanPiperSDK Docs
+        </a>
+         (100% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">UrbanPiperSDK Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      SocialRegBuilder Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CheckoutBuilder.html">CheckoutBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ItemOptionBuilder.html">ItemOptionBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/RegistrationBuilder.html">RegistrationBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ResetPasswordBuilder.html">ResetPasswordBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SocialRegBuilder.html">SocialRegBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/UPError.html">UPError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/UrbanPiperSDK.html">UrbanPiperSDK</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/CartError.html">CartError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DeliveryOption.html">DeliveryOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ItemOptionBuilderError.html">ItemOptionBuilderError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/PaymentOption.html">PaymentOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SDKEvent.html">SDKEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/SocialLoginProvider.html">SocialLoginProvider</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/NSNotification.html">NSNotification</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/NSNotification/Name.html">– Name</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13UrbanPiperSDK13APICompletiona">APICompletion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13UrbanPiperSDK10APIFailurea">APIFailure</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>SocialRegBuilder</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SocialRegBuilder</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>A helper class that contains the related api&rsquo;s to register a social login user.</p>
+
+<ul>
+<li>verifyPhone(name:phone:email:gender:provider:providerAccessToken:completion:failure), function to verify the phone number provided by an unregistered social login user, sends an OTP to the phone number passed in on success, if the message is <q>new_registration_required</q> the user has be registered using the registerSocialUser(completion:failure:) call, if the message is <q>otp_sent</q> the users phone number is already present in the system and the phone number needs to be verified by the verifySocialOTP(otp:completion:failure) call</li>
+<li>registerSocialUser(completion:failure:), function to register a new social login user if the message value in verifyPhone response is <q>new_registration_required</q></li>
+<li>verifyRegOTP(paymentOption), function to verify the phone number passed in by the user if the message value in verifyPhone response is <q>new_registration_required</q></li>
+<li>resendRegOTP(completion:failure:), function to resend a new otp to the users phone number passed in by the user if the message value in verifyPhone response is <q>new_registration_required</q></li>
+<li>verifySocialOTP(otp:completion:failure:), function to verify the phone number passed in by the user if the message value in verifyPhone response is <q>otp_sent</q></li>
+<li>resendSocialOTP(completion:failure:), function to resend a new otp to the users phone number passed in by the user if the message value in verifyPhone response is <q>otp_sent</q></li>
+</ul>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13UrbanPiperSDK16SocialRegBuilderC11verifyPhone4name5phone5email6gender8provider0M11AccessToken10completion7failureSo20NSURLSessionDataTaskCSS_S3SSgAA0D13LoginProviderOSSyAA0dU8ResponseCSgcyAA7UPErrorCSgctF"></a>
+                    <a name="//apple_ref/swift/Method/verifyPhone(name:phone:email:gender:provider:providerAccessToken:completion:failure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13UrbanPiperSDK16SocialRegBuilderC11verifyPhone4name5phone5email6gender8provider0M11AccessToken10completion7failureSo20NSURLSessionDataTaskCSS_S3SSgAA0D13LoginProviderOSSyAA0dU8ResponseCSgcyAA7UPErrorCSgctF">verifyPhone(name:phone:email:gender:provider:providerAccessToken:completion:failure:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>API call to  check if the passed in phone number is already present in the system</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">verifyPhone</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">phone</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">email</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">gender</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="nv">provider</span><span class="p">:</span> <span class="kt"><a href="../Enums/SocialLoginProvider.html">SocialLoginProvider</a></span><span class="p">,</span> <span class="nv">providerAccessToken</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">((</span><span class="kt">SocialLoginResponse</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">),</span> <span class="nv">failure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:13UrbanPiperSDK10APIFailurea">APIFailure</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the name of the user from the social login provider</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>phone</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the phone number entered by the user</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>email</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the email id of the user from the social login provider</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>gender</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional. the gender value from the social login provider</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>provider</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the social login provider from which the data is from (i.e google, facebook etc.)</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>providerAccessToken</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the access token provided by the social login provider</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>success callback with SocialLoginResponse, if the message value is <q>new_registration_required</q> the user has to be registered using registerSocialUser(completion:failure:), if the message value is <q>otp_sent</q> the users phone number is already present in the system and it needs to be verified by calling verifySocialOTP(otp:completion:failure:)</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>failure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>failure callback with UPError object, the UPError object contains the data from the api</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Return an instance of URLSessionDataTask</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13UrbanPiperSDK16SocialRegBuilderC08registerD4User10completion7failureSo20NSURLSessionDataTaskCyAA20RegistrationResponseCSgc_yAA7UPErrorCSgctF"></a>
+                    <a name="//apple_ref/swift/Method/registerSocialUser(completion:failure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13UrbanPiperSDK16SocialRegBuilderC08registerD4User10completion7failureSo20NSURLSessionDataTaskCyAA20RegistrationResponseCSgc_yAA7UPErrorCSgctF">registerSocialUser(completion:failure:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Funtion to register a new social login user</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">registerSocialUser</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">((</span><span class="kt">RegistrationResponse</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">),</span> <span class="nv">failure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:13UrbanPiperSDK10APIFailurea">APIFailure</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>success callback with RegistrationResponse, sends an otp to the passed in phone number, user is registered successfully if the success var is true, for a new user registration to verify the OTP the function verifyRegOTP should be called, and to resend the OTP the resendRegOTP should be called</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>failure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>failure callback with UPError object, the UPError object contains the data from the api</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Return an instance of URLSessionDataTask</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13UrbanPiperSDK16SocialRegBuilderC06verifyE3OTP3otp10completion7failureSo20NSURLSessionDataTaskCSS_yAA20RegistrationResponseCSgcyAA7UPErrorCSgctF"></a>
+                    <a name="//apple_ref/swift/Method/verifyRegOTP(otp:completion:failure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13UrbanPiperSDK16SocialRegBuilderC06verifyE3OTP3otp10completion7failureSo20NSURLSessionDataTaskCSS_yAA20RegistrationResponseCSgcyAA7UPErrorCSgctF">verifyRegOTP(otp:completion:failure:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>API call to  verify the OTP sent to the users phone number during registration, this function should be called only when the callback response message from registration is <q>User has successfully been registered.</q></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">verifyRegOTP</span><span class="p">(</span><span class="nv">otp</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">((</span><span class="kt">RegistrationResponse</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">),</span> <span class="nv">failure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:13UrbanPiperSDK10APIFailurea">APIFailure</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>otp</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the OTP sent to the users phone number during a new social login user registration</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>success callback with RegistrationResponse, otp has been verified successfully if the success varialble is true</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>failure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>failure callback with UPError object, the UPError object contains the data from the api</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Return an instance of URLSessionDataTask</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13UrbanPiperSDK16SocialRegBuilderC06resendE3OTP10completion7failureSo20NSURLSessionDataTaskCyAA20RegistrationResponseCSgc_yAA7UPErrorCSgctF"></a>
+                    <a name="//apple_ref/swift/Method/resendRegOTP(completion:failure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13UrbanPiperSDK16SocialRegBuilderC06resendE3OTP10completion7failureSo20NSURLSessionDataTaskCyAA20RegistrationResponseCSgc_yAA7UPErrorCSgctF">resendRegOTP(completion:failure:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>API call the resend the OTP to the phone number passed in the registerSocialUser api call</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">resendRegOTP</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">((</span><span class="kt">RegistrationResponse</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">),</span> <span class="nv">failure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:13UrbanPiperSDK10APIFailurea">APIFailure</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>success callback with RegistrationResponse, a true value for the success variable indicates that the OTP has been resent</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>failure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>failure callback with UPError object, the UPError object contains the data from the api</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Return an instance of URLSessionDataTask</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13UrbanPiperSDK16SocialRegBuilderC06verifyD3OTP3otp10completion7failureSo20NSURLSessionDataTaskCSS_yAA0D13LoginResponseCSgcyAA7UPErrorCSgctF"></a>
+                    <a name="//apple_ref/swift/Method/verifySocialOTP(otp:completion:failure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13UrbanPiperSDK16SocialRegBuilderC06verifyD3OTP3otp10completion7failureSo20NSURLSessionDataTaskCSS_yAA0D13LoginResponseCSgcyAA7UPErrorCSgctF">verifySocialOTP(otp:completion:failure:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>API call to  verify the OTP sent to the users phone number during verifyPhone api call, this function can be used for all the case other than <q>new_registration_required</q></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">verifySocialOTP</span><span class="p">(</span><span class="nv">otp</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">((</span><span class="kt">SocialLoginResponse</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">),</span> <span class="nv">failure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:13UrbanPiperSDK10APIFailurea">APIFailure</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>otp</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the OTP sent to the users phone number during after the verifyPhone call</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>success callback with SocialLoginResponse, otp has been verified successfully if the success varialble is true</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>failure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>failure callback with UPError object, the UPError object contains the data from the api</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Return an instance of URLSessionDataTask</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13UrbanPiperSDK16SocialRegBuilderC06resendD3OTP10completion7failureSo20NSURLSessionDataTaskCyAA0D13LoginResponseCSgc_yAA7UPErrorCSgctF"></a>
+                    <a name="//apple_ref/swift/Method/resendSocialOTP(completion:failure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13UrbanPiperSDK16SocialRegBuilderC06resendD3OTP10completion7failureSo20NSURLSessionDataTaskCyAA0D13LoginResponseCSgc_yAA7UPErrorCSgctF">resendSocialOTP(completion:failure:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>API call the resend the OTP to the phone number passed in the verifyPhone api call, this function can be used for all the case other than <q>new_registration_required</q></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">resendSocialOTP</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">((</span><span class="kt">SocialLoginResponse</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">),</span> <span class="nv">failure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:13UrbanPiperSDK10APIFailurea">APIFailure</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URLSessionDataTask</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>success callback with SocialLoginResponse, a true value for the success variable indicates that the OTP has been resent</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>failure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>failure callback with UPError object, the UPError object contains the data from the api</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Return an instance of URLSessionDataTask</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2019 <a class="link" href="https://urbanpiper.com" target="_blank" rel="external">UrbanPiper</a>. All rights reserved. (Last updated: 2019-03-11)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
