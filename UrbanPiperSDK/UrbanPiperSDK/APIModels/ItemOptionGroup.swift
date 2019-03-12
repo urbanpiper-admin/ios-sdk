@@ -9,14 +9,14 @@ import Foundation
 
 public class ItemOptionGroup : NSObject {
 
-	public private(set)  var descriptionField : String!
-	public private(set)  var id : Int!
-	public private(set)  var isDefault : Bool!
-	public private(set)  var maxSelectable : Int!
-	public private(set)  var minSelectable : Int!
-	public private(set)  var options : [ItemOption]!
-	public private(set)  var sortOrder : Int!
-	public private(set)  var title : String!
+	public private(set) var descriptionField : String!
+	public private(set) var id : Int!
+	public private(set) var isDefault : Bool!
+	public private(set) var maxSelectable : Int!
+	public private(set) var minSelectable : Int!
+	public private(set) var options : [ItemOption]!
+	public private(set) var sortOrder : Int!
+	public private(set) var title : String!
 
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values

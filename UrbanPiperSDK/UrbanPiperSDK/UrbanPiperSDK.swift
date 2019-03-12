@@ -26,23 +26,6 @@ public class UrbanPiperSDK: NSObject {
         self.callback = callback
         super.init()
         APIManager.initializeManager(language: language, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, jwt: UserManager.shared.currentUser?.jwt)
-        
-        if let mixpanelToken = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, mixpanelToken.count > 0 {
-            let mixpanelObserver = MixpanelObserver(mixpanelToken: mixpanelToken)
-            AnalyticsManager.shared.addObserver(observer: mixpanelObserver)
-        }
-        
-        let plistPath: String = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")!
-        var googleServiceInfoPlist: [String: Any] = NSDictionary(contentsOfFile: plistPath) as! [String: Any]
-        if let trackingId: String = googleServiceInfoPlist["TRACKING_ID"] as? String, trackingId.count > 0 {
-            let gaObserver = GAObserver(gaTrackingId: trackingId)
-            AnalyticsManager.shared.addObserver(observer: gaObserver)
-        }
-        
-        if let appsFlyerDevAppid: String = AppConfigManager.shared.firRemoteConfigDefaults.appsFlyerDevAppid, let appsFlyerDevKey: String = AppConfigManager.shared.firRemoteConfigDefaults.appsFlyerDevKey {
-            let appsFlyerObserver = AppsFlyerObserver(appsFlyerDevAppid: appsFlyerDevAppid, appsFlyerDevKey: appsFlyerDevKey)
-            AnalyticsManager.shared.addObserver(observer: appsFlyerObserver)
-        }
     }
     
     /// Intializes the UrbanPiperSDK, the initialized instance of the SDK is accessible via the static func sharedInstance()
@@ -222,9 +205,12 @@ public extension UrbanPiperSDK {
         guard getUser() != nil else { return nil }
 
         return APIManager.shared.addAddress(address: address, completion: { (addUpdateAddressResponse) in
-            let newAddress = address
-            newAddress.id = addUpdateAddressResponse?.addressId
-            AddressDataModel.shared.userAddressesResponse?.addresses.insert(address, at: 0)
+            if UrbanPiperSDK.sharedInstance().responds(to: Selector(("addAddress:"))) {
+                let newAddress = address
+                newAddress.id = addUpdateAddressResponse?.addressId
+
+                UrbanPiperSDK.sharedInstance().performSelector(onMainThread: Selector(("addAddress:")), with: newAddress, waitUntilDone: false)
+            }
             completion?(addUpdateAddressResponse)
         }, failure: failure)
     }
@@ -255,8 +241,8 @@ public extension UrbanPiperSDK {
         guard getUser() != nil else { return nil }
 
         return APIManager.shared.deleteAddress(addressId: addressId, completion: { (genericResponse) in
-            if let addresses = AddressDataModel.shared.userAddressesResponse?.addresses {
-                AddressDataModel.shared.userAddressesResponse?.addresses = addresses.filter { $0.id != addressId }
+            if UrbanPiperSDK.sharedInstance().responds(to: Selector(("deleteAddress:"))) {
+                UrbanPiperSDK.sharedInstance().performSelector(onMainThread: Selector(("deleteAddress:")), with: addressId, waitUntilDone: false)
             }
             completion?(genericResponse)
         }, failure: failure)

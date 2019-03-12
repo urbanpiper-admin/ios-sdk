@@ -10,6 +10,6 @@ import UIKit
 
 extension Double {
 
-    public static let zero: Double = Double(0)
+    internal static let zero: Double = Double(0)
     
 }

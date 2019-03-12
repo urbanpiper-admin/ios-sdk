@@ -10,8 +10,8 @@ import Foundation
 
 public class MatchedSubstring : NSObject, NSCoding{
 
-	public private(set)  var length : Int!
-	public private(set)  var offset : Int!
+	public private(set) var length : Int!
+	public private(set) var offset : Int!
 
 
 	/**

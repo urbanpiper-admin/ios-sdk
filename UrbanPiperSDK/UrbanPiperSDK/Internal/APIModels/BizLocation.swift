@@ -10,29 +10,29 @@ import Foundation
 
 public class BizLocation : NSObject{
 
-	public private(set)  var address : String!
-	public private(set)  var bizLocationId : Int!
-	public private(set)  var city : String!
-	public private(set)  var closingDay : Bool!
-	public private(set)  var closingTime : AnyObject!
-//    public private(set)  var deliveryCharge : Float!
-	public private(set)  var deliveryMinOffsetTime : Int!
-	public private(set)  var hideStoreName : Bool!
-	public private(set)  var lat : Double!
-	public private(set)  var lng : Double!
-//    public private(set)  var minOrderTotal : Float!
-	public private(set)  var name : String!
-	public private(set)  var onCloseMsg : String!
-	public private(set)  var onSelectMsg : AnyObject!
-	public private(set)  var openingTime : AnyObject!
-//    public private(set)  var packagingCharge : Float!
-	public private(set)  var pgKey : String!
-	public private(set)  var phone : String!
-	public private(set)  var pickupMinOffsetTime : Int!
-	public private(set)  var sortOrder : Int!
-//    public private(set)  var taxRate : Float!
-	public private(set)  var temporarilyClosed : Bool!
-	public private(set)  var timeSlots : [AnyObject]!
+	public private(set) var address : String!
+	public private(set) var bizLocationId : Int!
+	public private(set) var city : String!
+	public private(set) var closingDay : Bool!
+	public private(set) var closingTime : AnyObject!
+//    public private(set) var deliveryCharge : Float!
+	public private(set) var deliveryMinOffsetTime : Int!
+	public private(set) var hideStoreName : Bool!
+	public private(set) var lat : Double!
+	public private(set) var lng : Double!
+//    public private(set) var minOrderTotal : Float!
+	public private(set) var name : String!
+	public private(set) var onCloseMsg : String!
+	public private(set) var onSelectMsg : AnyObject!
+	public private(set) var openingTime : AnyObject!
+//    public private(set) var packagingCharge : Float!
+	public private(set) var pgKey : String!
+	public private(set) var phone : String!
+	public private(set) var pickupMinOffsetTime : Int!
+	public private(set) var sortOrder : Int!
+//    public private(set) var taxRate : Float!
+	public private(set) var temporarilyClosed : Bool!
+	public private(set) var timeSlots : [AnyObject]!
 
 
 	/**

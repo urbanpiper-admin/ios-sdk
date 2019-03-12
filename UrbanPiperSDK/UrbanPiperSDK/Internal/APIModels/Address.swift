@@ -17,17 +17,17 @@ public enum AddressTag: String {
 
 @objc public class Address : NSObject, NSCoding {
 
-	public private(set)  var address1 : String!
-	public private(set)  var landmark : String!
-    public internal(set)  var deliverable : Bool?
-	@objc public private(set)  var city : String!
-	public internal(set)  var id : Int!
-    @objc public private(set)  var lat : CLLocationDegrees = 0
-    @objc public private(set)  var lng : CLLocationDegrees = 0
-	@objc public private(set)  var pin : String!
-	public private(set)  var podId : Int!
-	@objc public private(set)  var subLocality : String!
-	@objc public private(set)  var tag : String!
+	public private(set) var address1 : String!
+	public private(set) var landmark : String!
+    public internal(set) var deliverable : Bool?
+	@objc public private(set) var city : String!
+	public internal(set) var id : Int!
+    @objc public private(set) var lat : CLLocationDegrees = 0
+    @objc public private(set) var lng : CLLocationDegrees = 0
+	@objc public private(set) var pin : String!
+	public private(set) var podId : Int!
+	@objc public private(set) var subLocality : String!
+	@objc public private(set) var tag : String!
     
     public var addressTag: AddressTag {
         guard let tagString: String = tag, let addressTagVal: AddressTag = AddressTag(rawValue: tagString.lowercased()) else { return .other }
@@ -194,7 +194,7 @@ public enum AddressTag: String {
     
     @objc public convenience init(address1: String, landmark: String, city: String, lat: CLLocationDegrees,
                  lng: CLLocationDegrees, pin: String, subLocality: String, tag: String) {
-        self.init(address1: address1, landmark: landmark, city: city, lat: lat, lng: lng, pin: pin, subLocality: subLocality, tag: tag)
+        self.init(id: nil, address1: address1, landmark: landmark, city: city, lat: lat, lng: lng, pin: pin, subLocality: subLocality, tag: tag)
     }
     
     public init(id: Int? = nil, address1: String, landmark: String, city: String, lat: CLLocationDegrees,

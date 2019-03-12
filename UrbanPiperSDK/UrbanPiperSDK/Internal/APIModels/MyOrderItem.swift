@@ -10,16 +10,16 @@ import Foundation
 
 public class MyOrderItem : NSObject{
 
-	public private(set)  var id : Int!
-	public private(set)  var image : String!
-	public private(set)  var imageLandscape : String!
-	public private(set)  var options : [MyOrderOption]!
-	public private(set)  var optionsToRemove : [AnyObject]!
-	public private(set)  var price : Decimal!
-	public private(set)  var quantity : Int!
-//    public private(set)  var srvcTaxRate : Float!
-	public private(set)  var title : String!
-//    public private(set)  var vatRate : Float!
+	public private(set) var id : Int!
+	public private(set) var image : String!
+	public private(set) var imageLandscape : String!
+	public private(set) var options : [MyOrderOption]!
+	public private(set) var optionsToRemove : [AnyObject]!
+	public private(set) var price : Decimal!
+	public private(set) var quantity : Int!
+//    public private(set) var srvcTaxRate : Float!
+	public private(set) var title : String!
+//    public private(set) var vatRate : Float!
 
 
 	/**

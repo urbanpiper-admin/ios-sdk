@@ -39,7 +39,7 @@ extension Item {
 
 //extension Item: NSCopying {
 //    
-//    public private(set)  var totalAmount: Decimal {
+//    public private(set) var totalAmount: Decimal {
 //        var totalAmount: Decimal = itemPrice ?? Decimal.zero
 //        for group in optionGroups {
 //            for item in group.options {
@@ -49,15 +49,15 @@ extension Item {
 //        return totalAmount
 //    }
 //    
-//    public private(set)  var isComboItem: Bool {
+//    public private(set) var isComboItem: Bool {
 //        return optionGroups.count > 1
 //    }
 //    
-//    public private(set)  var isOptionGroupItem: Bool {
+//    public private(set) var isOptionGroupItem: Bool {
 //        return !isNestedOptionItem && optionGroups != nil && optionGroups.count == 1 && optionGroups.last!.options.count > 0
 //    }
 //    
-//    public private(set)  var isNestedOptionItem: Bool {
+//    public private(set) var isNestedOptionItem: Bool {
 //        return optionGroups.filter ({ (optionGroup) -> Bool in
 //            guard let options = optionGroup.options else { return false }
 //            return options.filter ({ (option) -> Bool in
@@ -68,7 +68,7 @@ extension Item {
 //        //        return optionGroups.filter { $0.options != nil && $0.options.filter { $0.nestedOptionGroups != nil && $0.nestedOptionGroups.count > 0 }.count > 0 }.count > 0
 //    }
 //
-//    public private(set)  var isValidCartItem: Bool {
+//    public private(set) var isValidCartItem: Bool {
 //        var isValidItem : Bool = true
 //
 //        for group in optionGroups {
@@ -78,19 +78,19 @@ extension Item {
 //        return isValidItem
 //    }
 //
-//    public private(set)  var descriptionText: String? {
+//    public private(set) var descriptionText: String? {
 //        let descriptionArray: [String] = optionGroups.compactMap { $0.descriptionText }
 //        guard descriptionArray.count > 0 else { return nil }
 //        return descriptionArray.joined(separator: "\n")
 //    }
 //
-//    public private(set)  var orderOptionsText: String? {
+//    public private(set) var orderOptionsText: String? {
 //        let descriptionArray: [String] = orderOptionsToAdd.compactMap { $0.descriptionText }
 //        guard descriptionArray.count > 0 else { return nil }
 //        return descriptionArray.joined(separator: "\n")
 //    }
 //
-//    public private(set)  var optionsToAdd: [[String : Int]]? {
+//    public private(set) var optionsToAdd: [[String : Int]]? {
 //        var options: [[String : Int]] = [[String : Int]]()
 //
 //        guard let optionGroups = optionGroups, optionGroups.count > 0 else { return  nil }
@@ -102,7 +102,7 @@ extension Item {
 //        return options.count > 0 ? options : nil
 //    }
 //
-//    public private(set)  var optionsToRemove: [[String: Int]]? {
+//    public private(set) var optionsToRemove: [[String: Int]]? {
 //        var options: [[String : Int]] = [[String : Int]]()
 //
 //        guard let optionGroups = optionGroups, optionGroups.count > 0 else { return  nil }
@@ -114,7 +114,7 @@ extension Item {
 //        return options.count > 0 ? options : nil
 //    }
 //
-//    @objc public private(set)  var apiItemDictionary: [String: Any] {
+//    @objc public private(set) var apiItemDictionary: [String: Any] {
 //        var itemDictionary: [String: Any] = discountCouponApiItemDictionary
 //
 //        if let options: [[String: Int]] = optionsToRemove {
@@ -124,7 +124,7 @@ extension Item {
 //        return itemDictionary
 //    }
 //
-//    @objc public private(set)  var discountCouponApiItemDictionary: [String: Any] {
+//    @objc public private(set) var discountCouponApiItemDictionary: [String: Any] {
 //        var itemDictionary = toDictionary()
 //        itemDictionary.removeValue(forKey: "option_groups")
 //

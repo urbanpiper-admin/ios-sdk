@@ -10,9 +10,9 @@ import Foundation
 
 public class ItemExtra : NSObject{
 
-	public private(set)  var id : Int!
-	public private(set)  var keyValues : [ItemKeyValue]!
-	public private(set)  var name : String!
+	public private(set) var id : Int!
+	public private(set) var keyValues : [ItemKeyValue]!
+	public private(set) var name : String!
 
 
 	/**

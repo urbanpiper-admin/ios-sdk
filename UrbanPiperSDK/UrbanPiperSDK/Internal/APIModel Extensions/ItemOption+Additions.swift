@@ -10,7 +10,7 @@ import Foundation
 
 extension ItemOption {
 
-//    public private(set)  var totalAmount: Decimal {
+//    public private(set) var totalAmount: Decimal {
 //        var totalAmount: Decimal = price
 //                
 //        if let nestedOptionGroups: [ItemOptionGroup] = nestedOptionGroups, nestedOptionGroups.count > 0 {
@@ -41,7 +41,7 @@ extension ItemOption {
 //        }
 //    }
 
-//    public private(set)  var isValidCartItemOption: Bool {
+//    public private(set) var isValidCartItemOption: Bool {
 //        guard quantity > 0 else { return false }
 //        if let groups = nestedOptionGroups, groups.count > 0 {
 //
@@ -72,7 +72,7 @@ extension ItemOption {
         return reorderOptionsToAdd
     }
     
-//    public private(set)  var optionsToAdd: [[String : Int]] {
+//    public private(set) var optionsToAdd: [[String : Int]] {
 //        var options: [[String : Int]] = [[String : Int]]()
 //
 //        if quantity > 0 {
@@ -88,7 +88,7 @@ extension ItemOption {
 //        return options
 //    }
 //
-//    public private(set)  var optionsToRemove: [[String: Int]] {
+//    public private(set) var optionsToRemove: [[String: Int]] {
 //        var options: [[String : Int]] = [[String : Int]]()
 //
 //        if let optionGroups = nestedOptionGroups, optionGroups.count > 0 {
@@ -102,7 +102,7 @@ extension ItemOption {
 //        return options
 //    }
 //
-//    public private(set)  var descriptionText: String? {
+//    public private(set) var descriptionText: String? {
 //        if let groups = nestedOptionGroups, groups.count > 0 {
 //            let descriptionArray: [String] = groups.compactMap { $0.descriptionText }
 //            guard let titleText: String = title, descriptionArray.count > 0 else { return nil }

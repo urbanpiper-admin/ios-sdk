@@ -171,7 +171,7 @@ internal class MixpanelObserver: AnalyticsEventObserver {
                                             "reorder": isReorder,
                                             "taxes": NSDecimalNumber(decimal: checkoutBuilder.order?.itemTaxes ?? Decimal.zero).doubleValue,
                                             "wallet_credit_applied": checkoutBuilder.useWalletCredits,
-                                            "wallet_credit_amt": NSDecimalNumber(decimal: userWalletBalance ?? Decimal.zero).doubleValue,
+                                            "wallet_credit_amt": NSDecimalNumber(decimal: userWalletBalance).doubleValue,
                                             "is_pickup": checkoutBuilder.deliveryOption == .pickUp,
                                             "payment_mode": paymentOption.rawValue])
         case .reorderInit:

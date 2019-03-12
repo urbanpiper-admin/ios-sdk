@@ -10,7 +10,7 @@ import UIKit
 
 extension String {
 
-    public var array: [[String: AnyObject]]? {
+    internal var array: [[String: AnyObject]]? {
         guard let data: Data = data(using: String.Encoding.utf8) else { return nil }
         
         do {

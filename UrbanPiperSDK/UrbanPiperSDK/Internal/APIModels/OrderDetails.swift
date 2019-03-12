@@ -10,13 +10,13 @@ import Foundation
 
 @objc public class OrderDetails : NSObject{
 
-	@objc public private(set)  var details : PastOrder!
-	@objc public private(set)  var items : [PastOrderItem]!
-	public private(set)  var nextState : AnyObject!
-	public private(set)  var nextStates : [String]!
-	@objc public private(set)  var payment : [OrderPayment]!
-	public private(set)  var statusUpdates : [StatusUpdate]!
-	public private(set)  var store : Store!
+	@objc public private(set) var details : PastOrder!
+	@objc public private(set) var items : [PastOrderItem]!
+	public private(set) var nextState : AnyObject!
+	public private(set) var nextStates : [String]!
+	@objc public private(set) var payment : [OrderPayment]!
+	public private(set) var statusUpdates : [StatusUpdate]!
+	public private(set) var store : Store!
 
 
 	/**

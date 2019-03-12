@@ -11,22 +11,22 @@ import CoreLocation
 
 public class OrderDeliveryAddress: NSObject, NSCoding {
  
-    @objc public private(set)  var coordLatitude: CLLocationDegrees = 0
-    @objc public private(set)  var coordLongitude: CLLocationDegrees = 0
+    @objc public private(set) var coordLatitude: CLLocationDegrees = 0
+    @objc public private(set) var coordLongitude: CLLocationDegrees = 0
     
-//    public private(set)  var thoroughfare: String!
+//    public private(set) var thoroughfare: String!
     
-    @objc public private(set)  var locality: String!
+    @objc public private(set) var locality: String!
     
-//    public private(set)  var subLocality: String!
+//    public private(set) var subLocality: String!
     
-//    public private(set)  var administrativeArea: String!
+//    public private(set) var administrativeArea: String!
     
-    @objc public private(set)  var postalCode: String!
+    @objc public private(set) var postalCode: String!
     
-//    public private(set)  var country: String!
+//    public private(set) var country: String!
     
-    public private(set)  var lines: [String?]!
+    public private(set) var lines: [String?]!
     
     public var coordinate: CLLocationCoordinate2D? {
         guard coordLatitude != 0, coordLongitude != 0 else { return nil }

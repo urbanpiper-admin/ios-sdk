@@ -10,10 +10,10 @@ import Foundation
 
 public class Photo : NSObject{
 
-	public private(set)  var height : Int!
-	public private(set)  var htmlAttributions : [String]!
-	public private(set)  var photoReference : String!
-	public private(set)  var width : Int!
+	public private(set) var height : Int!
+	public private(set) var htmlAttributions : [String]!
+	public private(set) var photoReference : String!
+	public private(set) var width : Int!
 
 
 	/**

@@ -10,8 +10,8 @@ import Foundation
 
 public class UserBizInfoResponse : NSObject, NSCoding{
 
-	public private(set)  var meta : Meta!
-	@objc public private(set)  var userBizInfos : [UserBizInfo]!
+	public private(set) var meta : Meta!
+	@objc public private(set) var userBizInfos : [UserBizInfo]!
 
 
 	/**

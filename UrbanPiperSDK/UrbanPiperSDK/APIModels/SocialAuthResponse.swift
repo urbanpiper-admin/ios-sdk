@@ -8,16 +8,16 @@ import Foundation
 
 public class SocialLoginResponse : NSObject {//}, NSCoding{
 
-//    public private(set)  var authKey : String!
-//    public private(set)  var biz : AnyObject!
-//    public private(set)  var email : String!
-    public private(set)  var message : String!
-//    public private(set)  var name : String!
-//    public private(set)  var phone : String!
-    public private(set)  var success : Bool!
-//    var timestamp : String!
+//    public private(set) var authKey : String!
+//    public private(set) var biz : AnyObject!
+//    public private(set) var email : String!
+    public private(set) var message : String!
+//    public private(set) var name : String!
+//    public private(set) var phone : String!
+    public private(set) var success : Bool!
+//   var timestamp : String!
     internal var token : String!
-//    public private(set)  var username : String!
+//    public private(set) var username : String!
 
 
     /**

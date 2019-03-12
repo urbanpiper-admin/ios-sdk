@@ -10,33 +10,33 @@ import Foundation
 
 public class OrderItem : NSObject{
 
-	public private(set)  var category : ItemCategory!
-	public private(set)  var charges : [AnyObject]!
-	public private(set)  var currentStock : Int!
-//    public private(set)  var extras : [AnyObject]!
-    public private(set)  var discount: Decimal?
-	public private(set)  var foodType : String!
-	public private(set)  var id : Int!
-	public private(set)  var imageLandscapeUrl : String!
-	public private(set)  var imageUrl : String!
-	public private(set)  var itemDesc : String!
-	public private(set)  var itemPrice : Decimal!
-	public private(set)  var itemTitle : String!
-	public private(set)  var likes : Int!
-	public private(set)  var options : [ItemOption]!
-    public private(set)  var optionsToRemove : [ItemOption]!
-//    public private(set)  var price : Decimal!
-	public private(set)  var quantity : Int!
-//    public private(set)  var slug : String!
-	public private(set)  var sortOrder : Int!
-    public private(set)  var subCategory : ItemCategory!
-//    public private(set)  var tags : [AnyObject]!
-	public private(set)  var taxPercentage : Float!
-    public private(set)  var toBeDiscounted: Bool = false
-	public private(set)  var taxes : [ItemTaxes]!
-//    public private(set)  var totalCharge : Float!
-	public private(set)  var totalTax : Float!
-	public private(set)  var weight : Int!
+	public private(set) var category : ItemCategory!
+	public private(set) var charges : [AnyObject]!
+	public private(set) var currentStock : Int!
+//    public private(set) var extras : [AnyObject]!
+    public private(set) var discount: Decimal?
+	public private(set) var foodType : String!
+	public private(set) var id : Int!
+	public private(set) var imageLandscapeUrl : String!
+	public private(set) var imageUrl : String!
+	public private(set) var itemDesc : String!
+	public private(set) var itemPrice : Decimal!
+	public private(set) var itemTitle : String!
+	public private(set) var likes : Int!
+	public private(set) var options : [ItemOption]!
+    public private(set) var optionsToRemove : [ItemOption]!
+//    public private(set) var price : Decimal!
+	public private(set) var quantity : Int!
+//    public private(set) var slug : String!
+	public private(set) var sortOrder : Int!
+    public private(set) var subCategory : ItemCategory!
+//    public private(set) var tags : [AnyObject]!
+	public private(set) var taxPercentage : Float!
+    public private(set) var toBeDiscounted: Bool = false
+	public private(set) var taxes : [ItemTaxes]!
+//    public private(set) var totalCharge : Float!
+	public private(set) var totalTax : Float!
+	public private(set) var weight : Int!
 
 
 	/**

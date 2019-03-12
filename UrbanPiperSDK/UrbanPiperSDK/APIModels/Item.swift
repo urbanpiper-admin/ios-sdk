@@ -10,41 +10,41 @@ import Foundation
 
 @objc public class Item : NSObject{
 
-	public private(set)  var category : ItemCategory!
-	public private(set)  var currentStock : Int!
-//    public private(set)  var extras : [AnyObject]!
-	public private(set)  var foodType : String!
-//    public private(set)  var fulfillmentModes : [String]!
-	public private(set)  var id : Int!
-	public private(set)  var imageLandscapeUrl : String!
-	public private(set)  var imageUrl : String!
-	public private(set)  var itemDesc : String!
-	public private(set)  var itemPrice : Decimal!
-	public private(set)  var itemTitle : String!
-	public internal(set)  var likes : Int!
-	public private(set)  var optionGroups : [ItemOptionGroup]!
-    public private(set)  var orderOptionsToAdd : [ItemOption]!
-    public private(set)  var orderOptionsToRemove : [ItemOption]!
-	public private(set)  var priceDescriptor : String!
-//    public private(set)  var serviceTaxRate : Float!
-    public private(set)  var preOrderStartTime : Int?
-    public private(set)  var preOrderEndTime : Int?
-	public private(set)  var slug : String!
-	public private(set)  var sortOrder : Int!
-    public private(set)  var subCategory : ItemCategory?
-//    public private(set)  var tags : [ItemTag]!
-//    public private(set)  var vatRate : Float!
+	public private(set) var category : ItemCategory!
+	public private(set) var currentStock : Int!
+//    public private(set) var extras : [AnyObject]!
+	public private(set) var foodType : String!
+//    public private(set) var fulfillmentModes : [String]!
+	public private(set) var id : Int!
+	public private(set) var imageLandscapeUrl : String!
+	public private(set) var imageUrl : String!
+	public private(set) var itemDesc : String!
+	public private(set) var itemPrice : Decimal!
+	public private(set) var itemTitle : String!
+	public internal(set) var likes : Int!
+	public private(set) var optionGroups : [ItemOptionGroup]!
+    public private(set) var orderOptionsToAdd : [ItemOption]!
+    public private(set) var orderOptionsToRemove : [ItemOption]!
+	public private(set) var priceDescriptor : String!
+//    public private(set) var serviceTaxRate : Float!
+    public private(set) var preOrderStartTime : Int?
+    public private(set) var preOrderEndTime : Int?
+	public private(set) var slug : String!
+	public private(set) var sortOrder : Int!
+    public private(set) var subCategory : ItemCategory?
+//    public private(set) var tags : [ItemTag]!
+//    public private(set) var vatRate : Float!
     
-//    public private(set)  var total : Decimal!
+//    public private(set) var total : Decimal!
 
     @objc public internal(set) var quantity: Int = 0
-    public internal(set)  var isRecommendedItem: Bool = false
-    public internal(set)  var isUpsoldItem: Bool = false
-    public internal(set)  var isSearchItem: Bool = false
+    public internal(set) var isRecommendedItem: Bool = false
+    public internal(set) var isUpsoldItem: Bool = false
+    public internal(set) var isSearchItem: Bool = false
     
-    public internal(set)  var isItemDetailsItem: Bool = false
+    public internal(set) var isItemDetailsItem: Bool = false
 
-    public private(set)  var notes: String?
+    public private(set) var notes: String?
     
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values

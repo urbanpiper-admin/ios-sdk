@@ -10,8 +10,8 @@ import Foundation
 
 public class FeedbackConfig : NSObject, NSCoding{
 
-	public private(set)  var choices : [Choice]!
-	public private(set)  var type : String!
+	public private(set) var choices : [Choice]!
+	public private(set) var type : String!
 
 
 	/**

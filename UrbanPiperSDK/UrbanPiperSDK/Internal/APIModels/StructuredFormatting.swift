@@ -10,9 +10,9 @@ import Foundation
 
 public class StructuredFormatting : NSObject, NSCoding{
 
-	public private(set)  var mainText : String!
-	public private(set)  var mainTextMatchedSubstrings : [MatchedSubstring]!
-	public private(set)  var secondaryText : String!
+	public private(set) var mainText : String!
+	public private(set) var mainTextMatchedSubstrings : [MatchedSubstring]!
+	public private(set) var secondaryText : String!
 
 
 	/**

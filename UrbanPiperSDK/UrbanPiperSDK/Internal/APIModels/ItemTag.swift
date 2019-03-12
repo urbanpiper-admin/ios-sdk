@@ -10,10 +10,10 @@ import Foundation
 
 public class ItemTag : NSObject{
 
-	public private(set)  var id : Int!
-	public private(set)  var title : String!
-	public private(set)  var group : String!
-	public private(set)  var tags : [ItemTag]!
+	public private(set) var id : Int!
+	public private(set) var title : String!
+	public private(set) var group : String!
+	public private(set) var tags : [ItemTag]!
 
 
 	/**

@@ -10,9 +10,9 @@ import Foundation
 
 public class AddressComponent : NSObject{
 
-	public private(set)  var longName : String!
-	public private(set)  var shortName : String!
-	public private(set)  var types : [String]!
+	public private(set) var longName : String!
+	public private(set) var shortName : String!
+	public private(set) var types : [String]!
 
 
 	/**

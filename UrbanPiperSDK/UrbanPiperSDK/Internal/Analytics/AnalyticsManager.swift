@@ -74,7 +74,7 @@ public class AnalyticsManager: NSObject {
         #endif
     }
     
-//    var sdksInitialized: Bool = false
+//   var sdksInitialized: Bool = false
 //    
 //    public func screenLoginOpened() {
 //        #if !DEBUG

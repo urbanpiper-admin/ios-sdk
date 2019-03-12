@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import FirebaseInstanceID
+//import FirebaseInstanceID
 
 //@objc internal protocol UserManagerDelegate {
 //    
@@ -31,7 +31,7 @@ public struct Simpl {
 
 internal typealias CompletionHandler<T> = (T?, UPError?) -> Void
 
-internal class UserManager: UrbanPiperDataModel {
+internal class UserManager: NSObject {
 
     private struct KeychainAppUserKeys {
         static let AppUserKey: String = "KeyChainUserDataKey"
@@ -143,9 +143,10 @@ internal class UserManager: UrbanPiperDataModel {
             return
         }
         
-        let dataTask: URLSessionDataTask?
+//        let dataTask: URLSessionDataTask?
         if appUser.provider != nil {
-            dataTask = APIManager.shared.socialLogin(email: appUser.email,
+//            dataTask =
+                APIManager.shared.socialLogin(email: appUser.email,
                                                      socialLoginProvider: appUser.provider!,
                                                      accessToken: appUser.accessToken!,
                                                      completion:
@@ -159,7 +160,7 @@ internal class UserManager: UrbanPiperDataModel {
                     self?.logout()
             })
         } else {
-            dataTask = nil
+//            dataTask = nil
             logout()
 //            dataTask = APIManager.shared.login(phone: appUser.phone, password: appUser.password!, completion: { [weak self] (loginResponse) in
 //                guard let token = loginResponse?.token else { return }
@@ -170,7 +171,7 @@ internal class UserManager: UrbanPiperDataModel {
 //                self?.logout()
 //            })
         }
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
     }
     
     func refreshToken() {
@@ -182,13 +183,14 @@ internal class UserManager: UrbanPiperDataModel {
         }
         guard jwt.shouldRefreshToken else { return }
         
-        let dataTask = APIManager.shared.refreshToken(token: jwt.token, completion: { [weak self] (newToken) in
+//        let dataTask =
+            APIManager.shared.refreshToken(token: jwt.token, completion: { [weak self] (newToken) in
             guard let token = newToken else { return }
             let user = self?.currentUser?.update(fromJWTToken: token)
             self?.currentUser = user
         }, failure: nil)
         
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
     }
     
     @objc internal func logout() {
@@ -199,18 +201,16 @@ internal class UserManager: UrbanPiperDataModel {
         CartManager.shared.clearCart()
 //        CartManager.shared.lastOrder = nil
 //        CartManager.shared.couponCodeToApply = nil
-
-        DeliveryLocationDataModel.shared.deliveryLocation = nil
-        DeliveryLocationDataModel.shared.deliveryAddress = nil
-
-        OrderingStoreDataModel.shared.nearestStoreResponse = nil
+        
+        if responds(to: Selector(("oldSDKLogout"))) {
+            performSelector(onMainThread: Selector(("oldSDKLogout")), with: nil, waitUntilDone: false)
+        }
+        
         UserDefaults.standard.removeObject(forKey: "defaultAddress")
 
         UserManager.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
         UserManager.keychain.removeObject(forKey: "KeyChainBizInfoKey")
-        
-        AddressDataModel.shared.userAddressesResponse = nil
-        
+                
         UserDefaults.standard.removeObject(forKey: "deliverySlots")
         UserDefaults.standard.removeObject(forKey: "deliverySlotsEnabled")
         UserDefaults.standard.removeObject(forKey: "feedback_config")
@@ -222,9 +222,6 @@ internal class UserManager: UrbanPiperDataModel {
         UserDefaults.standard.removeObject(forKey: "NextLocationUpdateDate")
 
         UserDefaults.standard.removeObject(forKey: "loginResponse")
-
-        UserDefaults.standard.removeObject(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey)
-        UserDefaults.standard.removeObject(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
         
         currentUser = nil
     }
@@ -251,7 +248,7 @@ extension UserManager {
             completion?(response)
         }, failure: failure)
         
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
     
@@ -293,7 +290,7 @@ extension UserManager {
                 completion?(response)
             }, failure: failure)
         
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
     
@@ -311,7 +308,7 @@ extension UserManager {
                                             completion?(genericResponse)
             }, failure: failure)
         
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
     
@@ -330,7 +327,7 @@ extension UserManager {
             completion?(info)
         }, failure: failure)
         
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
     
@@ -343,14 +340,14 @@ extension UserManager {
     @discardableResult internal func registerForFCMMessaging(token: String, completion: ((GenericResponse?) -> Void)? = nil,
         failure: APIFailure? = nil) -> URLSessionDataTask {
         let dataTask: URLSessionDataTask = APIManager.shared.registerForFCMToken(token: token, completion: nil, failure: nil)
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
     
     @discardableResult internal func unRegisterForFCMMessaging(token: String, completion: ((GenericResponse??) -> Void)? = nil,
                                                              failure: APIFailure? = nil) -> URLSessionDataTask {
         let dataTask: URLSessionDataTask = APIManager.shared.unRegisterForFCMMessaging(token: token, completion: nil, failure: nil)
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
 }
@@ -383,7 +380,7 @@ extension UserManager {
             failure(error)
         }
         
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
     
@@ -396,7 +393,7 @@ extension UserManager {
             failure(error)
         }
         
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
     
@@ -418,7 +415,7 @@ extension UserManager {
             failure(error)
         }
         
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
     
@@ -444,7 +441,7 @@ extension UserManager {
             failure(error)
         }
         
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
     
@@ -478,7 +475,7 @@ extension UserManager {
             failure(error)
         }
         
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
     
@@ -504,7 +501,7 @@ extension UserManager {
         }, failure: { (error) in
             failure(error)
         })
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
 }
@@ -527,7 +524,7 @@ extension UserManager {
                                                                               completion: completion,
                                                                               failure: failure)
         
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
     
@@ -542,7 +539,7 @@ extension UserManager {
             failure(error)
         })
         
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
 //  used in all the other cases
@@ -568,7 +565,7 @@ extension UserManager {
                 failure(error)
         })
 
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
     
@@ -583,30 +580,31 @@ extension UserManager {
             failure(error)
         })
         
-        addDataTask(dataTask: dataTask)
+//        addDataTask(dataTask: dataTask)
         return dataTask
     }
     
 }
 
-//  App State Management
-
-extension UserManager {
-    
-    @objc open override func appWillEnterForeground() {
-        loginUserWithJWT()
-    }
-    
-    @objc open override func appDidEnterBackground() {
-    }
-}
-
-//  Reachability
-
-extension UserManager {
-    
-    @objc open override func networkIsAvailable() {
-        loginUserWithJWT()
-    }
-    
-}
+//
+////  App State Management
+//
+//extension UserManager {
+//
+//    @objc open override func appWillEnterForeground() {
+//        loginUserWithJWT()
+//    }
+//
+//    @objc open override func appDidEnterBackground() {
+//    }
+//}
+//
+////  Reachability
+//
+//extension UserManager {
+//
+//    @objc open override func networkIsAvailable() {
+//        loginUserWithJWT()
+//    }
+//
+//}

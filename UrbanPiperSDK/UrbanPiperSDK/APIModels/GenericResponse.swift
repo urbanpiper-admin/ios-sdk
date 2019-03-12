@@ -10,9 +10,9 @@ import UIKit
 
 @objc public class GenericResponse: NSObject {
     
-    @objc public private(set)  var status: String? = "success"
-    public private(set)  var message: String?
-    public private(set)  var errorMessage: String?
+    @objc public private(set) var status: String? = "success"
+    public private(set) var message: String?
+    public private(set) var errorMessage: String?
     internal var msg: String?
     
     

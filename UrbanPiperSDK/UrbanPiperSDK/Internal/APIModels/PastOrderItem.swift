@@ -8,22 +8,22 @@ import Foundation
 
 public class PastOrderItem : NSObject {//}, NSCoding{
     
-    public private(set)  var charges : [OrderCharges]!
-    public private(set)  var discount : Decimal!
-    public private(set)  var foodType : String!
-    public private(set)  var id : Int!
-    public private(set)  var imageLandscapeUrl : String!
-    public private(set)  var imageUrl : String!
-    public private(set)  var merchantId : String!
-    public private(set)  var optionsToAdd : [ItemOption]!
-    public private(set)  var optionsToRemove : [ItemOption]!
-    public private(set)  var price : Decimal!
-    public private(set)  var quantity : Int!
-    public private(set)  var taxes : [ItemTaxes]!
-    public private(set)  var title : String!
-    public private(set)  var total : Decimal!
-    public private(set)  var totalWithTax : Decimal!
-    public private(set)  var unitWeight : Int!
+    public private(set) var charges : [OrderCharges]!
+    public private(set) var discount : Decimal!
+    public private(set) var foodType : String!
+    public private(set) var id : Int!
+    public private(set) var imageLandscapeUrl : String!
+    public private(set) var imageUrl : String!
+    public private(set) var merchantId : String!
+    public private(set) var optionsToAdd : [ItemOption]!
+    public private(set) var optionsToRemove : [ItemOption]!
+    public private(set) var price : Decimal!
+    public private(set) var quantity : Int!
+    public private(set) var taxes : [ItemTaxes]!
+    public private(set) var title : String!
+    public private(set) var total : Decimal!
+    public private(set) var totalWithTax : Decimal!
+    public private(set) var unitWeight : Int!
     
     
     /**

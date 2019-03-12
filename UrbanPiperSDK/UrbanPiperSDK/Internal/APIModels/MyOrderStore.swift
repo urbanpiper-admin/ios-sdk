@@ -10,8 +10,8 @@ import Foundation
 
 public class MyOrderStore : NSObject{
 
-	public private(set)  var bizLocationId : Int!
-	public private(set)  var name : String!
+	public private(set) var bizLocationId : Int!
+	public private(set) var name : String!
 
 
 	/**

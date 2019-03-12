@@ -44,8 +44,8 @@ import Foundation
 
 public class User : NSObject, NSCoding{
     
-    @objc public internal(set)  var firstName : String!
-    public private(set)  var lastName : String!
+    @objc public internal(set) var firstName : String!
+    public private(set) var lastName : String!
     @objc public var username : String? {
         if var phoneNo = phone {
             if phoneNo.hasPrefix("+") {
@@ -58,29 +58,29 @@ public class User : NSObject, NSCoding{
         }
     }
 
-    public private(set)  var phoneVerified : Bool!
+    public private(set) var phoneVerified : Bool!
 
-    @objc public internal(set)  var phone : String!
-    @objc public internal(set)  var email : String!
+    @objc public internal(set) var phone : String!
+    @objc public internal(set) var email : String!
     
-    @objc public internal(set)  var gender : String?
+    @objc public internal(set) var gender : String?
     
-    public internal(set)  var anniversary : Int!
-    public internal(set)  var birthday : Int!
+    public internal(set) var anniversary : Int!
+    public internal(set) var birthday : Int!
     
-    public private(set)  var currentCity : String!
-    public private(set)  var address : String!
+    public private(set) var currentCity : String!
+    public private(set) var address : String!
 
-	@objc public private(set)  var authKey : String!
+	@objc public private(set) var authKey : String!
     
-	@objc public internal(set)  var userBizInfoResponse : UserBizInfoResponse!
+	@objc public internal(set) var userBizInfoResponse : UserBizInfoResponse!
     
-    @objc public private(set)  var message : String?
-//    public private(set)  var success : Bool!
+    @objc public private(set) var message : String?
+//    public private(set) var success : Bool!
 	internal var timestamp : String!
     internal var jwt: JWT!
 
-//    @objc public private(set)  var password: String? {
+//    @objc public private(set) var password: String? {
 //        didSet {
 //            guard let passwordString: String = password, passwordString.count > 0 else { return }
 //            accessToken = nil
@@ -88,8 +88,8 @@ public class User : NSObject, NSCoding{
 //        }
 //    }
     
-    public private(set)  var provider: SocialLoginProvider?
-    public private(set)  var accessToken: String?
+    public private(set) var provider: SocialLoginProvider?
+    public private(set) var accessToken: String?
 //    {
 //        didSet {
 //            guard let token = accessToken, token.count > 0 else { return }
@@ -230,7 +230,7 @@ public class User : NSObject, NSCoding{
             dictionary["accessToken"] = accessToken
         }
         
-        dictionary["countryCode"] = countryCode
+//        dictionary["countryCode"] = countryCode
         
 //        if password != nil {
 //            dictionary["password"] = password

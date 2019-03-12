@@ -10,9 +10,9 @@ import Foundation
 
 public class Choice : NSObject, NSCoding{
 
-	public private(set)  var id : Int!
-	public private(set)  var sortOrder : Int!
-	public private(set)  var text : String!
+	public private(set) var id : Int!
+	public private(set) var sortOrder : Int!
+	public private(set) var text : String!
 
 
 	/**

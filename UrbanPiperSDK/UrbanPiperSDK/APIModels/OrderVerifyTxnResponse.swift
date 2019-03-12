@@ -9,9 +9,9 @@ import UIKit
 
 public class OrderVerifyTxnResponse: NSObject {
 
-    public private(set)  var txnId: String?
-    public private(set)  var pid: String?
-    public private(set)  var status: String?
+    public private(set) var txnId: String?
+    public private(set) var pid: String?
+    public private(set) var status: String?
     
     
     /**

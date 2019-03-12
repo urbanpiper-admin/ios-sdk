@@ -12,7 +12,7 @@ extension APIManager {
 
     static let socialLoginBaseUrl: String = "\(APIManager.baseUrl)/api/v2/social_auth/me"
 
-    @objc internal func request(urlString: String,
+    @objc @discardableResult internal func request(urlString: String,
                               completion: ((SocialLoginResponse?) -> Void)?,
                               failure: APIFailure?) -> URLSessionDataTask {
         
@@ -84,7 +84,7 @@ extension APIManager {
 
 extension APIManager {
     
-    internal func socialLogin(email: String,
+    @discardableResult internal func socialLogin(email: String,
                               socialLoginProvider: SocialLoginProvider,
                                 accessToken: String,
                                 completion: ((SocialLoginResponse?) -> Void)?,
@@ -101,7 +101,7 @@ extension APIManager {
 
 extension APIManager {
     
-    internal func verifyPhone(phone: String,
+    @discardableResult internal func verifyPhone(phone: String,
                               email: String,
                               socialLoginProvider: SocialLoginProvider,
                               accessToken: String,
@@ -114,7 +114,7 @@ extension APIManager {
         
     }
     
-    internal func verifySocialOTP(phone: String,
+    @discardableResult internal func verifySocialOTP(phone: String,
                                 email: String,
                                 socialLoginProvider: SocialLoginProvider,
                                 accessToken: String,

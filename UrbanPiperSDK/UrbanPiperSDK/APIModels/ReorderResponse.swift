@@ -10,14 +10,14 @@ import Foundation
 
 public class ReorderResponse : NSObject{
 
-	public private(set)  var bizLocation : BizLocation!
-//    public private(set)  var deliveryCharge : Float!
-	@objc public private(set)  var itemsAvailable : [ReorderItem]!
-	@objc public private(set)  var itemsNotAvailable : [ReorderItem]!
-//    public private(set)  var orderItemTaxes : Float!
-//    public private(set)  var orderSubtotal : Float!
-//    public private(set)  var orderTotal : Float!
-//    public private(set)  var packagingCharge : Float!
+	public private(set) var bizLocation : BizLocation!
+//    public private(set) var deliveryCharge : Float!
+	@objc public private(set) var itemsAvailable : [ReorderItem]!
+	@objc public private(set) var itemsNotAvailable : [ReorderItem]!
+//    public private(set) var orderItemTaxes : Float!
+//    public private(set) var orderSubtotal : Float!
+//    public private(set) var orderTotal : Float!
+//    public private(set) var packagingCharge : Float!
 
 
 	/**

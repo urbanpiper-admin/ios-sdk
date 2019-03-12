@@ -2,14 +2,14 @@
 platform :ios, '10.0'
 
 def common_pods
-    pod 'FirebaseMessaging'
-    pod 'FirebaseRemoteConfig'
-    pod 'GooglePlaces'
-    pod 'GoogleMaps'
+#    pod 'FirebaseMessaging'
+#    pod 'FirebaseRemoteConfig'
+#    pod 'GooglePlaces'
+#    pod 'GoogleMaps'
     pod 'GoogleAnalytics'
     pod 'Mixpanel-swift'
     pod 'AppsFlyerFramework'
-    pod 'PhoneNumberKit', '~> 2.5'
+#    pod 'PhoneNumberKit', '~> 2.5'
 end
 
 target 'UrbanPiperSDK' do

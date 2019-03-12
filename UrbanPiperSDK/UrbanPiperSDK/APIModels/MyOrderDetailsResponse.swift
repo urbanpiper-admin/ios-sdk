@@ -10,8 +10,8 @@ import Foundation
 
 public class PastOrderDetailsResponse : NSObject{
 
-	@objc public private(set)  var customer : Customer!
-	@objc public private(set)  var order : OrderDetails!
+	@objc public private(set) var customer : Customer!
+	@objc public private(set) var order : OrderDetails!
 
 
 	/**

@@ -14,26 +14,26 @@ public class CartItem: NSObject {
     public private(set) var optionsToAdd: [ItemOption] = []
     private var optionsToRemove: [ItemOption] = []
     
-    public private(set)  var category : ItemCategory!
-    public private(set)  var currentStock : Int!
-//    public private(set)  var extras : [AnyObject]!
-//    public private(set)  var foodType : String!
-    public private(set)  var id : Int!
-    public private(set)  var imageLandscapeUrl : String!
-    public private(set)  var imageUrl : String!
-//    public private(set)  var itemDesc : String!
-    public private(set)  var itemPrice : Decimal!
-    public private(set)  var itemTitle : String!
-//    public private(set)  var likes : Int!
-//    var optionGroups : [ItemOptionGroup]!
-//    public private(set)  var priceDescriptor : String!
-//    var serviceTaxRate : Float!
-    public private(set)  var preOrderStartTime : Int?
-    public private(set)  var preOrderEndTime : Int?
-    public private(set)  var slug : String!
-    public private(set)  var sortOrder : Int!
-//    public private(set)  var subCategory : ItemCategory!
-//    public private(set)  var tags : [ItemTag]!
+    public private(set) var category : ItemCategory!
+    public private(set) var currentStock : Int!
+//    public private(set) var extras : [AnyObject]!
+//    public private(set) var foodType : String!
+    public private(set) var id : Int!
+    public private(set) var imageLandscapeUrl : String!
+    public private(set) var imageUrl : String!
+//    public private(set) var itemDesc : String!
+    public private(set) var itemPrice : Decimal!
+    public private(set) var itemTitle : String!
+//    public private(set) var likes : Int!
+//   var optionGroups : [ItemOptionGroup]!
+//    public private(set) var priceDescriptor : String!
+//   var serviceTaxRate : Float!
+    public private(set) var preOrderStartTime : Int?
+    public private(set) var preOrderEndTime : Int?
+    public private(set) var slug : String!
+    public private(set) var sortOrder : Int!
+//    public private(set) var subCategory : ItemCategory!
+//    public private(set) var tags : [ItemTag]!
     
     public private(set) var isRecommendedItem: Bool = false
     public private(set) var isUpsoldItem: Bool = false
@@ -41,7 +41,7 @@ public class CartItem: NSObject {
     public private(set) var isItemDetailsItem: Bool = false
     internal(set) var isReorder: Bool = false
 
-//    var vatRate : Float!
+//   var vatRate : Float!
     
     public internal(set) var quantity: Int = 0
     

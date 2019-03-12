@@ -9,10 +9,10 @@ import UIKit
 
 public class OrderResponse: NSObject {
 
-    public private(set)  var status: String?
-    public private(set)  var message: String?
-    public private(set)  var errorDetails: [String: Any]?
-    public private(set)  var orderId: String?
+    public private(set) var status: String?
+    public private(set) var message: String?
+    public private(set) var errorDetails: [String: Any]?
+    public private(set) var orderId: String?
     
     
     /**

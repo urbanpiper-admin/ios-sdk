@@ -10,8 +10,8 @@ import Foundation
 
 public class WalletTransactionResponse : NSObject{
 
-	public private(set)  var meta : Meta!
-	public private(set)  var transactions : [Transaction]!
+	public private(set) var meta : Meta!
+	public private(set) var transactions : [Transaction]!
 
 
 	/**

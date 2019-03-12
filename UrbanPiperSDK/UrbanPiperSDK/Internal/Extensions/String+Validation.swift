@@ -10,7 +10,7 @@ import UIKit
 
 extension String {
     
-    public var isValidEmailId: Bool {
+    internal var isValidEmailId: Bool {
 //        let emailRegEx: String = "[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}" // Strict validation
 //        let emailRegEx: String = ".+@([A-Za-z0-9]+\\.)+[A-Za-z]{2}[A-Za-z]*" // lax validation
 
@@ -21,18 +21,18 @@ extension String {
         return emailTest.evaluate(with: self)
     }
 
-    public var isValidPhoneNumber: Bool {
+    internal var isValidPhoneNumber: Bool {
         let PHONE_REGEX: String = "^((\\+)|(00))[0-9]{10}$"
         let phoneTest: NSPredicate = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
         return phoneTest.evaluate(with: self)
     }
     
-    public var isValidPassword: Bool {
+    internal var isValidPassword: Bool {
         guard !isEmpty else { return false }
         return trimmingCharacters(in: .whitespacesAndNewlines).count > 3
     }
     
-    public var isValidStringEntry: Bool {
+    internal var isValidStringEntry: Bool {
         guard !isEmpty else { return false }
         return trimmingCharacters(in: .whitespacesAndNewlines).count > 0
     }

@@ -8,20 +8,20 @@ import Foundation
 
 @objc public class ReorderItem : NSObject, NSCoding{
 
-    public private(set)  var category : ItemCategory!
-    public private(set)  var currentStock : Int!
-    public private(set)  var id : Int!
-    public private(set)  var imageLandscapeUrl : String!
-    public private(set)  var imageUrl : String!
-    public private(set)  var itemCategory : ItemCategory!
-    public private(set)  var itemPrice : Decimal!
-    @objc public private(set)  var itemTitle : String!
-    public private(set)  var optionGroups : [ItemOptionGroup]!
-    public private(set)  var preOrderStartTime : Int?
-    public private(set)  var preOrderEndTime : Int?
-    @objc public private(set)  var quantity : Int = 0
-    public private(set)  var serviceTaxRate : Int!
-    public private(set)  var vatRate : Int!
+    public private(set) var category : ItemCategory!
+    public private(set) var currentStock : Int!
+    public private(set) var id : Int!
+    public private(set) var imageLandscapeUrl : String!
+    public private(set) var imageUrl : String!
+    public private(set) var itemCategory : ItemCategory!
+    public private(set) var itemPrice : Decimal!
+    @objc public private(set) var itemTitle : String!
+    public private(set) var optionGroups : [ItemOptionGroup]!
+    public private(set) var preOrderStartTime : Int?
+    public private(set) var preOrderEndTime : Int?
+    @objc public private(set) var quantity : Int = 0
+    public private(set) var serviceTaxRate : Int!
+    public private(set) var vatRate : Int!
 
 
     /**
@@ -87,9 +87,9 @@ import Foundation
         if itemTitle != nil{
             dictionary["item_title"] = itemTitle
         }
-        if quantity != nil{
-            dictionary["quantity"] = quantity
-        }
+
+        dictionary["quantity"] = quantity
+        
         if serviceTaxRate != nil{
             dictionary["service_tax_rate"] = serviceTaxRate
         }
@@ -175,9 +175,9 @@ import Foundation
         if optionGroups != nil{
             aCoder.encode(optionGroups, forKey: "option_groups")
         }
-        if quantity != nil{
-            aCoder.encode(quantity, forKey: "quantity")
-        }
+        
+        aCoder.encode(quantity, forKey: "quantity")
+
         if serviceTaxRate != nil{
             aCoder.encode(serviceTaxRate, forKey: "service_tax_rate")
         }

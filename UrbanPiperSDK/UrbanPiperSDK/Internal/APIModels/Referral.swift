@@ -9,11 +9,11 @@ import UIKit
 
 public class Referral: NSObject {
 
-    public private(set)  var codeLink : String!
-    public private(set)  var referrerCard : String!
-    public private(set)  var channel : String!
-    public private(set)  var sharedOn : String!
-    public private(set)  var platform : String!
+    public private(set) var codeLink : String!
+    public private(set) var referrerCard : String!
+    public private(set) var channel : String!
+    public private(set) var sharedOn : String!
+    public private(set) var platform : String!
 
     public init(fromDictionary dictionary:  [String:Any]) {
         

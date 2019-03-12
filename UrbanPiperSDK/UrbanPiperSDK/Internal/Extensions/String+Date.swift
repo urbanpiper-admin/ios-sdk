@@ -20,7 +20,7 @@ extension String {
         return formatter
     }()
 
-    public var currentDateTime: Date? {
+    internal var currentDateTime: Date? {
         guard let date = String.stringToCurrentDateTimeFormatter.date(from: self) else { return  nil }
 
         let calendar: Calendar = Calendar(identifier: .gregorian)

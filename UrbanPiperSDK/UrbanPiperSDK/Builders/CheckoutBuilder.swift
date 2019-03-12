@@ -215,7 +215,7 @@ public class CheckoutBuilder: NSObject {
     ///   - address: Optional. An address object from the user's saved addresses, can be set to nil for `DeliveryOption.pickUp`
     ///   - deliveryDate: The date of the order delivery
     ///   - deliveryTime: The time of the order delivery
-    ///   - timeSlot: Optional. The user selected timeSlot, the available timeSlots for a store is returned either in the nearest store object if set on a store by store level or the biz object returned in the nearest store api call
+    ///   - timeSlot: Optional. The user selected timeSlot, the available timeSlots for a store is returned either in the nearest store object if set on a store by store level or the biz object returned in the nearest store api call. Should be set nil when not using timeslots.
     ///   - paymentOption: The payment option selected by the user, the payment option needs to be the same as the one passed in the initPayment call if payment option is not cash on delivery
     ///   - instructions: The instructions to be added to the order
     ///   - phone: The phone number of the user

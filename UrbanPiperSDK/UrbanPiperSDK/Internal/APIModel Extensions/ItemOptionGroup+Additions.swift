@@ -24,7 +24,7 @@ extension ItemOptionGroup {
         return maxSelectable > 1 || maxSelectable == SelectionQuantity.unlimited
     }
 
-//    public private(set)  var isValidCartOptionGroup: Bool {
+//    public private(set) var isValidCartOptionGroup: Bool {
 //        guard let groupOptions: [ItemOption] = options, groupOptions.count > 0 else { return false }
 //
 //        var isValidItem: Bool = minSelectable == SelectionQuantity.one ? false : true
@@ -53,7 +53,7 @@ extension ItemOptionGroup {
         return reorderOptionsToAdd
     }
 
-//    public private(set)  var optionsToAdd: [[String : Int]] {
+//    public private(set) var optionsToAdd: [[String : Int]] {
 //        var optionsToAdd = [[String : Int]]()
 //
 //        for option in options {
@@ -64,7 +64,7 @@ extension ItemOptionGroup {
 //        return optionsToAdd
 //    }
 //
-//    public private(set)  var optionsToRemove: [[String: Int]] {
+//    public private(set) var optionsToRemove: [[String: Int]] {
 //        var optionsToRemove = [[String : Int]]()
 //
 //        for option in options {
@@ -75,7 +75,7 @@ extension ItemOptionGroup {
 //        return optionsToRemove
 //    }
 //
-//    public private(set)  var descriptionText: String? {
+//    public private(set) var descriptionText: String? {
 //        let descriptionArray = options.compactMap({ (itemOption) -> String? in
 //            guard (isDefault && itemOption.quantity == 0) || (!isDefault && itemOption.quantity > 0) else { return nil }
 //            return itemOption.descriptionText

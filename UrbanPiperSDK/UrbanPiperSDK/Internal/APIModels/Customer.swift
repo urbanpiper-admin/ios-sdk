@@ -10,10 +10,10 @@ import Foundation
 
 @objc public class Customer : NSObject{
 
-	@objc public private(set)  var address : Address!
-	@objc public private(set)  var email : String!
-	@objc public private(set)  var name : String!
-	@objc public private(set)  var phone : String!
+	@objc public private(set) var address : Address!
+	@objc public private(set) var email : String!
+	@objc public private(set) var name : String!
+	@objc public private(set) var phone : String!
 
 
 	/**

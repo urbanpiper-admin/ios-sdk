@@ -10,9 +10,9 @@ import Foundation
 
 public class TimeSlot : NSObject, NSCoding{
 
-	public private(set)  var day : String!
-	public private(set)  var endTime : String!
-	public private(set)  var startTime : String!
+	public private(set) var day : String!
+	public private(set) var endTime : String!
+	public private(set) var startTime : String!
 
 
 	/**

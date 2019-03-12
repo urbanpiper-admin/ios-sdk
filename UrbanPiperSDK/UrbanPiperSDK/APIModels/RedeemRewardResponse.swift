@@ -9,11 +9,11 @@ import UIKit
 
 public class RedeemRewardResponse: NSObject {
     
-    public private(set)  var expiresIn : Int!
-    public private(set)  var ptsRemaining : Int!
-    public private(set)  var redemptionCode : String!
-    public private(set)  var status : String!
-    public private(set)  var message : String!
+    public private(set) var expiresIn : Int!
+    public private(set) var ptsRemaining : Int!
+    public private(set) var redemptionCode : String!
+    public private(set) var status : String!
+    public private(set) var message : String!
     
     
     /**

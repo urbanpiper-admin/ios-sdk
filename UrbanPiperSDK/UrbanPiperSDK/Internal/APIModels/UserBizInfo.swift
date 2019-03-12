@@ -10,20 +10,20 @@ import Foundation
 
 public class UserBizInfo : NSObject, NSCoding{
 
-	public private(set)  var addresses : [AnyObject]!
-	@objc public private(set)  var balance : NSDecimalNumber = NSDecimalNumber.zero
-	public private(set)  var bizId : Int!
-	@objc public private(set)  var cardNumbers : [String]!
-	public private(set)  var daysSinceLastOrder : Int!
-	public private(set)  var id : Int!
-	public private(set)  var lastOrderDt : Int!
-	public private(set)  var name : String!
-	public private(set)  var numOfOrders : Int!
-	public private(set)  var phone : String!
-	@objc public private(set)  var points : NSNumber = NSNumber(integerLiteral: 0)
-	public private(set)  var signupDt : Int!
-	public private(set)  var totalOrderValue : Decimal!
-    @objc public private(set)  var lastUpdatedDateString: String?
+	public private(set) var addresses : [AnyObject]!
+	@objc public private(set) var balance : NSDecimalNumber = NSDecimalNumber.zero
+	public private(set) var bizId : Int!
+	@objc public private(set) var cardNumbers : [String]!
+	public private(set) var daysSinceLastOrder : Int!
+	public private(set) var id : Int!
+	public private(set) var lastOrderDt : Int!
+	public private(set) var name : String!
+	public private(set) var numOfOrders : Int!
+	public private(set) var phone : String!
+	@objc public private(set) var points : NSNumber = NSNumber(integerLiteral: 0)
+	public private(set) var signupDt : Int!
+	public private(set) var totalOrderValue : Decimal!
+    @objc public private(set) var lastUpdatedDateString: String?
     public var lastOrderDateString: String? {
         if let val = lastOrderDt {
             let date: Date = Date(timeIntervalSince1970: TimeInterval(val / 1000))

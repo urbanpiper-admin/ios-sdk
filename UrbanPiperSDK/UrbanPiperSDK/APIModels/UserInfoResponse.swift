@@ -9,18 +9,18 @@ import UIKit
 
 @objc public class UserInfoResponse: NSObject {
     
-    public private(set)  var phone : String!
-    public private(set)  var firstName : String!
-    public private(set)  var email : String!
+    public private(set) var phone : String!
+    public private(set) var firstName : String!
+    public private(set) var email : String!
     
-    public private(set)  var lastName : String?
-    public private(set)  var gender : String?
-    public private(set)  var currentCity : String?
-    public private(set)  var birthday : Int?
-    public private(set)  var anniversary : Int?
-    public private(set)  var birthdayDate : String?
-    public private(set)  var anniversaryDate : String?
-    public private(set)  var address : String?
+    public private(set) var lastName : String?
+    public private(set) var gender : String?
+    public private(set) var currentCity : String?
+    public private(set) var birthday : Int?
+    public private(set) var anniversary : Int?
+    public private(set) var birthdayDate : String?
+    public private(set) var anniversaryDate : String?
+    public private(set) var address : String?
 
 
 

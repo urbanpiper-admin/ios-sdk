@@ -10,9 +10,9 @@ import Foundation
 
 public class ItemKeyValue : NSObject{
 
-	public private(set)  var id : Int!
-	public private(set)  var key : String!
-	public private(set)  var value : String!
+	public private(set) var id : Int!
+	public private(set) var key : String!
+	public private(set) var value : String!
 
 
 	/**

@@ -10,16 +10,16 @@ import Foundation
 
 public class ItemOption : NSObject {
 
-	public private(set)  var currentStock : Int!
-	public private(set)  var descriptionField : String!
-	public private(set)  var foodType : String!
-	public private(set)  var id : Int!
-	public private(set)  var imageUrl : String!
-	public internal(set)  var price : Decimal!
-    public private(set)  var recommended : Bool = false
-	public private(set)  var sortOrder : Int!
-	@objc public private(set)  var title : String!
-	public private(set)  var nestedOptionGroups : [ItemOptionGroup]!
+	public private(set) var currentStock : Int!
+	public private(set) var descriptionField : String!
+	public private(set) var foodType : String!
+	public private(set) var id : Int!
+	public private(set) var imageUrl : String!
+	public internal(set) var price : Decimal!
+    public private(set) var recommended : Bool = false
+	public private(set) var sortOrder : Int!
+	@objc public private(set) var title : String!
+	public private(set) var nestedOptionGroups : [ItemOptionGroup]!
     internal var quantity: Int = 0
 
 

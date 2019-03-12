@@ -12,7 +12,7 @@ extension APIManager {
 
     static let cardBaseUrl: String = "\(APIManager.baseUrl)/api/v2/card"
     
-    internal func refreshToken(token: String,
+    @discardableResult internal func refreshToken(token: String,
                                completion: ((String?) -> Void)?,
                                failure: APIFailure?) -> URLSessionDataTask {
         
