@@ -24,7 +24,7 @@ extension APIManager {
         urlRequest.setValue(bizAuth(), forHTTPHeaderField: "Authorization")
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> BannersResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> BannersResponse? in
             return BannersResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         

@@ -175,17 +175,18 @@ public class User : NSObject, NSCoding{
     }
     
     @discardableResult public func update(fromJWTToken jwtToken: String) -> User {
-        jwt = JWT(jwtToken: jwtToken, decodeHandler: { [weak self] (dictionary) in
-            if let authKey = dictionary["t_key"] as? String {
-                self?.authKey = authKey
-            }
-//            self?.username = dictionary["username"] as? String
-            self?.email = dictionary["email"] as? String
-            self?.phone = dictionary["phone"] as? String
-            self?.phoneVerified = dictionary["phone_verified"] as? Bool ?? false
-            self?.firstName = dictionary["first_name"] as? String
-            self?.lastName = dictionary["last_name"] as? String
-        })
+        jwt = JWT(jwtToken: jwtToken)
+        let dictionary = JWT.decode(jwtToken: jwtToken)
+        if let authKey = dictionary["t_key"] as? String {
+            self.authKey = authKey
+        }
+//        self?.username = dictionary["username"] as? String
+        email = dictionary["email"] as? String
+        phone = dictionary["phone"] as? String
+        phoneVerified = dictionary["phone_verified"] as? Bool ?? false
+        firstName = dictionary["first_name"] as? String
+        lastName = dictionary["last_name"] as? String
+        
 //        message = UserStatus.valid.rawValue
         return self
     }

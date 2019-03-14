@@ -27,7 +27,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> SocialLoginResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> SocialLoginResponse? in
             return SocialLoginResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         

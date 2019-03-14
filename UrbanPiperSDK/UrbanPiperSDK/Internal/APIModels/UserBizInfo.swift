@@ -24,7 +24,7 @@ public class UserBizInfo : NSObject, NSCoding{
 	public private(set) var signupDt : Int!
 	public private(set) var totalOrderValue : Decimal!
     @objc public private(set) var lastUpdatedDateString: String?
-    public var lastOrderDateString: String? {
+    internal var lastOrderDateString: String? {
         if let val = lastOrderDt {
             let date: Date = Date(timeIntervalSince1970: TimeInterval(val / 1000))
             return DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .short)

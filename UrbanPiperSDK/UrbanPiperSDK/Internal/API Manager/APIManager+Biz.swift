@@ -22,7 +22,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> UserBizInfoResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> UserBizInfoResponse? in
             return UserBizInfoResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         

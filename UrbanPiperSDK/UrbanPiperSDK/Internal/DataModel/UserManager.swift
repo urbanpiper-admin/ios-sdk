@@ -53,6 +53,7 @@ internal class UserManager: NSObject {
             Meta.registerClass()
             UserBizInfo.registerClass()
             UserBizInfo.registerClass(name: "UserBizInfo")
+            UserBizInfo.registerClass(name: "BizObject")
             UserBizInfoResponse.registerClass()
             UserBizInfoResponse.registerClass(name: "BizInfo")
             JWT.registerClass()
@@ -63,7 +64,7 @@ internal class UserManager: NSObject {
         }
         set {
             defer {
-                APIManager.shared.updateHeaders(jwt: currentUser?.jwt)
+                APIManager.shared.jwt = currentUser?.jwt
                 
                 DispatchQueue.main.async { [weak self] in
                     NotificationCenter.default.post(name: NSNotification.Name.userInfoChanged, object: nil)
@@ -363,14 +364,14 @@ extension UserManager {
         let dataTask: URLSessionDataTask = APIManager.shared.login(phone: phone, password: password, completion: { [weak self] (loginResponse) in
             if let token = loginResponse?.token {
                 let user = User(jwtToken: token)
-                if user.phoneVerified {
+//                if user.phoneVerified {
                     self?.currentUser = user
                     AnalyticsManager.shared.track(event: .loginSuccess(phone: phone))
-                } else {
-                    loginResponse?.status = "error"
-                    loginResponse?.message = UserStatus.verifyPhoneNumber.rawValue
-                    loginResponse?.token = nil
-                }
+//                } else {
+//                    loginResponse?.status = "error"
+//                    loginResponse?.message = UserStatus.verifyPhoneNumber.rawValue
+//                    loginResponse?.token = nil
+//                }
             } else {
                 AnalyticsManager.shared.track(event: .loginFailed(phone: phone))
             }

@@ -22,7 +22,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> StoreListResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> StoreListResponse? in
             return StoreListResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -67,7 +67,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> StoreResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> StoreResponse? in
             return StoreResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         

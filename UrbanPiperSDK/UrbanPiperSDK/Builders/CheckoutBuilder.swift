@@ -97,6 +97,9 @@ public class CheckoutBuilder: NSObject {
         assert(UrbanPiperSDK.shared.getUser() != nil, "The user has to logged in to call this function")
         guard UrbanPiperSDK.shared.getUser() != nil else { return nil }
 
+        assert(cartItems.count > 0, "Provided cart items variable is empty")
+        guard cartItems.count > 0 else { return nil }
+
         self.store = nil
         self.useWalletCredits = nil
         self.deliveryOption = nil
@@ -178,7 +181,7 @@ public class CheckoutBuilder: NSObject {
         assert(paymentOption != .select, "Select an valid payment option")
         guard paymentOption != .select else { return nil }
         
-        assert(paymentOption == .cash, "For cash payment option initPayment call is not needed, the placeOrder method can be called directly")
+        assert(paymentOption != .cash, "For cash payment option initPayment call is not needed, the placeOrder method can be called directly")
         guard paymentOption != .cash else { return nil}
         
         paymentInitResponse = nil

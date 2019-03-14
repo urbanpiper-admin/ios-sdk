@@ -25,7 +25,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> PlaceDetailsResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> PlaceDetailsResponse? in
             return PlaceDetailsResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -72,7 +72,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> Address? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> Address? in
             return Address(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -132,7 +132,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GooglePlacesResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> GooglePlacesResponse? in
             return GooglePlacesResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         

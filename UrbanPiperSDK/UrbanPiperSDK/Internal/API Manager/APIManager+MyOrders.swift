@@ -21,7 +21,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> [String: Any]? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> [String: Any]? in
             return dictionary
         }, completion: completion, failure: failure)!
     }
@@ -45,7 +45,7 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> PastOrdersResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> PastOrdersResponse? in
             return PastOrdersResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -88,7 +88,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> PastOrderDetailsResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> PastOrderDetailsResponse? in
             return PastOrderDetailsResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         

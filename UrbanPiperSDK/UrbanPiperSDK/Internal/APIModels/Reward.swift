@@ -17,6 +17,7 @@ public class Reward : NSObject, NSCoding{
     public private(set) var locked : Bool!
     public private(set) var points : Int!
     public private(set) var redeemedCount : Int!
+    public private(set) var redemptionCodes : [RedemptionCode]!
     public private(set) var title : String!
     public private(set) var type : Int!
     public private(set) var value : String!
@@ -35,6 +36,13 @@ public class Reward : NSObject, NSCoding{
         locked = dictionary["locked"] as? Bool
         points = dictionary["points"] as? Int
         redeemedCount = dictionary["redeemed_count"] as? Int
+        redemptionCodes = [RedemptionCode]()
+        if let redemptionCodesArray = dictionary["redemption_codes"] as? [[String:Any]]{
+            for dic in redemptionCodesArray{
+                let value = RedemptionCode(fromDictionary: dic)
+                redemptionCodes.append(value)
+            }
+        }
         title = dictionary["title"] as? String
         type = dictionary["type"] as? Int
         value = dictionary["value"] as? String
@@ -73,6 +81,13 @@ public class Reward : NSObject, NSCoding{
         if redeemedCount != nil{
             dictionary["redeemed_count"] = redeemedCount
         }
+        if redemptionCodes != nil{
+            var dictionaryElements = [[String:Any]]()
+            for redemptionCodesElement in redemptionCodes {
+                dictionaryElements.append(redemptionCodesElement.toDictionary())
+            }
+            dictionary["redemption_codes"] = dictionaryElements
+        }
         if title != nil{
             dictionary["title"] = title
         }
@@ -100,6 +115,7 @@ public class Reward : NSObject, NSCoding{
         locked = aDecoder.decodeObject(forKey: "locked") as? Bool
         points = aDecoder.decodeObject(forKey: "points") as? Int
         redeemedCount = aDecoder.decodeObject(forKey: "redeemed_count") as? Int
+        redemptionCodes = aDecoder.decodeObject(forKey: "redemption_codes") as? [RedemptionCode]
         title = aDecoder.decodeObject(forKey: "title") as? String
         type = aDecoder.decodeObject(forKey: "type") as? Int
         value = aDecoder.decodeObject(forKey: "value") as? String
@@ -137,6 +153,9 @@ public class Reward : NSObject, NSCoding{
         }
         if redeemedCount != nil{
             aCoder.encode(redeemedCount, forKey: "redeemed_count")
+        }
+        if redemptionCodes != nil{
+            aCoder.encode(redemptionCodes, forKey: "redemption_codes")
         }
         if title != nil{
             aCoder.encode(title, forKey: "title")

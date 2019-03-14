@@ -22,8 +22,8 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> UserInfoResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> UserInfoResponse? in
+            print("refreshUserDataResponse \(dictionary as AnyObject)")
             return UserInfoResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -92,7 +92,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> UserInfoUpdateResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> UserInfoUpdateResponse? in
             return UserInfoUpdateResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -153,7 +153,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GenericResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> GenericResponse? in
             return GenericResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -201,7 +201,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> UserAddressesResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> UserAddressesResponse? in
             return UserAddressesResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -251,7 +251,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> UserAddressesResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> UserAddressesResponse? in
             return UserAddressesResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -322,7 +322,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: addressDict, options: [])
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> AddUpdateAddressResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> AddUpdateAddressResponse? in
             return AddUpdateAddressResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -396,7 +396,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: addressDict, options: [])
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> AddUpdateAddressResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> AddUpdateAddressResponse? in
             return AddUpdateAddressResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -441,7 +441,7 @@ extension APIManager {
         urlRequest.httpMethod = "DELETE"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: nil, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, responseParser: nil, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             

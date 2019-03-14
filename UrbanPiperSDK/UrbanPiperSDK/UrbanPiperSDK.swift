@@ -22,11 +22,19 @@ public class UrbanPiperSDK: NSObject {
         return shared
     }
     
-    private init(language: Language = .english, bizId: String, apiUsername: String, apiKey: String, callback: @escaping (SDKEvent) -> Void) {
+    private init(language: Language = .english, bizId: String, apiUsername: String, apiKey: String, session: URLSession? = nil, callback: @escaping (SDKEvent) -> Void) {
         self.callback = callback
         super.init()
         APIManager.initializeManager(language: language, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, jwt: UserManager.shared.currentUser?.jwt)
+        guard let testSession = session else { return }
+        APIManager.shared.session = testSession
     }
+    
+    #if DEBUG
+    public class func intialize(language: Language? = .english, bizId: String, apiUsername: String, apiKey: String, session: URLSession? = nil, callback: @escaping (SDKEvent) -> Void) {
+        shared = UrbanPiperSDK(language: language!, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, session: session, callback: callback)
+    }
+    #else
     
     /// Intializes the UrbanPiperSDK, the initialized instance of the SDK is accessible via the static func sharedInstance()
     ///
@@ -39,6 +47,7 @@ public class UrbanPiperSDK: NSObject {
     public class func intialize(language: Language? = .english, bizId: String, apiUsername: String, apiKey: String, callback: @escaping (SDKEvent) -> Void) {
         shared = UrbanPiperSDK(language: language!, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, callback: callback)
     }
+    #endif
     
     /// Change the `Language` of the data being returned from the server after the SDK has been initialized
     ///
@@ -154,8 +163,11 @@ public extension UrbanPiperSDK {
                                                         completion: ((UserInfoUpdateResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard let user = getUser() else { return nil }
-        assert(user.provider != nil && email == nil, "The email id cannot be changed for a social login user")
-        guard user.provider != nil && email == nil else { return  nil }
+        
+        if user.provider != nil {
+            assert(email == nil, "The email id cannot be changed for a social login user")
+            guard email == nil else { return  nil }
+        }
         
         return UserManager.shared.updateUserInfo(name: name ?? user.firstName, phone: user.phone, email: email ?? user.email, gender: gender, aniversary: aniversary, birthday: birthday, completion: completion, failure: failure)
     }
@@ -328,7 +340,7 @@ public extension UrbanPiperSDK {
     ///   - completion: `APICompletion` with `GenericResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult @objc public func submitFeedback(name: String, rating: Double, orderId: String, choiceText: String?, comments: String?,
+    @discardableResult @objc public func submitFeedback(name: String, rating: Double, orderId: Int, choiceText: String?, comments: String?,
                                                   completion: ((GenericResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
@@ -623,6 +635,13 @@ extension UrbanPiperSDK {
         return CartManager.shared.cartItems
     }
     
+    /// Returns the total item quantity of the cart
+    ///
+    /// - Returns: Return an int value
+    public func getCartCount() -> Int {
+        return CartManager.shared.cartCount
+    }
+    
     /// Returns the item quantity added to the cart for a given item id
     ///
     /// - Parameter itemId: Item id to get the cart quantity for
@@ -644,7 +663,7 @@ extension UrbanPiperSDK {
     ///   - cartItem: The cart item to be added
     ///   - quantity: The quantity of the item to be added
     ///   - notes: The notes for the item to be added
-    /// - Throws: Throws the error "maxOrderableQuantityAdded" if the current cart quantity of the item is equal to the avaialble stock for the item
+    /// - Throws: Throws the error "itemQuantityNotAvaialble" if the current cart quantity of the item is equal to the avaialble stock for the item
     @objc public func addItemToCart(cartItem: CartItem, quantity: Int, notes: String? = nil) throws {
         do {
             try CartManager.shared.add(cartItem: cartItem, quantity: quantity, notes: notes)

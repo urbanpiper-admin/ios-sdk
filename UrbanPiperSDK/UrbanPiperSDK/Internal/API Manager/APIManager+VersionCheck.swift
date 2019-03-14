@@ -27,7 +27,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> VersionCheckResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> VersionCheckResponse? in
             return VersionCheckResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         

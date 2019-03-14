@@ -11,7 +11,7 @@ extension APIManager {
     
     @objc internal func submitFeedback(name: String,
                                      rating: Double,
-                                     orderId: String,
+                                     orderId: Int,
                                      choiceText: String?,
                                      comments: String?,
                                      completion: ((GenericResponse?) -> Void)?,
@@ -42,7 +42,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GenericResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> GenericResponse? in
             return GenericResponse(fromDictionary: dictionary) ?? GenericResponse.init()
         }, completion: completion, failure: failure)!
         

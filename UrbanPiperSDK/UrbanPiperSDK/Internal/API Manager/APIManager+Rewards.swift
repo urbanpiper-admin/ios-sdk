@@ -19,7 +19,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
 
 
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> RewardsResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> RewardsResponse? in
             return RewardsResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
     }
@@ -36,7 +36,7 @@ extension APIManager {
         urlRequest.httpMethod = "POST"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> RedeemRewardResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> RedeemRewardResponse? in
             return RedeemRewardResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
     }

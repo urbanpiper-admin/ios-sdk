@@ -28,7 +28,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GenericResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> GenericResponse? in
             return GenericResponse(fromDictionary: dictionary) ?? GenericResponse.init()
         }, completion: completion, failure: failure)!
         
@@ -75,7 +75,7 @@ extension APIManager {
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GenericResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> GenericResponse? in
             return GenericResponse(fromDictionary: dictionary) ?? GenericResponse.init()
         }, completion: completion, failure: failure)!
         

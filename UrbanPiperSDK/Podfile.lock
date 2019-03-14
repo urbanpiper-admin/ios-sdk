@@ -4,11 +4,13 @@ PODS:
   - Mixpanel-swift (2.5.7):
     - Mixpanel-swift/Complete (= 2.5.7)
   - Mixpanel-swift/Complete (2.5.7)
+  - Vinyl (0.10.4)
 
 DEPENDENCIES:
   - AppsFlyerFramework
   - GoogleAnalytics
   - Mixpanel-swift
+  - Vinyl (from `https://github.com/Velhotes/Vinyl.git`, branch `master`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -16,11 +18,22 @@ SPEC REPOS:
     - GoogleAnalytics
     - Mixpanel-swift
 
+EXTERNAL SOURCES:
+  Vinyl:
+    :branch: master
+    :git: https://github.com/Velhotes/Vinyl.git
+
+CHECKOUT OPTIONS:
+  Vinyl:
+    :commit: d5cc99e3da7d6c64f7daaae0dd96624c47232a29
+    :git: https://github.com/Velhotes/Vinyl.git
+
 SPEC CHECKSUMS:
   AppsFlyerFramework: 726f063384d8dc763d7b423e48cbc8cbe10989ab
   GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
   Mixpanel-swift: d4de197db883e9dbba162fee6751db5e7766971b
+  Vinyl: 7df5f28a0fa95c87a039624f7a356ab9875ff2e1
 
-PODFILE CHECKSUM: 4e354b4f9583766a11e5c96419a3469702c67f02
+PODFILE CHECKSUM: 7744762fc95e631d9600df1387bdd9b0be8c25f2
 
 COCOAPODS: 1.5.3

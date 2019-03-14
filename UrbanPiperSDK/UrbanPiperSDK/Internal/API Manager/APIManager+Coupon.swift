@@ -24,7 +24,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> OffersAPIResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> OffersAPIResponse? in
             return OffersAPIResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -83,7 +83,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> Order? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> Order? in
             return Order(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         

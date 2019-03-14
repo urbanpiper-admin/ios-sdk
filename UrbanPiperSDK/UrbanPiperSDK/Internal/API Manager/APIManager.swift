@@ -42,17 +42,15 @@ import Foundation
     static let channel: String = "app_ios"
     static let fetchLimit: Int = 20
 
-    var language: Language {
-        didSet {
-            updateHeaders(jwt: jwt)
-        }
-    }
+    var language: Language
 
     let bizId: String
     let apiUsername: String
     let apiKey: String
     
     var jwt: JWT?
+    
+    let appVersion: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
     
     private static let KeyChainUUIDString: String = "KeyChainUUIDStringKey"
 
@@ -63,9 +61,7 @@ import Foundation
     }()
 
     lazy internal var session: URLSession = {
-        let session: URLSession = URLSession(configuration: sessionConfig,
-                                 delegate: self,
-                                 delegateQueue: nil)
+        let session: URLSession = URLSession(configuration: sessionConfig)
         return session
     }()
 
@@ -96,9 +92,8 @@ import Foundation
         self.bizId = bizId
         self.apiUsername = apiUsername
         self.apiKey = apiKey
+        self.jwt = jwt
         super.init()
-        
-        updateHeaders(jwt: jwt)
     }
     
     internal class func initializeManager(language: Language, bizId: String, apiUsername: String, apiKey: String, jwt: JWT?) {
@@ -117,31 +112,24 @@ import Foundation
         }
     }
 
-    @objc internal func updateHeaders(jwt: JWT?) {
-        self.jwt = jwt
-        
-        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-        var additionalHeaders: [String: Any] = ["X-App-Src": "ios",
-                                                 "X-Bid": bizId,
-                                                 "X-App-Version": version,
-                                                 "X-Use-Lang": language.rawValue,
-                                                 "Content-Type": "application/json"] as [String: Any]
-
-        additionalHeaders["Accept-Encoding"] = "gzip"
-        
-        additionalHeaders["Authorization"] = authorizationKey()
-
-        sessionConfig.httpAdditionalHeaders = additionalHeaders
-        
-        session = URLSession(configuration: sessionConfig,
-                             delegate: self,
-                             delegateQueue: nil)
-    }
+//    @objc internal func updateHeaders(jwt: JWT?) {
+//        self.jwt = jwt
+//    }
     
-    func apiRequest<T>(urlRequest: URLRequest,
+    func apiRequest<T>(urlRequest: inout URLRequest,
                        responseParser: (([String: Any]) -> T?)?,
                        completion: APICompletion<T>?,
                        failure: APIFailure?) -> URLSessionDataTask? {
+        
+        let additionalHeaders: [String: String] = ["X-App-Src": "ios",
+                                                "X-Bid": bizId,
+                                                "X-App-Version": appVersion,
+                                                "X-Use-Lang": language.rawValue,
+                                                "Content-Type": "application/json",
+                                                "Accept-Encoding": "gzip",
+                                                "Authorization": authorizationKey()]
+        
+        urlRequest.allHTTPHeaderFields = additionalHeaders
         
         let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             guard let httpResponse = response as? HTTPURLResponse else {
@@ -169,18 +157,23 @@ import Foundation
             
             guard httpResponse.statusCode != 204 else {
                 DispatchQueue.main.async {
-                    completion?(nil)
+                    completion?(GenericResponse.init() as? T)
                 }
                 return
             }
             
-            guard let responseData = data,
-                let jsonObject: Any = try? JSONSerialization.jsonObject(with: responseData, options: []),
-                let dictionary: [String: Any] = jsonObject as? [String: Any],
-                responseParser != nil else {
-                    let upError = UPError(data: data, response: response, error: error)
+            guard let responseData = data else {
+                let upError = UPError(data: data, response: response, error: error)
+                DispatchQueue.main.async {
+                    failure?(upError)
+                }
+                return
+            }
+            
+            guard let jsonObject: Any = try? JSONSerialization.jsonObject(with: responseData, options: []),
+                let dictionary: [String: Any] = jsonObject as? [String: Any], responseParser != nil else {
                     DispatchQueue.main.async {
-                        failure?(upError)
+                        completion?(GenericResponse.init() as? T)
                     }
                 return
             }
@@ -224,14 +217,4 @@ import Foundation
 //        }
 //    }
 
-}
-
-extension APIManager: URLSessionDelegate {
-    
-//    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-//        guard session.delegateQueue.operationCount == 0 else { return }
-//        print("task count \(session.delegateQueue.operationCount)")
-//        session.finishTasksAndInvalidate()
-//    }
-    
 }

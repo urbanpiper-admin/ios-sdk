@@ -32,7 +32,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> CategoriesResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> CategoriesResponse? in
             return CategoriesResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         

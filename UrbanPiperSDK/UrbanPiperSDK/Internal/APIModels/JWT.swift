@@ -56,15 +56,13 @@ public class JWT: NSObject, NSCoding {
         return payload
     }
     
-    public init(jwtToken: String, decodeHandler: (([String: Any]) -> Void)?) {
+    public init(jwtToken: String) {
         let dictionary = JWT.decode(jwtToken: jwtToken)
         
         exp = dictionary["exp"] as? Int
         iat = dictionary["iat"] as? Int
         jit = dictionary["jit"] as? String
-        token = jwtToken
-        
-        decodeHandler?(dictionary)
+        token = jwtToken        
     }
     
 //    public func toDictionary() -> [String:Any] {

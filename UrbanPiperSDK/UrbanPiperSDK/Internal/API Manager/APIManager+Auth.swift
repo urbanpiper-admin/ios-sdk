@@ -31,7 +31,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> String? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> String? in
             return dictionary["token"] as? String
         }, completion: completion, failure: failure)!
         
@@ -79,7 +79,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> LoginResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> LoginResponse? in
             return LoginResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -131,7 +131,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GenericResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> GenericResponse? in
             return GenericResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -184,7 +184,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GenericResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> GenericResponse? in
             return GenericResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -236,7 +236,7 @@ extension APIManager {
         }
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> RegistrationResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> RegistrationResponse? in
             return RegistrationResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         

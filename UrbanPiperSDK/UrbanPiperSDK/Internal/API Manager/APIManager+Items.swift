@@ -26,7 +26,7 @@ extension APIManager {
         urlRequest.setValue(bizAuth(), forHTTPHeaderField: "Authorization")
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> CategoryOptionsResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> CategoryOptionsResponse? in
             return CategoryOptionsResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -96,7 +96,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> CategoryItemsResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> CategoryItemsResponse? in
             return CategoryItemsResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -153,7 +153,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> ItemsSearchResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> ItemsSearchResponse? in
             return ItemsSearchResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -206,7 +206,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> Item? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> Item? in
             let item = Item(fromDictionary: dictionary)
             item.isItemDetailsItem = true
             return item

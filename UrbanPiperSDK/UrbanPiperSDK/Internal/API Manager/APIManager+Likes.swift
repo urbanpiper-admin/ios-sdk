@@ -24,7 +24,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> UserLikesResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> UserLikesResponse? in
             return UserLikesResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -66,7 +66,7 @@ extension APIManager {
         var urlRequest: URLRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GenericResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> GenericResponse? in
             return GenericResponse(fromDictionary: dictionary) ?? GenericResponse.init()
         }, completion: completion, failure: failure)!
         
@@ -107,7 +107,7 @@ extension APIManager {
         var urlRequest: URLRequest = URLRequest(url: url)
         urlRequest.httpMethod = "DELETE"
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> GenericResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> GenericResponse? in
             return GenericResponse(fromDictionary: dictionary) ?? GenericResponse.init()
         }, completion: completion, failure: failure)!
         

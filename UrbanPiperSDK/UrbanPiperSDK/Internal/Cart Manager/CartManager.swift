@@ -107,13 +107,13 @@ extension CartManager {
                 item.quantity += quantity
                 item.notes = notes
             } else {
-                let error = CartError.maxOrderableQuantityAdded(cartItem.currentStock)
+                let error = CartError.itemQuantityNotAvaialble(cartItem.currentStock - item.quantity)
                 throw error
 //                let _ = cartManagerObservers.map { $0.value?.handleCart(error: upError) }
             }
              isCartItem = cartItem === item
         } else {
-            cartItem.quantity = 1
+            cartItem.quantity = quantity
             cartItem.notes = notes
 
             cartItems.append(cartItem)

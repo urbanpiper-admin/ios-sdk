@@ -35,7 +35,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> ReorderResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> ReorderResponse? in
             return ReorderResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         

@@ -36,7 +36,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> PreProcessOrderResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> PreProcessOrderResponse? in
             return PreProcessOrderResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -86,7 +86,7 @@ extension APIManager {
 //        urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 //        
 //        
-//        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> Order? in
+//        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> Order? in
 //            return Order(fromDictionary: dictionary)
 //        }, completion: completion, failure: failure)!
 //        
@@ -147,7 +147,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> PaymentInitResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> PaymentInitResponse? in
             return PaymentInitResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -272,7 +272,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> OrderResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> OrderResponse? in
             return OrderResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
@@ -316,7 +316,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: urlRequest, responseParser: { (dictionary) -> OrderVerifyTxnResponse? in
+        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> OrderVerifyTxnResponse? in
             return OrderVerifyTxnResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
