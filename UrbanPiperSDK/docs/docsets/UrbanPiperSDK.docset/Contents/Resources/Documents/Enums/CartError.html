@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           UrbanPiperSDK Docs
         </a>
-         (42% documented)
+         (43% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -32,7 +32,19 @@
         </form>
       </p>
     
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/urbanpiper/ios-sdk">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
     
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="dash-feed://https%3A%2F%2Fgithub%2Ecom%2Furbanpiper%2Fios%2Durbanpipersdk%2Ddocs%2Fdocsets%2FUrbanPiperSDK%2Exml">
+            <img class="header-icon" src="../img/dash.png"/>
+            Install in Dash
+          </a>
+        </p>
     </header>
 
     <p class="breadcrumbs">
@@ -230,7 +242,7 @@
             <p>Error thrown by Cart</p>
 
 <ul>
-<li>maxOrderableQuantityAdded: This error is thrown by the addItem function in UrbanPiperSDK when an item is added beyond the vairable value currentStock in <code><a href="../Classes/Item.html">Item</a></code></li>
+<li>itemQuantityNotAvaialble: This error is thrown by the <code><a href="../Classes/UrbanPiperSDK.html#/c:@CM@UrbanPiperSDK@objc(cs)UrbanPiperSDK(im)addItemToCartWithCartItem:quantity:notes:error:">UrbanPiperSDK.addItemToCart(...)</a></code> function in UrbanPiperSDK when the quantity to be added + the current item quantity exceeds the variable value <code><a href="../Classes/Item.html#/s:13UrbanPiperSDK4ItemC12currentStockSiSgvp">Item.currentStock</a></code> in <code><a href="../Classes/Item.html">Item</a></code> object, the associated value of the enum returns the max item quanity that can be added.</li>
 </ul>
 
           </div>
@@ -243,9 +255,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:13UrbanPiperSDK9CartErrorO25maxOrderableQuantityAddedyACSicACmF"></a>
-                    <a name="//apple_ref/swift/Element/maxOrderableQuantityAdded(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:13UrbanPiperSDK9CartErrorO25maxOrderableQuantityAddedyACSicACmF">maxOrderableQuantityAdded(_:)</a>
+                    <a name="/s:13UrbanPiperSDK9CartErrorO24itemQuantityNotAvaialbleyACSicACmF"></a>
+                    <a name="//apple_ref/swift/Element/itemQuantityNotAvaialble(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13UrbanPiperSDK9CartErrorO24itemQuantityNotAvaialbleyACSicACmF">itemQuantityNotAvaialble(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -255,7 +267,7 @@
                       <div class="abstract">
                         
 <ul>
-<li>maxOrderableQuantityAdded: This error is thrown by the addItem function in UrbanPiperSDK when an item is added beyond the vairable value currentStock in <code><a href="../Classes/Item.html">Item</a></code></li>
+<li>itemQuantityNotAvaialble: This error is thrown by the <code><a href="../Classes/UrbanPiperSDK.html#/c:@CM@UrbanPiperSDK@objc(cs)UrbanPiperSDK(im)addItemToCartWithCartItem:quantity:notes:error:">UrbanPiperSDK.addItemToCart(...)</a></code> function in UrbanPiperSDK when the quantity to be added + the current item quantity exceeds the variable value <code><a href="../Classes/Item.html#/s:13UrbanPiperSDK4ItemC12currentStockSiSgvp">Item.currentStock</a></code> in <code><a href="../Classes/Item.html">Item</a></code> object, the associated value of the enum returns the max item quanity that can be added.</li>
 </ul>
 
                       </div>
@@ -263,9 +275,12 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">maxOrderableQuantityAdded</span><span class="p">(</span><span class="kt">Int</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">itemQuantityNotAvaialble</span><span class="p">(</span><span class="kt">Int</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/urbanpiper/ios-sdk/tree/v0.1.0/UrbanPiperSDK/Constants.swift#L93">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -278,7 +293,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="https://urbanpiper.com" target="_blank" rel="external">UrbanPiper</a>. All rights reserved. (Last updated: 2019-03-12)</p>
+      <p>&copy; 2019 <a class="link" href="https://urbanpiper.com" target="_blank" rel="external">UrbanPiper</a>. All rights reserved. (Last updated: 2019-03-14)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

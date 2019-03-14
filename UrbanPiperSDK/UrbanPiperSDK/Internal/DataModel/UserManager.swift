@@ -344,13 +344,7 @@ extension UserManager {
 //        addDataTask(dataTask: dataTask)
         return dataTask
     }
-    
-    @discardableResult internal func unRegisterForFCMMessaging(token: String, completion: ((GenericResponse??) -> Void)? = nil,
-                                                             failure: APIFailure? = nil) -> URLSessionDataTask {
-        let dataTask: URLSessionDataTask = APIManager.shared.unRegisterForFCMMessaging(token: token, completion: nil, failure: nil)
-//        addDataTask(dataTask: dataTask)
-        return dataTask
-    }
+
 }
 
 //  MARK: Normal Auth

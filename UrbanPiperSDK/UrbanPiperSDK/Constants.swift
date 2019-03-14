@@ -87,9 +87,9 @@ public enum ItemOptionBuilderError: Error {
 
 /// Error thrown by Cart
 ///
-/// - itemQuantityNotAvaialble: This error is thrown by the addItem function in UrbanPiperSDK when an the new item quantity obtained by adding the item quantity and the quantity to be added, exceeds variable value currentStock in `Item` object, the associated value of the enum returns the max item quanity that can be added.
+/// - itemQuantityNotAvaialble: This error is thrown by the `UrbanPiperSDK.addItemToCart(...)` function in UrbanPiperSDK when the quantity to be added + the current item quantity exceeds the variable value `Item.currentStock` in `Item` object, the associated value of the enum returns the max item quanity that can be added.
 public enum CartError: Error {
-    /// - itemQuantityNotAvaialble: This error is thrown by the addItem function in UrbanPiperSDK when an the new item quantity obtained by adding the item quantity and the quantity to be added, exceeds variable value currentStock in `Item` object, the associated value of the enum returns the max item quanity that can be added.
+    /// - itemQuantityNotAvaialble: This error is thrown by the `UrbanPiperSDK.addItemToCart(...)` function in UrbanPiperSDK when the quantity to be added + the current item quantity exceeds the variable value `Item.currentStock` in `Item` object, the associated value of the enum returns the max item quanity that can be added.
     case itemQuantityNotAvaialble(Int)
 }
 

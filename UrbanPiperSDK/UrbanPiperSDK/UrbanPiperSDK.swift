@@ -30,11 +30,11 @@ public class UrbanPiperSDK: NSObject {
         APIManager.shared.session = testSession
     }
     
-    #if DEBUG
-    public class func intialize(language: Language? = .english, bizId: String, apiUsername: String, apiKey: String, session: URLSession? = nil, callback: @escaping (SDKEvent) -> Void) {
-        shared = UrbanPiperSDK(language: language!, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, session: session, callback: callback)
-    }
-    #else
+//    #if DEBUG
+//    public class func intialize(language: Language? = .english, bizId: String, apiUsername: String, apiKey: String, session: URLSession? = nil, callback: @escaping (SDKEvent) -> Void) {
+//        shared = UrbanPiperSDK(language: language!, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, session: session, callback: callback)
+//    }
+//    #else
     
     /// Intializes the UrbanPiperSDK, the initialized instance of the SDK is accessible via the static func sharedInstance()
     ///
@@ -47,7 +47,7 @@ public class UrbanPiperSDK: NSObject {
     public class func intialize(language: Language? = .english, bizId: String, apiUsername: String, apiKey: String, callback: @escaping (SDKEvent) -> Void) {
         shared = UrbanPiperSDK(language: language!, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, callback: callback)
     }
-    #endif
+//    #endif
     
     /// Change the `Language` of the data being returned from the server after the SDK has been initialized
     ///
@@ -663,7 +663,7 @@ extension UrbanPiperSDK {
     ///   - cartItem: The cart item to be added
     ///   - quantity: The quantity of the item to be added
     ///   - notes: The notes for the item to be added
-    /// - Throws: Throws the error "itemQuantityNotAvaialble" if the current cart quantity of the item is equal to the avaialble stock for the item
+    /// - Throws: Throws the error "itemQuantityNotAvaialble" if the quantity to be added + the current item quantity exceeds the variable value `Item.currentStock` in `Item` object, the associated value of the enum returns the max item quanity that can be added.
     @objc public func addItemToCart(cartItem: CartItem, quantity: Int, notes: String? = nil) throws {
         do {
             try CartManager.shared.add(cartItem: cartItem, quantity: quantity, notes: notes)

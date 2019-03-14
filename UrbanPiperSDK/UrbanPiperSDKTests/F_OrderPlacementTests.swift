@@ -26,6 +26,16 @@ class F_OrderPlacementTests: XCTestCase {
         return UrbanPiperSDK.sharedInstance()
     }()
     
+    override class func setUp() {
+        let bizId: String = "76720224"
+        let apiUsername: String = "biz_adm_clients_BTWNKmcbJCeb"
+        let apiKey: String = "d8e16d812ebe53c7907fe1969210566a981c8962"
+        
+        UrbanPiperSDK.intialize(bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, session: turntable, callback: { (sdkEvent) in
+            print("sdk event \(sdkEvent)")
+        })
+    }
+    
     override func setUp() {
         
     }
