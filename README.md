@@ -59,7 +59,7 @@ Check out the **[Carthage docs »](https://github.com/Carthage/Carthage#if-youre
 # Initialization
 
 Import UrbanPiper into AppDelegate.swift, and initialize UrbanPiper within `application:didFinishLaunchingWithOptions:`
-![alt text](http://images.mxpnl.com/docs/2016-07-19%2023:27:03.724972-Screen%20Shot%202016-07-18%20at%207.16.51%20PM.png)
+![alt text]
 
 ```swift
 func application(_ application: UIApplication,
