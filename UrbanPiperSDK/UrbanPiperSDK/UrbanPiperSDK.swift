@@ -30,11 +30,11 @@ public class UrbanPiperSDK: NSObject {
         APIManager.shared.session = testSession
     }
     
-//    #if DEBUG
-//    public class func intialize(language: Language? = .english, bizId: String, apiUsername: String, apiKey: String, session: URLSession? = nil, callback: @escaping (SDKEvent) -> Void) {
-//        shared = UrbanPiperSDK(language: language!, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, session: session, callback: callback)
-//    }
-//    #else
+    #if SDKTESTS
+    public class func intialize(language: Language? = .english, bizId: String, apiUsername: String, apiKey: String, session: URLSession? = nil, callback: @escaping (SDKEvent) -> Void) {
+        shared = UrbanPiperSDK(language: language!, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, session: session, callback: callback)
+    }
+    #else
     
     /// Intializes the UrbanPiperSDK, the initialized instance of the SDK is accessible via the static func sharedInstance()
     ///
@@ -47,7 +47,7 @@ public class UrbanPiperSDK: NSObject {
     public class func intialize(language: Language? = .english, bizId: String, apiUsername: String, apiKey: String, callback: @escaping (SDKEvent) -> Void) {
         shared = UrbanPiperSDK(language: language!, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, callback: callback)
     }
-//    #endif
+    #endif
     
     /// Change the `Language` of the data being returned from the server after the SDK has been initialized
     ///
