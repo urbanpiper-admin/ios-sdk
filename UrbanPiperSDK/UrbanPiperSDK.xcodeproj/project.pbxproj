@@ -24,6 +24,7 @@
 		1807BEDD22200929009B9804 /* ReorderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1807BEDA22200929009B9804 /* ReorderItem.swift */; };
 		1807BEDE22200929009B9804 /* PastOrderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1807BEDB22200929009B9804 /* PastOrderItem.swift */; };
 		1807BEDF22200929009B9804 /* PreProcessOrderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1807BEDC22200929009B9804 /* PreProcessOrderResponse.swift */; };
+		1809BBFA223B873C00709B52 /* UrbanPiperSDK+Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1809BBF9223B873C00709B52 /* UrbanPiperSDK+Tests.swift */; };
 		1811F6C620D4F3AF006FEDE1 /* MyOrderOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1811F6BE20D4F3AC006FEDE1 /* MyOrderOption.swift */; };
 		1811F6C720D4F3AF006FEDE1 /* MyOrderMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1811F6BF20D4F3AD006FEDE1 /* MyOrderMeta.swift */; };
 		1811F6CA20D4F3AF006FEDE1 /* MyOrderStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1811F6C220D4F3AE006FEDE1 /* MyOrderStore.swift */; };
@@ -230,6 +231,7 @@
 		1807BEDA22200929009B9804 /* ReorderItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReorderItem.swift; sourceTree = "<group>"; };
 		1807BEDB22200929009B9804 /* PastOrderItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PastOrderItem.swift; sourceTree = "<group>"; };
 		1807BEDC22200929009B9804 /* PreProcessOrderResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreProcessOrderResponse.swift; sourceTree = "<group>"; };
+		1809BBF9223B873C00709B52 /* UrbanPiperSDK+Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UrbanPiperSDK+Tests.swift"; sourceTree = "<group>"; };
 		1811F6BE20D4F3AC006FEDE1 /* MyOrderOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOrderOption.swift; sourceTree = "<group>"; };
 		1811F6BF20D4F3AD006FEDE1 /* MyOrderMeta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOrderMeta.swift; sourceTree = "<group>"; };
 		1811F6C220D4F3AE006FEDE1 /* MyOrderStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyOrderStore.swift; sourceTree = "<group>"; };
@@ -504,6 +506,7 @@
 		189BF4BF2235551400FD5D72 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
+				1809BBF9223B873C00709B52 /* UrbanPiperSDK+Tests.swift */,
 				189BF4C122363E5900FD5D72 /* APIModel Extensions */,
 				189BF4BC223547A100FD5D72 /* UrbanPiperSDK+Internal.swift */,
 				189BF4E1223778B900FD5D72 /* UserManager+Internal.swift */,
@@ -1194,6 +1197,7 @@
 				4607A9E0208F1E2700128010 /* Photo.swift in Sources */,
 				4607A9C5208F1E2700128010 /* Geometry.swift in Sources */,
 				18B3C40A21D7415A00768401 /* CategoryOptionsResponse.swift in Sources */,
+				1809BBFA223B873C00709B52 /* UrbanPiperSDK+Tests.swift in Sources */,
 				181F215F2105B76500878E6D /* OrderPayment.swift in Sources */,
 				18B3C41F21D9E71700768401 /* APIManager+Feedback.swift in Sources */,
 				18978EE02202E62300189AB4 /* Constants.swift in Sources */,

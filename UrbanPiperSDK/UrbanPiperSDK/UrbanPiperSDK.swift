@@ -11,7 +11,7 @@ import CoreLocation
 /// The primary class for integrating UrbanPiperSDK in your app
 public class UrbanPiperSDK: NSObject {
 
-    static private(set) var shared: UrbanPiperSDK!
+    static internal(set) var shared: UrbanPiperSDK!
     internal var callback:  (SDKEvent) -> Void
     
     /// Returns the shared instance that was initialized
@@ -22,19 +22,13 @@ public class UrbanPiperSDK: NSObject {
         return shared
     }
     
-    private init(language: Language = .english, bizId: String, apiUsername: String, apiKey: String, session: URLSession? = nil, callback: @escaping (SDKEvent) -> Void) {
+    internal init(language: Language = .english, bizId: String, apiUsername: String, apiKey: String, session: URLSession? = nil, callback: @escaping (SDKEvent) -> Void) {
         self.callback = callback
         super.init()
         APIManager.initializeManager(language: language, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, jwt: UserManager.shared.currentUser?.jwt)
         guard let testSession = session else { return }
         APIManager.shared.session = testSession
     }
-    
-    #if SDKTESTS
-    public class func intialize(language: Language? = .english, bizId: String, apiUsername: String, apiKey: String, session: URLSession? = nil, callback: @escaping (SDKEvent) -> Void) {
-        shared = UrbanPiperSDK(language: language!, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, session: session, callback: callback)
-    }
-    #else
     
     /// Intializes the UrbanPiperSDK, the initialized instance of the SDK is accessible via the static func sharedInstance()
     ///
@@ -47,7 +41,6 @@ public class UrbanPiperSDK: NSObject {
     public class func intialize(language: Language? = .english, bizId: String, apiUsername: String, apiKey: String, callback: @escaping (SDKEvent) -> Void) {
         shared = UrbanPiperSDK(language: language!, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, callback: callback)
     }
-    #endif
     
     /// Change the `Language` of the data being returned from the server after the SDK has been initialized
     ///
