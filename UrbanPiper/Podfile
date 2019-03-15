@@ -1,0 +1,27 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '10.0'
+use_frameworks!
+
+def common_pods
+#    pod 'FirebaseMessaging'
+#    pod 'FirebaseRemoteConfig'
+#    pod 'GooglePlaces'
+#    pod 'GoogleMaps'
+    pod 'GoogleAnalytics'
+    pod 'Mixpanel-swift'
+    pod 'AppsFlyerFramework'
+#    pod 'PhoneNumberKit', '~> 2.5'
+end
+
+target 'UrbanPiper' do
+    common_pods
+end
+
+target 'UrbanPiperTests' do
+    pod 'Vinyl', :git => 'https://github.com/Velhotes/Vinyl.git', :branch => 'master'
+end
+
+target 'UrbanPiper-Example' do
+    common_pods
+end
+
