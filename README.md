@@ -90,7 +90,7 @@ Once the SDK has been initialized the user object can be accessed from the SDK b
 ## User login
 
 <a name="login"></a>
-<b>Login
+<b>Login</b>
     
 An User can be logged in by calling the function below with the relevant params.
 
@@ -102,7 +102,7 @@ An User can be logged in by calling the function below with the relevant params.
 PHONENUMBER: The phone number passed in should be prefixed with the user's country code
 
 <a name="social-login"></a>
-<b>Social User Login
+<b>Social User Login</b>
     
 For a Social User Login the function below should be called with the relevant params
 
@@ -123,7 +123,7 @@ PROVIDER_ACCESS_TOKEN: The token that is provided by the PROVIDER on successful 
 ## User registration
 
 <a name="registration"></a>
-<b>Registration
+<b>Registration</b>
     
 Registering an user is a two step process, the user has to be registered using the registerUser api and then verify the account with the otp sent to the user's phone by calling the verifyRegOTP api
 
@@ -143,7 +143,7 @@ Registering an user is a two step process, the user has to be registered using t
 OTP: 
 
 <a name="social-registration"></a>
-<b>Social User Registration
+<b>Social User Registration</b>
     
 ```swift
    Social user registration
