@@ -176,7 +176,7 @@ Case where the message variable is 'new_registration_required' the user has to b
 
 For cases where the message variable is other than 'new_registration_required' the phone number is already present in the system an the user's phone number needs to be verified using the functions verifySocialOTP and to resend a new otp the function resendSocialOTP should be used.
 
-<em>Case 2:
+<em>Case 2:<em />
 
 ```swift
    socialRegBuilder.verifySocialOTP(otp: String, completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
