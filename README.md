@@ -22,6 +22,7 @@
     - [Nearest store](#nearest-store)
     - [Store item categories](#store-item-catalogue)
     - [Category items](#category-items)
+- [Item Option Builder](#item-option-builder)
 - [Cart](#cart)
     - [Add item](#add-item)
 - [Ordering](#ordering)
@@ -90,7 +91,7 @@ Once the SDK has been initialized the user object can be accessed from the SDK b
 ## User login
 
 <a name="login"></a>
-<b>Login</b>
+### Login
     
 An User can be logged in by calling the function below with the relevant params.
 
@@ -101,8 +102,10 @@ An User can be logged in by calling the function below with the relevant params.
 
 PHONENUMBER: The phone number passed in should be prefixed with the user's country code
 
+Once a user has successfully logged in the user object can be accessed by the SDK's getUser()![alt text] function
+
 <a name="social-login"></a>
-<b>Social User Login</b>
+### Social User Login
     
 For a Social User Login the function below should be called with the relevant params
 
@@ -123,7 +126,7 @@ PROVIDER_ACCESS_TOKEN: The token that is provided by the PROVIDER on successful 
 ## User registration
 
 <a name="registration"></a>
-<b>Registration</b>
+### Registration
     
 Registering an user is a two step process, the user has to be registered using the registerUser api and then verify the account with the otp sent to the user's phone by calling the verifyRegOTP api
 
@@ -143,8 +146,10 @@ Registering an user is a two step process, the user has to be registered using t
 
 OTP: The otp sent is sent to the phone number passed in the registerUser call
 
+Once a user's otp has been verifed successfully the [login](#login) function should to used to login the user.
+
 <a name="social-registration"></a>
-<b>Social User Registration</b>
+### Social User Registration
 
 Registering an social user starts with an call to verifyPhone number.
 
@@ -164,7 +169,7 @@ The verifyPhone api returns an 'RegistrationResponse' object, the object contain
 
 Case where the message variable is 'new_registration_required' the user has to be registered to the business by calling the function 'registerSocialUser' and the functions verifyRegOTP and resendRegOtp should be used to used to verify the account and resend the otp.
 
-*Case 1:*
+#### Case 1:
     
 ```swift
     socialRegBuilder.registerSocialUser(completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
@@ -176,7 +181,7 @@ Case where the message variable is 'new_registration_required' the user has to b
 
 For cases where the message variable is other than 'new_registration_required' the phone number is already present in the system an the user's phone number needs to be verified using the functions verifySocialOTP and to resend a new otp the function resendSocialOTP should be used.
 
-*Case 2:*
+#### Case 2:
 
 ```swift
    socialRegBuilder.verifySocialOTP(otp: String, completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
@@ -184,17 +189,28 @@ For cases where the message variable is other than 'new_registration_required' t
    socialRegBuilder.resendSocialOTP(completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
 ```
 
+Once a user has successfully verified the otp the [social user login](#social-login) function should to called to login the user.
+
 <a name="catalogue"></a>
 ## Catalogue
+
 ```swift
-   Nearest store
+   UrbanPiper.sharedInstance().getNearestStore(lat: USERLOCATIONLATITUDE, lng: USERLOCATIONLONGITUDE,
+                                               completion: COMPLETION_CALLBACK,
+                                               failure: FAILURE_CALLBACK)
 ```
+
 ```swift
-   Store categories
+   UrbanPiper.sharedInstance().getCategories(storeId: NEARESTSTOREID, offset: PAGINATIONOFFSET, limit: PAGINATIONFETCHLIMIT,
+                                             completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
+
+   UrbanPiper.sharedInstance().getCategoryItems(categoryId: CATEGORYID, storeId: NEARESTSTOREID, offset: PAGINATIONOFFSET, 
+                                                limit: PAGINATIONFETCHLIMIT, sortKey: SORTKEY, filterOptions: FILTEROPTIONS,
+                                                completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
 ```
-```swift
-   Category items
-```
+
+<a name="item-option-builder"></a>
+## Item Option Builder
 
 <a name="cart"></a>
 ## Cart
