@@ -1,7 +1,7 @@
 
 [![CocoaPods Compatible](http://img.shields.io/cocoapods/v/urbanpiper-swift.svg)](https://urbanpiper.com)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg)](https://github.com/Carthage/Carthage)
-[![Documentation](https://urbanpiper.github.io/urbanpiper/badge.svg)](https://urbanpiper.github.io/urbanpipersdk-ios)
+
 # Table of Contents
 
 <!-- MarkdownTOC -->
@@ -107,7 +107,7 @@ PHONENUMBER: The phone number passed in should be prefixed with the user's count
 For a Social User Login the function below should be called with the relevant params
 
 ```swift
-   UrbanPiper.sharedInstance().socialLogin(email: EMAIL, socialLoginProvider: PROVIDER, accessToken: PROVIDER_ACCESS_TtOKEN,         
+   UrbanPiper.sharedInstance().socialLogin(email: EMAIL, socialLoginProvider: PROVIDER, accessToken: PROVIDER_ACCESS_TOKEN,         
                                            completion:COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
 ```
 
@@ -133,20 +133,55 @@ Registering an user is a two step process, the user has to be registered using t
    
    // Register an account with your business
    registrationBuilder.registerUser(phone: PHONENUMBER, name: USERNAME, email: EMAIL, password: PASSWORD, 
-                                    completion: COMPLETION_CALLBACK, failure: @escaping FAILURE_CALLBACK)
+                                    completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
    
    // Verify the account with the otp sent to the user's phone number
    // The phone number passed in should be prefixed with the user's country code
-   registrationBuilder.registerUser(phone: PHONENUMBER, otp: OTP, email: EMAIL, password: PASSWORD, 
-                                    completion: COMPLETION_CALLBACK, failure: @escaping FAILURE_CALLBACK)
+   registrationBuilder.verifyRegOTP(phone: PHONENUMBER, otp: OTP, email: EMAIL, password: PASSWORD, 
+                                    completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
 ```
-OTP: 
+
+OTP: The otp sent is sent to the phone number passed in the registerUser call
 
 <a name="social-registration"></a>
 <b>Social User Registration</b>
+
+Registering an social user starts with an call to verifyPhone number.
+
+```swift
+   // This returns an social registration builder object that contains the relevant api call to register an social login user
+   let socialRegBuilder: SocialRegBuilder = UrbanPiper.sharedInstance().startSocialRegistration()
+
+    // API call check if the passed in phone number is present in the system
+    socialRegBuilder.verifyPhone(name: USERNAME, phone: PHONENUMBER, email: EMAIL, gender: GENDER, provider: PROVIDER,        
+                                 providerAccessToken: PROVIDER_ACCESS_TOKEN, completion: COMPLETION_CALLBACK, 
+                                 failure: FAILURE_CALLBACK)
+```
+
+Based on the result of the verifyPhone api call the social user registration varies in two way.
+
+The verifyPhone api returns an 'RegistrationResponse' object, the object contains the 'message' variable
+
+Case where the message variable is 'new_registration_required' the user has to be registered to the business by calling the function 'registerSocialUser' and the functions verifyRegOTP and resendRegOtp should be used to used to verify the account and resend the otp.
+
+<em>Case 1:<em /><br>
     
 ```swift
-   Social user registration
+    socialRegBuilder.registerSocialUser(completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
+    
+    socialRegBuilder.verifyRegOTP(otp: OTP, completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
+    
+    socialRegBuilder.resendRegOTP(completion: COMPLETION_CALLBACK, failure: @escaping APIFailure)
+```
+
+For cases where the message variable is other than 'new_registration_required' the phone number is already present in the system an the user's phone number needs to be verified using the functions verifySocialOTP and to resend a new otp the function resendSocialOTP should be used.
+
+<em>Case 2:
+
+```swift
+   socialRegBuilder.verifySocialOTP(otp: String, completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
+    
+   socialRegBuilder.resendSocialOTP(completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
 ```
 
 <a name="catalogue"></a>
