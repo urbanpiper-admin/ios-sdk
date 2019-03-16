@@ -164,7 +164,7 @@ The verifyPhone api returns an 'RegistrationResponse' object, the object contain
 
 Case where the message variable is 'new_registration_required' the user has to be registered to the business by calling the function 'registerSocialUser' and the functions verifyRegOTP and resendRegOtp should be used to used to verify the account and resend the otp.
 
-<em>Case 1:<em /><br>
+*Case 1:*
     
 ```swift
     socialRegBuilder.registerSocialUser(completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
@@ -176,7 +176,7 @@ Case where the message variable is 'new_registration_required' the user has to b
 
 For cases where the message variable is other than 'new_registration_required' the phone number is already present in the system an the user's phone number needs to be verified using the functions verifySocialOTP and to resend a new otp the function resendSocialOTP should be used.
 
-<em>Case 2:<em />
+*Case 2:*
 
 ```swift
    socialRegBuilder.verifySocialOTP(otp: String, completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
