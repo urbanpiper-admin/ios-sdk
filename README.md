@@ -28,6 +28,8 @@
 <a name="introduction"></a>
 # Introduction
 
+The official iOS SDK of UrbanPiper
+
 <a name="installation"></a>
 # Installation
 
