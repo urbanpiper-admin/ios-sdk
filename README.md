@@ -270,13 +270,14 @@ ITEM: An instance of item object from the getCategoryItems API result.
 <a name="cart"></a>
 ## Cart
 
-The following are some of the cart functions to add an item to the cart.
+The following are functions to call to add an item to the cart.
 
 ```swift
    // The initializer methods returns a cart item that can be added to the Cart.
    let cartItem = CartItem(item: item)
    let cartItem = CartItem(reorderItem: item)
 
+   // Adds the cartItem to the cart.
    do {
       try UrbanPiper.sharedInstance().addItemToCart(cartItem: cartItem, quantity: 1)
       // cartItem has been added to the cart.
@@ -294,25 +295,91 @@ REORDERITEM: An instance of reorderItem object from the reorder API result.
 <a name="Ordering"></a>
 ## Ordering
 
+To place an order the `CheckoutBuilder` class needs to be initialized. checkout builder contains the relevant API calls to place an order
+
 ```swift
+   // Initializes an instance of CheckoutBuilder
    let checkoutBuilder: CheckoutBuilder = UrbanPiper.sharedInstance().startCheckout()
    
+   // Returns an list of supported paymentOptions, this call returns the supported payment options only when the validateCart function has been called atleast once else it returns an 'nil'.
    var paymentOptionsArray = checkoutBuilder.getPaymentModes()
    
+   // Clears the coupon that has been applied.
    checkoutBuilder.clearCoupon()
-   
-   checkoutBuilder.validateCart(store: OrderingStoreDataModel.shared.orderingStore!, useWalletCredits: applyWalletCredits,
-                                deliveryOption: selectedDeliveryOption, cartItems: CartManager.shared.cartItems,
-                                orderTotal: CartManager.shared.cartValue, completion: COMPLETION_CALLBACK, 
+```
+
+The following are the steps to be followed to place an order.
+
+#### Step 1:
+
+API call to validate the items in cart, get the supported payments options, get order details such as taxes, delivery charges, payment charges etc.
+
+This API should be called whenever a cart item is added, removed.
+
+Calling this API invalidates the previous calls to `validateCoupon(...)`, and `initPayment(...)`, the response values of both the calls should be discarded.
+
+```swift
+   checkoutBuilder.validateCart(store: NEARESTSTORE, useWalletCredits: USERWALLETCREDIT, deliveryOption: DELIVERYOPTION, 
+                                cartItems: CARTITEMS, orderTotal: CARTTOTAL, completion: COMPLETION_CALLBACK, 
                                 failure: FAILURE_CALLBACK)
-                                                                        
-    checkoutBuilder.validateCoupon(code: String, completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
-    
-    checkoutBuilder.initPayment(paymentOption: PaymentOption, completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
-    
-    checkoutBuilder.placeOrder(address: Address?, deliveryDate: Date, deliveryTime: Date, timeSlot: TimeSlot?, 
-                               paymentOption: PaymentOption, instructions: String, phone: String,
+```
+
+NEARESTSTORE: The store where the order is to be placed..<br />
+USERWALLETCREDIT: Setting this as 'true' enable split payment where wallet amount is used for payment first and the balance amount from the payment option selected by the user.<br />
+DELIVERYOPTION: Delivery optin selected by the user.<br />
+CARTITEMS: The list of cart items added to card, retrived using UrbanPiper.sharedInstance().getCartItems().<br />
+CARTTOTAL: The total value of all the items in cart, retrived using UrbanPiper.sharedInstance().getCartValue().
+
+#### Step 2:
+
+API call to validate the coupon code applied by the user. 
+
+When ever a validateCart API call is made the previous validateCoupon response is invalidated. To reapply the coupon call this API after the completion of the validateCart API call.  
+
+```swift                                                                
+    checkoutBuilder.validateCoupon(code: COUPONCODE, completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
+```
+
+#### Step 3:
+
+This API call returns the details on the payment option passed in. This step can be skipped for the paymentOption 'cash' and the placeOrder API call can be called directly.
+
+```swift                                                                
+    checkoutBuilder.initPayment(paymentOption: PAYMENTOPTION, completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
+```
+
+PAYMENTOPTION: Payment option selected by the user.
+
+#### Step 4:
+
+API call places the order in the store passed in the validateCart API with the cart items from the same.
+
+```swift                                                                
+    checkoutBuilder.placeOrder(address: ADDRESS, deliveryDate: DELIVERYDATE, deliveryTime: DELIVERYTIME, timeSlot: TIMESLOT, 
+                               paymentOption: PAYMENTOPTION, instructions: INSTRUCTIONS, phone: PHONENUMBER,
                                completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
-                                              
-    checkoutBuilder.verifyPayment(pid: String, completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
+```
+
+ADDRESS: Address to delivered.<br />
+DELIVERYDATE: The date at which the item is to delivered.<br />
+DELIVERYTIME: The time at which the item is to be delivered.<br />
+
+TIMESLOT: Optional. Only needs to be set when time slots are used. The timeslot selected by the user to deliver at.<br />
+
+The available time slots can be retrived from the [nearest store api](#catalogue), the api result `StoreResponse` contains two varibles 'Biz' and 'Store'.<br />
+
+The time slots available in the Store object represents the time slots set on a store level, if there are no time slot objects in the Store object use the time slots from the Biz which are the time slots configured at Biz level.<br />
+
+PAYMENTOPTION: Payment option selected by the user.<br />
+INSTRUCTIONS: Instructions to be sent to the store.<br />
+PHONENUMBER: Phone number of the user.
+
+#### Step 5:
+
+API call to verify the payment transaction when the paymentOption is 'paymentGateway', for other payment options this function can be skipped.
+
+#### Step 5:
+
+```swift                                                                                                              
+    checkoutBuilder.verifyPayment(pid: PAYMENTID, completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
 ```
