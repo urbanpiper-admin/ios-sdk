@@ -378,8 +378,6 @@ PHONENUMBER: Phone number of the user.
 
 API call to verify the payment transaction when the paymentOption is 'paymentGateway', for other payment options this function can be skipped.
 
-#### Step 5:
-
 ```swift                                                                                                              
     checkoutBuilder.verifyPayment(pid: PAYMENTID, completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
 ```
