@@ -366,7 +366,7 @@ DELIVERYTIME: The time at which the item is to be delivered.<br />
 
 TIMESLOT: Optional. Only needs to be set when time slots are used. The timeslot selected by the user to deliver at.<br />
 
-The available time slots can be retrived from the [nearest store api](#catalogue), the api result `StoreResponse` contains two varibles 'Biz' and 'Store'.<br />
+The available time slots can be retrived from the [nearest store api](#catalogue), the api result `StoreResponse` contains two varibles `Biz` and `Store`.<br />
 
 The time slots available in the Store object represents the time slots set on a store level, if there are no time slot objects in the Store object use the time slots from the Biz which are the time slots configured at Biz level.<br />
 
