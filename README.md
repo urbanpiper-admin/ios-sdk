@@ -19,14 +19,9 @@
     - [Registration](#registration)
     - [Social user registration](#social-registration)
 - [Catalogue](#catalogue)
-    - [Nearest store](#nearest-store)
-    - [Store item categories](#store-item-catalogue)
-    - [Category items](#category-items)
 - [Item Option Builder](#item-option-builder)
 - [Cart](#cart)
-    - [Add item](#add-item)
 - [Ordering](#ordering)
-    - [Place order](#place-order)
 
 <!-- /MarkdownTOC -->
 
