@@ -194,32 +194,125 @@ Once a user has successfully verified the otp the [social user login](#social-lo
 <a name="catalogue"></a>
 ## Catalogue
 
+The getNearestStore fucntion return the store details nearest to the user's location, if there is no stores present nearby the store object is nil
+
 ```swift
    UrbanPiper.sharedInstance().getNearestStore(lat: USERLOCATIONLATITUDE, lng: USERLOCATIONLONGITUDE,
                                                completion: COMPLETION_CALLBACK,
                                                failure: FAILURE_CALLBACK)
 ```
 
+The getCategories function can be called with or without the 'NEARESTSTOREID', when called without the 'NEARESTSTOREID' the api's returns categories that are generic and cannot be added to the cart. Passing the 'NEARESTSTOREID' returns categories specific to the particular store.
+
+
 ```swift
    UrbanPiper.sharedInstance().getCategories(storeId: NEARESTSTOREID, offset: PAGINATIONOFFSET, limit: PAGINATIONFETCHLIMIT,
                                              completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
+```
 
+The getCategoryItems function can be called with or without the 'NEARESTSTOREID', when called without the 'NEARESTSTOREID' the api's returns items that are generic and cannot be added to the cart. Passing the 'NEARESTSTOREID' returns items specific to the particular store.
+
+```swift
    UrbanPiper.sharedInstance().getCategoryItems(categoryId: CATEGORYID, storeId: NEARESTSTOREID, offset: PAGINATIONOFFSET, 
                                                 limit: PAGINATIONFETCHLIMIT, sortKey: SORTKEY, filterOptions: FILTEROPTIONS,
                                                 completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
 ```
 
+PAGINATIONOFFSET: Default - 0. The offset from which the categories or items should be returned from.<br />
+PAGINATIONFETCHLIMIT: Default - 20. The number of categories or items that can be fetched from the PAGINATIONOFFSET.<br />
+SORTKEY: User selected sort option key from getFilterAndSortOptions API.<br />
+FILTEROPTIONS: User selected filters options from getFilterAndSortOptions API.<br />
+
+The getFilterAndSortOptions function returns a list of sorting keys and filter options for a given CATEGORYID that are supported by your business.
+
+```swift
+   UrbanPiper.sharedInstance.getFilterAndSortOptions(categoryId: CATEGORYID, completion: COMPLETION_CALLBACK, 
+                                                     failure: FAILURE_CALLBACK)
+```                                                     
+
 <a name="item-option-builder"></a>
 ## Item Option Builder
 
+ItemOptionBuilder is a helper class that simplifys the addition and removal of 'ItemOption' for an item, The item option group is used only in cases where the `Item.optionGroups` is non-nil.
+
+```swift
+   // The initializer methods returns the ItemOptionGroup helper class for adding item options.
+   let itemOptionBuilder = ItemOptionBuilder(item: ITEM)
+
+   // Returns the current value of the item including the base price and the value of the options added. 
+   let amount = itemOptionBuilder.totalAmount
+   
+   // Code to add an option to the itemOptionBuilder
+   do {
+       try itemOptionBuilder.addOption(groupId: OPTIONGROUPID, option: ITEMOPTION)
+       // Option has been added.
+   } catch ItemOptionBuilderError.maxItemOptionsSelected(let maxCount) {
+       // The max number of options has been added for the provided group id
+   } catch {
+       // This should not happen
+       print("Unexpected error: \(error).")
+   }
+   
+   // Once the necessary `ItemOption` are added the build method returns an `CartItem` object that can be added to the cart
+   do {
+        let cartItem = try itemOptionBuilder.build()
+        // The cartItem can be added to the cart
+   } catch ItemOptionBuilderError.invalid(let group) {
+        // Error thrown indicates that a group has option addtions below the minSelectable variable or additions above the maxSelectable variable.
+   } catch {
+        // This should not happen.
+        print("Unexpected error: \(error).")
+   }
+```
+
+ITEM: An instance of item object from the getCategoryItems API result.
+
 <a name="cart"></a>
 ## Cart
+
+The following are some of the cart functions to add an item to the cart.
+
 ```swift
-   Add item
+   // The initializer methods returns a cart item that can be added to the Cart.
+   let cartItem = CartItem(item: item)
+   let cartItem = CartItem(reorderItem: item)
+
+   do {
+      try UrbanPiper.sharedInstance().addItemToCart(cartItem: cartItem, quantity: 1)
+      // cartItem has been added to the cart.
+   } catch CartError.itemQuantityNotAvaialble(let maxOrderCount) {
+      // Error thrown indicates that the item quantity passed and the current cart item count is higher than the `Item.currentStock` of the item.
+   } catch {
+      // This should not happen.
+      print("Unexpected error: \(error).")
+   }
 ```
+
+ITEM: An instance of item object from the getCategoryItems API result.
+REORDERITEM: An instance of reorderItem object from the reorder API result.
 
 <a name="Ordering"></a>
 ## Ordering
+
 ```swift
-   Place order
+   let checkoutBuilder: CheckoutBuilder = UrbanPiper.sharedInstance().startCheckout()
+   
+   var paymentOptionsArray = checkoutBuilder.getPaymentModes()
+   
+   checkoutBuilder.clearCoupon()
+   
+   checkoutBuilder.validateCart(store: OrderingStoreDataModel.shared.orderingStore!, useWalletCredits: applyWalletCredits,
+                                deliveryOption: selectedDeliveryOption, cartItems: CartManager.shared.cartItems,
+                                orderTotal: CartManager.shared.cartValue, completion: COMPLETION_CALLBACK, 
+                                failure: FAILURE_CALLBACK)
+                                                                        
+    checkoutBuilder.validateCoupon(code: String, completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
+    
+    checkoutBuilder.initPayment(paymentOption: PaymentOption, completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
+    
+    checkoutBuilder.placeOrder(address: Address?, deliveryDate: Date, deliveryTime: Date, timeSlot: TimeSlot?, 
+                               paymentOption: PaymentOption, instructions: String, phone: String,
+                               completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
+                                              
+    checkoutBuilder.verifyPayment(pid: String, completion: COMPLETION_CALLBACK, failure: FAILURE_CALLBACK)
 ```
