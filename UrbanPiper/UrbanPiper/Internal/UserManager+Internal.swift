@@ -11,14 +11,14 @@ import UIKit
 extension UserManager {
 
     @objc func oldSDKLogout() {
-        AddressDataModel.shared.userAddressesResponse = nil
-
-        DeliveryLocationDataModel.shared.deliveryLocation = nil
-        DeliveryLocationDataModel.shared.deliveryAddress = nil
-        
-        OrderingStoreDataModel.shared.nearestStoreResponse = nil
-
-        UserDefaults.standard.removeObject(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey)
-        UserDefaults.standard.removeObject(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
+//        AddressDataModel.shared.userAddressesResponse = nil
+//
+//        DeliveryLocationDataModel.shared.deliveryLocation = nil
+//        DeliveryLocationDataModel.shared.deliveryAddress = nil
+//        
+//        OrderingStoreDataModel.shared.nearestStoreResponse = nil
+//
+//        UserDefaults.standard.removeObject(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey)
+//        UserDefaults.standard.removeObject(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)
     }
 }

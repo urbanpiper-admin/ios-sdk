@@ -8,7 +8,8 @@
 
 import UIKit
 
-internal enum ErrorType {
+//  TODO: Should be changed back to internal
+public enum ErrorType {
     case apiError
     case responseParseError
 }
@@ -49,7 +50,8 @@ internal enum ErrorType {
         }
     }
     
-    internal init(type: ErrorType = .apiError, data: Data?, response: URLResponse?, error: Error?) {
+    //  TODO: Should be changed back to internal
+    public init(type: ErrorType = .apiError, data: Data?, response: URLResponse?, error: Error?) {
         self.errorType = type
         self.data = data
         self.response = response

@@ -10,21 +10,21 @@ import Foundation
 
 public class Result : NSObject{
 
-	public private(set) var addressComponents : [AddressComponent]!
-	public private(set) var adrAddress : String!
-	public private(set) var formattedAddress : String!
-	public private(set) var geometry : Geometry!
-	public private(set) var icon : String!
-	public private(set) var id : String!
-	public private(set) var name : String!
-	public private(set) var photos : [Photo]!
-	public private(set) var placeId : String!
-	public private(set) var reference : String!
-	public private(set) var scope : String!
-	public private(set) var types : [String]!
-	public private(set) var url : String!
-	public private(set) var utcOffset : Int!
-	public private(set) var vicinity : String!
+	public var addressComponents : [AddressComponent]!
+	public var adrAddress : String!
+	public var formattedAddress : String!
+	public var geometry : Geometry!
+	public var icon : String!
+	public var id : String!
+	public var name : String!
+	public var photos : [Photo]!
+	public var placeId : String!
+	public var reference : String!
+	public var scope : String!
+	public var types : [String]!
+	public var url : String!
+	public var utcOffset : Int!
+	public var vicinity : String!
 
 
 	/**

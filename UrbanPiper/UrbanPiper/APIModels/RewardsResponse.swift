@@ -8,11 +8,11 @@ import Foundation
 
 public class RewardsResponse : NSObject, NSCoding{
 
-    public private(set) var claimed : [Reward]!
-    public private(set) var locked : [Reward]!
-    public private(set) var meta : Meta!
-    public private(set) var redeemed : [Reward]!
-    public private(set) var unlocked : [Reward]!
+    public var claimed : [Reward]!
+    public var locked : [Reward]!
+    public var meta : Meta!
+    public var redeemed : [Reward]!
+    public var unlocked : [Reward]!
 
 
     /**

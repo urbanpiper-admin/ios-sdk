@@ -10,8 +10,8 @@ import Foundation
 
 public class OffersAPIResponse : NSObject{
 
-	public internal(set) var coupons : [Coupon]!
-	public internal(set) var meta : Meta!
+	public var coupons : [Coupon]!
+	public var meta : Meta!
 
 
 	/**

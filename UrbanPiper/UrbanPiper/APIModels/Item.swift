@@ -10,41 +10,41 @@ import Foundation
 
 @objc public class Item : NSObject{
 
-	public private(set) var category : ItemCategory!
-	public private(set) var currentStock : Int!
-//    public private(set) var extras : [AnyObject]!
-	public private(set) var foodType : String!
-//    public private(set) var fulfillmentModes : [String]!
-	public private(set) var id : Int!
-	public private(set) var imageLandscapeUrl : String!
-	public private(set) var imageUrl : String!
-	public private(set) var itemDesc : String!
-	public private(set) var itemPrice : Decimal!
-	public private(set) var itemTitle : String!
-	public internal(set) var likes : Int!
-	public private(set) var optionGroups : [ItemOptionGroup]!
-    public private(set) var orderOptionsToAdd : [ItemOption]!
-    public private(set) var orderOptionsToRemove : [ItemOption]!
-	public private(set) var priceDescriptor : String!
-//    public private(set) var serviceTaxRate : Float!
-    public private(set) var preOrderStartTime : Int?
-    public private(set) var preOrderEndTime : Int?
-	public private(set) var slug : String!
-	public private(set) var sortOrder : Int!
-    public private(set) var subCategory : ItemCategory?
-//    public private(set) var tags : [ItemTag]!
-//    public private(set) var vatRate : Float!
+	public var category : ItemCategory!
+	public var currentStock : Int!
+//    public var extras : [AnyObject]!
+	public var foodType : String!
+//    public var fulfillmentModes : [String]!
+	public var id : Int!
+	public var imageLandscapeUrl : String!
+	public var imageUrl : String!
+	public var itemDesc : String!
+	public var itemPrice : Decimal!
+	public var itemTitle : String!
+	public var likes : Int!
+	public var optionGroups : [ItemOptionGroup]!
+    public var orderOptionsToAdd : [ItemOption]!
+    public var orderOptionsToRemove : [ItemOption]!
+	public var priceDescriptor : String!
+//    public var serviceTaxRate : Float!
+    public var preOrderStartTime : Int?
+    public var preOrderEndTime : Int?
+	public var slug : String!
+	public var sortOrder : Int!
+    public var subCategory : ItemCategory?
+//    public var tags : [ItemTag]!
+//    public var vatRate : Float!
     
-//    public private(set) var total : Decimal!
+//    public var total : Decimal!
 
-    @objc public internal(set) var quantity: Int = 0
-    public internal(set) var isRecommendedItem: Bool = false
-    public internal(set) var isUpsoldItem: Bool = false
-    public internal(set) var isSearchItem: Bool = false
+//    @objc public var quantity: Int = 0
+    internal var isRecommendedItem: Bool = false
+    internal var isUpsoldItem: Bool = false
+    internal var isSearchItem: Bool = false
     
-    public internal(set) var isItemDetailsItem: Bool = false
+    internal var isItemDetailsItem: Bool = false
 
-    public private(set) var notes: String?
+    public var notes: String?
     
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
@@ -52,11 +52,7 @@ import Foundation
     @objc init(fromDictionary dictionary: [String:Any]){
         
         super.init()
-        update(fromDictionary: dictionary)
-    }
-
-    func update(fromDictionary dictionary: [String:Any]){
-    if let categoryData: [String:Any] = dictionary["category"] as? [String:Any]{
+        if let categoryData: [String:Any] = dictionary["category"] as? [String:Any]{
 			category = ItemCategory(fromDictionary: categoryData)
         } else if let categoryData: [String:Any] = dictionary["item_category"] as? [String:Any]{
             category = ItemCategory(fromDictionary: categoryData)
@@ -132,7 +128,7 @@ import Foundation
 //            }
 //        }
 //        vatRate = dictionary["vat_rate"] as? Float
-        quantity = dictionary["quantity"] as? Int ?? 0
+//        quantity = dictionary["quantity"] as? Int ?? 0
 	}
 
     /**
@@ -232,7 +228,7 @@ import Foundation
 //        if vatRate != nil{
 //            dictionary["vat_rate"] = vatRate
 //        }
-        dictionary["quantity"] = quantity
+//        dictionary["quantity"] = quantity
 
         if notes != nil{
             dictionary["notes"] = notes

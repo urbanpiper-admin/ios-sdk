@@ -10,8 +10,8 @@ import Foundation
 
 public class Location : NSObject{
 
-	public private(set) var lat : Double!
-	public private(set) var lng : Double!
+	public var lat : Double!
+	public var lng : Double!
 
 
 	/**

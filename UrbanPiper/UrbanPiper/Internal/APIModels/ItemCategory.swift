@@ -10,9 +10,9 @@ import Foundation
 
 public class ItemCategory : NSObject{
 
-	public private(set) var id : Int!
-	public private(set) var name : String!
-    public private(set) var sortOrder: Int!
+	public var id : Int!
+	public var name : String!
+    public var sortOrder: Int!
 
 
 	/**

@@ -10,10 +10,10 @@ import Foundation
 
 public class StatusUpdate : NSObject{
 
-	public private(set) var created : Int!
-	public private(set) var message : String!
-	public private(set) var status : String!
-	public private(set) var updatedBy : String!
+	public var created : Int!
+	public var message : String!
+	public var status : String!
+	public var updatedBy : String!
 
 
 	/**

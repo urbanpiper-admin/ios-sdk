@@ -8,9 +8,9 @@ import Foundation
 
 public class RedemptionCode : NSObject, NSCoding{
 
-    public internal(set) var expiresIn : Int!
-    public internal(set) var redemptionCode : String!
-    public internal(set) var validFrom : Int!
+    public var expiresIn : Int!
+    public var redemptionCode : String!
+    public var validFrom : Int!
 
 
     /**

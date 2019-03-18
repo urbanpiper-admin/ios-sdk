@@ -10,8 +10,8 @@ import Foundation
 
 @objc public class StoreResponse : NSObject, NSCoding{
 
-    @objc public private(set) var biz : Biz!
-    @objc public private(set) var store : Store?
+    @objc public var biz : Biz!
+    @objc public var store : Store?
 
 
 	/**

@@ -10,33 +10,33 @@ import Foundation
 
 public class Store : NSObject, NSCoding{
 
-	public private(set) var address : String!
-	public private(set) var bizLocationId : Int!
-	public private(set) var city : String!
-	public private(set) var closingDay : Bool = false
-	public private(set) var closingTime : String!
-    public private(set) var isPickupEnabled : Bool!
-	public private(set) var deliveryCharge : Decimal!
-	public private(set) var deliveryMinOffsetTime : Int!
-    public private(set) var discount : Decimal!
-	public private(set) var hideStoreName : Bool!
-    public private(set) var itemTaxes : Decimal!
-	public private(set) var lat : Double!
-	public private(set) var lng : Double!
-	public private(set) var minOrderTotal : Decimal!
-	@objc public private(set) var name : String!
-	public private(set) var onCloseMsg : String!
-	public private(set) var onSelectMsg : String!
-	public private(set) var openingTime : String!
-	public private(set) var packagingCharge : Decimal!
-	public private(set) var pgKey : String!
-	public private(set) var phone : String!
-	public private(set) var pickupMinOffsetTime : Int!
-	public private(set) var sortOrder : Int!
-	public private(set) var taxRate : Float!
-	public private(set) var temporarilyClosed : Bool = false
-	public private(set) var timeSlots : [TimeSlot]!
-    public private(set) var merchantRefId: String!
+	public var address : String!
+	public var bizLocationId : Int!
+	public var city : String!
+	public var closingDay : Bool = false
+	public var closingTime : String!
+    public var isPickupEnabled : Bool!
+	public var deliveryCharge : Decimal!
+	public var deliveryMinOffsetTime : Int!
+    public var discount : Decimal!
+	public var hideStoreName : Bool!
+    public var itemTaxes : Decimal!
+	public var lat : Double!
+	public var lng : Double!
+	public var minOrderTotal : Decimal!
+	@objc public var name : String!
+	public var onCloseMsg : String!
+	public var onSelectMsg : String!
+	public var openingTime : String!
+	public var packagingCharge : Decimal!
+	public var pgKey : String!
+	public var phone : String!
+	public var pickupMinOffsetTime : Int!
+	public var sortOrder : Int!
+	public var taxRate : Float!
+	public var temporarilyClosed : Bool = false
+	public var timeSlots : [TimeSlot]!
+    public var merchantRefId: String!
 
     @objc public var storeId: NSNumber {
         return NSNumber(integerLiteral: bizLocationId)

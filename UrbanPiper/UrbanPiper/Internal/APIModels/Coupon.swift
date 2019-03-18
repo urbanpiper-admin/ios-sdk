@@ -10,10 +10,10 @@ import Foundation
 
 public class Coupon : NSObject{
 
-	public private(set) var descriptionField : String!
-	public private(set) var redemptionCode : String!
-	public private(set) var title : String!
-	public private(set) var validUntil : Int?
+	public var descriptionField : String!
+	public var redemptionCode : String!
+	public var title : String!
+	public var validUntil : Int?
 
 
 	/**

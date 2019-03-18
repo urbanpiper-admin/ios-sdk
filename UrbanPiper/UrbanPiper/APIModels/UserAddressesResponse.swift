@@ -8,9 +8,9 @@
 import Foundation
 
 
-public class UserAddressesResponse : NSObject{
+@objc public class UserAddressesResponse : NSObject{
 
-	public internal(set) var addresses : [Address]!
+	@objc public var addresses : [Address]!
 
 
 	/**

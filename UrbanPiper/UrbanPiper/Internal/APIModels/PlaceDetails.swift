@@ -10,9 +10,9 @@ import Foundation
 
 public class PlaceDetailsResponse : NSObject{
 
-	public private(set) var htmlAttributions : [AnyObject]!
-	public private(set) var result : Result?
-	public private(set) var status : String!
+	public var htmlAttributions : [AnyObject]!
+	public var result : Result?
+	public var status : String!
 
 
 	/**

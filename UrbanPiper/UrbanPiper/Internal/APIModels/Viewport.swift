@@ -10,8 +10,8 @@ import Foundation
 
 public class Viewport : NSObject{
 
-	public private(set) var northeast : Location!
-	public private(set) var southwest : Location!
+	public var northeast : Location!
+	public var southwest : Location!
 
 
 	/**

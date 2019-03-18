@@ -10,8 +10,8 @@ import Foundation
 
 public class ItemsSearchResponse : NSObject{
 
-	public private(set) var items : [Item]!
-    public private(set) var meta : Meta!
+	public var items : [Item]!
+    public var meta : Meta!
 
 
 	/**

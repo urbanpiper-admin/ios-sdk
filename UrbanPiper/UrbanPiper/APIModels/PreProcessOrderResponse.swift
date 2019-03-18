@@ -10,11 +10,11 @@ import Foundation
 
 public class PreProcessOrderResponse : NSObject{
 
-	public private(set) var order : Order!
-//    public private(set) var discount : Decimal?
-    public private(set) var notification : String?
-    public private(set) var status : String?
-    public private(set) var message : String?
+	public var order : Order!
+//    public var discount : Decimal?
+    public var notification : String?
+    public var status : String?
+    public var message : String?
 
 
 	/**

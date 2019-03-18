@@ -10,14 +10,14 @@ import Foundation
 
 public class Prediction : NSObject, NSCoding{
 
-	public private(set) var descriptionField : String!
-	public private(set) var id : String!
-	public private(set) var matchedSubstrings : [MatchedSubstring]!
-	public private(set) var placeId : String!
-	public private(set) var reference : String!
-	public private(set) var structuredFormatting : StructuredFormatting!
-	public private(set) var terms : [Term]!
-	public private(set) var types : [String]!
+	public var descriptionField : String!
+	public var id : String!
+	public var matchedSubstrings : [MatchedSubstring]!
+	public var placeId : String!
+	public var reference : String!
+	public var structuredFormatting : StructuredFormatting!
+	public var terms : [Term]!
+	public var types : [String]!
 
 
 	/**

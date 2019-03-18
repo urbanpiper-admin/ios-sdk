@@ -29,33 +29,33 @@ public enum Language: String {
 
 @objc public class Biz : NSObject, NSCoding{
     
-    static public internal(set) var shared: Biz?
+    static public var shared: Biz?
 
-	public private(set) var contactPhone : String!
-	public private(set) var currency : String!
-	public private(set) var deliveryMinOffsetTime : Int!
-	public private(set) var feedbackConfig : [FeedbackConfig]!
-	public private(set) var gst : String!
-	public private(set) var isPickupEnabled : Bool = false
-	public private(set) var minOrderTotal : Decimal!
-//    public private(set) var minimumWalletCreditThreshold : Float!
-	public private(set) var msgNearestStoreClosed : String!
-	public private(set) var msgNoStoresNearby : String!
-	public private(set) var msgStoreClosedTemporary : String!
-	public private(set) var orderDeliveryRadius : Int!
-	public private(set) var paymentOptions : [String]!
-    public internal(set) var supportedLanguages : [String]!
-    public private(set) var paypalClientToken : String!
-	public private(set) var pgProvider : String!
-	public private(set) var pickupMinOffsetTime : Int!
-	public private(set) var preProcess : Bool!
-	public private(set) var referralShareLbl : String!
-	public private(set) var referralUiLbl : String!
-	public private(set) var simplClientId : String!
-	public private(set) var timeSlots : [TimeSlot]!
-	public private(set) var timezone : String!
-	public private(set) var tin : String!
-	public private(set) var usePointOfDelivery : Bool!
+	public var contactPhone : String!
+	public var currency : String!
+	public var deliveryMinOffsetTime : Int!
+	public var feedbackConfig : [FeedbackConfig]!
+	public var gst : String!
+	public var isPickupEnabled : Bool = false
+	public var minOrderTotal : Decimal!
+//    public var minimumWalletCreditThreshold : Float!
+	public var msgNearestStoreClosed : String!
+	public var msgNoStoresNearby : String!
+	public var msgStoreClosedTemporary : String!
+	public var orderDeliveryRadius : Int!
+	public var paymentOptions : [String]!
+    public var supportedLanguages : [String]!
+    public var paypalClientToken : String!
+	public var pgProvider : String!
+	public var pickupMinOffsetTime : Int!
+	public var preProcess : Bool!
+	public var referralShareLbl : String!
+	public var referralUiLbl : String!
+	public var simplClientId : String!
+	public var timeSlots : [TimeSlot]!
+	public var timezone : String!
+	public var tin : String!
+	public var usePointOfDelivery : Bool!
 
 
 	/**

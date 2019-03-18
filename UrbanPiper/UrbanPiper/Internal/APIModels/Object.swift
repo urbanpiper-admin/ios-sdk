@@ -10,16 +10,16 @@ import Foundation
 
 public class Object : NSObject{
 
-	public private(set) var comboCount : Int!
-	public private(set) var descriptionField : String!
-	public private(set) var id : Int!
-	public private(set) var image : String!
-	public private(set) var itemCount : Int!
-	public private(set) var loadFromWeb : Bool!
-	@objc public private(set) var name : String!
-	public private(set) var slug : String!
-	public private(set) var sortOrder : Int!
-	public private(set) var webUrl : String!
+	public var comboCount : Int!
+	public var descriptionField : String!
+	public var id : Int!
+	public var image : String!
+	public var itemCount : Int!
+	public var loadFromWeb : Bool!
+	@objc public var name : String!
+	public var slug : String!
+	public var sortOrder : Int!
+	public var webUrl : String!
 
 
 	/**

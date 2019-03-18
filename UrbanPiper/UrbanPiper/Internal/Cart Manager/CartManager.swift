@@ -23,10 +23,6 @@ internal class CartManager: NSObject {
 //    private var cartManagerObservers: [WeakRefCartManagerDelegate] = [WeakRefCartManagerDelegate]()
 
     @objc internal var cartItems = [CartItem]()
-
-    internal var groupedCartItems: [[CartItem]] {
-        return Array(Dictionary(grouping:cartItems){$0.category.id ?? 0}.values)
-    }
     
     @objc internal var isReorder: Bool {
         guard cartItems.count > 0 else { return false }

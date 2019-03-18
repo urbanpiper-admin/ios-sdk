@@ -10,11 +10,11 @@ import Foundation
 
 public class PaymentInitResponse : NSObject{
 
-	public private(set) var data : OnlinePaymentData!
-	public private(set) var message : String!
-	public private(set) var success : Bool!
-	public private(set) var transactionId : String!
-	public private(set) var url : AnyObject!
+	public var data : OnlinePaymentData!
+	public var message : String!
+	public var success : Bool!
+	public var transactionId : String!
+	public var url : AnyObject!
 
 
 	/**

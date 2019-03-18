@@ -37,12 +37,5 @@ extension Date {
         Date.localeDateToStringFormatter.dateFormat = "yyyy-MM-dd"
         return Date.localeDateToStringFormatter.string(from: self)
     }
-        
-//  MARK: Date
-    
-    internal var dayName: String {
-        Date.localeDateToStringFormatter.dateFormat = "EEEE"
-        return Date.localeDateToStringFormatter.string(from: self)
-    }
     
 }

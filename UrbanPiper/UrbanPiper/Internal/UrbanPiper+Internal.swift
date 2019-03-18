@@ -15,15 +15,27 @@ public extension UrbanPiper {
                                                         failure: APIFailure?) -> URLSessionDataTask {
         return APIManager.shared.reverseGeoCode(lat: lat, lng: lng, completion: completion, failure: failure)
     }
+    
+    @discardableResult @objc public func fetchCoordinates(placeId: String,
+                                                          completion: ((PlaceDetailsResponse?) -> Void)?,
+                                                          failure: APIFailure?) -> URLSessionDataTask {
+        return APIManager.shared.fetchCoordinates(from: placeId, completion: completion, failure: failure)
+    }
+    
+    @discardableResult @objc public func fetchPlaces(for keyword: String,
+                                                     completion: ((GooglePlacesResponse?) -> Void)?,
+                                                     failure: APIFailure?) -> URLSessionDataTask {
+        return APIManager.shared.fetchPlaces(for: keyword, completion: completion, failure: failure)
+    }
 
     func addAddress(address: Address) {
-        AddressDataModel.shared.userAddressesResponse?.addresses.insert(address, at: 0)
+//        AddressDataModel.shared.userAddressesResponse?.addresses.insert(address, at: 0)
     }
     
     func deleteAddress(addressId: Int) {
-        if let addresses = AddressDataModel.shared.userAddressesResponse?.addresses {
-            AddressDataModel.shared.userAddressesResponse?.addresses = addresses.filter { $0.id != addressId }
-        }
+//        if let addresses = AddressDataModel.shared.userAddressesResponse?.addresses {
+//            AddressDataModel.shared.userAddressesResponse?.addresses = addresses.filter { $0.id != addressId }
+//        }
     }
     
     

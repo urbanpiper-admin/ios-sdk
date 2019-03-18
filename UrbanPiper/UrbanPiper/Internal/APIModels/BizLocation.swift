@@ -10,29 +10,29 @@ import Foundation
 
 public class BizLocation : NSObject{
 
-	public private(set) var address : String!
-	public private(set) var bizLocationId : Int!
-	public private(set) var city : String!
-	public private(set) var closingDay : Bool!
-	public private(set) var closingTime : AnyObject!
-//    public private(set) var deliveryCharge : Float!
-	public private(set) var deliveryMinOffsetTime : Int!
-	public private(set) var hideStoreName : Bool!
-	public private(set) var lat : Double!
-	public private(set) var lng : Double!
-//    public private(set) var minOrderTotal : Float!
-	public private(set) var name : String!
-	public private(set) var onCloseMsg : String!
-	public private(set) var onSelectMsg : AnyObject!
-	public private(set) var openingTime : AnyObject!
-//    public private(set) var packagingCharge : Float!
-	public private(set) var pgKey : String!
-	public private(set) var phone : String!
-	public private(set) var pickupMinOffsetTime : Int!
-	public private(set) var sortOrder : Int!
-//    public private(set) var taxRate : Float!
-	public private(set) var temporarilyClosed : Bool!
-	public private(set) var timeSlots : [AnyObject]!
+	public var address : String!
+	public var bizLocationId : Int!
+	public var city : String!
+	public var closingDay : Bool!
+	public var closingTime : AnyObject!
+//    public var deliveryCharge : Float!
+	public var deliveryMinOffsetTime : Int!
+	public var hideStoreName : Bool!
+	public var lat : Double!
+	public var lng : Double!
+//    public var minOrderTotal : Float!
+	public var name : String!
+	public var onCloseMsg : String!
+	public var onSelectMsg : AnyObject!
+	public var openingTime : AnyObject!
+//    public var packagingCharge : Float!
+	public var pgKey : String!
+	public var phone : String!
+	public var pickupMinOffsetTime : Int!
+	public var sortOrder : Int!
+//    public var taxRate : Float!
+	public var temporarilyClosed : Bool!
+	public var timeSlots : [AnyObject]!
 
 
 	/**

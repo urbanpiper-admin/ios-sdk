@@ -10,8 +10,8 @@ import Foundation
 
 public class BannersResponse : NSObject{
 
-	public private(set) var images : [BannerImage]!
-	public private(set) var meta : Meta!
+	public var images : [BannerImage]!
+	public var meta : Meta!
 
 
 	/**

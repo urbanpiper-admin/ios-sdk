@@ -11,41 +11,41 @@ import UIKit
 public class CartItem: NSObject {
 
     private var optionBuilder: ItemOptionBuilder?
-    public private(set) var optionsToAdd: [ItemOption] = []
+    public var optionsToAdd: [ItemOption] = []
     private var optionsToRemove: [ItemOption] = []
     
-    public private(set) var category : ItemCategory!
-    public private(set) var currentStock : Int!
-//    public private(set) var extras : [AnyObject]!
-//    public private(set) var foodType : String!
-    public private(set) var id : Int!
-    public private(set) var imageLandscapeUrl : String!
-    public private(set) var imageUrl : String!
-//    public private(set) var itemDesc : String!
-    public private(set) var itemPrice : Decimal!
-    public private(set) var itemTitle : String!
-//    public private(set) var likes : Int!
+    public var category : ItemCategory!
+    public var currentStock : Int!
+//    public var extras : [AnyObject]!
+//    public var foodType : String!
+    public var id : Int!
+    public var imageLandscapeUrl : String!
+    public var imageUrl : String!
+//    public var itemDesc : String!
+    public var itemPrice : Decimal!
+    public var itemTitle : String!
+//    public var likes : Int!
 //   var optionGroups : [ItemOptionGroup]!
-//    public private(set) var priceDescriptor : String!
+//    public var priceDescriptor : String!
 //   var serviceTaxRate : Float!
-    public private(set) var preOrderStartTime : Int?
-    public private(set) var preOrderEndTime : Int?
-    public private(set) var slug : String!
-    public private(set) var sortOrder : Int!
-//    public private(set) var subCategory : ItemCategory!
-//    public private(set) var tags : [ItemTag]!
+    public var preOrderStartTime : Int?
+    public var preOrderEndTime : Int?
+    public var slug : String!
+    public var sortOrder : Int!
+//    public var subCategory : ItemCategory!
+//    public var tags : [ItemTag]!
     
-    public private(set) var isRecommendedItem: Bool = false
-    public private(set) var isUpsoldItem: Bool = false
-    public private(set) var isSearchItem: Bool = false
-    public private(set) var isItemDetailsItem: Bool = false
-    internal(set) var isReorder: Bool = false
+    public var isRecommendedItem: Bool = false
+    public var isUpsoldItem: Bool = false
+    public var isSearchItem: Bool = false
+    public var isItemDetailsItem: Bool = false
+    public internal(set) var isReorder: Bool = false
 
 //   var vatRate : Float!
     
-    public internal(set) var quantity: Int = 0
+    public var quantity: Int = 0
     
-    public internal(set) var notes: String?
+    public var notes: String?
     
     public var totalAmount: Decimal {
         var totalAmount: Decimal = itemPrice ?? Decimal.zero
@@ -124,7 +124,7 @@ public class CartItem: NSObject {
         self.isSearchItem = item.isSearchItem
         self.isItemDetailsItem = item.isItemDetailsItem
         
-        self.quantity = item.quantity
+//        self.quantity = item.quantity
         
         self.optionsToAdd = item.orderOptionsToAdd ?? []
         self.optionsToRemove = item.orderOptionsToRemove ?? []

@@ -10,17 +10,17 @@ import Foundation
 
 public class Transaction : NSObject{
 
-	public private(set) var billNumber : String!
-	public private(set) var comments : String!
-	public private(set) var created : Int!
-	public private(set) var id : Int!
-	public private(set) var paymentAmount : Decimal!
-	public private(set) var paymentSrc : String!
-	public private(set) var paymentType : String!
-	public private(set) var posMcId : AnyObject!
-	public private(set) var posOperatorUname : AnyObject!
-	public private(set) var store : Store!
-	public private(set) var transactionId : String!
+	public var billNumber : String!
+	public var comments : String!
+	public var created : Int!
+	public var id : Int!
+	public var paymentAmount : Decimal!
+	public var paymentSrc : String!
+	public var paymentType : String!
+	public var posMcId : AnyObject!
+	public var posOperatorUname : AnyObject!
+	public var store : Store!
+	public var transactionId : String!
 
 
 	/**

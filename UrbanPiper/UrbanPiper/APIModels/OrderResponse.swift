@@ -9,10 +9,10 @@ import UIKit
 
 public class OrderResponse: NSObject {
 
-    public private(set) var status: String?
-    public private(set) var message: String?
-    public private(set) var errorDetails: [String: Any]?
-    public private(set) var orderId: String?
+    public var status: String?
+    public var message: String?
+    public var errorDetails: [String: Any]?
+    public var orderId: String?
     
     
     /**
@@ -33,7 +33,7 @@ public class OrderResponse: NSObject {
     /**
      * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    func toDictionary() -> [String:Any]
+    public func toDictionary() -> [String:Any]
     {
         var dictionary: [String: Any] = [String:Any]()
         if status != nil{

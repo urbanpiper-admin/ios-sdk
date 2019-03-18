@@ -17,17 +17,17 @@ public enum AddressTag: String {
 
 @objc public class Address : NSObject, NSCoding {
 
-	public private(set) var address1 : String!
-	public private(set) var landmark : String!
-    public internal(set) var deliverable : Bool?
-	@objc public private(set) var city : String!
-	public internal(set) var id : Int!
-    @objc public private(set) var lat : CLLocationDegrees = 0
-    @objc public private(set) var lng : CLLocationDegrees = 0
-	@objc public private(set) var pin : String!
-	public private(set) var podId : Int!
-	@objc public private(set) var subLocality : String!
-	@objc public private(set) var tag : String!
+	public var address1 : String!
+	public var landmark : String!
+    public var deliverable : Bool?
+	@objc public var city : String!
+	public var id : Int!
+    @objc public var lat : CLLocationDegrees = 0
+    @objc public var lng : CLLocationDegrees = 0
+	@objc public var pin : String!
+	public var podId : Int!
+	@objc public var subLocality : String!
+	@objc public var tag : String!
     
     public var addressTag: AddressTag {
         guard let tagString: String = tag, let addressTagVal: AddressTag = AddressTag(rawValue: tagString.lowercased()) else { return .other }
@@ -214,7 +214,7 @@ public enum AddressTag: String {
     /**
      * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any]
+    @objc public func toDictionary() -> [String:Any]
     {
         var dictionary: [String: Any] = [String:Any]()
         if address1 != nil{

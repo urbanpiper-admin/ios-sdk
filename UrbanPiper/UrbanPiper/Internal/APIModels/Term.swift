@@ -10,8 +10,8 @@ import Foundation
 
 public class Term : NSObject, NSCoding{
 
-	public private(set) var offset : Int!
-	public private(set) var value : String!
+	public var offset : Int!
+	public var value : String!
 
 
 	/**

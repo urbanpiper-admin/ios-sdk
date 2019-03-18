@@ -10,8 +10,8 @@ import Foundation
 
 public class Geometry : NSObject{
 
-	public private(set) var location : Location!
-	public private(set) var viewport : Viewport!
+	public var location : Location!
+	public var viewport : Viewport!
 
 
 	/**

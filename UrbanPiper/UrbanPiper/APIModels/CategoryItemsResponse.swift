@@ -10,9 +10,9 @@ import Foundation
 
 public class CategoryItemsResponse : NSObject, NSCopying{
 
-//    public private(set) var combos : [AnyObject]!
-	public internal(set) var meta : Meta!
-	public internal(set) var objects : [Item]!
+//    public var combos : [AnyObject]!
+	public var meta : Meta!
+	public var objects : [Item]!
 
 
 	/**

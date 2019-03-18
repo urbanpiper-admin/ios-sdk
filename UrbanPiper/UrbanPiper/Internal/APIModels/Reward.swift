@@ -8,19 +8,19 @@ import Foundation
 
 public class Reward : NSObject, NSCoding{
 
-    public private(set) var claimedCount : Int!
-    public private(set) var descriptionField : String!
-    public private(set) var expiresOn : Int!
-    public private(set) var id : Int!
-    public private(set) var imgLink : String!
-    public private(set) var inStoreCouponRewards : Bool!
-    public private(set) var locked : Bool!
-    public private(set) var points : Int!
-    public private(set) var redeemedCount : Int!
-    public private(set) var redemptionCodes : [RedemptionCode]!
-    public private(set) var title : String!
-    public private(set) var type : Int!
-    public private(set) var value : String!
+    public var claimedCount : Int!
+    public var descriptionField : String!
+    public var expiresOn : Int!
+    public var id : Int!
+    public var imgLink : String!
+    public var inStoreCouponRewards : Bool!
+    public var locked : Bool!
+    public var points : Int!
+    public var redeemedCount : Int!
+    public var redemptionCodes : [RedemptionCode]!
+    public var title : String!
+    public var type : Int!
+    public var value : String!
 
 
     /**
