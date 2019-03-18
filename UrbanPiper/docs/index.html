@@ -248,7 +248,7 @@
 </ul></li>
 <li><a href="#initialization">Initialization</a></li>
 <li><a href="#user">User</a></li>
-<li><a href="#user-login">User login</a>
+<li><a href="#authentication">Authentication</a>
 
 <ul>
 <li><a href="#login">Login</a></li>
@@ -271,7 +271,7 @@
 <p><a name="introduction"></a></p>
 <h1 id='introduction' class='heading'>Introduction</h1>
 
-<p>The official iOS SDK of UrbanPiper</p>
+<p>The Urban piper ios SDK is written in swift.</p>
 
 <p><a name="installation"></a></p>
 <h1 id='installation' class='heading'>Installation</h1>
@@ -281,8 +281,6 @@
 
 <p>UrbanPiper supports <code>CocoaPods</code> for easy installation.
 To Install, see our <strong><a href="https://UrbanPiper.com/help/reference/swift">swift integration guide »</a></strong></p>
-
-<p>For iOS, tvOS, macOS, and App Extension integrations:</p>
 
 <p><code>pod &#39;UrbanPiper&#39;</code></p>
 
@@ -302,56 +300,56 @@ To Install, see our <strong><a href="https://UrbanPiper.com/help/reference/swift
 ![alt text]</p>
 <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">application</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span>
                  <span class="n">didFinishLaunchingWithOptions</span> <span class="nv">launchOptions</span><span class="p">:</span> <span class="p">[</span><span class="kt">NSObject</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="p">]?)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
-    <span class="kt">UrbanPiper</span><span class="o">.</span><span class="nf">intialize</span><span class="p">(</span><span class="nv">language</span><span class="p">:</span> <span class="kt">APP_LANGUAGE</span><span class="p">,</span> <span class="nv">bizId</span><span class="p">:</span> <span class="kt">URBANPIPER_BIZID</span><span class="p">,</span> <span class="nv">apiUsername</span><span class="p">:</span> <span class="kt">URBANPIPER_API_USERNAME</span><span class="p">,</span> 
-                         <span class="nv">apiKey</span><span class="p">:</span> <span class="kt">URBANPIPER_API_KEY</span><span class="p">,</span> <span class="nv">callback</span><span class="p">:</span> <span class="kt">CALLBACK</span><span class="p">)</span>
+    <span class="kt">UrbanPiper</span><span class="o">.</span><span class="nf">intialize</span><span class="p">(</span><span class="nv">language</span><span class="p">:</span> <span class="kt">APP</span><span class="o">-</span><span class="kt">LANGUAGE</span><span class="p">,</span> <span class="nv">bizId</span><span class="p">:</span> <span class="kt">URBANPIPER</span><span class="o">-</span><span class="kt">BIZID</span><span class="p">,</span> <span class="nv">apiUsername</span><span class="p">:</span> <span class="kt">URBANPIPER</span><span class="o">-</span><span class="kt">API</span><span class="o">-</span><span class="kt">USERNAME</span><span class="p">,</span> 
+                         <span class="nv">apiKey</span><span class="p">:</span> <span class="kt">URBANPIPER</span><span class="o">-</span><span class="kt">API</span><span class="o">-</span><span class="kt">KEY</span><span class="p">,</span> <span class="nv">callback</span><span class="p">:</span> <span class="kt">CALLBACK</span><span class="p">)</span>
     <span class="o">...</span>
 <span class="p">}</span>
 </code></pre>
 
 <p>You initialize the UrbanPiper instance with the params lanuguage, bizId, apiUsername, apiKey, callback</p>
 
-<p>APP_LANGUAGE: Optional. Default - english. The <code>Language</code> the server should send the data.<br />
-URBANPIPER_BIZID: your business id from urbanpiper.<br />
-URBANPIPER_API_USERNAME: your api username from urbanpiper.<br />
-URBANPIPER_API_KEY: your api key from urbanpiper.<br />
+<p>APP-LANGUAGE: Optional. Default - english. The <code>Language</code> the server should send the data.<br />
+URBANPIPER-BIZID: your business id from urbanpiper.<br />
+URBANPIPER-API-USERNAME: your api username from urbanpiper.<br />
+URBANPIPER-API-KEY: your api key from urbanpiper.<br />
 CALLBACK: callback notifies about the <code><a href="Enums/SDKEvent.html">SDKEvent</a></code> that should be handled by the app.<br /></p>
 
 <p><a name="user"></a></p>
 <h2 id='user' class='heading'>User</h2>
 
-<p>Once the SDK has been initialized the user object can be accessed from the SDK by calling the function below</p>
+<p>Once the SDK has been initialized the user object can be accessed from the SDK by calling the function below, returns an user object if a user is logged in else return an nil.</p>
 <pre class="highlight swift"><code>   <span class="kt">UrbanPiperSDK</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="nf">getUser</span><span class="p">()</span>
 </code></pre>
 
-<p><a name="user-login"></a></p>
-<h2 id='user-login' class='heading'>User login</h2>
+<p><a name="authentication"></a></p>
+<h2 id='authentication' class='heading'>Authentication</h2>
 
 <p><a name="login"></a></p>
 <h3 id='login' class='heading'>Login</h3>
 
 <p>An User can be logged in by calling the function below with the relevant params.</p>
-<pre class="highlight swift"><code>   <span class="kt">UrbanPiper</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="nf">login</span><span class="p">(</span><span class="nv">phone</span><span class="p">:</span> <span class="kt">PHONENUMBER</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">PASSWORD</span><span class="p">,</span> 
-                                     <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+<pre class="highlight swift"><code>   <span class="kt">UrbanPiper</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="nf">login</span><span class="p">(</span><span class="nv">phone</span><span class="p">:</span> <span class="kt">PHONE</span><span class="o">-</span><span class="kt">NUMBER</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">PASSWORD</span><span class="p">,</span> 
+                                     <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 </code></pre>
 
-<p>PHONENUMBER: The phone number passed in should be prefixed with the user&rsquo;s country code</p>
+<p>PHONE-NUMBER: The phone number passed in should be prefixed with the user&rsquo;s country code</p>
 
-<p>Once a user has successfully logged in the user object can be accessed by the SDK&rsquo;s getUser()![alt text] function</p>
+<p>Once a user has successfully logged in the user object can be accessed by the SDK&rsquo;s <a href="#user">getUser()</a> function</p>
 
 <p><a name="social-login"></a></p>
 <h3 id='social-user-login' class='heading'>Social User Login</h3>
 
 <p>For a Social User Login the function below should be called with the relevant params</p>
-<pre class="highlight swift"><code>   <span class="kt">UrbanPiper</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="nf">socialLogin</span><span class="p">(</span><span class="nv">email</span><span class="p">:</span> <span class="kt">EMAIL</span><span class="p">,</span> <span class="nv">socialLoginProvider</span><span class="p">:</span> <span class="kt">PROVIDER</span><span class="p">,</span> <span class="nv">accessToken</span><span class="p">:</span> <span class="kt">PROVIDER_ACCESS_TOKEN</span><span class="p">,</span>         
-                                           <span class="nv">completion</span><span class="p">:</span><span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+<pre class="highlight swift"><code>   <span class="kt">UrbanPiper</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="nf">socialLogin</span><span class="p">(</span><span class="nv">email</span><span class="p">:</span> <span class="kt">EMAIL</span><span class="p">,</span> <span class="nv">socialLoginProvider</span><span class="p">:</span> <span class="kt">PROVIDER</span><span class="p">,</span> <span class="nv">accessToken</span><span class="p">:</span> <span class="kt">PROVIDER</span><span class="o">-</span><span class="kt">ACCESS</span><span class="o">-</span><span class="kt">TOKEN</span><span class="p">,</span>         
+                                           <span class="nv">completion</span><span class="p">:</span><span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 </code></pre>
 
-<p>COMPLETION_CALLBACK: In the completion callback the <code><a href="Classes/SocialLoginResponse.html">SocialLoginResponse</a></code> object is returned, the object contains the &lsquo;message&rsquo; and &lsquo;success&rsquo;, if the success variable is &lsquo;true&rsquo; then the social login was successfull, if the success variable is &lsquo;false&rsquo; then the message variable provides you info on what it do next.</p>
+<p>COMPLETION-CALLBACK: In the completion callback the <code><a href="Classes/SocialLoginResponse.html">SocialLoginResponse</a></code> object is returned, the object contains the <code>message</code> and <code>success</code> variables, if the success variable is <code>true</code> then the social login was successfull, if the success variable is <code>false</code> then the message variable provides you info on what it do next.</p>
 
-<p>if the message is &lsquo;phone_number_required&rsquo; a new social user has to be registered, this can be done by following the steps mentioned in <a href="#social-registration">Social User Registration</a></p>
+<p>if the message is <code>phone_number_required</code> the phone number of the social login user has to be veriifed, this can be done by following the steps mentioned in <a href="#social-registration">Social User Registration</a></p>
 
 <p>PROVIDER: The currently supported providers are Google and Facebook<br />
-PROVIDER_ACCESS_TOKEN: The token that is provided by the PROVIDER on successful login</p>
+PROVIDER-ACCESS-TOKEN: The token that is provided by the PROVIDER on successful login</p>
 
 <p><a name="user-registration"></a></p>
 <h2 id='user-registration' class='heading'>User registration</h2>
@@ -364,13 +362,13 @@ PROVIDER_ACCESS_TOKEN: The token that is provided by the PROVIDER on successful 
    <span class="k">let</span> <span class="nv">registrationBuilder</span><span class="p">:</span> <span class="kt">RegistrationBuilder</span> <span class="o">=</span> <span class="kt">UrbanPiper</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="nf">startRegistration</span><span class="p">()</span>
 
    <span class="c1">// Register an account with your business</span>
-   <span class="n">registrationBuilder</span><span class="o">.</span><span class="nf">registerUser</span><span class="p">(</span><span class="nv">phone</span><span class="p">:</span> <span class="kt">PHONENUMBER</span><span class="p">,</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">USERNAME</span><span class="p">,</span> <span class="nv">email</span><span class="p">:</span> <span class="kt">EMAIL</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">PASSWORD</span><span class="p">,</span> 
-                                    <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+   <span class="n">registrationBuilder</span><span class="o">.</span><span class="nf">registerUser</span><span class="p">(</span><span class="nv">phone</span><span class="p">:</span> <span class="kt">PHONE</span><span class="o">-</span><span class="kt">NUMBER</span><span class="p">,</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">USERNAME</span><span class="p">,</span> <span class="nv">email</span><span class="p">:</span> <span class="kt">EMAIL</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">PASSWORD</span><span class="p">,</span> 
+                                    <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 
    <span class="c1">// Verify the account with the otp sent to the user's phone number</span>
    <span class="c1">// The phone number passed in should be prefixed with the user's country code</span>
-   <span class="n">registrationBuilder</span><span class="o">.</span><span class="nf">verifyRegOTP</span><span class="p">(</span><span class="nv">phone</span><span class="p">:</span> <span class="kt">PHONENUMBER</span><span class="p">,</span> <span class="nv">otp</span><span class="p">:</span> <span class="kt">OTP</span><span class="p">,</span> <span class="nv">email</span><span class="p">:</span> <span class="kt">EMAIL</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">PASSWORD</span><span class="p">,</span> 
-                                    <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+   <span class="n">registrationBuilder</span><span class="o">.</span><span class="nf">verifyRegOTP</span><span class="p">(</span><span class="nv">phone</span><span class="p">:</span> <span class="kt">PHONE</span><span class="o">-</span><span class="kt">NUMBER</span><span class="p">,</span> <span class="nv">otp</span><span class="p">:</span> <span class="kt">OTP</span><span class="p">,</span> <span class="nv">email</span><span class="p">:</span> <span class="kt">EMAIL</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">PASSWORD</span><span class="p">,</span> 
+                                    <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 </code></pre>
 
 <p>OTP: The otp sent is sent to the phone number passed in the registerUser call</p>
@@ -381,71 +379,71 @@ PROVIDER_ACCESS_TOKEN: The token that is provided by the PROVIDER on successful 
 <h3 id='social-user-registration' class='heading'>Social User Registration</h3>
 
 <p>Registering an social user starts with an call to verifyPhone number.</p>
-<pre class="highlight swift"><code>   <span class="c1">// This returns an social registration builder object that contains the relevant api call to register an social login user</span>
+<pre class="highlight swift"><code>   <span class="c1">// This returns an social registration builder object that contains the relevant api calls to register an social login user</span>
    <span class="k">let</span> <span class="nv">socialRegBuilder</span><span class="p">:</span> <span class="kt">SocialRegBuilder</span> <span class="o">=</span> <span class="kt">UrbanPiper</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="nf">startSocialRegistration</span><span class="p">()</span>
 
     <span class="c1">// API call check if the passed in phone number is present in the system</span>
-    <span class="n">socialRegBuilder</span><span class="o">.</span><span class="nf">verifyPhone</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="kt">USERNAME</span><span class="p">,</span> <span class="nv">phone</span><span class="p">:</span> <span class="kt">PHONENUMBER</span><span class="p">,</span> <span class="nv">email</span><span class="p">:</span> <span class="kt">EMAIL</span><span class="p">,</span> <span class="nv">gender</span><span class="p">:</span> <span class="kt">GENDER</span><span class="p">,</span> <span class="nv">provider</span><span class="p">:</span> <span class="kt">PROVIDER</span><span class="p">,</span>        
-                                 <span class="nv">providerAccessToken</span><span class="p">:</span> <span class="kt">PROVIDER_ACCESS_TOKEN</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> 
-                                 <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+    <span class="n">socialRegBuilder</span><span class="o">.</span><span class="nf">verifyPhone</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="kt">USERNAME</span><span class="p">,</span> <span class="nv">phone</span><span class="p">:</span> <span class="kt">PHONE</span><span class="o">-</span><span class="kt">NUMBER</span><span class="p">,</span> <span class="nv">email</span><span class="p">:</span> <span class="kt">EMAIL</span><span class="p">,</span> <span class="nv">gender</span><span class="p">:</span> <span class="kt">GENDER</span><span class="p">,</span> <span class="nv">provider</span><span class="p">:</span> <span class="kt">PROVIDER</span><span class="p">,</span>        
+                                 <span class="nv">providerAccessToken</span><span class="p">:</span> <span class="kt">PROVIDER</span><span class="o">-</span><span class="kt">ACCESS</span><span class="o">-</span><span class="kt">TOKEN</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> 
+                                 <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 </code></pre>
 
 <p>Based on the result of the verifyPhone api call the social user registration varies in two way.</p>
 
-<p>The verifyPhone api returns an &lsquo;RegistrationResponse&rsquo; object, the object contains the &lsquo;message&rsquo; variable</p>
+<p>The verifyPhone api returns an <code><a href="Classes/RegistrationResponse.html">RegistrationResponse</a></code> object, the object contains the <code>message</code> variable</p>
 
-<p>Case where the message variable is &lsquo;new_registration_required&rsquo; the user has to be registered to the business by calling the function &lsquo;registerSocialUser&rsquo; and the functions verifyRegOTP and resendRegOtp should be used to used to verify the account and resend the otp.</p>
+<p>Case where the message variable is <code>new_registration_required</code> the user has to be registered to the business by calling the function <code>registerSocialUser</code> and the functions verifyRegOTP and resendRegOtp should be used to used to verify the account and resend the otp.</p>
 <h4 id='case-1' class='heading'>Case 1:</h4>
-<pre class="highlight swift"><code>    <span class="n">socialRegBuilder</span><span class="o">.</span><span class="nf">registerSocialUser</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+<pre class="highlight swift"><code>    <span class="n">socialRegBuilder</span><span class="o">.</span><span class="nf">registerSocialUser</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 
-    <span class="n">socialRegBuilder</span><span class="o">.</span><span class="nf">verifyRegOTP</span><span class="p">(</span><span class="nv">otp</span><span class="p">:</span> <span class="kt">OTP</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+    <span class="n">socialRegBuilder</span><span class="o">.</span><span class="nf">verifyRegOTP</span><span class="p">(</span><span class="nv">otp</span><span class="p">:</span> <span class="kt">OTP</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 
-    <span class="n">socialRegBuilder</span><span class="o">.</span><span class="nf">resendRegOTP</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">APIFailure</span><span class="p">)</span>
+    <span class="n">socialRegBuilder</span><span class="o">.</span><span class="nf">resendRegOTP</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 </code></pre>
 
-<p>For cases where the message variable is other than &lsquo;new_registration_required&rsquo; the phone number is already present in the system an the user&rsquo;s phone number needs to be verified using the functions verifySocialOTP and to resend a new otp the function resendSocialOTP should be used.</p>
+<p>For cases where the message variable is other than <code>new_registration_required</code> the phone number is already present in the system and the user&rsquo;s phone number needs to be verified using the functions verifySocialOTP and to resend a new otp the function resendSocialOTP should be used.</p>
 <h4 id='case-2' class='heading'>Case 2:</h4>
-<pre class="highlight swift"><code>   <span class="n">socialRegBuilder</span><span class="o">.</span><span class="nf">verifySocialOTP</span><span class="p">(</span><span class="nv">otp</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+<pre class="highlight swift"><code>   <span class="n">socialRegBuilder</span><span class="o">.</span><span class="nf">verifySocialOTP</span><span class="p">(</span><span class="nv">otp</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 
-   <span class="n">socialRegBuilder</span><span class="o">.</span><span class="nf">resendSocialOTP</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+   <span class="n">socialRegBuilder</span><span class="o">.</span><span class="nf">resendSocialOTP</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 </code></pre>
 
-<p>Once a user has successfully verified the otp the <a href="#social-login">social user login</a> function should to called to login the user.</p>
+<p>Once a user has successfully verified the otp the <a href="#social-login">social user login</a> function should called to login the user.</p>
 
 <p><a name="catalogue"></a></p>
 <h2 id='catalogue' class='heading'>Catalogue</h2>
 
-<p>The getNearestStore fucntion return the store details nearest to the user&rsquo;s location, if there is no stores present nearby the store object is nil</p>
-<pre class="highlight swift"><code>   <span class="kt">UrbanPiper</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="nf">getNearestStore</span><span class="p">(</span><span class="nv">lat</span><span class="p">:</span> <span class="kt">USERLOCATIONLATITUDE</span><span class="p">,</span> <span class="nv">lng</span><span class="p">:</span> <span class="kt">USERLOCATIONLONGITUDE</span><span class="p">,</span>
-                                               <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span>
-                                               <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+<p>The getNEAREST-STORE function return the store details nearest to the user&rsquo;s location, if there is no stores present nearby the store object is nil</p>
+<pre class="highlight swift"><code>   <span class="kt">UrbanPiper</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="n">getNEAREST</span><span class="o">-</span><span class="kt">STORE</span><span class="p">(</span><span class="nv">lat</span><span class="p">:</span> <span class="kt">USER</span><span class="o">-</span><span class="kt">LOCATION</span><span class="o">-</span><span class="kt">LATITUDE</span><span class="p">,</span> <span class="nv">lng</span><span class="p">:</span> <span class="kt">USER</span><span class="o">-</span><span class="kt">LOCATION</span><span class="o">-</span><span class="kt">LONGITUDE</span><span class="p">,</span>
+                                               <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span>
+                                               <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 </code></pre>
 
-<p>The getCategories function can be called with or without the &lsquo;NEARESTSTOREID&rsquo;, when called without the &lsquo;NEARESTSTOREID&rsquo; the api&rsquo;s returns categories that are generic and cannot be added to the cart. Passing the &lsquo;NEARESTSTOREID&rsquo; returns categories specific to the particular store.</p>
-<pre class="highlight swift"><code>   <span class="kt">UrbanPiper</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="nf">getCategories</span><span class="p">(</span><span class="nv">storeId</span><span class="p">:</span> <span class="kt">NEARESTSTOREID</span><span class="p">,</span> <span class="nv">offset</span><span class="p">:</span> <span class="kt">PAGINATIONOFFSET</span><span class="p">,</span> <span class="nv">limit</span><span class="p">:</span> <span class="kt">PAGINATIONFETCHLIMIT</span><span class="p">,</span>
-                                             <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+<p>The getCategories function can be called with or without the <code>NEAREST-STORE-ID</code>, when called without the <code>NEAREST-STORE-ID</code> the api&rsquo;s returns categories that are generic and cannot be added to the cart. Passing the <code>NEAREST-STORE-ID</code> returns categories specific to the particular store.</p>
+<pre class="highlight swift"><code>   <span class="kt">UrbanPiper</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="nf">getCategories</span><span class="p">(</span><span class="nv">storeId</span><span class="p">:</span> <span class="kt">NEAREST</span><span class="o">-</span><span class="kt">STORE</span><span class="o">-</span><span class="kt">ID</span><span class="p">,</span> <span class="nv">offset</span><span class="p">:</span> <span class="kt">PAGINATION</span><span class="o">-</span><span class="kt">OFFSET</span><span class="p">,</span> <span class="nv">limit</span><span class="p">:</span> <span class="kt">PAGINATION</span><span class="o">-</span><span class="kt">FETCH</span><span class="o">-</span><span class="kt">LIMIT</span><span class="p">,</span>
+                                             <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 </code></pre>
 
-<p>The getCategoryItems function can be called with or without the &lsquo;NEARESTSTOREID&rsquo;, when called without the &lsquo;NEARESTSTOREID&rsquo; the api&rsquo;s returns items that are generic and cannot be added to the cart. Passing the &lsquo;NEARESTSTOREID&rsquo; returns items specific to the particular store.</p>
-<pre class="highlight swift"><code>   <span class="kt">UrbanPiper</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="nf">getCategoryItems</span><span class="p">(</span><span class="nv">categoryId</span><span class="p">:</span> <span class="kt">CATEGORYID</span><span class="p">,</span> <span class="nv">storeId</span><span class="p">:</span> <span class="kt">NEARESTSTOREID</span><span class="p">,</span> <span class="nv">offset</span><span class="p">:</span> <span class="kt">PAGINATIONOFFSET</span><span class="p">,</span> 
-                                                <span class="nv">limit</span><span class="p">:</span> <span class="kt">PAGINATIONFETCHLIMIT</span><span class="p">,</span> <span class="nv">sortKey</span><span class="p">:</span> <span class="kt">SORTKEY</span><span class="p">,</span> <span class="nv">filterOptions</span><span class="p">:</span> <span class="kt">FILTEROPTIONS</span><span class="p">,</span>
-                                                <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+<p>The getCategoryItems function can be called with or without the <code>NEAREST-STORE-ID</code>, when called without the <code>NEAREST-STORE-ID</code> the api&rsquo;s returns items that are generic and cannot be added to the cart. Passing the <code>NEAREST-STORE-ID</code> returns items specific to the particular store.</p>
+<pre class="highlight swift"><code>   <span class="kt">UrbanPiper</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="nf">getCategoryItems</span><span class="p">(</span><span class="kt">CATEGORY</span><span class="o">-</span><span class="kt">ID</span><span class="p">:</span> <span class="kt">CATEGORY</span><span class="o">-</span><span class="kt">ID</span><span class="p">,</span> <span class="nv">storeId</span><span class="p">:</span> <span class="kt">NEAREST</span><span class="o">-</span><span class="kt">STORE</span><span class="o">-</span><span class="kt">ID</span><span class="p">,</span> <span class="nv">offset</span><span class="p">:</span> <span class="kt">PAGINATION</span><span class="o">-</span><span class="kt">OFFSET</span><span class="p">,</span> 
+                                                <span class="nv">limit</span><span class="p">:</span> <span class="kt">PAGINATION</span><span class="o">-</span><span class="kt">FETCH</span><span class="o">-</span><span class="kt">LIMIT</span><span class="p">,</span> <span class="kt">SORT</span><span class="o">-</span><span class="kt">KEY</span><span class="p">:</span> <span class="kt">SORT</span><span class="o">-</span><span class="kt">KEY</span><span class="p">,</span> <span class="kt">FILTER</span><span class="o">-</span><span class="kt">OPTIONS</span><span class="p">:</span> <span class="kt">FILTER</span><span class="o">-</span><span class="kt">OPTIONS</span><span class="p">,</span>
+                                                <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 </code></pre>
 
-<p>PAGINATIONOFFSET: Default - 0. The offset from which the categories or items should be returned from.<br />
-PAGINATIONFETCHLIMIT: Default - 20. The number of categories or items that can be fetched from the PAGINATIONOFFSET.<br />
-SORTKEY: User selected sort option key from getFilterAndSortOptions API.<br />
-FILTEROPTIONS: User selected filters options from getFilterAndSortOptions API.<br /></p>
+<p>PAGINATION-OFFSET: Default - 0. The offset from which the categories or items should be returned from.<br />
+PAGINATION-FETCH-LIMIT: Default - 20. The number of categories or items that can be fetched from the PAGINATION-OFFSET.<br />
+SORT-KEY: User selected sort option key from getFilterAndSortOptions API.<br />
+FILTER-OPTIONS: User selected filters options from getFilterAndSortOptions API.<br /></p>
 
-<p>The getFilterAndSortOptions function returns a list of sorting keys and filter options for a given CATEGORYID that are supported by your business.</p>
-<pre class="highlight swift"><code>   <span class="kt">UrbanPiper</span><span class="o">.</span><span class="n">sharedInstance</span><span class="o">.</span><span class="nf">getFilterAndSortOptions</span><span class="p">(</span><span class="nv">categoryId</span><span class="p">:</span> <span class="kt">CATEGORYID</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> 
-                                                     <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+<p>The getFilterAndSortOptions function returns a list of sorting keys and filter options for a given CATEGORY-ID that are supported by your business.</p>
+<pre class="highlight swift"><code>   <span class="kt">UrbanPiper</span><span class="o">.</span><span class="n">sharedInstance</span><span class="o">.</span><span class="nf">getFilterAndSortOptions</span><span class="p">(</span><span class="kt">CATEGORY</span><span class="o">-</span><span class="kt">ID</span><span class="p">:</span> <span class="kt">CATEGORY</span><span class="o">-</span><span class="kt">ID</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> 
+                                                     <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 </code></pre>
 
 <p><a name="item-option-builder"></a></p>
 <h2 id='item-option-builder' class='heading'>Item Option Builder</h2>
 
-<p>ItemOptionBuilder is a helper class that simplifys the addition and removal of &lsquo;ItemOption&rsquo; for an item, The item option group is used only in cases where the <code><a href="Classes/Item.html#/s:10UrbanPiper4ItemC12optionGroupsSayAA0C11OptionGroupCGSgvp">Item.optionGroups</a></code> is non-nil.</p>
+<p>ItemOptionBuilder is a helper class that simplifys the addition and removal of <code>ItemOption</code> for an item, The item option group is used only in cases where the <code><a href="Classes/Item.html#/s:10UrbanPiper4ItemC12optionGroupsSayAA0C11OptionGroupCGSgvp">Item.optionGroups</a></code> is non-nil.</p>
 <pre class="highlight swift"><code>   <span class="c1">// The initializer methods returns the ItemOptionGroup helper class for adding item options.</span>
    <span class="k">let</span> <span class="nv">itemOptionBuilder</span> <span class="o">=</span> <span class="kt">ItemOptionBuilder</span><span class="p">(</span><span class="nv">item</span><span class="p">:</span> <span class="kt">ITEM</span><span class="p">)</span>
 
@@ -507,8 +505,8 @@ REORDERITEM: An instance of reorderItem object from the reorder API result.</p>
 <pre class="highlight swift"><code>   <span class="c1">// Initializes an instance of CheckoutBuilder</span>
    <span class="k">let</span> <span class="nv">checkoutBuilder</span><span class="p">:</span> <span class="kt">CheckoutBuilder</span> <span class="o">=</span> <span class="kt">UrbanPiper</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="nf">startCheckout</span><span class="p">()</span>
 
-   <span class="c1">// Returns an list of supported paymentOptions, this call returns the supported payment options only when the validateCart function has been called atleast once else it returns an 'nil'.</span>
-   <span class="k">var</span> <span class="nv">paymentOptionsArray</span> <span class="o">=</span> <span class="n">checkoutBuilder</span><span class="o">.</span><span class="nf">getPaymentModes</span><span class="p">()</span>
+   <span class="c1">// Returns an list of supported PAYMENT-OPTIONs, this call returns the supported payment options only when the validateCart function has been called atleast once else it returns an `nil`.</span>
+   <span class="k">var</span> <span class="nv">PAYMENT</span><span class="o">-</span><span class="kt">OPTIONsArray</span> <span class="o">=</span> <span class="n">checkoutBuilder</span><span class="o">.</span><span class="nf">getPaymentModes</span><span class="p">()</span>
 
    <span class="c1">// Clears the coupon that has been applied.</span>
    <span class="n">checkoutBuilder</span><span class="o">.</span><span class="nf">clearCoupon</span><span class="p">()</span>
@@ -522,41 +520,41 @@ REORDERITEM: An instance of reorderItem object from the reorder API result.</p>
 <p>This API should be called whenever a cart item is added, removed.</p>
 
 <p>Calling this API invalidates the previous calls to <code>validateCoupon(...)</code>, and <code>initPayment(...)</code>, the response values of both the calls should be discarded.</p>
-<pre class="highlight swift"><code>   <span class="n">checkoutBuilder</span><span class="o">.</span><span class="nf">validateCart</span><span class="p">(</span><span class="nv">store</span><span class="p">:</span> <span class="kt">NEARESTSTORE</span><span class="p">,</span> <span class="nv">useWalletCredits</span><span class="p">:</span> <span class="kt">USERWALLETCREDIT</span><span class="p">,</span> <span class="nv">deliveryOption</span><span class="p">:</span> <span class="kt">DELIVERYOPTION</span><span class="p">,</span> 
-                                <span class="nv">cartItems</span><span class="p">:</span> <span class="kt">CARTITEMS</span><span class="p">,</span> <span class="nv">orderTotal</span><span class="p">:</span> <span class="kt">CARTTOTAL</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> 
-                                <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+<pre class="highlight swift"><code>   <span class="n">checkoutBuilder</span><span class="o">.</span><span class="nf">validateCart</span><span class="p">(</span><span class="nv">store</span><span class="p">:</span> <span class="kt">NEAREST</span><span class="o">-</span><span class="kt">STORE</span><span class="p">,</span> <span class="nv">useWalletCredits</span><span class="p">:</span> <span class="kt">USER</span><span class="o">-</span><span class="kt">WALLET</span><span class="o">-</span><span class="kt">CREDIT</span><span class="p">,</span> <span class="kt">DELIVERY</span><span class="o">-</span><span class="kt">OPTION</span><span class="p">:</span> <span class="kt">DELIVERY</span><span class="o">-</span><span class="kt">OPTION</span><span class="p">,</span> 
+                                <span class="nv">cartItems</span><span class="p">:</span> <span class="kt">CARTITEMS</span><span class="p">,</span> <span class="nv">orderTotal</span><span class="p">:</span> <span class="kt">CARTTOTAL</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> 
+                                <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 </code></pre>
 
-<p>NEARESTSTORE: The store where the order is to be placed..<br />
-USERWALLETCREDIT: Setting this as &lsquo;true&rsquo; enable split payment where wallet amount is used for payment first and the balance amount from the payment option selected by the user.<br />
-DELIVERYOPTION: Delivery optin selected by the user.<br />
+<p>NEAREST-STORE: The store where the order is to be placed..<br />
+USER-WALLET-CREDIT: Setting this as <code>true</code> enable split payment where wallet amount is used for payment first and the balance amount from the payment option selected by the user.<br />
+DELIVERY-OPTION: Delivery optin selected by the user.<br />
 CARTITEMS: The list of cart items added to card, retrived using UrbanPiper.sharedInstance().getCartItems().<br />
 CARTTOTAL: The total value of all the items in cart, retrived using UrbanPiper.sharedInstance().getCartValue().</p>
 <h4 id='step-2' class='heading'>Step 2:</h4>
 
 <p>API call to validate the coupon code applied by the user. </p>
 
-<p>When ever a validateCart API call is made the previous validateCoupon response is invalidated. To reapply the coupon call this API after the completion of the validateCart API call.  </p>
-<pre class="highlight swift"><code>    <span class="n">checkoutBuilder</span><span class="o">.</span><span class="nf">validateCoupon</span><span class="p">(</span><span class="nv">code</span><span class="p">:</span> <span class="kt">COUPONCODE</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+<p>When ever a validateCart API call is made the previous validateCoupon response is invalidated. To re-apply the coupon call this API after the completion of the validateCart API call.  </p>
+<pre class="highlight swift"><code>    <span class="n">checkoutBuilder</span><span class="o">.</span><span class="nf">validateCoupon</span><span class="p">(</span><span class="nv">code</span><span class="p">:</span> <span class="kt">COUPONCODE</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 </code></pre>
 <h4 id='step-3' class='heading'>Step 3:</h4>
 
-<p>This API call returns the details on the payment option passed in. This step can be skipped for the paymentOption &lsquo;cash&rsquo; and the placeOrder API call can be called directly.</p>
-<pre class="highlight swift"><code>    <span class="n">checkoutBuilder</span><span class="o">.</span><span class="nf">initPayment</span><span class="p">(</span><span class="nv">paymentOption</span><span class="p">:</span> <span class="kt">PAYMENTOPTION</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+<p>This API call returns the details on the payment option passed in. This step can be skipped for the PAYMENT-OPTION <code>cash</code> and the placeOrder API can be called directly.</p>
+<pre class="highlight swift"><code>    <span class="n">checkoutBuilder</span><span class="o">.</span><span class="nf">initPayment</span><span class="p">(</span><span class="kt">PAYMENT</span><span class="o">-</span><span class="kt">OPTION</span><span class="p">:</span> <span class="kt">PAYMENT</span><span class="o">-</span><span class="kt">OPTION</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 </code></pre>
 
-<p>PAYMENTOPTION: Payment option selected by the user.</p>
+<p>PAYMENT-OPTION: Payment option selected by the user.</p>
 <h4 id='step-4' class='heading'>Step 4:</h4>
 
 <p>API call places the order in the store passed in the validateCart API with the cart items from the same.</p>
-<pre class="highlight swift"><code>    <span class="n">checkoutBuilder</span><span class="o">.</span><span class="nf">placeOrder</span><span class="p">(</span><span class="nv">address</span><span class="p">:</span> <span class="kt">ADDRESS</span><span class="p">,</span> <span class="nv">deliveryDate</span><span class="p">:</span> <span class="kt">DELIVERYDATE</span><span class="p">,</span> <span class="nv">deliveryTime</span><span class="p">:</span> <span class="kt">DELIVERYTIME</span><span class="p">,</span> <span class="nv">timeSlot</span><span class="p">:</span> <span class="kt">TIMESLOT</span><span class="p">,</span> 
-                               <span class="nv">paymentOption</span><span class="p">:</span> <span class="kt">PAYMENTOPTION</span><span class="p">,</span> <span class="nv">instructions</span><span class="p">:</span> <span class="kt">INSTRUCTIONS</span><span class="p">,</span> <span class="nv">phone</span><span class="p">:</span> <span class="kt">PHONENUMBER</span><span class="p">,</span>
-                               <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+<pre class="highlight swift"><code>    <span class="n">checkoutBuilder</span><span class="o">.</span><span class="nf">placeOrder</span><span class="p">(</span><span class="nv">address</span><span class="p">:</span> <span class="kt">ADDRESS</span><span class="p">,</span> <span class="kt">DELIVERY</span><span class="o">-</span><span class="kt">DATE</span><span class="p">:</span> <span class="kt">DELIVERY</span><span class="o">-</span><span class="kt">DATE</span><span class="p">,</span> <span class="kt">DELIVERY</span><span class="o">-</span><span class="kt">TIME</span><span class="p">:</span> <span class="kt">DELIVERY</span><span class="o">-</span><span class="kt">TIME</span><span class="p">,</span> <span class="nv">timeSlot</span><span class="p">:</span> <span class="kt">TIMESLOT</span><span class="p">,</span> 
+                               <span class="kt">PAYMENT</span><span class="o">-</span><span class="kt">OPTION</span><span class="p">:</span> <span class="kt">PAYMENT</span><span class="o">-</span><span class="kt">OPTION</span><span class="p">,</span> <span class="nv">instructions</span><span class="p">:</span> <span class="kt">INSTRUCTIONS</span><span class="p">,</span> <span class="nv">phone</span><span class="p">:</span> <span class="kt">PHONE</span><span class="o">-</span><span class="kt">NUMBER</span><span class="p">,</span>
+                               <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 </code></pre>
 
 <p>ADDRESS: Address to delivered.<br />
-DELIVERYDATE: The date at which the item is to delivered.<br />
-DELIVERYTIME: The time at which the item is to be delivered.<br /></p>
+DELIVERY-DATE: The date at which the item is to delivered.<br />
+DELIVERY-TIME: The time at which the item is to be delivered.<br /></p>
 
 <p>TIMESLOT: Optional. Only needs to be set when time slots are used. The timeslot selected by the user to deliver at.<br /></p>
 
@@ -564,14 +562,16 @@ DELIVERYTIME: The time at which the item is to be delivered.<br /></p>
 
 <p>The time slots available in the Store object represents the time slots set on a store level, if there are no time slot objects in the Store object use the time slots from the Biz which are the time slots configured at Biz level.<br /></p>
 
-<p>PAYMENTOPTION: Payment option selected by the user.<br />
+<p>PAYMENT-OPTION: Payment option selected by the user.<br />
 INSTRUCTIONS: Instructions to be sent to the store.<br />
-PHONENUMBER: Phone number of the user.</p>
+PHONE-NUMBER: Phone number of the user.</p>
 <h4 id='step-5' class='heading'>Step 5:</h4>
 
-<p>API call to verify the payment transaction when the paymentOption is &lsquo;paymentGateway&rsquo;, for other payment options this function can be skipped.</p>
-<pre class="highlight swift"><code>    <span class="n">checkoutBuilder</span><span class="o">.</span><span class="nf">verifyPayment</span><span class="p">(</span><span class="nv">pid</span><span class="p">:</span> <span class="kt">PAYMENTID</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION_CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE_CALLBACK</span><span class="p">)</span>
+<p>API call to verify the payment transaction when the PAYMENT-OPTION is <code>paymentGateway</code>, for other payment options this function can be skipped.</p>
+<pre class="highlight swift"><code>    <span class="n">checkoutBuilder</span><span class="o">.</span><span class="nf">verifyPayment</span><span class="p">(</span><span class="nv">pid</span><span class="p">:</span> <span class="kt">PAYMENT</span><span class="o">-</span><span class="kt">ID</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt">COMPLETION</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">,</span> <span class="nv">failure</span><span class="p">:</span> <span class="kt">FAILURE</span><span class="o">-</span><span class="kt">CALLBACK</span><span class="p">)</span>
 </code></pre>
+
+<p>PAYMENT-ID: The id returned by the 3rd party payment provider on successfull payment completion.</p>
 
           </div>
         </section>
@@ -580,7 +580,7 @@ PHONENUMBER: Phone number of the user.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2019 <a class="link" href="https://urbanpiper.com" target="_blank" rel="external">UrbanPiper</a>. All rights reserved. (Last updated: 2019-03-17)</p>
+      <p>&copy; 2019 <a class="link" href="https://urbanpiper.com" target="_blank" rel="external">UrbanPiper</a>. All rights reserved. (Last updated: 2019-03-18)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
