@@ -17,7 +17,7 @@
 - [User registration](#user-registration)
     - [Registration](#registration)
     - [Social user registration](#social-registration)
-- [Catalogue](#catalogue)
+- [catalog](#catalog)
 	- [nearest store](#get-nearest-store)
 - [Item Option Builder](#item-option-builder)
 - [Cart](#cart)
@@ -43,7 +43,7 @@ The following are the steps that needs to be followed to place an order.
 * [Initalizing the SDK](#initialization)
 * [Logging in a user](#login)
 * [Registering a new user](#registration)
-* [How to get the catalogue](#catalogue)
+* [How to get the catalog](#catalog)
 * [Managing your cart](#cart)
 * [Placing an order](#ordering)
  
@@ -130,7 +130,7 @@ To get your businesses credentials you can contact urbanpiper at `support@urbanp
 The following contains methods to related to the retriving user object, [logging in](#login) and [registering](#registration) an user.
 
 <a name="login"></a>
-### Login
+## Login
 
 A user can login into your business in two ways
 
@@ -140,7 +140,7 @@ A user can login into your business in two ways
 Note: Once a user has successfully logged in the user object can be accessed by the SDK's [getUser()](#user) method
 
 <a name="phone-based-login"></a>
-#### Phone based login
+### Phone based login
 
 Logging an user into your business using phone number and password.
 
@@ -158,7 +158,7 @@ UrbanPiper.sharedInstance().login(phone: PHONE-NUMBER, password: PASSWORD, compl
 
 
 <a name="social-login"></a>
-#### Social login
+### Social login
 
 The currently supported social login providers by the platform are `Google Sign In` and `Facebook Login` and have to be setup in your project before performing an social login with the SDK.
 
@@ -192,7 +192,7 @@ The [Social User Registration](#social-registration) section provides the steps 
 
 
 <a name="registration"></a>
-### Registration
+## Registration
 
 An user can be registered to your business in two ways
 
@@ -200,7 +200,7 @@ An user can be registered to your business in two ways
 * Social Registration.
 
 <a name="registration"></a>
-#### Phone Based Registration
+### Phone Based Registration
 
 For registration the Builder approach has been taken, to get an instance of the `RegistrationBuilder` the following method should be called on the `sharedInstance()` of the SDK.
 
@@ -251,7 +251,7 @@ registrationBuilder.verifyRegOTP(phone: PHONE-NUMBER, otp: OTP, email: EMAIL, pa
 Note: Once a user's `otp` has been verifed successfully the user has to logged into the sytem by using the [login](#login) method in the `sharedInstance()` of UrbanPiper SDK.
 
 <a name="social-registration"></a>
-#### Social User Registration
+### Social User Registration
 
 The Social User Registration should only the initiated when the `success` varible in the [social login](#social-login) response is false and the `message` variable of the response is `phone_number_required`.
 
@@ -337,7 +337,7 @@ Note: Once a user has successfully verified the otp the [social user login](#soc
 <a name="user"></a>
 ## User
 
-When an user log's in, the user's details are store in the SDK, the `User` object stored by the SDK can be retrived by calling the `getUser()` method on the `sharedInstance()` of the UrbanPiper SDK.
+When an user log's in, the user's details are stored in the SDK, the `User` object stored by the SDK can be retrived by calling the `getUser()` method on the `sharedInstance()` of the UrbanPiper SDK.
 
 ```swift
 
@@ -348,30 +348,72 @@ let user: User = UrbanPiperSDK.sharedInstance().getUser()
 
 Returns an user object if the user is logged in or else returns an `nil` reference.
 
-<a name="catalogue"></a>
-## Catalogue
+# Usecases
+<a name="how-to-get-catalog"></a>
+## How to get catalog
+
+The UrbanPiper order management system(OMS) allows you to configure categories, items, item prices, item stock etc on a store by store basis.
+
+Therefore it's essential for the app to get the store nearest to the user before retriving the catalog from the server.
+
+In cases where the users location services are disabled or when there are no store's near by the user the generic catalogue can be retrived from the server. The items returned from the generic catalogue cannot be added to the cart.
+
 
 <a name="get-nearest-store"></a>
-#### Get Nearest Store
+### How to get a store
 
-The getNearestStore function returns the store details nearest to the user's location, if there is no stores present nearby the store object is nil
+To return the nearest store the user's location is required. The following method takes the users location and returns the nearest store if the user is within the deliverable area a store.
 
 ```swift
-   UrbanPiper.sharedInstance().getNearestStore(lat: USER-LOCATION-LATITUDE, lng: USER-LOCATION-LONGITUDE,
-                                               completion: COMPLETION-CALLBACK,
-                                               failure: FAILURE-CALLBACK)
+
+UrbanPiper.sharedInstance().getNearestStore(lat: USER-LOCATION-LATITUDE, lng: USER-LOCATION-LONGITUDE,
+                                            completion: COMPLETION-CALLBACK, failure: FAILURE-CALLBACK)
+                                            
 ```
+
+| Params | Description |
+|--------|-------------|
+| USER-LOCATION-LATITUDE | The users location latitude |
+| USER-LOCATION-LONGITUDE | The users location longitude |
+
 
 <a name="get-categories"></a>
-#### Get Categories
+#### Categories
 
-The getCategories function can be called with or without the `NEAREST-STORE-ID`, when called without the `NEAREST-STORE-ID` the api's returns categories that are generic and cannot be added to the cart. Passing the `NEAREST-STORE-ID` returns categories specific to the particular store.
+The categories that are configured in your businesses OMS
 
+##### Store specific categories
+Store specific categories can be retrived by passing in the nearest id for the param `storeId`.
 
 ```swift
+
    UrbanPiper.sharedInstance().getCategories(storeId: NEAREST-STORE-ID, offset: PAGINATION-OFFSET, limit: PAGINATION-FETCH-LIMIT,
                                              completion: COMPLETION-CALLBACK, failure: FAILURE-CALLBACK)
+                                             
 ```
+
+| Params | Description |
+|--------|-------------|
+| NEAREST-STORE-ID | The id of the store near by to the user |
+| PAGINATION-OFFSET | `Default - 0` The offset from which the categories should be returned from. |
+| PAGINATION-FETCH-LIMIT | `Default - 20` The number of categories to be fetched from the PAGINATION-OFFSET |
+
+##### Generic categories
+
+Generic categories can be retrived by passing a `nil` reference for the param `storeId`.
+
+```swift
+
+   UrbanPiper.sharedInstance().getCategories(storeId: NEAREST-STORE-ID, offset: PAGINATION-OFFSET, limit: PAGINATION-FETCH-LIMIT,
+                                             completion: COMPLETION-CALLBACK, failure: FAILURE-CALLBACK)
+                                             
+```
+
+| Params | Description |
+|--------|-------------|
+| NEAREST-STORE-ID | `nil` reference |
+| PAGINATION-OFFSET | `Default - 0` The offset from which the categories should be returned from. |
+| PAGINATION-FETCH-LIMIT | `Default - 20` The number of categories to be fetched from the PAGINATION-OFFSET |
 
 <a name="get-category-items"></a>
 #### Get Category Items
@@ -379,9 +421,11 @@ The getCategories function can be called with or without the `NEAREST-STORE-ID`,
 The getCategoryItems function can be called with or without the `NEAREST-STORE-ID`, when called without the `NEAREST-STORE-ID` the api's returns items that are generic and cannot be added to the cart. Passing the `NEAREST-STORE-ID` returns items specific to the particular store.
 
 ```swift
+
    UrbanPiper.sharedInstance().getCategoryItems(categoryId: CATEGORY-ID, storeId: NEAREST-STORE-ID, offset: PAGINATION-OFFSET, 
                                                 limit: PAGINATION-FETCH-LIMIT, sortBy: SORT-KEY, filterBy: FILTER-OPTIONS,
                                                 completion: COMPLETION-CALLBACK, failure: FAILURE-CALLBACK)
+                                                
 ```
 
 PAGINATION-OFFSET: Default - 0. The offset from which the categories or items should be returned from.<br />
@@ -399,7 +443,9 @@ The getFilterAndSortOptions function returns a list of sorting keys and filter o
 <a name="item-option-builder"></a>
 ## Item Option Builder
 
-ItemOptionBuilder is a helper class that simplifys the addition and removal of `ItemOption` for an item, The item option group is used only in cases where the `Item.optionGroups` is non-nil.
+ItemOptionBuilder is a helper class that simplifies the addition and removal of `ItemOption` for an item,
+An item option is an variation of an item.
+The item option group is used only in cases where the `Item.optionGroups` is non-nil.
 
 ```swift
    // The initializer methods returns the ItemOptionGroup helper class for adding item options.
@@ -533,7 +579,7 @@ DELIVERY-TIME: The time at which the item is to be delivered.<br />
 
 TIMESLOT: Optional. Only needs to be set when time slots are used. The timeslot selected by the user to deliver at.<br />
 
-The available time slots can be retrived from the [nearest store api](#catalogue), the api result `StoreResponse` contains two varibles `Biz` and `Store`.<br />
+The available time slots can be retrived from the [nearest store api](#catalog), the api result `StoreResponse` contains two varibles `Biz` and `Store`.<br />
 
 The time slots available in the Store object represents the time slots set on a store level, if there are no time slot objects in the Store object use the time slots from the Biz which are the time slots configured at Biz level.<br />
 
