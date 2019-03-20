@@ -188,21 +188,55 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
     public var normalDefaultOrderDeliveryDate: Date? {
         let paymentOffsetTimeSecs: TimeInterval = TimeInterval(120)
         let defaultOffset: TimeInterval = selectedDeliveryOption.deliveryOptionOffsetTimeSecs
-        // around 2 minutes gap to payment
-        var normalDeliveryDate: Date? = Date().addingTimeInterval(paymentOffsetTimeSecs + defaultOffset)
-
-        let openingDate: Date = OrderingStoreDataModel.shared.orderingStore!.openingDate!
-        let openingDateWithOffset: Date = openingDate.addingTimeInterval(defaultOffset)
-
-        let closingDate: Date = OrderingStoreDataModel.shared.orderingStore!.closingDate!
-//        let closingDateWithOffset: Date = closingDate.addingTimeInterval(-(paymentOffsetTimeSecs + defaultOffset))
         
-        if normalDeliveryDate! < openingDateWithOffset {
-            normalDeliveryDate = openingDateWithOffset
-        } else if normalDeliveryDate! > closingDate {
-            normalDeliveryDate = nil
+        var normalDeliveryDate: Date?
+        
+        if Calendar.current.isDateInToday(selectedRequestedDate) {
+            // around 2 minutes gap to payment
+            normalDeliveryDate = Date().addingTimeInterval(paymentOffsetTimeSecs + defaultOffset)
+            
+            let openingDate: Date = OrderingStoreDataModel.shared.orderingStore!.openingDate!
+            let openingDateWithOffset: Date = openingDate.addingTimeInterval(defaultOffset)
+            
+            let closingDate: Date = OrderingStoreDataModel.shared.orderingStore!.closingDate!
+            //        let closingDateWithOffset: Date = closingDate.addingTimeInterval(-(paymentOffsetTimeSecs + defaultOffset))
+            
+            if normalDeliveryDate! < openingDateWithOffset {
+                normalDeliveryDate = openingDateWithOffset
+            } else if normalDeliveryDate! > closingDate {
+                normalDeliveryDate = nil
+            }
+        } else {
+            let deliveryDate = Calendar.current.startOfDay(for: selectedRequestedDate)
+            
+            print("selectedRequestedDate time\(deliveryDate.description)")
+            // around 2 minutes gap to payment
+            normalDeliveryDate = deliveryDate.addingTimeInterval(paymentOffsetTimeSecs + defaultOffset)
+            
+            let calendar = Calendar.current
+            
+            // Replace the hour (time) of both dates with 00:00
+            let todayMorning = calendar.startOfDay(for: Date())
+            
+            let components = calendar.dateComponents([.day], from: todayMorning, to: deliveryDate)
+            
+            let daysDifference = components.day ?? 1
+
+            let openingDate: Date = OrderingStoreDataModel.shared.orderingStore!.openingDate!
+            let openingDateOnPreOrderDate: Date = Calendar.current.date(byAdding: .day, value: daysDifference, to: openingDate)!
+            let openingDateWithOffset: Date = openingDateOnPreOrderDate.addingTimeInterval(defaultOffset)
+            
+            let closingDate: Date = OrderingStoreDataModel.shared.orderingStore!.closingDate!
+            let closingDateOnPreOrderDate: Date = Calendar.current.date(byAdding: .day, value: daysDifference, to: closingDate)!
+            //        let closingDateWithOffset: Date = closingDate.addingTimeInterval(-(paymentOffsetTimeSecs + defaultOffset))
+            
+            if normalDeliveryDate! < openingDateWithOffset {
+                normalDeliveryDate = openingDateWithOffset
+            } else if normalDeliveryDate! > closingDateOnPreOrderDate {
+                normalDeliveryDate = nil
+            }
         }
-        
+
         return normalDeliveryDate
     }
     
