@@ -62,28 +62,30 @@ Note: to add an item with option groups the [ItemOptionBuilder](#item-option-bui
  
 
 
-<a name="how-to-setup"></a>
-# How to setup
-
-The below guide provides you with the steps to install and initialize the SDK in your an iOS app.
-
 <a name="installation"></a>
+# Installation & Initialization 
+
 ## Installation
 
-The SDK supports installation via both CocoaPods and Carthage. Steps to integrate the SDK are shown below.
+UrbanPiper SDK can be installed through either of the two approches: 
 
 <a name="cocoapods"></a>
 ### CocoaPods
 
-UrbanPiper supports `CocoaPods` for easy installation.
-To Install, see our **[swift integration guide »](https://UrbanPiper.com/help/reference/swift)**
 
-`pod 'UrbanPiper'`
+Here are the steps to install UP SDK with CocoaPods: 
+
+- Install CocoaPods (Installation Guide)
+- Integrate CocoaPods in you projects (Integration Guide)
+- Add the pod for UrbanPiper SDK <br> `pod 'UrbanPiper'`
+- Install your dependancies by running the following command in your project directory <br> `pod install`
+
+
 
 <a name="carthage"></a>
 ### Carthage
 
-UrbanPiper also supports `Carthage` to package your dependencies as a framework. Include the following dependency in your Cartfile:
+UHere are the steps to install UP SDK with CocoaPods: 
 
 `github "urbanpiper/ios-sdk"`
 
@@ -92,7 +94,7 @@ Check out the **[Carthage docs »](https://github.com/Carthage/Carthage#if-youre
 <a name="initialization"></a>
 ## Initialization
 
-Import UrbanPiper into AppDelegate.swift, and initialize UrbanPiper within `application:didFinishLaunchingWithOptions:`
+Import the UrbanPiper module into AppDelegate.swift, and initialize UrbanPiper SDK inside the `application:didFinishLaunchingWithOptions:` method
 
 ```swift
 
@@ -110,35 +112,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 | Params | Description |
 |--------|-------------|
-| APP-LANGUAGE | `Optional` `Default - english` The `Language` the server should send the data in. |
-| URBANPIPER-BIZID | your business id from urbanpiper. |
-| URBANPIPER-API-USERNAME | your api username from urbanpiper. |
-| URBANPIPER-API-KEY | your api key from urbanpiper. |
-| CALLBACK | callback notifies about the `SDKEvent` that should be handled by the app. |
+| APP-LANGUAGE | `Optional` <br>This is the language the server should send the data in. Default is `english` |
+| URBANPIPER-BIZID | This is your Business ID in UrbanPiper System. |
+| URBANPIPER-API-USERNAME | This is your API Username in Urbanpiper System.  |
+| URBANPIPER-API-KEY | This is your API Key in UrbanPiper System. |
+| CALLBACK | Callback notifies about the `SDKEvent` that should be handled by the app. |
 
-You initialize the UrbanPiper instance with the params lanuguage, `bizId`, `apiUsername`, `apiKey`, `callback`. once initialized the sharedInstance of the SDK can be accessed by the class method `UrbanPiper.sharedInstance()`
+> Note: `URBANPIPER-BIZID`, `URBANPIPER-API-USERNAME` & `URBANPIPER-API-KEY` are essential to initionalise the SDK. If you don't have them, please reach out to our support team (support@urbanpiper.com) & we'll set you up. 
 
-To get your businesses credentials you can contact urbanpiper at `support@urbanpiper.com`.
+Once the SDK is initialized, the shared instance of the SDK can be accessed by the class method `UrbanPiper.sharedInstance()`
+
 
 <a name="user-and-authentication"></a>
 # Users & Authentication
 
-The following contains methods to related to the retriving user object, [logging in](#login) and [registering](#registration) an user.
+There are four major use-cases w.r.t User & Authentication: 
+
+- Login an existing User 
+- Reset password for an exisiting User 
+- Registering a new User 
+- Retreving the user data for a logged-in user 
+
 
 <a name="login"></a>
-## Login
+## Login an existing User 
 
-A user can login into your business in two ways
+There are two ways Users can login:
 
-* Phone based login.
+* Phone number based login.
 * Social login.
 
-Note: Once a user has successfully logged in the user object can be accessed by the SDK's [getUser()](#user) method
 
 <a name="phone-based-login"></a>
-### Phone based login
+### Phone number based login
 
-Logging an user into your business using phone number and password.
+With a combination of registered phone number and saved password, a user can login into the app. Here is how the login method can be called: 
 
 ```swift
 
@@ -151,20 +159,22 @@ UrbanPiper.sharedInstance().login(phone: PHONE-NUMBER, password: PASSWORD, compl
 |--------|-------------|
 | PHONE-NUMBER | Phone number of the user prefixed with the user's country code |
 | PASSWORD | Password entered by the user |
+| COMPLETION-CALLBACK | The completion callback is called when the method call succeeds |
+| FAILURE-CALLBACK | The failure callback is called if the method call fails  |
 
 
 <a name="social-login"></a>
 ### Social login
 
-The currently supported social login providers by the platform are `Google Sign In` and `Facebook Login` and have to be setup in your project before performing an social login with the SDK.
+UP system currently support Social Login via - Google & Facebook
 
-The setup for social login providers are out of scope of this document below are the links to guides for setting up the supported login providers.
+The setup for social login providers are out of scope of this document, but below are the links that might be useful: 
 
 * Google Sign in: **[Google sign in integration guide »](https://developers.google.com/identity/sign-in/ios/)**
 * Facebook Login: **[Facebook login integration guide »](https://developers.facebook.com/docs/facebook-login/ios/)**
 
         
-Once the social login flow of the selected provider is completed the user can be logged into your business by calling the following method.
+Once the social login flow of the selected provider (Google/Facebook) is completed the user can be logged in by calling the following method:
 
 ```swift
 
@@ -175,36 +185,36 @@ UrbanPiper.sharedInstance().socialLogin(email: EMAIL, socialLoginProvider: PROVI
 
 | Params | Description |
 |--------|-------------|
-| EMAIL | The user's email id from the social login provider |
-| PROVIDER | The social login method selected by the user (Google or Facebook) |
-| PROVIDER-ACCESS-TOKEN | The access token returned by the social login provider (Google or Facebook) |
+| EMAIL | User's email id from the social login provider (Google/ Facebook) |
+| PROVIDER | The social login method selected by the user (`.google` or `.facebook`) |
+| PROVIDER-ACCESS-TOKEN | The access token returned by the social login provider (Google/ Facebook) |
+| COMPLETION-CALLBACK | The completion callback is called when the method call succeeds |
+| FAILURE-CALLBACK | The failure callback is called if the method call fails  |
 
-Note: the completion callback returns the `SocialLoginResponse` object with the variables `message` and `success`. 
+> Note: The completion callback returns the `SocialLoginResponse` object with the variables `message` and `success`. 
 
 * if the success variable is `true` then the social login was successfull.
-* if the success variable is `false` and the message variable is `phone_number_required` the user has to registered to your business.
+* if the success variable is `false` and the message variable is `phone_number_required` the user has to go through the social registration flow .
 
-The [Social User Registration](#social-registration) section provides the steps to register an social login user.
+Jump to [Social Registration Flow](#social-registration) to understand the steps required to register a social login user. 
 
 <a name="reset-password"></a>
-## Reset Password
+## Reset password for an existing User 
 
-If the user has forgotten his password, the password can be reset using the `ResetPasswordBuilder`. An instance of `ResetPasswordBuilder` can be accessed by called the method below on the SDK's `sharedInstance()`.
+If the user has forgotten his/her password, the password can be reset using the `ResetPasswordBuilder`. 
+
+An instance of `ResetPasswordBuilder` can be accessed by calling the method below:
 
 ```swift
 
-// This returns an reset password builder that contains the relevant methods to reset the password of the user
 let resetPasswordBuilder: ResetPasswordBuilder = UrbanPiper.sharedInstance().startResetPassword()
    
 ```
 
-Resetting the password using the `ResetPasswordBuilder` involves two steps
+Resetting the password using the `ResetPasswordBuilder` is a two steps process: 
 
-* validating the phone number of the user.
-* resetting password using the otp sent to the phone number passed in the validation process.
-
-#### Step 1:
-The `forgotPassword` method takes the users phone number, checks if the phone number is present in the sytem and if it's present in the system send an `otp` that can be used to reset the password of the user. 
+#### Step 1: Validating User
+With the entered phone-number, UrbanPiper System checks if the user exists. Following method can be called for that: 
 
 ```swift
 
@@ -216,8 +226,10 @@ resetPasswordBuilder.forgotPassword(phone: PHONE-NUMBER, completion: COMPLETION-
 |--------|-------------|
 | PHONE-NUMBER | Phone number of the user prefixed with the user's country code |
 
-#### Step 2:
-The password can be reset to the new password passed in using the `resetPassword` method below. 
+If the user exists, an `OTP` is sent to the registered phone number. Else, it returns an error. 
+
+#### Step 2: Resetting Password
+Using the `OTP`, recieved in the previous step, the following method can be called to reset the password: 
 
 ```swift
 
@@ -228,37 +240,38 @@ resetPasswordBuilder.resetPassword(otp: OTP, password: NEW-PASSWORD, confirmPass
 
 | Params | Description |
 |--------|-------------|
-| OTP | The `otp` sent to the phone number provided in step 1 |
+| OTP | The `otp` sent to the phone number recieved in the previous step |
 | NEW-PASSWORD | The new password of the user |
 | NEW-CONFIRMATION-PASSWORD | The new confirmation password of the user |
 
 <a name="registration"></a>
-## Registration
+## Registering a new User
 
-An user can be registered to your business in two ways
+A user can be registered in either of the two ways: 
 
-* Phone based registration.
+* Phone number based registration.
 * Social Registration.
 
 <a name="registration"></a>
-### Phone Based Registration
+### Phone number based registration
 
-For registration the Builder approach has been taken, to get an instance of the `RegistrationBuilder` the following method should be called on the `sharedInstance()` of the SDK.
+A User can be registered with a phone number, using the `RegistrationBuilder`. 
+
+An instance of `RegistrationBuilder` can be accessed by calling the following method:
+
 
 ```swift
 
-// This returns an registration builder that contains the relevant methods to register an user
 let registrationBuilder: RegistrationBuilder = UrbanPiper.sharedInstance().startRegistration()
    
 ```
     
-User registration is a two step process.
-
-* The user has to be registered using the `registerUser` method.
-* verifiying the account with the otp sent to the user's phone number using the `verifyRegOTP` method.
+User registration is a two step process: 
 
 
-Register an new user account with your business
+#### Step 1: Initiate User registration
+
+The user registration can be initiated by calling the following method:
 
 ```swift
    
@@ -270,12 +283,13 @@ registrationBuilder.registerUser(phone: PHONE-NUMBER, name: USERNAME, email: EMA
 | Params | Description |
 |--------|-------------|
 | PHONE-NUMBER | Phone number of the user prefixed with the user's country code |
-| USERNAME | The name of the user |
-| EMAIL | The email id provided by the user |
+| USERNAME | The entered name of the user |
+| EMAIL | The email id entered by the user |
 | PASSWORD | Password entered by the user |
 
 
-Verify the account with the otp sent to the user's phone number in registerUser
+#### Step 2: Verify the account 
+Using the `OTP`, recieved in the previous step, the following method can be called to verify the account
 
 ```swift
 
@@ -289,26 +303,27 @@ registrationBuilder.verifyRegOTP(phone: PHONE-NUMBER, otp: OTP, email: EMAIL, pa
 | PHONE-NUMBER | Phone number of the user prefixed with the user's country code |
 | OTP | The otp sent to the phone number passed in the `registerUser` call |
 
-Note: Once a user's `otp` has been verifed successfully the user has to logged into the sytem by using the [login](#login) method in the `sharedInstance()` of UrbanPiper SDK.
+> Note: Once a user's `otp` has been verifed successfully the user can be logged into the sytem by using the [login](#login) method.
 
 <a name="social-registration"></a>
-### Social User Registration
+### Social Registration
 
-The Social User Registration should only the initiated when the `success` varible in the [social login](#social-login) response is false and the `message` variable of the response is `phone_number_required`.
+> Note: The Social User Registration should only the initiated when the `success` variable in the [social login](#social-login) response is `false` and the `message` variable of the response is `phone_number_required`.
 
-For Social User Registration the Builder approach has been taken, to get an instance of the `SocialRegBuilder` the following method should be called on the `sharedInstance()` of the SDK.
+A User can be registered with a social login provider, using the `SocialRegBuilder`. 
+
+An instance of `SocialRegBuilder ` can be accessed by calling the following method:
 
 ```swift
 
-// This returns an social registration builder that contains the relevant methods to register an social login user
 let socialRegBuilder: SocialRegBuilder = UrbanPiper.sharedInstance().startSocialRegistration()
    
 ```
-Registering an social user starts with the method call to verify the phone number.
+
+Registering a new social user starts with the method call to verify the phone number.
 
 ```swift
 
-// Method to check if the passed in phone number is present in your business
 socialRegBuilder.verifyPhone(name: USERNAME, phone: PHONE-NUMBER, email: EMAIL, gender: GENDER, provider: PROVIDER,
 							 providerAccessToken: PROVIDER-ACCESS-TOKEN, completion: COMPLETION-CALLBACK, 
 							 failure: FAILURE-CALLBACK)
@@ -325,12 +340,14 @@ socialRegBuilder.verifyPhone(name: USERNAME, phone: PHONE-NUMBER, email: EMAIL, 
 | PROVIDER-ACCESS-TOKEN | The access token returned by the social login provider (Google or Facebook) |
 
 
-The verifyPhone api returns an `RegistrationResponse` object with the variable `message`. Based on the value of the `message` variable the social user registration varies in two ways.
+If the `COMPLETION-CALLBACK` is called then it'll return a `RegistrationResponse` object with the variable `message`.
+
+Based on the value of the `message` variable the social user registration can have two cases.
 
 
-#### Case 1:
+#### Case 1: Message is `new_registration_required`
 
-Case where the `message` variable is `new_registration_required` the user has to be registered to the business. 
+In this case the user has to be registered and the `OTP` has to be verified
 
 The new social login user can be registered using the method `registerSocialUser` in the `SocialRegBuilder` instance.
 
@@ -340,44 +357,59 @@ socialRegBuilder.registerSocialUser(completion: COMPLETION-CALLBACK, failure: FA
  
 ```
 
-The method `verifyRegOTP` and `resendRegOtp` should be used to verify the account and resend the otp for a new registration user.
+Once the user is registered successfully, then an OTP will be sent to the user from UrbanPiper sytem. 
 
-    
+Use the following method to verify OTP:
+
 ```swift
     
 socialRegBuilder.verifyRegOTP(otp: OTP, completion: COMPLETION-CALLBACK, failure: FAILURE-CALLBACK)
-    
-socialRegBuilder.resendRegOTP(completion: COMPLETION-CALLBACK, failure: FAILURE-CALLBACK)
    
 ```
+
 
 | Params | Description |
 |--------|-------------|
 | OTP | The otp sent to the phone number passed in the `verifyPhone` call |
 
 
-#### Case 2:
+In case the user hasn't recieved the OTP, another OTP can be requested with the following method:
 
-For cases where the `message` variable is other than `new_registration_required`.
+```swift
+    
+socialRegBuilder.resendRegOTP(completion: COMPLETION-CALLBACK, failure: FAILURE-CALLBACK)
+   
+```
 
-The user's phone number is already present in the system and needs to be verified. 
 
-The methods `verifySocialOTP` and `resendSocialOTP` should be used to verify phone number and resend the otp for an user's phone number already present in the system.
+#### Case 2: Message is something other than `new_registration_required`
+
+In this case the user is already registered and only `OTP` verification is required. Here the `OTP` would have already been sent in the `verifyPhone` method call.
+
+Use the following method to verify the `OTP`
 
 ```swift
 
 socialRegBuilder.verifySocialOTP(otp: String, completion: COMPLETION-CALLBACK, failure: FAILURE-CALLBACK)
+ 
+```
+
+In case the user hasn't recieved the OTP, another OTP can be requested with the following method:
+
+```swift
     
 socialRegBuilder.resendSocialOTP(completion: COMPLETION-CALLBACK, failure: FAILURE-CALLBACK)
    
 ```
 
-Note: Once a user has successfully verified the otp the [social user login](#social-login) function should called to login the user.
+> Note: Once a user has successfully verified the otp the [social user login](#social-login) method should called to login the user.
 
 <a name="user"></a>
-## User
+## Retrieving the user data for a logged-in user 
 
-When an user log's in, the user's details are stored in the SDK, the `User` object stored by the SDK can be retrived by calling the `getUser()` method on the `sharedInstance()` of the UrbanPiper SDK.
+When a user is logged in, the user's details are stored in the SDK, 
+
+The `User` object stored by the SDK is accessible by the following method
 
 ```swift
 
@@ -385,7 +417,7 @@ let user: User = UrbanPiperSDK.sharedInstance().getUser()
  
 ```
 
-Returns an user object if the user is logged in or else returns an `nil` reference.
+> Note: Returns an user object if the user is logged in or else returns an `nil` reference.
 
 # Usecases
 <a name="how-to-get-catalog"></a>
