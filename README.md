@@ -40,30 +40,29 @@ The following documentation contains the details on the essential methods that n
 
 The following are the steps that needs to be followed to place an order.
 
-* [Initalizing the SDK](#initialization)
-* [Logging in a user](#login)
-* [Registering a new user](#registration)
-* [How to get the catalog](#catalog)
-* [Managing your cart](#cart)
-* [Placing an order](#ordering)
- 
+* [Initalizing the SDK](#initialization) <br>
 The SDK is [initialized](#initialization) with the params `biz id`, `api username` and `api key` provided by UrbanPiper. if you don't have the keys you can contact urbanpiper at `support@urbanpiper.com` to get the keys for your business.
 
+* [Logging in a user](#login) <br>
 An User can login to your business by performing an [phone based login](#phone-based-login) or a [social user login](#social-login).
 
+* [Registering a new user](#registration) <br>
 A new account can be registered in your business either by performing a [phone based registration](#phone-based-registration) or by a [social registration](social-registration).
 
+* [How to get the catalog](#catalog) <br>
 To get the nearest store the user's location is required. with the user's location the [nearest store](#get-nearest-store) can be retrived from the server.
 
 With the nearest store the store specific [categories](#get-categories) can be retrived from the server.
 
 The [items](#get-category-items) for a specific store and category can be retrived from the server using the Store and Category details retrived previously.
 
-
+* [Managing your cart](#cart) <br>
 The store specfic items can be added to the [cart](#add-to-cart).<br />
 Note: to add an item with option groups the [ItemOptionBuilder](#item-option-builder) should be used to generate the cart item.
 
-With items added to the cart the 
+* [Placing an order](#ordering)
+ 
+
 
 <a name="how-to-setup"></a>
 # How to setup
