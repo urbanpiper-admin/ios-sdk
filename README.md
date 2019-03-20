@@ -50,10 +50,8 @@ An User can login to your business by performing an [phone based login](#phone-b
 A new account can be registered in your business either by performing a [phone based registration](#phone-based-registration) or by a [social registration](social-registration).
 
 * [How to get the catalog](#catalog) <br>
-To get the nearest store the user's location is required. with the user's location the [nearest store](#get-nearest-store) can be retrived from the server.
-
-With the nearest store the store specific [categories](#get-categories) can be retrived from the server.
-
+To get the nearest store the user's location is required. with the user's location the [nearest store](#get-nearest-store) can be retrived from the server. <br>
+With the nearest store the store specific [categories](#get-categories) can be retrived from the server. <br>
 The [items](#get-category-items) for a specific store and category can be retrived from the server using the Store and Category details retrived previously.
 
 * [Managing your cart](#cart) <br>
