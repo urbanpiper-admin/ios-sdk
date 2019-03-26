@@ -64,7 +64,7 @@ public class AnalyticsManager: NSObject {
     
     
     public func removeObserver(observer: AnalyticsEventObserver) {
-        guard let index = (observers.index { $0 === observer }) else { return }
+        guard let index = (observers.firstIndex { $0 === observer }) else { return }
         observers.remove(at: index)
     }
     

@@ -26,17 +26,18 @@ extension APIManager {
         }, completion: completion, failure: failure)!
     }
     
-    internal func getPastOrders(limit: Int? = nil,
-                                  next: String? = nil,
-                                  completion: ((PastOrdersResponse?) -> Void)?,
-                                  failure: APIFailure?) -> URLSessionDataTask {
+    internal func getPastOrders(offset: Int = 0,
+                                limit: Int = Constants.fetchLimit,
+                                next: String? = nil,
+                                completion: ((PastOrdersResponse?) -> Void)?,
+                                failure: APIFailure?) -> URLSessionDataTask {
 
         var urlString: String = "\(APIManager.baseUrl)/api/v2/orders/"
         
         if let nextUrlString: String = next {
             urlString = "\(APIManager.baseUrl)\(nextUrlString)"
-        } else if let orderFetchLimit: Int = limit {
-            urlString = "\(urlString)?limit=\(orderFetchLimit)"
+        } else {
+            urlString = "\(urlString)?offset=\(offset)&limit=\(limit)"
         }
 
         let url: URL = URL(string: urlString)!

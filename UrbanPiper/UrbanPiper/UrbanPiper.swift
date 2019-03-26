@@ -191,11 +191,11 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `UserAddressesResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult @objc public func getDeliverableAddresses(storeId: Int, completion: ((UserAddressesResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult @objc public func getDeliverableAddresses(storeId: String?, completion: ((UserAddressesResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
-        return APIManager.shared.getDeliverableAddresses(storeId: storeId, completion: completion, failure: failure)
+        return APIManager.shared.getDeliverableAddresses(storeId: Int(storeId ?? ""), completion: completion, failure: failure)
     }
 
     /// API call to add a new address to the user's saved addresses, user needs to be logged in to make this call
@@ -274,11 +274,17 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `PastOrdersResponse` containing the list of user's `PastOrder` objects
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult @objc public func getPastOrders(completion: ((PastOrdersResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult @objc public func getPastOrders(offset: Int = 0,
+                                                       limit: Int = 20,
+                                                       completion: ((PastOrdersResponse?) -> Void)?,
+                                                       failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
-        return APIManager.shared.getPastOrders(completion: completion, failure: failure)
+        return APIManager.shared.getPastOrders(offset: offset,
+                                               limit: limit,// ?? Constants.fetchLimit,
+                                               completion: completion,
+                                               failure: failure)
     }
 
     /// Get the user's past order details, user needs to be logged in to make this call
@@ -315,11 +321,13 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `NotificationsResponse` containing the list of user's Notification `Message` objects
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func getNotifications(completion: ((NotificationsResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult public func getNotifications(offset: Int = 0,
+                                                    limit: Int? = nil,
+                                                    completion: ((NotificationsResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
-        return APIManager.shared.getNotifications(completion: completion, failure: failure)
+        return APIManager.shared.getNotifications(offset: offset, limit: limit ?? Constants.fetchLimit, completion: completion, failure: failure)
     }
 
     /// Use this method to submit the feedback for an completed order, user needs to be logged in to make this call

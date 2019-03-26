@@ -141,7 +141,7 @@ extension CartManager {
 //            let _ = cartManagerObservers.map { $0.value?.refreshCartUI() }
             return
         }
-        guard let index = cartItems.index(of: cartItem) else {
+        guard let index = cartItems.firstIndex(of: cartItem) else {
             NotificationCenter.default.post(name: Notification.Name.cartChanged, object: nil)
 //            let _ = cartManagerObservers.map { $0.value?.refreshCartUI() }
             return

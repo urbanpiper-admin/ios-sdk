@@ -143,7 +143,7 @@ There are two ways Users can login:
 * Social login.
 
 
-<a name="phone-based-login"></a>
+<a name="phone-number-based-login"></a>
 ### Phone number based login
 
 With a combination of registered phone number and saved password, a user can login into the app. Here is how the login method can be called: 
@@ -252,7 +252,7 @@ A user can be registered in either of the two ways:
 * Phone number based registration.
 * Social Registration.
 
-<a name="registration"></a>
+<a name="phone-number-based-registration"></a>
 ### Phone number based registration
 
 A User can be registered with a phone number, using the `RegistrationBuilder`. 
@@ -404,7 +404,7 @@ socialRegBuilder.resendSocialOTP(completion: COMPLETION-CALLBACK, failure: FAILU
 
 > Note: Once a user has successfully verified the otp the [social user login](#social-login) method should called to login the user.
 
-<a name="user"></a>
+<a name="retrieving-the-user-data"></a>
 ## Retrieving the user data for a logged-in user 
 
 When a user is logged in, the user's details are stored in the SDK, 
@@ -420,22 +420,12 @@ let user: User = UrbanPiperSDK.sharedInstance().getUser()
 > Note: Returns an user object if the user is logged in or else returns an `nil` reference.
 
 # Usecases
-<a name="how-to-get-catalog"></a>
-## How to get catalog
+<a name="how-to-get-a-store"></a>
+## How to get a store
 
-The UrbanPiper order management system(OMS) allows you to configure categories, items, item prices, item stock etc on a store by store basis.
+To get the nearest store the user's location is required. The following method takes the users location and returns the nearest store if the user is within the deliverable area of a store.
 
-Therefore it's important for the app to get the store nearest to the user before retriving the catalog from the server.
-
-The genric catalogue should be displayed when there are no stores near by to the user or if the app does not have the users location due location services being disabled or because of failure in retriving the users location. The generic catalogue items cannot be added to the cart.
-
-
-<a name="get-nearest-store"></a>
-### How to get a store
-
-To get the nearest store the user's location is required. The following method takes the users location and returns the nearest store if the user is within the deliverable area the store.
-
-Note: When the nearest store is retrived the categories, category items and the cart associated with the previous store must be discared as the categories and category items differ on a store by store basis.
+> Note: When the nearest store is retrived the categories, category items and the cart associated with the previous store must be discared as the categories and category items differ on a store by store basis.
 
 ```swift
 
@@ -449,15 +439,26 @@ UrbanPiper.sharedInstance().getNearestStore(lat: USER-LOCATION-LATITUDE, lng: US
 | USER-LOCATION-LATITUDE | The users location latitude |
 | USER-LOCATION-LONGITUDE | The users location longitude |
 
+<a name="how-to-get-catalog"></a>
+## How to get catalog
+
+The UrbanPiper system has two types of catalogue a generic catalogue and a store catalogue.
+
+The store cataloge is unique to each store as the data such as categories, items, item prices, item stock etc vary on a store by store basis.
+
+To retrive the store catalogue the nearest stores `Store.bizLocationId` should be passed in the param `storeId` of the catalogue methods.
+
+The generic catalogue can be retrived by passing an `nil` reference in the param `storeId` of the catalogue methods. 
+
+> Note: A generic catalogue item cannot be added to the cart.<br>
+> <br>
+> The genric catalogue should only be displayed when there are no stores near by to the user or if the app does not have the users location due location services being disabled or because of failure in retriving the users location
+
 
 <a name="get-categories"></a>
-#### Categories
+### Categories
 
-Retriving the categories that are configured in your businesses OMS on the business level(generic) and on store by store basis.
-
-<a name="store-specific-categories"></a>
-##### Store specific categories
-Store specific categories can be retrived by passing in the `Store.bizLocationId` of the store nearest to the user for the param `storeId` in the following method.
+Retriving the categories that are configured in the UrbanPiper system.
 
 ```swift
 
@@ -468,36 +469,20 @@ Store specific categories can be retrived by passing in the `Store.bizLocationId
 
 | Params | Description |
 |--------|-------------|
-| NEAREST-STORE-ID | The `Store.bizLocationId` of the store near by to the user |
-| PAGINATION-OFFSET | `Default - 0` The offset from which the categories should be returned from. |
-| PAGINATION-FETCH-LIMIT | `Default - 20` The number of categories to be fetched from the PAGINATION-OFFSET |
-
-<a name="generic-categories"></a>
-##### Generic categories
-
-Generic categories are retrived by passing a `nil` reference for the param `storeId` in the following method.
-
-```swift
-
-UrbanPiper.sharedInstance().getCategories(storeId: NEAREST-STORE-ID, offset: PAGINATION-OFFSET, limit: PAGINATION-FETCH-LIMIT,
-                                          completion: COMPLETION-CALLBACK, failure: FAILURE-CALLBACK)
-                                             
-```
-
-| Params | Description |
-|--------|-------------|
-| NEAREST-STORE-ID | `nil` reference |
+| NEAREST-STORE-ID | Pass the `Store.bizLocationId` of the nearest store to the user to get the store specific categories<br>Pass a `nil` reference to get the generic categories |
 | PAGINATION-OFFSET | `Default - 0` The offset from which the categories should be returned from. |
 | PAGINATION-FETCH-LIMIT | `Default - 20` The number of categories to be fetched from the PAGINATION-OFFSET |
 
 <a name="filter-and-sort-options"></a>
-#### Filter and sort options
+### Filter and sort options
 
-UrbanPiper SDK supports filtering and sorting of items on a category by category basis, the supported filter and sort options for a given category can be retrived from the server using the method below.
+UrbanPiper SDK supports filtering and sorting of items on a category by category basis, the supported filter and sort options for a given category can be retrived from the UrbanPiper system using the method below.
 
 ```swift
+
 UrbanPiper.sharedInstance.getFilterAndSortOptions(categoryId: CATEGORY-ID, 
 												  completion: COMPLETION-CALLBACK, failure: FAILURE-CALLBACK)
+												  
 ```                                                     
 | Params | Description |
 |--------|-------------|
@@ -505,14 +490,9 @@ UrbanPiper.sharedInstance.getFilterAndSortOptions(categoryId: CATEGORY-ID,
 
 
 <a name="get-category-items"></a>
-#### Get Category Items
+### Category Items
 
-Retriving the category items that are configured in your businesses OMS on the business level(generic) and on store by store basis.
-
-<a name="store-specific-category-items"></a>
-##### Store specific category items
-
-Store specific categories can be retrived by passing in the `Store.bizLocationId` of the store nearest to the user for the param `storeId` and the `ItemCategory.id` for the param `categoryId` in the following method.
+Retriving the category items that are configured in the UrbanPiper system.
 
 ```swift
 
@@ -525,47 +505,24 @@ UrbanPiper.sharedInstance().getCategoryItems(categoryId: CATEGORY-ID, storeId: N
 
 | Params | Description |
 |--------|-------------|
-| NEAREST-STORE-ID | The `Store.bizLocationId` of the store near by to the user |
-| CATEGORY-ID | The `ItemCategory.id` for which the item are to be retrived |
-| PAGINATION-OFFSET | `Default - 0` The offset from which the items should be returned from |
-| PAGINATION-FETCH-LIMIT | `Default - 20` The number of items to be fetched from the PAGINATION-OFFSET |
-| SORT-KEY | User selected sort key from [filter and sort options](#filter-and-sort-options) |
-| FILTER-OPTIONS | User selected filter options from [filter and sort options](#filter-and-sort-options) |
-
-<a name="generic-category-items"></a>
-##### Generic category items
-
-Generic category items are retrived by passing a `nil` reference for the param `storeId` and the `ItemCategory.id` of the category for the param `categoryId` in the following method.
-
-```swift
-
-UrbanPiper.sharedInstance().getCategoryItems(categoryId: CATEGORY-ID, storeId: NEAREST-STORE-ID, offset: PAGINATION-OFFSET, 
-                                             limit: PAGINATION-FETCH-LIMIT, sortBy: SORT-KEY, filterBy: FILTER-OPTIONS,
-                                             completion: COMPLETION-CALLBACK, failure: FAILURE-CALLBACK)
-                                                
-```
-
-
-| Params | Description |
-|--------|-------------|
-| NEAREST-STORE-ID | `nil` reference |
-| CATEGORY-ID | The `ItemCategory.id` for which the item are to be retrived |
+| NEAREST-STORE-ID | Pass the `Store.bizLocationId` of the nearest store to the user to get the store specific category items<br>Pass a `nil` reference to get the generic category items |
+| CATEGORY-ID | The `ItemCategory.id` for which the items are to be retrived |
 | PAGINATION-OFFSET | `Default - 0` The offset from which the items should be returned from |
 | PAGINATION-FETCH-LIMIT | `Default - 20` The number of items to be fetched from the PAGINATION-OFFSET |
 | SORT-KEY | User selected sort key from [filter and sort options](#filter-and-sort-options) |
 | FILTER-OPTIONS | User selected filter options from [filter and sort options](#filter-and-sort-options) |
 
 
-<a name="cart"></a>
+<a name="how-to-build-a-cart"></a>
 # How to build a cart
 ## Building an cart item
 There are three way to generate an cart item
 
-* From an store specific item with no option groups.
-* From an reorder item.
-* From an store specific item with option groups.
+* From a item with no option groups.
+* From a reorder item.
+* From a item with option groups.
 
-### From a store specific item with no option groups
+### Item with no option groups
 The cart item can be initialized from a store specific item using the `CartItem` initializer that takes a `Item` object as an parameter.
 
 ```swift
@@ -574,7 +531,7 @@ let cartItem: CartItem = CartItem(item: ITEM)
  
 ```
 
-### From a reorder item
+### Reorder item
 
 The cart item can be initialized from a reorder item using the `CartItem` initializer that takes a `ReorderItem` object as an parameter.
 
@@ -584,7 +541,7 @@ let cartItem: CartItem = CartItem(reorderItem: REORDERITEM)
  
 ```
 
-### From a store specific item with option groups
+### From a item with option groups
 
 The cart item can be generated from an store specific item with option groups using the `ItemOptionBuilder` 
 

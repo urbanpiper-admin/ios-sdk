@@ -10,10 +10,12 @@ import Foundation
 
 extension APIManager {
 
-    @objc internal func getNotifications(completion: ((NotificationsResponse?) -> Void)?,
+    @objc internal func getNotifications(offset: Int = 0,
+                                         limit: Int = Constants.fetchLimit,
+                                         completion: ((NotificationsResponse?) -> Void)?,
                                       failure: APIFailure?) -> URLSessionDataTask {
 
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/ub/notifications/?channel__in=app_notification,all"
+        let urlString: String = "\(APIManager.baseUrl)/api/v1/ub/notifications/?channel__in=app_notification,all&offset=\(offset)&limit=\(limit)"
 
         let url: URL = URL(string: urlString)!
 
