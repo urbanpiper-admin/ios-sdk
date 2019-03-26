@@ -263,7 +263,7 @@ extension ItemOptionBuilder {
 
         if let options = option.nestedOptionGroups, options.count > 0, selectedNestedOptions[groupId] != nil {
             selectedNestedOptions.removeValue(forKey: groupId)
-        } else if var selectedOptionGroupOptions = itemsToAdd[groupId], let index = selectedOptionGroupOptions.index(of: option) {
+        } else if var selectedOptionGroupOptions = itemsToAdd[groupId], let index = selectedOptionGroupOptions.firstIndex(of: option) {
             selectedOptionGroupOptions.remove(at: index)
             if selectedOptionGroupOptions.count == 0 {
                 itemsToAdd.removeValue(forKey: groupId)

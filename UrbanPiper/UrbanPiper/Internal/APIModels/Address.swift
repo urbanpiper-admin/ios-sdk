@@ -101,17 +101,17 @@ public enum AddressTag: String {
         if subLocalityArray.count < 3 {
             let formattedAddress = placeDetailsResponse.result?.formattedAddress ?? ""
             var addressComps = formattedAddress.components(separatedBy: ", ")
-            if let neighborhood = subLocalityLevel2, let index = addressComps.index(of: neighborhood) {
+            if let neighborhood = subLocalityLevel2, let index = addressComps.firstIndex(of: neighborhood) {
                 addressComps.removeFirst(index)
                 let addressString = addressComps.joined(separator: ", ")
                 let stringWithoutDigit = (addressString.components(separatedBy: NSCharacterSet.decimalDigits).joined(separator: ""))
                 subLocality = stringWithoutDigit.replacingOccurrences(of: " ,", with: ",")
-            } else if let area = subLocalityLevel1, let index = addressComps.index(of: area) {
+            } else if let area = subLocalityLevel1, let index = addressComps.firstIndex(of: area) {
                 addressComps.removeFirst(index)
                 let addressString = addressComps.joined(separator: ", ")
                 let stringWithoutDigit = (addressString.components(separatedBy: NSCharacterSet.decimalDigits).joined(separator: ""))
                 subLocality = stringWithoutDigit.replacingOccurrences(of: " ,", with: ",")
-            } else if let cityName = city, var index = addressComps.index(of: cityName) {
+            } else if let cityName = city, var index = addressComps.firstIndex(of: cityName) {
                 if index > 2 {
                     index = index - 1
                 }
