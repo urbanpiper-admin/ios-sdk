@@ -76,8 +76,8 @@ public enum OrderStatus: String {
 //    public var orderLevelTotalCharges : Float!
 //    public var orderLevelTotalTaxes : Float!
 	@objc public var orderState : String!
-	public var orderSubtotal : Decimal!
-	public var orderTotal : Decimal!
+	@objc public var orderSubtotal : Decimal = 0
+	@objc public var orderTotal : Decimal = 0
 	public var orderType : String!
 	@objc public var paymentOption : String!
 	@objc public var phone : String!
@@ -89,13 +89,13 @@ public enum OrderStatus: String {
     public var myOrderDetailsResponse: PastOrderDetailsResponse?
 
 
-    @objc public var orderSubTotalString: String {
-        return "\(orderSubtotal.stringVal)"
-    }
-    
-    @objc public var orderTotalString: String {
-        return "\(orderTotal.stringVal)"
-    }
+//    @objc public var orderSubTotalString: String {
+//        return "\(orderSubtotal.stringVal)"
+//    }
+//    
+//    @objc public var orderTotalString: String {
+//        return "\(orderTotal.stringVal)"
+//    }
     
     public var packagingCharge: Decimal? {
         var charge = charges.filter({ $0.title == "Packaging charge" }).last?.value
@@ -287,13 +287,12 @@ public enum OrderStatus: String {
 		if orderState != nil{
 			dictionary["order_state"] = orderState
 		}
-		if orderSubtotal != nil{
-			dictionary["order_subtotal"] = orderSubtotal
-		}
-		if orderTotal != nil{
-			dictionary["order_total"] = orderTotal
-		}
-		if orderType != nil{
+       
+        dictionary["order_subtotal"] = orderSubtotal
+		
+        dictionary["order_total"] = orderTotal
+		
+        if orderType != nil{
 			dictionary["order_type"] = orderType
 		}
 		if paymentOption != nil{

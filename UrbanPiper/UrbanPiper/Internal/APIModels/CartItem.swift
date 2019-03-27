@@ -180,7 +180,7 @@ public class CartItem: NSObject {
             var dictionaryElements: [[String:Any]] = [[String:Any]]()
             for orderOptionsToAddElement in optionsToAdd {
 //                dictionaryElements.append(orderOptionsToAddElement.toDictionary())
-                dictionaryElements.append(["id": orderOptionsToAddElement.id])
+                dictionaryElements.append(["id": orderOptionsToAddElement.id as Any])
             }
             dictionary["options"] = dictionaryElements
         }
@@ -188,7 +188,7 @@ public class CartItem: NSObject {
             var dictionaryElements: [[String:Any]] = [[String:Any]]()
             for orderOptionsToRemoveElement in optionsToRemove {
 //                dictionaryElements.append(orderOptionsToRemoveElement.toDictionary())
-                dictionaryElements.append(["id": orderOptionsToRemoveElement.id])
+                dictionaryElements.append(["id": orderOptionsToRemoveElement.id as Any])
             }
             dictionary["options_to_remove"] = dictionaryElements
         }

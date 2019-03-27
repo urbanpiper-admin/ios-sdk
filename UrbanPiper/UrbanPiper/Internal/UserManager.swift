@@ -580,26 +580,3 @@ extension UserManager {
     }
     
 }
-
-//
-////  App State Management
-//
-//extension UserManager {
-//
-//    @objc open override func appWillEnterForeground() {
-//        loginUserWithJWT()
-//    }
-//
-//    @objc open override func appDidEnterBackground() {
-//    }
-//}
-//
-////  Reachability
-//
-//extension UserManager {
-//
-//    @objc open override func networkIsAvailable() {
-//        loginUserWithJWT()
-//    }
-//
-//}

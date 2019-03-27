@@ -8,7 +8,7 @@
 import UIKit
 import AppsFlyerLib
 
-internal class AppsFlyerObserver: AnalyticsEventObserver {
+public class AppsFlyerObserver: AnalyticsEventObserver {
     
     var appsFlyerDevAppid: String?
     var appsFlyerDevKey: String?
@@ -21,7 +21,7 @@ internal class AppsFlyerObserver: AnalyticsEventObserver {
         AppsFlyerTracker.shared().appsFlyerDevKey = appsFlyerDevKey
     }
     
-    func track(event: AnalyticsEvent) {
+    public func track(event: AnalyticsEvent) {
         switch event {
         case .appLaunch(_):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
@@ -29,7 +29,7 @@ internal class AppsFlyerObserver: AnalyticsEventObserver {
         case .addToCart(let cartItem, _, _):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
             tracker.trackEvent(AFEventAddToCart,
-                               withValues: [AFEventParamContentId: cartItem.id,
+                               withValues: [AFEventParamContentId: cartItem.id as Any,
                                             AFEventParamPrice: cartItem.totalAmount,
                                             AFEventParamQuantity : cartItem.quantity,
                                             AFEventParamCurrency: "INR"])
@@ -45,10 +45,10 @@ internal class AppsFlyerObserver: AnalyticsEventObserver {
             }
             
             tracker.trackEvent(AFEventContentView,
-                               withValues: [AFEventParamContentId: item.id,
+                               withValues: [AFEventParamContentId: item.id as Any,
                                             AFEventParamPrice: itemPrice,
                                             AFEventParamContentType: "item_view",
-                                            AFEventParamContent: item.itemTitle,
+                                            AFEventParamContent: item.itemTitle as Any,
                                             AFEventParamCurrency: "INR"])
         case .purchaseCompleted(_,_,let checkoutBuilder, _):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }

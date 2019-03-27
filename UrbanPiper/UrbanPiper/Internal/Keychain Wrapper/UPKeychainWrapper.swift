@@ -112,7 +112,7 @@ open class UPKeychainWrapper {
         var keychainQueryDictionary: [String:Any] = [
             SecClass: kSecClassGenericPassword,
             SecAttrService: serviceName,
-            SecReturnAttributes: kCFBooleanTrue,
+            SecReturnAttributes: kCFBooleanTrue as Any,
             SecMatchLimit: kSecMatchLimitAll,
             ]
         
@@ -411,9 +411,9 @@ open class UPKeychainWrapper {
         
         let query: [String: Any] = [
             kSecClass as String : secClass,
-            kSecReturnData as String  : kCFBooleanTrue,
-            kSecReturnAttributes as String : kCFBooleanTrue,
-            kSecReturnRef as String : kCFBooleanTrue,
+            kSecReturnData as String  : kCFBooleanTrue as Any,
+            kSecReturnAttributes as String : kCFBooleanTrue as Any,
+            kSecReturnRef as String : kCFBooleanTrue as Any,
             kSecMatchLimit as String : kSecMatchLimitAll
         ]
         

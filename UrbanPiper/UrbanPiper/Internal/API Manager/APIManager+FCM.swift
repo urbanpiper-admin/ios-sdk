@@ -22,8 +22,8 @@ extension APIManager {
         urlRequest.httpMethod = "POST"
         
         let params: [String: Any] = ["registration_id": token,
-                      "device_id": APIManager.uuidString,
-                      "channel": APIManager.channel]
+                                     "device_id": APIManager.uuidString as Any,
+                                     "channel": APIManager.channel]
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 

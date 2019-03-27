@@ -70,8 +70,8 @@ public class OrderDeliveryAddress: NSObject, NSCoding {
     }
 
     public init(coordinate: CLLocationCoordinate2D?, locality: String?, postalCode: String?, lines: [String]?) {
-        coordLatitude = coordinate?.latitude ?? Double.zero
-        coordLongitude = coordinate?.longitude ?? Double.zero
+        coordLatitude = coordinate?.latitude ?? Double(0)
+        coordLongitude = coordinate?.longitude ?? Double(0)
 
         //        thoroughfare = gmsAddress.thoroughfare
         self.locality = locality

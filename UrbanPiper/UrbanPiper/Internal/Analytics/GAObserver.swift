@@ -8,7 +8,7 @@
 import UIKit
 import GoogleAnalyticsSDK
 
-internal class GAObserver: AnalyticsEventObserver {
+public class GAObserver: AnalyticsEventObserver {
     
     var gaTrackingId: String?
     
@@ -23,7 +23,7 @@ internal class GAObserver: AnalyticsEventObserver {
         gai.logger.logLevel = .error
     }
 
-    func track(event: AnalyticsEvent) {
+    public func track(event: AnalyticsEvent) {
         switch event {
         case .nearestStoreFound:
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }

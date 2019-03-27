@@ -294,15 +294,15 @@ extension APIManager {
         
         urlRequest.httpMethod = "POST"
         
-        var addressDict: [String: Any] = ["tag" : address.tag,
+        var addressDict: [String: Any] = ["tag" : address.tag as Any,
                            "biz_id" : bizId,
-                           "sub_locality" : address.subLocality,
-                           "address_1" : address.address1,
+                           "sub_locality" : address.subLocality as Any,
+                           "address_1" : address.address1 as Any,
                            "landmark" : "",
                            "city" : "",
                            "pin" : "",
-                           "lat" : Double.zero,
-                           "lng" : Double.zero]
+                           "lat" : Double(0),
+                           "lng" : Double(0)]
         
         if let landmark = address.landmark {
             addressDict["landmark"] = landmark
@@ -367,16 +367,16 @@ extension APIManager {
         urlRequest.httpMethod = "POST"
         
 
-        var addressDict: [String: Any] = ["tag": address.tag,
+        var addressDict: [String: Any] = ["tag": address.tag as Any,
                            "id": address.id!,
                            "biz_id" : bizId,
-                           "sub_locality" : address.subLocality,
-                           "address_1" : address.address1,
+                           "sub_locality" : address.subLocality as Any,
+                           "address_1" : address.address1 as Any,
                            "landmark" : "",
                            "city" : "",
                            "pin" : "",
-                           "lat" : Double.zero,
-                           "lng" : Double.zero]
+                           "lat" : Double(0),
+                           "lng" : Double(0)]
         
         if let landmark = address.landmark {
             addressDict["landmark"] = landmark

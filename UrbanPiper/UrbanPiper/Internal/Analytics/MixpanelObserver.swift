@@ -8,7 +8,7 @@
 import UIKit
 import Mixpanel
 
-internal class MixpanelObserver: AnalyticsEventObserver {
+public class MixpanelObserver: AnalyticsEventObserver {
     
     var mixpanelToken: String?
     
@@ -17,7 +17,7 @@ internal class MixpanelObserver: AnalyticsEventObserver {
         Mixpanel.initialize(token: mixpanelToken)
     }
  
-    func track(event: AnalyticsEvent) {
+    public func track(event: AnalyticsEvent) {
         switch event {
         case .appLaunch(let theme):
             guard let token: String = mixpanelToken, token.count > 0 else { return }

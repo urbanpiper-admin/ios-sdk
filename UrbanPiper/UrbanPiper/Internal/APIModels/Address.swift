@@ -58,92 +58,6 @@ public enum AddressTag: String {
         guard fullAddress.count > 0 else { return nil }
         return fullAddress
     }
-    
-    public init(placeDetailsResponse: PlaceDetailsResponse) {
-        lat = placeDetailsResponse.result!.geometry.location.lat
-        lng = placeDetailsResponse.result!.geometry.location.lng
-        
-        let addressComponents = placeDetailsResponse.result!.addressComponents
-        
-        var subLocalityArray = [String]()
-        
-        let subLocalityLevel1 = addressComponents?.filter ({ $0.types.contains("sublocality_level_1")}).last?.longName
-        let subLocalityLevel2 = addressComponents?.filter ({ $0.types.contains("sublocality_level_2")}).last?.longName
-
-        if let text = addressComponents?.filter ({ $0.types.contains("route")}).last?.longName {
-            subLocalityArray.append(text)
-        }
-        if let text = addressComponents?.filter ({ $0.types.contains("neighborhood")}).last?.longName {
-            subLocalityArray.append(text)
-        }
-        if let text = addressComponents?.filter ({ $0.types.contains("sublocality_level_5")}).last?.longName {
-            subLocalityArray.append(text)
-        }
-        if let text = addressComponents?.filter ({ $0.types.contains("sublocality_level_4")}).last?.longName {
-            subLocalityArray.append(text)
-        }
-        if let text = addressComponents?.filter ({ $0.types.contains("sublocality_level_3")}).last?.longName {
-            subLocalityArray.append(text)
-        }
-        if let text = subLocalityLevel2 {
-            subLocalityArray.append(text)
-            landmark = text
-        }
-        if let text = subLocalityLevel1 {
-            subLocalityArray.append(text)
-            address1 = text
-        }
-        if let text = addressComponents?.filter ({ $0.types.contains("locality")}).last?.longName {
-            subLocalityArray.append(text)
-            city = text
-        }
-        
-        if subLocalityArray.count < 3 {
-            let formattedAddress = placeDetailsResponse.result?.formattedAddress ?? ""
-            var addressComps = formattedAddress.components(separatedBy: ", ")
-            if let neighborhood = subLocalityLevel2, let index = addressComps.firstIndex(of: neighborhood) {
-                addressComps.removeFirst(index)
-                let addressString = addressComps.joined(separator: ", ")
-                let stringWithoutDigit = (addressString.components(separatedBy: NSCharacterSet.decimalDigits).joined(separator: ""))
-                subLocality = stringWithoutDigit.replacingOccurrences(of: " ,", with: ",")
-            } else if let area = subLocalityLevel1, let index = addressComps.firstIndex(of: area) {
-                addressComps.removeFirst(index)
-                let addressString = addressComps.joined(separator: ", ")
-                let stringWithoutDigit = (addressString.components(separatedBy: NSCharacterSet.decimalDigits).joined(separator: ""))
-                subLocality = stringWithoutDigit.replacingOccurrences(of: " ,", with: ",")
-            } else if let cityName = city, var index = addressComps.firstIndex(of: cityName) {
-                if index > 2 {
-                    index = index - 1
-                }
-                addressComps.removeFirst(index)
-                let addressString = addressComps.joined(separator: ", ")
-                let stringWithoutDigit = (addressString.components(separatedBy: NSCharacterSet.decimalDigits).joined(separator: ""))
-                subLocality = stringWithoutDigit.replacingOccurrences(of: " ,", with: ",")
-            } else {
-                subLocality = placeDetailsResponse.result!.formattedAddress
-            }
-        } else {
-            subLocality = subLocalityArray.joined(separator: ", ")
-        }
-        
-        pin = addressComponents?.filter ({ $0.types.contains("postal_code")}).last?.longName
-    }
-    
-//    public init(coordinate: CLLocationCoordinate2D?, thoroughfare: String?, locality: String?, administrativeArea: String?, postalCode: String?, lines: [String?]?) {
-//        lat = coordinate?.latitude ?? Double.zero
-//        lng = coordinate?.longitude ?? Double.zero
-//        
-//        address1 = thoroughfare
-//        if let linesString = lines {
-//            if let landmarkVal = lines?[1] {
-//                landmark = landmarkVal
-//            }
-//        }
-//        
-//        subLocality = locality
-//        city = administrativeArea
-//        pin = postalCode
-//    }
 
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
@@ -156,13 +70,13 @@ public enum AddressTag: String {
         if let latitude: Double = dictionary["latitude"] as? Double {
             lat = latitude
         } else {
-            lat = dictionary["lat"] as? Double ?? Double.zero
+            lat = dictionary["lat"] as? Double ?? Double(0)
         }
         
         if let longitude: Double = dictionary["longitude"] as? Double {
             lng = longitude
         } else {
-            lng = dictionary["lng"] as? Double ?? Double.zero
+            lng = dictionary["lng"] as? Double ?? Double(0)
         }
         
         if let line1: String = dictionary["line_1"] as? String {
@@ -198,7 +112,7 @@ public enum AddressTag: String {
     }
     
     public init(id: Int? = nil, address1: String, landmark: String, city: String, lat: CLLocationDegrees,
-                lng: CLLocationDegrees, pin: String, subLocality: String, tag: String) {
+                lng: CLLocationDegrees, pin: String, subLocality: String, tag: String?) {
         
         self.id = id
         self.address1 = address1
@@ -263,8 +177,8 @@ public enum AddressTag: String {
          deliverable = aDecoder.decodeObject(forKey: "deliverable") as? Bool
          city = aDecoder.decodeObject(forKey: "city") as? String
          id = aDecoder.decodeObject(forKey: "id") as? Int
-         lat = aDecoder.decodeObject(forKey: "lat") as? Double ?? Double.zero
-         lng = aDecoder.decodeObject(forKey: "lng") as? Double ?? Double.zero
+         lat = aDecoder.decodeObject(forKey: "lat") as? Double ?? Double(0)
+         lng = aDecoder.decodeObject(forKey: "lng") as? Double ?? Double(0)
          pin = aDecoder.decodeObject(forKey: "pin") as? String
          podId = aDecoder.decodeObject(forKey: "pod_id") as? Int
          subLocality = aDecoder.decodeObject(forKey: "sub_locality") as? String
