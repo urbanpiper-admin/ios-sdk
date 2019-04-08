@@ -209,10 +209,11 @@ public class GAObserver: AnalyticsEventObserver {
             tracker.send((screenBuilder.build() as! [AnyHashable : Any]))
         case .purchaseCompleted(let orderID,_,let checkoutBuilder, _):
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker, let paymentOption = checkoutBuilder.paymentOption else { return }
+            let payableAmount = NSDecimalNumber(decimal: checkoutBuilder.order?.payableAmount ?? Decimal.zero)
             let eventDictionary: [AnyHashable : Any] = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
                                                                                         action: "purchase",
                                                                                         label: "success",
-                                                                                        value: (checkoutBuilder.order?.payableAmount ?? Decimal.zero) as NSNumber).build() as! [AnyHashable : Any]
+                                                                                        value: payableAmount).build() as! [AnyHashable : Any]
             tracker.send(eventDictionary)
             
             let eventBuilder = GAIDictionaryBuilder.createEvent(withCategory: nil, action: nil, label: nil, value: nil)!
@@ -221,7 +222,7 @@ public class GAObserver: AnalyticsEventObserver {
             productAction.setAction(kGAIPAPurchase)
             productAction.setTransactionId(orderID)
             productAction.setAffiliation("UrbanPiper")
-            productAction.setRevenue(NSDecimalNumber(decimal: checkoutBuilder.order?.payableAmount ?? Decimal.zero))
+            productAction.setRevenue(payableAmount)
             productAction.setTax(NSDecimalNumber(decimal: checkoutBuilder.order?.itemTaxes ?? Decimal.zero))
             
             let deliveryCharge = checkoutBuilder.deliveryOption == .pickUp ? Decimal.zero : checkoutBuilder.order?.deliveryCharge ?? Decimal.zero

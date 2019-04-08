@@ -52,10 +52,12 @@ public class AppsFlyerObserver: AnalyticsEventObserver {
                                             AFEventParamCurrency: "INR"])
         case .purchaseCompleted(_,_,let checkoutBuilder, _):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
+            let payableAmount = NSDecimalNumber(decimal: checkoutBuilder.order?.payableAmount ?? Decimal.zero)
+
             tracker.trackEvent(AFEventPurchase,
                                withValues: [AFEventParamContentId: "",
                                             AFEventParamContentType: "",
-                                            AFEventParamRevenue: checkoutBuilder.order?.payableAmount ?? Decimal.zero,
+                                            AFEventParamRevenue: payableAmount,
                                             AFEventParamCurrency: "INR"])
             break
         case .checkoutInit:

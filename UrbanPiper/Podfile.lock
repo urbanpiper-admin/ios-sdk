@@ -1,9 +1,9 @@
 PODS:
-  - AppsFlyerFramework (4.8.12)
+  - AppsFlyerFramework (4.9.0)
   - GoogleAnalytics (3.17.0)
-  - Mixpanel-swift (2.5.7):
-    - Mixpanel-swift/Complete (= 2.5.7)
-  - Mixpanel-swift/Complete (2.5.7)
+  - Mixpanel-swift (2.6.2):
+    - Mixpanel-swift/Complete (= 2.6.2)
+  - Mixpanel-swift/Complete (2.6.2)
   - Vinyl (0.10.4)
 
 DEPENDENCIES:
@@ -29,9 +29,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Velhotes/Vinyl.git
 
 SPEC CHECKSUMS:
-  AppsFlyerFramework: 726f063384d8dc763d7b423e48cbc8cbe10989ab
+  AppsFlyerFramework: f57e5d590ad3124d3e594a76032a181bc91ec6cd
   GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
-  Mixpanel-swift: d4de197db883e9dbba162fee6751db5e7766971b
+  Mixpanel-swift: eea98bb65fd80e992a9ecb3a0a421eca542ea72f
   Vinyl: 7df5f28a0fa95c87a039624f7a356ab9875ff2e1
 
 PODFILE CHECKSUM: c252496476025c7baa9647bed6c01edbfa94dea4

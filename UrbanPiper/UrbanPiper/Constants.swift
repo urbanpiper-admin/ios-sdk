@@ -59,7 +59,7 @@ public enum PaymentOption: String {
     /// - paypal: Paypal payment method
     case paypal = "paypal"
     /// - select: Select a payment method, Deprecated will be remove in future
-    @available(*, deprecated: 10.0, message: "the enum case will be removed in future")
+    @available(*, deprecated, message: "the enum case will be removed in future")
     case select = "select"
 }
 
@@ -104,13 +104,13 @@ struct Constants {
 public extension NSNotification.Name {
     
     /// Notification posted when the user's session has expired
-    public static let sessionExpired = NSNotification.Name("session-expired")
+    static let sessionExpired = NSNotification.Name("session-expired")
     /// Notification posted when the cart changes
-    public static let cartChanged = NSNotification.Name("cart-changed")
+    static let cartChanged = NSNotification.Name("cart-changed")
     /// Notification posted when the user details are changed
-    public static let userInfoChanged = NSNotification.Name("user-info-changed")
+    static let userInfoChanged = NSNotification.Name("user-info-changed")
     /// Notification posted when the user biz details(i.e points, balance etc) are changed
-    public static let userBizInfoChanged = NSNotification.Name("user-biz-info-changed")
+    static let userBizInfoChanged = NSNotification.Name("user-biz-info-changed")
 
 }
 

@@ -75,16 +75,14 @@ internal class UserManager: NSObject {
             }
             
             if let user = newValue {
-                if currentUser == nil {
-                    defer {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.refreshUserInfo()
-                            self?.refreshUserBizInfo()
-                        }
-                    }
-                }
-
+                let isNewLogin = currentUser == nil
                 saveToKeyChain(user: user)
+                
+                guard isNewLogin else { return }
+                    DispatchQueue.main.async { [weak self] in
+                        self?.refreshUserInfo()
+                        self?.refreshUserBizInfo()
+                    }
             } else {
                 UserManager.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
                 URLCache.shared.removeAllCachedResponses()

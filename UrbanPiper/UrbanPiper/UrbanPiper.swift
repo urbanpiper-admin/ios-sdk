@@ -11,7 +11,7 @@ import CoreLocation
 /// The primary class for integrating UrbanPiper in your app
 public class UrbanPiper: NSObject {
 
-    static internal(set) var shared: UrbanPiper!
+    static var shared: UrbanPiper!
     internal var callback:  (SDKEvent) -> Void
     
     /// Returns the shared instance that was initialized
@@ -65,33 +65,33 @@ public extension UrbanPiper {
     /// Function returns the the saved `User` object for a logged in user and nil for a guest user
     ///
     /// - Returns: An instance of `User`
-    @objc public func getUser() -> User? {
+    @objc func getUser() -> User? {
         return UserManager.shared.currentUser
     }
 
     /// Function returns a new instance of the helper class `RegistrationBuilder` that contains the api calls to perform a user registration
     ///
     /// - Returns: An instance of `RegistrationBuilder`
-    public func startRegistration() -> RegistrationBuilder {
+    func startRegistration() -> RegistrationBuilder {
         return RegistrationBuilder()
     }
     
     /// Function returns a new instance of the helper class `SocialRegBuilder` that contains the api calls to perform a social user registration
     ///
     /// - Returns: An instance of `SocialRegBuilder`
-    public func startSocialRegistration() -> SocialRegBuilder {
+    func startSocialRegistration() -> SocialRegBuilder {
         return SocialRegBuilder()
     }
     
     /// Function returns a new instance of the helper class `ResetPasswordBuilder` that contains the api calls to perform a password reset
     ///
     /// - Returns: An instance of `ResetPasswordBuilder`
-    public func startPasswordReset() -> ResetPasswordBuilder {
+    func startPasswordReset() -> ResetPasswordBuilder {
         return ResetPasswordBuilder()
     }
     
     /// Function to logout the user and remove all the user related data from memory and persistant storage
-    public func logout() {
+    func logout() {
         UserManager.shared.logout()
     }
     
@@ -103,7 +103,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `LoginResponse`, if the `LoginResponse.message` variable is "userbiz_phone_not_validated" the user's phone number has to verified by calling the `RegistrationBuilder.verifyRegOTP(...)`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func login(phone: String, password: String, completion: @escaping ((LoginResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult func login(phone: String, password: String, completion: @escaping ((LoginResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
         return UserManager.shared.login(phone: phone, password: password, completion: completion, failure: failure)
     }
     
@@ -116,7 +116,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `SocialLoginResponse`, if the value `SocialLoginResponse.message` variable is "phone_number_required" the user's phone number needs to be verified by calling the `SocialRegBuilder.verifyPhone(...)`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func socialLogin(email: String, socialLoginProvider: SocialLoginProvider, accessToken: String,
+    @discardableResult func socialLogin(email: String, socialLoginProvider: SocialLoginProvider, accessToken: String,
                                                completion: @escaping ((SocialLoginResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
         return UserManager.shared.socialLogin(email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken, completion: completion, failure: failure)
     }
@@ -127,7 +127,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `UserInfoResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult @objc public func refreshUserInfo(completion: ((UserInfoResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
+    @discardableResult @objc func refreshUserInfo(completion: ((UserInfoResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
         return UserManager.shared.refreshUserInfo(completion: completion, failure: failure)
     }
 
@@ -137,7 +137,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `UserBizInfoResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @objc @discardableResult public func refreshUserBizInfo(completion: ((UserBizInfoResponse?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
+    @objc @discardableResult func refreshUserBizInfo(completion: ((UserBizInfoResponse?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
         return UserManager.shared.refreshUserBizInfo(completion: completion, failure: failure)
     }
 
@@ -152,7 +152,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `UserInfoUpdateResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult @objc public func updateUserInfo(name: String? = nil, email: String? = nil, gender: String? = nil, aniversary: Date? = nil, birthday: Date? = nil,
+    @discardableResult @objc func updateUserInfo(name: String? = nil, email: String? = nil, gender: String? = nil, aniversary: Date? = nil, birthday: Date? = nil,
                                                         completion: ((UserInfoUpdateResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard let user = getUser() else { return nil }
@@ -174,7 +174,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `GenericResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @objc @discardableResult public func changePassword(phone: String, oldPassword: String, newPassword: String, completion: ((GenericResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
+    @objc @discardableResult func changePassword(phone: String, oldPassword: String, newPassword: String, completion: ((GenericResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard let user = getUser() else { return nil }
 
@@ -191,7 +191,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `UserAddressesResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult @objc public func getDeliverableAddresses(storeId: String?, completion: ((UserAddressesResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult @objc func getDeliverableAddresses(storeId: String?, completion: ((UserAddressesResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
@@ -205,7 +205,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `AddUpdateAddressResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult @objc public func addAddress(address: Address, completion: ((AddUpdateAddressResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult @objc func addAddress(address: Address, completion: ((AddUpdateAddressResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
@@ -227,7 +227,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `AddUpdateAddressResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func updateAddress(address: Address, completion: ((AddUpdateAddressResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult func updateAddress(address: Address, completion: ((AddUpdateAddressResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
@@ -241,7 +241,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `GenericResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult @objc public func deleteAddress(addressId: Int, completion: ((GenericResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult @objc func deleteAddress(addressId: Int, completion: ((GenericResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
@@ -261,7 +261,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `WalletTransactionResponse` containing the list of user's wallet `Transaction` objects
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func getWalletTransactions(offset: Int = 0, limit: Int? = nil, completion: ((WalletTransactionResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult func getWalletTransactions(offset: Int = 0, limit: Int? = nil, completion: ((WalletTransactionResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
@@ -274,7 +274,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `PastOrdersResponse` containing the list of user's `PastOrder` objects
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult @objc public func getPastOrders(offset: Int = 0,
+    @discardableResult @objc func getPastOrders(offset: Int = 0,
                                                        limit: Int = 20,
                                                        completion: ((PastOrdersResponse?) -> Void)?,
                                                        failure: @escaping APIFailure) -> URLSessionDataTask? {
@@ -294,7 +294,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `PastOrderDetailsResponse` containing the details of the provided past order id
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult @objc public func getPastOrderDetails(orderId: Int, completion: ((PastOrderDetailsResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult @objc func getPastOrderDetails(orderId: Int, completion: ((PastOrderDetailsResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
@@ -308,7 +308,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `RedeemRewardResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult @objc public func redeemReward(rewardId: Int, completion: ((RedeemRewardResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult @objc func redeemReward(rewardId: Int, completion: ((RedeemRewardResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
@@ -321,7 +321,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `NotificationsResponse` containing the list of user's Notification `Message` objects
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func getNotifications(offset: Int = 0,
+    @discardableResult func getNotifications(offset: Int = 0,
                                                     limit: Int? = nil,
                                                     completion: ((NotificationsResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
@@ -341,7 +341,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `GenericResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult @objc public func submitFeedback(name: String, rating: Double, orderId: Int, choiceText: String?, comments: String?,
+    @discardableResult @objc func submitFeedback(name: String, rating: Double, orderId: Int, choiceText: String?, comments: String?,
                                                   completion: ((GenericResponse?) -> Void)?, failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
@@ -357,7 +357,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `UserLikesResponse` containing the user's `Like` objects
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func getItemLikes(offset: Int = 0, limit: Int? = nil, completion: @escaping ((UserLikesResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult func getItemLikes(offset: Int = 0, limit: Int? = nil, completion: @escaping ((UserLikesResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
@@ -371,7 +371,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `GenericResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func likeItem(itemId: Int, completion: @escaping ((GenericResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult func likeItem(itemId: Int, completion: @escaping ((GenericResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
@@ -385,7 +385,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `GenericResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func unlikeItem(itemId: Int, completion: @escaping ((GenericResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult func unlikeItem(itemId: Int, completion: @escaping ((GenericResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
@@ -398,7 +398,7 @@ public extension UrbanPiper {
     ///   - amount: The amount to be reloaded into the wallet
     ///   - completion: `APICompletion` with `PaymentInitResponse`, the response contains the payment gateway details
     ///   - failure: Return an instance of URLSessionDataTask
-    @discardableResult @objc public func initWalletReload(amount: Decimal,
+    @discardableResult @objc func initWalletReload(amount: Decimal,
                                                           completion: ((PaymentInitResponse?) -> Void)?,
                                                           failure: APIFailure?) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
@@ -417,7 +417,7 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `OrderVerifyTxnResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult @objc public func verifyWalletReload(paymentId: String,
+    @discardableResult @objc func verifyWalletReload(paymentId: String,
                                                        transactionId: String,
                                                        completion: @escaping ((OrderVerifyTxnResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")

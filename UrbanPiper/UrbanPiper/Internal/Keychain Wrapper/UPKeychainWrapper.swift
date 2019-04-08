@@ -314,7 +314,7 @@ open class UPKeychainWrapper {
         }
     }
     
-    @available(*, deprecated: 2.2.1, message: "remove is deprecated, use removeObject instead")
+    @available(*, deprecated, message: "remove is deprecated, use removeObject instead")
     @discardableResult open func remove(key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> Bool {
         return removeObject(forKey: key, withAccessibility: accessibility)
     }
