@@ -246,8 +246,8 @@ extension OrderingStoreDataModel {
                                          completion: UpdateCompletionBlock? = nil) {
         var deliveryAddress = address
         
-        if let placeDetails = placeDetailsResponse {
-            deliveryAddress = Address(placeDetailsResponse: placeDetails)
+        if let placeDetails = placeDetailsResponse, let placeDetailsAddress = Address(placeDetailsResponse: placeDetails) {
+            deliveryAddress = placeDetailsAddress
         }
         
         var addressLoc: CLLocation? = nil

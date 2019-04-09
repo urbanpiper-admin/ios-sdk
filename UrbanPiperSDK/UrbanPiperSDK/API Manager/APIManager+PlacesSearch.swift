@@ -78,8 +78,7 @@ extension APIManager {
                     let placeDetailsResponse: PlaceDetailsResponse = PlaceDetailsResponse(fromDictionary: dictionary)
                     var address: Address?
                     
-                    if placeDetailsResponse.result != nil {
-                        address = Address(placeDetailsResponse: placeDetailsResponse)
+                    if let address = Address(placeDetailsResponse: placeDetailsResponse) {
                         DispatchQueue.main.async {
                             completionClosure(address)
                         }

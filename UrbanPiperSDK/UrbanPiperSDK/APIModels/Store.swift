@@ -14,7 +14,7 @@ public class Store : NSObject, NSCoding{
 	public var bizLocationId : Int!
 	public var city : String!
 	public var closingDay : Bool = false
-	public var closingTime : String!
+	@objc public var closingTime : String!
     public var isPickupEnabled : Bool!
 	public var deliveryCharge : Decimal!
 	public var deliveryMinOffsetTime : Int!
@@ -27,7 +27,7 @@ public class Store : NSObject, NSCoding{
 	@objc public var name : String!
 	public var onCloseMsg : String!
 	public var onSelectMsg : String!
-	public var openingTime : String!
+	@objc public var openingTime : String!
 	public var packagingCharge : Decimal!
 	public var pgKey : String!
 	public var phone : String!
@@ -126,7 +126,7 @@ public class Store : NSObject, NSCoding{
     /**
      * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any]
+    @objc public func toDictionary() -> [String:Any]
     {
         var dictionary: [String : Any] = [String:Any]()
         if address != nil{

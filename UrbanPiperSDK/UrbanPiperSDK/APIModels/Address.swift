@@ -59,9 +59,12 @@ public enum AddressTag: String {
         return fullAddress
     }
     
-    public init(placeDetailsResponse: PlaceDetailsResponse) {
-        lat = placeDetailsResponse.result!.geometry.location.lat
-        lng = placeDetailsResponse.result!.geometry.location.lng
+    public init?(placeDetailsResponse: PlaceDetailsResponse) {
+        let result = placeDetailsResponse.result
+        guard let latitude = result?.geometry.location.lat, let longitude = result?.geometry.location.lng else { return nil }
+
+        lat = latitude
+        lng = longitude
         
         let addressComponents = placeDetailsResponse.result!.addressComponents
         
