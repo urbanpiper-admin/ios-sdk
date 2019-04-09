@@ -848,7 +848,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK/Pods-UrbanPiperSDK-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-UrbanPiperSDK/Pods-UrbanPiperSDK-resources.sh",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
 			);
@@ -861,7 +861,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK/Pods-UrbanPiperSDK-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UrbanPiperSDK/Pods-UrbanPiperSDK-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		46ACCAC220933BA7001BD979 /* ShellScript */ = {
@@ -907,7 +907,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
 				"${BUILT_PRODUCTS_DIR}/PhoneNumberKit/PhoneNumberKit.framework",
@@ -926,7 +926,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		86DBA85FDAE92970C5867188 /* [CP] Copy Pods Resources */ = {
@@ -937,7 +937,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-resources.sh",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
 			);
@@ -950,7 +950,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UrbanPiperSDK-Example/Pods-UrbanPiperSDK-Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9D706E751C853DA96538479F /* [CP] Check Pods Manifest.lock */ = {

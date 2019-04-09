@@ -76,15 +76,14 @@ extension APIManager {
                 
                 if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
                     let placeDetailsResponse: PlaceDetailsResponse = PlaceDetailsResponse(fromDictionary: dictionary)
-                    var address: Address?
                     
                     if let address = Address(placeDetailsResponse: placeDetailsResponse) {
                         DispatchQueue.main.async {
                             completionClosure(address)
                         }
+                        return
                     }
                     
-                    return
                 }
                 
                 DispatchQueue.main.async {
