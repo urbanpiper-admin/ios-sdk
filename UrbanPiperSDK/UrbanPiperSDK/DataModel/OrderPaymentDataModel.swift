@@ -196,7 +196,13 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
             //        let closingDateWithOffset: Date = closingDate.addingTimeInterval(-(paymentOffsetTimeSecs + defaultOffset))
             
             if normalDeliveryDate! < openingDateWithOffset {
-                normalDeliveryDate = openingDateWithOffset
+                let maxPreOrderDate = AppConfigManager.shared.firRemoteConfigDefaults.maxPreOrderDate ?? 0
+                
+                if maxPreOrderDate > 0 {
+                    normalDeliveryDate = openingDateWithOffset
+                } else {
+                    normalDeliveryDate = nil
+                }
             } else if normalDeliveryDate! > closingDate {
                 normalDeliveryDate = nil
             }
