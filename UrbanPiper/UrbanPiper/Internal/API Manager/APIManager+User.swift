@@ -23,7 +23,6 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> UserInfoResponse? in
-            print("refreshUserDataResponse \(dictionary as AnyObject)")
             return UserInfoResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         

@@ -221,7 +221,6 @@ internal class UserManager: NSObject {
         UserDefaults.standard.removeObject(forKey: "NextLocationUpdateDate")
 
         UserDefaults.standard.removeObject(forKey: "loginResponse")
-        UserDefaults.standard.removeObject(forKey: "loginResponse")
 
         UserDefaults.standard.removeObject(forKey: "DeliveryLocationLatitude")
         UserDefaults.standard.removeObject(forKey: "DeliveryLocationLongitude")
