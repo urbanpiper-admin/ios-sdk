@@ -221,7 +221,19 @@ internal class UserManager: NSObject {
         UserDefaults.standard.removeObject(forKey: "NextLocationUpdateDate")
 
         UserDefaults.standard.removeObject(forKey: "loginResponse")
-        
+        UserDefaults.standard.removeObject(forKey: "loginResponse")
+
+        UserDefaults.standard.removeObject(forKey: "DeliveryLocationLatitude")
+        UserDefaults.standard.removeObject(forKey: "DeliveryLocationLongitude")
+        UserDefaults.standard.removeObject(forKey: "DeliveryAddress")
+        UserDefaults.standard.removeObject(forKey: "SelectedPlacesDataKey")
+        UserDefaults.standard.removeObject(forKey: "NearestStoreResponse")
+        UserDefaults.standard.removeObject(forKey: "DefaultDeliveryAddress")
+        UserDefaults.standard.removeObject(forKey: "lastOrderKey")
+        UserDefaults.standard.removeObject(forKey: "referral dictionary")
+        UserDefaults.standard.removeObject(forKey: "languagePageDisplayedKey")
+        UserDefaults.standard.removeObject(forKey: "Partial User Data key")
+
         currentUser = nil
     }
     

@@ -108,17 +108,24 @@ import Foundation
 //    }
     
     func apiRequest<T>(urlRequest: inout URLRequest,
+                       headers: [String : String]? = nil,
                        responseParser: (([String: Any]) -> T?)?,
                        completion: APICompletion<T>?,
                        failure: APIFailure?) -> URLSessionDataTask? {
         
-        let additionalHeaders: [String: String] = ["X-App-Src": "ios",
+        var additionalHeaders: [String: String] = ["X-App-Src": "ios",
                                                 "X-Bid": bizId,
                                                 "X-App-Version": appVersion,
                                                 "X-Use-Lang": language.rawValue,
                                                 "Content-Type": "application/json",
                                                 "Accept-Encoding": "gzip",
                                                 "Authorization": authorizationKey()]
+        
+        if let customHeaders: [String : String] = headers {
+            for header in customHeaders {
+                additionalHeaders[header.key] = header.value
+            }
+        }
         
         urlRequest.allHTTPHeaderFields = additionalHeaders
         

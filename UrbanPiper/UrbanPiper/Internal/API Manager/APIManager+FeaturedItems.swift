@@ -30,13 +30,12 @@ extension APIManager {
         
         var urlRequest: URLRequest = URLRequest(url: url)
 
-        urlRequest.setValue(bizAuth(), forHTTPHeaderField: "Authorization")
-
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> CategoryItemsResponse? in
-            return CategoryItemsResponse(fromDictionary: dictionary)
+        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()],
+                          responseParser: { (dictionary) -> CategoryItemsResponse? in
+                            return CategoryItemsResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in

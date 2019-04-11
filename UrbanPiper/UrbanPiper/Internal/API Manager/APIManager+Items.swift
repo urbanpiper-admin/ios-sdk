@@ -23,11 +23,9 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        urlRequest.setValue(bizAuth(), forHTTPHeaderField: "Authorization")
-
-        
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> CategoryOptionsResponse? in
-            return CategoryOptionsResponse(fromDictionary: dictionary)
+        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()],
+                          responseParser: { (dictionary) -> CategoryOptionsResponse? in
+                            return CategoryOptionsResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in

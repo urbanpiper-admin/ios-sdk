@@ -22,8 +22,6 @@ extension APIManager {
         
         var urlRequest: URLRequest = URLRequest(url: url)
 
-        urlRequest.setValue(bizAuth(), forHTTPHeaderField: "Authorization")
-
         urlRequest.httpMethod = "POST"
         
         let params: [String: Any] = ["token": token]
@@ -31,8 +29,9 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
         
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> String? in
-            return dictionary["token"] as? String
+        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()],
+                          responseParser: { (dictionary) -> String? in
+                            return dictionary["token"] as? String
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
@@ -227,8 +226,6 @@ extension APIManager {
         
         var urlRequest: URLRequest = URLRequest(url: url)
         
-        urlRequest.setValue(bizAuth(), forHTTPHeaderField: "Authorization")
-
         urlRequest.httpMethod = "POST"
         
         if let params = referralParams {
@@ -236,8 +233,9 @@ extension APIManager {
         }
 
         
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> RegistrationResponse? in
-            return RegistrationResponse(fromDictionary: dictionary)
+        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()],
+                          responseParser: { (dictionary) -> RegistrationResponse? in
+                            return RegistrationResponse(fromDictionary: dictionary)
         }, completion: completion, failure: failure)!
         
         /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
