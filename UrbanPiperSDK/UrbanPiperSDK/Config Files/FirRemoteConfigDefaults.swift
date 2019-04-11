@@ -89,6 +89,7 @@ import FirebaseRemoteConfig
 	public private(set) var moduleFaq : Bool!
 	public private(set) var moduleFeedbackOld : Bool!
 	public private(set) var moduleHelp : Bool!
+	public private(set) var moduleHistory : Bool!
     public private(set) var moduleHome : Bool!
 	public private(set) var moduleNotifications : Bool!
 	public private(set) var moduleOffersV2 : Bool!
@@ -186,6 +187,7 @@ import FirebaseRemoteConfig
 		moduleFaq = remoteConfig["module_faq"].boolValue
 		moduleFeedbackOld = remoteConfig["module_feedback_old"].boolValue
 		moduleHelp = remoteConfig["module_help"].boolValue
+		moduleHistory = remoteConfig["module_history"].boolValue
         moduleHome = remoteConfig["module_home"].boolValue
 		moduleNotifications = remoteConfig["module_notifications"].boolValue
 		moduleOffersV2 = remoteConfig["module_offers_v2"].boolValue
