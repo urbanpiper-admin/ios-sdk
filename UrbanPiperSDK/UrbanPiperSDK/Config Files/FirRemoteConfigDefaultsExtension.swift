@@ -68,10 +68,10 @@ extension FirRemoteConfigDefaults {
             stringArray.append(Module.schedule.rawValue)
         }
 
-//        if !moduleOrdering, moduleHistory {
-//            stringArray.append(Module.historyWeb.rawValue)
-//        }
-//
+        if !moduleOrdering, moduleHistory {
+            stringArray.append(Module.historyWeb.rawValue)
+        }
+
 //        if "custom messages enabled" {
 //        }
 //
