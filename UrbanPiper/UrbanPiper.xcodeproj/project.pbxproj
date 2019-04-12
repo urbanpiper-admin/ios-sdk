@@ -936,7 +936,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperTests/Pods-UrbanPiperTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-UrbanPiperTests/Pods-UrbanPiperTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Vinyl/Vinyl.framework",
 				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
 			);
@@ -949,7 +949,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiperTests/Pods-UrbanPiperTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UrbanPiperTests/Pods-UrbanPiperTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FBFF59CE4B75359ED870AB53 /* [CP] Embed Pods Frameworks */ = {
@@ -960,7 +960,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiper-Example/Pods-UrbanPiper-Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-UrbanPiper-Example/Pods-UrbanPiper-Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -971,7 +971,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UrbanPiper-Example/Pods-UrbanPiper-Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UrbanPiper-Example/Pods-UrbanPiper-Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
