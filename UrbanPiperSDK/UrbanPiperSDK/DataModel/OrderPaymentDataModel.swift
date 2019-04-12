@@ -326,6 +326,8 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
         return filteredSlots
     }
     
+    public var specialInstructions: String?
+    
 //    public var globalCouponApplied: Bool = false
     
     public func refreshData(_ isForcedRefresh: Bool = false) {
@@ -448,8 +450,7 @@ extension OrderPaymentDataModel {
         addOrCancelDataTask(dataTask: dataTask)
     }
     
-    public func payOnlineAndPlaceOrder(instructions: String,
-                                phone: String) {
+    public func payOnlineAndPlaceOrder(phone: String) {
         dataModelDelegate?.initiatingPayment(isProcessing: true)
         let paymentOption = selectedPaymentOption
         let dataTask: URLSessionDataTask? = APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption,
@@ -459,7 +460,7 @@ extension OrderPaymentDataModel {
                                                                completion: { [weak self] (onlinePaymentInitResponse) in
                                                                 self?.dataModelDelegate?.initiatingPayment(isProcessing: false)
                                                                 if paymentOption == .paymentGateway || paymentOption == .paytm || paymentOption == .simpl {
-                                                                    self?.placeOrder(instructions: instructions, phone: phone, onlinePaymentInitResponse: onlinePaymentInitResponse)
+                                                                    self?.placeOrder(phone: phone, onlinePaymentInitResponse: onlinePaymentInitResponse)
                                                                 }
         }, failure: { [weak self] (error) in
             self?.dataModelDelegate?.initiatingPayment(isProcessing: false)
@@ -470,8 +471,7 @@ extension OrderPaymentDataModel {
         addOrCancelDataTask(dataTask: task)
     }
         
-    public func placeOrder(instructions: String,
-                    phone: String,
+    public func placeOrder(phone: String,
                     onlinePaymentInitResponse: OnlinePaymentInitResponse? = nil) {
         
         dataModelDelegate?.placingOrder(isProcessing: true)
@@ -484,7 +484,7 @@ extension OrderPaymentDataModel {
                                      deliveryDate: deliveryDateTime!,
                                      timeSlot: timeSlotDelivery ? selectedDeliveryTimeSlotOption : nil,
                                      deliveryOption: selectedDeliveryOption,
-                                     instructions: instructions,
+                                     instructions: specialInstructions ?? "",
                                      phone: phone,
                                      bizLocationId: OrderingStoreDataModel.shared.orderingStore!.bizLocationId,
                                      paymentOption: paymentOption.rawValue,

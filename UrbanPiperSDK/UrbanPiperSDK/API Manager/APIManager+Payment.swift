@@ -252,7 +252,7 @@ extension APIManager {
         
         if itemWithInstructionsArray.count > 0 {
             let itemsInstructionsStringArray = itemWithInstructionsArray.map { "\($0.itemTitle!) : \($0.notes!)" }
-            instructionsText = "\(itemsInstructionsStringArray.joined(separator: ",\n"))\n general instructions: \(instructions))"
+            instructionsText = "\(itemsInstructionsStringArray.joined(separator: ",\n"))"
             if instructions.count > 0 {
                 instructionsText = "\(instructionsText)\n general instructions: \(instructions))"
             }
