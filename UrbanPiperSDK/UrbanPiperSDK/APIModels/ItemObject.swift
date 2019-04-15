@@ -12,7 +12,7 @@ import Foundation
 
 	public var category : ItemCategory!
 	public var currentStock : Int!
-	public var extras : [AnyObject]!
+	public var extras : [ItemExtra]!
 	public var foodType : String!
 	public var fulfillmentModes : [String]!
 	public var id : Int!
@@ -57,7 +57,13 @@ import Foundation
             category = ItemCategory(fromDictionary: categoryData)
         }
 		currentStock = dictionary["current_stock"] as? Int ?? 0
-		extras = dictionary["extras"] as? [AnyObject]
+        extras = [ItemExtra]()
+        if let extrasArray: [[String:Any]] = dictionary["extras"] as? [[String:Any]]{
+            for dic in extrasArray{
+                let value: ItemExtra = ItemExtra(fromDictionary: dic)
+                extras.append(value)
+            }
+        }
 		foodType = dictionary["food_type"] as? String
 		fulfillmentModes = dictionary["fulfillment_modes"] as? [String]
 		id = dictionary["id"] as? Int
@@ -143,7 +149,11 @@ import Foundation
             dictionary["current_stock"] = currentStock
         }
         if extras != nil{
-            dictionary["extras"] = extras
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            for itemExtraElement in extras {
+                dictionaryElements.append(itemExtraElement.toDictionary())
+            }
+            dictionary["extras"] = dictionaryElements
         }
         if foodType != nil{
             dictionary["food_type"] = foodType

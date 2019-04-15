@@ -30,28 +30,28 @@ public class ItemExtra : NSObject{
 		name = dictionary["name"] as? String
 	}
 
-//    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    public func toDictionary() -> [String:Any]
-//    {
-//        var dictionary: [String : Any] = [String:Any]()
-//        if id != nil{
-//            dictionary["id"] = id
-//        }
-//        if keyValues != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
-//            for keyValuesElement in keyValues {
-//                dictionaryElements.append(keyValuesElement.toDictionary())
-//            }
-//            dictionary["key_values"] = dictionaryElements
-//        }
-//        if name != nil{
-//            dictionary["name"] = name
-//        }
-//        return dictionary
-//    }
-//
+    /**
+     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String:Any]
+    {
+        var dictionary: [String : Any] = [String:Any]()
+        if id != nil{
+            dictionary["id"] = id
+        }
+        if keyValues != nil{
+            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            for keyValuesElement in keyValues {
+                dictionaryElements.append(keyValuesElement.toDictionary())
+            }
+            dictionary["key_values"] = dictionaryElements
+        }
+        if name != nil{
+            dictionary["name"] = name
+        }
+        return dictionary
+    }
+
 //    /**
 //    * NSCoding required initializer.
 //    * Fills the data from the passed decoder
