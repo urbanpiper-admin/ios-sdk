@@ -356,14 +356,8 @@ extension UserManager {
         let dataTask: URLSessionDataTask = APIManager.shared.login(phone: phone, password: password, completion: { [weak self] (loginResponse) in
             if let token = loginResponse?.token {
                 let user = User(jwtToken: token)
-//                if user.phoneVerified {
-                    self?.currentUser = user
-                    AnalyticsManager.shared.track(event: .loginSuccess(phone: phone))
-//                } else {
-//                    loginResponse?.status = "error"
-//                    loginResponse?.message = UserStatus.verifyPhoneNumber.rawValue
-//                    loginResponse?.token = nil
-//                }
+                self?.currentUser = user
+                AnalyticsManager.shared.track(event: .loginSuccess(phone: phone))
             } else {
                 AnalyticsManager.shared.track(event: .loginFailed(phone: phone))
             }
