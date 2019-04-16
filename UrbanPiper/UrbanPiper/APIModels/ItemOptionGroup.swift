@@ -37,10 +37,10 @@ public class ItemOptionGroup : NSObject {
 		if let optionsArray: [[String:Any]] = dictionary["options"] as? [[String:Any]]{
 			for dic in optionsArray{
 				let value: ItemOption = ItemOption(fromDictionary: dic)
-                let defaultVal = isDefault ?? false
-                if (!defaultVal && value.quantity == 0) || (defaultVal && value.quantity > 0) {
-                    value.quantity = isDefault ? 1 : 0
-                }
+//                let defaultVal = isDefault ?? false
+//                if (!defaultVal && value.quantity == 0) || (defaultVal && value.quantity > 0) {
+//                    value.quantity = isDefault ? 1 : 0
+//                }
 				options.append(value)
 			}
             if options.count > 1 {
