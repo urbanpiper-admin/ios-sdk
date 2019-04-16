@@ -16,6 +16,7 @@ public class ItemOption : NSObject {
 	public var id : Int!
 	public var imageUrl : String!
 	public var price : Decimal!
+    public var recommended : Bool = false
 	public var sortOrder : Int!
 	public var title : String!
 	public var nestedOptionGroups : [ItemOptionGroup]!
@@ -39,7 +40,8 @@ public class ItemOption : NSObject {
         } else {
             price = Decimal.zero
         }
-
+        
+        recommended = dictionary["recommended"] as? Bool ?? false
 		sortOrder = dictionary["sort_order"] as? Int ?? 0
 		title = dictionary["title"] as? String
 		nestedOptionGroups = [ItemOptionGroup]()
@@ -50,8 +52,12 @@ public class ItemOption : NSObject {
 			}
 		}
 
-        quantity = dictionary["quantity"] as? Int ?? 0
-	}
+        if let qty = dictionary["quantity"] as? Int {
+            quantity = qty
+        } else {
+            quantity = recommended ? 1 : 0
+        }
+    }
 
     /**
      * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -77,6 +83,7 @@ public class ItemOption : NSObject {
         if price != nil{
             dictionary["price"] = price
         }
+        dictionary["recommended"] = recommended
         if sortOrder != nil{
             dictionary["sort_order"] = sortOrder
         }
