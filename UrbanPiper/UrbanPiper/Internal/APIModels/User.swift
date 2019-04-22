@@ -57,8 +57,7 @@ public class User : NSObject, NSCoding{
             return nil
         }
     }
-
-    public var phoneVerified : Bool!
+    @objc public var phoneVerified : Bool = false
 
     @objc public var phone : String!
     @objc public var email : String!
@@ -375,9 +374,7 @@ public class User : NSObject, NSCoding{
         if currentCity != nil{
             aCoder.encode(currentCity, forKey: "current_city")
         }
-        if phoneVerified != nil {
-            aCoder.encode(phoneVerified, forKey: "phone_verified")
-        }
+        aCoder.encode(phoneVerified, forKey: "phone_verified")
         if firstName != nil{
             aCoder.encode(firstName, forKey: "first_name")
         }
