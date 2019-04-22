@@ -62,6 +62,8 @@ public class User : NSObject, NSCoding{
         }
     }
     
+    public var phoneVerified : Bool!
+
     @objc public var phone : String!
     @objc public var email : String!
     
@@ -167,6 +169,7 @@ public class User : NSObject, NSCoding{
 //            self?.username = dictionary["username"] as? String
             self?.email = dictionary["email"] as? String
             self?.phone = dictionary["phone"] as? String
+            self?.phoneVerified = dictionary["phone_verified"] as? Bool ?? false
             self?.firstName = dictionary["first_name"] as? String
             self?.lastName = dictionary["last_name"] as? String
         })
@@ -273,6 +276,7 @@ public class User : NSObject, NSCoding{
          timestamp = aDecoder.decodeObject(forKey: "timestamp") as? String
 //         username = aDecoder.decodeObject(forKey: "username") as? String
         gender = aDecoder.decodeObject(forKey: "gender") as? String
+        phoneVerified = aDecoder.decodeObject(forKey: "phone_verified") as? Bool ?? false
 
         if let providerString: String = aDecoder.decodeObject(forKey: "provider") as? String {
             provider = SocialLoginProvider(rawValue: providerString)
@@ -352,6 +356,9 @@ public class User : NSObject, NSCoding{
         }
         if currentCity != nil{
             aCoder.encode(currentCity, forKey: "current_city")
+        }
+        if phoneVerified != nil {
+            aCoder.encode(phoneVerified, forKey: "phone_verified")
         }
         if firstName != nil{
             aCoder.encode(firstName, forKey: "first_name")
