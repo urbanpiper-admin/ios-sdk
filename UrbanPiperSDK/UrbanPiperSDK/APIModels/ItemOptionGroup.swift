@@ -11,7 +11,7 @@ public class ItemOptionGroup : NSObject {
 
 	public var descriptionField : String!
 	public var id : Int!
-	public var isDefault : Bool!
+    public var isDefault : Bool
 	public var maxSelectable : Int!
 	public var minSelectable : Int!
 	public var options : [ItemOption]!
@@ -24,7 +24,7 @@ public class ItemOptionGroup : NSObject {
 	public init(fromDictionary dictionary:  [String:Any]){
 		descriptionField = dictionary["description"] as? String
 		id = dictionary["id"] as? Int
-		isDefault = dictionary["is_default"] as? Bool
+		isDefault = dictionary["is_default"] as? Bool ?? false
 		maxSelectable = dictionary["max_selectable"] as? Int
 		minSelectable = dictionary["min_selectable"] as? Int
 		options = [ItemOption]()
@@ -57,9 +57,9 @@ public class ItemOptionGroup : NSObject {
         if id != nil{
             dictionary["id"] = id
         }
-        if isDefault != nil{
-            dictionary["is_default"] = isDefault
-        }
+
+        dictionary["is_default"] = isDefault
+        
         if maxSelectable != nil{
             dictionary["max_selectable"] = maxSelectable
         }
@@ -91,7 +91,7 @@ public class ItemOptionGroup : NSObject {
 //    {
 //         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
 //         id = aDecoder.decodeObject(forKey: "id") as? Int
-//         isDefault = aDecoder.decodeObject(forKey: "is_default") as? Bool
+//         isDefault = aDecoder.decodeBool(forKey: "is_default") as? Bool
 //         maxSelectable = aDecoder.decodeObject(forKey: "max_selectable") as? Int
 //         minSelectable = aDecoder.decodeObject(forKey: "min_selectable") as? Int
 //         options = aDecoder.decodeObject(forKey :"options") as? [ItemOption]

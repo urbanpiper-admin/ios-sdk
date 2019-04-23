@@ -11,7 +11,7 @@ import Foundation
 @objc public class CategoriesResponse : NSObject{
 
 	private var biz : Biz!
-	public var clearCache : Bool!
+    public var clearCache : Bool
 	public var meta : Meta!
     public var objects : [Object]!
 
@@ -26,7 +26,7 @@ import Foundation
         
         Biz.shared = biz
 
-		clearCache = dictionary["clear_cache"] as? Bool
+		clearCache = dictionary["clear_cache"] as? Bool ?? false
 		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
 			meta = Meta(fromDictionary: metaData)
 		}
@@ -71,7 +71,7 @@ import Foundation
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
 //         biz = aDecoder.decodeObject(forKey: "biz") as? Biz
-//         clearCache = aDecoder.decodeObject(forKey: "clear_cache") as? Bool
+//         clearCache = aDecoder.decodeBool(forKey: "clear_cache") as? Bool
 //         meta = aDecoder.decodeObject(forKey: "meta") as? Meta
 //         objects = aDecoder.decodeObject(forKey :"objects") as? [Object]
 //

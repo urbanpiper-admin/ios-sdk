@@ -15,7 +15,7 @@ public class Object : NSObject{
 	public var id : Int!
 	public var image : String!
 	public var itemCount : Int!
-	public var loadFromWeb : Bool!
+    public var loadFromWeb : Bool
 	@objc public var name : String!
 	public var slug : String!
 	public var sortOrder : Int!
@@ -31,7 +31,7 @@ public class Object : NSObject{
 		id = dictionary["id"] as? Int
 		image = dictionary["image"] as? String
 		itemCount = dictionary["item_count"] as? Int
-		loadFromWeb = dictionary["load_from_web"] as? Bool
+		loadFromWeb = dictionary["load_from_web"] as? Bool ?? false
 		name = dictionary["name"] as? String
 		slug = dictionary["slug"] as? String
 		sortOrder = dictionary["sort_order"] as? Int ?? 0
@@ -88,7 +88,7 @@ public class Object : NSObject{
 //         id = aDecoder.decodeObject(forKey: "id") as? Int
 //         image = aDecoder.decodeObject(forKey: "image") as? String
 //         itemCount = aDecoder.decodeObject(forKey: "item_count") as? Int
-//         loadFromWeb = aDecoder.decodeObject(forKey: "load_from_web") as? Bool
+//         loadFromWeb = aDecoder.decodeBool(forKey: "load_from_web") as? Bool
 //         name = aDecoder.decodeObject(forKey: "name") as? String
 //         slug = aDecoder.decodeObject(forKey: "slug") as? String
 //         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int

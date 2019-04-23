@@ -80,7 +80,7 @@ public class User : NSObject, NSCoding{
 	public var biz : BizInfo!
     
 	public var message : String!
-//    public var success : Bool!
+//    public var success : Bool
 	public var timestamp : String!
     public var jwt: JWT!
 
@@ -272,11 +272,11 @@ public class User : NSObject, NSCoding{
         email = aDecoder.decodeObject(forKey: "email") as? String
          message = aDecoder.decodeObject(forKey: "message") as? String
          phone = aDecoder.decodeObject(forKey: "phone") as? String
-//         success = aDecoder.decodeObject(forKey: "success") as? Bool ?? false
+//         success = aDecoder.decodeBool(forKey: "success") as? Bool ?? false
          timestamp = aDecoder.decodeObject(forKey: "timestamp") as? String
 //         username = aDecoder.decodeObject(forKey: "username") as? String
         gender = aDecoder.decodeObject(forKey: "gender") as? String
-        phoneVerified = aDecoder.decodeObject(forKey: "phone_verified") as? Bool ?? false
+        phoneVerified = aDecoder.decodeBool(forKey: "phone_verified")
 
         if let providerString: String = aDecoder.decodeObject(forKey: "provider") as? String {
             provider = SocialLoginProvider(rawValue: providerString)

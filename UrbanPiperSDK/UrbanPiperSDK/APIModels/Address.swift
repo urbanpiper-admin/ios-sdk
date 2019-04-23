@@ -19,7 +19,7 @@ public enum AddressTag: String {
 
 	public var address1 : String!
 	public var landmark : String!
-    public var deliverable : Bool!
+    public var deliverable : Bool = false
 	@objc public var city : String!
 	public var id : Int!
     @objc public var lat : CLLocationDegrees = 0
@@ -236,7 +236,7 @@ public enum AddressTag: String {
         if landmark == nil {
             landmark = aDecoder.decodeObject(forKey: "address_2") as? String
         }
-         deliverable = aDecoder.decodeObject(forKey: "deliverable") as? Bool ?? false
+         deliverable = aDecoder.decodeBool(forKey: "deliverable")
          city = aDecoder.decodeObject(forKey: "city") as? String
          id = aDecoder.decodeObject(forKey: "id") as? Int
          lat = aDecoder.decodeObject(forKey: "lat") as? Double ?? Double.zero
@@ -260,9 +260,9 @@ public enum AddressTag: String {
 		if landmark != nil{
 			aCoder.encode(landmark, forKey: "landmark")
 		}
-        if deliverable != nil{
-            aCoder.encode(deliverable, forKey: "deliverable")
-        }
+
+        aCoder.encode(deliverable, forKey: "deliverable")
+        
 		if city != nil{
 			aCoder.encode(city, forKey: "city")
 		}

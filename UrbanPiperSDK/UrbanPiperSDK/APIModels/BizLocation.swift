@@ -13,11 +13,11 @@ public class BizLocation : NSObject{
 	public var address : String!
 	public var bizLocationId : Int!
 	public var city : String!
-	public var closingDay : Bool!
+    public var closingDay : Bool
 	public var closingTime : AnyObject!
 	public var deliveryCharge : Float!
 	public var deliveryMinOffsetTime : Int!
-	public var hideStoreName : Bool!
+    public var hideStoreName : Bool
 	public var lat : Double!
 	public var lng : Double!
 	public var minOrderTotal : Float!
@@ -31,7 +31,7 @@ public class BizLocation : NSObject{
 	public var pickupMinOffsetTime : Int!
 	public var sortOrder : Int!
 	public var taxRate : Float!
-	public var temporarilyClosed : Bool!
+    public var temporarilyClosed : Bool
 	public var timeSlots : [AnyObject]!
 
 
@@ -42,11 +42,11 @@ public class BizLocation : NSObject{
 		address = dictionary["address"] as? String
 		bizLocationId = dictionary["biz_location_id"] as? Int
 		city = dictionary["city"] as? String
-		closingDay = dictionary["closing_day"] as? Bool
+		closingDay = dictionary["closing_day"] as? Bool ?? false
 		closingTime = dictionary["closing_time"] as AnyObject
 		deliveryCharge = dictionary["delivery_charge"] as? Float
 		deliveryMinOffsetTime = dictionary["delivery_min_offset_time"] as? Int
-		hideStoreName = dictionary["hide_store_name"] as? Bool
+		hideStoreName = dictionary["hide_store_name"] as? Bool ?? false
 		lat = dictionary["lat"] as? Double
 		lng = dictionary["lng"] as? Double
 		minOrderTotal = dictionary["min_order_total"] as? Float
@@ -60,7 +60,7 @@ public class BizLocation : NSObject{
 		pickupMinOffsetTime = dictionary["pickup_min_offset_time"] as? Int
 		sortOrder = dictionary["sort_order"] as? Int
 		taxRate = dictionary["tax_rate"] as? Float
-		temporarilyClosed = dictionary["temporarily_closed"] as? Bool
+		temporarilyClosed = dictionary["temporarily_closed"] as? Bool ?? false
 		timeSlots = dictionary["time_slots"] as? [AnyObject]
 	}
 
@@ -151,11 +151,11 @@ public class BizLocation : NSObject{
 //         address = aDecoder.decodeObject(forKey: "address") as? String
 //         bizLocationId = aDecoder.decodeObject(forKey: "biz_location_id") as? Int
 //         city = aDecoder.decodeObject(forKey: "city") as? String
-//         closingDay = aDecoder.decodeObject(forKey: "closing_day") as? Bool
+//         closingDay = aDecoder.decodeBool(forKey: "closing_day") as? Bool
 //         closingTime = aDecoder.decodeObject(forKey: "closing_time") as AnyObject
 //         deliveryCharge = aDecoder.decodeObject(forKey: "delivery_charge") as? Float
 //         deliveryMinOffsetTime = aDecoder.decodeObject(forKey: "delivery_min_offset_time") as? Int
-//         hideStoreName = aDecoder.decodeObject(forKey: "hide_store_name") as? Bool
+//         hideStoreName = aDecoder.decodeBool(forKey: "hide_store_name") as? Bool
 //         lat = aDecoder.decodeObject(forKey: "lat") as? Double
 //         lng = aDecoder.decodeObject(forKey: "lng") as? Double
 //         minOrderTotal = aDecoder.decodeObject(forKey: "min_order_total") as? Float
@@ -169,7 +169,7 @@ public class BizLocation : NSObject{
 //         pickupMinOffsetTime = aDecoder.decodeObject(forKey: "pickup_min_offset_time") as? Int
 //         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
 //         taxRate = aDecoder.decodeObject(forKey: "tax_rate") as? Float
-//         temporarilyClosed = aDecoder.decodeObject(forKey: "temporarily_closed") as? Bool
+//         temporarilyClosed = aDecoder.decodeBool(forKey: "temporarily_closed") as? Bool
 //         timeSlots = aDecoder.decodeObject(forKey: "time_slots") as? [AnyObject]
 //
 //    }

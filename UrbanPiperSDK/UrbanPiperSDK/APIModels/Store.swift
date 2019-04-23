@@ -15,11 +15,11 @@ public class Store : NSObject, NSCoding{
 	public var city : String!
 	public var closingDay : Bool = false
 	@objc public var closingTime : String!
-    public var isPickupEnabled : Bool!
+    public var isPickupEnabled : Bool
 	public var deliveryCharge : Decimal!
 	public var deliveryMinOffsetTime : Int!
     public var discount : Decimal!
-	public var hideStoreName : Bool!
+    public var hideStoreName : Bool
     public var itemTaxes : Decimal!
 	public var lat : Double!
 	public var lng : Double!
@@ -53,7 +53,7 @@ public class Store : NSObject, NSCoding{
 		city = dictionary["city"] as? String
 		closingDay = dictionary["closing_day"] as? Bool ?? false
 		closingTime = dictionary["closing_time"] as? String
-        isPickupEnabled = dictionary["is_pickup_enabled"] as? Bool
+        isPickupEnabled = dictionary["is_pickup_enabled"] as? Bool ?? false
 
         var priceVal: Any? = dictionary["delivery_charge"]
         if let val: Decimal = priceVal as? Decimal {
@@ -75,7 +75,7 @@ public class Store : NSObject, NSCoding{
             discount = Decimal.zero
         }
         
-		hideStoreName = dictionary["hide_store_name"] as? Bool
+		hideStoreName = dictionary["hide_store_name"] as? Bool ?? false
         priceVal = dictionary["item_taxes"]
         if let val: Decimal = priceVal as? Decimal {
             itemTaxes = val
@@ -154,9 +154,9 @@ public class Store : NSObject, NSCoding{
         if discount != nil{
             dictionary["discount"] = discount
         }
-        if hideStoreName != nil{
-            dictionary["hide_store_name"] = hideStoreName
-        }
+
+        dictionary["hide_store_name"] = hideStoreName
+        
         if itemTaxes != nil{
             dictionary["item_taxes"] = itemTaxes
         }
@@ -219,13 +219,30 @@ public class Store : NSObject, NSCoding{
          address = aDecoder.decodeObject(forKey: "address") as? String
          bizLocationId = aDecoder.decodeObject(forKey: "biz_location_id") as? Int
          city = aDecoder.decodeObject(forKey: "city") as? String
-        isPickupEnabled = aDecoder.decodeObject(forKey: "is_pickup_enabled") as? Bool ?? false
-         closingDay = aDecoder.decodeObject(forKey: "closing_day") as? Bool ?? false
+        
+        if let boolVal = aDecoder.decodeObject(forKey: "is_pickup_enabled") as? NSNumber {
+            isPickupEnabled = boolVal == 0 ? false : true
+        } else {
+            isPickupEnabled = aDecoder.decodeBool(forKey: "is_pickup_enabled")
+        }
+        
+        if let boolVal = aDecoder.decodeObject(forKey: "closing_day") as? NSNumber {
+            closingDay = boolVal == 0 ? false : true
+        } else {
+            closingDay = aDecoder.decodeBool(forKey: "closing_day")
+        }
+        
          closingTime = aDecoder.decodeObject(forKey: "closing_time") as? String
          deliveryCharge = aDecoder.decodeObject(forKey: "delivery_charge") as? Decimal
          deliveryMinOffsetTime = aDecoder.decodeObject(forKey: "delivery_min_offset_time") as? Int
         discount = aDecoder.decodeObject(forKey: "discount") as? Decimal
-         hideStoreName = aDecoder.decodeObject(forKey: "hide_store_name") as? Bool
+        
+        if let boolVal = aDecoder.decodeObject(forKey: "hide_store_name") as? NSNumber {
+            hideStoreName = boolVal == 0 ? false : true
+        } else {
+            hideStoreName = aDecoder.decodeBool(forKey: "hide_store_name")
+        }
+        
         itemTaxes = aDecoder.decodeObject(forKey: "item_taxes") as? Decimal
          lat = aDecoder.decodeObject(forKey: "lat") as? Double
          lng = aDecoder.decodeObject(forKey: "lng") as? Double
@@ -240,7 +257,13 @@ public class Store : NSObject, NSCoding{
          pickupMinOffsetTime = aDecoder.decodeObject(forKey: "pickup_min_offset_time") as? Int
          sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
          taxRate = aDecoder.decodeObject(forKey: "tax_rate") as? Float
-         temporarilyClosed = aDecoder.decodeObject(forKey: "temporarily_closed") as? Bool ?? false
+        
+        if let boolVal = aDecoder.decodeObject(forKey: "temporarily_closed") as? NSNumber {
+            temporarilyClosed = boolVal == 0 ? false : true
+        } else {
+            temporarilyClosed = aDecoder.decodeBool(forKey: "temporarily_closed")
+        }
+        
          timeSlots = aDecoder.decodeObject(forKey: "time_slots") as? [TimeSlot]
         merchantRefId = aDecoder.decodeObject(forKey: "merchant_ref_id") as? String
 
@@ -275,9 +298,9 @@ public class Store : NSObject, NSCoding{
         if discount != nil{
             aCoder.encode(discount, forKey: "discount")
         }
-		if hideStoreName != nil{
-			aCoder.encode(hideStoreName, forKey: "hide_store_name")
-		}
+
+        aCoder.encode(hideStoreName, forKey: "hide_store_name")
+		
         if itemTaxes != nil{
             aCoder.encode(itemTaxes, forKey: "item_taxes")
         }

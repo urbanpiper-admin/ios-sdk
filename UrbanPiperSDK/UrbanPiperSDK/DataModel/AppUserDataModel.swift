@@ -513,6 +513,9 @@ extension AppUserDataModel {
 //  used only when "new_registration_required"
     public func verifyMobileNumber(user: User, otp: String, completion: @escaping CompletionHandler<CardAPIResponse>) {
         let dataTask: URLSessionDataTask = APIManager.shared.verifyMobile(user: user, pin: otp, completion: { (cardAPIResponse) in
+            if let token = cardAPIResponse?.token {
+                AppUserDataModel.shared.appUserData = User(jwtToken: token)
+            }
             completion(cardAPIResponse, nil)
         }, failure: { (error) in
             completion(nil, error)
