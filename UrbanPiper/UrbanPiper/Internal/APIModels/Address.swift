@@ -174,11 +174,14 @@ public enum AddressTag: String {
         if landmark == nil {
             landmark = aDecoder.decodeObject(forKey: "address_2") as? String
         }
-        var val = aDecoder.decodeObject(forKey: "deliverable")
-        if let numberVal = val as? NSNumber {
-            deliverable = numberVal == 0 ? false : true
+        if let val = aDecoder.decodeObject(forKey: "deliverable") {
+            if let numberVal = val as? NSNumber {
+                deliverable = numberVal == 0 ? false : true
+            } else {
+                deliverable = false
+            }
         } else {
-            deliverable = aDecoder.decodeObject(forKey: "deliverable") as? Bool ?? false
+            deliverable = aDecoder.decodeBool(forKey: "deliverable")
         }
          city = aDecoder.decodeObject(forKey: "city") as? String
          id = aDecoder.decodeObject(forKey: "id") as? Int
