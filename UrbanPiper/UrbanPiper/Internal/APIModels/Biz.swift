@@ -48,14 +48,14 @@ public enum Language: String {
     public var paypalClientToken : String!
 	public var pgProvider : String!
 	public var pickupMinOffsetTime : Int!
-	public var preProcess : Bool!
+    public var preProcess : Bool
 	public var referralShareLbl : String!
 	public var referralUiLbl : String!
 	public var simplClientId : String!
 	public var timeSlots : [TimeSlot]!
 	public var timezone : String!
 	public var tin : String!
-	public var usePointOfDelivery : Bool!
+    public var usePointOfDelivery : Bool
 
 
 	/**
@@ -93,7 +93,7 @@ public enum Language: String {
 		paypalClientToken = dictionary["paypal_client_token"] as? String
 		pgProvider = dictionary["pg_provider"] as? String
 		pickupMinOffsetTime = dictionary["pickup_min_offset_time"] as? Int
-		preProcess = dictionary["pre_process"] as? Bool
+		preProcess = dictionary["pre_process"] as? Bool ?? false
 		referralShareLbl = dictionary["referral_share_lbl"] as? String
 		referralUiLbl = dictionary["referral_ui_lbl"] as? String
 		simplClientId = dictionary["simpl_client_id"] as? String
@@ -106,7 +106,7 @@ public enum Language: String {
 		}
 		timezone = dictionary["timezone"] as? String
 		tin = dictionary["tin"] as? String
-		usePointOfDelivery = dictionary["use_point_of_delivery"] as? Bool
+		usePointOfDelivery = dictionary["use_point_of_delivery"] as? Bool ?? false
 	}
 
 	/**
@@ -168,9 +168,9 @@ public enum Language: String {
 		if pickupMinOffsetTime != nil{
 			dictionary["pickup_min_offset_time"] = pickupMinOffsetTime
 		}
-		if preProcess != nil{
-			dictionary["pre_process"] = preProcess
-		}
+
+        dictionary["pre_process"] = preProcess
+		
 		if referralShareLbl != nil{
 			dictionary["referral_share_lbl"] = referralShareLbl
 		}
@@ -193,9 +193,9 @@ public enum Language: String {
 		if tin != nil{
 			dictionary["tin"] = tin
 		}
-		if usePointOfDelivery != nil{
-			dictionary["use_point_of_delivery"] = usePointOfDelivery
-		}
+
+        dictionary["use_point_of_delivery"] = usePointOfDelivery
+		
 		return dictionary
 	}
 
@@ -210,7 +210,17 @@ public enum Language: String {
          deliveryMinOffsetTime = aDecoder.decodeObject(forKey: "delivery_min_offset_time") as? Int
         feedbackConfig = aDecoder.decodeObject(forKey :"feedback_config") as? [FeedbackConfig]
          gst = aDecoder.decodeObject(forKey: "gst") as? String
-         isPickupEnabled = aDecoder.decodeObject(forKey: "is_pickup_enabled") as? Bool ?? false
+       
+        if let val = aDecoder.decodeObject(forKey: "is_pickup_enabled") {
+            if let numberVal = val as? NSNumber {
+                isPickupEnabled = numberVal == 0 ? false : true
+            } else {
+                isPickupEnabled = false
+            }
+        } else {
+            isPickupEnabled = aDecoder.decodeBool(forKey: "is_pickup_enabled")
+        }
+        
          minOrderTotal = aDecoder.decodeObject(forKey: "min_order_total") as? Decimal
 //         minimumWalletCreditThreshold = aDecoder.decodeObject(forKey: "minimum_wallet_credit_threshold") as? Float
          msgNearestStoreClosed = aDecoder.decodeObject(forKey: "msg_nearest_store_closed") as? String
@@ -222,15 +232,33 @@ public enum Language: String {
          paypalClientToken = aDecoder.decodeObject(forKey: "paypal_client_token") as? String
          pgProvider = aDecoder.decodeObject(forKey: "pg_provider") as? String
          pickupMinOffsetTime = aDecoder.decodeObject(forKey: "pickup_min_offset_time") as? Int
-         preProcess = aDecoder.decodeObject(forKey: "pre_process") as? Bool
+        
+        if let val = aDecoder.decodeObject(forKey: "pre_process") {
+            if let numberVal = val as? NSNumber {
+                preProcess = numberVal == 0 ? false : true
+            } else {
+                preProcess = false
+            }
+        } else {
+            preProcess = aDecoder.decodeBool(forKey: "pre_process")
+        }
+        
          referralShareLbl = aDecoder.decodeObject(forKey: "referral_share_lbl") as? String
          referralUiLbl = aDecoder.decodeObject(forKey: "referral_ui_lbl") as? String
          simplClientId = aDecoder.decodeObject(forKey: "simpl_client_id") as? String
         timeSlots = aDecoder.decodeObject(forKey :"time_slots") as? [TimeSlot]
          timezone = aDecoder.decodeObject(forKey: "timezone") as? String
          tin = aDecoder.decodeObject(forKey: "tin") as? String
-         usePointOfDelivery = aDecoder.decodeObject(forKey: "use_point_of_delivery") as? Bool
 
+        if let val = aDecoder.decodeObject(forKey: "use_point_of_delivery") {
+            if let numberVal = val as? NSNumber {
+                usePointOfDelivery = numberVal == 0 ? false : true
+            } else {
+                usePointOfDelivery = false
+            }
+        } else {
+            usePointOfDelivery = aDecoder.decodeBool(forKey: "use_point_of_delivery")
+        }
 	}
 
     /**
@@ -288,9 +316,9 @@ public enum Language: String {
 		if pickupMinOffsetTime != nil{
 			aCoder.encode(pickupMinOffsetTime, forKey: "pickup_min_offset_time")
 		}
-		if preProcess != nil{
-			aCoder.encode(preProcess, forKey: "pre_process")
-		}
+
+        aCoder.encode(preProcess, forKey: "pre_process")
+		
 		if referralShareLbl != nil{
 			aCoder.encode(referralShareLbl, forKey: "referral_share_lbl")
 		}
@@ -309,10 +337,8 @@ public enum Language: String {
 		if tin != nil{
 			aCoder.encode(tin, forKey: "tin")
 		}
-		if usePointOfDelivery != nil{
-			aCoder.encode(usePointOfDelivery, forKey: "use_point_of_delivery")
-		}
 
+        aCoder.encode(usePointOfDelivery, forKey: "use_point_of_delivery")
 	}
 
 }

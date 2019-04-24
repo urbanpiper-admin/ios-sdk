@@ -93,8 +93,8 @@ extension APIManager {
     }
 
     func usePODEnabled(biz: Biz) {
-        if let usePointOfDelivery = biz.usePointOfDelivery {
-            UserDefaults.standard.set(usePointOfDelivery, forKey: "use_point_of_delivery")
+        if biz.usePointOfDelivery {
+            UserDefaults.standard.set(biz.usePointOfDelivery, forKey: "use_point_of_delivery")
             UserDefaults.standard.synchronize()
         }
     }

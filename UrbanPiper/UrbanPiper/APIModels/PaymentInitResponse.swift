@@ -12,7 +12,7 @@ public class PaymentInitResponse : NSObject{
 
 	public var data : OnlinePaymentData!
 	public var message : String!
-	public var success : Bool!
+    public var success : Bool
 	public var transactionId : String!
 	public var url : AnyObject!
 
@@ -25,7 +25,7 @@ public class PaymentInitResponse : NSObject{
 			data = OnlinePaymentData(fromDictionary: dataData)
 		}
 		message = dictionary["message"] as? String
-		success = dictionary["success"] as? Bool
+		success = dictionary["success"] as? Bool ?? false
 		transactionId = dictionary["transaction_id"] as? String
 		url = dictionary["url"] as AnyObject
 	}
@@ -42,9 +42,9 @@ public class PaymentInitResponse : NSObject{
         if message != nil{
             dictionary["message"] = message
         }
-        if success != nil{
-            dictionary["success"] = success
-        }
+
+        dictionary["success"] = success
+        
         if transactionId != nil{
             dictionary["transaction_id"] = transactionId
         }
@@ -62,7 +62,7 @@ public class PaymentInitResponse : NSObject{
 //    {
 //         data = aDecoder.decodeObject(forKey: "data") as? OnlinePaymentData
 //         message = aDecoder.decodeObject(forKey: "message") as? String
-//         success = aDecoder.decodeObject(forKey: "success") as? Bool
+//         success = val as? Bool ?? false
 //         transactionId = aDecoder.decodeObject(forKey: "transaction_id") as? String
 //         url = aDecoder.decodeObject(forKey: "url") as AnyObject
 //

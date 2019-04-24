@@ -10,7 +10,7 @@ import Foundation
 
 public class VersionCheckResponse : NSObject{
 
-    public var forceUpdate : Bool!
+    public var forceUpdate : Bool
 	public var latestVersion : String!
 	public var releaseDate : Int!
 	public var url : String!
@@ -20,7 +20,7 @@ public class VersionCheckResponse : NSObject{
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
 	init(fromDictionary dictionary: [String:Any]){
-		forceUpdate = dictionary["force_update"] as? Bool
+		forceUpdate = dictionary["force_update"] as? Bool ?? false
 		latestVersion = dictionary["latest_version"] as? String
 		releaseDate = dictionary["release_date"] as? Int
 		url = dictionary["url"] as? String
@@ -53,7 +53,7 @@ public class VersionCheckResponse : NSObject{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         forceUpdate = aDecoder.decodeObject(forKey: "force_update") as? Bool
+//         forceUpdate = val as? Bool ?? false
 //         latestVersion = aDecoder.decodeObject(forKey: "latest_version") as? String
 //         releaseDate = aDecoder.decodeObject(forKey: "release_date") as? Int
 //         url = aDecoder.decodeObject(forKey: "url") as? String

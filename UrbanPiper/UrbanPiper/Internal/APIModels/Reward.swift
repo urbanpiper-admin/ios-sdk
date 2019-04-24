@@ -13,8 +13,8 @@ public class Reward : NSObject, NSCoding{
     public var expiresOn : Int!
     public var id : Int!
     public var imgLink : String!
-    public var inStoreCouponRewards : Bool!
-    public var locked : Bool!
+    public var inStoreCouponRewards : Bool = false
+    public var locked : Bool = false
     public var points : Int!
     public var redeemedCount : Int!
     public var redemptionCodes : [RedemptionCode]!
@@ -32,8 +32,8 @@ public class Reward : NSObject, NSCoding{
         expiresOn = dictionary["expires_on"] as? Int
         id = dictionary["id"] as? Int
         imgLink = dictionary["img_link"] as? String
-        inStoreCouponRewards = dictionary["in_store_coupon_rewards"] as? Bool
-        locked = dictionary["locked"] as? Bool
+        inStoreCouponRewards = dictionary["in_store_coupon_rewards"] as? Bool ?? false
+        locked = dictionary["locked"] as? Bool ?? false
         points = dictionary["points"] as? Int
         redeemedCount = dictionary["redeemed_count"] as? Int
         redemptionCodes = [RedemptionCode]()
@@ -69,12 +69,11 @@ public class Reward : NSObject, NSCoding{
         if imgLink != nil{
             dictionary["img_link"] = imgLink
         }
-        if inStoreCouponRewards != nil{
-            dictionary["in_store_coupon_rewards"] = inStoreCouponRewards
-        }
-        if locked != nil{
-            dictionary["locked"] = locked
-        }
+
+        dictionary["in_store_coupon_rewards"] = inStoreCouponRewards
+        
+        dictionary["locked"] = locked
+        
         if points != nil{
             dictionary["points"] = points
         }
@@ -111,8 +110,27 @@ public class Reward : NSObject, NSCoding{
         expiresOn = aDecoder.decodeObject(forKey: "expires_on") as? Int
         id = aDecoder.decodeObject(forKey: "id") as? Int
         imgLink = aDecoder.decodeObject(forKey: "img_link") as? String
-        inStoreCouponRewards = aDecoder.decodeObject(forKey: "in_store_coupon_rewards") as? Bool
-        locked = aDecoder.decodeObject(forKey: "locked") as? Bool
+        
+        if let val = aDecoder.decodeObject(forKey: "in_store_coupon_rewards") {
+            if let numberVal = val as? NSNumber {
+                inStoreCouponRewards = numberVal == 0 ? false : true
+            } else {
+                inStoreCouponRewards = false
+            }
+        } else {
+            inStoreCouponRewards = aDecoder.decodeBool(forKey: "in_store_coupon_rewards")
+        }
+        
+        if let val = aDecoder.decodeObject(forKey: "locked") {
+            if let numberVal = val as? NSNumber {
+                locked = numberVal == 0 ? false : true
+            } else {
+                locked = false
+            }
+        } else {
+            locked = aDecoder.decodeBool(forKey: "locked")
+        }
+
         points = aDecoder.decodeObject(forKey: "points") as? Int
         redeemedCount = aDecoder.decodeObject(forKey: "redeemed_count") as? Int
         redemptionCodes = aDecoder.decodeObject(forKey: "redemption_codes") as? [RedemptionCode]
@@ -142,12 +160,11 @@ public class Reward : NSObject, NSCoding{
         if imgLink != nil{
             aCoder.encode(imgLink, forKey: "img_link")
         }
-        if inStoreCouponRewards != nil{
-            aCoder.encode(inStoreCouponRewards, forKey: "in_store_coupon_rewards")
-        }
-        if locked != nil{
-            aCoder.encode(locked, forKey: "locked")
-        }
+
+        aCoder.encode(inStoreCouponRewards, forKey: "in_store_coupon_rewards")
+
+        aCoder.encode(locked, forKey: "locked")
+        
         if points != nil{
             aCoder.encode(points, forKey: "points")
         }

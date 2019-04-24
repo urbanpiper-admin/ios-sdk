@@ -11,7 +11,7 @@ import Foundation
 public class Discount : NSObject{
 
 	public var msg : String!
-	public var success : Bool!
+    public var success : Bool
 	public var value : Decimal!
 
 
@@ -20,7 +20,7 @@ public class Discount : NSObject{
 	 */
 	internal init(fromDictionary dictionary:  [String:Any]){
 		msg = dictionary["msg"] as? String
-		success = dictionary["success"] as? Bool
+		success = dictionary["success"] as? Bool ?? false
         
         let priceVal = dictionary["value"]
         if let val: Decimal = priceVal as? Decimal {
@@ -41,9 +41,9 @@ public class Discount : NSObject{
         if msg != nil{
             dictionary["msg"] = msg
         }
-        if success != nil{
-            dictionary["success"] = success
-        }
+
+        dictionary["success"] = success
+        
         if value != nil{
             dictionary["value"] = value
         }
@@ -57,7 +57,7 @@ public class Discount : NSObject{
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
 //         msg = aDecoder.decodeObject(forKey: "msg") as? String
-//         success = aDecoder.decodeObject(forKey: "success") as? Bool
+//         success = val as? Bool ?? false
 //         value = aDecoder.decodeObject(forKey: "value") as? Decimal
 //
 //    }

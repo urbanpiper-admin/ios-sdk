@@ -20,9 +20,10 @@ public class RegistrationResponse : NSObject{
 //    public var points : Float!
 //    public var prepaidBalance : Float!
 	public var result : String!
-	public var success : Bool!
+    public var success : Bool
 //    public var timestamp : String!
 //    public var totalBalance : Float!
+    public var token : String?
 
 
 	/**
@@ -38,10 +39,14 @@ public class RegistrationResponse : NSObject{
 		message = dictionary["message"] as? String
 //        points = dictionary["points"] as? Float
 //        prepaidBalance = dictionary["prepaid_balance"] as? Float
-        result = dictionary["result"] as? String
-		success = dictionary["success"] as? Bool
+		result = dictionary["result"] as? String
+		success = dictionary["success"] as? Bool ?? false
 //        timestamp = dictionary["timestamp"] as? String
 //        totalBalance = dictionary["total_balance"] as? Float
+        token = dictionary["access_token"] as? String
+        if token == nil {
+            token = dictionary["token"] as? String
+        }
 	}
 
 //    /**
@@ -49,7 +54,7 @@ public class RegistrationResponse : NSObject{
 //     */
 //    public func toDictionary() -> [String:Any]
 //    {
-//        var dictionary: [String: Any] = [String:Any]()
+//        var dictionary: [String : Any] = [String:Any]()
 //        if approvalCode != nil{
 //            dictionary["approval_code"] = approvalCode
 //        }
@@ -80,14 +85,17 @@ public class RegistrationResponse : NSObject{
 //        if result != nil{
 //            dictionary["result"] = result
 //        }
-//        if success != nil{
-//            dictionary["success"] = success
-//        }
+//
+//        dictionary["success"] = success
+//        
 //        if timestamp != nil{
 //            dictionary["timestamp"] = timestamp
 //        }
 //        if totalBalance != nil{
 //            dictionary["total_balance"] = totalBalance
+//        }
+//        if token != nil{
+//            dictionary["token"] = token
 //        }
 //        return dictionary
 //    }
@@ -108,7 +116,7 @@ public class RegistrationResponse : NSObject{
 //         points = aDecoder.decodeObject(forKey: "points") as? Float
 //         prepaidBalance = aDecoder.decodeObject(forKey: "prepaid_balance") as? Float
 //         result = aDecoder.decodeObject(forKey: "result") as? String
-//         success = aDecoder.decodeObject(forKey: "success") as? Bool
+//         success = val as? Bool ?? false
 //         timestamp = aDecoder.decodeObject(forKey: "timestamp") as? String
 //         totalBalance = aDecoder.decodeObject(forKey: "total_balance") as? Float
 //

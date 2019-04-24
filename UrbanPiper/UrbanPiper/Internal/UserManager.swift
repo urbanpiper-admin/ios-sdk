@@ -520,7 +520,10 @@ extension UserManager {
                                    otp: String,
                                    completion: @escaping ((RegistrationResponse?) -> Void),
                                    failure: @escaping APIFailure) -> URLSessionDataTask {
-        let dataTask: URLSessionDataTask = APIManager.shared.verifyRegOTP(phone: phone, pin: otp, completion: { (registrationResponse) in
+        let dataTask: URLSessionDataTask = APIManager.shared.verifyRegOTP(phone: phone, pin: otp, completion: { [weak self] (registrationResponse) in
+            if let token = registrationResponse?.token {
+                self?.currentUser = User(jwtToken: token)
+            }
             completion(registrationResponse)
         }, failure: { (error) in
             failure(error)
