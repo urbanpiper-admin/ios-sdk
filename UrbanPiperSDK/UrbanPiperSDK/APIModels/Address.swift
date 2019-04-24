@@ -236,8 +236,17 @@ public enum AddressTag: String {
         if landmark == nil {
             landmark = aDecoder.decodeObject(forKey: "address_2") as? String
         }
-         deliverable = aDecoder.decodeBool(forKey: "deliverable")
-         city = aDecoder.decodeObject(forKey: "city") as? String
+        if let val = aDecoder.decodeObject(forKey: "deliverable") {
+            if let numberVal = val as? NSNumber {
+                deliverable = numberVal == 0 ? false : true
+            } else {
+                deliverable = false
+            }
+        } else {
+            deliverable = aDecoder.decodeBool(forKey: "deliverable")
+        }
+        
+        city = aDecoder.decodeObject(forKey: "city") as? String
          id = aDecoder.decodeObject(forKey: "id") as? Int
          lat = aDecoder.decodeObject(forKey: "lat") as? Double ?? Double.zero
          lng = aDecoder.decodeObject(forKey: "lng") as? Double ?? Double.zero

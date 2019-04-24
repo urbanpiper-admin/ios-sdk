@@ -211,8 +211,12 @@ public enum Language: String {
         feedbackConfig = aDecoder.decodeObject(forKey :"feedback_config") as? [FeedbackConfig]
          gst = aDecoder.decodeObject(forKey: "gst") as? String
        
-        if let boolVal = aDecoder.decodeObject(forKey: "is_pickup_enabled") as? NSNumber {
-            isPickupEnabled = boolVal == 0 ? false : true
+        if let val = aDecoder.decodeObject(forKey: "is_pickup_enabled") {
+            if let numberVal = val as? NSNumber {
+                isPickupEnabled = numberVal == 0 ? false : true
+            } else {
+                isPickupEnabled = false
+            }
         } else {
             isPickupEnabled = aDecoder.decodeBool(forKey: "is_pickup_enabled")
         }
@@ -229,8 +233,12 @@ public enum Language: String {
          pgProvider = aDecoder.decodeObject(forKey: "pg_provider") as? String
          pickupMinOffsetTime = aDecoder.decodeObject(forKey: "pickup_min_offset_time") as? Int
         
-        if let boolVal = aDecoder.decodeObject(forKey: "pre_process") as? NSNumber {
-            preProcess = boolVal == 0 ? false : true
+        if let val = aDecoder.decodeObject(forKey: "pre_process") {
+            if let numberVal = val as? NSNumber {
+                preProcess = numberVal == 0 ? false : true
+            } else {
+                preProcess = false
+            }
         } else {
             preProcess = aDecoder.decodeBool(forKey: "pre_process")
         }
@@ -242,8 +250,12 @@ public enum Language: String {
          timezone = aDecoder.decodeObject(forKey: "timezone") as? String
          tin = aDecoder.decodeObject(forKey: "tin") as? String
 
-        if let boolVal = aDecoder.decodeObject(forKey: "use_point_of_delivery") as? NSNumber {
-            usePointOfDelivery = boolVal == 0 ? false : true
+        if let val = aDecoder.decodeObject(forKey: "use_point_of_delivery") {
+            if let numberVal = val as? NSNumber {
+                usePointOfDelivery = numberVal == 0 ? false : true
+            } else {
+                usePointOfDelivery = false
+            }
         } else {
             usePointOfDelivery = aDecoder.decodeBool(forKey: "use_point_of_delivery")
         }

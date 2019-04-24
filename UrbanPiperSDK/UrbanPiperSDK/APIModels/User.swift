@@ -276,7 +276,16 @@ public class User : NSObject, NSCoding{
          timestamp = aDecoder.decodeObject(forKey: "timestamp") as? String
 //         username = aDecoder.decodeObject(forKey: "username") as? String
         gender = aDecoder.decodeObject(forKey: "gender") as? String
-        phoneVerified = aDecoder.decodeBool(forKey: "phone_verified")
+        
+        if let val = aDecoder.decodeObject(forKey: "phone_verified") {
+            if let numberVal = val as? NSNumber {
+                phoneVerified = numberVal == 0 ? false : true
+            } else {
+                phoneVerified = false
+            }
+        } else {
+            phoneVerified = aDecoder.decodeBool(forKey: "phone_verified")
+        }
 
         if let providerString: String = aDecoder.decodeObject(forKey: "provider") as? String {
             provider = SocialLoginProvider(rawValue: providerString)
