@@ -236,14 +236,12 @@ public enum AddressTag: String {
         if landmark == nil {
             landmark = aDecoder.decodeObject(forKey: "address_2") as? String
         }
-        if let val = aDecoder.decodeObject(forKey: "deliverable") {
-            if let numberVal = val as? NSNumber {
-                deliverable = numberVal == 0 ? false : true
-            } else {
-                deliverable = false
-            }
-        } else {
+        if let numberVal = aDecoder.decodeObject(forKey: "deliverable") as? NSNumber {
+            deliverable = numberVal == 0 ? false : true
+        } else if aDecoder.containsValue(forKey: "deliverable") {
             deliverable = aDecoder.decodeBool(forKey: "deliverable")
+        } else {
+            deliverable = false
         }
         
         city = aDecoder.decodeObject(forKey: "city") as? String

@@ -211,14 +211,12 @@ public enum Language: String {
         feedbackConfig = aDecoder.decodeObject(forKey :"feedback_config") as? [FeedbackConfig]
          gst = aDecoder.decodeObject(forKey: "gst") as? String
        
-        if let val = aDecoder.decodeObject(forKey: "is_pickup_enabled") {
-            if let numberVal = val as? NSNumber {
-                isPickupEnabled = numberVal == 0 ? false : true
-            } else {
-                isPickupEnabled = false
-            }
-        } else {
+        if let numberVal = aDecoder.decodeObject(forKey: "is_pickup_enabled") as? NSNumber {
+            isPickupEnabled = numberVal == 0 ? false : true
+        } else if aDecoder.containsValue(forKey: "is_pickup_enabled") {
             isPickupEnabled = aDecoder.decodeBool(forKey: "is_pickup_enabled")
+        } else {
+            isPickupEnabled = false
         }
         
          minOrderTotal = aDecoder.decodeObject(forKey: "min_order_total") as? Decimal
@@ -233,14 +231,12 @@ public enum Language: String {
          pgProvider = aDecoder.decodeObject(forKey: "pg_provider") as? String
          pickupMinOffsetTime = aDecoder.decodeObject(forKey: "pickup_min_offset_time") as? Int
         
-        if let val = aDecoder.decodeObject(forKey: "pre_process") {
-            if let numberVal = val as? NSNumber {
-                preProcess = numberVal == 0 ? false : true
-            } else {
-                preProcess = false
-            }
-        } else {
+        if let numberVal = aDecoder.decodeObject(forKey: "pre_process") as? NSNumber {
+            preProcess = numberVal == 0 ? false : true
+        } else if aDecoder.containsValue(forKey: "pre_process") {
             preProcess = aDecoder.decodeBool(forKey: "pre_process")
+        } else {
+            preProcess = false
         }
         
          referralShareLbl = aDecoder.decodeObject(forKey: "referral_share_lbl") as? String
@@ -250,14 +246,12 @@ public enum Language: String {
          timezone = aDecoder.decodeObject(forKey: "timezone") as? String
          tin = aDecoder.decodeObject(forKey: "tin") as? String
 
-        if let val = aDecoder.decodeObject(forKey: "use_point_of_delivery") {
-            if let numberVal = val as? NSNumber {
-                usePointOfDelivery = numberVal == 0 ? false : true
-            } else {
-                usePointOfDelivery = false
-            }
-        } else {
+        if let numberVal = aDecoder.decodeObject(forKey: "use_point_of_delivery") as? NSNumber {
+            usePointOfDelivery = numberVal == 0 ? false : true
+        } else if aDecoder.containsValue(forKey: "use_point_of_delivery") {
             usePointOfDelivery = aDecoder.decodeBool(forKey: "use_point_of_delivery")
+        } else {
+            usePointOfDelivery = false
         }
 	}
 
