@@ -209,7 +209,6 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
         } else {
             let deliveryDate = Calendar.current.startOfDay(for: selectedRequestedDate)
             
-            print("selectedRequestedDate time\(deliveryDate.description)")
             // around 2 minutes gap to payment
             normalDeliveryDate = deliveryDate.addingTimeInterval(paymentOffsetTimeSecs + defaultOffset)
             
