@@ -211,10 +211,9 @@ public enum Language: String {
         feedbackConfig = aDecoder.decodeObject(forKey :"feedback_config") as? [FeedbackConfig]
          gst = aDecoder.decodeObject(forKey: "gst") as? String
        
-        var val = aDecoder.decodeObject(forKey: "is_pickup_enabled")
-        if let numberVal = val as? NSNumber {
+        if let numberVal = aDecoder.decodeObject(forKey: "is_pickup_enabled") as? NSNumber {
             isPickupEnabled = numberVal == 0 ? false : true
-        } else if aDecoder.containsValue(forKey: "is_pickup_enabled") && val == nil {
+        } else if aDecoder.containsValue(forKey: "is_pickup_enabled") {
             isPickupEnabled = aDecoder.decodeBool(forKey: "is_pickup_enabled")
         } else {
             isPickupEnabled = false
@@ -232,10 +231,9 @@ public enum Language: String {
          pgProvider = aDecoder.decodeObject(forKey: "pg_provider") as? String
          pickupMinOffsetTime = aDecoder.decodeObject(forKey: "pickup_min_offset_time") as? Int
         
-        val = aDecoder.decodeObject(forKey: "pre_process")
-        if let numberVal = val as? NSNumber {
+        if let numberVal = aDecoder.decodeObject(forKey: "pre_process") as? NSNumber {
             preProcess = numberVal == 0 ? false : true
-        } else if aDecoder.containsValue(forKey: "pre_process") && val == nil {
+        } else if aDecoder.containsValue(forKey: "pre_process") {
             preProcess = aDecoder.decodeBool(forKey: "pre_process")
         } else {
             preProcess = false
@@ -248,10 +246,9 @@ public enum Language: String {
          timezone = aDecoder.decodeObject(forKey: "timezone") as? String
          tin = aDecoder.decodeObject(forKey: "tin") as? String
 
-        val = aDecoder.decodeObject(forKey: "use_point_of_delivery")
-        if let numberVal = val as? NSNumber {
+        if let numberVal = aDecoder.decodeObject(forKey: "use_point_of_delivery") as? NSNumber {
             usePointOfDelivery = numberVal == 0 ? false : true
-        } else if aDecoder.containsValue(forKey: "use_point_of_delivery") && val == nil {
+        } else if aDecoder.containsValue(forKey: "use_point_of_delivery") {
             usePointOfDelivery = aDecoder.decodeBool(forKey: "use_point_of_delivery")
         } else {
             usePointOfDelivery = false

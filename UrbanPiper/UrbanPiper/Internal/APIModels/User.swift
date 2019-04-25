@@ -294,10 +294,9 @@ public class User : NSObject, NSCoding{
 //         username = aDecoder.decodeObject(forKey: "username") as? String
         gender = aDecoder.decodeObject(forKey: "gender") as? String
         
-        let val = aDecoder.decodeObject(forKey: "phone_verified")
-        if let numberVal = val as? NSNumber {
+        if let numberVal = aDecoder.decodeObject(forKey: "phone_verified") as? NSNumber {
             phoneVerified = numberVal == 0 ? false : true
-        } else if aDecoder.containsValue(forKey: "phone_verified") && val == nil {
+        } else if aDecoder.containsValue(forKey: "phone_verified") {
             phoneVerified = aDecoder.decodeBool(forKey: "phone_verified")
         } else {
             phoneVerified = false
