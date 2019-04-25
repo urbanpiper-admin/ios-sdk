@@ -111,24 +111,22 @@ public class Reward : NSObject, NSCoding{
         id = aDecoder.decodeObject(forKey: "id") as? Int
         imgLink = aDecoder.decodeObject(forKey: "img_link") as? String
         
-        if let val = aDecoder.decodeObject(forKey: "in_store_coupon_rewards") {
-            if let numberVal = val as? NSNumber {
-                inStoreCouponRewards = numberVal == 0 ? false : true
-            } else {
-                inStoreCouponRewards = false
-            }
-        } else {
+        var val = aDecoder.decodeObject(forKey: "in_store_coupon_rewards")
+        if let numberVal = val as? NSNumber {
+            inStoreCouponRewards = numberVal == 0 ? false : true
+        } else if aDecoder.containsValue(forKey: "in_store_coupon_rewards") && val == nil {
             inStoreCouponRewards = aDecoder.decodeBool(forKey: "in_store_coupon_rewards")
-        }
-        
-        if let val = aDecoder.decodeObject(forKey: "locked") {
-            if let numberVal = val as? NSNumber {
-                locked = numberVal == 0 ? false : true
-            } else {
-                locked = false
-            }
         } else {
+            inStoreCouponRewards = false
+        }
+
+        val = aDecoder.decodeObject(forKey: "locked")
+        if let numberVal = val as? NSNumber {
+            locked = numberVal == 0 ? false : true
+        } else if aDecoder.containsValue(forKey: "locked") && val == nil {
             locked = aDecoder.decodeBool(forKey: "locked")
+        } else {
+            locked = false
         }
 
         points = aDecoder.decodeObject(forKey: "points") as? Int

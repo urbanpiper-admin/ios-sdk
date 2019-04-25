@@ -294,14 +294,13 @@ public class User : NSObject, NSCoding{
 //         username = aDecoder.decodeObject(forKey: "username") as? String
         gender = aDecoder.decodeObject(forKey: "gender") as? String
         
-        if let val = aDecoder.decodeObject(forKey: "phone_verified") {
-            if let numberVal = val as? NSNumber {
-                phoneVerified = numberVal == 0 ? false : true
-            } else {
-                phoneVerified = false
-            }
-        } else {
+        let val = aDecoder.decodeObject(forKey: "phone_verified")
+        if let numberVal = val as? NSNumber {
+            phoneVerified = numberVal == 0 ? false : true
+        } else if aDecoder.containsValue(forKey: "phone_verified") && val == nil {
             phoneVerified = aDecoder.decodeBool(forKey: "phone_verified")
+        } else {
+            phoneVerified = false
         }
 
         if let providerString: String = aDecoder.decodeObject(forKey: "provider") as? String {
@@ -319,6 +318,11 @@ public class User : NSObject, NSCoding{
         currentCity = aDecoder.decodeObject(forKey: "current_city") as? String
         lastName = aDecoder.decodeObject(forKey: "last_name") as? String
         jwt = aDecoder.decodeObject(forKey: "jwt") as? JWT
+        
+        if jwt?.token != nil {
+            let dictionary = JWT.decode(jwtToken: jwt.token)
+            phoneVerified = dictionary["phone_verified"] as? Bool ?? false
+        }
 	}
 
     /**

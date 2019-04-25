@@ -94,9 +94,7 @@ public class CheckoutBuilder: NSObject {
                                                 cartItems: [CartItem],
                                                 orderTotal: Decimal,
                                                 completion: ((PreProcessOrderResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
-        assert(UrbanPiper.shared.getUser() != nil, "The user has to logged in to call this function")
-        guard UrbanPiper.shared.getUser() != nil else { return nil }
-
+        
         assert(cartItems.count > 0, "Provided cart items variable is empty")
         guard cartItems.count > 0 else { return nil }
 
