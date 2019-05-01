@@ -36,18 +36,21 @@ public class RewardsResponse : NSObject, NSCoding{
                 locked.append(value)
             }
         }
-        redeemed = [Reward]()
-        if let redeemedArray = dictionary["redeemed"] as? [[String:Any]]{
-            for dic in redeemedArray{
-                let value = Reward(fromDictionary: dic)
-                redeemed.append(value)
-            }
-        }
         unlocked = [Reward]()
         if let unlockedArray = dictionary["unlocked"] as? [[String:Any]]{
             for dic in unlockedArray{
                 let value = Reward(fromDictionary: dic)
                 unlocked.append(value)
+            }
+        }
+        redeemed = [Reward]()
+        if let redeemedArray = dictionary["redeemed"] as? [[String:Any]]{
+            for dic in redeemedArray{
+                let value = Reward(fromDictionary: dic)
+                claimed.append(value)
+                locked.append(value)
+                unlocked.append(value)
+                redeemed.append(value)
             }
         }
     }
@@ -60,6 +63,13 @@ public class RewardsResponse : NSObject, NSCoding{
         var dictionary = [String:Any]()
         if meta != nil{
             dictionary["meta"] = meta.toDictionary()
+        }
+        if claimed != nil{
+            var dictionaryElements = [[String:Any]]()
+            for claimedElement in claimed {
+                dictionaryElements.append(claimedElement.toDictionary())
+            }
+            dictionary["claimed"] = dictionaryElements
         }
         if locked != nil{
             var dictionaryElements = [[String:Any]]()
