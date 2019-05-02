@@ -47,9 +47,6 @@ public class RewardsResponse : NSObject, NSCoding{
         if let redeemedArray = dictionary["redeemed"] as? [[String:Any]]{
             for dic in redeemedArray{
                 let value = Reward(fromDictionary: dic)
-                claimed.append(value)
-                locked.append(value)
-                unlocked.append(value)
                 redeemed.append(value)
             }
         }
