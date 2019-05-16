@@ -189,7 +189,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
             // around 2 minutes gap to payment
             normalDeliveryDate = Date().addingTimeInterval(paymentOffsetTimeSecs + defaultOffset)
             
-            let openingDate: Date = OrderingStoreDataModel.shared.orderingStore!.openingDate!
+            guard let openingDate: Date = OrderingStoreDataModel.shared.orderingStore?.openingDate else { return nil }
             let openingDateWithOffset: Date = openingDate.addingTimeInterval(defaultOffset)
             
             let closingDate: Date = OrderingStoreDataModel.shared.orderingStore!.closingDate!
@@ -221,7 +221,7 @@ public class OrderPaymentDataModel: UrbanPiperDataModel {
             
             let daysDifference = components.day ?? 1
 
-            let openingDate: Date = OrderingStoreDataModel.shared.orderingStore!.openingDate!
+            guard let openingDate: Date = OrderingStoreDataModel.shared.orderingStore?.openingDate else { return nil }
             let openingDateOnPreOrderDate: Date = Calendar.current.date(byAdding: .day, value: daysDifference, to: openingDate)!
             let openingDateWithOffset: Date = openingDateOnPreOrderDate.addingTimeInterval(defaultOffset)
             

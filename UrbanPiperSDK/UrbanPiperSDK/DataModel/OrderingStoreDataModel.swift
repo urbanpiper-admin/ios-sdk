@@ -149,6 +149,11 @@ public class OrderingStoreDataModel: UrbanPiperDataModel {
         super.init()
 
         deliveryLocationDataModel.dataModelDelegate = self
+        
+        guard let currentDeliveryLocation = deliveryLocationDataModel.deliveryLocation else { return }
+        DispatchQueue.main.async { [weak self] in
+            self?.fetchNearestStore(location: currentDeliveryLocation)
+        }
     }
 
     @objc public func addObserver(delegate: OrderingStoreDataModelDelegate) {
