@@ -13,10 +13,10 @@ extension UserManager {
     @objc func oldSDKLogout() {
 //        AddressDataModel.shared.userAddressesResponse = nil
 //
-//        DeliveryLocationDataModel.shared.deliveryLocation = nil
-//        DeliveryLocationDataModel.shared.deliveryAddress = nil
+//        DeliveryLocationManager.shared.deliveryLocation = nil
+//        DeliveryLocationManager.shared.deliveryAddress = nil
 //        
-//        OrderingStoreDataModel.shared.nearestStoreResponse = nil
+//        OrderingStoreManager.shared.nearestStoreResponse = nil
 //
 //        UserDefaults.standard.removeObject(forKey: PlacesSearchUserDefaultKeys.selectedPlacesDataKey)
 //        UserDefaults.standard.removeObject(forKey: DefaultAddressUserDefaultKeys.defaultDeliveryAddressKey)

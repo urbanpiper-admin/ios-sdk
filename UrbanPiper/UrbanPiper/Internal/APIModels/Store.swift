@@ -15,7 +15,6 @@ public class Store : NSObject, NSCoding{
 	public var city : String!
 	public var closingDay : Bool = false
 	@objc public var closingTime : String!
-    public var isPickupEnabled : Bool
 	public var deliveryCharge : Decimal!
 	public var deliveryMinOffsetTime : Int!
     public var discount : Decimal!
@@ -52,7 +51,6 @@ public class Store : NSObject, NSCoding{
 		city = dictionary["city"] as? String
 		closingDay = dictionary["closing_day"] as? Bool ?? false
 		closingTime = dictionary["closing_time"] as? String
-        isPickupEnabled = dictionary["is_pickup_enabled"] as? Bool ?? false
 
         var priceVal: Any? = dictionary["delivery_charge"]
         if let val: Decimal = priceVal as? Decimal {
@@ -137,7 +135,6 @@ public class Store : NSObject, NSCoding{
         if city != nil{
             dictionary["city"] = city
         }
-        dictionary["is_pickup_enabled"] = isPickupEnabled
 
         dictionary["closing_day"] = closingDay
         
@@ -219,14 +216,6 @@ public class Store : NSObject, NSCoding{
          bizLocationId = aDecoder.decodeObject(forKey: "biz_location_id") as? Int
          city = aDecoder.decodeObject(forKey: "city") as? String
         
-        if let numberVal = aDecoder.decodeObject(forKey: "is_pickup_enabled") as? NSNumber {
-            isPickupEnabled = numberVal == 0 ? false : true
-        } else if aDecoder.containsValue(forKey: "is_pickup_enabled") {
-            isPickupEnabled = aDecoder.decodeBool(forKey: "is_pickup_enabled")
-        } else {
-            isPickupEnabled = false
-        }
-        
         if let numberVal = aDecoder.decodeObject(forKey: "closing_day") as? NSNumber {
             closingDay = numberVal == 0 ? false : true
         } else if aDecoder.containsValue(forKey: "closing_day") {
@@ -288,7 +277,6 @@ public class Store : NSObject, NSCoding{
 		if bizLocationId != nil{
 			aCoder.encode(bizLocationId, forKey: "biz_location_id")
 		}
-        aCoder.encode(isPickupEnabled, forKey: "is_pickup_enabled")
 		if city != nil{
 			aCoder.encode(city, forKey: "city")
 		}

@@ -129,6 +129,8 @@ import Foundation
         
         urlRequest.allHTTPHeaderFields = additionalHeaders
         
+        let apiUrl = urlRequest.url
+        
         let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
             guard let httpResponse = response as? HTTPURLResponse else {
                 let upError = UPError(data: data, response: response, error: error)
@@ -178,6 +180,7 @@ import Foundation
             
             guard let result = responseParser?(dictionary) else {
                 let upError = UPError(type: .responseParseError, data: data, response: response, error: error)
+                print("API Response parsing failure for url \(apiUrl?.absoluteString)")
                 DispatchQueue.main.async {
                     failure?(upError)
                 }
