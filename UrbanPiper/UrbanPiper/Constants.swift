@@ -97,7 +97,7 @@ struct Constants {
 
     static let isNotFirstLaunchKey: String = "IsNotFirstLaunchKey"
 
-    static let fetchLimit: Int = 20
+    static let fetchLimit: Int = 100
 }
 
 
