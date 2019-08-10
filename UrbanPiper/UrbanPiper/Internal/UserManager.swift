@@ -200,10 +200,10 @@ internal class UserManager: NSObject {
         CartManager.shared.clearCart()
 //        CartManager.shared.lastOrder = nil
 //        CartManager.shared.couponCodeToApply = nil
-        
-        if responds(to: Selector(("oldSDKLogout"))) {
-            performSelector(onMainThread: Selector(("oldSDKLogout")), with: nil, waitUntilDone: false)
-        }
+//
+//        if responds(to: Selector(("oldSDKLogout"))) {
+//            performSelector(onMainThread: Selector(("oldSDKLogout")), with: nil, waitUntilDone: false)
+//        }
         
         UserDefaults.standard.removeObject(forKey: "defaultAddress")
 

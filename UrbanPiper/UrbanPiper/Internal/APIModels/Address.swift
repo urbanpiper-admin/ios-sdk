@@ -137,9 +137,7 @@ public enum AddressTag: String {
         if landmark != nil{
             dictionary["landmark"] = landmark
         }
-        if deliverable != nil{
-            dictionary["deliverable"] = deliverable
-        }
+        dictionary["deliverable"] = deliverable
         if city != nil{
             dictionary["city"] = city
         }

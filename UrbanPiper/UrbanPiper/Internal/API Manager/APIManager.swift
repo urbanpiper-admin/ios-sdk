@@ -180,7 +180,7 @@ import Foundation
             
             guard let result = responseParser?(dictionary) else {
                 let upError = UPError(type: .responseParseError, data: data, response: response, error: error)
-                print("API Response parsing failure for url \(apiUrl?.absoluteString)")
+                print("API Response parsing failure for url \(String(describing: apiUrl?.absoluteString))")
                 DispatchQueue.main.async {
                     failure?(upError)
                 }

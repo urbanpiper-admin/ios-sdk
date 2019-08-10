@@ -241,7 +241,7 @@ public class CheckoutBuilder: NSObject {
         if let paymentInitPaymentOption = self.paymentOption, paymentInitPaymentOption != paymentOption, paymentOption != .cash {
             assert(paymentInitResponse != nil, "payment option passed differs from the payment option passed in the initPayment method, to change payment option please call init payment again with the new payment option")
             return nil
-        } else if paymentOption == .cash {
+        } else if paymentOption == .cash || paymentOption == .prepaid {
             self.paymentOption = nil
             self.paymentInitResponse = nil
         } else if paymentInitResponse == nil {
@@ -251,7 +251,7 @@ public class CheckoutBuilder: NSObject {
         
         orderResponse = nil
         
-        guard paymentOption == .cash || paymentInitResponse != nil else { return nil }
+        guard paymentOption == .cash || paymentOption == .prepaid || paymentInitResponse != nil else { return nil }
         return APIManager.shared.placeOrder(address: deliveryOption != .pickUp ? address : nil,
                                             cartItems: cartItems,
                                             deliveryDate: deliveryDateTime(date: deliveryDate, time: deliveryTime),

@@ -230,9 +230,7 @@ public class User : NSObject, NSCoding{
             dictionary["accessToken"] = accessToken
         }
         
-        if phoneVerified != nil {
-            dictionary["phone_verified"] = phoneVerified
-        }
+        dictionary["phone_verified"] = phoneVerified
         
 //        dictionary["countryCode"] = countryCode
         

@@ -79,9 +79,7 @@ public class BizLocation : NSObject{
         if city != nil{
             dictionary["city"] = city
         }
-        if closingDay != nil{
-            dictionary["closing_day"] = closingDay
-        }
+        dictionary["closing_day"] = closingDay
         if closingTime != nil{
             dictionary["closing_time"] = closingTime
         }
@@ -91,9 +89,7 @@ public class BizLocation : NSObject{
         if deliveryMinOffsetTime != nil{
             dictionary["delivery_min_offset_time"] = deliveryMinOffsetTime
         }
-        if hideStoreName != nil{
-            dictionary["hide_store_name"] = hideStoreName
-        }
+        dictionary["hide_store_name"] = hideStoreName
         if lat != nil{
             dictionary["lat"] = lat
         }
@@ -133,9 +129,7 @@ public class BizLocation : NSObject{
 //        if taxRate != nil{
 //            dictionary["tax_rate"] = taxRate
 //        }
-        if temporarilyClosed != nil{
-            dictionary["temporarily_closed"] = temporarilyClosed
-        }
+        dictionary["temporarily_closed"] = temporarilyClosed
         if timeSlots != nil{
             dictionary["time_slots"] = timeSlots
         }
