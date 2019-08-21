@@ -13,7 +13,7 @@ public class SocialLoginResponse : NSObject {//}, NSCoding{
 //    public var email : String!
     public var message : String!
 //    public var name : String!
-//    public var phone : String!
+    public var phone : String!
     public var success : Bool!
 //   var timestamp : String!
     internal var token : String!
@@ -29,7 +29,7 @@ public class SocialLoginResponse : NSObject {//}, NSCoding{
 //        email = dictionary["email"] as? String
         message = dictionary["message"] as? String
 //        name = dictionary["name"] as? String
-//        phone = dictionary["phone"] as? String
+        phone = dictionary["phone"] as? String
         success = dictionary["success"] as? Bool
 //        timestamp = dictionary["timestamp"] as? String
         token = dictionary["token"] as? String

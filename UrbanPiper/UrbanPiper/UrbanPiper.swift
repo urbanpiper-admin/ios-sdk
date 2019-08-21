@@ -39,7 +39,7 @@ public class UrbanPiper: NSObject {
     ///   - apiKey: your api key from urbanpiper
     ///   - callback: callback notifies about the `SDKEvent` that should be handled by the app
     public class func intialize(language: Language? = .english, bizId: String, apiUsername: String, apiKey: String, callback: @escaping (SDKEvent) -> Void) {
-        shared = UrbanPiper(language: language!, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, callback: callback)
+        shared = UrbanPiper(language: language ?? .english, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, callback: callback)
     }
     
     /// Change the `Language` of the data being returned from the server after the SDK has been initialized
