@@ -76,34 +76,34 @@ extension APIManager {
         return dataTask*/
     }
 
-    func saveDeliveryTimingSlots(biz: Biz) {
-        guard let timeSlots = biz.timeSlots, timeSlots.count > 0 else { return }
-        let timeSlotsDictionary = biz.timeSlots.map { $0.toDictionary() }
-        let responseData = NSKeyedArchiver.archivedData(withRootObject: timeSlotsDictionary)
-        UserDefaults.standard.set(responseData, forKey: "deliverySlots")
-        UserDefaults.standard.set(true, forKey: "deliverySlotsEnabled")
-        UserDefaults.standard.synchronize()
-    }
-
-    func saveFeedbackConfiguration(biz: Biz) {
-        guard let feedbackConfig = biz.feedbackConfig, feedbackConfig.count > 0 else { return }
-        let responseData = NSKeyedArchiver.archivedData(withRootObject: biz.toDictionary()["feedback_config"]!)
-        UserDefaults.standard.set(responseData, forKey: "feedback_config")
-        UserDefaults.standard.synchronize()
-    }
-
-    func usePODEnabled(biz: Biz) {
-        if biz.usePointOfDelivery {
-            UserDefaults.standard.set(biz.usePointOfDelivery, forKey: "use_point_of_delivery")
-            UserDefaults.standard.synchronize()
-        }
-    }
-
-    func savePaymentOptionsDetail(biz: Biz) {
-        if let paymentOptions = biz.paymentOptions {
-            UserDefaults.standard.set(paymentOptions, forKey: "payment_options")
-            UserDefaults.standard.synchronize()
-        }
-    }
+//    func saveDeliveryTimingSlots(biz: Biz) {
+//        guard let timeSlots = biz.timeSlots, timeSlots.count > 0 else { return }
+//        let timeSlotsDictionary = biz.timeSlots.map { $0.toDictionary() }
+//        let responseData = NSKeyedArchiver.archivedData(withRootObject: timeSlotsDictionary)
+//        UserDefaults.standard.set(responseData, forKey: "deliverySlots")
+//        UserDefaults.standard.set(true, forKey: "deliverySlotsEnabled")
+//        UserDefaults.standard.synchronize()
+//    }
+//
+//    func saveFeedbackConfiguration(biz: Biz) {
+//        guard let feedbackConfig = biz.feedbackConfig, feedbackConfig.count > 0 else { return }
+//        let responseData = NSKeyedArchiver.archivedData(withRootObject: biz.toDictionary()["feedback_config"]!)
+//        UserDefaults.standard.set(responseData, forKey: "feedback_config")
+//        UserDefaults.standard.synchronize()
+//    }
+//
+//    func usePODEnabled(biz: Biz) {
+//        if biz.usePointOfDelivery {
+//            UserDefaults.standard.set(biz.usePointOfDelivery, forKey: "use_point_of_delivery")
+//            UserDefaults.standard.synchronize()
+//        }
+//    }
+//
+//    func savePaymentOptionsDetail(biz: Biz) {
+//        if let paymentOptions = biz.paymentOptions {
+//            UserDefaults.standard.set(paymentOptions, forKey: "payment_options")
+//            UserDefaults.standard.synchronize()
+//        }
+//    }
 
 }

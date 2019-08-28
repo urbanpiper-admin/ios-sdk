@@ -35,6 +35,7 @@ internal class UserManager: NSObject {
 
     private struct KeychainAppUserKeys {
         static let AppUserKey: String = "KeyChainUserDataKey"
+        static let UserBizInfoKey: String = "KeyChainBizInfoKey"
     }
     
 //    private typealias WeakRefDataModelDelegate = WeakRef<UserManagerDelegate>
@@ -205,22 +206,22 @@ internal class UserManager: NSObject {
 //            performSelector(onMainThread: Selector(("oldSDKLogout")), with: nil, waitUntilDone: false)
 //        }
         
-        UserDefaults.standard.removeObject(forKey: "defaultAddress")
+//        UserDefaults.standard.removeObject(forKey: "defaultAddress")
 
         UserManager.keychain.removeObject(forKey: KeychainAppUserKeys.AppUserKey)
-        UserManager.keychain.removeObject(forKey: "KeyChainBizInfoKey")
+        UserManager.keychain.removeObject(forKey: KeychainAppUserKeys.UserBizInfoKey)
                 
-        UserDefaults.standard.removeObject(forKey: "deliverySlots")
-        UserDefaults.standard.removeObject(forKey: "deliverySlotsEnabled")
-        UserDefaults.standard.removeObject(forKey: "feedback_config")
-        UserDefaults.standard.removeObject(forKey: "referral_share_lbl")
-        UserDefaults.standard.removeObject(forKey: "referral_ui_lbl")
-        UserDefaults.standard.removeObject(forKey: "use_point_of_delivery")
-        UserDefaults.standard.removeObject(forKey: "payment_options")
+//        UserDefaults.standard.removeObject(forKey: "deliverySlots")
+//        UserDefaults.standard.removeObject(forKey: "deliverySlotsEnabled")
+//        UserDefaults.standard.removeObject(forKey: "feedback_config")
+//        UserDefaults.standard.removeObject(forKey: "referral_share_lbl")
+//        UserDefaults.standard.removeObject(forKey: "referral_ui_lbl")
+//        UserDefaults.standard.removeObject(forKey: "use_point_of_delivery")
+//        UserDefaults.standard.removeObject(forKey: "payment_options")
 
-        UserDefaults.standard.removeObject(forKey: "NextLocationUpdateDate")
+//        UserDefaults.standard.removeObject(forKey: "NextLocationUpdateDate")
 
-        UserDefaults.standard.removeObject(forKey: "loginResponse")
+//        UserDefaults.standard.removeObject(forKey: "loginResponse")
 
         currentUser = nil
     }
