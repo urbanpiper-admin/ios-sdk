@@ -42,8 +42,6 @@ import Foundation
     static let channel: String = "app_ios"
     static let fetchLimit: Int = 20
 
-    var language: Language
-
     let bizId: String
     let apiUsername: String
     let apiKey: String
@@ -78,8 +76,7 @@ import Foundation
         }
     }
     
-    private init(language: Language, bizId: String, apiUsername: String, apiKey: String, jwt: JWT?) {
-        self.language = language
+    private init(bizId: String, apiUsername: String, apiKey: String, jwt: JWT?) {
         self.bizId = bizId
         self.apiUsername = apiUsername
         self.apiKey = apiKey
@@ -87,8 +84,8 @@ import Foundation
         super.init()
     }
     
-    internal class func initializeManager(language: Language, bizId: String, apiUsername: String, apiKey: String, jwt: JWT?) {
-        shared = APIManager(language: language, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, jwt: jwt)
+    internal class func initializeManager(bizId: String, apiUsername: String, apiKey: String, jwt: JWT?) {
+        shared = APIManager(bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, jwt: jwt)
     }
 
     func bizAuth() -> String {
@@ -116,7 +113,7 @@ import Foundation
         var additionalHeaders: [String: String] = ["X-App-Src": "ios",
                                                 "X-Bid": bizId,
                                                 "X-App-Version": appVersion,
-                                                "X-Use-Lang": language.rawValue,
+                                                "X-Use-Lang": SharedPreferences.language.rawValue,
                                                 "Content-Type": "application/json",
                                                 "Accept-Encoding": "gzip",
                                                 "Authorization": authorizationKey()]

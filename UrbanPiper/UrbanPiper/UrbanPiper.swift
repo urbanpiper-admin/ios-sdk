@@ -25,7 +25,8 @@ public class UrbanPiper: NSObject {
     internal init(language: Language = .english, bizId: String, apiUsername: String, apiKey: String, session: URLSession? = nil, callback: @escaping (SDKEvent) -> Void) {
         self.callback = callback
         super.init()
-        APIManager.initializeManager(language: language, bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, jwt: UserManager.shared.currentUser?.jwt)
+        SharedPreferences.language = language
+        APIManager.initializeManager(bizId: bizId, apiUsername: apiUsername, apiKey: apiKey, jwt: UserManager.shared.currentUser?.jwt)
         guard let testSession = session else { return }
         APIManager.shared.session = testSession
     }
@@ -46,14 +47,14 @@ public class UrbanPiper: NSObject {
     ///
     /// - Parameter language: The new `Language` the server should send the data
     public func change(language: Language) {
-        APIManager.shared.language = language
+        SharedPreferences.language = language
     }
     
     /// The `Language` value that is sent to the server as part of the api call header
     ///
     /// - Returns: Current `Language` set in the SDK
     public func currentLanguage() -> Language {
-        return APIManager.shared.language
+        return SharedPreferences.language
     }
 
 }

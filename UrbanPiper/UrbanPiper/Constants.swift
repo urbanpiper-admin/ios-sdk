@@ -94,9 +94,6 @@ public enum CartError: Error {
 }
 
 struct Constants {
-
-    static let isNotFirstLaunchKey: String = "IsNotFirstLaunchKey"
-
     static let fetchLimit: Int = 100
 }
 

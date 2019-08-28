@@ -17,14 +17,14 @@ extension Date {
         return "\(hour):00 - \(hour + 1):00"
     }
 
-    static let localeDateToStringFormatter: DateFormatter = {
-        var formatter = DateFormatter()
+    static var localeDateToStringFormatter: DateFormatter {
+        let formatter = DateFormatter()
         formatter.timeZone = NSTimeZone.system
-        formatter.locale = Locale.currentAppleLanguage()
+        formatter.locale = SharedPreferences.currentLocale
         formatter.formatterBehavior = .default
 
         return formatter
-    }()
+    }
     
     //  MARK: Time
     

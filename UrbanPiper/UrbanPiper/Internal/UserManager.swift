@@ -108,11 +108,11 @@ internal class UserManager: NSObject {
                                                selector: #selector(self.logout),
                                                name: .sessionExpired, object: nil)
 
-        if !UserDefaults.standard.bool(forKey: Constants.isNotFirstLaunchKey) {
+        if !SharedPreferences.isNotFirstLaunch {
             // Remove Keychain items here
             
             // Update the flag indicator
-            UserDefaults.standard.set(true, forKey: Constants.isNotFirstLaunchKey)
+            SharedPreferences.isNotFirstLaunch = true
             DispatchQueue.main.async { [weak self] in
                 self?.logout()
             }
