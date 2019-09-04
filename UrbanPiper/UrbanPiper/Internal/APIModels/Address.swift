@@ -62,7 +62,7 @@ public enum AddressTag: String {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	@objc internal init(fromDictionary dictionary:  [String:Any]){
+	@objc public init(fromDictionary dictionary:  [String:Any]){
 		city = dictionary["city"] as? String
 
          deliverable = dictionary["deliverable"] as? Bool ?? false

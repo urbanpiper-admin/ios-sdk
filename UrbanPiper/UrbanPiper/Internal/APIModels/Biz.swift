@@ -29,7 +29,7 @@ public enum Language: String {
 
 @objc public class Biz : NSObject, NSCoding{
     
-    static public var shared: Biz?
+    @objc static public var shared: Biz?
 
 	public var contactPhone : String!
 	public var currency : String!
@@ -43,7 +43,7 @@ public enum Language: String {
 	public var msgNoStoresNearby : String!
 	public var msgStoreClosedTemporary : String!
 	public var orderDeliveryRadius : Int!
-	public var paymentOptions : [String]!
+	@objc public var paymentOptions : [String]!
     public var supportedLanguages : [String]!
     public var paypalClientToken : String!
 	public var pgProvider : String!
@@ -55,7 +55,7 @@ public enum Language: String {
 	public var timeSlots : [TimeSlot]!
 	public var timezone : String!
 	public var tin : String!
-    public var usePointOfDelivery : Bool
+    @objc public var usePointOfDelivery : Bool
 
 
 	/**
@@ -112,7 +112,7 @@ public enum Language: String {
 	/**
 	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
-	public func toDictionary() -> [String:Any]
+	@objc public func toDictionary() -> [String:Any]
 	{
 		var dictionary: [String: Any] = [String:Any]()
 		if contactPhone != nil{
