@@ -26,7 +26,7 @@ public class JWT: NSObject, NSCoding {
         return exp < utcTime
     }
 
-    static func decode(jwtToken jwt: String) -> [String: Any] {
+    static func decode(jwtToken jwt: String) -> [String : AnyObject] {
         let segments: [String?] = jwt.components(separatedBy: ".")
         guard let segment = segments[1] else { return [:] }
         return decodeJWTPart(segment) ?? [:]
@@ -47,9 +47,9 @@ public class JWT: NSObject, NSCoding {
         return Data(base64Encoded: base64, options: .ignoreUnknownCharacters)
     }
     
-    static func decodeJWTPart(_ value: String) -> [String: Any]? {
+    static func decodeJWTPart(_ value: String) -> [String : AnyObject]? {
         guard let bodyData = base64UrlDecode(value),
-            let json = try? JSONSerialization.jsonObject(with: bodyData, options: []), let payload = json as? [String: Any] else {
+            let json = try? JSONSerialization.jsonObject(with: bodyData, options: []), let payload = json as? [String : AnyObject] else {
                 return nil
         }
         
@@ -65,19 +65,19 @@ public class JWT: NSObject, NSCoding {
         token = jwtToken        
     }
     
-//    public func toDictionary() -> [String:Any] {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if exp != nil{
-//            dictionary["exp"] = exp
+//    public func toDictionary() -> [String : AnyObject] {
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        if let exp = exp {
+//            dictionary["exp"] = exp as AnyObject
 //        }
-//        if iat != nil{
-//            dictionary["iat"] = iat
+//        if let iat = iat {
+//            dictionary["iat"] = iat as AnyObject
 //        }
-//        if jit != nil{
-//            dictionary["jit"] = jit
+//        if let jit = jit {
+//            dictionary["jit"] = jit as AnyObject
 //        }
-//        if token != nil{
-//            dictionary["token"] = token
+//        if let token = token {
+//            dictionary["token"] = token as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -88,8 +88,8 @@ public class JWT: NSObject, NSCoding {
      * Fills the data from the passed decoder
      */
     @objc required public init(coder aDecoder: NSCoder) {
-        exp = aDecoder.decodeObject(forKey: "exp") as? Int
-        iat = aDecoder.decodeObject(forKey: "iat") as? Int
+        exp = aDecoder.decodeInteger(forKey: "exp")
+        iat = aDecoder.decodeInteger(forKey: "iat")
         jit = aDecoder.decodeObject(forKey: "jit") as? String
         token = aDecoder.decodeObject(forKey: "token") as? String
     }
@@ -99,16 +99,16 @@ public class JWT: NSObject, NSCoding {
      * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder) {
-        if exp != nil{
+        if let exp = exp {
             aCoder.encode(exp, forKey: "exp")
         }
-        if iat != nil{
+        if let iat = iat {
             aCoder.encode(iat, forKey: "iat")
         }
-        if jit != nil{
+        if let jit = jit {
             aCoder.encode(jit, forKey: "jit")
         }
-        if token != nil{
+        if let token = token {
             aCoder.encode(token, forKey: "token")
         }
     }

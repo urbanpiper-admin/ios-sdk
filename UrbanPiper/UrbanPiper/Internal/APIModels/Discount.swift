@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class Discount : NSObject{
+public class Discount : NSObject, JSONDecodable{
 
 	public var msg : String!
     public var success : Bool
@@ -18,7 +18,8 @@ public class Discount : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		msg = dictionary["msg"] as? String
 		success = dictionary["success"] as? Bool ?? false
         
@@ -33,19 +34,19 @@ public class Discount : NSObject{
     }
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any]
+    public func toDictionary() -> [String : AnyObject]
     {
-        var dictionary: [String: Any] = [String:Any]()
-        if msg != nil{
-            dictionary["msg"] = msg
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        if let msg = msg {
+            dictionary["msg"] = msg as AnyObject
         }
 
-        dictionary["success"] = success
+        dictionary["success"] = success as AnyObject
         
-        if value != nil{
-            dictionary["value"] = value
+        if let value = value {
+            dictionary["value"] = value as AnyObject
         }
         return dictionary
     }
@@ -68,13 +69,13 @@ public class Discount : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if msg != nil{
+//        if let msg = msg {
 //            aCoder.encode(msg, forKey: "msg")
 //        }
-//        if success != nil{
+//        if let success = success {
 //            aCoder.encode(success, forKey: "success")
 //        }
-//        if value != nil{
+//        if let value = value {
 //            aCoder.encode(value, forKey: "value")
 //        }
 //

@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class FeedbackConfig : NSObject, NSCoding{
+public class FeedbackConfig : NSObject, JSONDecodable, NSCoding{
 
 	public var choices : [Choice]!
 	public var type : String!
@@ -17,11 +17,12 @@ public class FeedbackConfig : NSObject, NSCoding{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		choices = [Choice]()
-		if let choicesArray: [[String:Any]] = dictionary["choices"] as? [[String:Any]]{
+		if let choicesArray: [[String : AnyObject]] = dictionary["choices"] as? [[String : AnyObject]]{
 			for dic in choicesArray{
-				let value: Choice = Choice(fromDictionary: dic)
+				guard let value: Choice = Choice(fromDictionary: dic) else { continue }
 				choices.append(value)
 			}
 		}
@@ -29,20 +30,20 @@ public class FeedbackConfig : NSObject, NSCoding{
 	}
 
 	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+	 * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
-	public func toDictionary() -> [String:Any]
+	public func toDictionary() -> [String : AnyObject]
 	{
-		var dictionary: [String: Any] = [String:Any]()
-		if choices != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+		var dictionary: [String : AnyObject] = [String : AnyObject]()
+		if let choices = choices {
+            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
 			for choicesElement in choices {
 				dictionaryElements.append(choicesElement.toDictionary())
 			}
-			dictionary["choices"] = dictionaryElements
+			dictionary["choices"] = dictionaryElements as AnyObject
 		}
-		if type != nil{
-			dictionary["type"] = type
+		if let type = type {
+			dictionary["type"] = type as AnyObject
 		}
 		return dictionary
 	}
@@ -65,10 +66,10 @@ public class FeedbackConfig : NSObject, NSCoding{
     */
     @objc public func encode(with aCoder: NSCoder)
 	{
-		if choices != nil{
+		if let choices = choices {
 			aCoder.encode(choices, forKey: "choices")
 		}
-		if type != nil{
+		if let type = type {
 			aCoder.encode(type, forKey: "type")
 		}
 

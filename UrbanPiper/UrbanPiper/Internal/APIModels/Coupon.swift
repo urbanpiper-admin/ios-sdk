@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class Coupon : NSObject{
+public class Coupon : NSObject, JSONDecodable{
 
 	public var descriptionField : String!
 	public var redemptionCode : String!
@@ -19,7 +19,8 @@ public class Coupon : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	init(fromDictionary dictionary: [String:Any]){
+	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		descriptionField = dictionary["description"] as? String
 		redemptionCode = dictionary["redemption_code"] as? String
 		title = dictionary["title"] as? String
@@ -27,22 +28,22 @@ public class Coupon : NSObject{
 	}
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    func toDictionary() -> [String:Any]
+//    func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary = [String:Any]()
-//        if descriptionField != nil{
-//            dictionary["description"] = descriptionField
+//        var dictionary = [String : AnyObject]()
+//        if let descriptionField = descriptionField {
+//            dictionary["description"] = descriptionField as AnyObject
 //        }
-//        if redemptionCode != nil{
-//            dictionary["redemption_code"] = redemptionCode
+//        if let redemptionCode = redemptionCode {
+//            dictionary["redemption_code"] = redemptionCode as AnyObject
 //        }
-//        if title != nil{
-//            dictionary["title"] = title
+//        if let title = title {
+//            dictionary["title"] = title as AnyObject
 //        }
-//        if validUntil != nil{
-//            dictionary["valid_until"] = validUntil
+//        if let validUntil = validUntil {
+//            dictionary["valid_until"] = validUntil as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -56,7 +57,7 @@ public class Coupon : NSObject{
 //         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
 //         redemptionCode = aDecoder.decodeObject(forKey: "redemption_code") as? String
 //         title = aDecoder.decodeObject(forKey: "title") as? String
-//         validUntil = aDecoder.decodeObject(forKey: "valid_until") as? Int
+//         validUntil = aDecoder.decodeInteger(forKey: "valid_until")
 //
 //    }
 //
@@ -66,16 +67,16 @@ public class Coupon : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if descriptionField != nil{
+//        if let descriptionField = descriptionField {
 //            aCoder.encode(descriptionField, forKey: "description")
 //        }
-//        if redemptionCode != nil{
+//        if let redemptionCode = redemptionCode {
 //            aCoder.encode(redemptionCode, forKey: "redemption_code")
 //        }
-//        if title != nil{
+//        if let title = title {
 //            aCoder.encode(title, forKey: "title")
 //        }
-//        if validUntil != nil{
+//        if let validUntil = validUntil {
 //            aCoder.encode(validUntil, forKey: "valid_until")
 //        }
 //

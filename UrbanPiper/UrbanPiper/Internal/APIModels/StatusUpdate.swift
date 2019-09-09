@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class StatusUpdate : NSObject{
+public class StatusUpdate : NSObject, JSONDecodable{
 
 	public var created : Int!
 	public var message : String!
@@ -19,7 +19,8 @@ public class StatusUpdate : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	init(fromDictionary dictionary: [String:Any]){
+	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		created = dictionary["created"] as? Int
 		message = dictionary["message"] as? String
 		status = dictionary["status"] as? String
@@ -27,22 +28,22 @@ public class StatusUpdate : NSObject{
 	}
 
 	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+	 * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
-	func toDictionary() -> [String:Any]
+	func toDictionary() -> [String : AnyObject]
 	{
-		var dictionary = [String:Any]()
-		if created != nil{
-			dictionary["created"] = created
+		var dictionary = [String : AnyObject]()
+		if let created = created {
+			dictionary["created"] = created as AnyObject
 		}
-		if message != nil{
-			dictionary["message"] = message
+		if let message = message {
+			dictionary["message"] = message as AnyObject
 		}
-		if status != nil{
-			dictionary["status"] = status
+		if let status = status {
+			dictionary["status"] = status as AnyObject
 		}
-		if updatedBy != nil{
-			dictionary["updated_by"] = updatedBy
+		if let updatedBy = updatedBy {
+			dictionary["updated_by"] = updatedBy as AnyObject
 		}
 		return dictionary
 	}
@@ -53,7 +54,7 @@ public class StatusUpdate : NSObject{
     */
     @objc required init(coder aDecoder: NSCoder)
 	{
-         created = aDecoder.decodeObject(forKey: "created") as? Int
+         created = aDecoder.decodeInteger(forKey: "created")
          message = aDecoder.decodeObject(forKey: "message") as? String
          status = aDecoder.decodeObject(forKey: "status") as? String
          updatedBy = aDecoder.decodeObject(forKey: "updated_by") as? String
@@ -66,16 +67,16 @@ public class StatusUpdate : NSObject{
     */
     @objc func encode(with aCoder: NSCoder)
 	{
-		if created != nil{
+		if let created = created {
 			aCoder.encode(created, forKey: "created")
 		}
-		if message != nil{
+		if let message = message {
 			aCoder.encode(message, forKey: "message")
 		}
-		if status != nil{
+		if let status = status {
 			aCoder.encode(status, forKey: "status")
 		}
-		if updatedBy != nil{
+		if let updatedBy = updatedBy {
 			aCoder.encode(updatedBy, forKey: "updated_by")
 		}
 

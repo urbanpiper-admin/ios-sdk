@@ -8,6 +8,55 @@
 
 import Foundation
 
+enum VersionCheckAPI {
+    case checkVersion(username: String?, version: String)
+}
+
+extension VersionCheckAPI: UPAPI {
+    var path: String {
+        switch self {
+        case .checkVersion:
+            return "api/v1/app/ios/"
+        }
+    }
+    
+    var parameters: [String : String]? {
+        switch self {
+        case .checkVersion(let username, let version):
+            var params = ["biz_id":APIManager.shared.bizId,
+                          "ver":version]
+            
+            if let username = username {
+                params["user"] = username
+            }
+            
+            return params
+        }
+    }
+    
+    var headers: [String : String]? {
+        switch self {
+        case .checkVersion:
+            return nil
+        }
+    }
+    
+    var method: HttpMethod {
+        switch self {
+        case .checkVersion:
+            return .GET
+        }
+    }
+    
+    var body: [String : AnyObject]? {
+        switch self {
+        case .checkVersion:
+            return nil
+        }
+    }
+    
+}
+
 extension APIManager {
 
     @objc internal func checkAppVersion(username: String?,
@@ -26,36 +75,7 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
 
-        
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> VersionCheckResponse? in
-            return VersionCheckResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let versionCheckResponse: VersionCheckResponse = VersionCheckResponse(fromDictionary: dictionary)
-
-                    DispatchQueue.main.async {
-                        completion?(versionCheckResponse)
-                    }
-                    return
-                }
-
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-
-        }
-        
-        return dataTask*/
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
     }
 
 }

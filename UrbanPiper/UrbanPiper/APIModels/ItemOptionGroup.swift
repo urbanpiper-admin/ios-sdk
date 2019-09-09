@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class ItemOptionGroup : NSObject {
+public class ItemOptionGroup : NSObject, JSONDecodable {
 
 	public var descriptionField : String!
 	public var id : Int!
@@ -21,7 +21,8 @@ public class ItemOptionGroup : NSObject {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		descriptionField = dictionary["description"] as? String
 		id = dictionary["id"] as? Int
 		isDefault = dictionary["is_default"] as? Bool ?? false
@@ -34,9 +35,9 @@ public class ItemOptionGroup : NSObject {
 //            minSelectable = 1
 //        }
 		options = [ItemOption]()
-		if let optionsArray: [[String:Any]] = dictionary["options"] as? [[String:Any]]{
+		if let optionsArray: [[String : AnyObject]] = dictionary["options"] as? [[String : AnyObject]]{
 			for dic in optionsArray{
-				let value: ItemOption = ItemOption(fromDictionary: dic)
+				guard let value: ItemOption = ItemOption(fromDictionary: dic) else { continue }
 //                let defaultVal = isDefault ?? false
 //                if (!defaultVal && value.quantity == 0) || (defaultVal && value.quantity > 0) {
 //                    value.quantity = isDefault ? 1 : 0
@@ -52,38 +53,38 @@ public class ItemOptionGroup : NSObject {
 	}
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any]
+    public func toDictionary() -> [String : AnyObject]
     {
-        var dictionary: [String: Any] = [String:Any]()
-        if descriptionField != nil{
-            dictionary["description"] = descriptionField
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        if let descriptionField = descriptionField {
+            dictionary["description"] = descriptionField as AnyObject
         }
-        if id != nil{
-            dictionary["id"] = id
+        if let id = id {
+            dictionary["id"] = id as AnyObject
         }
 
-        dictionary["is_default"] = isDefault
+        dictionary["is_default"] = isDefault as AnyObject
         
-        if maxSelectable != nil{
-            dictionary["max_selectable"] = maxSelectable
+        if let maxSelectable = maxSelectable {
+            dictionary["max_selectable"] = maxSelectable as AnyObject
         }
-        if minSelectable != nil{
-            dictionary["min_selectable"] = minSelectable
+        if let minSelectable = minSelectable {
+            dictionary["min_selectable"] = minSelectable as AnyObject
         }
-        if options != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+        if let options = options {
+            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
             for optionsElement in options {
                 dictionaryElements.append(optionsElement.toDictionary())
             }
-            dictionary["options"] = dictionaryElements
+            dictionary["options"] = dictionaryElements as AnyObject
         }
-        if sortOrder != nil{
-            dictionary["sort_order"] = sortOrder
+        if let sortOrder = sortOrder {
+            dictionary["sort_order"] = sortOrder as AnyObject
         }
-        if title != nil{
-            dictionary["title"] = title
+        if let title = title {
+            dictionary["title"] = title as AnyObject
         }
 
         return dictionary
@@ -96,12 +97,12 @@ public class ItemOptionGroup : NSObject {
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
 //         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
-//         id = aDecoder.decodeObject(forKey: "id") as? Int
-//         isDefault = val as? Bool ?? false
-//         maxSelectable = aDecoder.decodeObject(forKey: "max_selectable") as? Int
-//         minSelectable = aDecoder.decodeObject(forKey: "min_selectable") as? Int
+//         id = aDecoder.decodeInteger(forKey: "id")
+//         isDefault = aDecoder.decodeBool(forKey: "is_default")
+//         maxSelectable = aDecoder.decodeInteger(forKey: "max_selectable")
+//         minSelectable = aDecoder.decodeInteger(forKey: "min_selectable")
 //         options = aDecoder.decodeObject(forKey :"options") as? [ItemOption]
-//         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
+//         sortOrder = aDecoder.decodeInteger(forKey: "sort_order")
 //         title = aDecoder.decodeObject(forKey: "title") as? String
 //    }
 //
@@ -111,28 +112,28 @@ public class ItemOptionGroup : NSObject {
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if descriptionField != nil{
+//        if let descriptionField = descriptionField {
 //            aCoder.encode(descriptionField, forKey: "description")
 //        }
-//        if id != nil{
+//        if let id = id {
 //            aCoder.encode(id, forKey: "id")
 //        }
-//        if isDefault != nil{
+//        if let isDefault = isDefault {
 //            aCoder.encode(isDefault, forKey: "is_default")
 //        }
-//        if maxSelectable != nil{
+//        if let maxSelectable = maxSelectable {
 //            aCoder.encode(maxSelectable, forKey: "max_selectable")
 //        }
-//        if minSelectable != nil{
+//        if let minSelectable = minSelectable {
 //            aCoder.encode(minSelectable, forKey: "min_selectable")
 //        }
-//        if options != nil{
+//        if let options = options {
 //            aCoder.encode(options, forKey: "options")
 //        }
-//        if sortOrder != nil{
+//        if let sortOrder = sortOrder {
 //            aCoder.encode(sortOrder, forKey: "sort_order")
 //        }
-//        if title != nil{
+//        if let title = title {
 //            aCoder.encode(title, forKey: "title")
 //        }
 //        
@@ -143,18 +144,18 @@ public class ItemOptionGroup : NSObject {
 
 extension ItemOptionGroup {
     
-    internal func equitableCheckDictionary() -> [String: Any] {
-        var dictionary: [String: Any] = [String:Any]()
-        //        if isDefault != nil{
-        //            dictionary["is_default"] = isDefault
+    internal func equitableCheckDictionary() -> [String : AnyObject] {
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        //        if let isDefault = isDefault {
+        //            dictionary["is_default"] = isDefault as AnyObject
         //        }
-        if options != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+        if let options = options {
+            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
             for optionsElement in options {
                 guard optionsElement.quantity > 0 else { continue }
                 dictionaryElements.append(optionsElement.equitableCheckDictionary())
             }
-            dictionary["options"] = dictionaryElements
+            dictionary["options"] = dictionaryElements as AnyObject
         }
         
         return dictionary

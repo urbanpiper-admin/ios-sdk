@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class TimeSlot : NSObject, NSCoding{
+public class TimeSlot : NSObject, JSONDecodable, NSCoding{
 
 	public var day : String!
 	public var endTime : String!
@@ -18,26 +18,27 @@ public class TimeSlot : NSObject, NSCoding{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		day = dictionary["day"] as? String
 		endTime = dictionary["end_time"] as? String
 		startTime = dictionary["start_time"] as? String
 	}
 
 	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+	 * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
-	public func toDictionary() -> [String:Any]
+	public func toDictionary() -> [String : AnyObject]
 	{
-		var dictionary: [String: Any] = [String:Any]()
-		if day != nil{
-			dictionary["day"] = day
+		var dictionary: [String : AnyObject] = [String : AnyObject]()
+		if let day = day {
+			dictionary["day"] = day as AnyObject
 		}
-		if endTime != nil{
-			dictionary["end_time"] = endTime
+		if let endTime = endTime {
+			dictionary["end_time"] = endTime as AnyObject
 		}
-		if startTime != nil{
-			dictionary["start_time"] = startTime
+		if let startTime = startTime {
+			dictionary["start_time"] = startTime as AnyObject
 		}
 		return dictionary
 	}
@@ -60,13 +61,13 @@ public class TimeSlot : NSObject, NSCoding{
     */
     @objc public func encode(with aCoder: NSCoder)
 	{
-		if day != nil{
+		if let day = day {
 			aCoder.encode(day, forKey: "day")
 		}
-		if endTime != nil{
+		if let endTime = endTime {
 			aCoder.encode(endTime, forKey: "end_time")
 		}
-		if startTime != nil{
+		if let startTime = startTime {
 			aCoder.encode(startTime, forKey: "start_time")
 		}
 

@@ -6,7 +6,7 @@
 import Foundation
 
 
-public class RedemptionCode : NSObject, NSCoding{
+public class RedemptionCode : NSObject, JSONDecodable, NSCoding{
 
     public var expiresIn : Int!
     public var redemptionCode : String!
@@ -16,26 +16,27 @@ public class RedemptionCode : NSObject, NSCoding{
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    init(fromDictionary dictionary: [String:Any]){
+    required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
         expiresIn = dictionary["expires_in"] as? Int
         redemptionCode = dictionary["redemption_code"] as? String
         validFrom = dictionary["valid_from"] as? Int
     }
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    @objc public func toDictionary() -> [String:Any]
+    @objc public func toDictionary() -> [String : AnyObject]
     {
-        var dictionary = [String:Any]()
-        if expiresIn != nil{
-            dictionary["expires_in"] = expiresIn
+        var dictionary = [String : AnyObject]()
+        if let expiresIn = expiresIn {
+            dictionary["expires_in"] = expiresIn as AnyObject
         }
-        if redemptionCode != nil{
-            dictionary["redemption_code"] = redemptionCode
+        if let redemptionCode = redemptionCode {
+            dictionary["redemption_code"] = redemptionCode as AnyObject
         }
-        if validFrom != nil{
-            dictionary["valid_from"] = validFrom
+        if let validFrom = validFrom {
+            dictionary["valid_from"] = validFrom as AnyObject
         }
         return dictionary
     }
@@ -46,9 +47,9 @@ public class RedemptionCode : NSObject, NSCoding{
      */
     @objc required public init(coder aDecoder: NSCoder)
     {
-        expiresIn = aDecoder.decodeObject(forKey: "expires_in") as? Int
+        expiresIn = aDecoder.decodeInteger(forKey: "expires_in")
         redemptionCode = aDecoder.decodeObject(forKey: "redemption_code") as? String
-        validFrom = aDecoder.decodeObject(forKey: "valid_from") as? Int
+        validFrom = aDecoder.decodeInteger(forKey: "valid_from")
     }
 
     /**
@@ -57,13 +58,13 @@ public class RedemptionCode : NSObject, NSCoding{
      */
     @objc public func encode(with aCoder: NSCoder)
     {
-        if expiresIn != nil{
+        if let expiresIn = expiresIn {
             aCoder.encode(expiresIn, forKey: "expires_in")
         }
-        if redemptionCode != nil{
+        if let redemptionCode = redemptionCode {
             aCoder.encode(redemptionCode, forKey: "redemption_code")
         }
-        if validFrom != nil{
+        if let validFrom = validFrom {
             aCoder.encode(validFrom, forKey: "valid_from")
         }
     }

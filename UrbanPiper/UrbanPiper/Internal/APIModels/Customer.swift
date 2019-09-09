@@ -8,7 +8,7 @@
 import Foundation
 
 
-@objc public class Customer : NSObject{
+@objc public class Customer : NSObject, JSONDecodable{
 
 	@objc public var address : Address!
 	@objc public var email : String!
@@ -19,8 +19,9 @@ import Foundation
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	init(fromDictionary dictionary: [String:Any]){
-		if let addressData = dictionary["address"] as? [String:Any]{
+	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+		if let addressData = dictionary["address"] as? [String : AnyObject]{
 			address = Address(fromDictionary: addressData)
 		}
 		email = dictionary["email"] as? String
@@ -29,22 +30,22 @@ import Foundation
 	}
 
 /*	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+	 * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
-	func toDictionary() -> [String:Any]
+	func toDictionary() -> [String : AnyObject]
 	{
-		var dictionary = [String:Any]()
-		if address != nil{
-			dictionary["address"] = address.toDictionary()
+		var dictionary = [String : AnyObject]()
+		if let address = address {
+			dictionary["address"] = address.toDictionary() as AnyObject
 		}
-		if email != nil{
-			dictionary["email"] = email
+		if let email = email {
+			dictionary["email"] = email as AnyObject
 		}
-		if name != nil{
-			dictionary["name"] = name
+		if let name = name {
+			dictionary["name"] = name as AnyObject
 		}
-		if phone != nil{
-			dictionary["phone"] = phone
+		if let phone = phone {
+			dictionary["phone"] = phone as AnyObject
 		}
 		return dictionary
 	}
@@ -68,16 +69,16 @@ import Foundation
     */
     @objc func encode(with aCoder: NSCoder)
 	{
-		if address != nil{
+		if let address = address {
 			aCoder.encode(address, forKey: "address")
 		}
-		if email != nil{
+		if let email = email {
 			aCoder.encode(email, forKey: "email")
 		}
-		if name != nil{
+		if let name = name {
 			aCoder.encode(name, forKey: "name")
 		}
-		if phone != nil{
+		if let phone = phone {
 			aCoder.encode(phone, forKey: "phone")
 		}
 

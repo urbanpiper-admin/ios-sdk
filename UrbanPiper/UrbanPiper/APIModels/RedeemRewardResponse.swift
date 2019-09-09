@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class RedeemRewardResponse: NSObject {
+public class RedeemRewardResponse: NSObject, JSONDecodable {
     
     public var expiresIn : Int!
     public var ptsRemaining : Int!
@@ -19,7 +19,8 @@ public class RedeemRewardResponse: NSObject {
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    init(fromDictionary dictionary: [String:Any]){
+    required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
         expiresIn = dictionary["expires_in"] as? Int
         ptsRemaining = dictionary["ptsRemaining"] as? Int
         redemptionCode = dictionary["redemption_code"] as? String
@@ -27,27 +28,27 @@ public class RedeemRewardResponse: NSObject {
         message = dictionary["message"] as? String
     }
     
-    @objc public func toDictionary() -> [String:Any] {
-        var dictionary: [String: Any] = [String:Any]()
+    @objc public func toDictionary() -> [String : AnyObject] {
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
         
-        if expiresIn != nil{
-            dictionary["expires_in"] = expiresIn
+        if let expiresIn = expiresIn {
+            dictionary["expires_in"] = expiresIn as AnyObject
         }
         
-        if ptsRemaining != nil{
-            dictionary["ptsRemaining"] = ptsRemaining
+        if let ptsRemaining = ptsRemaining {
+            dictionary["ptsRemaining"] = ptsRemaining as AnyObject
         }
         
-        if redemptionCode != nil{
-            dictionary["redemption_code"] = redemptionCode
+        if let redemptionCode = redemptionCode {
+            dictionary["redemption_code"] = redemptionCode as AnyObject
         }
         
-        if status != nil{
-            dictionary["status"] = status
+        if let status = status {
+            dictionary["status"] = status as AnyObject
         }
         
-        if message != nil{
-            dictionary["message"] = message
+        if let message = message {
+            dictionary["message"] = message as AnyObject
         }
         
         return dictionary

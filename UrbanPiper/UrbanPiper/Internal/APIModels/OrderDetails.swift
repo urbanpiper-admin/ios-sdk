@@ -8,7 +8,7 @@
 import Foundation
 
 
-@objc public class OrderDetails : NSObject{
+@objc public class OrderDetails : NSObject, JSONDecodable{
 
 	@objc public var details : PastOrder!
 	@objc public var items : [PastOrderItem]!
@@ -22,76 +22,77 @@ import Foundation
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	init(fromDictionary dictionary: [String:Any]){
-		if let detailsData = dictionary["details"] as? [String:Any]{
+	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+		if let detailsData = dictionary["details"] as? [String : AnyObject]{
 			details = PastOrder(fromDictionary: detailsData)
 		}
 		items = [PastOrderItem]()
-		if let itemsArray = dictionary["items"] as? [[String:Any]]{
+		if let itemsArray = dictionary["items"] as? [[String : AnyObject]]{
 			for dic in itemsArray{
-				let value = PastOrderItem(fromDictionary: dic)
+				guard let value = PastOrderItem(fromDictionary: dic) else { continue }
 				items.append(value)
 			}
 		}
 		nextState = dictionary["next_state"] as AnyObject
 		nextStates = dictionary["next_states"] as? [String]
 		payment = [OrderPayment]()
-		if let paymentArray = dictionary["payment"] as? [[String:Any]]{
+		if let paymentArray = dictionary["payment"] as? [[String : AnyObject]]{
 			for dic in paymentArray{
-				let value = OrderPayment(fromDictionary: dic)
+				guard let value = OrderPayment(fromDictionary: dic) else { continue }
 				payment.append(value)
 			}
 		}
 		statusUpdates = [StatusUpdate]()
-		if let statusUpdatesArray = dictionary["status_updates"] as? [[String:Any]]{
+		if let statusUpdatesArray = dictionary["status_updates"] as? [[String : AnyObject]]{
 			for dic in statusUpdatesArray{
-				let value = StatusUpdate(fromDictionary: dic)
+				guard let value = StatusUpdate(fromDictionary: dic) else { continue }
 				statusUpdates.append(value)
 			}
 		}
-		if let storeData = dictionary["store"] as? [String:Any]{
+		if let storeData = dictionary["store"] as? [String : AnyObject]{
 			store = Store(fromDictionary: storeData)
 		}
 	}
 
 	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+	 * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
-	@objc public func toDictionary() -> [String:Any]
+	@objc public func toDictionary() -> [String : AnyObject]
 	{
-		var dictionary = [String:Any]()
-		if details != nil{
-			dictionary["details"] = details.toDictionary()
+		var dictionary = [String : AnyObject]()
+		if let details = details {
+			dictionary["details"] = details.toDictionary() as AnyObject
 		}
-		if items != nil{
-			var dictionaryElements = [[String:Any]]()
+		if let items = items {
+			var dictionaryElements = [[String : AnyObject]]()
 			for itemsElement in items {
 				dictionaryElements.append(itemsElement.toDictionary())
 			}
-			dictionary["items"] = dictionaryElements
+			dictionary["items"] = dictionaryElements as AnyObject
 		}
-		if nextState != nil{
-			dictionary["next_state"] = nextState
+		if let nextState = nextState {
+			dictionary["next_state"] = nextState as AnyObject
 		}
-		if nextStates != nil{
-			dictionary["next_states"] = nextStates
+		if let nextStates = nextStates {
+			dictionary["next_states"] = nextStates as AnyObject
 		}
-		if payment != nil{
-			var dictionaryElements = [[String:Any]]()
+		if let payment = payment {
+			var dictionaryElements = [[String : AnyObject]]()
 			for paymentElement in payment {
 				dictionaryElements.append(paymentElement.toDictionary())
 			}
-			dictionary["payment"] = dictionaryElements
+			dictionary["payment"] = dictionaryElements as AnyObject
 		}
-		if statusUpdates != nil{
-			var dictionaryElements = [[String:Any]]()
+		if let statusUpdates = statusUpdates {
+			var dictionaryElements = [[String : AnyObject]]()
 			for statusUpdatesElement in statusUpdates {
 				dictionaryElements.append(statusUpdatesElement.toDictionary())
 			}
-			dictionary["status_updates"] = dictionaryElements
+			dictionary["status_updates"] = dictionaryElements as AnyObject
 		}
-		if store != nil{
-			dictionary["store"] = store.toDictionary()
+		if let store = store {
+			dictionary["store"] = store.toDictionary() as AnyObject
 		}
 		return dictionary
 	}
@@ -118,25 +119,25 @@ import Foundation
     */
     @objc func encode(with aCoder: NSCoder)
 	{
-		if details != nil{
+		if let details = details {
 			aCoder.encode(details, forKey: "details")
 		}
-		if items != nil{
+		if let items = items {
 			aCoder.encode(items, forKey: "items")
 		}
-		if nextState != nil{
+		if let nextState = nextState {
 			aCoder.encode(nextState, forKey: "next_state")
 		}
-		if nextStates != nil{
+		if let nextStates = nextStates {
 			aCoder.encode(nextStates, forKey: "next_states")
 		}
-		if payment != nil{
+		if let payment = payment {
 			aCoder.encode(payment, forKey: "payment")
 		}
-		if statusUpdates != nil{
+		if let statusUpdates = statusUpdates {
 			aCoder.encode(statusUpdates, forKey: "status_updates")
 		}
-		if store != nil{
+		if let store = store {
 			aCoder.encode(store, forKey: "store")
 		}
 

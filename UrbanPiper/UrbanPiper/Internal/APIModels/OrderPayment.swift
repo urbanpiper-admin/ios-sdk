@@ -8,7 +8,7 @@
 import Foundation
 
 
-@objc public class OrderPayment : NSObject{
+@objc public class OrderPayment : NSObject, JSONDecodable{
 
 	public var amount : Decimal!
 	@objc public var option : String!
@@ -18,7 +18,8 @@ import Foundation
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	init(fromDictionary dictionary: [String:Any]){
+	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
         if let val: Decimal = dictionary["amount"] as? Decimal {
             amount = val
         } else if let val: Double = dictionary["amount"] as? Double {
@@ -34,19 +35,19 @@ import Foundation
 	}
 
 	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+	 * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
-	func toDictionary() -> [String:Any]
+	func toDictionary() -> [String : AnyObject]
 	{
-		var dictionary = [String:Any]()
-		if amount != nil{
-			dictionary["amount"] = amount
+		var dictionary = [String : AnyObject]()
+		if let amount = amount {
+			dictionary["amount"] = amount as AnyObject
 		}
-		if option != nil{
-			dictionary["option"] = option
+		if let option = option {
+			dictionary["option"] = option as AnyObject
 		}
-		if srvrTrxId != nil{
-			dictionary["srvr_trx_id"] = srvrTrxId
+		if let srvrTrxId = srvrTrxId {
+			dictionary["srvr_trx_id"] = srvrTrxId as AnyObject
 		}
 		return dictionary
 	}
@@ -69,13 +70,13 @@ import Foundation
     */
     @objc func encode(with aCoder: NSCoder)
 	{
-		if amount != nil{
+		if let amount = amount {
 			aCoder.encode(amount, forKey: "amount")
 		}
-		if option != nil{
+		if let option = option {
 			aCoder.encode(option, forKey: "option")
 		}
-		if srvrTrxId != nil{
+		if let srvrTrxId = srvrTrxId {
 			aCoder.encode(srvrTrxId, forKey: "srvr_trx_id")
 		}
 

@@ -8,6 +8,57 @@
 
 import Foundation
 
+enum CategoriesAPI {
+    case categories(storeId: Int?, offset: Int, limit: Int)
+}
+
+extension CategoriesAPI: UPAPI {
+    var path: String {
+        switch self {
+        case .categories:
+            return "api/v1/order/categories/"
+        }
+    }
+    
+    var parameters: [String : String]? {
+        switch self {
+        case .categories(let storeId, let offset, let limit):
+            var params = ["format":"json",
+                    "offset": String(offset),
+                    "limit": String(limit),
+                    "biz_id": APIManager.shared.bizId]
+            
+            if let storeId = storeId {
+                params["location_id"] = String(storeId)
+            }
+            
+            return params
+        }
+    }
+    
+    var headers: [String : String]? {
+        switch self {
+        case .categories:
+            return nil
+        }
+    }
+    
+    var method: HttpMethod {
+        switch self {
+        case .categories:
+            return .GET
+        }
+    }
+    
+    var body: [String : AnyObject]? {
+        switch self {
+        case .categories:
+            return nil
+        }
+    }
+    
+}
+
 extension APIManager {
 
     func getCategories(storeId: Int?,
@@ -32,78 +83,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> CategoriesResponse? in
-            return CategoriesResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let categoriesResponse: CategoriesResponse = CategoriesResponse(fromDictionary: dictionary)
-                    if categoriesResponse.objects.count > 1 {
-                        categoriesResponse.objects.sort { $0.sortOrder < $1.sortOrder }
-                    }
-                    
-//                    self?.saveDeliveryTimingSlots(biz: categoriesResponse.biz)
-//                    // Saving feedback config info
-//                    self?.saveFeedbackConfiguration(biz: categoriesResponse.biz)
-//                    // Baba Fattoosh Specific
-//                    self?.saveReferEarnDetail(biz: categoriesResponse.biz)
-//                    // POD feature enable
-//                    self?.usePODEnabled(biz: categoriesResponse.biz)
-//                    // PayTm payment Enabled
-//                    self?.savePaymentOptionsDetail(biz: categoriesResponse.biz)
-
-                    DispatchQueue.main.async {
-                        completion?(categoriesResponse)
-                    }
-                    return
-                }
-
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-
-        }
-
-        return dataTask*/
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
     }
-
-//    func saveDeliveryTimingSlots(biz: Biz) {
-//        guard let timeSlots = biz.timeSlots, timeSlots.count > 0 else { return }
-//        let timeSlotsDictionary = biz.timeSlots.map { $0.toDictionary() }
-//        let responseData = NSKeyedArchiver.archivedData(withRootObject: timeSlotsDictionary)
-//        UserDefaults.standard.set(responseData, forKey: "deliverySlots")
-//        UserDefaults.standard.set(true, forKey: "deliverySlotsEnabled")
-//        UserDefaults.standard.synchronize()
-//    }
-//
-//    func saveFeedbackConfiguration(biz: Biz) {
-//        guard let feedbackConfig = biz.feedbackConfig, feedbackConfig.count > 0 else { return }
-//        let responseData = NSKeyedArchiver.archivedData(withRootObject: biz.toDictionary()["feedback_config"]!)
-//        UserDefaults.standard.set(responseData, forKey: "feedback_config")
-//        UserDefaults.standard.synchronize()
-//    }
-//
-//    func usePODEnabled(biz: Biz) {
-//        if biz.usePointOfDelivery {
-//            UserDefaults.standard.set(biz.usePointOfDelivery, forKey: "use_point_of_delivery")
-//            UserDefaults.standard.synchronize()
-//        }
-//    }
-//
-//    func savePaymentOptionsDetail(biz: Biz) {
-//        if let paymentOptions = biz.paymentOptions {
-//            UserDefaults.standard.set(paymentOptions, forKey: "payment_options")
-//            UserDefaults.standard.synchronize()
-//        }
-//    }
-
+    
 }

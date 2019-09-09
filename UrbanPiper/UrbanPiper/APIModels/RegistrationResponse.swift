@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class RegistrationResponse : NSObject{
+public class RegistrationResponse : NSObject, JSONDecodable{
 
 //    public var approvalCode : String!
 //    public var authKey : String!
@@ -29,7 +29,8 @@ public class RegistrationResponse : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 //        approvalCode = dictionary["approval_code"] as? String
 //        authKey = dictionary["auth_key"] as? String
 //        cardNumber = dictionary["card_number"] as? String
@@ -50,52 +51,52 @@ public class RegistrationResponse : NSObject{
 	}
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    public func toDictionary() -> [String:Any]
+//    public func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary: [String : Any] = [String:Any]()
-//        if approvalCode != nil{
-//            dictionary["approval_code"] = approvalCode
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        if let approvalCode = approvalCode {
+//            dictionary["approval_code"] = approvalCode as AnyObject
 //        }
-//        if authKey != nil{
-//            dictionary["auth_key"] = authKey
+//        if let authKey = authKey {
+//            dictionary["auth_key"] = authKey as AnyObject
 //        }
-//        if cardNumber != nil{
-//            dictionary["card_number"] = cardNumber
+//        if let cardNumber = cardNumber {
+//            dictionary["card_number"] = cardNumber as AnyObject
 //        }
-//        if customerEmail != nil{
-//            dictionary["customer_email"] = customerEmail
+//        if let customerEmail = customerEmail {
+//            dictionary["customer_email"] = customerEmail as AnyObject
 //        }
-//        if customerName != nil{
-//            dictionary["customer_name"] = customerName
+//        if let customerName = customerName {
+//            dictionary["customer_name"] = customerName as AnyObject
 //        }
-//        if customerPhone != nil{
-//            dictionary["customer_phone"] = customerPhone
+//        if let customerPhone = customerPhone {
+//            dictionary["customer_phone"] = customerPhone as AnyObject
 //        }
-//        if message != nil{
-//            dictionary["message"] = message
+//        if let message = message {
+//            dictionary["message"] = message as AnyObject
 //        }
-//        if points != nil{
-//            dictionary["points"] = points
+//        if let points = points {
+//            dictionary["points"] = points as AnyObject
 //        }
-//        if prepaidBalance != nil{
-//            dictionary["prepaid_balance"] = prepaidBalance
+//        if let prepaidBalance = prepaidBalance {
+//            dictionary["prepaid_balance"] = prepaidBalance as AnyObject
 //        }
-//        if result != nil{
-//            dictionary["result"] = result
+//        if let result = result {
+//            dictionary["result"] = result as AnyObject
 //        }
 //
-//        dictionary["success"] = success
+//        dictionary["success"] = success as AnyObject
 //        
-//        if timestamp != nil{
-//            dictionary["timestamp"] = timestamp
+//        if let timestamp = timestamp {
+//            dictionary["timestamp"] = timestamp as AnyObject
 //        }
-//        if totalBalance != nil{
-//            dictionary["total_balance"] = totalBalance
+//        if let totalBalance = totalBalance {
+//            dictionary["total_balance"] = totalBalance as AnyObject
 //        }
-//        if token != nil{
-//            dictionary["token"] = token
+//        if let token = token {
+//            dictionary["token"] = token as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -128,43 +129,43 @@ public class RegistrationResponse : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if approvalCode != nil{
+//        if let approvalCode = approvalCode {
 //            aCoder.encode(approvalCode, forKey: "approval_code")
 //        }
-//        if authKey != nil{
+//        if let authKey = authKey {
 //            aCoder.encode(authKey, forKey: "auth_key")
 //        }
-//        if cardNumber != nil{
+//        if let cardNumber = cardNumber {
 //            aCoder.encode(cardNumber, forKey: "card_number")
 //        }
-//        if customerEmail != nil{
+//        if let customerEmail = customerEmail {
 //            aCoder.encode(customerEmail, forKey: "customer_email")
 //        }
-//        if customerName != nil{
+//        if let customerName = customerName {
 //            aCoder.encode(customerName, forKey: "customer_name")
 //        }
-//        if customerPhone != nil{
+//        if let customerPhone = customerPhone {
 //            aCoder.encode(customerPhone, forKey: "customer_phone")
 //        }
-//        if message != nil{
+//        if let message = message {
 //            aCoder.encode(message, forKey: "message")
 //        }
-//        if points != nil{
+//        if let points = points {
 //            aCoder.encode(points, forKey: "points")
 //        }
-//        if prepaidBalance != nil{
+//        if let prepaidBalance = prepaidBalance {
 //            aCoder.encode(prepaidBalance, forKey: "prepaid_balance")
 //        }
-//        if result != nil{
+//        if let result = result {
 //            aCoder.encode(result, forKey: "result")
 //        }
-//        if success != nil{
+//        if let success = success {
 //            aCoder.encode(success, forKey: "success")
 //        }
-//        if timestamp != nil{
+//        if let timestamp = timestamp {
 //            aCoder.encode(timestamp, forKey: "timestamp")
 //        }
-//        if totalBalance != nil{
+//        if let totalBalance = totalBalance {
 //            aCoder.encode(totalBalance, forKey: "total_balance")
 //        }
 //

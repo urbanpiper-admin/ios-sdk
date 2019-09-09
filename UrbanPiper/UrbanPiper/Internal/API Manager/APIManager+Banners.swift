@@ -8,6 +8,48 @@
 
 import Foundation
 
+enum BannersAPI {
+    case banners
+}
+
+extension BannersAPI: UPAPI {
+    var path: String {
+        switch self {
+        case .banners:
+            return "api/v1/galleries/"
+        }
+    }
+    
+    var parameters: [String : String]? {
+        switch self {
+        case .banners:
+            return ["type":"app_banner"]
+        }
+    }
+    
+    var headers: [String : String]? {
+        switch self {
+        case .banners:
+            return ["Authorization" : APIManager.shared.bizAuth()]
+        }
+    }
+    
+    var method: HttpMethod {
+        switch self {
+        case .banners:
+            return .GET
+        }
+    }
+    
+    var body: [String : AnyObject]? {
+        switch self {
+        case .banners:
+            return nil
+        }
+    }
+    
+}
+
 extension APIManager {
 
     @objc internal func getBanners(completion: ((BannersResponse?) -> Void)?,
@@ -21,36 +63,10 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
         
-        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()],
-                          responseParser: { (dictionary) -> BannersResponse? in
-                            return BannersResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let bannersResponse: BannersResponse = BannersResponse(fromDictionary: dictionary)
-
-                    DispatchQueue.main.async {
-                        completion?(bannersResponse)
-                    }
-                    return
-                }
-
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-
-        }
-        
-        return dataTask*/
+        return apiRequest(urlRequest: &urlRequest,
+                          headers: ["Authorization" : bizAuth()],
+                          completion: completion,
+                          failure: failure)!
     }
 
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class AddUpdateAddressResponse : NSObject{
+public class AddUpdateAddressResponse : NSObject, JSONDecodable{
 
 	public var addressId : Int!
 	public var msg : String!
@@ -17,22 +17,23 @@ public class AddUpdateAddressResponse : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	init(fromDictionary dictionary: [String:Any]){
+	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		addressId = dictionary["address_id"] as? Int
 		msg = dictionary["msg"] as? String
 	}
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    @objc public func toDictionary() -> [String:Any]
+    @objc public func toDictionary() -> [String : AnyObject]
     {
-        var dictionary: [String: Any] = [String:Any]()
-        if addressId != nil{
-            dictionary["address_id"] = addressId
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        if let addressId = addressId {
+            dictionary["address_id"] = addressId as AnyObject
         }
-        if msg != nil{
-            dictionary["msg"] = msg
+        if let msg = msg {
+            dictionary["msg"] = msg as AnyObject
         }
         return dictionary
     }
@@ -43,7 +44,7 @@ public class AddUpdateAddressResponse : NSObject{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         addressId = aDecoder.decodeObject(forKey: "address_id") as? Int
+//         addressId = aDecoder.decodeInteger(forKey: "address_id")
 //         msg = aDecoder.decodeObject(forKey: "msg") as? String
 //
 //    }
@@ -54,10 +55,10 @@ public class AddUpdateAddressResponse : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if addressId != nil{
+//        if let addressId = addressId {
 //            aCoder.encode(addressId, forKey: "address_id")
 //        }
-//        if msg != nil{
+//        if let msg = msg {
 //            aCoder.encode(msg, forKey: "msg")
 //        }
 //

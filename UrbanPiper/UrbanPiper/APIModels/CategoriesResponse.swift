@@ -8,7 +8,7 @@
 import Foundation
 
 
-@objc public class CategoriesResponse : NSObject{
+@objc public class CategoriesResponse : NSObject, JSONDecodable{
 
 	private var biz : Biz!
     public var clearCache : Bool
@@ -19,51 +19,52 @@ import Foundation
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		if let bizData: [String:Any] = dictionary["biz"] as? [String:Any]{
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+		if let bizData: [String : AnyObject] = dictionary["biz"] as? [String : AnyObject]{
 			biz = Biz(fromDictionary: bizData)
 		}
         
         Biz.shared = biz
 
 		clearCache = dictionary["clear_cache"] as? Bool ?? false
-		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
+		if let metaData: [String : AnyObject] = dictionary["meta"] as? [String : AnyObject]{
 			meta = Meta(fromDictionary: metaData)
 		}
 		objects = [Object]()
-		if let objectsArray: [[String:Any]] = dictionary["objects"] as? [[String:Any]]{
+		if let objectsArray: [[String : AnyObject]] = dictionary["objects"] as? [[String : AnyObject]]{
 			for dic in objectsArray{
-				let value: Object = Object(fromDictionary: dic)
+				guard let value: Object = Object(fromDictionary: dic) else { continue }
 				objects.append(value)
 			}
 		}
 	}
 
-//    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    @objc public func toDictionary() -> [String:Any]
-//    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if biz != nil{
-//            dictionary["biz"] = biz.toDictionary()
+    /**
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    @objc public func toDictionary() -> [String : AnyObject]
+    {
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        if let biz = biz {
+            dictionary["biz"] = biz.toDictionary() as AnyObject
+        }
+//        if let clearCache = clearCache {
+            dictionary["clear_cache"] = clearCache as AnyObject
 //        }
-//        if clearCache != nil{
-//            dictionary["clear_cache"] = clearCache
-//        }
-//        if meta != nil{
-//            dictionary["meta"] = meta.toDictionary()
-//        }
-//        if objects != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
-//            for objectsElement in objects {
-//                dictionaryElements.append(objectsElement.toDictionary())
-//            }
-//            dictionary["objects"] = dictionaryElements
-//        }
-//        return dictionary
-//    }
-//
+        if let meta = meta {
+            dictionary["meta"] = meta.toDictionary() as AnyObject
+        }
+        if let objects = objects {
+            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            for objectsElement in objects {
+                dictionaryElements.append(objectsElement.toDictionary())
+            }
+            dictionary["objects"] = dictionaryElements as AnyObject
+        }
+        return dictionary
+    }
+
 //    /**
 //    * NSCoding required initializer.
 //    * Fills the data from the passed decoder
@@ -83,16 +84,16 @@ import Foundation
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if biz != nil{
+//        if let biz = biz {
 //            aCoder.encode(biz, forKey: "biz")
 //        }
-//        if clearCache != nil{
+//        if let clearCache = clearCache {
 //            aCoder.encode(clearCache, forKey: "clear_cache")
 //        }
-//        if meta != nil{
+//        if let meta = meta {
 //            aCoder.encode(meta, forKey: "meta")
 //        }
-//        if objects != nil{
+//        if let objects = objects {
 //            aCoder.encode(objects, forKey: "objects")
 //        }
 //

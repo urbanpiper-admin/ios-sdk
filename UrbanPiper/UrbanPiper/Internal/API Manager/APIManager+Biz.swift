@@ -8,6 +8,49 @@
 
 import Foundation
 
+enum UserBizInfoAPI {
+    case userBizInfo
+}
+
+extension UserBizInfoAPI: UPAPI {
+    var path: String {
+        switch self {
+        case .userBizInfo:
+            return "api/v1/userbizinfo/"
+        }
+    }
+    
+    var parameters: [String : String]? {
+        switch self {
+        case .userBizInfo:
+            return ["format":"json",
+                    "biz_id":APIManager.shared.bizId]
+        }
+    }
+    
+    var headers: [String : String]? {
+        switch self {
+        case .userBizInfo:
+            return nil
+        }
+    }
+    
+    var method: HttpMethod {
+        switch self {
+        case .userBizInfo:
+            return .GET
+        }
+    }
+    
+    var body: [String : AnyObject]? {
+        switch self {
+        case .userBizInfo:
+            return nil
+        }
+    }
+    
+}
+
 extension APIManager {
     
     @objc internal func refreshUserBizInfo(completion: ((UserBizInfoResponse?) -> Void)?,
@@ -22,34 +65,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> UserBizInfoResponse? in
-            return UserBizInfoResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let bizInfoUserBizInfoResponse = BizInfo(fromDictionary: dictionary)
-                    
-                    DispatchQueue.main.async {
-                        completion?(bizInfo)
-                    }
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-            
-        }
-        
-        return dataTask*/
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
     }
 
 }

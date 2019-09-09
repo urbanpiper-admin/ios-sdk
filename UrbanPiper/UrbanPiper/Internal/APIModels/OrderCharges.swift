@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class OrderCharges : NSObject{
+public class OrderCharges : NSObject, JSONDecodable{
 
 	public var rate : Float!
 	public var title : String!
@@ -18,7 +18,8 @@ public class OrderCharges : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		rate = dictionary["rate"] as? Float
 		title = dictionary["title"] as? String
 
@@ -34,19 +35,19 @@ public class OrderCharges : NSObject{
     }
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any]
+    public func toDictionary() -> [String : AnyObject]
     {
-        var dictionary: [String: Any] = [String:Any]()
-        if rate != nil{
-            dictionary["rate"] = rate
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        if let rate = rate {
+            dictionary["rate"] = rate as AnyObject
         }
-        if title != nil{
-            dictionary["title"] = title
+        if let title = title {
+            dictionary["title"] = title as AnyObject
         }
-        if value != nil{
-            dictionary["value"] = value
+        if let value = value {
+            dictionary["value"] = value as AnyObject
         }
         return dictionary
     }
@@ -69,13 +70,13 @@ public class OrderCharges : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if rate != nil{
+//        if let rate = rate {
 //            aCoder.encode(rate, forKey: "rate")
 //        }
-//        if title != nil{
+//        if let title = title {
 //            aCoder.encode(title, forKey: "title")
 //        }
-//        if value != nil{
+//        if let value = value {
 //            aCoder.encode(value, forKey: "value")
 //        }
 //

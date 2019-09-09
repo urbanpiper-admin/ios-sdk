@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class Order : NSObject{
+public class Order : NSObject, JSONDecodable{
 
     public var orderType : String!
     public var cartItems : [AnyObject]!
@@ -46,7 +46,8 @@ public class Order : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		addressId = dictionary["address_id"] as? Int
 		addressLat = dictionary["address_lat"] as? Float
 		addressLng = dictionary["address_lng"] as? Float
@@ -54,15 +55,15 @@ public class Order : NSObject{
 		cartItems = dictionary["cartItems"] as? [AnyObject]
 		channel = dictionary["channel"] as? String
 		charges = [OrderCharges]()
-		if let chargesArray: [[String:Any]] = dictionary["charges"] as? [[String:Any]]{
+		if let chargesArray: [[String : AnyObject]] = dictionary["charges"] as? [[String : AnyObject]]{
 			for dic in chargesArray{
-				let value: OrderCharges = OrderCharges(fromDictionary: dic)
+				guard let value: OrderCharges = OrderCharges(fromDictionary: dic) else { continue }
 				charges.append(value)
 			}
 		}
 		combos = dictionary["combos"] as? [AnyObject]
         
-        if let discountData: [String:Any] = dictionary["discount"] as? [String:Any]{
+        if let discountData: [String : AnyObject] = dictionary["discount"] as? [String : AnyObject]{
             discount = Discount(fromDictionary: discountData)
         }
         
@@ -108,9 +109,9 @@ public class Order : NSObject{
         }
         
 		items = [OrderItem]()
-		if let itemsArray: [[String:Any]] = dictionary["items"] as? [[String:Any]]{
+		if let itemsArray: [[String : AnyObject]] = dictionary["items"] as? [[String : AnyObject]]{
 			for dic in itemsArray{
-				let value: OrderItem = OrderItem(fromDictionary: dic)
+				guard let value: OrderItem = OrderItem(fromDictionary: dic) else { continue }
 				items.append(value)
 			}
 		}
@@ -174,105 +175,105 @@ public class Order : NSObject{
 	}
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    public func toDictionary() -> [String:Any]
+//    public func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if addressId != nil{
-//            dictionary["address_id"] = addressId
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        if let addressId = addressId {
+//            dictionary["address_id"] = addressId as AnyObject
 //        }
-//        if addressLat != nil{
-//            dictionary["address_lat"] = addressLat
+//        if let addressLat = addressLat {
+//            dictionary["address_lat"] = addressLat as AnyObject
 //        }
-//        if addressLng != nil{
-//            dictionary["address_lng"] = addressLng
+//        if let addressLng = addressLng {
+//            dictionary["address_lng"] = addressLng as AnyObject
 //        }
-//        if bizLocationId != nil{
-//            dictionary["biz_location_id"] = bizLocationId
+//        if let bizLocationId = bizLocationId {
+//            dictionary["biz_location_id"] = bizLocationId as AnyObject
 //        }
-//        if cartItems != nil{
-//            dictionary["cartItems"] = cartItems
+//        if let cartItems = cartItems {
+//            dictionary["cartItems"] = cartItems as AnyObject
 //        }
-//        if channel != nil{
-//            dictionary["channel"] = channel
+//        if let channel = channel {
+//            dictionary["channel"] = channel as AnyObject
 //        }
-//        if charges != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//        if let charges = charges {
+//            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
 //            for chargesElement in charges {
 //                dictionaryElements.append(chargesElement.toDictionary())
 //            }
-//            dictionary["charges"] = dictionaryElements
+//            dictionary["charges"] = dictionaryElements as AnyObject
 //        }
-//        if combos != nil{
-//            dictionary["combos"] = combos
+//        if let combos = combos {
+//            dictionary["combos"] = combos as AnyObject
 //        }
-//        if discount != nil{
-//            dictionary["discount"] = discount.toDictionary()
+//        if let discount = discount {
+//            dictionary["discount"] = discount.toDictionary() as AnyObject
 //        }
-//        if deliveryCharge != nil{
-//            dictionary["delivery_charge"] = deliveryCharge
+//        if let deliveryCharge = deliveryCharge {
+//            dictionary["delivery_charge"] = deliveryCharge as AnyObject
 //        }
-//        if packagingCharge != nil{
-//            dictionary["packaging_charge"] = packagingCharge
+//        if let packagingCharge = packagingCharge {
+//            dictionary["packaging_charge"] = packagingCharge as AnyObject
 //        }
-//        if deliveryDatetime != nil{
-//            dictionary["delivery_datetime"] = deliveryDatetime
+//        if let deliveryDatetime = deliveryDatetime {
+//            dictionary["delivery_datetime"] = deliveryDatetime as AnyObject
 //        }
-//        if discountApplied != nil{
-//            dictionary["discount_applied"] = discountApplied
+//        if let discountApplied = discountApplied {
+//            dictionary["discount_applied"] = discountApplied as AnyObject
 //        }
-//        if itemLevelTotalCharges != nil{
-//            dictionary["item_level_total_charges"] = itemLevelTotalCharges
+//        if let itemLevelTotalCharges = itemLevelTotalCharges {
+//            dictionary["item_level_total_charges"] = itemLevelTotalCharges as AnyObject
 //        }
-//        if itemLevelTotalTaxes != nil{
-//            dictionary["item_level_total_taxes"] = itemLevelTotalTaxes
+//        if let itemLevelTotalTaxes = itemLevelTotalTaxes {
+//            dictionary["item_level_total_taxes"] = itemLevelTotalTaxes as AnyObject
 //        }
-//        if itemTaxes != nil{
-//            dictionary["item_taxes"] = itemTaxes
+//        if let itemTaxes = itemTaxes {
+//            dictionary["item_taxes"] = itemTaxes as AnyObject
 //        }
-//        if items != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//        if let items = items {
+//            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
 //            for itemsElement in items {
 //                dictionaryElements.append(itemsElement.toDictionary())
 //            }
-//            dictionary["items"] = dictionaryElements
+//            dictionary["items"] = dictionaryElements as AnyObject
 //        }
-//        if orderLevelTotalCharges != nil{
-//            dictionary["order_level_total_charges"] = orderLevelTotalCharges
+//        if let orderLevelTotalCharges = orderLevelTotalCharges {
+//            dictionary["order_level_total_charges"] = orderLevelTotalCharges as AnyObject
 //        }
-//        if orderLevelTotalTaxes != nil{
-//            dictionary["order_level_total_taxes"] = orderLevelTotalTaxes
+//        if let orderLevelTotalTaxes = orderLevelTotalTaxes {
+//            dictionary["order_level_total_taxes"] = orderLevelTotalTaxes as AnyObject
 //        }
-//        if orderSubtotal != nil{
-//            dictionary["order_subtotal"] = orderSubtotal
+//        if let orderSubtotal = orderSubtotal {
+//            dictionary["order_subtotal"] = orderSubtotal as AnyObject
 //        }
-////        if orderTotal != nil{
-////            dictionary["order_total"] = orderTotal
+////        if let orderTotal = orderTotal {
+////            dictionary["order_total"] = orderTotal as AnyObject
 ////        }
-//        if orderType != nil{
-//            dictionary["order_type"] = orderType
+//        if let orderType = orderType {
+//            dictionary["order_type"] = orderType as AnyObject
 //        }
-//        if payableAmount != nil{
-//            dictionary["payable_amount"] = payableAmount
+//        if let payableAmount = payableAmount {
+//            dictionary["payable_amount"] = payableAmount as AnyObject
 //        }
-//        if walletCreditApplied != nil{
-//            dictionary["wallet_credit_applied"] = walletCreditApplied
+//        if let walletCreditApplied = walletCreditApplied {
+//            dictionary["wallet_credit_applied"] = walletCreditApplied as AnyObject
 //        }
-//        if paymentModes != nil{
-//            dictionary["payment_modes"] = paymentModes
+//        if let paymentModes = paymentModes {
+//            dictionary["payment_modes"] = paymentModes as AnyObject
 //        }
-//        if paymentOption != nil{
-//            dictionary["payment_option"] = paymentOption
+//        if let paymentOption = paymentOption {
+//            dictionary["payment_option"] = paymentOption as AnyObject
 //        }
-//        if taxes != nil{
-//            dictionary["taxes"] = taxes
+//        if let taxes = taxes {
+//            dictionary["taxes"] = taxes as AnyObject
 //        }
-//        if taxRate != nil{
-//            dictionary["tax_rate"] = taxRate
+//        if let taxRate = taxRate {
+//            dictionary["tax_rate"] = taxRate as AnyObject
 //        }
-//        if totalWeight != nil{
-//            dictionary["total_weight"] = totalWeight
+//        if let totalWeight = totalWeight {
+//            dictionary["total_weight"] = totalWeight as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -283,10 +284,10 @@ public class Order : NSObject{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         addressId = aDecoder.decodeObject(forKey: "address_id") as? Int
+//         addressId = aDecoder.decodeInteger(forKey: "address_id")
 //         addressLat = aDecoder.decodeObject(forKey: "address_lat") as? Float
 //         addressLng = aDecoder.decodeObject(forKey: "address_lng") as? Float
-//         bizLocationId = aDecoder.decodeObject(forKey: "biz_location_id") as? Int
+//         bizLocationId = aDecoder.decodeInteger(forKey: "biz_location_id")
 //         cartItems = aDecoder.decodeObject(forKey: "cartItems") as? [AnyObject]
 //         channel = aDecoder.decodeObject(forKey: "channel") as? String
 //         charges = aDecoder.decodeObject(forKey :"charges") as? [OrderCharges]
@@ -294,8 +295,8 @@ public class Order : NSObject{
 //        discount = aDecoder.decodeObject(forKey: "discount") as? Discount
 //         deliveryCharge = aDecoder.decodeObject(forKey: "delivery_charge") as? Decimal
 //        packagingCharge = aDecoder.decodeObject(forKey: "packaging_charge") as? Decimal
-//         deliveryDatetime = aDecoder.decodeObject(forKey: "delivery_datetime") as? Int
-//         discountApplied = aDecoder.decodeObject(forKey: "discount_applied") as? Int
+//         deliveryDatetime = aDecoder.decodeInteger(forKey: "delivery_datetime")
+//         discountApplied = aDecoder.decodeInteger(forKey: "discount_applied")
 //         itemLevelTotalCharges = aDecoder.decodeObject(forKey: "item_level_total_charges") as? Decimal
 //         itemLevelTotalTaxes = aDecoder.decodeObject(forKey: "item_level_total_taxes") as? Float
 //         itemTaxes = aDecoder.decodeObject(forKey: "item_taxes") as? Decimal
@@ -311,7 +312,7 @@ public class Order : NSObject{
 //         paymentOption = aDecoder.decodeObject(forKey: "payment_option") as? String
 //         taxes = aDecoder.decodeObject(forKey: "taxes") as? [AnyObject]
 //        taxRate = aDecoder.decodeObject(forKey: "tax_rate") as? Float
-//         totalWeight = aDecoder.decodeObject(forKey: "total_weight") as? Int
+//         totalWeight = aDecoder.decodeInteger(forKey: "total_weight")
 //
 //    }
 //
@@ -321,91 +322,91 @@ public class Order : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if addressId != nil{
+//        if let addressId = addressId {
 //            aCoder.encode(addressId, forKey: "address_id")
 //        }
-//        if addressLat != nil{
+//        if let addressLat = addressLat {
 //            aCoder.encode(addressLat, forKey: "address_lat")
 //        }
-//        if addressLng != nil{
+//        if let addressLng = addressLng {
 //            aCoder.encode(addressLng, forKey: "address_lng")
 //        }
-//        if bizLocationId != nil{
+//        if let bizLocationId = bizLocationId {
 //            aCoder.encode(bizLocationId, forKey: "biz_location_id")
 //        }
-//        if cartItems != nil{
+//        if let cartItems = cartItems {
 //            aCoder.encode(cartItems, forKey: "cartItems")
 //        }
-//        if channel != nil{
+//        if let channel = channel {
 //            aCoder.encode(channel, forKey: "channel")
 //        }
-//        if charges != nil{
+//        if let charges = charges {
 //            aCoder.encode(charges, forKey: "charges")
 //        }
-//        if combos != nil{
+//        if let combos = combos {
 //            aCoder.encode(combos, forKey: "combos")
 //        }
-//        if discount != nil{
+//        if let discount = discount {
 //            aCoder.encode(discount, forKey: "discount")
 //        }
-//        if deliveryCharge != nil{
+//        if let deliveryCharge = deliveryCharge {
 //            aCoder.encode(deliveryCharge, forKey: "delivery_charge")
 //        }
-//        if packagingCharge != nil{
+//        if let packagingCharge = packagingCharge {
 //            aCoder.encode(packagingCharge, forKey: "packaging_charge")
 //        }
-//        if deliveryDatetime != nil{
+//        if let deliveryDatetime = deliveryDatetime {
 //            aCoder.encode(deliveryDatetime, forKey: "delivery_datetime")
 //        }
-//        if discountApplied != nil{
+//        if let discountApplied = discountApplied {
 //            aCoder.encode(discountApplied, forKey: "discount_applied")
 //        }
-//        if itemLevelTotalCharges != nil{
+//        if let itemLevelTotalCharges = itemLevelTotalCharges {
 //            aCoder.encode(itemLevelTotalCharges, forKey: "item_level_total_charges")
 //        }
-//        if itemLevelTotalTaxes != nil{
+//        if let itemLevelTotalTaxes = itemLevelTotalTaxes {
 //            aCoder.encode(itemLevelTotalTaxes, forKey: "item_level_total_taxes")
 //        }
-//        if itemTaxes != nil{
+//        if let itemTaxes = itemTaxes {
 //            aCoder.encode(itemTaxes, forKey: "item_taxes")
 //        }
-//        if items != nil{
+//        if let items = items {
 //            aCoder.encode(items, forKey: "items")
 //        }
-//        if orderLevelTotalCharges != nil{
+//        if let orderLevelTotalCharges = orderLevelTotalCharges {
 //            aCoder.encode(orderLevelTotalCharges, forKey: "order_level_total_charges")
 //        }
-//        if orderLevelTotalTaxes != nil{
+//        if let orderLevelTotalTaxes = orderLevelTotalTaxes {
 //            aCoder.encode(orderLevelTotalTaxes, forKey: "order_level_total_taxes")
 //        }
-//        if orderSubtotal != nil{
+//        if let orderSubtotal = orderSubtotal {
 //            aCoder.encode(orderSubtotal, forKey: "order_subtotal")
 //        }
-////        if orderTotal != nil{
+////        if let orderTotal = orderTotal {
 ////            aCoder.encode(orderTotal, forKey: "order_total")
 ////        }
-//        if orderType != nil{
+//        if let orderType = orderType {
 //            aCoder.encode(orderType, forKey: "order_type")
 //        }
-//        if payableAmount != nil{
+//        if let payableAmount = payableAmount {
 //            aCoder.encode(payableAmount, forKey: "payable_amount")
 //        }
-//        if walletCreditApplied != nil{
+//        if let walletCreditApplied = walletCreditApplied {
 //            aCoder.encode(walletCreditApplied, forKey: "wallet_credit_applied")
 //        }
-//        if paymentModes != nil{
+//        if let paymentModes = paymentModes {
 //            aCoder.encode(paymentModes, forKey: "payment_modes")
 //        }
-//        if paymentOption != nil{
+//        if let paymentOption = paymentOption {
 //            aCoder.encode(paymentOption, forKey: "payment_option")
 //        }
-//        if taxes != nil{
+//        if let taxes = taxes {
 //            aCoder.encode(taxes, forKey: "taxes")
 //        }
-//        if taxRate != nil{
+//        if let taxRate = taxRate {
 //            aCoder.encode(taxRate, forKey: "tax_rate")
 //        }
-//        if totalWeight != nil{
+//        if let totalWeight = totalWeight {
 //            aCoder.encode(totalWeight, forKey: "total_weight")
 //        }
 //

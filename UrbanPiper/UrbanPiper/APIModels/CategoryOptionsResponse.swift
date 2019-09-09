@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class CategoryOptionsResponse : NSObject {
+public class CategoryOptionsResponse : NSObject, JSONDecodable {
 
 	public var filters : [Filter]!
 	public var sortBy : [String]!
@@ -17,11 +17,12 @@ public class CategoryOptionsResponse : NSObject {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	init(fromDictionary dictionary: [String:Any]){
+	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		filters = [Filter]()
-		if let filtersArray = dictionary["filters"] as? [[String:Any]]{
+		if let filtersArray = dictionary["filters"] as? [[String : AnyObject]]{
 			for dic in filtersArray{
-				let value = Filter(fromDictionary: dic)
+				guard let value = Filter(fromDictionary: dic) else { continue }
 				filters.append(value)
 			}
 		}
@@ -29,20 +30,20 @@ public class CategoryOptionsResponse : NSObject {
 	}
 
 /*	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+	 * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
-	func toDictionary() -> [String:Any]
+	func toDictionary() -> [String : AnyObject]
 	{
-		var dictionary = [String:Any]()
-		if filters != nil{
-			var dictionaryElements = [[String:Any]]()
+		var dictionary = [String : AnyObject]()
+		if let filters = filters {
+			var dictionaryElements = [[String : AnyObject]]()
 			for filtersElement in filters {
 				dictionaryElements.append(filtersElement.toDictionary())
 			}
-			dictionary["filters"] = dictionaryElements
+			dictionary["filters"] = dictionaryElements as AnyObject
 		}
-		if sortBy != nil{
-			dictionary["sort_by"] = sortBy
+		if let sortBy = sortBy {
+			dictionary["sort_by"] = sortBy as AnyObject
 		}
 		return dictionary
 	}
@@ -64,10 +65,10 @@ public class CategoryOptionsResponse : NSObject {
     */
     @objc public func encode(with aCoder: NSCoder)
 	{
-		if filters != nil{
+		if let filters = filters {
 			aCoder.encode(filters, forKey: "filters")
 		}
-		if sortBy != nil{
+		if let sortBy = sortBy {
 			aCoder.encode(sortBy, forKey: "sort_by")
 		}
 

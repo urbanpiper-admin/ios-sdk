@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class MyOrderOption : NSObject{
+public class MyOrderOption : NSObject, JSONDecodable{
 
 	public var id : Int!
 	public var title : String!
@@ -17,22 +17,23 @@ public class MyOrderOption : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	init(fromDictionary dictionary: [String:Any]){
+	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		id = dictionary["id"] as? Int
 		title = dictionary["title"] as? String
 	}
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    func toDictionary() -> [String:Any]
+//    func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if id != nil{
-//            dictionary["id"] = id
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        if let id = id {
+//            dictionary["id"] = id as AnyObject
 //        }
-//        if title != nil{
-//            dictionary["title"] = title
+//        if let title = title {
+//            dictionary["title"] = title as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -43,7 +44,7 @@ public class MyOrderOption : NSObject{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         id = aDecoder.decodeObject(forKey: "id") as? Int
+//         id = aDecoder.decodeInteger(forKey: "id")
 //         title = aDecoder.decodeObject(forKey: "title") as? String
 //
 //    }
@@ -54,10 +55,10 @@ public class MyOrderOption : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if id != nil{
+//        if let id = id {
 //            aCoder.encode(id, forKey: "id")
 //        }
-//        if title != nil{
+//        if let title = title {
 //            aCoder.encode(title, forKey: "title")
 //        }
 //

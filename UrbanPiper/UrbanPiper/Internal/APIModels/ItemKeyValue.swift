@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class ItemKeyValue : NSObject{
+public class ItemKeyValue : NSObject, JSONDecodable{
 
 	public var id : Int!
 	public var key : String!
@@ -18,26 +18,27 @@ public class ItemKeyValue : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		id = dictionary["id"] as? Int
 		key = dictionary["key"] as? String
 		value = dictionary["value"] as? String
 	}
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any]
+    public func toDictionary() -> [String : AnyObject]
     {
-        var dictionary: [String : Any] = [String:Any]()
-        if id != nil{
-            dictionary["id"] = id
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        if let id = id {
+            dictionary["id"] = id as AnyObject
         }
-        if key != nil{
-            dictionary["key"] = key
+        if let key = key {
+            dictionary["key"] = key as AnyObject
         }
-        if value != nil{
-            dictionary["value"] = value
+        if let value = value {
+            dictionary["value"] = value as AnyObject
         }
         return dictionary
     }
@@ -48,7 +49,7 @@ public class ItemKeyValue : NSObject{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         id = aDecoder.decodeObject(forKey: "id") as? Int
+//         id = aDecoder.decodeInteger(forKey: "id")
 //         key = aDecoder.decodeObject(forKey: "key") as? String
 //         value = aDecoder.decodeObject(forKey: "value") as? String
 //
@@ -60,13 +61,13 @@ public class ItemKeyValue : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if id != nil{
+//        if let id = id {
 //            aCoder.encode(id, forKey: "id")
 //        }
-//        if key != nil{
+//        if let key = key {
 //            aCoder.encode(key, forKey: "key")
 //        }
-//        if value != nil{
+//        if let value = value {
 //            aCoder.encode(value, forKey: "value")
 //        }
 //

@@ -184,8 +184,8 @@ internal class UserManager: NSObject {
         guard jwt.shouldRefreshToken else { return }
         
 //        let dataTask =
-            APIManager.shared.refreshToken(token: jwt.token, completion: { [weak self] (newToken) in
-            guard let token = newToken else { return }
+            APIManager.shared.refreshToken(token: jwt.token, completion: { [weak self] (refreshTokenResponse) in
+            guard let token = refreshTokenResponse?.token else { return }
             let user = self?.currentUser?.update(fromJWTToken: token)
             self?.currentUser = user
         }, failure: nil)

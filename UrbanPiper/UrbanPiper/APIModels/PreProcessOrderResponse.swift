@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class PreProcessOrderResponse : NSObject{
+public class PreProcessOrderResponse : NSObject, JSONDecodable{
 
 	public var order : Order!
 //    public var discount : Decimal?
@@ -20,8 +20,9 @@ public class PreProcessOrderResponse : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		if let orderData: [String:Any] = dictionary["order"] as? [String:Any]{
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+		if let orderData: [String : AnyObject] = dictionary["order"] as? [String : AnyObject]{
 			order = Order(fromDictionary: orderData)
 		}
         
@@ -40,16 +41,16 @@ public class PreProcessOrderResponse : NSObject{
 	}
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    public func toDictionary() -> [String:Any]
+//    public func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if order != nil{
-//            dictionary["order"] = order.toDictionary()
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        if let order = order {
+//            dictionary["order"] = order.toDictionary() as AnyObject
 //        }
-//        if discount != nil{
-//            dictionary["discount"] = discount
+//        if let discount = discount {
+//            dictionary["discount"] = discount as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -71,10 +72,10 @@ public class PreProcessOrderResponse : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if order != nil{
+//        if let order = order {
 //            aCoder.encode(order, forKey: "order")
 //        }
-//        if discount != nil{
+//        if let discount = discount {
 //            aCoder.encode(discount, forKey: "discount")
 //        }
 //

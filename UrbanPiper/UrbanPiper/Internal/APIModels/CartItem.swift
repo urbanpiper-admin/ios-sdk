@@ -139,94 +139,94 @@ public class CartItem: NSObject {
         self.optionsToRemove = optionBuilder.optionsToRemove
     }
     
-    public func toDictionary() -> [String:Any]
+    public func toDictionary() -> [String : AnyObject]
     {
-        var dictionary = [String:Any]()
+        var dictionary = [String : AnyObject]()
 
-        if category != nil{
-            dictionary["category"] = category.toDictionary()
+        if let category = category {
+            dictionary["category"] = category.toDictionary() as AnyObject
         }
-        if currentStock != nil{
-            dictionary["current_stock"] = currentStock
+        if let currentStock = currentStock {
+            dictionary["current_stock"] = currentStock as AnyObject
         }
-//        if extras != nil{
-//            dictionary["extras"] = extras
+//        if let extras = extras {
+//            dictionary["extras"] = extras as AnyObject
 //        }
-//        if foodType != nil{
-//            dictionary["food_type"] = foodType
+//        if let foodType = foodType {
+//            dictionary["food_type"] = foodType as AnyObject
 //        }
-        if id != nil{
-            dictionary["id"] = id
+        if let id = id {
+            dictionary["id"] = id as AnyObject
         }
-        if imageLandscapeUrl != nil{
-            dictionary["image_landscape_url"] = imageLandscapeUrl
+        if let imageLandscapeUrl = imageLandscapeUrl {
+            dictionary["image_landscape_url"] = imageLandscapeUrl as AnyObject
         }
-        if imageUrl != nil{
-            dictionary["image_url"] = imageUrl
+        if let imageUrl = imageUrl {
+            dictionary["image_url"] = imageUrl as AnyObject
         }
-//        if itemDesc != nil{
-//            dictionary["item_desc"] = itemDesc
+//        if let itemDesc = itemDesc {
+//            dictionary["item_desc"] = itemDesc as AnyObject
 //        }
-        if itemPrice != nil{
-            dictionary["item_price"] = itemPrice
+        if let itemPrice = itemPrice {
+            dictionary["item_price"] = itemPrice as AnyObject
         }
-        if itemTitle != nil{
-            dictionary["item_title"] = itemTitle
+        if let itemTitle = itemTitle {
+            dictionary["item_title"] = itemTitle as AnyObject
         }
-//        if likes != nil{
-//            dictionary["likes"] = likes
+//        if let likes = likes {
+//            dictionary["likes"] = likes as AnyObject
 //        }
         if optionsToAdd.count > 0{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
             for orderOptionsToAddElement in optionsToAdd {
 //                dictionaryElements.append(orderOptionsToAddElement.toDictionary())
-                dictionaryElements.append(["id": orderOptionsToAddElement.id as Any])
+                dictionaryElements.append(["id": orderOptionsToAddElement.id! as AnyObject])
             }
-            dictionary["options"] = dictionaryElements
+            dictionary["options"] = dictionaryElements as AnyObject
         }
         if optionsToRemove.count > 0 {
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
             for orderOptionsToRemoveElement in optionsToRemove {
 //                dictionaryElements.append(orderOptionsToRemoveElement.toDictionary())
-                dictionaryElements.append(["id": orderOptionsToRemoveElement.id as Any])
+                dictionaryElements.append(["id": orderOptionsToRemoveElement.id! as AnyObject])
             }
-            dictionary["options_to_remove"] = dictionaryElements
+            dictionary["options_to_remove"] = dictionaryElements as AnyObject
         }
-//        if priceDescriptor != nil{
-//            dictionary["price_descriptor"] = priceDescriptor
+//        if let priceDescriptor = priceDescriptor {
+//            dictionary["price_descriptor"] = priceDescriptor as AnyObject
 //        }
-//        if serviceTaxRate != nil{
-//            dictionary["service_tax_rate"] = serviceTaxRate
+//        if let serviceTaxRate = serviceTaxRate {
+//            dictionary["service_tax_rate"] = serviceTaxRate as AnyObject
 //        }
-        if preOrderStartTime != nil{
-            dictionary["pre_order_start_time"] = preOrderStartTime
+        if let preOrderStartTime = preOrderStartTime {
+            dictionary["pre_order_start_time"] = preOrderStartTime as AnyObject
         }
-        if preOrderEndTime != nil{
-            dictionary["pre_order_end_time"] = preOrderEndTime
+        if let preOrderEndTime = preOrderEndTime {
+            dictionary["pre_order_end_time"] = preOrderEndTime as AnyObject
         }
-        if slug != nil{
-            dictionary["slug"] = slug
+        if let slug = slug {
+            dictionary["slug"] = slug as AnyObject
         }
-        if sortOrder != nil{
-            dictionary["sort_order"] = sortOrder
+        if let sortOrder = sortOrder {
+            dictionary["sort_order"] = sortOrder as AnyObject
         }
-//        if subCategory != nil{
-//            dictionary["sub_category"] = subCategory.toDictionary()
+//        if let subCategory = subCategory {
+//            dictionary["sub_category"] = subCategory.toDictionary() as AnyObject
 //        }
-//        if tags != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//        if let tags = tags {
+//            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
 //            for tagsElement in tags {
 //                dictionaryElements.append(tagsElement.toDictionary())
 //            }
-//            dictionary["tags"] = dictionaryElements
+//            dictionary["tags"] = dictionaryElements as AnyObject
 //        }
-//        if vatRate != nil{
-//            dictionary["vat_rate"] = vatRate
+//        if let vatRate = vatRate {
+//            dictionary["vat_rate"] = vatRate as AnyObject
 //        }
-        dictionary["quantity"] = quantity
+        dictionary["quantity"] = quantity as AnyObject
         
-        if notes != nil{
-            dictionary["notes"] = notes
+        if let notes = notes {
+            dictionary["notes"] = notes as AnyObject
         }
         
         return dictionary
@@ -241,40 +241,40 @@ public class CartItem: NSObject {
         return true
     }
     
-    internal func equitableCheckDictionary() -> [String: Any] {
-        var dictionary: [String: Any] = [String:Any]()
-//        if category != nil{
+    internal func equitableCheckDictionary() -> [String : AnyObject] {
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        if let category = category {
 //            dictionary["category"] = category.equitableCheckDictionary()
 //        }
-//        if currentStock != nil{
-//            dictionary["current_stock"] = currentStock
+//        if let currentStock = currentStock {
+//            dictionary["current_stock"] = currentStock as AnyObject
 //        }
-        if id != nil{
-            dictionary["id"] = id
+        if let id = id {
+            dictionary["id"] = id as AnyObject
         }
         if optionsToAdd.count > 0{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
             for orderOptionsToAddElement in optionsToAdd {
                 dictionaryElements.append(orderOptionsToAddElement.equitableCheckDictionary())
             }
-            dictionary["options_to_add"] = dictionaryElements
+            dictionary["options_to_add"] = dictionaryElements as AnyObject
         }
         if optionsToRemove.count > 0 {
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
             for orderOptionsToRemoveElement in optionsToRemove {
                 dictionaryElements.append(orderOptionsToRemoveElement.equitableCheckDictionary())
             }
-            dictionary["options_to_remove"] = dictionaryElements
+            dictionary["options_to_remove"] = dictionaryElements as AnyObject
         }
-//        if itemTitle != nil{
-//            dictionary["item_title"] = itemTitle
+//        if let itemTitle = itemTitle {
+//            dictionary["item_title"] = itemTitle as AnyObject
 //        }
-//        if optionGroups != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//        if let optionGroups = optionGroups {
+//            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
 //            for optionGroupsElement in optionGroups {
 //                dictionaryElements.append(optionGroupsElement.equitableCheckDictionary())
 //            }
-//            dictionary["option_groups"] = dictionaryElements
+//            dictionary["option_groups"] = dictionaryElements as AnyObject
 //        }
         return dictionary
     }

@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class PaymentInitResponse : NSObject{
+public class PaymentInitResponse : NSObject, JSONDecodable{
 
 	public var data : OnlinePaymentData!
 	public var message : String!
@@ -20,8 +20,9 @@ public class PaymentInitResponse : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		if let dataData: [String:Any] = dictionary["data"] as? [String:Any]{
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+		if let dataData: [String : AnyObject] = dictionary["data"] as? [String : AnyObject]{
 			data = OnlinePaymentData(fromDictionary: dataData)
 		}
 		message = dictionary["message"] as? String
@@ -31,25 +32,25 @@ public class PaymentInitResponse : NSObject{
 	}
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    @objc public func toDictionary() -> [String:Any]
+    @objc public func toDictionary() -> [String : AnyObject]
     {
-        var dictionary: [String: Any] = [String:Any]()
-        if data != nil{
-            dictionary["data"] = data.toDictionary()
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        if let data = data {
+            dictionary["data"] = data.toDictionary() as AnyObject
         }
-        if message != nil{
-            dictionary["message"] = message
+        if let message = message {
+            dictionary["message"] = message as AnyObject
         }
 
-        dictionary["success"] = success
+        dictionary["success"] = success as AnyObject
         
-        if transactionId != nil{
-            dictionary["transaction_id"] = transactionId
+        if let transactionId = transactionId {
+            dictionary["transaction_id"] = transactionId as AnyObject
         }
-        if url != nil{
-            dictionary["url"] = url
+        if let url = url {
+            dictionary["url"] = url as AnyObject
         }
         return dictionary
     }
@@ -74,19 +75,19 @@ public class PaymentInitResponse : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if data != nil{
+//        if let data = data {
 //            aCoder.encode(data, forKey: "data")
 //        }
-//        if message != nil{
+//        if let message = message {
 //            aCoder.encode(message, forKey: "message")
 //        }
-//        if success != nil{
+//        if let success = success {
 //            aCoder.encode(success, forKey: "success")
 //        }
-//        if transactionId != nil{
+//        if let transactionId = transactionId {
 //            aCoder.encode(transactionId, forKey: "transaction_id")
 //        }
-//        if url != nil{
+//        if let url = url {
 //            aCoder.encode(url, forKey: "url")
 //        }
 //

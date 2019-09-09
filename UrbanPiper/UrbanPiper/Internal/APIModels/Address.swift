@@ -15,7 +15,7 @@ public enum AddressTag: String {
 }
 
 
-@objc public class Address : NSObject, NSCoding {
+@objc public class Address : NSObject, JSONDecodable, NSCoding {
 
 	public var address1 : String!
 	public var landmark : String!
@@ -62,7 +62,8 @@ public enum AddressTag: String {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	@objc public init(fromDictionary dictionary:  [String:Any]){
+	@objc public required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		city = dictionary["city"] as? String
 
          deliverable = dictionary["deliverable"] as? Bool ?? false
@@ -126,37 +127,37 @@ public enum AddressTag: String {
     }
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    @objc public func toDictionary() -> [String:Any]
+    @objc public func toDictionary() -> [String : AnyObject]
     {
-        var dictionary: [String: Any] = [String:Any]()
-        if address1 != nil{
-            dictionary["address_1"] = address1
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        if let address1 = address1 {
+            dictionary["address_1"] = address1 as AnyObject
         }
-        if landmark != nil{
-            dictionary["landmark"] = landmark
+        if let landmark = landmark {
+            dictionary["landmark"] = landmark as AnyObject
         }
-        dictionary["deliverable"] = deliverable
-        if city != nil{
-            dictionary["city"] = city
+        dictionary["deliverable"] = deliverable as AnyObject
+        if let city = city {
+            dictionary["city"] = city as AnyObject
         }
-        if id != nil{
-            dictionary["id"] = id
+        if let id = id {
+            dictionary["id"] = id as AnyObject
         }
-        dictionary["lat"] = lat
-        dictionary["lng"] = lng
-        if pin != nil{
-            dictionary["pin"] = pin
+        dictionary["lat"] = lat as AnyObject
+        dictionary["lng"] = lng as AnyObject
+        if let pin = pin {
+            dictionary["pin"] = pin as AnyObject
         }
-        if podId != nil{
-            dictionary["pod_id"] = podId
+        if let podId = podId {
+            dictionary["pod_id"] = podId as AnyObject
         }
-        if subLocality != nil{
-            dictionary["sub_locality"] = subLocality
+        if let subLocality = subLocality {
+            dictionary["sub_locality"] = subLocality as AnyObject
         }
-        if tag != nil{
-            dictionary["tag"] = tag
+        if let tag = tag {
+            dictionary["tag"] = tag as AnyObject
         }
         return dictionary
     }
@@ -180,11 +181,11 @@ public enum AddressTag: String {
             deliverable = false
         }
          city = aDecoder.decodeObject(forKey: "city") as? String
-         id = aDecoder.decodeObject(forKey: "id") as? Int
+         id = aDecoder.decodeInteger(forKey: "id")
          lat = aDecoder.decodeObject(forKey: "lat") as? Double ?? Double(0)
          lng = aDecoder.decodeObject(forKey: "lng") as? Double ?? Double(0)
          pin = aDecoder.decodeObject(forKey: "pin") as? String
-         podId = aDecoder.decodeObject(forKey: "pod_id") as? Int
+         podId = aDecoder.decodeInteger(forKey: "pod_id")
          subLocality = aDecoder.decodeObject(forKey: "sub_locality") as? String
          tag = aDecoder.decodeObject(forKey: "tag") as? String
 
@@ -196,19 +197,19 @@ public enum AddressTag: String {
     */
     @objc public func encode(with aCoder: NSCoder)
 	{
-		if address1 != nil{
+		if let address1 = address1 {
 			aCoder.encode(address1, forKey: "address_1")
 		}
-		if landmark != nil{
+		if let landmark = landmark {
 			aCoder.encode(landmark, forKey: "landmark")
 		}
 
         aCoder.encode(deliverable, forKey: "deliverable")
         
-		if city != nil{
+		if let city = city {
 			aCoder.encode(city, forKey: "city")
 		}
-		if id != nil{
+		if let id = id {
 			aCoder.encode(id, forKey: "id")
 		}
         
@@ -216,16 +217,16 @@ public enum AddressTag: String {
 		
         aCoder.encode(lng, forKey: "lng")
 
-		if pin != nil{
+		if let pin = pin {
 			aCoder.encode(pin, forKey: "pin")
 		}
-		if podId != nil{
+		if let podId = podId {
 			aCoder.encode(podId, forKey: "pod_id")
 		}
-		if subLocality != nil{
+		if let subLocality = subLocality {
 			aCoder.encode(subLocality, forKey: "sub_locality")
 		}
-		if tag != nil{
+		if let tag = tag {
 			aCoder.encode(tag, forKey: "tag")
 		}
 

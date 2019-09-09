@@ -7,6 +7,61 @@
 
 import UIKit
 
+enum FeedbackAPI {
+    case submitFeedback(name: String, rating: Double, orderId: Int, choiceText: String?, comments: String?)
+}
+
+extension FeedbackAPI: UPAPI {
+    var path: String {
+        switch self {
+        case .submitFeedback:
+            return "api/v2/feedback/"
+        }
+    }
+    
+    var parameters: [String : String]? {
+        switch self {
+        case .submitFeedback:
+            return nil
+        }
+    }
+    
+    var headers: [String : String]? {
+        switch self {
+        case .submitFeedback:
+            return nil
+        }
+    }
+    
+    var method: HttpMethod {
+        switch self {
+        case .submitFeedback:
+            return .POST
+        }
+    }
+    
+    var body: [String : AnyObject]? {
+        switch self {
+        case .submitFeedback(let name, let rating, let orderId, let choiceText, let comments):
+            var params = ["name": name,
+                    "biz_id": APIManager.shared.bizId,
+                    "rating": Int(rating),
+                    "type": "ordering",
+                    "type_id": orderId] as [String : AnyObject]
+            
+            if let text = choiceText, text.count > 0 {
+                params["choice_text"] = text as AnyObject
+            }
+            
+            if let text = comments, text.count > 0 {
+                params["comments"] = text as AnyObject
+            }
+            return params
+        }
+    }
+    
+}
+
 extension APIManager {
     
     @objc internal func submitFeedback(name: String,
@@ -42,33 +97,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
         
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> GenericResponse? in
-            return GenericResponse(fromDictionary: dictionary) ?? GenericResponse.init()
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 201 {
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    
-                    DispatchQueue.main.async {
-                        completion?(dictionary)
-                    }
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-            
-        }
-        
-        return dataTask*/
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
     }
     
 }

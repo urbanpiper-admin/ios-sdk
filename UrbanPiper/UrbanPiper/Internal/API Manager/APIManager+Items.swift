@@ -1,4 +1,4 @@
-//
+    //
 //  APIManager+Items.swift
 //  WhiteLabel
 //
@@ -7,6 +7,120 @@
 //
 
 import Foundation
+
+enum ItemsAPI {
+    case filterAndSortOptions(categoryId: Int)
+    case getCategoryItems(categoryId: Int, storeId: Int?, offset: Int, limit: Int, sortKey: String?, filterOptions: [FilterOption]?)
+    case searchItems(query: String, storeId: Int?, offset: Int, limit: Int)
+    case itemDetails(itemId: Int, storeId: Int?)
+}
+
+extension ItemsAPI: UPAPI {
+    
+    var path: String {
+        switch self {
+        case .filterAndSortOptions(let categoryId):
+            return "api/v2/categories/\(categoryId)/options/"
+        case .getCategoryItems(let categoryId, _, _, _, _, _):
+            return "api/v1/order/categories/\(categoryId)/items/"
+        case .searchItems:
+            return "api/v2/search/items/"
+        case .itemDetails(let itemId, _):
+            return "api/v1/items/\(itemId)/"
+        }
+    }
+    
+    var parameters: [String : String]? {
+        switch self {
+        case .filterAndSortOptions:
+            return nil
+        case .getCategoryItems(_, let storeId, let offset, let limit, let sortKey, let filterOptions):
+            var params = ["format":"json",
+                          "offset":String(offset),
+                          "limit":String(limit),
+                          "biz_id":APIManager.shared.bizId]
+            
+            if let storeId = storeId {
+                params["location_id"] = String(storeId)
+            }
+            
+            if let key = sortKey {
+                params["sort_by"] = key
+            }
+            
+            if let options = filterOptions, options.count > 0 {
+                let keysArray = options.map { String($0.id!) }
+                let filterKeysString = keysArray.joined(separator: ",")
+                params["filter_by"] = filterKeysString
+            }
+            
+            return params
+        case .searchItems(let query, let storeId, let offset, let limit):
+            var params = ["keyword":query,
+                          "offset":"\(offset)",
+                          "limit":"\(limit)",
+                          "biz_id":APIManager.shared.bizId]
+            
+            if let storeId = storeId {
+                params["location_id"] = String(storeId)
+            }
+            
+            return params
+        case .itemDetails(_, let storeId):
+            
+            let now: Date = Date()
+            let timeInt = String(now.timeIntervalSince1970 * 1000)
+            
+            var params: [String : String] = ["cx" : timeInt]
+            
+            if let storeId = storeId {
+                params["location_id"] = String(storeId)
+            }
+            
+            return params
+        }
+    }
+    
+    var headers: [String : String]? {
+        switch self {
+        case .filterAndSortOptions(_):
+            return ["Authorization" : APIManager.shared.bizAuth()]
+        case .getCategoryItems:
+            return nil
+        case .searchItems:
+            return nil
+        case .itemDetails:
+            return nil
+        }
+    }
+    
+    var method: HttpMethod {
+        switch self {
+        case .filterAndSortOptions:
+            return .GET
+        case .getCategoryItems:
+            return .GET
+        case .searchItems:
+            return .GET
+        case .itemDetails:
+            return .GET
+        }
+    }
+    
+    var body: [String : AnyObject]? {
+        switch self {
+        case .filterAndSortOptions:
+            return nil
+        case .getCategoryItems:
+            return nil
+        case .searchItems:
+            return nil
+        case .itemDetails:
+            return nil
+        }
+    }
+    
+}
 
 extension APIManager {
     
@@ -23,36 +137,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()],
-                          responseParser: { (dictionary) -> CategoryOptionsResponse? in
-                            return CategoryOptionsResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-                
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let categoryOptionsResponse: CategoryOptionsResponse = CategoryOptionsResponse(fromDictionary: dictionary)
-                    
-                    DispatchQueue.main.async {
-                        completion?(categoryOptionsResponse)
-                    }
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-            
-        }
-        
-        return dataTask*/
+        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)!
     }
 
     func getCategoryItems(categoryId: Int,
@@ -94,35 +179,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
 
         
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> CategoryItemsResponse? in
-            return CategoryItemsResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let categoryItemsResponse: CategoryItemsResponse = CategoryItemsResponse(fromDictionary: dictionary)
-
-                    DispatchQueue.main.async {
-                        completion?(categoryItemsResponse)
-                    }
-                    return
-                }
-
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-
-        }
-
-        return dataTask*/
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
     }
 
     func searchItems(query: String,
@@ -151,34 +208,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
 
         
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> ItemsSearchResponse? in
-            return ItemsSearchResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let itemsSearchResponse: ItemsSearchResponse = ItemsSearchResponse(fromDictionary: dictionary)
-                    DispatchQueue.main.async {
-                        completion?(itemsSearchResponse)
-                    }
-                    return
-                }
-
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-
-        }
-
-        return dataTask*/
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
     }
 
     func getItemDetails(itemId: Int,
@@ -203,38 +233,10 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
 
-        
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> Item? in
-            let item = Item(fromDictionary: dictionary)
-            item.isItemDetailsItem = true
-            return item
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let item: Item = Item(fromDictionary: dictionary)
-
-                    DispatchQueue.main.async {
-                        completion?(item)
-                    }
-                    return
-                }
-
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-
-        }
-
-        return dataTask*/
+        return apiRequest(urlRequest: &urlRequest, completion: { (item: Item?) in
+            item?.isItemDetailsItem = true
+            completion?(item)
+        }, failure: failure)!
     }
 
 }

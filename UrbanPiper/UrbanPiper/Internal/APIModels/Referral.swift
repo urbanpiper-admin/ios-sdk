@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class Referral: NSObject {
+public class Referral: NSObject, JSONDecodable {
 
     public var codeLink : String!
     public var referrerCard : String!
@@ -15,7 +15,8 @@ public class Referral: NSObject {
     public var sharedOn : String!
     public var platform : String!
 
-    public init(fromDictionary dictionary:  [String:Any]) {
+    public required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
         
         var referralLink = dictionary["~referring_link"] as? String
         if referralLink == nil || referralLink!.count == 0 {
@@ -30,25 +31,25 @@ public class Referral: NSObject {
     }
     
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any] {
-        var dictionary: [String: Any] = [String:Any]()
+    public func toDictionary() -> [String : AnyObject] {
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
         
-        if codeLink != nil{
-            dictionary["code_link"] = codeLink
+        if let codeLink = codeLink {
+            dictionary["code_link"] = codeLink as AnyObject
         }
-        if referrerCard != nil{
-            dictionary["referrer_card"] = referrerCard
+        if let referrerCard = referrerCard {
+            dictionary["referrer_card"] = referrerCard as AnyObject
         }
-        if channel != nil{
-            dictionary["channel"] = channel
+        if let channel = channel {
+            dictionary["channel"] = channel as AnyObject
         }
-        if sharedOn != nil{
-            dictionary["shared_on"] = sharedOn
+        if let sharedOn = sharedOn {
+            dictionary["shared_on"] = sharedOn as AnyObject
         }
-        if platform != nil{
-            dictionary["platform"] = platform
+        if let platform = platform {
+            dictionary["platform"] = platform as AnyObject
         }
         
         return dictionary

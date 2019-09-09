@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class Choice : NSObject, NSCoding{
+public class Choice : NSObject, JSONDecodable, NSCoding{
 
 	public var id : Int!
 	public var sortOrder : Int!
@@ -18,26 +18,27 @@ public class Choice : NSObject, NSCoding{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		id = dictionary["id"] as? Int
 		sortOrder = dictionary["sort_order"] as? Int ?? 0
 		text = dictionary["text"] as? String
 	}
 
 	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+	 * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
-	public func toDictionary() -> [String:Any]
+	public func toDictionary() -> [String : AnyObject]
 	{
-		var dictionary: [String: Any] = [String:Any]()
-		if id != nil{
-			dictionary["id"] = id
+		var dictionary: [String : AnyObject] = [String : AnyObject]()
+		if let id = id {
+			dictionary["id"] = id as AnyObject
 		}
-		if sortOrder != nil{
-			dictionary["sort_order"] = sortOrder
+		if let sortOrder = sortOrder {
+			dictionary["sort_order"] = sortOrder as AnyObject
 		}
-		if text != nil{
-			dictionary["text"] = text
+		if let text = text {
+			dictionary["text"] = text as AnyObject
 		}
 		return dictionary
 	}
@@ -48,8 +49,8 @@ public class Choice : NSObject, NSCoding{
     */
     @objc required public init(coder aDecoder: NSCoder)
 	{
-         id = aDecoder.decodeObject(forKey: "id") as? Int
-         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
+         id = aDecoder.decodeInteger(forKey: "id")
+         sortOrder = aDecoder.decodeInteger(forKey: "sort_order")
          text = aDecoder.decodeObject(forKey: "text") as? String
 
 	}
@@ -60,13 +61,13 @@ public class Choice : NSObject, NSCoding{
     */
     @objc public func encode(with aCoder: NSCoder)
 	{
-		if id != nil{
+		if let id = id {
 			aCoder.encode(id, forKey: "id")
 		}
-		if sortOrder != nil{
+		if let sortOrder = sortOrder {
 			aCoder.encode(sortOrder, forKey: "sort_order")
 		}
-		if text != nil{
+		if let text = text {
 			aCoder.encode(text, forKey: "text")
 		}
 

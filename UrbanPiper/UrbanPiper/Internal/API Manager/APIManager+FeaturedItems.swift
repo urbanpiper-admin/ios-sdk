@@ -7,6 +7,56 @@
 
 import UIKit
 
+enum FeaturedItemsAPI {
+    case featuredItems(itemIds: [Int], storeId: Int?, offset: Int, limit: Int)
+}
+
+extension FeaturedItemsAPI: UPAPI {
+    var path: String {
+        switch self {
+        case .featuredItems(let itemIds, _, _, _):
+            let itemIdsString = itemIds.map { "\($0)" }.joined(separator: ",")
+            return "api/v2/items/\(itemIdsString)/recommendations/"
+        }
+    }
+    
+    var parameters: [String : String]? {
+        switch self {
+        case .featuredItems(_, let storeId, let offset, let limit):
+            var params = ["offset":String(offset),
+                    "limit":String(limit)]
+            
+            if let storeId = storeId {
+                params["location_id"] = String(storeId)
+            }
+            
+            return params
+        }
+    }
+    
+    var headers: [String : String]? {
+        switch self {
+        case .featuredItems:
+            return ["Authorization" : APIManager.shared.bizAuth()]
+        }
+    }
+    
+    var method: HttpMethod {
+        switch self {
+        case .featuredItems:
+            return .GET
+        }
+    }
+    
+    var body: [String : AnyObject]? {
+        switch self {
+        case .featuredItems:
+            return nil
+        }
+    }
+    
+}
+
 extension APIManager {
 
     func getFeaturedItems(itemIds: [Int] = [0],
@@ -33,40 +83,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()],
-                          responseParser: { (dictionary) -> CategoryItemsResponse? in
-                            return CategoryItemsResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-                
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let isUpsoldItems = itemIds.count > 1
-                    let isRecommendedItems = itemIds.count == 1 && itemIds.last! == 0
-                    let categoryItemsResponse: CategoryItemsResponse = CategoryItemsResponse(fromDictionary: dictionary,
-                                                                                             isUpsoldItems: isUpsoldItems,
-                                                                                             isRecommendedItems: isRecommendedItems)
-                    
-                    DispatchQueue.main.async {
-                        completion?(categoryItemsResponse)
-                    }
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-            
-        }
-        
-        return dataTask*/
+        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)!
     }
     
 }

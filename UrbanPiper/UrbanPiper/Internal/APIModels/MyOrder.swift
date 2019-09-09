@@ -56,7 +56,7 @@ public enum OrderStatus: String {
     
 }
 
-@objc public class PastOrder : NSObject{
+@objc public class PastOrder : NSObject, JSONDecodable{
 
 	@objc public var address : String!
 	public var bizLocationId : Int!
@@ -146,14 +146,15 @@ public enum OrderStatus: String {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	init(fromDictionary dictionary: [String:Any]){
+	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		address = dictionary["address"] as? String
 		bizLocationId = dictionary["biz_location_id"] as? Int
 		channel = dictionary["channel"] as? String
 		charges = [OrderCharges]()
-		if let chargesArray = dictionary["charges"] as? [[String:Any]]{
+		if let chargesArray = dictionary["charges"] as? [[String : AnyObject]]{
 			for dic in chargesArray{
-				let value = OrderCharges(fromDictionary: dic)
+				guard let value = OrderCharges(fromDictionary: dic) else { continue }
 				charges.append(value)
 			}
 		}
@@ -232,89 +233,89 @@ public enum OrderStatus: String {
 	}
 
 	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+	 * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
-	func toDictionary() -> [String:Any]
+	func toDictionary() -> [String : AnyObject]
 	{
-        var dictionary = [String:Any]()
-		if address != nil{
-			dictionary["address"] = address
+        var dictionary = [String : AnyObject]()
+		if let address = address {
+			dictionary["address"] = address as AnyObject
 		}
-		if bizLocationId != nil{
-			dictionary["biz_location_id"] = bizLocationId
+		if let bizLocationId = bizLocationId {
+			dictionary["biz_location_id"] = bizLocationId as AnyObject
 		}
-		if channel != nil{
-			dictionary["channel"] = channel
+		if let channel = channel {
+			dictionary["channel"] = channel as AnyObject
 		}
-		if charges != nil{
-            var dictionaryElements = [[String:Any]]()
+		if let charges = charges {
+            var dictionaryElements = [[String : AnyObject]]()
 			for chargesElement in charges {
 				dictionaryElements.append(chargesElement.toDictionary())
 			}
-			dictionary["charges"] = dictionaryElements
+			dictionary["charges"] = dictionaryElements as AnyObject
 		}
-		if coupon != nil{
-			dictionary["coupon"] = coupon
+		if let coupon = coupon {
+			dictionary["coupon"] = coupon as AnyObject
 		}
-        dictionary["created"] = created
-		if customerName != nil{
-			dictionary["customer_name"] = customerName
+        dictionary["created"] = created as AnyObject
+		if let customerName = customerName {
+			dictionary["customer_name"] = customerName as AnyObject
 		}
-		if deliveryAddressRef != nil{
-			dictionary["delivery_address_ref"] = deliveryAddressRef
+		if let deliveryAddressRef = deliveryAddressRef {
+			dictionary["delivery_address_ref"] = deliveryAddressRef as AnyObject
 		}
-        dictionary["delivery_datetime"] = deliveryDatetime
-		if discount != nil{
-			dictionary["discount"] = discount
+        dictionary["delivery_datetime"] = deliveryDatetime as AnyObject
+		if let discount = discount {
+			dictionary["discount"] = discount as AnyObject
 		}
-        dictionary["id"] = id
-		if instructions != nil{
-			dictionary["instructions"] = instructions
+        dictionary["id"] = id as AnyObject
+		if let instructions = instructions {
+			dictionary["instructions"] = instructions as AnyObject
 		}
-//        if itemLevelTotalCharges != nil{
-//            dictionary["item_level_total_charges"] = itemLevelTotalCharges
+//        if let itemLevelTotalCharges = itemLevelTotalCharges {
+//            dictionary["item_level_total_charges"] = itemLevelTotalCharges as AnyObject
 //        }
-//        if itemLevelTotalTaxes != nil{
-//            dictionary["item_level_total_taxes"] = itemLevelTotalTaxes
+//        if let itemLevelTotalTaxes = itemLevelTotalTaxes {
+//            dictionary["item_level_total_taxes"] = itemLevelTotalTaxes as AnyObject
 //        }
-        dictionary["merchant_ref_id"] = merchantRefId
-//        if orderLevelTotalCharges != nil{
-//            dictionary["order_level_total_charges"] = orderLevelTotalCharges
+        dictionary["merchant_ref_id"] = merchantRefId as AnyObject
+//        if let orderLevelTotalCharges = orderLevelTotalCharges {
+//            dictionary["order_level_total_charges"] = orderLevelTotalCharges as AnyObject
 //        }
-//        if orderLevelTotalTaxes != nil{
-//            dictionary["order_level_total_taxes"] = orderLevelTotalTaxes
+//        if let orderLevelTotalTaxes = orderLevelTotalTaxes {
+//            dictionary["order_level_total_taxes"] = orderLevelTotalTaxes as AnyObject
 //        }
-		if orderState != nil{
-			dictionary["order_state"] = orderState
+		if let orderState = orderState {
+			dictionary["order_state"] = orderState as AnyObject
 		}
        
-        dictionary["order_subtotal"] = orderSubtotal
+        dictionary["order_subtotal"] = orderSubtotal as AnyObject
 		
-        dictionary["order_total"] = orderTotal
+        dictionary["order_total"] = orderTotal as AnyObject
 		
-        if orderType != nil{
-			dictionary["order_type"] = orderType
+        if let orderType = orderType {
+			dictionary["order_type"] = orderType as AnyObject
 		}
-		if paymentOption != nil{
-			dictionary["payment_option"] = paymentOption
+		if let paymentOption = paymentOption {
+			dictionary["payment_option"] = paymentOption as AnyObject
 		}
-		if phone != nil{
-			dictionary["phone"] = phone
+		if let phone = phone {
+			dictionary["phone"] = phone as AnyObject
 		}
-		if taxAmt != nil{
-			dictionary["tax_amt"] = taxAmt
+		if let taxAmt = taxAmt {
+			dictionary["tax_amt"] = taxAmt as AnyObject
 		}
-//        if taxRate != nil{
-//            dictionary["tax_rate"] = taxRate
+//        if let taxRate = taxRate {
+//            dictionary["tax_rate"] = taxRate as AnyObject
 //        }
-		if taxes != nil{
-			dictionary["taxes"] = taxes
+		if let taxes = taxes {
+			dictionary["taxes"] = taxes as AnyObject
 		}
-		if totalCharges != nil{
-			dictionary["total_charges"] = totalCharges
+		if let totalCharges = totalCharges {
+			dictionary["total_charges"] = totalCharges as AnyObject
 		}
-		if totalTaxes != nil{
-			dictionary["total_taxes"] = totalTaxes
+		if let totalTaxes = totalTaxes {
+			dictionary["total_taxes"] = totalTaxes as AnyObject
 		}
 		return dictionary
 	}
@@ -326,16 +327,16 @@ public enum OrderStatus: String {
     @objc required public init(coder aDecoder: NSCoder)
 	{
          address = aDecoder.decodeObject(forKey: "address") as? String
-         bizLocationId = aDecoder.decodeObject(forKey: "biz_location_id") as? Int
+         bizLocationId = aDecoder.decodeInteger(forKey: "biz_location_id")
          channel = aDecoder.decodeObject(forKey: "channel") as? String
          charges = aDecoder.decodeObject(forKey :"charges") as? [Charge]
          coupon = aDecoder.decodeObject(forKey: "coupon") as? String
-         created = aDecoder.decodeObject(forKey: "created") as? Int
+         created = aDecoder.decodeInteger(forKey: "created")
          customerName = aDecoder.decodeObject(forKey: "customer_name") as? String
-         deliveryAddressRef = aDecoder.decodeObject(forKey: "delivery_address_ref") as? Int
-         deliveryDatetime = aDecoder.decodeObject(forKey: "delivery_datetime") as? Int
+         deliveryAddressRef = aDecoder.decodeInteger(forKey: "delivery_address_ref")
+         deliveryDatetime = aDecoder.decodeInteger(forKey: "delivery_datetime")
          discount = aDecoder.decodeObject(forKey: "discount") as? Float
-         id = aDecoder.decodeObject(forKey: "id") as? Int
+         id = aDecoder.decodeInteger(forKey: "id")
          instructions = aDecoder.decodeObject(forKey: "instructions") as? String
          itemLevelTotalCharges = aDecoder.decodeObject(forKey: "item_level_total_charges") as? Float
          itemLevelTotalTaxes = aDecoder.decodeObject(forKey: "item_level_total_taxes") as? Float
@@ -362,88 +363,88 @@ public enum OrderStatus: String {
     */
     @objc public func encode(with aCoder: NSCoder)
 	{
-		if address != nil{
+		if let address = address {
 			aCoder.encode(address, forKey: "address")
 		}
-		if bizLocationId != nil{
+		if let bizLocationId = bizLocationId {
 			aCoder.encode(bizLocationId, forKey: "biz_location_id")
 		}
-		if channel != nil{
+		if let channel = channel {
 			aCoder.encode(channel, forKey: "channel")
 		}
-		if charges != nil{
+		if let charges = charges {
 			aCoder.encode(charges, forKey: "charges")
 		}
-		if coupon != nil{
+		if let coupon = coupon {
 			aCoder.encode(coupon, forKey: "coupon")
 		}
-		if created != nil{
+		if let created = created {
 			aCoder.encode(created, forKey: "created")
 		}
-		if customerName != nil{
+		if let customerName = customerName {
 			aCoder.encode(customerName, forKey: "customer_name")
 		}
-		if deliveryAddressRef != nil{
+		if let deliveryAddressRef = deliveryAddressRef {
 			aCoder.encode(deliveryAddressRef, forKey: "delivery_address_ref")
 		}
-		if deliveryDatetime != nil{
+		if let deliveryDatetime = deliveryDatetime {
 			aCoder.encode(deliveryDatetime, forKey: "delivery_datetime")
 		}
-		if discount != nil{
+		if let discount = discount {
 			aCoder.encode(discount, forKey: "discount")
 		}
-		if id != nil{
+		if let id = id {
 			aCoder.encode(id, forKey: "id")
 		}
-		if instructions != nil{
+		if let instructions = instructions {
 			aCoder.encode(instructions, forKey: "instructions")
 		}
-		if itemLevelTotalCharges != nil{
+		if let itemLevelTotalCharges = itemLevelTotalCharges {
 			aCoder.encode(itemLevelTotalCharges, forKey: "item_level_total_charges")
 		}
-		if itemLevelTotalTaxes != nil{
+		if let itemLevelTotalTaxes = itemLevelTotalTaxes {
 			aCoder.encode(itemLevelTotalTaxes, forKey: "item_level_total_taxes")
 		}
-		if merchantRefId != nil{
+		if let merchantRefId = merchantRefId {
 			aCoder.encode(merchantRefId, forKey: "merchant_ref_id")
 		}
-		if orderLevelTotalCharges != nil{
+		if let orderLevelTotalCharges = orderLevelTotalCharges {
 			aCoder.encode(orderLevelTotalCharges, forKey: "order_level_total_charges")
 		}
-		if orderLevelTotalTaxes != nil{
+		if let orderLevelTotalTaxes = orderLevelTotalTaxes {
 			aCoder.encode(orderLevelTotalTaxes, forKey: "order_level_total_taxes")
 		}
-		if orderState != nil{
+		if let orderState = orderState {
 			aCoder.encode(orderState, forKey: "order_state")
 		}
-		if orderSubtotal != nil{
+		if let orderSubtotal = orderSubtotal {
 			aCoder.encode(orderSubtotal, forKey: "order_subtotal")
 		}
-		if orderTotal != nil{
+		if let orderTotal = orderTotal {
 			aCoder.encode(orderTotal, forKey: "order_total")
 		}
-		if orderType != nil{
+		if let orderType = orderType {
 			aCoder.encode(orderType, forKey: "order_type")
 		}
-		if paymentOption != nil{
+		if let paymentOption = paymentOption {
 			aCoder.encode(paymentOption, forKey: "payment_option")
 		}
-		if phone != nil{
+		if let phone = phone {
 			aCoder.encode(phone, forKey: "phone")
 		}
-		if taxAmt != nil{
+		if let taxAmt = taxAmt {
 			aCoder.encode(taxAmt, forKey: "tax_amt")
 		}
-		if taxRate != nil{
+		if let taxRate = taxRate {
 			aCoder.encode(taxRate, forKey: "tax_rate")
 		}
-		if taxes != nil{
+		if let taxes = taxes {
 			aCoder.encode(taxes, forKey: "taxes")
 		}
-		if totalCharges != nil{
+		if let totalCharges = totalCharges {
 			aCoder.encode(totalCharges, forKey: "total_charges")
 		}
-		if totalTaxes != nil{
+		if let totalTaxes = totalTaxes {
 			aCoder.encode(totalTaxes, forKey: "total_taxes")
 		}
 

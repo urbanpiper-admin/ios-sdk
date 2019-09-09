@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class Filter : NSObject {
+public class Filter : NSObject, JSONDecodable {
 
 	public var filterOptions : [FilterOption]!
 	public var group : String!
@@ -17,11 +17,12 @@ public class Filter : NSObject {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	init(fromDictionary dictionary: [String:Any]){
+	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		filterOptions = [FilterOption]()
-		if let filterOptionsArray = dictionary["options"] as? [[String:Any]]{
+		if let filterOptionsArray = dictionary["options"] as? [[String : AnyObject]]{
 			for dic in filterOptionsArray{
-				let value = FilterOption(fromDictionary: dic)
+				guard let value = FilterOption(fromDictionary: dic) else { continue }
 				filterOptions.append(value)
 			}
 		}
@@ -29,20 +30,20 @@ public class Filter : NSObject {
 	}
 
 /*	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+	 * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
-	func toDictionary() -> [String:Any]
+	func toDictionary() -> [String : AnyObject]
 	{
-		var dictionary = [String:Any]()
-		if filterOptions != nil{
-			var dictionaryElements = [[String:Any]]()
+		var dictionary = [String : AnyObject]()
+		if let filterOptions = filterOptions {
+			var dictionaryElements = [[String : AnyObject]]()
 			for filterOptionsElement in filterOptions {
 				dictionaryElements.append(filterOptionsElement.toDictionary())
 			}
-			dictionary["filter_options"] = dictionaryElements
+			dictionary["filter_options"] = dictionaryElements as AnyObject
 		}
-		if group != nil{
-			dictionary["group"] = group
+		if let group = group {
+			dictionary["group"] = group as AnyObject
 		}
 		return dictionary
 	}
@@ -64,10 +65,10 @@ public class Filter : NSObject {
     */
     @objc public func encode(with aCoder: NSCoder)
 	{
-		if filterOptions != nil{
+		if let filterOptions = filterOptions {
 			aCoder.encode(filterOptions, forKey: "filter_options")
 		}
-		if group != nil{
+		if let group = group {
 			aCoder.encode(group, forKey: "group")
 		}
 

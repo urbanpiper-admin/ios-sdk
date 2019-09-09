@@ -7,6 +7,59 @@
 
 import UIKit
 
+enum RewardsAPI {
+    case rewards(offset: Int, limit: Int)
+    case reedemRewards(rewardId: Int)
+}
+
+extension RewardsAPI: UPAPI {
+    var path: String {
+        switch self {
+        case .rewards:
+            return "api/v2/rewards/"
+        case .reedemRewards(let rewardId):
+            return "api/v2/rewards/\(rewardId)/redeem/"
+        }
+    }
+    
+    var parameters: [String : String]? {
+        switch self {
+        case .rewards:
+            return nil
+        case .reedemRewards:
+            return nil
+        }
+    }
+    
+    var headers: [String : String]? {
+        switch self {
+        case .rewards:
+            return nil
+        case .reedemRewards:
+            return nil
+        }
+    }
+    
+    var method: HttpMethod {
+        switch self {
+        case .rewards:
+            return .GET
+        case .reedemRewards:
+            return .POST
+        }
+    }
+    
+    var body: [String : AnyObject]? {
+        switch self {
+        case .rewards:
+            return nil
+        case .reedemRewards:
+            return nil
+        }
+    }
+    
+}
+
 extension APIManager {
     
     internal func getRewards(completion: ((RewardsResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask {
@@ -18,10 +71,7 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
 
-
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> RewardsResponse? in
-            return RewardsResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
     }
 
     internal func redeemReward(rewardId: Int, completion: ((RedeemRewardResponse?) -> Void)?,
@@ -35,10 +85,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "POST"
         
-        
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> RedeemRewardResponse? in
-            return RedeemRewardResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
     }
     
 }

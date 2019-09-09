@@ -8,6 +8,50 @@
 
 import Foundation
 
+enum NotificationsAPI {
+    case notifications(offset: Int, limit: Int)
+}
+
+extension NotificationsAPI: UPAPI {
+    var path: String {
+        switch self {
+        case .notifications:
+            return "api/v1/ub/notifications/"
+        }
+    }
+    
+    var parameters: [String : String]? {
+        switch self {
+        case .notifications(let offset, let limit):
+            return ["channel__in":"app_notification,all",
+                    "offset": String(offset),
+                    "limit": String(limit)]
+        }
+    }
+    
+    var headers: [String : String]? {
+        switch self {
+        case .notifications:
+            return nil
+        }
+    }
+    
+    var method: HttpMethod {
+        switch self {
+        case .notifications:
+            return .GET
+        }
+    }
+    
+    var body: [String : AnyObject]? {
+        switch self {
+        case .notifications:
+            return nil
+        }
+    }
+    
+}
+
 extension APIManager {
 
     @objc internal func getNotifications(offset: Int = 0,
@@ -24,35 +68,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
 
         
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> NotificationsResponse? in
-            return NotificationsResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let notificationsResponse: NotificationsResponse = NotificationsResponse(fromDictionary: dictionary)
-
-                    DispatchQueue.main.async {
-                        completion?(notificationsResponse)
-                    }
-                    return
-                }
-
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-
-        }
-
-        return dataTask*/
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
     }
 
 }

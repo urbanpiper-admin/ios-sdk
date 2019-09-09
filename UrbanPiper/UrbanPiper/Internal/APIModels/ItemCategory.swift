@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class ItemCategory : NSObject{
+public class ItemCategory : NSObject, JSONDecodable{
 
 	public var id : Int!
 	public var name : String!
@@ -18,40 +18,41 @@ public class ItemCategory : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		id = dictionary["id"] as? Int
 		name = dictionary["name"] as? String
         sortOrder = dictionary["sort_order"] as? Int ?? 0
 	}
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any]
+    public func toDictionary() -> [String : AnyObject]
     {
-        var dictionary: [String: Any] = [String:Any]()
-        if id != nil{
-            dictionary["id"] = id
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        if let id = id {
+            dictionary["id"] = id as AnyObject
         }
-        if name != nil{
-            dictionary["name"] = name
+        if let name = name {
+            dictionary["name"] = name as AnyObject
         }
-        if sortOrder != nil{
-            dictionary["sort_order"] = sortOrder
+        if let sortOrder = sortOrder {
+            dictionary["sort_order"] = sortOrder as AnyObject
         }
         return dictionary
     }
     
-    func equitableCheckDictionary() -> [String: Any] {
-        var dictionary: [String:Any] = [String:Any]()
-        if id != nil{
-            dictionary["id"] = id
+    func equitableCheckDictionary() -> [String : AnyObject] {
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        if let id = id {
+            dictionary["id"] = id as AnyObject
         }
-//        if name != nil{
-//            dictionary["name"] = name
+//        if let name = name {
+//            dictionary["name"] = name as AnyObject
 //        }
-//        if sortOrder != nil{
-//            dictionary["sort_order"] = sortOrder
+//        if let sortOrder = sortOrder {
+//            dictionary["sort_order"] = sortOrder as AnyObject
 //        }
         return dictionary
     }
@@ -62,9 +63,9 @@ public class ItemCategory : NSObject{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         id = aDecoder.decodeObject(forKey: "id") as? Int
+//         id = aDecoder.decodeInteger(forKey: "id")
 //         name = aDecoder.decodeObject(forKey: "name") as? String
-//        sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
+//        sortOrder = aDecoder.decodeInteger(forKey: "sort_order")
 //
 //    }
 //
@@ -74,13 +75,13 @@ public class ItemCategory : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if id != nil{
+//        if let id = id {
 //            aCoder.encode(id, forKey: "id")
 //        }
-//        if name != nil{
+//        if let name = name {
 //            aCoder.encode(name, forKey: "name")
 //        }
-//        if sortOrder != nil{
+//        if let sortOrder = sortOrder {
 //            aCoder.encode(id, forKey: "sort_order")
 //        }
 //

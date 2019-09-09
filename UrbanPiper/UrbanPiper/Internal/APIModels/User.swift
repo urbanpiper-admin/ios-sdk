@@ -118,10 +118,11 @@ public class User : NSObject, NSCoding{
 //    /**
 //     * Instantiate the instance using the passed dictionary values to set the properties values
 //     */
-//    @objc internal init(fromDictionary dictionary:  [String:Any]){
+//    @objc internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+//        guard let dictionary = dictionary else { return nil }
 //        super.init()
 //        authKey = dictionary["authKey"] as? String
-//        if let userBizInfoResponseData = dictionary["biz"] as? [String:Any]{
+//        if let userBizInfoResponseData = dictionary["biz"] as? [String : AnyObject]{
 //            userBizInfoResponse = UserBizInfoResponse(fromDictionary: userBizInfoResponseData)
 //        }
 //        email = dictionary["email"] as? String
@@ -147,7 +148,7 @@ public class User : NSObject, NSCoding{
 //        }
 //    }
     
-    @discardableResult public func update(fromDictionary dictionary: [String: Any]) -> User? {
+    @discardableResult public func update(fromDictionary dictionary: [String : AnyObject]) -> User? {
         address = dictionary["address"] as? String
         birthday = dictionary["birthday"] as? Int
         currentCity = dictionary["current_city"] as? String
@@ -191,79 +192,79 @@ public class User : NSObject, NSCoding{
     }
     
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any]
+    public func toDictionary() -> [String : AnyObject]
     {
-        var dictionary: [String: Any] = [String:Any]()
-        if authKey != nil{
-            dictionary["authKey"] = authKey
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        if let authKey = authKey {
+            dictionary["authKey"] = authKey as AnyObject
         }
-        if userBizInfoResponse != nil{
-            dictionary["biz"] = userBizInfoResponse.toDictionary()
+        if let userBizInfoResponse = userBizInfoResponse {
+            dictionary["biz"] = userBizInfoResponse.toDictionary() as AnyObject
         }
-        if email != nil{
-            dictionary["email"] = email
+        if let email = email {
+            dictionary["email"] = email as AnyObject
         }
-        if message != nil{
-            dictionary["message"] = message
+        if let message = message {
+            dictionary["message"] = message as AnyObject
         }
-        if phone != nil{
-            dictionary["phone"] = phone
+        if let phone = phone {
+            dictionary["phone"] = phone as AnyObject
         }
-        if gender != nil{
-            dictionary["gender"] = gender
+        if let gender = gender {
+            dictionary["gender"] = gender as AnyObject
         }
-//        dictionary["success"] = success
-        if timestamp != nil{
-            dictionary["timestamp"] = timestamp
+//        dictionary["success"] = success as AnyObject
+        if let timestamp = timestamp {
+            dictionary["timestamp"] = timestamp as AnyObject
         }
-        if username != nil{
-            dictionary["username"] = username
+        if let username = username {
+            dictionary["username"] = username as AnyObject
         }
         
         if provider != nil {
-            dictionary["provider"] = provider
+            dictionary["provider"] = provider as AnyObject
         }
         
         if accessToken != nil {
-            dictionary["accessToken"] = accessToken
+            dictionary["accessToken"] = accessToken as AnyObject
         }
         
-        dictionary["phone_verified"] = phoneVerified
+        dictionary["phone_verified"] = phoneVerified as AnyObject
         
-//        dictionary["countryCode"] = countryCode
+//        dictionary["countryCode"] = countryCode as AnyObject
         
 //        if password != nil {
-//            dictionary["password"] = password
+//            dictionary["password"] = password as AnyObject
 //        }
         
-        if address != nil{
-            dictionary["address"] = address
+        if let address = address {
+            dictionary["address"] = address as AnyObject
         }
-        if anniversary != nil{
-            dictionary["anniversary"] = anniversary
+        if let anniversary = anniversary {
+            dictionary["anniversary"] = anniversary as AnyObject
         }
-//        if anniversaryDate != nil{
-//            dictionary["anniversary_date"] = anniversaryDate
+//        if let anniversaryDate = anniversaryDate {
+//            dictionary["anniversary_date"] = anniversaryDate as AnyObject
 //        }
-//        if birthdate != nil{
-//            dictionary["birthdate"] = birthdate
+//        if let birthdate = birthdate {
+//            dictionary["birthdate"] = birthdate as AnyObject
 //        }
-        if birthday != nil{
-            dictionary["birthday"] = birthday
+        if let birthday = birthday {
+            dictionary["birthday"] = birthday as AnyObject
         }
-        if currentCity != nil{
-            dictionary["current_city"] = currentCity
+        if let currentCity = currentCity {
+            dictionary["current_city"] = currentCity as AnyObject
         }
-        if firstName != nil{
-            dictionary["first_name"] = firstName
+        if let firstName = firstName {
+            dictionary["first_name"] = firstName as AnyObject
         }
-        if lastName != nil{
-            dictionary["last_name"] = lastName
+        if let lastName = lastName {
+            dictionary["last_name"] = lastName as AnyObject
         }
-//        if jwt != nil{
-//            dictionary["jwt"] = jwt.toDictionary()
+//        if let jwt = jwt {
+//            dictionary["jwt"] = jwt.toDictionary() as AnyObject
 //        }
         
         return dictionary
@@ -287,7 +288,7 @@ public class User : NSObject, NSCoding{
         email = aDecoder.decodeObject(forKey: "email") as? String
          message = aDecoder.decodeObject(forKey: "message") as? String
          phone = aDecoder.decodeObject(forKey: "phone") as? String
-//         success = aDecoder.decodeObject(forKey: "success") as? Bool ?? false
+//         success = aDecoder.decodeBool(forKey: "success") ?? false
          timestamp = aDecoder.decodeObject(forKey: "timestamp") as? String
 //         username = aDecoder.decodeObject(forKey: "username") as? String
         gender = aDecoder.decodeObject(forKey: "gender") as? String
@@ -310,8 +311,8 @@ public class User : NSObject, NSCoding{
 //        password = aDecoder.decodeObject(forKey: "password") as? String
         
         address = aDecoder.decodeObject(forKey: "address") as? String
-        anniversary = aDecoder.decodeObject(forKey: "anniversary") as? Int
-        birthday = aDecoder.decodeObject(forKey: "birthday") as? Int
+        anniversary = aDecoder.decodeInteger(forKey: "anniversary")
+        birthday = aDecoder.decodeInteger(forKey: "birthday")
         currentCity = aDecoder.decodeObject(forKey: "current_city") as? String
         lastName = aDecoder.decodeObject(forKey: "last_name") as? String
         jwt = aDecoder.decodeObject(forKey: "jwt") as? JWT
@@ -328,22 +329,22 @@ public class User : NSObject, NSCoding{
     */
     @objc public func encode(with aCoder: NSCoder)
 	{
-		if authKey != nil{
+		if let authKey = authKey {
 			aCoder.encode(authKey, forKey: "authKey")
 		}
-		if userBizInfoResponse != nil{
+		if let userBizInfoResponse = userBizInfoResponse {
 			aCoder.encode(userBizInfoResponse, forKey: "biz")
 		}
-		if email != nil{
+		if let email = email {
 			aCoder.encode(email, forKey: "email")
 		}
-        if message != nil{
+        if let message = message {
             aCoder.encode(message, forKey: "message")
         }
-        if gender != nil{
+        if let gender = gender {
             aCoder.encode(gender, forKey: "gender")
         }
-		if phone != nil{
+		if let phone = phone {
 			aCoder.encode(phone, forKey: "phone")
 		}
         
@@ -351,10 +352,10 @@ public class User : NSObject, NSCoding{
 //            aCoder.encode(success, forKey: "success")
 //        }
         
-		if timestamp != nil{
+		if let timestamp = timestamp {
 			aCoder.encode(timestamp, forKey: "timestamp")
 		}
-		if username != nil{
+		if let username = username {
 			aCoder.encode(username, forKey: "username")
 		}
         
@@ -372,26 +373,26 @@ public class User : NSObject, NSCoding{
 //            aCoder.encode(password!, forKey: "password")
 //        }
         
-        if address != nil{
+        if let address = address {
             aCoder.encode(address, forKey: "address")
         }
-        if anniversary != nil{
+        if let anniversary = anniversary {
             aCoder.encode(anniversary, forKey: "anniversary")
         }
-        if birthday != nil{
+        if let birthday = birthday {
             aCoder.encode(birthday, forKey: "birthday")
         }
-        if currentCity != nil{
+        if let currentCity = currentCity {
             aCoder.encode(currentCity, forKey: "current_city")
         }
         aCoder.encode(phoneVerified, forKey: "phone_verified")
-        if firstName != nil{
+        if let firstName = firstName {
             aCoder.encode(firstName, forKey: "first_name")
         }
-        if lastName != nil{
+        if let lastName = lastName {
             aCoder.encode(lastName, forKey: "last_name")
         }
-        if jwt != nil{
+        if let jwt = jwt {
             aCoder.encode(jwt, forKey: "jwt")
         }
 	}

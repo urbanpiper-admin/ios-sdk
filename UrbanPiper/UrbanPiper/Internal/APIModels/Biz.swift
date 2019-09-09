@@ -27,7 +27,7 @@ public enum Language: String {
     }
 }
 
-@objc public class Biz : NSObject, NSCoding{
+@objc public class Biz : NSObject, JSONDecodable, NSCoding{
     
     @objc static public var shared: Biz?
 
@@ -61,14 +61,15 @@ public enum Language: String {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		contactPhone = dictionary["contact_phone"] as? String
 		currency = dictionary["currency"] as? String
 		deliveryMinOffsetTime = dictionary["delivery_min_offset_time"] as? Int
 		feedbackConfig = [FeedbackConfig]()
-		if let feedbackConfigArray: [[String:Any]] = dictionary["feedback_config"] as? [[String:Any]]{
+		if let feedbackConfigArray: [[String : AnyObject]] = dictionary["feedback_config"] as? [[String : AnyObject]]{
 			for dic in feedbackConfigArray{
-				let value: FeedbackConfig = FeedbackConfig(fromDictionary: dic)
+				guard let value: FeedbackConfig = FeedbackConfig(fromDictionary: dic) else { continue }
 				feedbackConfig.append(value)
 			}
 		}
@@ -98,9 +99,9 @@ public enum Language: String {
 		referralUiLbl = dictionary["referral_ui_lbl"] as? String
 		simplClientId = dictionary["simpl_client_id"] as? String
 		timeSlots = [TimeSlot]()
-		if let timeSlotsArray: [[String:Any]] = dictionary["time_slots"] as? [[String:Any]]{
+		if let timeSlotsArray: [[String : AnyObject]] = dictionary["time_slots"] as? [[String : AnyObject]]{
 			for dic in timeSlotsArray{
-				let value: TimeSlot = TimeSlot(fromDictionary: dic)
+				guard let value: TimeSlot = TimeSlot(fromDictionary: dic) else { continue }
 				timeSlots.append(value)
 			}
 		}
@@ -110,91 +111,91 @@ public enum Language: String {
 	}
 
 	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+	 * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 	 */
-	@objc public func toDictionary() -> [String:Any]
+	@objc public func toDictionary() -> [String : AnyObject]
 	{
-		var dictionary: [String: Any] = [String:Any]()
-		if contactPhone != nil{
-			dictionary["contact_phone"] = contactPhone
+		var dictionary: [String : AnyObject] = [String : AnyObject]()
+		if let contactPhone = contactPhone {
+			dictionary["contact_phone"] = contactPhone as AnyObject
 		}
-		if currency != nil{
-			dictionary["currency"] = currency
+		if let currency = currency {
+			dictionary["currency"] = currency as AnyObject
 		}
-		if deliveryMinOffsetTime != nil{
-			dictionary["delivery_min_offset_time"] = deliveryMinOffsetTime
+		if let deliveryMinOffsetTime = deliveryMinOffsetTime {
+			dictionary["delivery_min_offset_time"] = deliveryMinOffsetTime as AnyObject
 		}
-		if feedbackConfig != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+		if let feedbackConfig = feedbackConfig {
+            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
 			for feedbackConfigElement in feedbackConfig {
 				dictionaryElements.append(feedbackConfigElement.toDictionary())
 			}
-			dictionary["feedback_config"] = dictionaryElements
+			dictionary["feedback_config"] = dictionaryElements as AnyObject
 		}
-		if gst != nil{
-			dictionary["gst"] = gst
+		if let gst = gst {
+			dictionary["gst"] = gst as AnyObject
 		}
-        dictionary["is_pickup_enabled"] = isPickupEnabled
-		if minOrderTotal != nil{
-			dictionary["min_order_total"] = minOrderTotal
+        dictionary["is_pickup_enabled"] = isPickupEnabled as AnyObject
+		if let minOrderTotal = minOrderTotal {
+			dictionary["min_order_total"] = minOrderTotal as AnyObject
 		}
-//        if minimumWalletCreditThreshold != nil{
-//            dictionary["minimum_wallet_credit_threshold"] = minimumWalletCreditThreshold
+//        if let minimumWalletCreditThreshold = minimumWalletCreditThreshold {
+//            dictionary["minimum_wallet_credit_threshold"] = minimumWalletCreditThreshold as AnyObject
 //        }
-		if msgNearestStoreClosed != nil{
-			dictionary["msg_nearest_store_closed"] = msgNearestStoreClosed
+		if let msgNearestStoreClosed = msgNearestStoreClosed {
+			dictionary["msg_nearest_store_closed"] = msgNearestStoreClosed as AnyObject
 		}
-		if msgNoStoresNearby != nil{
-			dictionary["msg_no_stores_nearby"] = msgNoStoresNearby
+		if let msgNoStoresNearby = msgNoStoresNearby {
+			dictionary["msg_no_stores_nearby"] = msgNoStoresNearby as AnyObject
 		}
-		if msgStoreClosedTemporary != nil{
-			dictionary["msg_store_closed_temporary"] = msgStoreClosedTemporary
+		if let msgStoreClosedTemporary = msgStoreClosedTemporary {
+			dictionary["msg_store_closed_temporary"] = msgStoreClosedTemporary as AnyObject
 		}
-		if orderDeliveryRadius != nil{
-			dictionary["order_delivery_radius"] = orderDeliveryRadius
+		if let orderDeliveryRadius = orderDeliveryRadius {
+			dictionary["order_delivery_radius"] = orderDeliveryRadius as AnyObject
 		}
-		if paymentOptions != nil{
-			dictionary["payment_options"] = paymentOptions
+		if let paymentOptions = paymentOptions {
+			dictionary["payment_options"] = paymentOptions as AnyObject
 		}
-        if supportedLanguages != nil{
-            dictionary["supported_languages"] = supportedLanguages
+        if let supportedLanguages = supportedLanguages {
+            dictionary["supported_languages"] = supportedLanguages as AnyObject
         }
-		if paypalClientToken != nil{
-			dictionary["paypal_client_token"] = paypalClientToken
+		if let paypalClientToken = paypalClientToken {
+			dictionary["paypal_client_token"] = paypalClientToken as AnyObject
 		}
-		if pgProvider != nil{
-			dictionary["pg_provider"] = pgProvider
+		if let pgProvider = pgProvider {
+			dictionary["pg_provider"] = pgProvider as AnyObject
 		}
-		if pickupMinOffsetTime != nil{
-			dictionary["pickup_min_offset_time"] = pickupMinOffsetTime
+		if let pickupMinOffsetTime = pickupMinOffsetTime {
+			dictionary["pickup_min_offset_time"] = pickupMinOffsetTime as AnyObject
 		}
 
-        dictionary["pre_process"] = preProcess
+        dictionary["pre_process"] = preProcess as AnyObject
 		
-		if referralShareLbl != nil{
-			dictionary["referral_share_lbl"] = referralShareLbl
+		if let referralShareLbl = referralShareLbl {
+			dictionary["referral_share_lbl"] = referralShareLbl as AnyObject
 		}
-		if referralUiLbl != nil{
-			dictionary["referral_ui_lbl"] = referralUiLbl
+		if let referralUiLbl = referralUiLbl {
+			dictionary["referral_ui_lbl"] = referralUiLbl as AnyObject
 		}
-		if simplClientId != nil{
-			dictionary["simpl_client_id"] = simplClientId
+		if let simplClientId = simplClientId {
+			dictionary["simpl_client_id"] = simplClientId as AnyObject
 		}
-		if timeSlots != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+		if let timeSlots = timeSlots {
+            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
 			for timeSlotsElement in timeSlots {
 				dictionaryElements.append(timeSlotsElement.toDictionary())
 			}
-			dictionary["time_slots"] = dictionaryElements
+			dictionary["time_slots"] = dictionaryElements as AnyObject
 		}
-		if timezone != nil{
-			dictionary["timezone"] = timezone
+		if let timezone = timezone {
+			dictionary["timezone"] = timezone as AnyObject
 		}
-		if tin != nil{
-			dictionary["tin"] = tin
+		if let tin = tin {
+			dictionary["tin"] = tin as AnyObject
 		}
 
-        dictionary["use_point_of_delivery"] = usePointOfDelivery
+        dictionary["use_point_of_delivery"] = usePointOfDelivery as AnyObject
 		
 		return dictionary
 	}
@@ -207,7 +208,7 @@ public enum Language: String {
 	{
          contactPhone = aDecoder.decodeObject(forKey: "contact_phone") as? String
          currency = aDecoder.decodeObject(forKey: "currency") as? String
-         deliveryMinOffsetTime = aDecoder.decodeObject(forKey: "delivery_min_offset_time") as? Int
+         deliveryMinOffsetTime = aDecoder.decodeInteger(forKey: "delivery_min_offset_time")
         feedbackConfig = aDecoder.decodeObject(forKey :"feedback_config") as? [FeedbackConfig]
          gst = aDecoder.decodeObject(forKey: "gst") as? String
        
@@ -224,12 +225,12 @@ public enum Language: String {
          msgNearestStoreClosed = aDecoder.decodeObject(forKey: "msg_nearest_store_closed") as? String
          msgNoStoresNearby = aDecoder.decodeObject(forKey: "msg_no_stores_nearby") as? String
          msgStoreClosedTemporary = aDecoder.decodeObject(forKey: "msg_store_closed_temporary") as? String
-         orderDeliveryRadius = aDecoder.decodeObject(forKey: "order_delivery_radius") as? Int
+         orderDeliveryRadius = aDecoder.decodeInteger(forKey: "order_delivery_radius")
          paymentOptions = aDecoder.decodeObject(forKey: "payment_options") as? [String]
          supportedLanguages = aDecoder.decodeObject(forKey: "supported_languages") as? [String]
          paypalClientToken = aDecoder.decodeObject(forKey: "paypal_client_token") as? String
          pgProvider = aDecoder.decodeObject(forKey: "pg_provider") as? String
-         pickupMinOffsetTime = aDecoder.decodeObject(forKey: "pickup_min_offset_time") as? Int
+         pickupMinOffsetTime = aDecoder.decodeInteger(forKey: "pickup_min_offset_time")
         
         if let numberVal = aDecoder.decodeObject(forKey: "pre_process") as? NSNumber {
             preProcess = numberVal == 0 ? false : true
@@ -261,74 +262,74 @@ public enum Language: String {
     */
     @objc public func encode(with aCoder: NSCoder)
 	{
-		if contactPhone != nil{
+		if let contactPhone = contactPhone {
 			aCoder.encode(contactPhone, forKey: "contact_phone")
 		}
-		if currency != nil{
+		if let currency = currency {
 			aCoder.encode(currency, forKey: "currency")
 		}
-		if deliveryMinOffsetTime != nil{
+		if let deliveryMinOffsetTime = deliveryMinOffsetTime {
 			aCoder.encode(deliveryMinOffsetTime, forKey: "delivery_min_offset_time")
 		}
-		if feedbackConfig != nil{
+		if let feedbackConfig = feedbackConfig {
 			aCoder.encode(feedbackConfig, forKey: "feedback_config")
 		}
-		if gst != nil{
+		if let gst = gst {
 			aCoder.encode(gst, forKey: "gst")
 		}
         aCoder.encode(isPickupEnabled, forKey: "is_pickup_enabled")
-		if minOrderTotal != nil{
+		if let minOrderTotal = minOrderTotal {
 			aCoder.encode(minOrderTotal, forKey: "min_order_total")
 		}
-//        if minimumWalletCreditThreshold != nil{
+//        if let minimumWalletCreditThreshold = minimumWalletCreditThreshold {
 //            aCoder.encode(minimumWalletCreditThreshold, forKey: "minimum_wallet_credit_threshold")
 //        }
-		if msgNearestStoreClosed != nil{
+		if let msgNearestStoreClosed = msgNearestStoreClosed {
 			aCoder.encode(msgNearestStoreClosed, forKey: "msg_nearest_store_closed")
 		}
-		if msgNoStoresNearby != nil{
+		if let msgNoStoresNearby = msgNoStoresNearby {
 			aCoder.encode(msgNoStoresNearby, forKey: "msg_no_stores_nearby")
 		}
-		if msgStoreClosedTemporary != nil{
+		if let msgStoreClosedTemporary = msgStoreClosedTemporary {
 			aCoder.encode(msgStoreClosedTemporary, forKey: "msg_store_closed_temporary")
 		}
-		if orderDeliveryRadius != nil{
+		if let orderDeliveryRadius = orderDeliveryRadius {
 			aCoder.encode(orderDeliveryRadius, forKey: "order_delivery_radius")
 		}
-		if paymentOptions != nil{
+		if let paymentOptions = paymentOptions {
 			aCoder.encode(paymentOptions, forKey: "payment_options")
 		}
-        if supportedLanguages != nil{
+        if let supportedLanguages = supportedLanguages {
             aCoder.encode(supportedLanguages, forKey: "supported_languages")
         }
-		if paypalClientToken != nil{
+		if let paypalClientToken = paypalClientToken {
 			aCoder.encode(paypalClientToken, forKey: "paypal_client_token")
 		}
-		if pgProvider != nil{
+		if let pgProvider = pgProvider {
 			aCoder.encode(pgProvider, forKey: "pg_provider")
 		}
-		if pickupMinOffsetTime != nil{
+		if let pickupMinOffsetTime = pickupMinOffsetTime {
 			aCoder.encode(pickupMinOffsetTime, forKey: "pickup_min_offset_time")
 		}
 
         aCoder.encode(preProcess, forKey: "pre_process")
 		
-		if referralShareLbl != nil{
+		if let referralShareLbl = referralShareLbl {
 			aCoder.encode(referralShareLbl, forKey: "referral_share_lbl")
 		}
-		if referralUiLbl != nil{
+		if let referralUiLbl = referralUiLbl {
 			aCoder.encode(referralUiLbl, forKey: "referral_ui_lbl")
 		}
-		if simplClientId != nil{
+		if let simplClientId = simplClientId {
 			aCoder.encode(simplClientId, forKey: "simpl_client_id")
 		}
-		if timeSlots != nil{
+		if let timeSlots = timeSlots {
 			aCoder.encode(timeSlots, forKey: "time_slots")
 		}
-		if timezone != nil{
+		if let timezone = timezone {
 			aCoder.encode(timezone, forKey: "timezone")
 		}
-		if tin != nil{
+		if let tin = tin {
 			aCoder.encode(tin, forKey: "tin")
 		}
 

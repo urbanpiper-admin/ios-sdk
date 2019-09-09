@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class BannersResponse : NSObject{
+public class BannersResponse : NSObject, JSONDecodable{
 
 	public var images : [BannerImage]!
 	public var meta : Meta!
@@ -17,34 +17,35 @@ public class BannersResponse : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		images = [BannerImage]()
-		if let imagesArray: [[String:Any]] = dictionary["images"] as? [[String:Any]]{
+		if let imagesArray: [[String : AnyObject]] = dictionary["images"] as? [[String : AnyObject]]{
 			for dic in imagesArray{
-				let value: BannerImage = BannerImage(fromDictionary: dic)
+				guard let value: BannerImage = BannerImage(fromDictionary: dic) else { continue }
 				images.append(value)
 			}
 		}
-		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
+		if let metaData: [String : AnyObject] = dictionary["meta"] as? [String : AnyObject]{
 			meta = Meta(fromDictionary: metaData)
 		}
 	}
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    public func toDictionary() -> [String:Any]
+//    public func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if images != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        if let images = images {
+//            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
 //            for imagesElement in images {
 //                dictionaryElements.append(imagesElement.toDictionary())
 //            }
-//            dictionary["images"] = dictionaryElements
+//            dictionary["images"] = dictionaryElements as AnyObject
 //        }
-//        if meta != nil{
-//            dictionary["meta"] = meta.toDictionary()
+//        if let meta = meta {
+//            dictionary["meta"] = meta.toDictionary() as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -66,10 +67,10 @@ public class BannersResponse : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if images != nil{
+//        if let images = images {
 //            aCoder.encode(images, forKey: "images")
 //        }
-//        if meta != nil{
+//        if let meta = meta {
 //            aCoder.encode(meta, forKey: "meta")
 //        }
 //

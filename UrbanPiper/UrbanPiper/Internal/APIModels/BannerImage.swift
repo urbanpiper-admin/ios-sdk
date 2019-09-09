@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class BannerImage : NSObject{
+public class BannerImage : NSObject, JSONDecodable{
 
 	public var created : String!
 	public var id : Int!
@@ -20,7 +20,8 @@ public class BannerImage : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 		created = dictionary["created"] as? String
 		id = dictionary["id"] as? Int
 		image = dictionary["image"] as? String
@@ -29,25 +30,25 @@ public class BannerImage : NSObject{
 	}
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    public func toDictionary() -> [String:Any]
+//    public func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if created != nil{
-//            dictionary["created"] = created
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        if let created = created {
+//            dictionary["created"] = created as AnyObject
 //        }
-//        if id != nil{
-//            dictionary["id"] = id
+//        if let id = id {
+//            dictionary["id"] = id as AnyObject
 //        }
-//        if image != nil{
-//            dictionary["image"] = image
+//        if let image = image {
+//            dictionary["image"] = image as AnyObject
 //        }
-//        if imgType != nil{
-//            dictionary["img_type"] = imgType
+//        if let imgType = imgType {
+//            dictionary["img_type"] = imgType as AnyObject
 //        }
-//        if markups != nil{
-//            dictionary["markups"] = markups
+//        if let markups = markups {
+//            dictionary["markups"] = markups as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -59,7 +60,7 @@ public class BannerImage : NSObject{
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
 //         created = aDecoder.decodeObject(forKey: "created") as? String
-//         id = aDecoder.decodeObject(forKey: "id") as? Int
+//         id = aDecoder.decodeInteger(forKey: "id")
 //         image = aDecoder.decodeObject(forKey: "image") as? String
 //         imgType = aDecoder.decodeObject(forKey: "img_type") as? String
 //         markups = aDecoder.decodeObject(forKey: "markups") as? String
@@ -72,19 +73,19 @@ public class BannerImage : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if created != nil{
+//        if let created = created {
 //            aCoder.encode(created, forKey: "created")
 //        }
-//        if id != nil{
+//        if let id = id {
 //            aCoder.encode(id, forKey: "id")
 //        }
-//        if image != nil{
+//        if let image = image {
 //            aCoder.encode(image, forKey: "image")
 //        }
-//        if imgType != nil{
+//        if let imgType = imgType {
 //            aCoder.encode(imgType, forKey: "img_type")
 //        }
-//        if markups != nil{
+//        if let markups = markups {
 //            aCoder.encode(markups, forKey: "markups")
 //        }
 //

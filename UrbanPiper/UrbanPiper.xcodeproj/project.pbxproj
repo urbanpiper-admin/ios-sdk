@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -85,7 +85,6 @@
 		189F85D8220AC7D2004B1C3E /* SocialAuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189F85D7220AC7D2004B1C3E /* SocialAuthResponse.swift */; };
 		18B25FC5223785C000CA7D74 /* Decimal+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CE3FBC208F655A0022475F /* Decimal+Additions.swift */; };
 		18B25FC6223785D600CA7D74 /* Date+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CE3FBE208F655A0022475F /* Date+String.swift */; };
-		18B25FC82237870B00CA7D74 /* Locale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3C41C21D9E6EF00768401 /* Locale.swift */; };
 		18B3C40A21D7415A00768401 /* CategoryOptionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3C40921D7415A00768401 /* CategoryOptionsResponse.swift */; };
 		18B3C40F21D7416500768401 /* JWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3C40B21D7416400768401 /* JWT.swift */; };
 		18B3C41021D7416500768401 /* Referral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3C40C21D7416400768401 /* Referral.swift */; };
@@ -96,6 +95,10 @@
 		18B3C42521D9E72400768401 /* AppsFlyerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3C42121D9E72400768401 /* AppsFlyerObserver.swift */; };
 		18B3C42721D9E72400768401 /* MixpanelObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3C42321D9E72400768401 /* MixpanelObserver.swift */; };
 		18B3C42821D9E72400768401 /* GAObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3C42421D9E72400768401 /* GAObserver.swift */; };
+		18C60B90232387BF007CDFB4 /* SharedPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C60B8F232387BF007CDFB4 /* SharedPreferences.swift */; };
+		18C60B922323AB42007CDFB4 /* JSONDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C60B912323AB42007CDFB4 /* JSONDecodable.swift */; };
+		18C60B9823249D94007CDFB4 /* RefreshTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C60B9723249D94007CDFB4 /* RefreshTokenResponse.swift */; };
+		18C60B9E2324B969007CDFB4 /* UPAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C60B9D2324B969007CDFB4 /* UPAPI.swift */; };
 		18F5A0E8224B74130077956C /* UserManager+Internal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189BF4E1223778B900FD5D72 /* UserManager+Internal.swift */; };
 		365FB9B7B8D3DEF81CB4BA7F /* Pods_UrbanPiperTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF52EC10ABB2B45B98715E3 /* Pods_UrbanPiperTests.framework */; };
 		4607A99D208F1E2700128010 /* APIManager+Banners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A92A208F1E2600128010 /* APIManager+Banners.swift */; };
@@ -282,11 +285,14 @@
 		18B3C40D21D7416400768401 /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		18B3C40E21D7416500768401 /* FilterOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterOption.swift; sourceTree = "<group>"; };
 		18B3C41821D9E6D800768401 /* UrbanPiper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrbanPiper.swift; sourceTree = "<group>"; };
-		18B3C41C21D9E6EF00768401 /* Locale.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Locale.swift; sourceTree = "<group>"; };
 		18B3C41E21D9E71700768401 /* APIManager+Feedback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIManager+Feedback.swift"; sourceTree = "<group>"; };
 		18B3C42121D9E72400768401 /* AppsFlyerObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppsFlyerObserver.swift; sourceTree = "<group>"; };
 		18B3C42321D9E72400768401 /* MixpanelObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixpanelObserver.swift; sourceTree = "<group>"; };
 		18B3C42421D9E72400768401 /* GAObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GAObserver.swift; sourceTree = "<group>"; };
+		18C60B8F232387BF007CDFB4 /* SharedPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedPreferences.swift; sourceTree = "<group>"; };
+		18C60B912323AB42007CDFB4 /* JSONDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecodable.swift; sourceTree = "<group>"; };
+		18C60B9723249D94007CDFB4 /* RefreshTokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTokenResponse.swift; sourceTree = "<group>"; };
+		18C60B9D2324B969007CDFB4 /* UPAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPAPI.swift; sourceTree = "<group>"; };
 		301F9BF87DB97ACCA90F3400 /* Pods-UrbanPiperTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UrbanPiperTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UrbanPiperTests/Pods-UrbanPiperTests.release.xcconfig"; sourceTree = "<group>"; };
 		372786B27D3C7C1B9881DFD1 /* Pods-UrbanPiper-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UrbanPiper-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-UrbanPiper-Example/Pods-UrbanPiper-Example.release.xcconfig"; sourceTree = "<group>"; };
 		3805E7B614EE86F32F0B0B52 /* Pods_UrbanPiper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UrbanPiper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -426,8 +432,8 @@
 		189BF4BF2235551400FD5D72 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
+				18C60B8F232387BF007CDFB4 /* SharedPreferences.swift */,
 				1875A1D5223F646A008E4F34 /* UserManager.swift */,
-				18B3C41C21D9E6EF00768401 /* Locale.swift */,
 				4607A929208F1E2600128010 /* API Manager */,
 				4607A98E208F1E2700128010 /* Cart Manager */,
 				4607A953208F1E2700128010 /* APIModels */,
@@ -435,6 +441,8 @@
 				4623DB1C208F854A00BD7537 /* Analytics */,
 				18F5A0E9224B741C0077956C /* Keychain Wrapper */,
 				46CE3FBB208F655A0022475F /* Extensions */,
+				18C60B912323AB42007CDFB4 /* JSONDecodable.swift */,
+				18C60B9D2324B969007CDFB4 /* UPAPI.swift */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
@@ -514,7 +522,6 @@
 		4607A929208F1E2600128010 /* API Manager */ = {
 			isa = PBXGroup;
 			children = (
-				18374E0C2219CC3F00BFCB86 /* APIManager+Rewards.swift */,
 				4607A92D208F1E2600128010 /* APIManager.swift */,
 				4607A931208F1E2600128010 /* APIManager+Auth.swift */,
 				4607A92A208F1E2600128010 /* APIManager+Banners.swift */,
@@ -530,6 +537,7 @@
 				4607A92B208F1E2600128010 /* APIManager+Ordering.swift */,
 				4607A932208F1E2600128010 /* APIManager+Payment.swift */,
 				46E2EC5C20D2604B004C917A /* APIManager+Reorder.swift */,
+				18374E0C2219CC3F00BFCB86 /* APIManager+Rewards.swift */,
 				4607A92F208F1E2600128010 /* APIManager+SocialAuth.swift */,
 				181B4CBE20EFE49E00BF6629 /* APIManager+Store.swift */,
 				4607A934208F1E2600128010 /* APIManager+User.swift */,
@@ -588,6 +596,7 @@
 				1878275720EA06BD009F57FA /* Transaction.swift */,
 				4607A96C208F1E2700128010 /* User.swift */,
 				188886FC22114FDC0001FE72 /* CartItem.swift */,
+				18C60B9723249D94007CDFB4 /* RefreshTokenResponse.swift */,
 			);
 			path = APIModels;
 			sourceTree = "<group>";
@@ -934,18 +943,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-UrbanPiperTests/Pods-UrbanPiperTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Vinyl/Vinyl.framework",
-				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-UrbanPiperTests/Pods-UrbanPiperTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Vinyl.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mixpanel.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-UrbanPiperTests/Pods-UrbanPiperTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -958,16 +960,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-UrbanPiper-Example/Pods-UrbanPiper-Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Mixpanel-swift/Mixpanel.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-UrbanPiper-Example/Pods-UrbanPiper-Example-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mixpanel.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-UrbanPiper-Example/Pods-UrbanPiper-Example-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1079,6 +1076,7 @@
 				181F215E2105B76500878E6D /* OrderDetails.swift in Sources */,
 				1811F6C720D4F3AF006FEDE1 /* MyOrderMeta.swift in Sources */,
 				188886F922114E8D0001FE72 /* OrderVerifyTxnResponse.swift in Sources */,
+				18C60B922323AB42007CDFB4 /* JSONDecodable.swift in Sources */,
 				18374E0B2219CC2600BFCB86 /* RewardsResponse.swift in Sources */,
 				1811F6CC20D4F3AF006FEDE1 /* MyOrderItem.swift in Sources */,
 				4607A9E9208F1E2700128010 /* BannersResponse.swift in Sources */,
@@ -1092,6 +1090,7 @@
 				4607A9A2208F1E2700128010 /* APIManager+SocialAuth.swift in Sources */,
 				189F85CC22098FCE004B1C3E /* LoginResponse.swift in Sources */,
 				4607A9CC208F1E2700128010 /* UserBizInfo.swift in Sources */,
+				18C60B9823249D94007CDFB4 /* RefreshTokenResponse.swift in Sources */,
 				181F21512105B74F00878E6D /* APIManager+FeaturedItems.swift in Sources */,
 				187185BC20DA0C4F004AE018 /* BizLocation.swift in Sources */,
 				4607A9D7208F1E2700128010 /* FeedbackConfig.swift in Sources */,
@@ -1118,15 +1117,16 @@
 				4607A9E1208F1E2700128010 /* ItemOption+Additions.swift in Sources */,
 				4607A9D8208F1E2700128010 /* Message.swift in Sources */,
 				4607A9D6208F1E2700128010 /* ItemOptionGroup+Additions.swift in Sources */,
+				18C60B9E2324B969007CDFB4 /* UPAPI.swift in Sources */,
 				18F5A0E8224B74130077956C /* UserManager+Internal.swift in Sources */,
 				18B3C41A21D9E6D800768401 /* UrbanPiper.swift in Sources */,
 				4607A9A9208F1E2700128010 /* APIManager+Notifications.swift in Sources */,
 				4607A9C8208F1E2700128010 /* ItemsSearchResponse.swift in Sources */,
 				181F21642105B76500878E6D /* Customer.swift in Sources */,
 				4607A9D3208F1E2700128010 /* Order.swift in Sources */,
+				18C60B90232387BF007CDFB4 /* SharedPreferences.swift in Sources */,
 				18B3C41021D7416500768401 /* Referral.swift in Sources */,
 				181B4CBF20EFE49F00BF6629 /* APIManager+Store.swift in Sources */,
-				18B25FC82237870B00CA7D74 /* Locale.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1342,7 +1342,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "UrbanPiper-Example/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1398,7 +1398,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "UrbanPiper-Example/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1420,7 +1420,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LX9U6JG87H;
 				INFOPLIST_FILE = "UrbanPiper-Example/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

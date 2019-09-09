@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class LoginResponse : NSObject{//}, NSCoding {
+public class LoginResponse : NSObject, JSONDecodable{//}, NSCoding {
     
     @objc public var message : String?
 
@@ -18,7 +18,8 @@ public class LoginResponse : NSObject{//}, NSCoding {
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-    @objc internal init(fromDictionary dictionary:  [String:Any]){
+    @objc internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
         super.init()
         message = dictionary["message"] as? String
         status = dictionary["status"] as? String
@@ -26,19 +27,19 @@ public class LoginResponse : NSObject{//}, NSCoding {
     }
     
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any]
+    public func toDictionary() -> [String : AnyObject]
     {
-        var dictionary: [String: Any] = [String:Any]()
-        if message != nil{
-            dictionary["message"] = message
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        if let message = message {
+            dictionary["message"] = message as AnyObject
         }
-        if status != nil{
-            dictionary["status"] = status
+        if let status = status {
+            dictionary["status"] = status as AnyObject
         }
-        if token != nil{
-            dictionary["token"] = token
+        if let token = token {
+            dictionary["token"] = token as AnyObject
         }
         
         return dictionary
@@ -61,13 +62,13 @@ public class LoginResponse : NSObject{//}, NSCoding {
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if message != nil{
+//        if let message = message {
 //            aCoder.encode(message, forKey: "message")
 //        }
-//        if status != nil{
+//        if let status = status {
 //            aCoder.encode(status, forKey: "status")
 //        }
-//        if token != nil{
+//        if let token = token {
 //            aCoder.encode(token, forKey: "token")
 //        }
 //    }

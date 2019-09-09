@@ -6,7 +6,7 @@
 import Foundation
 
 
-@objc public class ReorderItem : NSObject, NSCoding{
+@objc public class ReorderItem : NSObject, JSONDecodable, NSCoding{
 
     public var category : ItemCategory!
     public var currentStock : Int!
@@ -27,7 +27,8 @@ import Foundation
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    init(fromDictionary dictionary: [String:Any]){
+    required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
         currentStock = dictionary["current_stock"] as? Int
         id = dictionary["id"] as? Int
         imageLandscapeUrl = dictionary["image_landscape_url"] as? String
@@ -46,16 +47,16 @@ import Foundation
         quantity = dictionary["quantity"] as? Int ?? 0
         serviceTaxRate = dictionary["service_tax_rate"] as? Int
         vatRate = dictionary["vat_rate"] as? Int
-        if let categoryData = dictionary["category"] as? [String:Any]{
+        if let categoryData = dictionary["category"] as? [String : AnyObject]{
             category = ItemCategory(fromDictionary: categoryData)
         }
-        if let itemCategoryData = dictionary["item_category"] as? [String:Any]{
+        if let itemCategoryData = dictionary["item_category"] as? [String : AnyObject]{
             itemCategory = ItemCategory(fromDictionary: itemCategoryData)
         }
         optionGroups = [ItemOptionGroup]()
-        if let optionGroupsArray = dictionary["option_groups"] as? [[String:Any]]{
+        if let optionGroupsArray = dictionary["option_groups"] as? [[String : AnyObject]]{
             for dic in optionGroupsArray{
-                let value = ItemOptionGroup(fromDictionary: dic)
+                guard let value = ItemOptionGroup(fromDictionary: dic) else { continue }
                 optionGroups.append(value)
             }
         }
@@ -64,56 +65,56 @@ import Foundation
     }
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    func toDictionary() -> [String:Any]
+    func toDictionary() -> [String : AnyObject]
     {
-        var dictionary = [String:Any]()
-        if currentStock != nil{
-            dictionary["current_stock"] = currentStock
+        var dictionary = [String : AnyObject]()
+        if let currentStock = currentStock {
+            dictionary["current_stock"] = currentStock as AnyObject
         }
-        if id != nil{
-            dictionary["id"] = id
+        if let id = id {
+            dictionary["id"] = id as AnyObject
         }
-        if imageLandscapeUrl != nil{
-            dictionary["image_landscape_url"] = imageLandscapeUrl
+        if let imageLandscapeUrl = imageLandscapeUrl {
+            dictionary["image_landscape_url"] = imageLandscapeUrl as AnyObject
         }
-        if imageUrl != nil{
-            dictionary["image_url"] = imageUrl
+        if let imageUrl = imageUrl {
+            dictionary["image_url"] = imageUrl as AnyObject
         }
-        if itemPrice != nil{
-            dictionary["item_price"] = itemPrice
+        if let itemPrice = itemPrice {
+            dictionary["item_price"] = itemPrice as AnyObject
         }
-        if itemTitle != nil{
-            dictionary["item_title"] = itemTitle
+        if let itemTitle = itemTitle {
+            dictionary["item_title"] = itemTitle as AnyObject
         }
 
-        dictionary["quantity"] = quantity
+        dictionary["quantity"] = quantity as AnyObject
         
-        if serviceTaxRate != nil{
-            dictionary["service_tax_rate"] = serviceTaxRate
+        if let serviceTaxRate = serviceTaxRate {
+            dictionary["service_tax_rate"] = serviceTaxRate as AnyObject
         }
-        if vatRate != nil{
-            dictionary["vat_rate"] = vatRate
+        if let vatRate = vatRate {
+            dictionary["vat_rate"] = vatRate as AnyObject
         }
-        if category != nil{
-            dictionary["category"] = category.toDictionary()
+        if let category = category {
+            dictionary["category"] = category.toDictionary() as AnyObject
         }
-        if itemCategory != nil{
-            dictionary["itemCategory"] = itemCategory.toDictionary()
+        if let itemCategory = itemCategory {
+            dictionary["itemCategory"] = itemCategory.toDictionary() as AnyObject
         }
-        if optionGroups != nil{
-            var dictionaryElements = [[String:Any]]()
+        if let optionGroups = optionGroups {
+            var dictionaryElements = [[String : AnyObject]]()
             for optionGroupsElement in optionGroups {
                 dictionaryElements.append(optionGroupsElement.toDictionary())
             }
-            dictionary["optionGroups"] = dictionaryElements
+            dictionary["optionGroups"] = dictionaryElements as AnyObject
         }
-        if preOrderStartTime != nil{
-            dictionary["pre_order_start_time"] = preOrderStartTime
+        if let preOrderStartTime = preOrderStartTime {
+            dictionary["pre_order_start_time"] = preOrderStartTime as AnyObject
         }
-        if preOrderEndTime != nil{
-            dictionary["pre_order_end_time"] = preOrderEndTime
+        if let preOrderEndTime = preOrderEndTime {
+            dictionary["pre_order_end_time"] = preOrderEndTime as AnyObject
         }
 
         return dictionary
@@ -126,20 +127,20 @@ import Foundation
     @objc required public init(coder aDecoder: NSCoder)
     {
         category = aDecoder.decodeObject(forKey: "category") as? ItemCategory
-        currentStock = aDecoder.decodeObject(forKey: "current_stock") as? Int
-        id = aDecoder.decodeObject(forKey: "id") as? Int
+        currentStock = aDecoder.decodeInteger(forKey: "current_stock")
+        id = aDecoder.decodeInteger(forKey: "id")
         imageLandscapeUrl = aDecoder.decodeObject(forKey: "image_landscape_url") as? String
         imageUrl = aDecoder.decodeObject(forKey: "image_url") as? String
         itemCategory = aDecoder.decodeObject(forKey: "item_category") as? ItemCategory
         itemPrice = aDecoder.decodeObject(forKey: "item_price") as? Decimal
         itemTitle = aDecoder.decodeObject(forKey: "item_title") as? String
         optionGroups = aDecoder.decodeObject(forKey: "option_groups") as? [ItemOptionGroup]
-        quantity = aDecoder.decodeObject(forKey: "quantity") as? Int ?? 0
-        serviceTaxRate = aDecoder.decodeObject(forKey: "service_tax_rate") as? Int
-        vatRate = aDecoder.decodeObject(forKey: "vat_rate") as? Int
+        quantity = aDecoder.decodeInteger(forKey: "quantity")
+        serviceTaxRate = aDecoder.decodeInteger(forKey: "service_tax_rate")
+        vatRate = aDecoder.decodeInteger(forKey: "vat_rate")
         
-        preOrderStartTime = aDecoder.decodeObject(forKey: "pre_order_start_time") as? Int
-        preOrderEndTime = aDecoder.decodeObject(forKey: "pre_order_end_time") as? Int
+        preOrderStartTime = aDecoder.decodeInteger(forKey: "pre_order_start_time")
+        preOrderEndTime = aDecoder.decodeInteger(forKey: "pre_order_end_time")
     }
 
     /**
@@ -148,46 +149,46 @@ import Foundation
      */
     @objc public func encode(with aCoder: NSCoder)
     {
-        if category != nil{
+        if let category = category {
             aCoder.encode(category, forKey: "category")
         }
-        if currentStock != nil{
+        if let currentStock = currentStock {
             aCoder.encode(currentStock, forKey: "current_stock")
         }
-        if id != nil{
+        if let id = id {
             aCoder.encode(id, forKey: "id")
         }
-        if imageLandscapeUrl != nil{
+        if let imageLandscapeUrl = imageLandscapeUrl {
             aCoder.encode(imageLandscapeUrl, forKey: "image_landscape_url")
         }
-        if imageUrl != nil{
+        if let imageUrl = imageUrl {
             aCoder.encode(imageUrl, forKey: "image_url")
         }
-        if itemCategory != nil{
+        if let itemCategory = itemCategory {
             aCoder.encode(itemCategory, forKey: "item_category")
         }
-        if itemPrice != nil{
+        if let itemPrice = itemPrice {
             aCoder.encode(itemPrice, forKey: "item_price")
         }
-        if itemTitle != nil{
+        if let itemTitle = itemTitle {
             aCoder.encode(itemTitle, forKey: "item_title")
         }
-        if optionGroups != nil{
+        if let optionGroups = optionGroups {
             aCoder.encode(optionGroups, forKey: "option_groups")
         }
         
         aCoder.encode(quantity, forKey: "quantity")
 
-        if serviceTaxRate != nil{
+        if let serviceTaxRate = serviceTaxRate {
             aCoder.encode(serviceTaxRate, forKey: "service_tax_rate")
         }
-        if vatRate != nil{
+        if let vatRate = vatRate {
             aCoder.encode(vatRate, forKey: "vat_rate")
         }
-        if preOrderStartTime != nil{
+        if let preOrderStartTime = preOrderStartTime {
             aCoder.encode(preOrderStartTime, forKey: "pre_order_start_time")
         }
-        if preOrderEndTime != nil{
+        if let preOrderEndTime = preOrderEndTime {
             aCoder.encode(preOrderEndTime, forKey: "pre_order_end_time")
         }
     }

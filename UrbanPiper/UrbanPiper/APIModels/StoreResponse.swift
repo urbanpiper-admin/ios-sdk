@@ -8,7 +8,7 @@
 import Foundation
 
 
-@objc public class StoreResponse : NSObject, NSCoding{
+@objc public class StoreResponse : NSObject, JSONDecodable, NSCoding{
 
     @objc public var biz : Biz!
     @objc public var store : Store?
@@ -17,29 +17,30 @@ import Foundation
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		if let bizData: [String:Any] = dictionary["biz"] as? [String:Any]{
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+		if let bizData: [String : AnyObject] = dictionary["biz"] as? [String : AnyObject]{
 			biz = Biz(fromDictionary: bizData)
 		}
         
         Biz.shared = biz
         
-		if let storeData: [String:Any] = dictionary["store"] as? [String:Any]{
+		if let storeData: [String : AnyObject] = dictionary["store"] as? [String : AnyObject]{
 			store = Store(fromDictionary: storeData)
 		}
 	}
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    @objc public func toDictionary() -> [String:Any]
+    @objc public func toDictionary() -> [String : AnyObject]
     {
-        var dictionary: [String: Any] = [String:Any]()
-        if biz != nil{
-            dictionary["biz"] = biz.toDictionary()
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        if let biz = biz {
+            dictionary["biz"] = biz.toDictionary() as AnyObject
         }
-        if store != nil{
-            dictionary["store"] = store!.toDictionary()
+        if let store = store {
+            dictionary["store"] = store.toDictionary() as AnyObject
         }
         return dictionary
     }
@@ -67,10 +68,10 @@ import Foundation
     */
     @objc public func encode(with aCoder: NSCoder)
 	{
-		if biz != nil{
+		if let biz = biz {
 			aCoder.encode(biz, forKey: "biz")
 		}
-		if store != nil{
+		if let store = store {
 			aCoder.encode(store, forKey: "store")
 		}
 

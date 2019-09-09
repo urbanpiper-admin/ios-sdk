@@ -7,25 +7,26 @@
 
 import UIKit
 
-public class UserInfoUpdateResponse: NSObject {
+public class UserInfoUpdateResponse: NSObject, JSONDecodable {
 
     public var msg: String?
     public var success: Bool = false
 
         
-    init(fromDictionary dictionary: [String:Any]) {
+    required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
         msg = dictionary["msg"] as? String
         success = dictionary["success"] as? Bool ?? false
     }
     
-    @objc public func toDictionary() -> [String: Any] {
-        var dictionary: [String: Any] = [String:Any]()
+    @objc public func toDictionary() -> [String : AnyObject] {
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
 
         if msg != nil {
-            dictionary["msg"] = msg
+            dictionary["msg"] = msg as AnyObject
         }
         
-        dictionary["success"] = success
+        dictionary["success"] = success as AnyObject
         
         return dictionary
     }

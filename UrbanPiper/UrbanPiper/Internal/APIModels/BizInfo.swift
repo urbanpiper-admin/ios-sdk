@@ -8,7 +8,7 @@
 import Foundation
 
 
-public class UserBizInfoResponse : NSObject, NSCoding{
+public class UserBizInfoResponse : NSObject, JSONDecodable, NSCoding{
 
 	public var meta : Meta!
 	@objc public var userBizInfos : [UserBizInfo]!
@@ -17,34 +17,35 @@ public class UserBizInfoResponse : NSObject, NSCoding{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+		if let metaData: [String : AnyObject] = dictionary["meta"] as? [String : AnyObject]{
 			meta = Meta(fromDictionary: metaData)
 		}
 		userBizInfos = [UserBizInfo]()
-		if let objectsArray: [[String:Any]] = dictionary["objects"] as? [[String:Any]]{
+		if let objectsArray: [[String : AnyObject]] = dictionary["objects"] as? [[String : AnyObject]]{
 			for dic in objectsArray{
-				let value: UserBizInfo = UserBizInfo(fromDictionary: dic)
+				guard let value: UserBizInfo = UserBizInfo(fromDictionary: dic) else { continue }
 				userBizInfos.append(value)
 			}
 		}
 	}
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any]
+    public func toDictionary() -> [String : AnyObject]
     {
-        var dictionary: [String: Any] = [String:Any]()
-        if meta != nil{
-            dictionary["meta"] = meta.toDictionary()
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        if let meta = meta {
+            dictionary["meta"] = meta.toDictionary() as AnyObject
         }
-        if userBizInfos != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+        if let userBizInfos = userBizInfos {
+            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
             for userBizInfo in userBizInfos {
                 dictionaryElements.append(userBizInfo.toDictionary())
             }
-            dictionary["objects"] = dictionaryElements
+            dictionary["objects"] = dictionaryElements as AnyObject
         }
         return dictionary
     }
@@ -65,10 +66,10 @@ public class UserBizInfoResponse : NSObject, NSCoding{
     */
     @objc public func encode(with aCoder: NSCoder)
 	{
-		if meta != nil{
+		if let meta = meta {
 			aCoder.encode(meta, forKey: "meta")
 		}
-		if userBizInfos != nil{
+		if let userBizInfos = userBizInfos {
 			aCoder.encode(userBizInfos, forKey: "objects")
 		}
 

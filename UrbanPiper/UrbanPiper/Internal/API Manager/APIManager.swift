@@ -104,9 +104,8 @@ import Foundation
 //        self.jwt = jwt
 //    }
     
-    func apiRequest<T>(urlRequest: inout URLRequest,
+    func apiRequest<T: JSONDecodable>(urlRequest: inout URLRequest,
                        headers: [String : String]? = nil,
-                       responseParser: (([String: Any]) -> T?)?,
                        completion: APICompletion<T>?,
                        failure: APIFailure?) -> URLSessionDataTask? {
         
@@ -168,14 +167,14 @@ import Foundation
             }
             
             guard let jsonObject: Any = try? JSONSerialization.jsonObject(with: responseData, options: []),
-                let dictionary: [String: Any] = jsonObject as? [String: Any], responseParser != nil else {
+                let dictionary: [String: AnyObject] = jsonObject as? [String: AnyObject] else {
                     DispatchQueue.main.async {
                         completion?(GenericResponse.init() as? T)
                     }
                 return
             }
             
-            guard let result = responseParser?(dictionary) else {
+            guard let result = T.init(fromDictionary: dictionary) else {
                 let upError = UPError(type: .responseParseError, data: data, response: response, error: error)
                 print("API Response parsing failure for url \(String(describing: apiUrl?.absoluteString))")
                 DispatchQueue.main.async {
@@ -194,25 +193,94 @@ import Foundation
 
     }
     
-//    func handleAPIError(httpStatusCode: Int?, errorCode: Int?, data: Data?, failureClosure: APIFailure?) {
-//        guard errorCode == nil || errorCode != NSURLErrorCancelled else { return }
-//        
-//        if let code = httpStatusCode, code == 401, jwt != nil, jwt!.tokenExpired {
-//            DispatchQueue.main.async {
-//                NotificationCenter.default.post(name: .sessionExpired, object: nil)
-//                UrbanPiper.sharedInstance().callback("token expired")
-//            }
-//        }
-//        
-//        if let closure = failureClosure {
-//            DispatchQueue.main.async {
-//                if let apiError: UPError = UPError(type: .apiError, httpStatusCode: httpStatusCode, errorCode: errorCode, data: data) {
-//                    closure(apiError as UPError)
-//                } else {
-//                    closure(nil)
-//                }
-//            }
-//        }
-//    }
-
+    func apiRequest<T: JSONDecodable>(upAPI: UPAPI,
+                                      completion: APICompletion<T>?,
+                                      failure: APIFailure?) -> URLSessionDataTask? {
+        
+        var urlRequest = upAPI.requestWithBaseURL(baseURL: NSURL(string: APIManager.baseUrl)!)
+        
+        var additionalHeaders: [String: String] = ["X-App-Src": "ios",
+                                                   "X-Bid": bizId,
+                                                   "X-App-Version": appVersion,
+                                                   "X-Use-Lang": SharedPreferences.language.rawValue,
+                                                   "Content-Type": "application/json",
+                                                   "Accept-Encoding": "gzip",
+                                                   "Authorization": authorizationKey()]
+        
+        if let customHeaders: [String : String] = upAPI.headers {
+            for header in customHeaders {
+                additionalHeaders[header.key] = header.value
+            }
+        }
+        
+        urlRequest.allHTTPHeaderFields = additionalHeaders
+                
+        let apiUrl = urlRequest.url
+        
+        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+            guard let httpResponse = response as? HTTPURLResponse else {
+                let upError = UPError(data: data, response: response, error: error)
+                DispatchQueue.main.async {
+                    failure?(upError)
+                }
+                return
+            }
+            
+            guard 200 ... 204 ~= httpResponse.statusCode else {
+                if let hasTokenExpired = self?.jwt?.tokenExpired, hasTokenExpired, httpResponse.statusCode == 401 {
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: .sessionExpired, object: nil)
+                        UrbanPiper.sharedInstance().callback(.sessionExpired)
+                    }
+                }
+                
+                let upError = UPError(data: data, response: response, error: error)
+                DispatchQueue.main.async {
+                    failure?(upError)
+                }
+                return
+            }
+            
+            guard httpResponse.statusCode != 204 else {
+                DispatchQueue.main.async {
+                    completion?(GenericResponse.init() as? T)
+                }
+                return
+            }
+            
+            guard let responseData = data else {
+                let upError = UPError(data: data, response: response, error: error)
+                DispatchQueue.main.async {
+                    failure?(upError)
+                }
+                return
+            }
+            
+            guard let jsonObject: Any = try? JSONSerialization.jsonObject(with: responseData, options: []),
+                let dictionary: [String: AnyObject] = jsonObject as? [String: AnyObject] else {
+                    DispatchQueue.main.async {
+                        completion?(GenericResponse.init() as? T)
+                    }
+                    return
+            }
+            
+            guard let result = T.init(fromDictionary: dictionary) else {
+                let upError = UPError(type: .responseParseError, data: data, response: response, error: error)
+                print("API Response parsing failure for url \(String(describing: apiUrl?.absoluteString))")
+                DispatchQueue.main.async {
+                    failure?(upError)
+                }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                completion?(result)
+            }
+        }
+        
+        dataTask.resume()
+        return dataTask
+        
+    }
+    
 }

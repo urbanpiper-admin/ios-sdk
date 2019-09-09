@@ -12,7 +12,7 @@ public enum PaymentType: String {
     case paytabs = "paytabs"
 }
 
-public class OnlinePaymentData : NSObject{
+public class OnlinePaymentData : NSObject, JSONDecodable{
 
 	public var cALLBACKURL : String!
 	public var cHANNELID : String!
@@ -35,7 +35,8 @@ public class OnlinePaymentData : NSObject{
 	/**
 	 * Instantiate the instance using the passed dictionary values to set the properties values
 	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
+	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
         key = dictionary["key"] as? String
 		cALLBACKURL = dictionary["CALLBACK_URL"] as? String
 		cHANNELID = dictionary["CHANNEL_ID"] as? String
@@ -51,46 +52,46 @@ public class OnlinePaymentData : NSObject{
 	}
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any]
+    public func toDictionary() -> [String : AnyObject]
     {
-        var dictionary: [String: Any] = [String:Any]()
-        if key != nil{
-            dictionary["key"] = key
+        var dictionary: [String : AnyObject] = [String : AnyObject]()
+        if let key = key {
+            dictionary["key"] = key as AnyObject
         }
-        if cALLBACKURL != nil{
-            dictionary["CALLBACK_URL"] = cALLBACKURL
+        if let cALLBACKURL = cALLBACKURL {
+            dictionary["CALLBACK_URL"] = cALLBACKURL as AnyObject
         }
-        if cHANNELID != nil{
-            dictionary["CHANNEL_ID"] = cHANNELID
+        if let cHANNELID = cHANNELID {
+            dictionary["CHANNEL_ID"] = cHANNELID as AnyObject
         }
-        if cHECKSUMHASH != nil{
-            dictionary["CHECKSUMHASH"] = cHECKSUMHASH
+        if let cHECKSUMHASH = cHECKSUMHASH {
+            dictionary["CHECKSUMHASH"] = cHECKSUMHASH as AnyObject
         }
-        if cUSTID != nil{
-            dictionary["CUST_ID"] = cUSTID
+        if let cUSTID = cUSTID {
+            dictionary["CUST_ID"] = cUSTID as AnyObject
         }
-        if iNDUSTRYTYPEID != nil{
-            dictionary["INDUSTRY_TYPE_ID"] = iNDUSTRYTYPEID
+        if let iNDUSTRYTYPEID = iNDUSTRYTYPEID {
+            dictionary["INDUSTRY_TYPE_ID"] = iNDUSTRYTYPEID as AnyObject
         }
-        if mID != nil{
-            dictionary["MID"] = mID
+        if let mID = mID {
+            dictionary["MID"] = mID as AnyObject
         }
-        if oRDERID != nil{
-            dictionary["ORDER_ID"] = oRDERID
+        if let oRDERID = oRDERID {
+            dictionary["ORDER_ID"] = oRDERID as AnyObject
         }
-        if tXNAMOUNT != nil{
-            dictionary["TXN_AMOUNT"] = tXNAMOUNT
+        if let tXNAMOUNT = tXNAMOUNT {
+            dictionary["TXN_AMOUNT"] = tXNAMOUNT as AnyObject
         }
-        if wEBSITE != nil{
-            dictionary["WEBSITE"] = wEBSITE
+        if let wEBSITE = wEBSITE {
+            dictionary["WEBSITE"] = wEBSITE as AnyObject
         }
-        if paymentUrl != nil{
-            dictionary["payment_url"] = paymentUrl
+        if let paymentUrl = paymentUrl {
+            dictionary["payment_url"] = paymentUrl as AnyObject
         }
-        if type != nil{
-            dictionary["type"] = type
+        if let type = type {
+            dictionary["type"] = type as AnyObject
         }
         return dictionary
     }
@@ -122,40 +123,40 @@ public class OnlinePaymentData : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if key != nil{
+//        if let key = key {
 //            aCoder.encode(key, forKey: "key")
 //        }
-//        if cALLBACKURL != nil{
+//        if let cALLBACKURL = cALLBACKURL {
 //            aCoder.encode(cALLBACKURL, forKey: "CALLBACK_URL")
 //        }
-//        if cHANNELID != nil{
+//        if let cHANNELID = cHANNELID {
 //            aCoder.encode(cHANNELID, forKey: "CHANNEL_ID")
 //        }
-//        if cHECKSUMHASH != nil{
+//        if let cHECKSUMHASH = cHECKSUMHASH {
 //            aCoder.encode(cHECKSUMHASH, forKey: "CHECKSUMHASH")
 //        }
-//        if cUSTID != nil{
+//        if let cUSTID = cUSTID {
 //            aCoder.encode(cUSTID, forKey: "CUST_ID")
 //        }
-//        if iNDUSTRYTYPEID != nil{
+//        if let iNDUSTRYTYPEID = iNDUSTRYTYPEID {
 //            aCoder.encode(iNDUSTRYTYPEID, forKey: "INDUSTRY_TYPE_ID")
 //        }
-//        if mID != nil{
+//        if let mID = mID {
 //            aCoder.encode(mID, forKey: "MID")
 //        }
-//        if oRDERID != nil{
+//        if let oRDERID = oRDERID {
 //            aCoder.encode(oRDERID, forKey: "ORDER_ID")
 //        }
-//        if tXNAMOUNT != nil{
+//        if let tXNAMOUNT = tXNAMOUNT {
 //            aCoder.encode(tXNAMOUNT, forKey: "TXN_AMOUNT")
 //        }
-//        if wEBSITE != nil{
+//        if let wEBSITE = wEBSITE {
 //            aCoder.encode(wEBSITE, forKey: "WEBSITE")
 //        }
-//        if paymentUrl != nil{
+//        if let paymentUrl = paymentUrl {
 //            aCoder.encode(paymentUrl, forKey: "payment_url")
 //        }
-//        if type != nil{
+//        if let type = type {
 //            aCoder.encode(type, forKey: "type")
 //        }
 //
