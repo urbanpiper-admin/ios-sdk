@@ -80,7 +80,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
     @objc internal func getNearestStore(_ coordinates: CLLocationCoordinate2D,
@@ -97,7 +97,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
 }
 

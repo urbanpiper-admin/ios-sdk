@@ -8,8 +8,11 @@
 
 import UIKit
 import UrbanPiper
+import RxSwift
 
 class ViewController: UIViewController {
+    
+    var disposeBag: DisposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,10 +29,26 @@ class ViewController: UIViewController {
         
         UrbanPiper.sharedInstance().logout()
         
-        UrbanPiper.sharedInstance().login(phone: "+918903464104", password: "qwerty", completion: { (loginResponse) in
-            print(loginResponse?.toDictionary() as AnyObject)
-            UrbanPiper.sharedInstance().getNearestStore(lat: 12.970171, lng: 77.7306347, completion: { (storeResponse) in
-                print(storeResponse?.toDictionary() as AnyObject)
+        login()
+    }
+    
+    func login() {
+        UrbanPiper.sharedInstance().login(phone: "+918903464104", password: "qwerty")
+            .subscribe(onNext: { [weak self] (loginResponse) in
+                print(loginResponse.toDictionary() as AnyObject)
+                self?.getNearestStore()
+            }, onError: { (error) in
+                print(error as Any)
+            }, onCompleted: {
+                print("completed")
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func getNearestStore() {
+        UrbanPiper.sharedInstance().getNearestStore(lat: 12.970171, lng: 77.7306347)
+            .subscribe(onNext: { (storeResponse) in
+                print(storeResponse.toDictionary() as AnyObject)
                 
                 let storeResponseData: Data = NSKeyedArchiver.archivedData(withRootObject: storeResponse as Any)
                 UserDefaults.standard.set(storeResponseData, forKey: "nearestStoreResponseKey")
@@ -37,22 +56,12 @@ class ViewController: UIViewController {
                 guard let storeResponseDataSaved: Data = UserDefaults.standard.object(forKey: "nearestStoreResponseKey") as? Data else { return }
                 guard let storeResponseSaved: StoreResponse = NSKeyedUnarchiver.unarchiveObject(with: storeResponseDataSaved) as? StoreResponse else { return }
                 print(storeResponseSaved.toDictionary() as AnyObject)
-            }, failure: { (error) in
+            }, onError: { (error) in
                 print(error as Any)
+            }, onCompleted: {
+                print("completed")
             })
-            
-//            UrbanPiper.sharedInstance().getCategories(storeId: nil, completion: { (categoriesResponse) in
-//                print(categoriesResponse?.toDictionary() as AnyObject)
-//            }, failure: { (error) in
-//                print(error as Any)
-//            })
-            
-        }, failure: { (error) in
-            print(error as Any)
-        })
-        
-        
-
+        .disposed(by: disposeBag)
     }
 
 }

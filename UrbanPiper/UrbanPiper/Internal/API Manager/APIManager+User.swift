@@ -13,7 +13,7 @@ enum UserAPI {
     case updateUserData(name: String, phone: String, email: String, gender: String?, aniversary: Date?, birthday: Date?)
     case changePassword(phone: String, oldPassword: String, newPassword: String)
     case savedAddresses
-    case deliverableAddresses(storeId: Int?)
+    case deliverableAddresses(storeId: String?)
     case addAddress(address: Address)
     case updateAddress(address: Address)
     case deleteAddress(addressId: Int)
@@ -223,7 +223,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "GET"
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
 
     @objc internal func updateUserInfo(name: String,
@@ -265,7 +265,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
     @objc internal func changePassword(phone: String,
@@ -291,7 +291,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
     @objc internal func getSavedAddresses(completion: ((UserAddressesResponse?) -> Void)?,
@@ -306,10 +306,10 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
-    internal func getDeliverableAddresses(storeId: Int?,
+    internal func getDeliverableAddresses(storeId: String?,
                                           completion: ((UserAddressesResponse?) -> Void)?,
                                           failure: APIFailure?) -> URLSessionDataTask {
         
@@ -328,7 +328,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
     @objc internal func addAddress(address: Address,
@@ -371,7 +371,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: addressDict, options: [])
         
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
     @objc internal func updateAddress(address: Address,
@@ -417,7 +417,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: addressDict, options: [])
         
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
     @objc internal func deleteAddress(addressId: Int,
@@ -434,6 +434,6 @@ extension APIManager {
         urlRequest.httpMethod = "DELETE"
         
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
 }

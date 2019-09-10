@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreLocation
+import RxSwift
 
 /// The primary class for integrating UrbanPiper in your app
 public class UrbanPiper: NSObject {
@@ -108,6 +109,10 @@ public extension UrbanPiper {
         return UserManager.shared.login(phone: phone, password: password, completion: completion, failure: failure)
     }
     
+    func login(phone: String, password: String) -> Observable<LoginResponse> {
+        return UserManager.shared.login(phone: phone, password: password)
+    }
+    
     /// API call to login an social login user
     ///
     /// - Parameters:
@@ -121,6 +126,10 @@ public extension UrbanPiper {
                                                completion: @escaping ((SocialLoginResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
         return UserManager.shared.socialLogin(email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken, completion: completion, failure: failure)
     }
+    
+    func socialLogin(email: String, socialLoginProvider: SocialLoginProvider, accessToken: String) -> Observable<SocialLoginResponse> {
+        return UserManager.shared.socialLogin(email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken)
+    }
         
     /// API call to retrieve the updated user info from the server, user needs to be logged in to make this call
     ///
@@ -131,6 +140,10 @@ public extension UrbanPiper {
     @discardableResult @objc func refreshUserInfo(completion: ((UserInfoResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
         return UserManager.shared.refreshUserInfo(completion: completion, failure: failure)
     }
+    
+    func refreshUserInfo() -> Observable<UserInfoResponse>? {
+        return UserManager.shared.refreshUserInfo()
+    }
 
     /// API call to retrieve the user's updated biz info (i.e. balance, points) from the server, user needs to be logged in to make this call
     ///
@@ -140,6 +153,10 @@ public extension UrbanPiper {
     /// - Returns: An instance of URLSessionDataTask
     @objc @discardableResult func refreshUserBizInfo(completion: ((UserBizInfoResponse?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
         return UserManager.shared.refreshUserBizInfo(completion: completion, failure: failure)
+    }
+    
+    func refreshUserBizInfo() -> Observable<UserBizInfoResponse>? {
+        return UserManager.shared.refreshUserBizInfo()
     }
 
     /// API call to update the user info in the server, user needs to be logged in to make this call
@@ -166,6 +183,18 @@ public extension UrbanPiper {
         return UserManager.shared.updateUserInfo(name: name ?? user.firstName, phone: user.phone, email: email ?? user.email, gender: gender, aniversary: aniversary, birthday: birthday, completion: completion, failure: failure)
     }
     
+    func updateUserInfo(name: String? = nil, email: String? = nil, gender: String? = nil, aniversary: Date? = nil, birthday: Date? = nil) -> Observable<UserInfoUpdateResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard let user = getUser() else { return nil }
+        
+        if user.provider != nil {
+            assert(email == nil, "The email id cannot be changed for a social login user")
+            guard email == nil else { return  nil }
+        }
+        
+        return UserManager.shared.updateUserInfo(name: name ?? user.firstName, phone: user.phone, email: email ?? user.email, gender: gender, aniversary: aniversary, birthday: birthday)
+    }
+    
     /// API call to change the password of the user, the password cannot be changed for a social login user, user needs to be logged in to make this call
     ///
     /// - Parameters:
@@ -185,6 +214,16 @@ public extension UrbanPiper {
         return UserManager.shared.changePassword(phone: phone, oldPassword: oldPassword, newPassword: newPassword, completion: completion, failure: failure)
     }
     
+    func changePassword(phone: String, oldPassword: String, newPassword: String) -> Observable<GenericResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard let user = getUser() else { return nil }
+        
+        assert(user.provider == nil, "Password cannot be changed for a social login user")
+        guard user.provider == nil else { return  nil }
+        
+        return UserManager.shared.changePassword(phone: phone, oldPassword: oldPassword, newPassword: newPassword)
+    }
+    
     /// Get the user's saved deliverable address for the provided store id, user needs to be logged in to make this call
     ///
     /// - Parameters:
@@ -196,7 +235,15 @@ public extension UrbanPiper {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
-        return APIManager.shared.getDeliverableAddresses(storeId: Int(storeId ?? ""), completion: completion, failure: failure)
+        return APIManager.shared.getDeliverableAddresses(storeId: storeId, completion: completion, failure: failure)
+    }
+    
+    func getDeliverableAddresses(storeId: String?, completion: ((UserAddressesResponse?) -> Void)?, failure: @escaping APIFailure) -> Observable<UserAddressesResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = UserAPI.deliverableAddresses(storeId: storeId)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
 
     /// API call to add a new address to the user's saved addresses, user needs to be logged in to make this call
@@ -221,6 +268,14 @@ public extension UrbanPiper {
         }, failure: failure)
     }
     
+    func addAddress(address: Address) -> Observable<AddUpdateAddressResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = UserAPI.addAddress(address: address)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
+    
     /// API call to update the user's address, user needs to be logged in to make this call
     ///
     /// - Parameters:
@@ -233,6 +288,14 @@ public extension UrbanPiper {
         guard getUser() != nil else { return nil }
 
         return APIManager.shared.updateAddress(address: address, completion: completion, failure: failure)
+    }
+    
+    func updateAddress(address: Address) -> Observable<AddUpdateAddressResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = UserAPI.updateAddress(address: address)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
     
     /// API call to delete the user's address, user needs to be logged in to make this call
@@ -254,6 +317,14 @@ public extension UrbanPiper {
         }, failure: failure)
     }
     
+    func deleteAddress(addressId: Int) -> Observable<GenericResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = UserAPI.deleteAddress(addressId: addressId)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
+    
     /// Get the user's wallet transactions, user needs to be logged in to make this call
     ///
     /// - Parameters:
@@ -267,6 +338,14 @@ public extension UrbanPiper {
         guard getUser() != nil else { return nil }
 
         return APIManager.shared.getWalletTransactions(offset: offset, limit: limit ?? Constants.fetchLimit, completion: completion, failure: failure)
+    }
+    
+    func getWalletTransactions(offset: Int = 0, limit: Int? = nil) -> Observable<WalletTransactionResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = WalletAPI.walletTransactions(offset: offset, limit: limit ?? Constants.fetchLimit)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
     
     /// Get the user's past orders, user needs to be logged in to make this call
@@ -287,6 +366,15 @@ public extension UrbanPiper {
                                                completion: completion,
                                                failure: failure)
     }
+    
+    func getPastOrders(offset: Int = 0,
+                       limit: Int? = nil) -> Observable<PastOrdersResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = PastOrdersAPI.pastOrders(offset: offset, limit: limit ?? Constants.fetchLimit)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
 
     /// Get the user's past order details, user needs to be logged in to make this call
     ///
@@ -300,6 +388,14 @@ public extension UrbanPiper {
         guard getUser() != nil else { return nil }
 
         return APIManager.shared.getPastOrderDetails(orderId: orderId, completion: completion, failure: failure)
+    }
+    
+    func getPastOrderDetails(orderId: Int) -> Observable<PastOrderDetailsResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = PastOrdersAPI.pastOrderDetails(orderId: orderId)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
 
     /// API call to reedem the reward available from the `getRewards(...)` API call, user needs to be logged in to make this call
@@ -316,6 +412,14 @@ public extension UrbanPiper {
         return APIManager.shared.redeemReward(rewardId: rewardId, completion: completion, failure: failure)
     }
     
+    func redeemReward(rewardId: Int) -> Observable<RedeemRewardResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = RewardsAPI.reedemRewards(rewardId: rewardId)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
+    
     /// Get the list of user's notfications, user needs to be logged in to make this call
     ///
     /// - Parameters:
@@ -329,6 +433,15 @@ public extension UrbanPiper {
         guard getUser() != nil else { return nil }
 
         return APIManager.shared.getNotifications(offset: offset, limit: limit ?? Constants.fetchLimit, completion: completion, failure: failure)
+    }
+    
+    func getNotifications(offset: Int = 0,
+                          limit: Int? = nil) -> Observable<NotificationsResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = NotificationsAPI.notifications(offset: offset, limit: limit ?? Constants.fetchLimit)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
 
     /// Use this method to submit the feedback for an completed order, user needs to be logged in to make this call
@@ -349,6 +462,15 @@ public extension UrbanPiper {
 
         return APIManager.shared.submitFeedback(name: name, rating: rating, orderId: orderId, choiceText: choiceText, comments: comments, completion: completion, failure: failure)
     }
+    
+    func submitFeedback(name: String, rating: Double, orderId: Int, choiceText: String?, comments: String?,
+                        completion: ((GenericResponse?) -> Void)?, failure: @escaping APIFailure) -> Observable<GenericResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = FeedbackAPI.submitFeedback(name: name, rating: rating, orderId: orderId, choiceText: choiceText, comments: comments)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
 
     /// Get the items that where liked by the user, user needs to be logged in to make this call
     ///
@@ -365,6 +487,14 @@ public extension UrbanPiper {
         return APIManager.shared.userLikes(offset: offset, limit: limit ?? Constants.fetchLimit, completion: completion, failure: failure)
     }
     
+    func getItemLikes(offset: Int = 0, limit: Int? = nil) -> Observable<UserLikesResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = ItemLikesAPI.userLikes
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
+    
     /// API call to like an item, user needs to be logged in to make this call
     ///
     /// - Parameters:
@@ -377,6 +507,14 @@ public extension UrbanPiper {
         guard getUser() != nil else { return nil }
 
         return APIManager.shared.likeItem(itemId: itemId, completion: completion, failure: failure)
+    }
+    
+    func likeItem(itemId: Int) -> Observable<GenericResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = ItemLikesAPI.likeItem(itemId: itemId)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
     
     /// API call to unlike an item, user needs to be logged in to make this call
@@ -392,6 +530,14 @@ public extension UrbanPiper {
 
         return APIManager.shared.unlikeItem(itemId: itemId, completion: completion, failure: failure)
     }
+    
+    func unlikeItem(itemId: Int) -> Observable<GenericResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = ItemLikesAPI.unlikeItem(itemId: itemId)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
 
     /// API call to initate a wallet reload, user needs to be logged in to make this call
     ///
@@ -400,14 +546,22 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `PaymentInitResponse`, the response contains the payment gateway details
     ///   - failure: Return an instance of URLSessionDataTask
     @discardableResult @objc func initWalletReload(amount: Decimal,
-                                                          completion: ((PaymentInitResponse?) -> Void)?,
-                                                          failure: APIFailure?) -> URLSessionDataTask? {
+                                                   completion: ((PaymentInitResponse?) -> Void)?,
+                                                   failure: APIFailure?) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
         let paymentOption = PaymentOption.paymentGateway
-        let purpose = OnlinePaymentPurpose.reload
-        return APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption, purpose: purpose, totalAmount: amount, storeId: nil, completion: completion, failure: failure)
+        return APIManager.shared.initiateWalletReload(paymentOption: paymentOption, totalAmount: amount, completion: completion, failure: failure)
+    }
+    
+    func initWalletReload(amount: Decimal) -> Observable<PaymentInitResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let paymentOption = PaymentOption.paymentGateway
+        let upAPI = PaymentsAPI.initiateWalletReload(paymentOption: paymentOption, totalAmount: amount)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
     
     /// API call to verify the wallet reload completed using a payment gateway
@@ -425,6 +579,14 @@ public extension UrbanPiper {
         guard getUser() != nil else { return nil }
 
         return APIManager.shared.verifyPayment(pid: paymentId, orderId: OnlinePaymentPurpose.reload.rawValue, transactionId: transactionId, completion: completion, failure: failure)
+    }
+    
+    func verifyWalletReload(paymentId: String, transactionId: String) -> Observable<OrderVerifyTxnResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = PaymentsAPI.verifyPayment(pid: paymentId, orderId: OnlinePaymentPurpose.reload.rawValue, transactionId: transactionId)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
 
 }
@@ -446,6 +608,11 @@ extension UrbanPiper {
         return APIManager.shared.registerForFCMToken(token: token, completion: completion, failure: failure)
     }
     
+    func registerFCMToken(token: String) -> Observable<GenericResponse> {
+        let upAPI = FCMAPI.registerForFCM(token: token)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
+    
     /// API call to  perform an version check with the urbanpiper server to indi
     ///
     /// - Parameters:
@@ -455,6 +622,11 @@ extension UrbanPiper {
     /// - Returns: An instance of URLSessionDataTask
     @discardableResult public func checkAppVersion(version: String, completion: ((VersionCheckResponse?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask {
         return APIManager.shared.checkAppVersion(username: UserManager.shared.currentUser?.username, version: version, completion: completion, failure: failure)
+    }
+    
+    func checkAppVersion(version: String) -> Observable<VersionCheckResponse> {
+        let upAPI = VersionCheckAPI.checkVersion(username: UserManager.shared.currentUser?.username, version: version)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
     
     /// API call used to get the nearest store to the provided lat lng
@@ -470,6 +642,11 @@ extension UrbanPiper {
         return APIManager.shared.getNearestStore(CLLocationCoordinate2DMake(lat, lng), completion: completion, failure: failure)
     }
     
+    @discardableResult public func getNearestStore(lat: CLLocationDegrees, lng: CLLocationDegrees) -> Observable<StoreResponse> {
+        let upAPI = StoreAPI.nearestStore(coordinates: CLLocationCoordinate2DMake(lat, lng))
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
+    
     /// Get all the stores registered for the business
     ///
     /// - Parameters:
@@ -478,6 +655,11 @@ extension UrbanPiper {
     /// - Returns: An instance of URLSessionDataTask
     @discardableResult @objc public func getAllStores(completion: @escaping ((StoreListResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
         return APIManager.shared.getAllStores(completion: completion, failure: failure)
+    }
+    
+    func getAllStores() -> Observable<StoreListResponse> {
+        let upAPI = StoreAPI.stores
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
     
 }
@@ -500,6 +682,11 @@ extension UrbanPiper {
         return APIManager.shared.getCategories(storeId: storeId, completion: completion, failure: failure)
     }
     
+    func getCategories(storeId: Int?, offset: Int = 0, limit: Int? = nil) -> Observable<CategoriesResponse> {
+        let upAPI = CategoriesAPI.categories(storeId: storeId, offset: offset, limit: limit ?? Constants.fetchLimit)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
+    
     /// Get the items for a given category
     ///
     /// - Parameters:
@@ -516,6 +703,11 @@ extension UrbanPiper {
                                                     completion: @escaping ((CategoryItemsResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
         return APIManager.shared.getCategoryItems(categoryId: categoryId, storeId: storeId, offset: offset, limit: limit ?? Constants.fetchLimit, sortKey: sortBy, filterOptions: filterBy, completion: completion, failure: failure)
     }
+    
+    func getCategoryItems(categoryId: Int, storeId: Int?, filterBy: [FilterOption]? = nil, sortBy: String? = nil, offset: Int = 0, limit: Int? = nil) -> Observable<CategoryItemsResponse> {
+        let upAPI = ItemsAPI.categoryItems(categoryId: categoryId, storeId: storeId, offset: offset, limit: limit ?? Constants.fetchLimit, sortKey: sortBy, filterOptions: filterBy)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
 
     /// API call to search items for a keyword
     ///
@@ -531,6 +723,11 @@ extension UrbanPiper {
         return APIManager.shared.searchItems(query: query, storeId: storeId, offset: offset, limit: limit ?? Constants.fetchLimit, completion: completion, failure: failure)
     }
     
+    func searchItems(query: String, storeId: Int?, offset: Int = 0, limit: Int? = nil) -> Observable<ItemsSearchResponse> {
+        let upAPI = ItemsAPI.searchItems(query: query, storeId: storeId, offset: offset, limit: limit ?? Constants.fetchLimit)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
+    
     /// Get the filter and sort options for a category
     ///
     /// - Parameters:
@@ -540,6 +737,11 @@ extension UrbanPiper {
     /// - Returns: An instance of URLSessionDataTask
     @discardableResult public func getFilterAndSortOptions(categoryId: Int, completion: @escaping ((CategoryOptionsResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
         return APIManager.shared.getFilterAndSortOptions(id: categoryId, completion: completion, failure:failure)
+    }
+    
+    func getFilterAndSortOptions(categoryId: Int) -> Observable<CategoryOptionsResponse> {
+        let upAPI = ItemsAPI.filterAndSortOptions(categoryId: categoryId)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
 
     /// Get the item details for a given item id
@@ -554,6 +756,11 @@ extension UrbanPiper {
         return APIManager.shared.getItemDetails(itemId: itemId, storeId: storeId, completion: completion, failure: failure)
     }
     
+    func getItemDetails(itemId: Int, storeId: Int?) -> Observable<Item> {
+        let upAPI = ItemsAPI.itemDetails(itemId: itemId, storeId: storeId)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
+    
     /// Get the list of featured items
     ///
     /// - Parameters:
@@ -565,6 +772,11 @@ extension UrbanPiper {
         return APIManager.shared.getFeaturedItems(storeId: storeId, completion: completion, failure: failure)
     }
     
+    func getFeaturedItems(storeId: Int) -> Observable<CategoryItemsResponse> {
+        let upAPI = ItemsAPI.featuredItems(storeId: storeId, offset: 0, limit: Constants.fetchLimit)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
+    
     /// Get the list of associated items for the provided item id
     ///
     /// - Parameters:
@@ -574,7 +786,12 @@ extension UrbanPiper {
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
     @discardableResult public func getAssociatedItems(itemId: Int, storeId: Int, completion: @escaping ((CategoryItemsResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
-        return APIManager.shared.getFeaturedItems(itemIds: [itemId], storeId: storeId, completion: completion, failure: failure)
+        return APIManager.shared.getAssociatedItems(itemId: itemId, storeId: storeId, completion: completion, failure: failure)
+    }
+    
+    func getAssociatedItems(itemId: Int, storeId: Int) -> Observable<CategoryItemsResponse> {
+        let upAPI = ItemsAPI.associatedItems(itemId: itemId, storeId: storeId, offset: 0, limit: Constants.fetchLimit)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
 }
 
@@ -595,6 +812,14 @@ extension UrbanPiper {
         return APIManager.shared.getRewards(completion: completion, failure: failure)
     }
     
+    func getRewards() -> Observable<RewardsResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = RewardsAPI.rewards(offset: 0, limit: Constants.fetchLimit)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
+    
     /// Get the list of offers from the server
     ///
     /// - Parameters:
@@ -607,6 +832,11 @@ extension UrbanPiper {
         return APIManager.shared.getOffers(offset: offset, limit: limit ?? Constants.fetchLimit, completion: completion, failure: failure)
     }
     
+    func getOffers(offset: Int = 0, limit: Int? = nil) -> Observable<OffersAPIResponse> {
+        let upAPI = OffersAPI.offers(offset: offset, limit: limit ?? Constants.fetchLimit)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
+    
     /// Get the list of banners from the server
     ///
     /// - Parameters:
@@ -615,6 +845,11 @@ extension UrbanPiper {
     /// - Returns: An instance of URLSessionDataTask
     @discardableResult public func getBanners(completion: @escaping ((BannersResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
         return APIManager.shared.getBanners(completion: completion, failure: failure)
+    }
+    
+    func getBanners() -> Observable<BannersResponse> {
+        let upAPI = BannersAPI.banners
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
     
 }
@@ -697,7 +932,12 @@ extension UrbanPiper {
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
     @discardableResult public func getRelatedItemsForCart(itemIds: [Int], storeId: Int, completion: ((CategoryItemsResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask {
-        return APIManager.shared.getFeaturedItems(itemIds: itemIds, storeId: storeId, completion: completion, failure: failure)
+        return APIManager.shared.getRelatedItems(itemIds: itemIds, storeId: storeId, completion: completion, failure: failure)
+    }
+    
+    func getRelatedItemsForCart(itemIds: [Int], storeId: Int) -> Observable<CategoryItemsResponse> {
+        let upAPI = ItemsAPI.relatedItems(itemIds: itemIds, storeId: storeId, offset: 0, limit: Constants.fetchLimit)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
     
     /// Perform a reorder of an past order
@@ -717,6 +957,14 @@ extension UrbanPiper {
 
         return APIManager.shared.reorder(orderId: orderId, userLocation: CLLocationCoordinate2D(latitude: lat, longitude: lng),
                                          storeId: storeId, completion: completion, failure: failure)
+    }
+    
+    func reorder(orderId: Int, lat: CLLocationDegrees, lng: CLLocationDegrees, storeId: Int) -> Observable<ReorderResponse>? {
+        assert(getUser() != nil, "The user has to logged in to call this function")
+        guard getUser() != nil else { return nil }
+        
+        let upAPI = ReorderAPI.reorder(orderId: orderId, userLocation: CLLocationCoordinate2D(latitude: lat, longitude: lng), storeId: storeId)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
     
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 
 /// A helper class that contains the related api's to register an user. The api's have to be called in the following order.
 ///
@@ -36,6 +37,14 @@ public class RegistrationBuilder: NSObject {
         return UserManager.shared.registerUser(name: name, phone: phone, email: email, password: password, referralObject: referralObject, completion: completion, failure: failure)
     }
     
+    func registerUser(phone: String, name: String, email: String, password: String/*, referralObject: Referral?*/) -> Observable<RegistrationResponse> {
+        var referralObject: Referral? = nil
+        if let responseData: Data = UserDefaults.standard.object(forKey: "referral dictionary") as? Data, let referralParams = NSKeyedUnarchiver.unarchiveObject(with: responseData) as? Referral {
+            referralObject = referralParams
+        }
+        return UserManager.shared.registerUser(name: name, phone: phone, email: email, password: password, referral: referralObject)
+    }
+    
     /// API call to verify the otp sent to the user's phone number
     ///
     /// - Parameters:
@@ -48,6 +57,10 @@ public class RegistrationBuilder: NSObject {
         return UserManager.shared.verifyRegOTP(phone: phone, otp: otp, completion: completion, failure: failure)
     }
     
+    func verifyRegOTP(phone: String,otp: String) -> Observable<RegistrationResponse> {
+        return UserManager.shared.verifyRegOTP(phone: phone, otp: otp)
+    }
+    
     /// Send a new otp to the passed in user's phone number
     ///
     /// - Parameters:
@@ -56,6 +69,10 @@ public class RegistrationBuilder: NSObject {
     /// - Returns: An instance of URLSessionDataTask
     @discardableResult public func resendRegOTP(phone: String, completion: @escaping ((RegistrationResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask? {
         return UserManager.shared.resendOTP(phone: phone, completion: completion, failure: failure)
+    }
+    
+    func resendRegOTP(phone: String) -> Observable<RegistrationResponse>? {
+        return UserManager.shared.resendOTP(phone: phone)
     }
 
 }

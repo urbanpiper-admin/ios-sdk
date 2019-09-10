@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 //import FirebaseInstanceID
 
 //@objc internal protocol UserManagerDelegate {
@@ -252,6 +253,22 @@ extension UserManager {
         return dataTask
     }
     
+    internal func refreshUserInfo() -> Observable<UserInfoResponse>? {
+        guard let phoneNo = currentUser?.phone else { return nil }
+        
+        let upAPI = UserAPI.userData(phone: phoneNo)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+            .observeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .subscribeOn(MainScheduler.instance)
+            .do(onNext: { [weak self] (userInfoResponse) in
+                
+                let user = self?.currentUser?.update(fromDictionary: userInfoResponse.toDictionary())
+                self?.currentUser = user
+                
+            })
+        
+    }
+    
     @objc @discardableResult internal func updateUserInfo(name: String,
                                                         phone: String,
                                                         email: String,
@@ -271,21 +288,8 @@ extension UserManager {
                 AnalyticsManager.shared.track(event: .profileUpdated(phone: phone, pwdChanged: false))
                 guard let responseObject = response, responseObject.success else { return }
                 
-                let user = self?.currentUser
-                
-                user?.firstName = name
-                user?.phone = phone
-                user?.email = email
-                if gender != nil {
-                    user?.gender = gender
-                }
-                if aniversary != nil {
-                    user?.anniversary = Int(aniversary!.timeIntervalSince1970 * 1000)
-                }
-                if birthday != nil {
-                    user?.birthday = Int(birthday!.timeIntervalSince1970 * 1000)
-                }
-                self?.currentUser = user
+                self?.updateCurrentUserInfo(name: name, phone: phone, email: email,
+                                            gender: gender, aniversary: aniversary, birthday: birthday)
                 
                 completion?(response)
             }, failure: failure)
@@ -293,6 +297,50 @@ extension UserManager {
 //        addDataTask(dataTask: dataTask)
         return dataTask
     }
+    
+    internal func updateUserInfo(name: String,
+                                 phone: String,
+                                 email: String,
+                                 gender: String? = nil,
+                                 aniversary: Date? = nil,
+                                 birthday: Date? = nil) -> Observable<UserInfoUpdateResponse> {
+        let upAPI = UserAPI.updateUserData(name: name, phone: phone, email: email, gender: gender, aniversary: aniversary, birthday: birthday)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+            .observeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .subscribeOn(MainScheduler.instance)
+            .do(onNext: { [weak self] (userInfoUpdateResponse) in
+                AnalyticsManager.shared.track(event: .profileUpdated(phone: phone, pwdChanged: false))
+                guard userInfoUpdateResponse.success else { return }
+                self?.updateCurrentUserInfo(name: name, phone: phone, email: email,
+                                            gender: gender, aniversary: aniversary, birthday: birthday)
+            })
+    }
+    
+    private func updateCurrentUserInfo(name: String,
+                                       phone: String,
+                                       email: String,
+                                       gender: String? = nil,
+                                       aniversary: Date? = nil,
+                                       birthday: Date? = nil) {
+        let user = currentUser
+        
+        user?.firstName = name
+        user?.phone = phone
+        user?.email = email
+        if gender != nil {
+            user?.gender = gender
+        }
+        if aniversary != nil {
+            user?.anniversary = Int(aniversary!.timeIntervalSince1970 * 1000)
+        }
+        if birthday != nil {
+            user?.birthday = Int(birthday!.timeIntervalSince1970 * 1000)
+        }
+        
+        currentUser = user
+    }
+    
+    
     
     @objc @discardableResult internal func changePassword(phone: String,
                                oldPassword: String,
@@ -310,6 +358,20 @@ extension UserManager {
         
 //        addDataTask(dataTask: dataTask)
         return dataTask
+    }
+    
+    internal func changePassword(phone: String,
+                                 oldPassword: String,
+                                 newPassword: String) -> Observable<GenericResponse>? {
+        guard currentUser != nil else { return nil }
+        let upAPI = UserAPI.changePassword(phone: phone, oldPassword: oldPassword, newPassword: newPassword)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+            .observeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .subscribeOn(MainScheduler.instance)
+            .do(onNext: { _ in
+                AnalyticsManager.shared.track(event: .profileUpdated(phone: phone, pwdChanged: true))
+            })
+        
     }
     
     @objc @discardableResult internal func refreshUserBizInfo(completion: ((UserBizInfoResponse?) -> Void)? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
@@ -331,6 +393,22 @@ extension UserManager {
         return dataTask
     }
     
+    internal func refreshUserBizInfo() -> Observable<UserBizInfoResponse>? {
+        guard currentUser != nil else { return nil }
+
+        let upAPI = UserBizInfoAPI.userBizInfo
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+            .observeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .subscribeOn(MainScheduler.instance)
+            .do(onNext: { [weak self] (userBizInfoResponse) in
+                guard let user = self?.currentUser else { return }
+                user.userBizInfoResponse = userBizInfoResponse
+                
+                self?.saveToKeyChain(user: user)
+                AnalyticsManager.shared.track(event: .bizInfoUpdated)
+                NotificationCenter.default.post(name: NSNotification.Name.userBizInfoChanged, object: nil)
+        })
+    }
 }
 
 //  MARK: FCM
@@ -342,6 +420,11 @@ extension UserManager {
         let dataTask: URLSessionDataTask = APIManager.shared.registerForFCMToken(token: token, completion: nil, failure: nil)
 //        addDataTask(dataTask: dataTask)
         return dataTask
+    }
+    
+    internal func registerForFCMMessaging(token: String) -> Observable<GenericResponse> {
+        let upAPI = FCMAPI.registerForFCM(token: token)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
 
 }
@@ -372,6 +455,25 @@ extension UserManager {
         return dataTask
     }
     
+    internal func login(phone: String,
+                        password: String) -> Observable<LoginResponse> {
+        let upAPI = AuthAPI.login(phone: phone, password: password)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .observeOn(MainScheduler.instance)
+            .do(onNext: { [weak self] (loginResponse) in
+                if let token = loginResponse.token {
+                    let user = User(jwtToken: token)
+                    self?.currentUser = user
+                    AnalyticsManager.shared.track(event: .loginSuccess(phone: phone))
+                } else {
+                    AnalyticsManager.shared.track(event: .loginFailed(phone: phone))
+                }
+            }, onError: { (error) in
+                AnalyticsManager.shared.track(event: .loginFailed(phone: phone))
+            })
+    }
+    
     @discardableResult internal func forgotPassword(phone: String,
                                completion: @escaping ((GenericResponse?) -> Void),
                                failure: @escaping APIFailure) -> URLSessionDataTask {
@@ -383,6 +485,11 @@ extension UserManager {
         
 //        addDataTask(dataTask: dataTask)
         return dataTask
+    }
+    
+    func forgotPassword(phone: String) -> Observable<GenericResponse> {
+        let upAPI = AuthAPI.forgotPassword(phone: phone)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
     
     @discardableResult internal func resetPassword(phone: String,
@@ -405,6 +512,15 @@ extension UserManager {
         
 //        addDataTask(dataTask: dataTask)
         return dataTask
+    }
+    
+    internal func resetPassword(phone: String,
+                                otp: String,
+                                password: String,
+                                confirmPassword: String) -> Observable<GenericResponse> {
+        AnalyticsManager.shared.track(event: .passwordReset(phone: phone))
+        let upAPI = AuthAPI.resetPassword(phone: phone, otp: otp, password: password, confirmPassword: confirmPassword)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
     
     @discardableResult internal func registerUser(name: String,
@@ -431,6 +547,15 @@ extension UserManager {
         
 //        addDataTask(dataTask: dataTask)
         return dataTask
+    }
+    
+    internal func registerUser(name: String,
+                               phone: String,
+                               email: String,
+                               password: String,
+                               referral: Referral?) -> Observable<RegistrationResponse> {
+        let upAPI = AuthAPI.registerUser(name: name, phone: phone, email: email, password: password, referral: referral)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
     }
     
 }
@@ -467,6 +592,18 @@ extension UserManager {
         return dataTask
     }
     
+    internal func registerSocialUser(name: String,
+                                     phone: String,
+                                     email: String,
+                                     gender: String? = nil,
+                                     socialLoginProvider: SocialLoginProvider,
+                                     accessToken: String,
+                                     referral: Referral?) -> Observable<RegistrationResponse> {
+        AnalyticsManager.shared.track(event: .socialAuthSignupStart(phone: phone, platform: socialLoginProvider.rawValue))
+        let upAPI = AuthAPI.createSocialUser(name: name, phone: phone, email: email, gender: gender, accessToken: accessToken, referral: referral)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
+    
     @discardableResult internal func socialLogin(email: String,
                             socialLoginProvider: SocialLoginProvider,
                             accessToken: String,
@@ -492,6 +629,21 @@ extension UserManager {
 //        addDataTask(dataTask: dataTask)
         return dataTask
     }
+
+    internal func socialLogin(email: String,
+                              socialLoginProvider: SocialLoginProvider,
+                              accessToken: String) -> Observable<SocialLoginResponse> {
+        let upAPI = SocialAuthAPI.socialLogin(email: email, accessToken: accessToken, socialLoginProvider: socialLoginProvider)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .observeOn(MainScheduler.instance)
+            .do(onNext: { [weak self] (socialLoginResponse) in
+                guard let token = socialLoginResponse.token else { return }
+                let user = User(jwtToken: token)
+                self?.currentUser = user
+            })
+    }
+    
 }
 
 
@@ -516,6 +668,17 @@ extension UserManager {
         return dataTask
     }
     
+    internal func verifyPhone(phone: String,
+                              email: String,
+                              socialLoginProvider: SocialLoginProvider,
+                              accessToken: String) -> Observable<SocialLoginResponse> {
+        let upAPI = SocialAuthAPI.verifyPhone(phone: phone,
+                                              email: email,
+                                              accessToken: accessToken,
+                                              socialLoginProvider: socialLoginProvider)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
+    
 //  used only when "new_registration_required"
     @discardableResult internal func verifyRegOTP(phone: String,
                                    otp: String,
@@ -533,6 +696,21 @@ extension UserManager {
 //        addDataTask(dataTask: dataTask)
         return dataTask
     }
+    
+    internal func verifyRegOTP(phone: String,
+                               otp: String) -> Observable<RegistrationResponse> {
+        let upAPI = AuthAPI.verifyRegOTP(phone: phone, pin: otp)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .observeOn(MainScheduler.instance)
+            .do(onNext: { [weak self] (registrationResponse) in
+                
+                guard let token = registrationResponse.token else { return }
+                self?.currentUser = User(jwtToken: token)
+            })
+        
+    }
+    
 //  used in all the other cases
     @discardableResult internal func verifySocialOTP(phone: String,
                           email: String,
@@ -560,6 +738,21 @@ extension UserManager {
         return dataTask
     }
     
+    internal func verifySocialOTP(phone: String,
+                                  email: String,
+                                  socialLoginProvider: SocialLoginProvider,
+                                  accessToken: String,
+                                  otp: String) -> Observable<SocialLoginResponse> {
+        let upAPI = SocialAuthAPI.verifySocialOTP(phone: phone, email: email, accessToken: accessToken, socialLoginProvider: socialLoginProvider, otp: otp)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .observeOn(MainScheduler.instance)
+            .do(onNext: { [weak self] (socialLoginResponse) in
+                guard let token = socialLoginResponse.token else { return }
+                self?.currentUser = User(jwtToken: token)
+            })
+    }
+    
     @discardableResult internal func resendOTP(phone: String,
                    completion: @escaping ((RegistrationResponse?) -> Void),
                    failure: @escaping APIFailure) -> URLSessionDataTask {
@@ -575,4 +768,9 @@ extension UserManager {
         return dataTask
     }
     
+    internal func resendOTP(phone: String) -> Observable<RegistrationResponse> {
+        AnalyticsManager.shared.track(event: .resendOTP(phone: phone))
+        let upAPI = AuthAPI.resendOTP(phone: phone)
+        return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
 }

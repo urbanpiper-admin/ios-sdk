@@ -10,7 +10,9 @@ import Foundation
 
 enum PaymentsAPI {
     case preProcessOrder(storeId: Int, applyWalletCredit: Bool, deliveryOption: DeliveryOption, cartItems: [CartItem], orderTotal: Decimal)
-    case initiateOnlinePayment(paymentOption: PaymentOption, purpose: OnlinePaymentPurpose, totalAmount: Decimal, storeId: Int?)
+    case initiateOnlinePayment(paymentOption: PaymentOption, totalAmount: Decimal, storeId: Int)
+    case initiateWalletReload(paymentOption: PaymentOption, totalAmount: Decimal)
+
     case placeOrder(address: Address?, cartItems: [CartItem], deliveryDate: Date, timeSlot: TimeSlot?, deliveryOption: DeliveryOption,
         instructions: String, phone: String, storeId: Int, paymentOption: PaymentOption, taxRate: Float, couponCode: String?,
         deliveryCharge: Decimal, discountApplied: Decimal, itemTaxes: Decimal, packagingCharge: Decimal, orderSubTotal: Decimal,
@@ -23,12 +25,10 @@ extension PaymentsAPI: UPAPI {
         switch self {
         case .preProcessOrder:
             return "api/v1/order/"
-        case .initiateOnlinePayment(_, let purpose, _, let storeId):
-            if let storeId = storeId, purpose == OnlinePaymentPurpose.ordering {
-                return "payments/init/\(APIManager.shared.bizId)/\(storeId)/"
-            } else {
-                return "payments/init/\(APIManager.shared.bizId)/"
-            }
+        case .initiateOnlinePayment(_, _, let storeId):
+            return "payments/init/\(APIManager.shared.bizId)/\(storeId)/"
+        case .initiateWalletReload(_, _):
+            return "payments/init/\(APIManager.shared.bizId)/"
         case .placeOrder:
             return "api/v1/order/"
         case .verifyPayment(_, _, let transactionId):
@@ -42,10 +42,26 @@ extension PaymentsAPI: UPAPI {
             return ["format": "json",
                     "pre_proc": "1",
                     "biz_id": APIManager.shared.bizId]
-        case .initiateOnlinePayment(let paymentOption, let purpose, let totalAmount, _):
+        case .initiateOnlinePayment(let paymentOption, let totalAmount, _):
             var params = ["amount": "\(totalAmount * 100)",
-                          "purpose": purpose.rawValue,
+                          "purpose": OnlinePaymentPurpose.ordering.rawValue,
                           "channel": APIManager.channel] as [String : String]
+            
+            if paymentOption == PaymentOption.paytm {
+                params["redirect_url"] = "https://urbanpiper.com/pg-redirect&paytm=1"
+            } else if paymentOption == PaymentOption.paymentGateway {
+                params[paymentOption.rawValue] = "1"
+                params["redirect_url"] = "https://urbanpiper.com/pg-redirect"
+            } else {
+                params[paymentOption.rawValue] = "1"
+            }
+            
+            return params
+            
+        case .initiateWalletReload(let paymentOption, let totalAmount):
+            var params = ["amount": "\(totalAmount * 100)",
+                "purpose": OnlinePaymentPurpose.reload.rawValue,
+                "channel": APIManager.channel] as [String : String]
             
             if paymentOption == PaymentOption.paytm {
                 params["redirect_url"] = "https://urbanpiper.com/pg-redirect&paytm=1"
@@ -72,6 +88,8 @@ extension PaymentsAPI: UPAPI {
             return nil
         case .initiateOnlinePayment:
             return nil
+        case .initiateWalletReload:
+            return nil
         case .placeOrder:
             return nil
         case .verifyPayment:
@@ -84,6 +102,8 @@ extension PaymentsAPI: UPAPI {
         case .preProcessOrder:
             return .POST
         case .initiateOnlinePayment:
+            return .GET
+        case .initiateWalletReload:
             return .GET
         case .placeOrder:
             return .POST
@@ -102,6 +122,8 @@ extension PaymentsAPI: UPAPI {
                     "items": cartItems.map { $0.toDictionary() },
                     "order_total": orderTotal] as [String : AnyObject]
         case .initiateOnlinePayment:
+            return nil
+        case .initiateWalletReload:
             return nil
         case .placeOrder(let address, let cartItems, let deliveryDate, let timeSlot, let deliveryOption, let instructions, let phone, let storeId, let paymentOption, let taxRate, let couponCode, let deliveryCharge, let discountApplied, let itemTaxes, let packagingCharge, let orderSubTotal, let orderTotal, let applyWalletCredit, let walletCreditApplied, let payableAmount, let paymentInitResponse):
             
@@ -196,22 +218,22 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
     internal func initiateOnlinePayment(paymentOption: PaymentOption,
-                                      purpose: OnlinePaymentPurpose,
                                       totalAmount: Decimal,
                                       storeId: Int?,
                                       completion: ((PaymentInitResponse?) -> Void)?,
-                                      failure: APIFailure?) -> URLSessionDataTask? {
+                                      failure: APIFailure?) -> URLSessionDataTask {
         
         
         var urlString: String = "\(APIManager.baseUrl)/payments/init/\(bizId)/"
 
-        if purpose == OnlinePaymentPurpose.ordering {
-            guard let locationId = storeId else { return nil}
-            urlString = urlString + "\(locationId)/"
+        let purpose = OnlinePaymentPurpose.ordering
+        
+        if let storeId = storeId {
+            urlString = urlString + "\(storeId)/"
         }
         
         if paymentOption == PaymentOption.paytm {
@@ -229,7 +251,35 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+    }
+    
+    internal func initiateWalletReload(paymentOption: PaymentOption,
+                                        totalAmount: Decimal,
+                                        completion: ((PaymentInitResponse?) -> Void)?,
+                                        failure: APIFailure?) -> URLSessionDataTask {
+        
+        
+        var urlString: String = "\(APIManager.baseUrl)/payments/init/\(bizId)/"
+        
+        let purpose = OnlinePaymentPurpose.reload
+        
+        if paymentOption == PaymentOption.paytm {
+            urlString = "\(urlString)?amount=\(totalAmount * 100)&purpose=\(purpose.rawValue)&channel=\(APIManager.channel)&redirect_url=https://urbanpiper.com/pg-redirect&paytm=1"
+        } else if paymentOption == PaymentOption.paymentGateway {
+            urlString = "\(urlString)?amount=\(totalAmount * 100)&purpose=\(purpose.rawValue)&channel=\(APIManager.channel)&\(paymentOption.rawValue)=1&redirect_url=https://urbanpiper.com/pg-redirect"
+        } else {
+            urlString = "\(urlString)?amount=\(totalAmount * 100)&purpose=\(purpose.rawValue)&channel=\(APIManager.channel)&\(paymentOption.rawValue)=1"
+        }
+        
+        let url: URL = URL(string: urlString)!
+        
+        var urlRequest: URLRequest = URLRequest(url: url)
+        
+        urlRequest.httpMethod = "GET"
+        
+        
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
     internal func placeOrder(address: Address?,
@@ -324,7 +374,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
     @objc internal func verifyPayment(pid: String,
@@ -342,6 +392,6 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
         
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
 }

@@ -71,7 +71,7 @@ extension APIManager {
 
         urlRequest.httpMethod = "GET"
 
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
 
     internal func redeemReward(rewardId: Int, completion: ((RedeemRewardResponse?) -> Void)?,
@@ -85,7 +85,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "POST"
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
 }

@@ -88,7 +88,7 @@ extension APIManager {
         urlRequest.httpMethod = "GET"
 
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
 
     @objc internal func likeItem(itemId: Int,
@@ -102,7 +102,7 @@ extension APIManager {
         var urlRequest: URLRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
     @objc internal func unlikeItem(itemId: Int,
@@ -116,7 +116,7 @@ extension APIManager {
         var urlRequest: URLRequest = URLRequest(url: url)
         urlRequest.httpMethod = "DELETE"
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
 
 }

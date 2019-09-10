@@ -177,7 +177,7 @@ extension APIManager {
         
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
-        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
     }
     
     @objc internal func login(phone: String,
@@ -199,7 +199,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
     @objc internal func forgotPassword(phone: String,
@@ -219,7 +219,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
     @objc internal func resetPassword(phone: String,
@@ -245,7 +245,7 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
 }
@@ -279,7 +279,7 @@ extension APIManager {
         }
         
         
-        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
     }
     
     @objc internal func createSocialUser(name: String,
@@ -312,7 +312,7 @@ extension APIManager {
         }
         
         
-        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
     }
     
 }
@@ -338,7 +338,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "POST"
         
-        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
     }
     
     @objc internal func resendOTP(phone: String,
@@ -356,7 +356,7 @@ extension APIManager {
         
         urlRequest.httpMethod = "POST"
 
-        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
     }
     
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 
 /// A helper class that contains the related api's to reset the user's password. The api's have to be called in the following order.
 ///
@@ -34,6 +35,11 @@ public class ResetPasswordBuilder: NSObject {
         return UserManager.shared.forgotPassword(phone: phone, completion: completion, failure: failure)
     }
     
+    func forgotPassword(phone: String) -> Observable<GenericResponse> {
+        self.phone = phone
+        return UserManager.shared.forgotPassword(phone: phone)
+    }
+    
     /// API call to  reset the password of the user
     ///
     /// - Parameters:
@@ -47,6 +53,12 @@ public class ResetPasswordBuilder: NSObject {
         assert(phone != nil, "forgotPassword method should be called first")
         guard phone != nil else { return nil }
         return UserManager.shared.resetPassword(phone: phone!, otp: otp, password: password, confirmPassword: confirmPassword, completion: completion, failure: failure)
+    }
+    
+    func resetPassword(otp: String, password: String, confirmPassword: String) -> Observable<GenericResponse>? {
+        assert(phone != nil, "forgotPassword method should be called first")
+        guard phone != nil else { return nil }
+        return UserManager.shared.resetPassword(phone: phone!, otp: otp, password: password, confirmPassword: confirmPassword)
     }
     
 }

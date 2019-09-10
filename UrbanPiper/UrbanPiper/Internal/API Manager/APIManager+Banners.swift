@@ -66,7 +66,7 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest,
                           headers: ["Authorization" : bizAuth()],
                           completion: completion,
-                          failure: failure)!
+                          failure: failure)
     }
 
 }

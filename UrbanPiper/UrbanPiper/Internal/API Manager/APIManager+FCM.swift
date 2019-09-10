@@ -72,6 +72,6 @@ extension APIManager {
         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
 
         
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)!
+        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
 }

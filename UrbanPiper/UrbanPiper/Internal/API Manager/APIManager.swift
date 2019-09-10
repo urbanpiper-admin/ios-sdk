@@ -26,11 +26,12 @@
 */
 
 import Foundation
+import RxSwift
 
 @objc internal class APIManager: NSObject {
 
     #if DEBUG
-    static let baseUrl: String = "https://staging.urbanpiper.com"
+    static let baseUrl: String = "https://api.urbanpiper.com"
     #elseif RELEASE
     static let baseUrl: String = "https://api.urbanpiper.com"
     #else
@@ -107,7 +108,7 @@ import Foundation
     func apiRequest<T: JSONDecodable>(urlRequest: inout URLRequest,
                        headers: [String : String]? = nil,
                        completion: APICompletion<T>?,
-                       failure: APIFailure?) -> URLSessionDataTask? {
+                       failure: APIFailure?) -> URLSessionDataTask {
         
         var additionalHeaders: [String: String] = ["X-App-Src": "ios",
                                                 "X-Bid": bizId,
@@ -193,9 +194,9 @@ import Foundation
 
     }
     
-    func apiRequest<T: JSONDecodable>(upAPI: UPAPI,
+    func apiDataTask<T: JSONDecodable>(upAPI: UPAPI,
                                       completion: APICompletion<T>?,
-                                      failure: APIFailure?) -> URLSessionDataTask? {
+                                      failure: APIFailure?) -> URLSessionDataTask {
         
         var urlRequest = upAPI.requestWithBaseURL(baseURL: NSURL(string: APIManager.baseUrl)!)
         
@@ -280,6 +281,91 @@ import Foundation
         
         dataTask.resume()
         return dataTask
+        
+    }
+    
+    func apiObservable<T: JSONDecodable>(upAPI: UPAPI) -> Observable<T> {
+        
+        var urlRequest = upAPI.requestWithBaseURL(baseURL: NSURL(string: APIManager.baseUrl)!)
+        
+        var additionalHeaders: [String: String] = ["X-App-Src": "ios",
+                                                   "X-Bid": bizId,
+                                                   "X-App-Version": appVersion,
+                                                   "X-Use-Lang": SharedPreferences.language.rawValue,
+                                                   "Content-Type": "application/json",
+                                                   "Accept-Encoding": "gzip",
+                                                   "Authorization": authorizationKey()]
+        
+        if let customHeaders: [String : String] = upAPI.headers {
+            for header in customHeaders {
+                additionalHeaders[header.key] = header.value
+            }
+        }
+        
+        urlRequest.allHTTPHeaderFields = additionalHeaders
+        
+        let apiUrl = urlRequest.url
+        let urlSession = session
+        
+        let observable = Observable<T>.create { [weak self] observer in
+            let dataTask: URLSessionDataTask = urlSession.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    let upError = UPError(data: data, response: response, error: error)
+                    observer.onError(upError)
+                    return
+                }
+                
+                guard (200 ..< 300) ~= httpResponse.statusCode else {
+                    if let hasTokenExpired = self?.jwt?.tokenExpired, hasTokenExpired, httpResponse.statusCode == 401 {
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: .sessionExpired, object: nil)
+                            UrbanPiper.sharedInstance().callback(.sessionExpired)
+                        }
+                    }
+                    
+                    let upError = UPError(data: data, response: response, error: error)
+                    observer.onError(upError)
+                    return
+                }
+                
+                guard httpResponse.statusCode != 204 else {
+                    observer.onNext(GenericResponse.init() as! T)
+                    observer.onCompleted()
+                    return
+                }
+                
+                guard let responseData = data else {
+                    let upError = UPError(data: data, response: response, error: error)
+                    observer.onError(upError)
+                    return
+                }
+                
+                guard let jsonObject: Any = try? JSONSerialization.jsonObject(with: responseData, options: []),
+                    let dictionary: [String: AnyObject] = jsonObject as? [String: AnyObject] else {
+                        observer.onNext(GenericResponse.init() as! T)
+                        observer.onCompleted()
+                        return
+                }
+                
+                guard let result = T.init(fromDictionary: dictionary) else {
+                    let upError = UPError(type: .responseParseError, data: data, response: response, error: error)
+                    print("API Response parsing failure for url \(String(describing: apiUrl?.absoluteString))")
+                    observer.onError(upError)
+                    return
+                }
+                
+                observer.onNext(result)
+                observer.onCompleted()
+            }
+            
+            dataTask.resume()
+            
+            return Disposables.create {
+                dataTask.cancel()
+            }
+        }
+        
+        return observable
         
     }
     
