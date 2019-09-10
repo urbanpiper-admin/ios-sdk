@@ -238,7 +238,7 @@ public extension UrbanPiper {
         return APIManager.shared.getDeliverableAddresses(storeId: storeId, completion: completion, failure: failure)
     }
     
-    func getDeliverableAddresses(storeId: String?, completion: ((UserAddressesResponse?) -> Void)?, failure: @escaping APIFailure) -> Observable<UserAddressesResponse>? {
+    func getDeliverableAddresses(storeId: String?) -> Observable<UserAddressesResponse>? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
         
@@ -463,8 +463,7 @@ public extension UrbanPiper {
         return APIManager.shared.submitFeedback(name: name, rating: rating, orderId: orderId, choiceText: choiceText, comments: comments, completion: completion, failure: failure)
     }
     
-    func submitFeedback(name: String, rating: Double, orderId: Int, choiceText: String?, comments: String?,
-                        completion: ((GenericResponse?) -> Void)?, failure: @escaping APIFailure) -> Observable<GenericResponse>? {
+    func submitFeedback(name: String, rating: Double, orderId: Int, choiceText: String?, comments: String?) -> Observable<GenericResponse>? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
         
