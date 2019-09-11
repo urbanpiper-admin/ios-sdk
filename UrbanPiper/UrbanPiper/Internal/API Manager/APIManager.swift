@@ -31,7 +31,7 @@ import RxSwift
 @objc internal class APIManager: NSObject {
 
     #if DEBUG
-    static let baseUrl: String = "https://api.urbanpiper.com"
+    static let baseUrl: String = "https://staging.urbanpiper.com"
     #elseif RELEASE
     static let baseUrl: String = "https://api.urbanpiper.com"
     #else
