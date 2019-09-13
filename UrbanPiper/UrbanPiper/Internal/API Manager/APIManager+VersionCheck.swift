@@ -57,11 +57,11 @@ extension VersionCheckAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
 
     @objc internal func checkAppVersion(username: String?,
                                       version: String,
-                                      completion: ((VersionCheckResponse?) -> Void)?,
+                                      completion: APICompletion<VersionCheckResponse>?,
                                       failure: APIFailure?) -> URLSessionDataTask {
         var urlString: String = "\(APIManager.baseUrl)/api/v1/app/ios/?biz_id=\(bizId)&ver=\(version)"
         
@@ -78,4 +78,4 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
 
-}
+}*/

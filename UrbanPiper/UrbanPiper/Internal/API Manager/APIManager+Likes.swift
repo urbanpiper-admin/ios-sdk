@@ -72,11 +72,11 @@ extension ItemLikesAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
 
     @objc func userLikes(offset: Int = 0,
                          limit: Int = Constants.fetchLimit,
-                         completion: ((UserLikesResponse?) -> Void)?,
+                         completion: APICompletion<UserLikesResponse>?,
                          failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/item/likes/"
@@ -92,7 +92,7 @@ extension APIManager {
     }
 
     @objc internal func likeItem(itemId: Int,
-                              completion: ((GenericResponse?) -> Void)?,
+                              completion: APICompletion<GenericResponse>?,
                               failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/item/\(itemId)/like/"
@@ -106,7 +106,7 @@ extension APIManager {
     }
     
     @objc internal func unlikeItem(itemId: Int,
-                                 completion: ((GenericResponse?) -> Void)?,
+                                 completion: APICompletion<GenericResponse>?,
                                 failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/item/\(itemId)/like/"
@@ -119,5 +119,5 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
 
-}
+}*/
 

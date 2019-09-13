@@ -62,14 +62,14 @@ extension FeedbackAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
     
     @objc internal func submitFeedback(name: String,
                                      rating: Double,
                                      orderId: Int,
                                      choiceText: String?,
                                      comments: String?,
-                                     completion: ((GenericResponse?) -> Void)?,
+                                     completion: APICompletion<GenericResponse>?,
                                      failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/feedback/"
@@ -100,4 +100,4 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
-}
+}*/

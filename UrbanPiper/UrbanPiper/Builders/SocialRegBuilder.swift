@@ -47,7 +47,7 @@ public class SocialRegBuilder: NSObject {
     ///   - completion: `APICompletion` with `SocialLoginResponse`, if the message value is "new_registration_required" the user has to be registered using `registerSocialUser(...)`, else the user's phone number is already present in the system and it needs to be verified by calling `verifySocialOTP(...)`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func verifyPhone(name: String, phone: String, email: String, gender: String?, provider: SocialLoginProvider, providerAccessToken: String, completion: @escaping ((SocialLoginResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult public func verifyPhone(name: String, phone: String, email: String, gender: String?, provider: SocialLoginProvider, providerAccessToken: String, completion: @escaping APICompletion<SocialLoginResponse>, failure: @escaping APIFailure) -> URLSessionDataTask {
         self.name = name
         self.phone = phone
         self.email = email
@@ -89,7 +89,7 @@ public class SocialRegBuilder: NSObject {
     ///   - completion: `APICompletion` with `RegistrationResponse`, sends an otp to the passed in phone number, user is registered successfully if the success variable is true, for a new user registration to verify the OTP the function `verifyRegOTP(...)`, should be called, and to resend the OTP the `resendRegOTP(...)`, should be called
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func registerSocialUser(completion: @escaping ((RegistrationResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult public func registerSocialUser(completion: @escaping APICompletion<RegistrationResponse>, failure: @escaping APIFailure) -> URLSessionDataTask {
         assert(verifyPhoneResponse != nil, "verifyPhone method should be called first")
         
         var referralObject: Referral? = nil
@@ -126,7 +126,7 @@ public class SocialRegBuilder: NSObject {
     ///   - completion: `APICompletion` with `RegistrationResponse`, otp has been verified successfully if the success varialble is true
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func verifyRegOTP(otp: String, completion: @escaping ((RegistrationResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult public func verifyRegOTP(otp: String, completion: @escaping APICompletion<RegistrationResponse>, failure: @escaping APIFailure) -> URLSessionDataTask {
         assert(verifyPhoneResponse != nil, "verifyPhone method should be called first")
         assert(!(verifyPhoneResponse!.message == "otp_sent"), "User phone no has been registerd previously should use method verifySocialOTP")
         assert(verifyPhoneResponse!.message == "new_registration_required" && registrationResponse != nil, "User should be registered first with method registerSocialUser")
@@ -148,7 +148,7 @@ public class SocialRegBuilder: NSObject {
     ///   - completion: `APICompletion` with `RegistrationResponse`, a true value for the success variable indicates that the OTP has been resent
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func resendRegOTP(completion: @escaping ((RegistrationResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult public func resendRegOTP(completion: @escaping APICompletion<RegistrationResponse>, failure: @escaping APIFailure) -> URLSessionDataTask {
         assert(verifyPhoneResponse != nil, "verifyPhone method should be called first")
         assert(!(verifyPhoneResponse!.message == "otp_sent"), "User phone no has been registerd previously should use method resendSocialOTP")
         assert(verifyPhoneResponse!.message == "new_registration_required" && registrationResponse != nil, "User should be registered first with method resendSocialOTP")
@@ -169,7 +169,7 @@ public class SocialRegBuilder: NSObject {
     ///   - completion: `APICompletion` with `SocialLoginResponse`, otp has been verified successfully if the success varialble is true
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func verifySocialOTP(otp: String, completion: @escaping ((SocialLoginResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult public func verifySocialOTP(otp: String, completion: @escaping APICompletion<SocialLoginResponse>, failure: @escaping APIFailure) -> URLSessionDataTask {
         assert(verifyPhoneResponse != nil, "verifyPhone method should be called first")
         assert(verifyPhoneResponse!.message == "otp_sent", "This is a new registration verifyRegOTP method should be called")
         return UserManager.shared.verifySocialOTP(phone: phone!, email: email!, socialLoginProvider: provider!, accessToken: providerAccessToken!, otp: otp, completion: completion, failure: failure)
@@ -187,7 +187,7 @@ public class SocialRegBuilder: NSObject {
     ///   - completion: `APICompletion` with `SocialLoginResponse`, a true value for the success variable indicates that the OTP has been resent
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func resendSocialOTP(completion: @escaping ((SocialLoginResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult public func resendSocialOTP(completion: @escaping APICompletion<SocialLoginResponse>, failure: @escaping APIFailure) -> URLSessionDataTask {
         assert(verifyPhoneResponse != nil, "verifyPhone method should be called first")
         assert(verifyPhoneResponse != nil && verifyPhoneResponse!.message == "otp_sent", "This is a new registration resendRegOTP method should be called")
         return UserManager.shared.verifyPhone(phone: phone!, email: email!, socialLoginProvider: provider!, accessToken: providerAccessToken!, completion: completion, failure: failure)

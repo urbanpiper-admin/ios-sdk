@@ -50,9 +50,9 @@ extension BannersAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
 
-    @objc internal func getBanners(completion: ((BannersResponse?) -> Void)?,
+    @objc internal func getBanners(completion: APICompletion<BannersResponse>?,
                                 failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/galleries/?type=app_banner"
@@ -69,4 +69,4 @@ extension APIManager {
                           failure: failure)
     }
 
-}
+}*/

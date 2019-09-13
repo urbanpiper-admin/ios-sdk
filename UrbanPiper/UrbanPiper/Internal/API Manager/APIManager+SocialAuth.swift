@@ -85,12 +85,12 @@ extension SocialAuthAPI: UPAPI {
 
 //  MARK: Social Login
 
-extension APIManager {
+/* extension APIManager {
     
     @discardableResult internal func socialLogin(email: String,
                               socialLoginProvider: SocialLoginProvider,
                                 accessToken: String,
-                                completion: ((SocialLoginResponse?) -> Void)?,
+                                completion: APICompletion<SocialLoginResponse>?,
                                 failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v2/social_auth/me/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)"
@@ -118,7 +118,7 @@ extension APIManager {
                               email: String,
                               socialLoginProvider: SocialLoginProvider,
                               accessToken: String,
-                              completion: ((SocialLoginResponse?) -> Void)?,
+                              completion: APICompletion<SocialLoginResponse>?,
                               failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/social_auth/me/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)&action=check_phone&phone=\(phone)"
@@ -141,7 +141,7 @@ extension APIManager {
                                 socialLoginProvider: SocialLoginProvider,
                                 accessToken: String,
                                 otp: String,
-                                completion: ((SocialLoginResponse?) -> Void)?,
+                                completion: APICompletion<SocialLoginResponse>?,
                                 failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/social_auth/me/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)&action=verify_otp&phone=\(phone)&otp=\(otp)"
@@ -159,4 +159,4 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
-}
+}*/

@@ -62,12 +62,12 @@ extension PastOrdersAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
     
     internal func getPastOrders(offset: Int = 0,
                                 limit: Int = Constants.fetchLimit,
                                 next: String? = nil,
-                                completion: ((PastOrdersResponse?) -> Void)?,
+                                completion: APICompletion<PastOrdersResponse>?,
                                 failure: APIFailure?) -> URLSessionDataTask {
 
         var urlString: String = "\(APIManager.baseUrl)/api/v2/orders/"
@@ -88,7 +88,7 @@ extension APIManager {
     }
     
     @objc internal func getPastOrderDetails(orderId: Int,
-                                  completion: ((PastOrderDetailsResponse?) -> Void)?,
+                                  completion: APICompletion<PastOrderDetailsResponse>?,
                                   failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/orders/\(orderId)/"
@@ -103,4 +103,4 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
 
-}
+}*/

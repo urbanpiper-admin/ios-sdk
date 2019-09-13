@@ -94,11 +94,11 @@ public class CheckoutBuilder: NSObject {
                                                 deliveryOption: DeliveryOption,
                                                 cartItems: [CartItem],
                                                 orderTotal: Decimal,
-                                                completion: ((PreProcessOrderResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask? {
+                                                completion: APICompletion<PreProcessOrderResponse>?, failure: APIFailure?) -> URLSessionDataTask? {
         
         assert(cartItems.count > 0, "Provided cart items variable is empty")
         guard cartItems.count > 0 else { return nil }
-
+        
         self.store = nil
         self.useWalletCredits = nil
         self.deliveryOption = nil
@@ -108,23 +108,20 @@ public class CheckoutBuilder: NSObject {
         validateCartResponse = nil
         
         self.clearCoupon()
-
-        return APIManager.shared.preProcessOrder(storeId: store.bizLocationId,
-                                                 applyWalletCredit: useWalletCredits,
-                                                 deliveryOption: deliveryOption,
-                                                 cartItems: cartItems,
-                                                 orderTotal: orderTotal,
-                                                 completion:
-            { [weak self] (preProcessOrderResponse) in
-                self?.store = store
-                self?.useWalletCredits = useWalletCredits
-                self?.deliveryOption = deliveryOption
-                self?.cartItems = cartItems
-                self?.orderTotal = orderTotal
-                
-                self?.validateCartResponse = preProcessOrderResponse
-                completion?(preProcessOrderResponse)
-        }, failure: failure)
+        
+        let upAPI = PaymentsAPI.preProcessOrder(storeId: store.bizLocationId, applyWalletCredit: useWalletCredits,
+                                                deliveryOption: deliveryOption, cartItems: cartItems, orderTotal: orderTotal)
+        
+        return APIManager.shared.apiDataTask(upAPI: upAPI, completion: { [weak self] (preProcessOrderResponse) in
+            self?.store = store
+            self?.useWalletCredits = useWalletCredits
+            self?.deliveryOption = deliveryOption
+            self?.cartItems = cartItems
+            self?.orderTotal = orderTotal
+            
+            self?.validateCartResponse = preProcessOrderResponse
+            completion?(preProcessOrderResponse)
+        } as APICompletion<PreProcessOrderResponse>, failure: failure)
     }
     
     func validateCart(store: Store,
@@ -170,7 +167,7 @@ public class CheckoutBuilder: NSObject {
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
     @discardableResult public func validateCoupon(code: String,
-                                                  completion: ((Order?) -> Void)?,
+                                                  completion: APICompletion<Order>?,
                                                   failure: APIFailure?) -> URLSessionDataTask? {
         assert(UrbanPiper.shared.getUser() != nil, "The user has to logged in to call this function")
         guard UrbanPiper.shared.getUser() != nil else { return nil }
@@ -178,17 +175,13 @@ public class CheckoutBuilder: NSObject {
         assert(validateCartResponse != nil, "validateCartResponse is nil, call validateCart method first")
         guard validateCartResponse != nil else { return nil }
         
-        return APIManager.shared.apply(coupon: code,
-                                       storeId: store.bizLocationId,
-                                       deliveryOption: deliveryOption,
-                                       cartItems: cartItems,
-                                       applyWalletCredit: useWalletCredits,
-                                       completion:
-            { [weak self] (validateCouponResponse) in
-                self?.validateCouponResponse = validateCouponResponse
-                self?.couponCode = code
-                completion?(validateCouponResponse)
-            }, failure: failure)
+        let upAPI = OffersAPI.applyCoupon(coupon: code, storeId: store.bizLocationId, deliveryOption: deliveryOption, cartItems: cartItems, applyWalletCredits: useWalletCredits)
+        
+        return APIManager.shared.apiDataTask(upAPI: upAPI, completion: { [weak self] (validateCouponResponse) in
+            self?.validateCouponResponse = validateCouponResponse
+            self?.couponCode = code
+            completion?(validateCouponResponse)
+        } as APICompletion<Order>, failure: failure)
     }
     
     func validateCoupon(code: String) -> Observable<Order>? {
@@ -221,7 +214,7 @@ public class CheckoutBuilder: NSObject {
     ///   - completion: `APICompletion` with `PaymentInitResponse` containing details on the payment option selected
     ///   - failure: `APIFailure` closure with `UPError`
     @discardableResult public func initPayment(paymentOption: PaymentOption,
-                                               completion: ((PaymentInitResponse?) -> Void)?,
+                                               completion: APICompletion<PaymentInitResponse>?,
                                                failure: APIFailure?) -> URLSessionDataTask? {
         assert(UrbanPiper.shared.getUser() != nil, "The user has to logged in to call this function")
         guard UrbanPiper.shared.getUser() != nil else { return nil }
@@ -239,15 +232,14 @@ public class CheckoutBuilder: NSObject {
         
         guard let payableAmount = order?.payableAmount else { return nil }
         
-        return APIManager.shared.initiateOnlinePayment(paymentOption: paymentOption,
-                                                       totalAmount: payableAmount,
-                                                       storeId: store.bizLocationId,
-                                                       completion:
-            {[weak self] (paymentInitResponse) in
+        let upAPI = PaymentsAPI.initiateOnlinePayment(paymentOption: paymentOption, totalAmount: payableAmount, storeId: store.bizLocationId)
+        
+        return APIManager.shared.apiDataTask(upAPI: upAPI, completion:
+            { [weak self] (paymentInitResponse) in
                 self?.paymentOption = paymentOption
                 self?.paymentInitResponse = paymentInitResponse
                 completion?(paymentInitResponse)
-            }, failure: failure)
+            } as APICompletion<PaymentInitResponse>, failure: failure)
     }
     
     func initPayment(paymentOption: PaymentOption) -> Observable<PaymentInitResponse>? {
@@ -308,7 +300,7 @@ public class CheckoutBuilder: NSObject {
                                               paymentOption: PaymentOption,
                                               instructions: String,
                                               phone: String,
-                                              completion: ((OrderResponse?) -> Void)?,
+                                              completion: APICompletion<OrderResponse>?,
                                               failure: APIFailure?) -> URLSessionDataTask? {
         assert(UrbanPiper.shared.getUser() != nil, "The user has to logged in to call this function")
         guard UrbanPiper.shared.getUser() != nil else { return nil }
@@ -330,33 +322,35 @@ public class CheckoutBuilder: NSObject {
         orderResponse = nil
         
         guard paymentOption == .cash || paymentOption == .prepaid || paymentInitResponse != nil else { return nil }
-        return APIManager.shared.placeOrder(address: deliveryOption != .pickUp ? address : nil,
-                                            cartItems: cartItems,
-                                            deliveryDate: deliveryDateTime(date: deliveryDate, time: deliveryTime),
-                                            timeSlot: timeSlot,
-                                            deliveryOption: deliveryOption,
-                                            instructions: instructions,
-                                            phone: phone,
-                                            storeId: store.bizLocationId,
-                                            paymentOption: paymentOption,
-                                            taxRate: order?.taxRate ?? store.taxRate ?? 0,
-                                            couponCode: couponCode,
-                                            deliveryCharge: order?.deliveryCharge ?? store.deliveryCharge ?? 0,
-                                            discountApplied: validateCouponResponse?.discount?.value ?? 0,
-                                            itemTaxes: order?.itemTaxes ?? store.itemTaxes ?? 0,
-                                            packagingCharge: order?.packagingCharge ?? store.packagingCharge ?? 0,
-                                            orderSubTotal: order?.orderSubtotal ?? orderTotal ?? 0,
-                                            orderTotal: order?.payableAmount ?? orderTotal ?? 0,
-                                            applyWalletCredit: useWalletCredits,
-                                            walletCreditApplied: order?.walletCreditApplied ?? 0,
-                                            payableAmount: order?.payableAmount ?? orderTotal ?? 0,
-                                            paymentInitResponse: paymentInitResponse,
-                                            completion:
+        
+        let upAPI = PaymentsAPI.placeOrder(address: deliveryOption != .pickUp ? address : nil,
+                                           cartItems: cartItems,
+                                           deliveryDate: deliveryDateTime(date: deliveryDate, time: deliveryTime),
+                                           timeSlot: timeSlot,
+                                           deliveryOption: deliveryOption,
+                                           instructions: instructions,
+                                           phone: phone,
+                                           storeId: store.bizLocationId,
+                                           paymentOption: paymentOption,
+                                           taxRate: order?.taxRate ?? store.taxRate ?? 0,
+                                           couponCode: couponCode,
+                                           deliveryCharge: order?.deliveryCharge ?? store.deliveryCharge ?? 0,
+                                           discountApplied: validateCouponResponse?.discount?.value ?? 0,
+                                           itemTaxes: order?.itemTaxes ?? store.itemTaxes ?? 0,
+                                           packagingCharge: order?.packagingCharge ?? store.packagingCharge ?? 0,
+                                           orderSubTotal: order?.orderSubtotal ?? orderTotal ?? 0,
+                                           orderTotal: order?.payableAmount ?? orderTotal ?? 0,
+                                           applyWalletCredit: useWalletCredits,
+                                           walletCreditApplied: order?.walletCreditApplied ?? 0,
+                                           payableAmount: order?.payableAmount ?? orderTotal ?? 0,
+                                           paymentInitResponse: paymentInitResponse)
+        
+        return APIManager.shared.apiDataTask(upAPI: upAPI, completion:
             { [weak self] (orderResponse) in
                 self?.paymentOption = paymentOption
                 self?.orderResponse = orderResponse
                 completion?(orderResponse)
-        }, failure: failure)
+            } as APICompletion<OrderResponse>, failure: failure)
     }
     
     func placeOrder(address: Address?,
@@ -425,7 +419,7 @@ public class CheckoutBuilder: NSObject {
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
     @discardableResult @objc public func verifyPayment(pid: String,
-                                                       completion: @escaping ((OrderVerifyTxnResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask? {
+                                                       completion: @escaping APICompletion<OrderVerifyTxnResponse>, failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(UrbanPiper.shared.getUser() != nil, "The user has to logged in to call this function")
         guard UrbanPiper.shared.getUser() != nil else { return nil }
 
@@ -436,7 +430,8 @@ public class CheckoutBuilder: NSObject {
         guard paymentOption! == .paymentGateway else { return nil }
 
         guard let orderId = orderResponse?.orderId, let transactionId = paymentInitResponse?.transactionId else { return nil }
-        return APIManager.shared.verifyPayment(pid: pid, orderId: orderId, transactionId: transactionId, completion: completion, failure: failure)
+        let upAPI = PaymentsAPI.verifyPayment(pid: pid, orderId: orderId, transactionId: transactionId)
+        return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
     
     func verifyPayment(pid: String) -> Observable<OrderVerifyTxnResponse>? {

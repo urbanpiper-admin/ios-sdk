@@ -50,11 +50,11 @@ extension WalletAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
 
     @objc internal func getWalletTransactions(offset: Int = 0,
                                               limit: Int = Constants.fetchLimit,
-                                              completion: ((WalletTransactionResponse?) -> Void)?,
+                                              completion: APICompletion<WalletTransactionResponse>?,
                                               failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/ub/wallet/transactions/"
@@ -69,4 +69,4 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
-}
+}*/

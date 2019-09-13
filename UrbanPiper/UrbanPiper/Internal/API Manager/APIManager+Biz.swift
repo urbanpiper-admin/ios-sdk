@@ -51,9 +51,9 @@ extension UserBizInfoAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
     
-    @objc internal func refreshUserBizInfo(completion: ((UserBizInfoResponse?) -> Void)?,
+    @objc internal func refreshUserBizInfo(completion: APICompletion<UserBizInfoResponse>?,
                                 failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/userbizinfo/?format=json&biz_id=\(bizId)"
@@ -68,4 +68,4 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
 
-}
+}*/

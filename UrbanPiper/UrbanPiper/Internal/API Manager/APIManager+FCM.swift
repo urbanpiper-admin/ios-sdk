@@ -52,10 +52,10 @@ extension FCMAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
     
     @objc internal func registerForFCMToken(token: String,
-                                       completion: ((GenericResponse?) -> Void)?,
+                                       completion: APICompletion<GenericResponse>?,
                                        failure: APIFailure?) -> URLSessionDataTask {
         let urlString: String = "\(APIManager.baseUrl)/api/v1/device/fcm/"
         
@@ -74,4 +74,4 @@ extension APIManager {
         
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
-}
+}*/

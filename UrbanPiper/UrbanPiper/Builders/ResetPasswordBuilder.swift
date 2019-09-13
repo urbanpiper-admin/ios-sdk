@@ -49,7 +49,7 @@ public class ResetPasswordBuilder: NSObject {
     ///   - completion: `APICompletion` with a GenericResponse inicating the status of the password reset
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func resetPassword(otp: String, password: String, confirmPassword: String, completion: @escaping ((GenericResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult public func resetPassword(otp: String, password: String, confirmPassword: String, completion: @escaping APICompletion<GenericResponse>, failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(phone != nil, "forgotPassword method should be called first")
         guard phone != nil else { return nil }
         return UserManager.shared.resetPassword(phone: phone!, otp: otp, password: password, confirmPassword: confirmPassword, completion: completion, failure: failure)

@@ -190,14 +190,14 @@ extension PaymentsAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
 
     internal func preProcessOrder(storeId: Int,
                                applyWalletCredit: Bool,
                                deliveryOption: DeliveryOption,
                                cartItems: [CartItem],
                                orderTotal: Decimal,
-                               completion: ((PreProcessOrderResponse?) -> Void)?,
+                               completion: APICompletion<PreProcessOrderResponse>?,
                                failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/order/?format=json&pre_proc=1&biz_id=\(bizId)"
@@ -224,7 +224,7 @@ extension APIManager {
     internal func initiateOnlinePayment(paymentOption: PaymentOption,
                                       totalAmount: Decimal,
                                       storeId: Int?,
-                                      completion: ((PaymentInitResponse?) -> Void)?,
+                                      completion: APICompletion<PaymentInitResponse>?,
                                       failure: APIFailure?) -> URLSessionDataTask {
         
         
@@ -256,7 +256,7 @@ extension APIManager {
     
     internal func initiateWalletReload(paymentOption: PaymentOption,
                                         totalAmount: Decimal,
-                                        completion: ((PaymentInitResponse?) -> Void)?,
+                                        completion: APICompletion<PaymentInitResponse>?,
                                         failure: APIFailure?) -> URLSessionDataTask {
         
         
@@ -303,7 +303,7 @@ extension APIManager {
                            walletCreditApplied: Decimal,
                            payableAmount: Decimal,
                            paymentInitResponse: PaymentInitResponse?,
-                           completion: ((OrderResponse?) -> Void)?,
+                           completion: APICompletion<OrderResponse>?,
                            failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/order/?format=json&biz_id=\(bizId)"
@@ -380,7 +380,7 @@ extension APIManager {
     @objc internal func verifyPayment(pid: String,
                              orderId: String,
                              transactionId: String,
-        completion: ((OrderVerifyTxnResponse?) -> Void)?,
+        completion: APICompletion<OrderVerifyTxnResponse>?,
                            failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/payments/callback/\(transactionId)/?gateway_txn_id=\(pid)&pid=\(orderId)"
@@ -394,4 +394,4 @@ extension APIManager {
         
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
-}
+}*/

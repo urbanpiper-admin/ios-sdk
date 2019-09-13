@@ -52,11 +52,11 @@ extension NotificationsAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
 
     @objc internal func getNotifications(offset: Int = 0,
                                          limit: Int = Constants.fetchLimit,
-                                         completion: ((NotificationsResponse?) -> Void)?,
+                                         completion: APICompletion<NotificationsResponse>?,
                                       failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/ub/notifications/?channel__in=app_notification,all&offset=\(offset)&limit=\(limit)"
@@ -71,5 +71,5 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
 
-}
+}*/
 

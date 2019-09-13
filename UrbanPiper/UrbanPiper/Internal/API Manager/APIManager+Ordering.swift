@@ -59,13 +59,13 @@ extension CategoriesAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
 
     func getCategories(storeId: Int?,
                              offset: Int = 0,
                              limit: Int = Constants.fetchLimit,
 //                             isForceRefresh: Bool,
-        completion: ((CategoriesResponse?) -> Void)?,
+        completion: APICompletion<CategoriesResponse>?,
         failure: APIFailure?) -> URLSessionDataTask {
 
 //        /api/v1/order/categories/1419/items/?format=json&limit=50&offset=50&biz_id=14632907
@@ -86,4 +86,4 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
-}
+}*/

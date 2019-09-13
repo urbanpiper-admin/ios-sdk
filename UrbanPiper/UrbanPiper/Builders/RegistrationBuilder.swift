@@ -53,7 +53,7 @@ public class RegistrationBuilder: NSObject {
     ///   - completion: `APICompletion` with `RegistrationResponse` with the success var set to true if the otp has been verified and the user registration is complete
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func verifyRegOTP(phone: String,otp: String, completion: @escaping ((RegistrationResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask {
+    @discardableResult public func verifyRegOTP(phone: String,otp: String, completion: @escaping APICompletion<RegistrationResponse>, failure: @escaping APIFailure) -> URLSessionDataTask {
         return UserManager.shared.verifyRegOTP(phone: phone, otp: otp, completion: completion, failure: failure)
     }
     
@@ -67,7 +67,7 @@ public class RegistrationBuilder: NSObject {
     ///   - completion: `APICompletion` with `RegistrationResponse` if the success variable is true a new OTP has been sent
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult public func resendRegOTP(phone: String, completion: @escaping ((RegistrationResponse?) -> Void), failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult public func resendRegOTP(phone: String, completion: @escaping APICompletion<RegistrationResponse>, failure: @escaping APIFailure) -> URLSessionDataTask? {
         return UserManager.shared.resendOTP(phone: phone, completion: completion, failure: failure)
     }
     

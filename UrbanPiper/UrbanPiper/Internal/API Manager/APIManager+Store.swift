@@ -66,9 +66,9 @@ extension StoreAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
     
-    @objc internal func getAllStores(completion: ((StoreListResponse?) -> Void)?,
+    @objc internal func getAllStores(completion: APICompletion<StoreListResponse>?,
                                      failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/stores/?format=json&biz_id=\(bizId)&all=1"
@@ -84,7 +84,7 @@ extension APIManager {
     }
     
     @objc internal func getNearestStore(_ coordinates: CLLocationCoordinate2D,
-                                        completion: ((StoreResponse?) -> Void)?,
+                                        completion: APICompletion<StoreResponse>?,
                                         failure: APIFailure?) -> URLSessionDataTask {
         
         
@@ -99,5 +99,5 @@ extension APIManager {
         
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
-}
+}*/
 

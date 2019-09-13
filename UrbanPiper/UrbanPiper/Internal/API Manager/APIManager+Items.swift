@@ -177,10 +177,10 @@ extension ItemsAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
     
     func getFilterAndSortOptions(id: Int,
-                            completion: ((CategoryOptionsResponse?) -> Void)?,
+                            completion: APICompletion<CategoryOptionsResponse>?,
                             failure: APIFailure?) -> URLSessionDataTask {
         
         var urlString: String = "\(APIManager.baseUrl)/api/v2/categories/\(id)/options/"
@@ -203,7 +203,7 @@ extension APIManager {
                             filterOptions: [FilterOption]? = nil,
 //                            isForcedRefresh: Bool,
 //                            next: String?,
-                            completion: ((CategoryItemsResponse?) -> Void)?,
+                            completion: APICompletion<CategoryItemsResponse>?,
                             failure: APIFailure?) -> URLSessionDataTask {
 
         var urlString: String = "\(APIManager.baseUrl)/api/v1/order/categories/\(categoryId)/items/?format=json&offset=\(offset)&limit=\(limit)&biz_id=\(bizId)"
@@ -241,7 +241,7 @@ extension APIManager {
                             storeId: Int?,
                             offset: Int = 0,
                             limit: Int = Constants.fetchLimit,
-                            completion: ((ItemsSearchResponse?) -> Void)?,
+                            completion: APICompletion<ItemsSearchResponse>?,
                             failure: APIFailure?) -> URLSessionDataTask {
 
         var urlString: String = "\(APIManager.baseUrl)/api/v2/search/items/?keyword=\(query)&offset=\(offset)&limit=\(limit)&biz_id=\(bizId)"
@@ -268,7 +268,7 @@ extension APIManager {
 
     func getItemDetails(itemId: Int,
                           storeId: Int?,
-                          completion: ((Item?) -> Void)?,
+                          completion: APICompletion<Item>?,
                           failure: APIFailure?) -> URLSessionDataTask {
 
         var urlString: String = "\(APIManager.baseUrl)/api/v1/items/\(itemId)/"
@@ -297,7 +297,7 @@ extension APIManager {
     func getFeaturedItems(storeId: Int?,
                           offset: Int = 0,
                           limit: Int = Constants.fetchLimit,
-                          completion: ((CategoryItemsResponse?) -> Void)?,
+                          completion: APICompletion<CategoryItemsResponse>?,
                           failure: APIFailure?) -> URLSessionDataTask {
         var urlString: String = "\(APIManager.baseUrl)/api/v2/items/0/recommendations/?offset=\(offset)&limit=\(limit)"
         
@@ -323,7 +323,7 @@ extension APIManager {
                          storeId: Int?,
                          offset: Int = 0,
                          limit: Int = Constants.fetchLimit,
-                         completion: ((CategoryItemsResponse?) -> Void)?,
+                         completion: APICompletion<CategoryItemsResponse>?,
                          failure: APIFailure?) -> URLSessionDataTask {
         let itemIdsString = itemIds.map { "\($0)" }.joined(separator: ",")
         var urlString: String = "\(APIManager.baseUrl)/api/v2/items/\(itemIdsString)/recommendations/?offset=\(offset)&limit=\(limit)"
@@ -350,7 +350,7 @@ extension APIManager {
                             storeId: Int?,
                             offset: Int = 0,
                             limit: Int = Constants.fetchLimit,
-                            completion: ((CategoryItemsResponse?) -> Void)?,
+                            completion: APICompletion<CategoryItemsResponse>?,
                             failure: APIFailure?) -> URLSessionDataTask {
         var urlString: String = "\(APIManager.baseUrl)/api/v2/items/\(itemId)/recommendations/?offset=\(offset)&limit=\(limit)"
         
@@ -372,5 +372,5 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
     }
 
-}
+}*/
 

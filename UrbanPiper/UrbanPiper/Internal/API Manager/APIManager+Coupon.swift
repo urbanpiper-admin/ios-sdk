@@ -69,11 +69,11 @@ extension OffersAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
     
     func getOffers(offset: Int = 0,
                           limit: Int = Constants.fetchLimit,
-                          completion: ((OffersAPIResponse?) -> Void)?,
+                          completion: APICompletion<OffersAPIResponse>?,
                           failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/?offset=\(offset)&limit=\(limit)"
@@ -92,7 +92,7 @@ extension APIManager {
                      deliveryOption: DeliveryOption,
                      cartItems: [CartItem],
                      applyWalletCredit: Bool,
-                     completion: ((Order?) -> Void)?,
+                     completion: APICompletion<Order>?,
                         failure: APIFailure?) -> URLSessionDataTask {
 
         let order: [String: Any] = ["biz_location_id": storeId,
@@ -118,4 +118,4 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
-}
+}*/

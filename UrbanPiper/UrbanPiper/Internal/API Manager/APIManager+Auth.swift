@@ -159,10 +159,10 @@ extension AuthAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
     
     @discardableResult internal func refreshToken(token: String,
-                               completion: ((RefreshTokenResponse?) -> Void)?,
+                               completion: APICompletion<RefreshTokenResponse>?,
                                failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/auth/refresh-token/"
@@ -182,7 +182,7 @@ extension APIManager {
     
     @objc internal func login(phone: String,
                             password: String,
-                            completion: ((LoginResponse?) -> Void)?,
+                            completion: APICompletion<LoginResponse>?,
                             failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v2/auth/token/"
@@ -203,7 +203,7 @@ extension APIManager {
     }
     
     @objc internal func forgotPassword(phone: String,
-                                     completion: ((GenericResponse?) -> Void)?,
+                                     completion: APICompletion<GenericResponse>?,
                                      failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/password/token/"
@@ -226,7 +226,7 @@ extension APIManager {
                                     otp: String,
                                     password: String,
                                     confirmPassword: String,
-                                    completion: ((GenericResponse?) -> Void)?,
+                                    completion: APICompletion<GenericResponse>?,
                                     failure: APIFailure?) -> URLSessionDataTask {
 
         let urlString: String = "\(APIManager.baseUrl)/api/v1/user/password/"
@@ -259,7 +259,7 @@ extension APIManager {
                                  email: String,
                                  password: String,
                                  referralObject: Referral? = nil,
-                                 completion: ((RegistrationResponse?) -> Void)?,
+                                 completion: APICompletion<RegistrationResponse>?,
                                  failure: APIFailure?) -> URLSessionDataTask {
         AnalyticsManager.shared.track(event: .signupStart(phone: phone))
         let urlString: String = "\(APIManager.baseUrl)/api/v2/card/?customer_name=\(name)&customer_phone=\(phone)&email=\(email)&password=\(password)&channel=\(APIManager.channel)"
@@ -288,7 +288,7 @@ extension APIManager {
                                        gender: String? = nil,
                                        accessToken: String,
                                        referralObject: Referral? = nil,
-                                       completion: ((RegistrationResponse?) -> Void)?,
+                                       completion: APICompletion<RegistrationResponse>?,
                                        failure: APIFailure?) -> URLSessionDataTask {
         
         var urlString: String = "\(APIManager.baseUrl)/api/v2/card/?customer_name=\(name)&customer_phone=\(phone)&email=\(email)&password=\(accessToken)&channel=\(APIManager.channel)"
@@ -323,7 +323,7 @@ extension APIManager {
     
     @objc internal func verifyRegOTP(phone: String,
                                    pin: String,
-                                   completion: ((RegistrationResponse?) -> Void)?,
+                                   completion: APICompletion<RegistrationResponse>?,
                                    failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/card/?customer_phone=\(phone)&pin=\(pin)&nopinsend=true"
@@ -342,7 +342,7 @@ extension APIManager {
     }
     
     @objc internal func resendOTP(phone: String,
-                                completion: ((RegistrationResponse?) -> Void)?,
+                                completion: APICompletion<RegistrationResponse>?,
                                 failure: APIFailure?) -> URLSessionDataTask {
         let urlString: String = "\(APIManager.baseUrl)/api/v2/card/?customer_phone=\(phone)&pin=resendotp"
         
@@ -359,5 +359,5 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
     }
     
-}
+}*/
 

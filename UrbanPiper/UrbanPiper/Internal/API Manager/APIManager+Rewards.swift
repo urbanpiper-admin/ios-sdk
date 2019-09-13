@@ -60,9 +60,9 @@ extension RewardsAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
     
-    internal func getRewards(completion: ((RewardsResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask {
+    internal func getRewards(completion: APICompletion<RewardsResponse>?, failure: APIFailure?) -> URLSessionDataTask {
         let urlString: String = "\(APIManager.baseUrl)/api/v2/rewards/"
 
         let url: URL = URL(string: urlString)!
@@ -74,7 +74,7 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
 
-    internal func redeemReward(rewardId: Int, completion: ((RedeemRewardResponse?) -> Void)?,
+    internal func redeemReward(rewardId: Int, completion: APICompletion<RedeemRewardResponse>?,
                                               failure: APIFailure?) -> URLSessionDataTask {
         
         let urlString: String = "\(APIManager.baseUrl)/api/v2/rewards/\(rewardId)/redeem/"
@@ -88,4 +88,4 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
     
-}
+}*/

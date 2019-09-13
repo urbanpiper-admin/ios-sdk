@@ -62,12 +62,12 @@ extension ReorderAPI: UPAPI {
     
 }
 
-extension APIManager {
+/* extension APIManager {
 
     internal func reorder(orderId: Int,
                         userLocation: CLLocationCoordinate2D?,
                         storeId: Int?,
-                        completion: ((ReorderResponse?) -> Void)?,
+                        completion: APICompletion<ReorderResponse>?,
                         failure: APIFailure?) -> URLSessionDataTask {
 
         var urlString: String = "\(APIManager.baseUrl)/api/v2/order/\(orderId)/reorder"
@@ -91,4 +91,4 @@ extension APIManager {
         return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
     }
 
-}
+}*/
