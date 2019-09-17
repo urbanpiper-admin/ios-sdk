@@ -8,9 +8,9 @@ import Foundation
 
 public class RedemptionCode : NSObject, JSONDecodable, NSCoding{
 
-    public var expiresIn : Int!
+    public var expiresIn : Int?
     public var redemptionCode : String!
-    public var validFrom : Int!
+    public var validFrom : Int?
 
 
     /**
@@ -47,9 +47,9 @@ public class RedemptionCode : NSObject, JSONDecodable, NSCoding{
      */
     @objc required public init(coder aDecoder: NSCoder)
     {
-        expiresIn = aDecoder.decodeInteger(forKey: "expires_in")
+        expiresIn = aDecoder.decodeObject(forKey: "expires_in") as? Int
         redemptionCode = aDecoder.decodeObject(forKey: "redemption_code") as? String
-        validFrom = aDecoder.decodeInteger(forKey: "valid_from")
+        validFrom = aDecoder.decodeObject(forKey: "valid_from") as? Int
     }
 
     /**

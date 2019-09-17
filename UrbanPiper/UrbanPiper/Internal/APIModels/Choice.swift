@@ -10,8 +10,8 @@ import Foundation
 
 public class Choice : NSObject, JSONDecodable, NSCoding{
 
-	public var id : Int!
-	public var sortOrder : Int!
+	public var id : Int = 0
+	public var sortOrder : Int?
 	public var text : String!
 
 
@@ -20,7 +20,7 @@ public class Choice : NSObject, JSONDecodable, NSCoding{
 	 */
 	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		id = dictionary["id"] as? Int
+		id = dictionary["id"] as? Int ?? 0
 		sortOrder = dictionary["sort_order"] as? Int ?? 0
 		text = dictionary["text"] as? String
 	}
@@ -31,9 +31,7 @@ public class Choice : NSObject, JSONDecodable, NSCoding{
 	public func toDictionary() -> [String : AnyObject]
 	{
 		var dictionary: [String : AnyObject] = [String : AnyObject]()
-		if let id = id {
-			dictionary["id"] = id as AnyObject
-		}
+        dictionary["id"] = id as AnyObject
 		if let sortOrder = sortOrder {
 			dictionary["sort_order"] = sortOrder as AnyObject
 		}
@@ -49,8 +47,12 @@ public class Choice : NSObject, JSONDecodable, NSCoding{
     */
     @objc required public init(coder aDecoder: NSCoder)
 	{
-         id = aDecoder.decodeInteger(forKey: "id")
-         sortOrder = aDecoder.decodeInteger(forKey: "sort_order")
+         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+            id = val
+         } else {
+            id = aDecoder.decodeInteger(forKey: "id")
+         }
+         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
          text = aDecoder.decodeObject(forKey: "text") as? String
 
 	}
@@ -61,9 +63,7 @@ public class Choice : NSObject, JSONDecodable, NSCoding{
     */
     @objc public func encode(with aCoder: NSCoder)
 	{
-		if let id = id {
-			aCoder.encode(id, forKey: "id")
-		}
+		aCoder.encode(id, forKey: "id")
 		if let sortOrder = sortOrder {
 			aCoder.encode(sortOrder, forKey: "sort_order")
 		}

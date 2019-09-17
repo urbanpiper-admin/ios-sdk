@@ -57,7 +57,7 @@ public class Coupon : NSObject, JSONDecodable{
 //         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
 //         redemptionCode = aDecoder.decodeObject(forKey: "redemption_code") as? String
 //         title = aDecoder.decodeObject(forKey: "title") as? String
-//         validUntil = aDecoder.decodeInteger(forKey: "valid_until")
+//         validUntil = aDecoder.decodeObject(forKey: "valid_until") as? Int
 //
 //    }
 //

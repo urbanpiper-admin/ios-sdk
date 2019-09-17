@@ -10,13 +10,13 @@ import Foundation
 
 public class MyOrderItem : NSObject, JSONDecodable{
 
-	public var id : Int!
+	public var id : Int = 0
 	public var image : String!
 	public var imageLandscape : String!
 	public var options : [MyOrderOption]!
 	public var optionsToRemove : [AnyObject]!
 	public var price : Decimal!
-	public var quantity : Int!
+	public var quantity : Int?
 //    public var srvcTaxRate : Float!
 	public var title : String!
 //    public var vatRate : Float!
@@ -27,7 +27,7 @@ public class MyOrderItem : NSObject, JSONDecodable{
 	 */
 	required init?(fromDictionary dictionary: [String : AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		id = dictionary["id"] as? Int
+		id = dictionary["id"] as? Int ?? 0
 		image = dictionary["image"] as? String
 		imageLandscape = dictionary["image_landscape"] as? String
 		options = [MyOrderOption]()
@@ -102,13 +102,17 @@ public class MyOrderItem : NSObject, JSONDecodable{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         id = aDecoder.decodeInteger(forKey: "id")
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         image = aDecoder.decodeObject(forKey: "image") as? String
 //         imageLandscape = aDecoder.decodeObject(forKey: "image_landscape") as? String
 //         options = aDecoder.decodeObject(forKey :"options") as? [MyOrderOption]
 //         optionsToRemove = aDecoder.decodeObject(forKey: "options_to_remove") as? [AnyObject]
 //         price = aDecoder.decodeObject(forKey: "price") as? Decimal
-//         quantity = aDecoder.decodeInteger(forKey: "quantity")
+//         quantity = aDecoder.decodeObject(forKey: "quantity") as? Int
 //         srvcTaxRate = aDecoder.decodeObject(forKey: "srvc_tax_rate") as? Float
 //         title = aDecoder.decodeObject(forKey: "title") as? String
 //         vatRate = aDecoder.decodeObject(forKey: "vat_rate") as? Float

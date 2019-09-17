@@ -59,13 +59,13 @@ public enum OrderStatus: String {
 @objc public class PastOrder : NSObject, JSONDecodable{
 
 	@objc public var address : String!
-	public var bizLocationId : Int!
+	public var bizLocationId : Int?
 	public var channel : String!
 	public var charges : [OrderCharges]!
 	@objc public var coupon : String!
 	@objc public var created : Int = 0
 	public var customerName : String!
-	public var deliveryAddressRef : Int!
+	public var deliveryAddressRef : Int?
 	@objc public var deliveryDatetime : Int = 0
 	public var discount : Decimal!
 	@objc public var id : Int = 0
@@ -327,16 +327,20 @@ public enum OrderStatus: String {
     @objc required public init(coder aDecoder: NSCoder)
 	{
          address = aDecoder.decodeObject(forKey: "address") as? String
-         bizLocationId = aDecoder.decodeInteger(forKey: "biz_location_id")
+         bizLocationId = aDecoder.decodeObject(forKey: "biz_location_id") as? Int
          channel = aDecoder.decodeObject(forKey: "channel") as? String
          charges = aDecoder.decodeObject(forKey :"charges") as? [Charge]
          coupon = aDecoder.decodeObject(forKey: "coupon") as? String
-         created = aDecoder.decodeInteger(forKey: "created")
+         created = aDecoder.decodeObject(forKey: "created") as? Int
          customerName = aDecoder.decodeObject(forKey: "customer_name") as? String
-         deliveryAddressRef = aDecoder.decodeInteger(forKey: "delivery_address_ref")
-         deliveryDatetime = aDecoder.decodeInteger(forKey: "delivery_datetime")
+         deliveryAddressRef = aDecoder.decodeObject(forKey: "delivery_address_ref") as? Int
+         deliveryDatetime = aDecoder.decodeObject(forKey: "delivery_datetime") as? Int
          discount = aDecoder.decodeObject(forKey: "discount") as? Float
-         id = aDecoder.decodeInteger(forKey: "id")
+         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+            id = val
+         } else {
+            id = aDecoder.decodeInteger(forKey: "id")
+         }
          instructions = aDecoder.decodeObject(forKey: "instructions") as? String
          itemLevelTotalCharges = aDecoder.decodeObject(forKey: "item_level_total_charges") as? Float
          itemLevelTotalTaxes = aDecoder.decodeObject(forKey: "item_level_total_taxes") as? Float
@@ -393,9 +397,7 @@ public enum OrderStatus: String {
 		if let discount = discount {
 			aCoder.encode(discount, forKey: "discount")
 		}
-		if let id = id {
-			aCoder.encode(id, forKey: "id")
-		}
+		aCoder.encode(id, forKey: "id")
 		if let instructions = instructions {
 			aCoder.encode(instructions, forKey: "instructions")
 		}

@@ -10,7 +10,7 @@ import Foundation
 
 public class StatusUpdate : NSObject, JSONDecodable{
 
-	public var created : Int!
+	public var created : Int?
 	public var message : String!
 	public var status : String!
 	public var updatedBy : String!
@@ -54,7 +54,7 @@ public class StatusUpdate : NSObject, JSONDecodable{
     */
     @objc required init(coder aDecoder: NSCoder)
 	{
-         created = aDecoder.decodeInteger(forKey: "created")
+         created = aDecoder.decodeObject(forKey: "created") as? Int
          message = aDecoder.decodeObject(forKey: "message") as? String
          status = aDecoder.decodeObject(forKey: "status") as? String
          updatedBy = aDecoder.decodeObject(forKey: "updated_by") as? String

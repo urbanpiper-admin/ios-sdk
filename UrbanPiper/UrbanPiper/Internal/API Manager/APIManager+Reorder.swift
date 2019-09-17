@@ -17,7 +17,7 @@ extension ReorderAPI: UPAPI {
     var path: String {
         switch self {
         case .reorder(let orderId, _, _):
-            return "api/v2/order/\(orderId)/reorder"
+            return "api/v2/order/\(orderId)/reorder/"
         }
     }
     

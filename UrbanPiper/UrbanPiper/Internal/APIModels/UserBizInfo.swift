@@ -12,16 +12,16 @@ public class UserBizInfo : NSObject, JSONDecodable, NSCoding{
 
 	public var addresses : [AnyObject]!
 	@objc public var balance : NSDecimalNumber = NSDecimalNumber.zero
-	public var bizId : Int!
+	public var bizId : Int?
 	@objc public var cardNumbers : [String]!
-	public var daysSinceLastOrder : Int!
-	public var id : Int!
-	public var lastOrderDt : Int!
+	public var daysSinceLastOrder : Int?
+	public var id : Int = 0
+	public var lastOrderDt : Int?
 	public var name : String!
-	public var numOfOrders : Int!
+	public var numOfOrders : Int?
 	public var phone : String!
 	@objc public var points : NSNumber = NSNumber(integerLiteral: 0)
-	public var signupDt : Int!
+	public var signupDt : Int?
 	public var totalOrderValue : Decimal!
     @objc public var lastUpdatedDateString: String?
     internal var lastOrderDateString: String? {
@@ -51,7 +51,7 @@ public class UserBizInfo : NSObject, JSONDecodable, NSCoding{
 		bizId = dictionary["biz_id"] as? Int
 		cardNumbers = dictionary["card_numbers"] as? [String]
 		daysSinceLastOrder = dictionary["days_since_last_order"] as? Int
-		id = dictionary["id"] as? Int
+		id = dictionary["id"] as? Int ?? 0
 		lastOrderDt = dictionary["last_order_dt"] as? Int
 		name = dictionary["name"] as? String
 		numOfOrders = dictionary["num_of_orders"] as? Int
@@ -91,9 +91,7 @@ public class UserBizInfo : NSObject, JSONDecodable, NSCoding{
         if let daysSinceLastOrder = daysSinceLastOrder {
             dictionary["days_since_last_order"] = daysSinceLastOrder as AnyObject
         }
-        if let id = id {
-            dictionary["id"] = id as AnyObject
-        }
+        dictionary["id"] = id as AnyObject
         if let lastOrderDt = lastOrderDt {
             dictionary["last_order_dt"] = lastOrderDt as AnyObject
         }
@@ -127,17 +125,21 @@ public class UserBizInfo : NSObject, JSONDecodable, NSCoding{
 	{
          addresses = aDecoder.decodeObject(forKey: "addresses") as? [AnyObject]
         balance = aDecoder.decodeObject(forKey: "balance") as? NSDecimalNumber ?? NSDecimalNumber.zero
-         bizId = aDecoder.decodeInteger(forKey: "biz_id")
+         bizId = aDecoder.decodeObject(forKey: "biz_id") as? Int
          cardNumbers = aDecoder.decodeObject(forKey: "card_numbers") as? [String]
-         daysSinceLastOrder = aDecoder.decodeInteger(forKey: "days_since_last_order")
-         id = aDecoder.decodeInteger(forKey: "id")
-         lastOrderDt = aDecoder.decodeInteger(forKey: "last_order_dt")
+         daysSinceLastOrder = aDecoder.decodeObject(forKey: "days_since_last_order") as? Int
+         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+            id = val
+         } else {
+            id = aDecoder.decodeInteger(forKey: "id")
+         }
+         lastOrderDt = aDecoder.decodeObject(forKey: "last_order_dt") as? Int
          name = aDecoder.decodeObject(forKey: "name") as? String
         lastUpdatedDateString = aDecoder.decodeObject(forKey: "lastUpdatedDateString") as? String
-         numOfOrders = aDecoder.decodeInteger(forKey: "num_of_orders")
+         numOfOrders = aDecoder.decodeObject(forKey: "num_of_orders") as? Int
          phone = aDecoder.decodeObject(forKey: "phone") as? String
         points = aDecoder.decodeObject(forKey: "points") as? NSNumber ?? NSNumber(integerLiteral: 0)
-         signupDt = aDecoder.decodeInteger(forKey: "signup_dt")
+         signupDt = aDecoder.decodeObject(forKey: "signup_dt") as? Int
          totalOrderValue = aDecoder.decodeObject(forKey: "total_order_value") as? Decimal
 
 	}
@@ -162,9 +164,7 @@ public class UserBizInfo : NSObject, JSONDecodable, NSCoding{
 		if let daysSinceLastOrder = daysSinceLastOrder {
 			aCoder.encode(daysSinceLastOrder, forKey: "days_since_last_order")
 		}
-		if let id = id {
-			aCoder.encode(id, forKey: "id")
-		}
+		aCoder.encode(id, forKey: "id")
 		if let lastOrderDt = lastOrderDt {
 			aCoder.encode(lastOrderDt, forKey: "last_order_dt")
 		}

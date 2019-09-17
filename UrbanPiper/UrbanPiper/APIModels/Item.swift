@@ -11,17 +11,17 @@ import Foundation
 @objc public class Item : NSObject, JSONDecodable{
 
 	public var category : ItemCategory!
-	public var currentStock : Int!
+	public var currentStock : Int = 0
 	public var extras : [ItemExtra]!
 	public var foodType : String!
 //    public var fulfillmentModes : [String]!
-	public var id : Int!
+	public var id : Int = 0
 	public var imageLandscapeUrl : String!
 	public var imageUrl : String!
 	public var itemDesc : String!
 	public var itemPrice : Decimal!
 	public var itemTitle : String!
-	public var likes : Int!
+	public var likes : Int?
 	public var optionGroups : [ItemOptionGroup]!
     public var orderOptionsToAdd : [ItemOption]!
     public var orderOptionsToRemove : [ItemOption]!
@@ -30,7 +30,7 @@ import Foundation
     public var preOrderStartTime : Int?
     public var preOrderEndTime : Int?
 	public var slug : String!
-	public var sortOrder : Int!
+	public var sortOrder : Int = 0
     public var subCategory : ItemCategory?
 //    public var tags : [ItemTag]!
 //    public var vatRate : Float!
@@ -68,7 +68,7 @@ import Foundation
         }
 		foodType = dictionary["food_type"] as? String
 //        fulfillmentModes = dictionary["fulfillment_modes"] as? [String]
-		id = dictionary["id"] as? Int
+		id = dictionary["id"] as? Int ?? 0
 		imageLandscapeUrl = dictionary["image_landscape_url"] as? String
 		imageUrl = dictionary["image_url"] as? String
 		itemDesc = dictionary["item_desc"] as? String
@@ -147,9 +147,7 @@ import Foundation
         if let category = category {
             dictionary["category"] = category.toDictionary() as AnyObject
         }
-        if let currentStock = currentStock {
-            dictionary["current_stock"] = currentStock as AnyObject
-        }
+        dictionary["current_stock"] = currentStock as AnyObject
         if let extras = extras {
             var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
             for itemExtraElement in extras {
@@ -163,9 +161,8 @@ import Foundation
 //        if let fulfillmentModes = fulfillmentModes {
 //            dictionary["fulfillment_modes"] = fulfillmentModes as AnyObject
 //        }
-        if let id = id {
-            dictionary["id"] = id as AnyObject
-        }
+        dictionary["id"] = id as AnyObject
+        
         if let imageLandscapeUrl = imageLandscapeUrl {
             dictionary["image_landscape_url"] = imageLandscapeUrl as AnyObject
         }
@@ -223,9 +220,9 @@ import Foundation
         if let slug = slug {
             dictionary["slug"] = slug as AnyObject
         }
-        if let sortOrder = sortOrder {
-            dictionary["sort_order"] = sortOrder as AnyObject
-        }
+
+        dictionary["sort_order"] = sortOrder as AnyObject
+        
         if let subCategory = subCategory {
             dictionary["sub_category"] = subCategory.toDictionary() as AnyObject
         }
@@ -255,27 +252,31 @@ import Foundation
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
 //         category = aDecoder.decodeObject(forKey: "category") as? ItemCategory
-//         currentStock = aDecoder.decodeInteger(forKey: "current_stock")
+//         currentStock = aDecoder.decodeObject(forKey: "current_stock") as? Int
 //         extras = aDecoder.decodeObject(forKey: "extras") as? [AnyObject]
 //         foodType = aDecoder.decodeObject(forKey: "food_type") as? String
 //         fulfillmentModes = aDecoder.decodeObject(forKey: "fulfillment_modes") as? [String]
-//         id = aDecoder.decodeInteger(forKey: "id")
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         imageLandscapeUrl = aDecoder.decodeObject(forKey: "image_landscape_url") as? String
 //         imageUrl = aDecoder.decodeObject(forKey: "image_url") as? String
 //         itemDesc = aDecoder.decodeObject(forKey: "item_desc") as? String
 //         itemPrice = aDecoder.decodeObject(forKey: "item_price") as? Decimal
 //         total = aDecoder.decodeObject(forKey: "total") as? Decimal
 //         itemTitle = aDecoder.decodeObject(forKey: "item_title") as? String
-//         likes = aDecoder.decodeInteger(forKey: "likes")
+//         likes = aDecoder.decodeObject(forKey: "likes") as? Int
 //         optionGroups = aDecoder.decodeObject(forKey :"option_groups") as? [ItemOptionGroup]
 //         optionsToAdd = aDecoder.decodeObject(forKey :"options_to_add") as? [ItemOption]
 //         optionsToRemove = aDecoder.decodeObject(forKey :"options_to_remove") as? [ItemOption]
 //         priceDescriptor = aDecoder.decodeObject(forKey: "price_descriptor") as? String
 //         serviceTaxRate = aDecoder.decodeObject(forKey: "service_tax_rate") as? Float
-//        preOrderStartTime = aDecoder.decodeInteger(forKey: "pre_order_start_time")
-//        preOrderEndTime = aDecoder.decodeInteger(forKey: "pre_order_end_time")
+//        preOrderStartTime = aDecoder.decodeObject(forKey: "pre_order_start_time") as? Int
+//        preOrderEndTime = aDecoder.decodeObject(forKey: "pre_order_end_time") as? Int
 //         slug = aDecoder.decodeObject(forKey: "slug") as? String
-//         sortOrder = aDecoder.decodeInteger(forKey: "sort_order")
+//         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
 //        subCategory = aDecoder.decodeObject(forKey: "sub_category") as? ItemCategory
 //        tags = aDecoder.decodeObject(forKey :"tags") as? [ItemTag]
 //         vatRate = aDecoder.decodeObject(forKey: "vat_rate") as? Float

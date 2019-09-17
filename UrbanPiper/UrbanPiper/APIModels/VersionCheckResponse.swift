@@ -12,7 +12,7 @@ public class VersionCheckResponse : NSObject, JSONDecodable{
 
     public var forceUpdate : Bool
 	public var latestVersion : String!
-	public var releaseDate : Int!
+	public var releaseDate : Int?
 	public var url : String!
 
 
@@ -56,7 +56,7 @@ public class VersionCheckResponse : NSObject, JSONDecodable{
 //    {
 //         forceUpdate = val as? Bool ?? false
 //         latestVersion = aDecoder.decodeObject(forKey: "latest_version") as? String
-//         releaseDate = aDecoder.decodeInteger(forKey: "release_date")
+//         releaseDate = aDecoder.decodeObject(forKey: "release_date") as? Int
 //         url = aDecoder.decodeObject(forKey: "url") as? String
 //
 //    }

@@ -11,12 +11,12 @@ import Foundation
 public class Store : NSObject, JSONDecodable, NSCoding{
 
 	public var address : String!
-	public var bizLocationId : Int!
+	public var bizLocationId : Int = 0
 	public var city : String!
 	public var closingDay : Bool = false
 	@objc public var closingTime : String!
 	public var deliveryCharge : Decimal!
-	public var deliveryMinOffsetTime : Int!
+	public var deliveryMinOffsetTime : Int?
     public var discount : Decimal!
     public var hideStoreName : Bool
     public var itemTaxes : Decimal!
@@ -30,8 +30,8 @@ public class Store : NSObject, JSONDecodable, NSCoding{
 	public var packagingCharge : Decimal!
 	public var pgKey : String!
 	public var phone : String!
-	public var pickupMinOffsetTime : Int!
-	public var sortOrder : Int!
+	public var pickupMinOffsetTime : Int?
+	public var sortOrder : Int?
 	public var taxRate : Float!
 	public var temporarilyClosed : Bool = false
 	public var timeSlots : [TimeSlot]!
@@ -48,7 +48,7 @@ public class Store : NSObject, JSONDecodable, NSCoding{
         guard let dictionary = dictionary else { return nil }
         merchantRefId = dictionary["merchant_ref_id"] as? String
 		address = dictionary["address"] as? String
-		bizLocationId = dictionary["biz_location_id"] as? Int ?? dictionary["id"] as? Int
+		bizLocationId = dictionary["biz_location_id"] as? Int ?? dictionary["id"] as? Int ?? 0
 		city = dictionary["city"] as? String
 		closingDay = dictionary["closing_day"] as? Bool ?? false
 		closingTime = dictionary["closing_time"] as? String
@@ -130,9 +130,7 @@ public class Store : NSObject, JSONDecodable, NSCoding{
         if let address = address {
             dictionary["address"] = address as AnyObject
         }
-        if let bizLocationId = bizLocationId {
-            dictionary["biz_location_id"] = bizLocationId as AnyObject
-        }
+        dictionary["biz_location_id"] = bizLocationId as AnyObject
         if let city = city {
             dictionary["city"] = city as AnyObject
         }
@@ -194,7 +192,11 @@ public class Store : NSObject, JSONDecodable, NSCoding{
         }
         dictionary["temporarily_closed"] = temporarilyClosed as AnyObject
         if let timeSlots = timeSlots {
-            dictionary["time_slots"] = timeSlots as AnyObject
+            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            for timeSlotsElement in timeSlots {
+                dictionaryElements.append(timeSlotsElement.toDictionary())
+            }
+            dictionary["time_slots"] = dictionaryElements as AnyObject
         }
         if let merchantRefId = merchantRefId {
             dictionary["merchant_ref_id"] = merchantRefId as AnyObject
@@ -210,17 +212,21 @@ public class Store : NSObject, JSONDecodable, NSCoding{
     @objc required public init(coder aDecoder: NSCoder)
 	{
          address = aDecoder.decodeObject(forKey: "address") as? String
-         bizLocationId = aDecoder.decodeInteger(forKey: "biz_location_id")
+         if let val = aDecoder.decodeObject(forKey: "biz_location_id") as? Int {
+            bizLocationId = val
+         } else {
+            bizLocationId = aDecoder.decodeInteger(forKey: "biz_location_id")
+         }
          city = aDecoder.decodeObject(forKey: "city") as? String
         closingDay = aDecoder.decodeBool(forKey: "closing_day")
          closingTime = aDecoder.decodeObject(forKey: "closing_time") as? String
          deliveryCharge = aDecoder.decodeObject(forKey: "delivery_charge") as? Decimal
-         deliveryMinOffsetTime = aDecoder.decodeInteger(forKey: "delivery_min_offset_time")
+         deliveryMinOffsetTime = aDecoder.decodeObject(forKey: "delivery_min_offset_time") as? Int
         discount = aDecoder.decodeObject(forKey: "discount") as? Decimal
         hideStoreName = aDecoder.decodeBool(forKey: "hide_store_name")
         itemTaxes = aDecoder.decodeObject(forKey: "item_taxes") as? Decimal
-         lat = aDecoder.decodeDouble(forKey: "lat")
-         lng = aDecoder.decodeDouble(forKey: "lng")
+         lat = aDecoder.decodeObject(forKey: "lat") as? Double ?? 0
+         lng = aDecoder.decodeObject(forKey: "lng") as? Double ?? 0
          minOrderTotal = aDecoder.decodeObject(forKey: "min_order_total") as? Decimal
          name = aDecoder.decodeObject(forKey: "name") as? String
          onCloseMsg = aDecoder.decodeObject(forKey: "on_close_msg") as? String
@@ -229,8 +235,8 @@ public class Store : NSObject, JSONDecodable, NSCoding{
          packagingCharge = aDecoder.decodeObject(forKey: "packaging_charge") as? Decimal
          pgKey = aDecoder.decodeObject(forKey: "pg_key") as? String
          phone = aDecoder.decodeObject(forKey: "phone") as? String
-         pickupMinOffsetTime = aDecoder.decodeInteger(forKey: "pickup_min_offset_time")
-         sortOrder = aDecoder.decodeInteger(forKey: "sort_order")
+         pickupMinOffsetTime = aDecoder.decodeObject(forKey: "pickup_min_offset_time") as? Int
+         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
          taxRate = aDecoder.decodeObject(forKey: "tax_rate") as? Float
         
         if let numberVal = aDecoder.decodeObject(forKey: "temporarily_closed") as? NSNumber {
@@ -255,9 +261,7 @@ public class Store : NSObject, JSONDecodable, NSCoding{
 		if let address = address {
 			aCoder.encode(address, forKey: "address")
 		}
-		if let bizLocationId = bizLocationId {
-			aCoder.encode(bizLocationId, forKey: "biz_location_id")
-		}
+        aCoder.encode(bizLocationId, forKey: "biz_location_id")
 		if let city = city {
 			aCoder.encode(city, forKey: "city")
 		}

@@ -33,7 +33,7 @@ public enum Language: String {
 
 	public var contactPhone : String!
 	public var currency : String!
-	public var deliveryMinOffsetTime : Int!
+	public var deliveryMinOffsetTime : Int = 0
 	public var feedbackConfig : [FeedbackConfig]!
 	public var gst : String!
 	public var isPickupEnabled : Bool = false
@@ -42,12 +42,12 @@ public enum Language: String {
 	public var msgNearestStoreClosed : String!
 	public var msgNoStoresNearby : String!
 	public var msgStoreClosedTemporary : String!
-	public var orderDeliveryRadius : Int!
+	public var orderDeliveryRadius : Int?
 	@objc public var paymentOptions : [String]!
     public var supportedLanguages : [String]!
     public var paypalClientToken : String!
 	public var pgProvider : String!
-	public var pickupMinOffsetTime : Int!
+	public var pickupMinOffsetTime : Int = 0
     public var preProcess : Bool
 	public var referralShareLbl : String!
 	public var referralUiLbl : String!
@@ -65,7 +65,7 @@ public enum Language: String {
         guard let dictionary = dictionary else { return nil }
 		contactPhone = dictionary["contact_phone"] as? String
 		currency = dictionary["currency"] as? String
-		deliveryMinOffsetTime = dictionary["delivery_min_offset_time"] as? Int
+		deliveryMinOffsetTime = dictionary["delivery_min_offset_time"] as? Int ?? 0
 		feedbackConfig = [FeedbackConfig]()
 		if let feedbackConfigArray: [[String : AnyObject]] = dictionary["feedback_config"] as? [[String : AnyObject]]{
 			for dic in feedbackConfigArray{
@@ -93,7 +93,7 @@ public enum Language: String {
         supportedLanguages = dictionary["supported_languages"] as? [String]
 		paypalClientToken = dictionary["paypal_client_token"] as? String
 		pgProvider = dictionary["pg_provider"] as? String
-		pickupMinOffsetTime = dictionary["pickup_min_offset_time"] as? Int
+		pickupMinOffsetTime = dictionary["pickup_min_offset_time"] as? Int ?? 0
 		preProcess = dictionary["pre_process"] as? Bool ?? false
 		referralShareLbl = dictionary["referral_share_lbl"] as? String
 		referralUiLbl = dictionary["referral_ui_lbl"] as? String
@@ -122,9 +122,9 @@ public enum Language: String {
 		if let currency = currency {
 			dictionary["currency"] = currency as AnyObject
 		}
-		if let deliveryMinOffsetTime = deliveryMinOffsetTime {
-			dictionary["delivery_min_offset_time"] = deliveryMinOffsetTime as AnyObject
-		}
+
+        dictionary["delivery_min_offset_time"] = deliveryMinOffsetTime as AnyObject
+		
 		if let feedbackConfig = feedbackConfig {
             var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
 			for feedbackConfigElement in feedbackConfig {
@@ -166,9 +166,8 @@ public enum Language: String {
 		if let pgProvider = pgProvider {
 			dictionary["pg_provider"] = pgProvider as AnyObject
 		}
-		if let pickupMinOffsetTime = pickupMinOffsetTime {
-			dictionary["pickup_min_offset_time"] = pickupMinOffsetTime as AnyObject
-		}
+
+        dictionary["pickup_min_offset_time"] = pickupMinOffsetTime as AnyObject
 
         dictionary["pre_process"] = preProcess as AnyObject
 		
@@ -208,7 +207,11 @@ public enum Language: String {
 	{
          contactPhone = aDecoder.decodeObject(forKey: "contact_phone") as? String
          currency = aDecoder.decodeObject(forKey: "currency") as? String
-         deliveryMinOffsetTime = aDecoder.decodeInteger(forKey: "delivery_min_offset_time")
+         if let val = aDecoder.decodeObject(forKey: "delivery_min_offset_time") as? Int {
+            deliveryMinOffsetTime = val
+         } else {
+            deliveryMinOffsetTime = aDecoder.decodeInteger(forKey: "delivery_min_offset_time")
+        }
         feedbackConfig = aDecoder.decodeObject(forKey :"feedback_config") as? [FeedbackConfig]
          gst = aDecoder.decodeObject(forKey: "gst") as? String
        
@@ -225,12 +228,16 @@ public enum Language: String {
          msgNearestStoreClosed = aDecoder.decodeObject(forKey: "msg_nearest_store_closed") as? String
          msgNoStoresNearby = aDecoder.decodeObject(forKey: "msg_no_stores_nearby") as? String
          msgStoreClosedTemporary = aDecoder.decodeObject(forKey: "msg_store_closed_temporary") as? String
-         orderDeliveryRadius = aDecoder.decodeInteger(forKey: "order_delivery_radius")
+         orderDeliveryRadius = aDecoder.decodeObject(forKey: "order_delivery_radius") as? Int
          paymentOptions = aDecoder.decodeObject(forKey: "payment_options") as? [String]
          supportedLanguages = aDecoder.decodeObject(forKey: "supported_languages") as? [String]
          paypalClientToken = aDecoder.decodeObject(forKey: "paypal_client_token") as? String
          pgProvider = aDecoder.decodeObject(forKey: "pg_provider") as? String
-         pickupMinOffsetTime = aDecoder.decodeInteger(forKey: "pickup_min_offset_time")
+         if let val = aDecoder.decodeObject(forKey: "pickup_min_offset_time") as? Int {
+            pickupMinOffsetTime = val
+         } else {
+            pickupMinOffsetTime = aDecoder.decodeInteger(forKey: "pickup_min_offset_time")
+        }
         
         if let numberVal = aDecoder.decodeObject(forKey: "pre_process") as? NSNumber {
             preProcess = numberVal == 0 ? false : true
@@ -268,9 +275,9 @@ public enum Language: String {
 		if let currency = currency {
 			aCoder.encode(currency, forKey: "currency")
 		}
-		if let deliveryMinOffsetTime = deliveryMinOffsetTime {
-			aCoder.encode(deliveryMinOffsetTime, forKey: "delivery_min_offset_time")
-		}
+
+        aCoder.encode(deliveryMinOffsetTime, forKey: "delivery_min_offset_time")
+		
 		if let feedbackConfig = feedbackConfig {
 			aCoder.encode(feedbackConfig, forKey: "feedback_config")
 		}
@@ -308,9 +315,8 @@ public enum Language: String {
 		if let pgProvider = pgProvider {
 			aCoder.encode(pgProvider, forKey: "pg_provider")
 		}
-		if let pickupMinOffsetTime = pickupMinOffsetTime {
-			aCoder.encode(pickupMinOffsetTime, forKey: "pickup_min_offset_time")
-		}
+
+        aCoder.encode(pickupMinOffsetTime, forKey: "pickup_min_offset_time")
 
         aCoder.encode(preProcess, forKey: "pre_process")
 		

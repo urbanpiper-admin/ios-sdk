@@ -19,8 +19,8 @@ public class Message : NSObject, JSONDecodable{
 	public var bannerImg : String!
 	public var body : String!
 	public var channel : String!
-	public var created : Int!
-	public var id : Int!
+	public var created : Int = 0
+	public var id : Int = 0
 	public var target : AnyObject!
 	public var title : String!
 	public var type : String!
@@ -34,8 +34,8 @@ public class Message : NSObject, JSONDecodable{
 		bannerImg = dictionary["banner_img"] as? String
 		body = dictionary["body"] as? String
 		channel = dictionary["channel"] as? String
-		created = dictionary["created"] as? Int
-		id = dictionary["id"] as? Int
+		created = dictionary["created"] as? Int ?? 0
+		id = dictionary["id"] as? Int ?? 0
 		target = dictionary["target"] as AnyObject
 		title = dictionary["title"] as? String
 		type = dictionary["type"] as? String
@@ -83,8 +83,12 @@ public class Message : NSObject, JSONDecodable{
 //         bannerImg = aDecoder.decodeObject(forKey: "banner_img") as? String
 //         body = aDecoder.decodeObject(forKey: "body") as? String
 //         channel = aDecoder.decodeObject(forKey: "channel") as? String
-//         created = aDecoder.decodeInteger(forKey: "created")
-//         id = aDecoder.decodeInteger(forKey: "id")
+//         created = aDecoder.decodeObject(forKey: "created") as? Int
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         target = aDecoder.decodeObject(forKey: "target") as AnyObject
 //         title = aDecoder.decodeObject(forKey: "title") as? String
 //         type = aDecoder.decodeObject(forKey: "type") as? String

@@ -12,8 +12,8 @@ public class Transaction : NSObject, JSONDecodable{
 
 	public var billNumber : String!
 	public var comments : String!
-	public var created : Int!
-	public var id : Int!
+	public var created : Int = 0
+	public var id : Int = 0
 	public var paymentAmount : Decimal!
 	public var paymentSrc : String!
 	public var paymentType : String!
@@ -30,8 +30,8 @@ public class Transaction : NSObject, JSONDecodable{
         guard let dictionary = dictionary else { return nil }
 		billNumber = dictionary["bill_number"] as? String
 		comments = dictionary["comments"] as? String
-		created = dictionary["created"] as? Int
-		id = dictionary["id"] as? Int
+		created = dictionary["created"] as? Int ?? 0
+		id = dictionary["id"] as? Int ?? 0
         
         let priceVal = dictionary["payment_amount"]
         if let val: Decimal = priceVal as? Decimal {
@@ -102,9 +102,13 @@ public class Transaction : NSObject, JSONDecodable{
 //    {
 //         billNumber = aDecoder.decodeObject(forKey: "bill_number") as? String
 //         comments = aDecoder.decodeObject(forKey: "comments") as? String
-//         created = aDecoder.decodeInteger(forKey: "created")
-//         id = aDecoder.decodeInteger(forKey: "id")
-//         paymentAmount = aDecoder.decodeInteger(forKey: "payment_amount")
+//         created = aDecoder.decodeObject(forKey: "created") as? Int
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
+//         paymentAmount = aDecoder.decodeObject(forKey: "payment_amount") as? Int
 //         paymentSrc = aDecoder.decodeObject(forKey: "payment_src") as? String
 //         paymentType = aDecoder.decodeObject(forKey: "payment_type") as? String
 //         posMcId = aDecoder.decodeObject(forKey: "pos_mc_id") as AnyObject

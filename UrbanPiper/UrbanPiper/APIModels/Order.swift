@@ -17,20 +17,20 @@ public class Order : NSObject, JSONDecodable{
     public var packagingCharge : Decimal!
     public var itemTaxes : Decimal!
     public var discount : Discount?
-    public var discountApplied : Int!
+    public var discountApplied : Int?
     public var deliveryCharge : Decimal!
     public var payableAmount : Decimal!
     public var walletCreditApplicable: Bool?
     public var walletCreditApplied : Decimal!
-	public var addressId : Int!
+	public var addressId : Int?
 	public var addressLat : Float!
 	public var addressLng : Float!
     
-	public var bizLocationId : Int!
+	public var bizLocationId : Int?
 	public var channel : String!
 	public var charges : [OrderCharges]!
 	public var combos : [AnyObject]!
-	public var deliveryDatetime : Int!
+	public var deliveryDatetime : Int?
 	public var itemLevelTotalCharges : Decimal!
 //    public var itemLevelTotalTaxes : Float!
 	public var orderLevelTotalCharges : Decimal!
@@ -40,7 +40,7 @@ public class Order : NSObject, JSONDecodable{
 	public var paymentOption : String!
 	public var taxes : [AnyObject]!
     public var taxRate : Float!
-	public var totalWeight : Int!
+	public var totalWeight : Int?
 
 /* store, order response, instructions, payment option, phone, delivery date, delivery time, coupon code, selected timeslot, payment transaction id */
 	/**
@@ -284,10 +284,10 @@ public class Order : NSObject, JSONDecodable{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         addressId = aDecoder.decodeInteger(forKey: "address_id")
+//         addressId = aDecoder.decodeObject(forKey: "address_id") as? Int
 //         addressLat = aDecoder.decodeObject(forKey: "address_lat") as? Float
 //         addressLng = aDecoder.decodeObject(forKey: "address_lng") as? Float
-//         bizLocationId = aDecoder.decodeInteger(forKey: "biz_location_id")
+//         bizLocationId = aDecoder.decodeObject(forKey: "biz_location_id") as? Int
 //         cartItems = aDecoder.decodeObject(forKey: "cartItems") as? [AnyObject]
 //         channel = aDecoder.decodeObject(forKey: "channel") as? String
 //         charges = aDecoder.decodeObject(forKey :"charges") as? [OrderCharges]
@@ -295,8 +295,8 @@ public class Order : NSObject, JSONDecodable{
 //        discount = aDecoder.decodeObject(forKey: "discount") as? Discount
 //         deliveryCharge = aDecoder.decodeObject(forKey: "delivery_charge") as? Decimal
 //        packagingCharge = aDecoder.decodeObject(forKey: "packaging_charge") as? Decimal
-//         deliveryDatetime = aDecoder.decodeInteger(forKey: "delivery_datetime")
-//         discountApplied = aDecoder.decodeInteger(forKey: "discount_applied")
+//         deliveryDatetime = aDecoder.decodeObject(forKey: "delivery_datetime") as? Int
+//         discountApplied = aDecoder.decodeObject(forKey: "discount_applied") as? Int
 //         itemLevelTotalCharges = aDecoder.decodeObject(forKey: "item_level_total_charges") as? Decimal
 //         itemLevelTotalTaxes = aDecoder.decodeObject(forKey: "item_level_total_taxes") as? Float
 //         itemTaxes = aDecoder.decodeObject(forKey: "item_taxes") as? Decimal
@@ -312,7 +312,7 @@ public class Order : NSObject, JSONDecodable{
 //         paymentOption = aDecoder.decodeObject(forKey: "payment_option") as? String
 //         taxes = aDecoder.decodeObject(forKey: "taxes") as? [AnyObject]
 //        taxRate = aDecoder.decodeObject(forKey: "tax_rate") as? Float
-//         totalWeight = aDecoder.decodeInteger(forKey: "total_weight")
+//         totalWeight = aDecoder.decodeObject(forKey: "total_weight") as? Int
 //
 //    }
 //

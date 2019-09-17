@@ -64,8 +64,8 @@ public class User : NSObject, NSCoding{
     
     @objc public var gender : String?
     
-    public var anniversary : Int!
-    public var birthday : Int!
+    public var anniversary : Int?
+    public var birthday : Int?
     
     public var currentCity : String!
     public var address : String!
@@ -311,8 +311,8 @@ public class User : NSObject, NSCoding{
 //        password = aDecoder.decodeObject(forKey: "password") as? String
         
         address = aDecoder.decodeObject(forKey: "address") as? String
-        anniversary = aDecoder.decodeInteger(forKey: "anniversary")
-        birthday = aDecoder.decodeInteger(forKey: "birthday")
+        anniversary = aDecoder.decodeObject(forKey: "anniversary") as? Int
+        birthday = aDecoder.decodeObject(forKey: "birthday") as? Int
         currentCity = aDecoder.decodeObject(forKey: "current_city") as? String
         lastName = aDecoder.decodeObject(forKey: "last_name") as? String
         jwt = aDecoder.decodeObject(forKey: "jwt") as? JWT

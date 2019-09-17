@@ -21,11 +21,11 @@ public enum AddressTag: String {
 	public var landmark : String!
     public var deliverable : Bool = false
 	@objc public var city : String!
-	public var id : Int!
+	public var id : Int?
     @objc public var lat : CLLocationDegrees = 0
     @objc public var lng : CLLocationDegrees = 0
 	@objc public var pin : String!
-	public var podId : Int!
+	public var podId : Int?
 	@objc public var subLocality : String!
 	@objc public var tag : String!
     
@@ -181,11 +181,11 @@ public enum AddressTag: String {
             deliverable = false
         }
          city = aDecoder.decodeObject(forKey: "city") as? String
-         id = aDecoder.decodeInteger(forKey: "id")
+         id = aDecoder.decodeObject(forKey: "id") as? Int
          lat = aDecoder.decodeObject(forKey: "lat") as? Double ?? Double(0)
          lng = aDecoder.decodeObject(forKey: "lng") as? Double ?? Double(0)
          pin = aDecoder.decodeObject(forKey: "pin") as? String
-         podId = aDecoder.decodeInteger(forKey: "pod_id")
+         podId = aDecoder.decodeObject(forKey: "pod_id") as? Int
          subLocality = aDecoder.decodeObject(forKey: "sub_locality") as? String
          tag = aDecoder.decodeObject(forKey: "tag") as? String
 

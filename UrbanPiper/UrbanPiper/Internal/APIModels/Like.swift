@@ -8,7 +8,7 @@ import Foundation
 public class Like : NSObject, JSONDecodable{
 
 	public var item : Item!
-	public var likedOn : Int!
+	public var likedOn : Int?
 
 
 	/**
@@ -44,7 +44,7 @@ public class Like : NSObject, JSONDecodable{
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
 //         item = aDecoder.decodeObject(forKey: "item") as? Item
-//         likedOn = aDecoder.decodeInteger(forKey: "liked_on")
+//         likedOn = aDecoder.decodeObject(forKey: "liked_on") as? Int
 //
 //    }
 //

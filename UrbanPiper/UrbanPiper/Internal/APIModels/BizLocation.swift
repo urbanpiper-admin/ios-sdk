@@ -11,12 +11,12 @@ import Foundation
 public class BizLocation : NSObject, JSONDecodable{
 
 	public var address : String!
-	public var bizLocationId : Int!
+	public var bizLocationId : Int?
 	public var city : String!
     public var closingDay : Bool
 	public var closingTime : AnyObject!
 //    public var deliveryCharge : Float!
-	public var deliveryMinOffsetTime : Int!
+	public var deliveryMinOffsetTime : Int?
     public var hideStoreName : Bool
 	public var lat : Double!
 	public var lng : Double!
@@ -28,8 +28,8 @@ public class BizLocation : NSObject, JSONDecodable{
 //    public var packagingCharge : Float!
 	public var pgKey : String!
 	public var phone : String!
-	public var pickupMinOffsetTime : Int!
-	public var sortOrder : Int!
+	public var pickupMinOffsetTime : Int?
+	public var sortOrder : Int?
 //    public var taxRate : Float!
     public var temporarilyClosed : Bool
 	public var timeSlots : [AnyObject]!
@@ -144,12 +144,12 @@ public class BizLocation : NSObject, JSONDecodable{
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
 //         address = aDecoder.decodeObject(forKey: "address") as? String
-//         bizLocationId = aDecoder.decodeInteger(forKey: "biz_location_id")
+//         bizLocationId = aDecoder.decodeObject(forKey: "biz_location_id") as? Int
 //         city = aDecoder.decodeObject(forKey: "city") as? String
 //         closingDay = val as? Bool ?? false
 //         closingTime = aDecoder.decodeObject(forKey: "closing_time") as AnyObject
 //         deliveryCharge = aDecoder.decodeObject(forKey: "delivery_charge") as? Float
-//         deliveryMinOffsetTime = aDecoder.decodeInteger(forKey: "delivery_min_offset_time")
+//         deliveryMinOffsetTime = aDecoder.decodeObject(forKey: "delivery_min_offset_time") as? Int
 //         hideStoreName = val as? Bool ?? false
 //         lat = aDecoder.decodeObject(forKey: "lat") as? Double
 //         lng = aDecoder.decodeObject(forKey: "lng") as? Double
@@ -161,8 +161,8 @@ public class BizLocation : NSObject, JSONDecodable{
 //         packagingCharge = aDecoder.decodeObject(forKey: "packaging_charge") as? Float
 //         pgKey = aDecoder.decodeObject(forKey: "pg_key") as? String
 //         phone = aDecoder.decodeObject(forKey: "phone") as? String
-//         pickupMinOffsetTime = aDecoder.decodeInteger(forKey: "pickup_min_offset_time")
-//         sortOrder = aDecoder.decodeInteger(forKey: "sort_order")
+//         pickupMinOffsetTime = aDecoder.decodeObject(forKey: "pickup_min_offset_time") as? Int
+//         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
 //         taxRate = aDecoder.decodeObject(forKey: "tax_rate") as? Float
 //         temporarilyClosed = val as? Bool ?? false
 //         timeSlots = aDecoder.decodeObject(forKey: "time_slots") as? [AnyObject]

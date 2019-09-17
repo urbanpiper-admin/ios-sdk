@@ -27,11 +27,10 @@ extension Item {
     }
 
     public func isItemQuantityAvailable(quantity: Int) -> Bool {
-        guard let stock = currentStock else { return true }
-        guard stock != StockQuantity.unlimited else { return true }
-        guard stock != StockQuantity.noStock else { return false }
+        guard currentStock != StockQuantity.unlimited else { return true }
+        guard currentStock != StockQuantity.noStock else { return false }
         let currentCartStock = CartManager.shared.cartCount(for: id)
-        guard stock >= currentCartStock + quantity else { return false }
+        guard currentStock >= currentCartStock + quantity else { return false }
         return true
     }
 

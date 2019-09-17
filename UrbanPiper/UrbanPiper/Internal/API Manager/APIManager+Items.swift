@@ -59,7 +59,7 @@ extension ItemsAPI: UPAPI {
             }
             
             if let options = filterOptions, options.count > 0 {
-                let keysArray = options.map { String($0.id!) }
+                let keysArray = options.map { String($0.id) }
                 let filterKeysString = keysArray.joined(separator: ",")
                 params["filter_by"] = filterKeysString
             }

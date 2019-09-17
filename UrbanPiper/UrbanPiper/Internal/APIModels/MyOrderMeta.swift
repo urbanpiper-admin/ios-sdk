@@ -10,11 +10,11 @@ import Foundation
 
 public class MyOrderMeta : NSObject, JSONDecodable{
 
-	public var limit : Int!
+	public var limit : Int = 20
 	public var next : String!
-	public var offset : Int!
-	public var previous : AnyObject!
-	public var totalCount : Int!
+	public var offset : Int = 0
+	public var previous : String!
+	public var totalCount : Int = 0
 
 
 	/**
@@ -22,11 +22,11 @@ public class MyOrderMeta : NSObject, JSONDecodable{
 	 */
 	required init?(fromDictionary dictionary: [String : AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		limit = dictionary["limit"] as? Int
+		limit = dictionary["limit"] as? Int ?? 20
 		next = dictionary["next"] as? String
-		offset = dictionary["offset"] as? Int
-		previous = dictionary["previous"] as AnyObject
-		totalCount = dictionary["total_count"] as? Int
+		offset = dictionary["offset"] as? Int ?? 0
+		previous = dictionary["previous"] as? String
+		totalCount = dictionary["total_count"] as? Int ?? 0
 	}
 
 //    /**
@@ -59,11 +59,11 @@ public class MyOrderMeta : NSObject, JSONDecodable{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         limit = aDecoder.decodeInteger(forKey: "limit")
+//         limit = aDecoder.decodeObject(forKey: "limit") as? Int
 //         next = aDecoder.decodeObject(forKey: "next") as? String
-//         offset = aDecoder.decodeInteger(forKey: "offset")
+//         offset = aDecoder.decodeObject(forKey: "offset") as? Int
 //         previous = aDecoder.decodeObject(forKey: "previous") as AnyObject
-//         totalCount = aDecoder.decodeInteger(forKey: "total_count")
+//         totalCount = aDecoder.decodeObject(forKey: "total_count") as? Int
 //
 //    }
 //

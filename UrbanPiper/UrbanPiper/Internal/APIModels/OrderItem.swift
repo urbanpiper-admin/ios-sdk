@@ -12,23 +12,23 @@ public class OrderItem : NSObject, JSONDecodable{
 
 	public var category : ItemCategory!
 	public var charges : [AnyObject]!
-	public var currentStock : Int!
+	public var currentStock : Int?
 //    public var extras : [AnyObject]!
     public var discount: Decimal?
 	public var foodType : String!
-	public var id : Int!
+	public var id : Int = 0
 	public var imageLandscapeUrl : String!
 	public var imageUrl : String!
 	public var itemDesc : String!
 	public var itemPrice : Decimal!
 	public var itemTitle : String!
-	public var likes : Int!
+	public var likes : Int?
 	public var options : [ItemOption]!
     public var optionsToRemove : [ItemOption]!
 //    public var price : Decimal!
-	public var quantity : Int!
+	public var quantity : Int?
 //    public var slug : String!
-	public var sortOrder : Int!
+	public var sortOrder : Int?
     public var subCategory : ItemCategory!
 //    public var tags : [AnyObject]!
 	public var taxPercentage : Float!
@@ -36,7 +36,7 @@ public class OrderItem : NSObject, JSONDecodable{
 	public var taxes : [ItemTaxes]!
 //    public var totalCharge : Float!
 	public var totalTax : Float!
-	public var weight : Int!
+	public var weight : Int?
 
 
 	/**
@@ -60,7 +60,7 @@ public class OrderItem : NSObject, JSONDecodable{
             discount = Decimal.zero
         }
 		foodType = dictionary["food_type"] as? String
-		id = dictionary["id"] as? Int
+		id = dictionary["id"] as? Int ?? 0
 		imageLandscapeUrl = dictionary["image_landscape_url"] as? String
 		imageUrl = dictionary["image_url"] as? String
 		itemDesc = dictionary["item_desc"] as? String
@@ -141,9 +141,7 @@ public class OrderItem : NSObject, JSONDecodable{
         if let foodType = foodType {
             dictionary["food_type"] = foodType as AnyObject
         }
-        if let id = id {
-            dictionary["id"] = id as AnyObject
-        }
+        dictionary["id"] = id as AnyObject
         if let imageLandscapeUrl = imageLandscapeUrl {
             dictionary["image_landscape_url"] = imageLandscapeUrl as AnyObject
         }
@@ -225,28 +223,32 @@ public class OrderItem : NSObject, JSONDecodable{
 //    {
 //         category = aDecoder.decodeObject(forKey: "category") as? ItemCategory
 //         charges = aDecoder.decodeObject(forKey: "charges") as? [AnyObject]
-//         currentStock = aDecoder.decodeInteger(forKey: "current_stock")
+//         currentStock = aDecoder.decodeObject(forKey: "current_stock") as? Int
 //         extras = aDecoder.decodeObject(forKey: "extras") as? [AnyObject]
 //         foodType = aDecoder.decodeObject(forKey: "food_type") as? String
-//         id = aDecoder.decodeInteger(forKey: "id")
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         imageLandscapeUrl = aDecoder.decodeObject(forKey: "image_landscape_url") as? String
 //         imageUrl = aDecoder.decodeObject(forKey: "image_url") as? String
 //         itemDesc = aDecoder.decodeObject(forKey: "item_desc") as? String
 //         itemPrice = aDecoder.decodeObject(forKey: "item_price") as? Decimal
 //         itemTitle = aDecoder.decodeObject(forKey: "item_title") as? String
-//         likes = aDecoder.decodeInteger(forKey: "likes")
+//         likes = aDecoder.decodeObject(forKey: "likes") as? Int
 //         options = aDecoder.decodeObject(forKey :"options") as? [ItemOption]
 //         optionsToRemove = aDecoder.decodeObject(forKey :"options_to_remove") as? [ItemOption]
 ////         price = aDecoder.decodeObject(forKey: "price") as? Decimal
-//         quantity = aDecoder.decodeInteger(forKey: "quantity")
+//         quantity = aDecoder.decodeObject(forKey: "quantity") as? Int
 //         slug = aDecoder.decodeObject(forKey: "slug") as? String
-//         sortOrder = aDecoder.decodeInteger(forKey: "sort_order")
+//         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
 //         tags = aDecoder.decodeObject(forKey: "tags") as? [AnyObject]
 //         taxPercentage = aDecoder.decodeObject(forKey: "tax_percentage") as? Float
 //         taxes = aDecoder.decodeObject(forKey :"taxes") as? [ItemTaxes]
 //         totalCharge = aDecoder.decodeObject(forKey: "total_charge") as? Float
 //         totalTax = aDecoder.decodeObject(forKey: "total_tax") as? Float
-//         weight = aDecoder.decodeInteger(forKey: "weight")
+//         weight = aDecoder.decodeObject(forKey: "weight") as? Int
 //
 //    }
 //

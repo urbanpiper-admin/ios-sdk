@@ -10,7 +10,7 @@ import Foundation
 
 public class MyOrderOption : NSObject, JSONDecodable{
 
-	public var id : Int!
+	public var id : Int = 0
 	public var title : String!
 
 
@@ -19,7 +19,7 @@ public class MyOrderOption : NSObject, JSONDecodable{
 	 */
 	required init?(fromDictionary dictionary: [String : AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		id = dictionary["id"] as? Int
+		id = dictionary["id"] as? Int ?? 0
 		title = dictionary["title"] as? String
 	}
 
@@ -44,7 +44,11 @@ public class MyOrderOption : NSObject, JSONDecodable{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         id = aDecoder.decodeInteger(forKey: "id")
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         title = aDecoder.decodeObject(forKey: "title") as? String
 //
 //    }

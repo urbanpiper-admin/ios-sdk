@@ -46,14 +46,13 @@ extension PaymentsAPI: UPAPI {
             var params = ["amount": "\(totalAmount * 100)",
                           "purpose": OnlinePaymentPurpose.ordering.rawValue,
                           "channel": APIManager.channel] as [String : String]
-            
-            if paymentOption == PaymentOption.paytm {
-                params["redirect_url"] = "https://urbanpiper.com/pg-redirect&paytm=1"
-            } else if paymentOption == PaymentOption.paymentGateway {
-                params[paymentOption.rawValue] = "1"
+
+            params[paymentOption.rawValue] = "1"
+
+            switch paymentOption {
+            case .paytm, .paymentGateway:
                 params["redirect_url"] = "https://urbanpiper.com/pg-redirect"
-            } else {
-                params[paymentOption.rawValue] = "1"
+            default: break
             }
             
             return params
@@ -63,13 +62,12 @@ extension PaymentsAPI: UPAPI {
                 "purpose": OnlinePaymentPurpose.reload.rawValue,
                 "channel": APIManager.channel] as [String : String]
             
-            if paymentOption == PaymentOption.paytm {
-                params["redirect_url"] = "https://urbanpiper.com/pg-redirect&paytm=1"
-            } else if paymentOption == PaymentOption.paymentGateway {
-                params[paymentOption.rawValue] = "1"
+            params[paymentOption.rawValue] = "1"
+
+            switch paymentOption {
+            case .paytm, .paymentGateway:
                 params["redirect_url"] = "https://urbanpiper.com/pg-redirect"
-            } else {
-                params[paymentOption.rawValue] = "1"
+            default: break
             }
             
             return params

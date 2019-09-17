@@ -10,14 +10,14 @@ import Foundation
 
 public class ItemOption : NSObject, JSONDecodable {
 
-	public var currentStock : Int!
+	public var currentStock : Int?
 	public var descriptionField : String!
 	public var foodType : String!
-	public var id : Int!
+	public var id : Int = 0
 	public var imageUrl : String!
 	public var price : Decimal!
     public var recommended : Bool = false
-	public var sortOrder : Int!
+	public var sortOrder : Int = 0
 	@objc public var title : String!
 	public var nestedOptionGroups : [ItemOptionGroup]!
     internal var quantity: Int = 0
@@ -31,7 +31,7 @@ public class ItemOption : NSObject, JSONDecodable {
 		currentStock = dictionary["current_stock"] as? Int
 		descriptionField = dictionary["description"] as? String
 		foodType = dictionary["food_type"] as? String
-		id = dictionary["id"] as? Int
+		id = dictionary["id"] as? Int ?? 0
 		imageUrl = dictionary["image_url"] as? String
 
         if let val: Decimal = dictionary["price"] as? Decimal {
@@ -71,9 +71,7 @@ public class ItemOption : NSObject, JSONDecodable {
         if let foodType = foodType {
             dictionary["food_type"] = foodType as AnyObject
         }
-        if let id = id {
-            dictionary["id"] = id as AnyObject
-        }
+        dictionary["id"] = id as AnyObject
         if let imageUrl = imageUrl {
             dictionary["image_url"] = imageUrl as AnyObject
         }
@@ -81,9 +79,7 @@ public class ItemOption : NSObject, JSONDecodable {
             dictionary["price"] = price as AnyObject
         }
         dictionary["recommended"] = recommended as AnyObject
-        if let sortOrder = sortOrder {
-            dictionary["sort_order"] = sortOrder as AnyObject
-        }
+        dictionary["sort_order"] = sortOrder as AnyObject
         if let title = title {
             dictionary["title"] = title as AnyObject
         }
@@ -104,17 +100,25 @@ public class ItemOption : NSObject, JSONDecodable {
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         currentStock = aDecoder.decodeInteger(forKey: "current_stock")
+//         currentStock = aDecoder.decodeObject(forKey: "current_stock") as? Int
 //         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
 //         foodType = aDecoder.decodeObject(forKey: "food_type") as? String
-//         id = aDecoder.decodeInteger(forKey: "id")
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         imageUrl = aDecoder.decodeObject(forKey: "image_url") as? String
 //         recommended = aDecoder.decodeBool(forKey: "recommended") ?? false
 //         price = aDecoder.decodeObject(forKey: "price") as? Decimal
-//         sortOrder = aDecoder.decodeInteger(forKey: "sort_order")
+//         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
 //         title = aDecoder.decodeObject(forKey: "title") as? String
 //         nestedOptionGroups = aDecoder.decodeObject(forKey :"nested_option_groups") as? [ItemOptionGroup]
-//        quantity = aDecoder.decodeInteger(forKey: "quantity") ?? 0
+//        if let val = aDecoder.decodeObject(forKey: "quantity") as? Int {
+//            quantity = val
+//        } else {
+//            quantity = aDecoder.decodeInteger(forKey: "quantity")
+//        }
 //    }
 //
 //    /**
@@ -163,9 +167,7 @@ extension ItemOption {
         //        if let currentStock = currentStock {
         //            dictionary["current_stock"] = currentStock as AnyObject
         //        }
-        if let id = id {
-            dictionary["id"] = id as AnyObject
-        }
+        dictionary["id"] = id as AnyObject
         //        if let price = price {
         //            dictionary["price"] = price as AnyObject
         //        }

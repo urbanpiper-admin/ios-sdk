@@ -10,9 +10,9 @@ import Foundation
 
 public class ItemCategory : NSObject, JSONDecodable{
 
-	public var id : Int!
+	public var id : Int = 0
 	public var name : String!
-    public var sortOrder: Int!
+    public var sortOrder: Int = 0
 
 
 	/**
@@ -20,7 +20,7 @@ public class ItemCategory : NSObject, JSONDecodable{
 	 */
 	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		id = dictionary["id"] as? Int
+		id = dictionary["id"] as? Int ?? 0
 		name = dictionary["name"] as? String
         sortOrder = dictionary["sort_order"] as? Int ?? 0
 	}
@@ -31,23 +31,19 @@ public class ItemCategory : NSObject, JSONDecodable{
     public func toDictionary() -> [String : AnyObject]
     {
         var dictionary: [String : AnyObject] = [String : AnyObject]()
-        if let id = id {
-            dictionary["id"] = id as AnyObject
-        }
+        dictionary["id"] = id as AnyObject
         if let name = name {
             dictionary["name"] = name as AnyObject
         }
-        if let sortOrder = sortOrder {
-            dictionary["sort_order"] = sortOrder as AnyObject
-        }
+
+        dictionary["sort_order"] = sortOrder as AnyObject
+        
         return dictionary
     }
     
     func equitableCheckDictionary() -> [String : AnyObject] {
         var dictionary: [String : AnyObject] = [String : AnyObject]()
-        if let id = id {
-            dictionary["id"] = id as AnyObject
-        }
+        dictionary["id"] = id as AnyObject
 //        if let name = name {
 //            dictionary["name"] = name as AnyObject
 //        }
@@ -63,9 +59,13 @@ public class ItemCategory : NSObject, JSONDecodable{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         id = aDecoder.decodeInteger(forKey: "id")
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         name = aDecoder.decodeObject(forKey: "name") as? String
-//        sortOrder = aDecoder.decodeInteger(forKey: "sort_order")
+//        sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
 //
 //    }
 //

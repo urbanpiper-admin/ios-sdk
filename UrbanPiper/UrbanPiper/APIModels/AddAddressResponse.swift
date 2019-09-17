@@ -10,7 +10,7 @@ import Foundation
 
 public class AddUpdateAddressResponse : NSObject, JSONDecodable{
 
-	public var addressId : Int!
+	public var addressId : Int?
 	public var msg : String!
 
 
@@ -44,7 +44,7 @@ public class AddUpdateAddressResponse : NSObject, JSONDecodable{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         addressId = aDecoder.decodeInteger(forKey: "address_id")
+//         addressId = aDecoder.decodeObject(forKey: "address_id") as? Int
 //         msg = aDecoder.decodeObject(forKey: "msg") as? String
 //
 //    }

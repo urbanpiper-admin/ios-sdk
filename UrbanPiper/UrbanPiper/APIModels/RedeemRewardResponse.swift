@@ -9,8 +9,8 @@ import UIKit
 
 public class RedeemRewardResponse: NSObject, JSONDecodable {
     
-    public var expiresIn : Int!
-    public var ptsRemaining : Int!
+    public var expiresIn : Int?
+    public var ptsRemaining : Int?
     public var redemptionCode : String!
     public var status : String!
     public var message : String!

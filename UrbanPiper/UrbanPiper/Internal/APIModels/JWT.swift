@@ -9,21 +9,21 @@ import UIKit
 
 public class JWT: NSObject, NSCoding {
     
-    var exp: Int!
-    var iat: Int!
+    var exp: Int?
+    var iat: Int?
     var jit: String!
     var token: String!
     
     var shouldRefreshToken: Bool {
         guard exp != nil, iat != nil else { return false }
         let utcTime: Int = Int(Date().timeIntervalSince1970)
-        return Int(0.8 * Double(exp - iat)) < (utcTime - iat)
+        return Int(0.8 * Double(exp! - iat!)) < (utcTime - iat!)
     }
     
     var tokenExpired: Bool {
         guard exp != nil, iat != nil else { return false }
         let utcTime: Int = Int(Date().timeIntervalSince1970)
-        return exp < utcTime
+        return exp! < utcTime
     }
 
     static func decode(jwtToken jwt: String) -> [String : AnyObject] {
@@ -88,8 +88,8 @@ public class JWT: NSObject, NSCoding {
      * Fills the data from the passed decoder
      */
     @objc required public init(coder aDecoder: NSCoder) {
-        exp = aDecoder.decodeInteger(forKey: "exp")
-        iat = aDecoder.decodeInteger(forKey: "iat")
+        exp = aDecoder.decodeObject(forKey: "exp") as? Int
+        iat = aDecoder.decodeObject(forKey: "iat") as? Int
         jit = aDecoder.decodeObject(forKey: "jit") as? String
         token = aDecoder.decodeObject(forKey: "token") as? String
     }

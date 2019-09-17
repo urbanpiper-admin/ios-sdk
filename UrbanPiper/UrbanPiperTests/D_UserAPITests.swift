@@ -128,7 +128,7 @@ class D_UserAPITests: XCTestCase {
         var expectation = XCTestExpectation(description: "Add new address to saved address")
         
         var address = Address(address1: "address 1", landmark: "landmark", city: "city", lat: 12.970150, lng: 77.731070, pin: "560066", subLocality: "sublocality", tag: "home")
-        var newAddressId: Int!
+        var newAddressId: Int?
         upSDK.addAddress(address: address, completion: { (response) in
             XCTAssert(response?.addressId != nil, "Add new address failed")
             newAddressId = response?.addressId

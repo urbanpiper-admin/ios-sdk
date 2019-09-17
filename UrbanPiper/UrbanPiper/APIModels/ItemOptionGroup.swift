@@ -10,12 +10,12 @@ import Foundation
 public class ItemOptionGroup : NSObject, JSONDecodable {
 
 	public var descriptionField : String!
-	public var id : Int!
+	public var id : Int = 0
     public var isDefault : Bool
-	public var maxSelectable : Int!
-	public var minSelectable : Int!
+	public var maxSelectable : Int = 0
+	public var minSelectable : Int = 0
 	public var options : [ItemOption]!
-	public var sortOrder : Int!
+	public var sortOrder : Int = 0
 	public var title : String!
 
 	/**
@@ -24,10 +24,10 @@ public class ItemOptionGroup : NSObject, JSONDecodable {
 	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
 		descriptionField = dictionary["description"] as? String
-		id = dictionary["id"] as? Int
+		id = dictionary["id"] as? Int ?? 0
 		isDefault = dictionary["is_default"] as? Bool ?? false
-		maxSelectable = dictionary["max_selectable"] as? Int
-		minSelectable = dictionary["min_selectable"] as? Int
+		maxSelectable = dictionary["max_selectable"] as? Int ?? 0
+		minSelectable = dictionary["min_selectable"] as? Int ?? 0
 //        if maxSelectable < 0 {
 //            maxSelectable = 1
 //        }
@@ -61,18 +61,14 @@ public class ItemOptionGroup : NSObject, JSONDecodable {
         if let descriptionField = descriptionField {
             dictionary["description"] = descriptionField as AnyObject
         }
-        if let id = id {
-            dictionary["id"] = id as AnyObject
-        }
+        dictionary["id"] = id as AnyObject
 
         dictionary["is_default"] = isDefault as AnyObject
         
-        if let maxSelectable = maxSelectable {
-            dictionary["max_selectable"] = maxSelectable as AnyObject
-        }
-        if let minSelectable = minSelectable {
-            dictionary["min_selectable"] = minSelectable as AnyObject
-        }
+        dictionary["max_selectable"] = maxSelectable as AnyObject
+        
+        dictionary["min_selectable"] = minSelectable as AnyObject
+        
         if let options = options {
             var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
             for optionsElement in options {
@@ -80,9 +76,7 @@ public class ItemOptionGroup : NSObject, JSONDecodable {
             }
             dictionary["options"] = dictionaryElements as AnyObject
         }
-        if let sortOrder = sortOrder {
-            dictionary["sort_order"] = sortOrder as AnyObject
-        }
+        dictionary["sort_order"] = sortOrder as AnyObject
         if let title = title {
             dictionary["title"] = title as AnyObject
         }
@@ -97,12 +91,16 @@ public class ItemOptionGroup : NSObject, JSONDecodable {
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
 //         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
-//         id = aDecoder.decodeInteger(forKey: "id")
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         isDefault = aDecoder.decodeBool(forKey: "is_default")
-//         maxSelectable = aDecoder.decodeInteger(forKey: "max_selectable")
-//         minSelectable = aDecoder.decodeInteger(forKey: "min_selectable")
+//         maxSelectable = aDecoder.decodeObject(forKey: "max_selectable") as? Int
+//         minSelectable = aDecoder.decodeObject(forKey: "min_selectable") as? Int
 //         options = aDecoder.decodeObject(forKey :"options") as? [ItemOption]
-//         sortOrder = aDecoder.decodeInteger(forKey: "sort_order")
+//         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
 //         title = aDecoder.decodeObject(forKey: "title") as? String
 //    }
 //

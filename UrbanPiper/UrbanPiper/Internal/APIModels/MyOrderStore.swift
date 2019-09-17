@@ -10,7 +10,7 @@ import Foundation
 
 public class MyOrderStore : NSObject, JSONDecodable{
 
-	public var bizLocationId : Int!
+	public var bizLocationId : Int?
 	public var name : String!
 
 
@@ -44,7 +44,7 @@ public class MyOrderStore : NSObject, JSONDecodable{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         bizLocationId = aDecoder.decodeInteger(forKey: "biz_location_id")
+//         bizLocationId = aDecoder.decodeObject(forKey: "biz_location_id") as? Int
 //         name = aDecoder.decodeObject(forKey: "name") as? String
 //
 //    }

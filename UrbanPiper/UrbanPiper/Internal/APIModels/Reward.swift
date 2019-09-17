@@ -8,18 +8,18 @@ import Foundation
 
 public class Reward : NSObject, JSONDecodable, NSCoding{
 
-    public var claimedCount : Int!
+    public var claimedCount : Int?
     public var descriptionField : String!
-    public var expiresOn : Int!
-    public var id : Int!
+    public var expiresOn : Int?
+    public var id : Int = 0
     public var imgLink : String!
     public var inStoreCouponRewards : Bool = false
     public var locked : Bool = false
-    public var points : Int!
-    public var redeemedCount : Int!
+    public var points : Int?
+    public var redeemedCount : Int?
     public var redemptionCodes : [RedemptionCode]!
     public var title : String!
-    public var type : Int!
+    public var type : Int?
     public var value : String!
 
 
@@ -31,7 +31,7 @@ public class Reward : NSObject, JSONDecodable, NSCoding{
         claimedCount = dictionary["claimed_count"] as? Int
         descriptionField = dictionary["description"] as? String
         expiresOn = dictionary["expires_on"] as? Int
-        id = dictionary["id"] as? Int
+        id = dictionary["id"] as? Int ?? 0
         imgLink = dictionary["img_link"] as? String
         inStoreCouponRewards = dictionary["in_store_coupon_rewards"] as? Bool ?? false
         locked = dictionary["locked"] as? Bool ?? false
@@ -64,9 +64,7 @@ public class Reward : NSObject, JSONDecodable, NSCoding{
         if let expiresOn = expiresOn {
             dictionary["expires_on"] = expiresOn as AnyObject
         }
-        if let id = id {
-            dictionary["id"] = id as AnyObject
-        }
+        dictionary["id"] = id as AnyObject
         if let imgLink = imgLink {
             dictionary["img_link"] = imgLink as AnyObject
         }
@@ -106,10 +104,14 @@ public class Reward : NSObject, JSONDecodable, NSCoding{
      */
     @objc required public init(coder aDecoder: NSCoder)
     {
-        claimedCount = aDecoder.decodeInteger(forKey: "claimed_count")
+        claimedCount = aDecoder.decodeObject(forKey: "claimed_count") as? Int
         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
-        expiresOn = aDecoder.decodeInteger(forKey: "expires_on")
-        id = aDecoder.decodeInteger(forKey: "id")
+        expiresOn = aDecoder.decodeObject(forKey: "expires_on") as? Int
+        if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+            id = val
+        } else {
+            id = aDecoder.decodeInteger(forKey: "id")
+        }
         imgLink = aDecoder.decodeObject(forKey: "img_link") as? String
         
         if let numberVal = aDecoder.decodeObject(forKey: "in_store_coupon_rewards") as? NSNumber {
@@ -128,11 +130,11 @@ public class Reward : NSObject, JSONDecodable, NSCoding{
             locked = false
         }
 
-        points = aDecoder.decodeInteger(forKey: "points")
-        redeemedCount = aDecoder.decodeInteger(forKey: "redeemed_count")
+        points = aDecoder.decodeObject(forKey: "points") as? Int
+        redeemedCount = aDecoder.decodeObject(forKey: "redeemed_count") as? Int
         redemptionCodes = aDecoder.decodeObject(forKey: "redemption_codes") as? [RedemptionCode]
         title = aDecoder.decodeObject(forKey: "title") as? String
-        type = aDecoder.decodeInteger(forKey: "type")
+        type = aDecoder.decodeObject(forKey: "type") as? Int
         value = aDecoder.decodeObject(forKey: "value") as? String
     }
 
@@ -151,9 +153,7 @@ public class Reward : NSObject, JSONDecodable, NSCoding{
         if let expiresOn = expiresOn {
             aCoder.encode(expiresOn, forKey: "expires_on")
         }
-        if let id = id {
-            aCoder.encode(id, forKey: "id")
-        }
+        aCoder.encode(id, forKey: "id")
         if let imgLink = imgLink {
             aCoder.encode(imgLink, forKey: "img_link")
         }

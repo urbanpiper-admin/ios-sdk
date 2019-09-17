@@ -161,7 +161,7 @@ public class GAObserver: AnalyticsEventObserver {
         case .addToCart(let cartItem, _, _):
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
             let product: GAIEcommerceProduct = GAIEcommerceProduct()
-            product.setId("\(cartItem.id!)")
+            product.setId("\(cartItem.id)")
             product.setName(cartItem.itemTitle)
             product.setQuantity(cartItem.quantity as NSNumber)
             product.setPrice(cartItem.totalAmount as NSNumber)
@@ -178,7 +178,7 @@ public class GAObserver: AnalyticsEventObserver {
         case .removeFromCart(let cartItem):
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
             let product: GAIEcommerceProduct = GAIEcommerceProduct()
-            product.setId("\(cartItem.id!)")
+            product.setId("\(cartItem.id)")
             product.setName(cartItem.itemTitle)
             product.setQuantity(cartItem.quantity as NSNumber)
             product.setPrice(cartItem.totalAmount as NSNumber)
@@ -195,7 +195,7 @@ public class GAObserver: AnalyticsEventObserver {
         case .productClicked(let item):
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
             let product: GAIEcommerceProduct = GAIEcommerceProduct()
-            product.setId("\(item.id!)")
+            product.setId("\(item.id)")
             product.setName(item.itemTitle)
             product.setCategory(item.category.name)
             
@@ -233,7 +233,7 @@ public class GAObserver: AnalyticsEventObserver {
             
             for item in checkoutBuilder.cartItems {
                 let product: GAIEcommerceProduct = GAIEcommerceProduct()
-                product.setId("\(item.id!)")
+                product.setId("\(item.id)")
                 product.setName(item.itemTitle)
                 product.setQuantity(NSNumber(value: item.quantity))
                 product.setPrice(NSDecimalNumber(decimal: item.itemPrice))

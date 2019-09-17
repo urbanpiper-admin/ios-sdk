@@ -11,7 +11,7 @@ import Foundation
 public class BannerImage : NSObject, JSONDecodable{
 
 	public var created : String!
-	public var id : Int!
+	public var id : Int = 0
 	public var image : String!
 	public var imgType : String!
 	public var markups : String!
@@ -23,7 +23,7 @@ public class BannerImage : NSObject, JSONDecodable{
 	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
 		created = dictionary["created"] as? String
-		id = dictionary["id"] as? Int
+		id = dictionary["id"] as? Int ?? 0
 		image = dictionary["image"] as? String
 		imgType = dictionary["img_type"] as? String
 		markups = dictionary["markups"] as? String
@@ -60,7 +60,11 @@ public class BannerImage : NSObject, JSONDecodable{
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
 //         created = aDecoder.decodeObject(forKey: "created") as? String
-//         id = aDecoder.decodeInteger(forKey: "id")
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         image = aDecoder.decodeObject(forKey: "image") as? String
 //         imgType = aDecoder.decodeObject(forKey: "img_type") as? String
 //         markups = aDecoder.decodeObject(forKey: "markups") as? String

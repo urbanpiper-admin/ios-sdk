@@ -10,7 +10,7 @@ import Foundation
 
 public class ItemExtra : NSObject, JSONDecodable{
 
-	public var id : Int!
+	public var id : Int = 0
 	public var keyValues : [ItemKeyValue]!
 	public var name : String!
 
@@ -20,7 +20,7 @@ public class ItemExtra : NSObject, JSONDecodable{
 	 */
 	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		id = dictionary["id"] as? Int
+		id = dictionary["id"] as? Int ?? 0
 		keyValues = [ItemKeyValue]()
 		if let keyValuesArray: [[String : AnyObject]] = dictionary["key_values"] as? [[String : AnyObject]]{
 			for dic in keyValuesArray{
@@ -37,9 +37,7 @@ public class ItemExtra : NSObject, JSONDecodable{
     public func toDictionary() -> [String : AnyObject]
     {
         var dictionary: [String : AnyObject] = [String : AnyObject]()
-        if let id = id {
-            dictionary["id"] = id as AnyObject
-        }
+        dictionary["id"] = id as AnyObject
         if let keyValues = keyValues {
             var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
             for keyValuesElement in keyValues {
@@ -59,7 +57,11 @@ public class ItemExtra : NSObject, JSONDecodable{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         id = aDecoder.decodeInteger(forKey: "id")
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         keyValues = aDecoder.decodeObject(forKey :"key_values") as? [ItemKeyValue]
 //         name = aDecoder.decodeObject(forKey: "name") as? String
 //

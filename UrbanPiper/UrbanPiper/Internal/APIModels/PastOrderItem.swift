@@ -11,19 +11,19 @@ public class PastOrderItem : NSObject, JSONDecodable {//}, NSCoding{
     public var charges : [OrderCharges]!
     public var discount : Decimal!
     public var foodType : String!
-    public var id : Int!
+    public var id : Int = 0
     public var imageLandscapeUrl : String!
     public var imageUrl : String!
     public var merchantId : String!
     public var optionsToAdd : [ItemOption]!
     public var optionsToRemove : [ItemOption]!
     public var price : Decimal!
-    public var quantity : Int!
+    public var quantity : Int?
     public var taxes : [ItemTaxes]!
     public var title : String!
     public var total : Decimal!
     public var totalWithTax : Decimal!
-    public var unitWeight : Int!
+    public var unitWeight : Int?
     
     
     /**
@@ -42,7 +42,7 @@ public class PastOrderItem : NSObject, JSONDecodable {//}, NSCoding{
         }
         
         foodType = dictionary["food_type"] as? String
-        id = dictionary["id"] as? Int
+        id = dictionary["id"] as? Int ?? 0
         imageLandscapeUrl = dictionary["image_landscape_url"] as? String
         imageUrl = dictionary["image_url"] as? String
         merchantId = dictionary["merchant_id"] as? String
@@ -100,9 +100,7 @@ public class PastOrderItem : NSObject, JSONDecodable {//}, NSCoding{
         if let foodType = foodType {
             dictionary["food_type"] = foodType as AnyObject
         }
-        if let id = id {
-            dictionary["id"] = id as AnyObject
-        }
+        dictionary["id"] = id as AnyObject
         if let imageLandscapeUrl = imageLandscapeUrl {
             dictionary["image_landscape_url"] = imageLandscapeUrl as AnyObject
         }
@@ -147,21 +145,25 @@ public class PastOrderItem : NSObject, JSONDecodable {//}, NSCoding{
     @objc required init(coder aDecoder: NSCoder)
     {
         charges = aDecoder.decodeObject(forKey: "charges") as? [AnyObject]
-        discount = aDecoder.decodeInteger(forKey: "discount")
+        discount = aDecoder.decodeObject(forKey: "discount") as? Int
         foodType = aDecoder.decodeObject(forKey: "food_type") as? String
-        id = aDecoder.decodeInteger(forKey: "id")
+        if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+            id = val
+        } else {
+            id = aDecoder.decodeInteger(forKey: "id")
+        }
         imageLandscapeUrl = aDecoder.decodeObject(forKey: "image_landscape_url") as? String
         imageUrl = aDecoder.decodeObject(forKey: "image_url") as? String
         merchantId = aDecoder.decodeObject(forKey: "merchant_id") as? String
         optionsToAdd = aDecoder.decodeObject(forKey: "options_to_add") as? [OptionsToAdd]
         optionsToRemove = aDecoder.decodeObject(forKey: "options_to_remove") as? [AnyObject]
-        price = aDecoder.decodeInteger(forKey: "price")
-        quantity = aDecoder.decodeInteger(forKey: "quantity")
+        price = aDecoder.decodeObject(forKey: "price") as? Int
+        quantity = aDecoder.decodeObject(forKey: "quantity") as? Int
         taxes = aDecoder.decodeObject(forKey: "taxes") as? [AnyObject]
         title = aDecoder.decodeObject(forKey: "title") as? String
-        total = aDecoder.decodeInteger(forKey: "total")
-        totalWithTax = aDecoder.decodeInteger(forKey: "total_with_tax")
-        unitWeight = aDecoder.decodeInteger(forKey: "unit_weight")
+        total = aDecoder.decodeObject(forKey: "total") as? Int
+        totalWithTax = aDecoder.decodeObject(forKey: "total_with_tax") as? Int
+        unitWeight = aDecoder.decodeObject(forKey: "unit_weight") as? Int
     }
     
     /**

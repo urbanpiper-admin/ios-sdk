@@ -9,8 +9,8 @@ import Foundation
 @objc public class ReorderItem : NSObject, JSONDecodable, NSCoding{
 
     public var category : ItemCategory!
-    public var currentStock : Int!
-    public var id : Int!
+    public var currentStock : Int = 0
+    public var id : Int = 0
     public var imageLandscapeUrl : String!
     public var imageUrl : String!
     public var itemCategory : ItemCategory!
@@ -20,8 +20,8 @@ import Foundation
     public var preOrderStartTime : Int?
     public var preOrderEndTime : Int?
     @objc public var quantity : Int = 0
-    public var serviceTaxRate : Int!
-    public var vatRate : Int!
+    public var serviceTaxRate : Int?
+    public var vatRate : Int?
 
 
     /**
@@ -29,8 +29,8 @@ import Foundation
      */
     required init?(fromDictionary dictionary: [String : AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-        currentStock = dictionary["current_stock"] as? Int
-        id = dictionary["id"] as? Int
+        currentStock = dictionary["current_stock"] as? Int ?? 0
+        id = dictionary["id"] as? Int ?? 0
         imageLandscapeUrl = dictionary["image_landscape_url"] as? String
         imageUrl = dictionary["image_url"] as? String
      
@@ -70,12 +70,8 @@ import Foundation
     func toDictionary() -> [String : AnyObject]
     {
         var dictionary = [String : AnyObject]()
-        if let currentStock = currentStock {
-            dictionary["current_stock"] = currentStock as AnyObject
-        }
-        if let id = id {
-            dictionary["id"] = id as AnyObject
-        }
+        dictionary["current_stock"] = currentStock as AnyObject
+        dictionary["id"] = id as AnyObject
         if let imageLandscapeUrl = imageLandscapeUrl {
             dictionary["image_landscape_url"] = imageLandscapeUrl as AnyObject
         }
@@ -127,20 +123,32 @@ import Foundation
     @objc required public init(coder aDecoder: NSCoder)
     {
         category = aDecoder.decodeObject(forKey: "category") as? ItemCategory
-        currentStock = aDecoder.decodeInteger(forKey: "current_stock")
-        id = aDecoder.decodeInteger(forKey: "id")
+        if let val = aDecoder.decodeObject(forKey: "current_stock") as? Int {
+            currentStock = val
+        } else {
+            currentStock = aDecoder.decodeInteger(forKey: "current_stock")
+        }
+        if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+            id = val
+        } else {
+            id = aDecoder.decodeInteger(forKey: "id")
+        }
         imageLandscapeUrl = aDecoder.decodeObject(forKey: "image_landscape_url") as? String
         imageUrl = aDecoder.decodeObject(forKey: "image_url") as? String
         itemCategory = aDecoder.decodeObject(forKey: "item_category") as? ItemCategory
         itemPrice = aDecoder.decodeObject(forKey: "item_price") as? Decimal
         itemTitle = aDecoder.decodeObject(forKey: "item_title") as? String
         optionGroups = aDecoder.decodeObject(forKey: "option_groups") as? [ItemOptionGroup]
-        quantity = aDecoder.decodeInteger(forKey: "quantity")
-        serviceTaxRate = aDecoder.decodeInteger(forKey: "service_tax_rate")
-        vatRate = aDecoder.decodeInteger(forKey: "vat_rate")
+        if let val = aDecoder.decodeObject(forKey: "quantity") as? Int {
+            quantity = val
+        } else {
+            quantity = aDecoder.decodeInteger(forKey: "quantity")
+        }
+        serviceTaxRate = aDecoder.decodeObject(forKey: "service_tax_rate") as? Int
+        vatRate = aDecoder.decodeObject(forKey: "vat_rate") as? Int
         
-        preOrderStartTime = aDecoder.decodeInteger(forKey: "pre_order_start_time")
-        preOrderEndTime = aDecoder.decodeInteger(forKey: "pre_order_end_time")
+        preOrderStartTime = aDecoder.decodeObject(forKey: "pre_order_start_time") as? Int
+        preOrderEndTime = aDecoder.decodeObject(forKey: "pre_order_end_time") as? Int
     }
 
     /**
@@ -152,12 +160,8 @@ import Foundation
         if let category = category {
             aCoder.encode(category, forKey: "category")
         }
-        if let currentStock = currentStock {
-            aCoder.encode(currentStock, forKey: "current_stock")
-        }
-        if let id = id {
-            aCoder.encode(id, forKey: "id")
-        }
+        aCoder.encode(currentStock, forKey: "current_stock")
+        aCoder.encode(id, forKey: "id")
         if let imageLandscapeUrl = imageLandscapeUrl {
             aCoder.encode(imageLandscapeUrl, forKey: "image_landscape_url")
         }
