@@ -38,15 +38,20 @@ public enum ErrorType {
         return httpResponse.statusCode
     }
     
+    public var serverErrorMessage: String? {
+        guard let dictionary = responseDictionary else { return nil }
+        let msg = (dictionary["message"] ?? dictionary["error_message"] ?? dictionary["msg"]) as? String
+        return msg
+    }
+    
     /// Returns the error message from the server if server error message is non nil else return the localizedDescription from the error object of the failed api call
     public var errorMessage: String {
         switch errorType {
         case .responseParseError:
             return "Unable to parse data"
         default:
-            guard let dictionary = responseDictionary else { return localizedDescription }
-            let msg = (dictionary["message"] ?? dictionary["error_message"] ?? dictionary["msg"]) as? String
-            return msg ?? localizedDescription
+            guard let msg = serverErrorMessage else { return localizedDescription }
+            return msg
         }
     }
     
@@ -57,7 +62,8 @@ public enum ErrorType {
         self.response = response
         self.error = error
 
-        super.init(domain: "com.urbanpiper.error", code: (error as NSError?)?.code ?? 0, userInfo: (error as NSError?)?.userInfo)
+        let errorObj = error as NSError?
+        super.init(domain: "com.urbanpiper.error", code: errorObj?.code ?? 0, userInfo: errorObj?.userInfo)
     }
     
     required internal init?(coder aDecoder: NSCoder) {

@@ -29,6 +29,8 @@ public enum SocialLoginProvider: String {
     case google = "google"
     /// - facebook: Facebook login
     case facebook = "facebook"
+    /// - apple: Apple login
+    case apple = "apple"
 }
 
 internal enum OnlinePaymentPurpose: String {

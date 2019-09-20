@@ -508,7 +508,7 @@ extension UserManager {
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
     
-    @discardableResult internal func socialLogin(email: String,
+    @discardableResult internal func socialLogin(email: String?,
                             socialLoginProvider: SocialLoginProvider,
                             accessToken: String,
                             completion: @escaping APICompletion<SocialLoginResponse>,
@@ -526,7 +526,7 @@ extension UserManager {
             } as APICompletion<SocialLoginResponse>, failure: failure)
     }
 
-    internal func socialLogin(email: String,
+    internal func socialLogin(email: String?,
                               socialLoginProvider: SocialLoginProvider,
                               accessToken: String) -> Observable<SocialLoginResponse> {
         let upAPI = SocialAuthAPI.socialLogin(email: email, accessToken: accessToken, socialLoginProvider: socialLoginProvider)

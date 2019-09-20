@@ -9,7 +9,7 @@
 import Foundation
 
 enum SocialAuthAPI {
-    case socialLogin(email: String, accessToken: String, socialLoginProvider: SocialLoginProvider)
+    case socialLogin(email: String?, accessToken: String, socialLoginProvider: SocialLoginProvider)
     case verifyPhone(phone: String, email: String, accessToken: String, socialLoginProvider: SocialLoginProvider)
     case verifySocialOTP(phone: String, email: String, accessToken: String, socialLoginProvider: SocialLoginProvider, otp: String)
 }
@@ -29,9 +29,12 @@ extension SocialAuthAPI: UPAPI {
     var parameters: [String : String]? {
         switch self {
         case .socialLogin(let email, let accessToken, let socialLoginProvider):
-            return ["email": email,
-                    "provider": socialLoginProvider.rawValue,
-                    "access_token": accessToken]
+            var params = ["provider": socialLoginProvider.rawValue,
+                          "access_token": accessToken]
+            if let emailId = email {
+                params["email"] = emailId
+            }
+            return params
         case .verifyPhone(let phone, let email, let accessToken, let socialLoginProvider):
             return ["email": email,
                     "provider": socialLoginProvider.rawValue,
