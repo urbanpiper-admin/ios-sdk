@@ -7,71 +7,69 @@
 
 import Foundation
 
-
-@objc public class Item : NSObject, JSONDecodable{
-
-	public var category : ItemCategory!
-	public var currentStock : Int = 0
-	public var extras : [ItemExtra]!
-	public var foodType : String!
+@objc public class Item: NSObject, JSONDecodable {
+    public var category: ItemCategory!
+    public var currentStock: Int = 0
+    public var extras: [ItemExtra]!
+    public var foodType: String!
 //    public var fulfillmentModes : [String]!
-	public var id : Int = 0
-	public var imageLandscapeUrl : String!
-	public var imageUrl : String!
-	public var itemDesc : String!
-	public var itemPrice : Decimal!
-	public var itemTitle : String!
-	public var likes : Int?
-	public var optionGroups : [ItemOptionGroup]!
-    public var orderOptionsToAdd : [ItemOption]!
-    public var orderOptionsToRemove : [ItemOption]!
-	public var priceDescriptor : String!
+    public var id: Int = 0
+    public var imageLandscapeUrl: String!
+    public var imageUrl: String!
+    public var itemDesc: String!
+    public var itemPrice: Decimal!
+    public var itemTitle: String!
+    public var likes: Int?
+    public var optionGroups: [ItemOptionGroup]!
+    public var orderOptionsToAdd: [ItemOption]!
+    public var orderOptionsToRemove: [ItemOption]!
+    public var priceDescriptor: String!
 //    public var serviceTaxRate : Float!
-    public var preOrderStartTime : Int?
-    public var preOrderEndTime : Int?
-	public var slug : String!
-	public var sortOrder : Int = 0
-    public var subCategory : ItemCategory?
+    public var preOrderStartTime: Int?
+    public var preOrderEndTime: Int?
+    public var slug: String!
+    public var sortOrder: Int = 0
+    public var subCategory: ItemCategory?
 //    public var tags : [ItemTag]!
 //    public var vatRate : Float!
-    
+
 //    public var total : Decimal!
 
 //    @objc public var quantity: Int = 0
     internal var isRecommendedItem: Bool = false
     internal var isUpsoldItem: Bool = false
     internal var isSearchItem: Bool = false
-    
+
     internal var isItemDetailsItem: Bool = false
 
     public var notes: String?
-    
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-    @objc required init?(fromDictionary dictionary: [String : AnyObject]?) {
+
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    @objc required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-        
+
         super.init()
-        if let categoryData: [String : AnyObject] = dictionary["category"] as? [String : AnyObject]{
-			category = ItemCategory(fromDictionary: categoryData)
-        } else if let categoryData: [String : AnyObject] = dictionary["item_category"] as? [String : AnyObject]{
+        if let categoryData: [String: AnyObject] = dictionary["category"] as? [String: AnyObject] {
+            category = ItemCategory(fromDictionary: categoryData)
+        } else if let categoryData: [String: AnyObject] = dictionary["item_category"] as? [String: AnyObject] {
             category = ItemCategory(fromDictionary: categoryData)
         }
-		currentStock = dictionary["current_stock"] as? Int ?? 0
+        currentStock = dictionary["current_stock"] as? Int ?? 0
         extras = [ItemExtra]()
-        if let extrasArray: [[String : AnyObject]] = dictionary["extras"] as? [[String : AnyObject]]{
-            for dic in extrasArray{
+        if let extrasArray: [[String: AnyObject]] = dictionary["extras"] as? [[String: AnyObject]] {
+            for dic in extrasArray {
                 guard let value: ItemExtra = ItemExtra(fromDictionary: dic) else { continue }
                 extras.append(value)
             }
         }
-		foodType = dictionary["food_type"] as? String
+        foodType = dictionary["food_type"] as? String
 //        fulfillmentModes = dictionary["fulfillment_modes"] as? [String]
-		id = dictionary["id"] as? Int ?? 0
-		imageLandscapeUrl = dictionary["image_landscape_url"] as? String
-		imageUrl = dictionary["image_url"] as? String
-		itemDesc = dictionary["item_desc"] as? String
+        id = dictionary["id"] as? Int ?? 0
+        imageLandscapeUrl = dictionary["image_landscape_url"] as? String
+        imageUrl = dictionary["image_url"] as? String
+        itemDesc = dictionary["item_desc"] as? String
 
         let priceVal: Any = dictionary["item_price"] ?? dictionary["price"] as Any
         if let val: Decimal = priceVal as? Decimal {
@@ -81,7 +79,7 @@ import Foundation
         } else {
             itemPrice = Decimal.zero
         }
-        
+
 //        priceVal = dictionary["total"] as Any
 //        if let val: Decimal = priceVal as? Decimal {
 //            total = val
@@ -91,28 +89,28 @@ import Foundation
 //            total = Decimal.zero
 //        }
 
-		itemTitle = dictionary["item_title"] as? String ?? dictionary["title"] as? String
-		likes = dictionary["likes"] as? Int ?? 0
-		optionGroups = [ItemOptionGroup]()
-		if let optionGroupsArray: [[String : AnyObject]] = dictionary["option_groups"] as? [[String : AnyObject]]{
-			for dic in optionGroupsArray{
-				guard let value: ItemOptionGroup = ItemOptionGroup(fromDictionary: dic) else { continue }
-				optionGroups.append(value)
-			}
+        itemTitle = dictionary["item_title"] as? String ?? dictionary["title"] as? String
+        likes = dictionary["likes"] as? Int ?? 0
+        optionGroups = [ItemOptionGroup]()
+        if let optionGroupsArray: [[String: AnyObject]] = dictionary["option_groups"] as? [[String: AnyObject]] {
+            for dic in optionGroupsArray {
+                guard let value: ItemOptionGroup = ItemOptionGroup(fromDictionary: dic) else { continue }
+                optionGroups.append(value)
+            }
             if optionGroups.count > 1 {
                 optionGroups.sort { $0.sortOrder < $1.sortOrder }
             }
-		}
+        }
         orderOptionsToAdd = [ItemOption]()
-        if let orderOptionsToAddArray: [[String : AnyObject]] = dictionary["options_to_add"] as? [[String : AnyObject]]{
-            for dic in orderOptionsToAddArray{
+        if let orderOptionsToAddArray: [[String: AnyObject]] = dictionary["options_to_add"] as? [[String: AnyObject]] {
+            for dic in orderOptionsToAddArray {
                 guard let value: ItemOption = ItemOption(fromDictionary: dic) else { continue }
                 orderOptionsToAdd.append(value)
             }
         }
         orderOptionsToRemove = [ItemOption]()
-        if let orderOptionsToRemoveArray: [[String : AnyObject]] = dictionary["options_to_remove"] as? [[String : AnyObject]]{
-            for dic in orderOptionsToRemoveArray{
+        if let orderOptionsToRemoveArray: [[String: AnyObject]] = dictionary["options_to_remove"] as? [[String: AnyObject]] {
+            for dic in orderOptionsToRemoveArray {
                 guard let value: ItemOption = ItemOption(fromDictionary: dic) else { continue }
                 orderOptionsToRemove.append(value)
             }
@@ -122,9 +120,9 @@ import Foundation
 //        serviceTaxRate = dictionary["service_tax_rate"] as? Float
         preOrderStartTime = dictionary["pre_order_start_time"] as? Int
         preOrderEndTime = dictionary["pre_order_end_time"] as? Int
-		slug = dictionary["slug"] as? String
-		sortOrder = dictionary["sort_order"] as? Int ?? 0
-        if let subCategoryData: [String : AnyObject] = dictionary["sub_category"] as? [String : AnyObject]{
+        slug = dictionary["slug"] as? String
+        sortOrder = dictionary["sort_order"] as? Int ?? 0
+        if let subCategoryData: [String: AnyObject] = dictionary["sub_category"] as? [String: AnyObject] {
             subCategory = ItemCategory(fromDictionary: subCategoryData)
         }
 //        tags = [ItemTag]()
@@ -136,20 +134,19 @@ import Foundation
 //        }
 //        vatRate = dictionary["vat_rate"] as? Float
 //        quantity = dictionary["quantity"] as? Int ?? 0
-	}
+    }
 
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let category = category {
             dictionary["category"] = category.toDictionary() as AnyObject
         }
         dictionary["current_stock"] = currentStock as AnyObject
         if let extras = extras {
-            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for itemExtraElement in extras {
                 dictionaryElements.append(itemExtraElement.toDictionary())
             }
@@ -162,7 +159,7 @@ import Foundation
 //            dictionary["fulfillment_modes"] = fulfillmentModes as AnyObject
 //        }
         dictionary["id"] = id as AnyObject
-        
+
         if let imageLandscapeUrl = imageLandscapeUrl {
             dictionary["image_landscape_url"] = imageLandscapeUrl as AnyObject
         }
@@ -185,21 +182,21 @@ import Foundation
             dictionary["likes"] = likes as AnyObject
         }
         if let optionGroups = optionGroups {
-            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for optionGroupsElement in optionGroups {
                 dictionaryElements.append(optionGroupsElement.toDictionary())
             }
             dictionary["option_groups"] = dictionaryElements as AnyObject
         }
         if let orderOptionsToAdd = orderOptionsToAdd {
-            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for orderOptionsToAddElement in orderOptionsToAdd {
                 dictionaryElements.append(orderOptionsToAddElement.toDictionary())
             }
             dictionary["options_to_add"] = dictionaryElements as AnyObject
         }
         if let orderOptionsToRemove = orderOptionsToRemove {
-            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for orderOptionsToRemoveElement in orderOptionsToRemove {
                 dictionaryElements.append(orderOptionsToRemoveElement.toDictionary())
             }
@@ -222,7 +219,7 @@ import Foundation
         }
 
         dictionary["sort_order"] = sortOrder as AnyObject
-        
+
         if let subCategory = subCategory {
             dictionary["sub_category"] = subCategory.toDictionary() as AnyObject
         }
@@ -370,5 +367,4 @@ import Foundation
 //        }
 //
 //    }
-
 }

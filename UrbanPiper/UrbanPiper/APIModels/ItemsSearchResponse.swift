@@ -7,39 +7,35 @@
 
 import Foundation
 
+public class ItemsSearchResponse: NSObject, JSONDecodable {
+    public var items: [Item]!
+    public var meta: Meta!
 
-public class ItemsSearchResponse : NSObject, JSONDecodable{
-
-	public var items : [Item]!
-    public var meta : Meta!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		items = [Item]()
-		if let itemsArray: [[String : AnyObject]] = dictionary["items"] as? [[String : AnyObject]]{
-			for dic in itemsArray{
-				guard let value: Item = Item(fromDictionary: dic) else { continue }
+        items = [Item]()
+        if let itemsArray: [[String: AnyObject]] = dictionary["items"] as? [[String: AnyObject]] {
+            for dic in itemsArray {
+                guard let value: Item = Item(fromDictionary: dic) else { continue }
                 value.isSearchItem = true
-				items.append(value)
-			}
-		}
-        if let metaData: [String : AnyObject] = dictionary["meta"] as? [String : AnyObject]{
+                items.append(value)
+            }
+        }
+        if let metaData: [String: AnyObject] = dictionary["meta"] as? [String: AnyObject] {
             meta = Meta(fromDictionary: metaData)
         }
-	}
+    }
 
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let items = items {
-            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for itemsElement in items {
                 dictionaryElements.append(itemsElement.toDictionary())
             }
@@ -75,5 +71,4 @@ public class ItemsSearchResponse : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

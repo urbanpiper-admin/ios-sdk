@@ -4,29 +4,26 @@
 
 import Foundation
 
+public class UserLikesResponse: NSObject, JSONDecodable {
+    public var likes: [Like]!
+    public var meta: Meta!
 
-public class UserLikesResponse : NSObject, JSONDecodable{
-
-	public var likes : [Like]!
-	public var meta : Meta!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		likes = [Like]()
-		if let likesArray: [[String : AnyObject]] = dictionary["likes"] as? [[String : AnyObject]]{
-			for dic in likesArray{
-				guard let value: Like = Like(fromDictionary: dic) else { continue }
-				likes.append(value)
-			}
-		}
-		if let metaData: [String : AnyObject] = dictionary["meta"] as? [String : AnyObject]{
-			meta = Meta(fromDictionary: metaData)
-		}
-	}
+        likes = [Like]()
+        if let likesArray: [[String: AnyObject]] = dictionary["likes"] as? [[String: AnyObject]] {
+            for dic in likesArray {
+                guard let value: Like = Like(fromDictionary: dic) else { continue }
+                likes.append(value)
+            }
+        }
+        if let metaData: [String: AnyObject] = dictionary["meta"] as? [String: AnyObject] {
+            meta = Meta(fromDictionary: metaData)
+        }
+    }
 
 //    /**
 //     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -72,5 +69,4 @@ public class UserLikesResponse : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

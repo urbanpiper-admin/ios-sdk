@@ -7,42 +7,38 @@
 
 import Foundation
 
-
-public class ItemCategory : NSObject, JSONDecodable{
-
-	public var id : Int = 0
-	public var name : String!
+public class ItemCategory: NSObject, JSONDecodable {
+    public var id: Int = 0
+    public var name: String!
     public var sortOrder: Int = 0
 
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		id = dictionary["id"] as? Int ?? 0
-		name = dictionary["name"] as? String
+        id = dictionary["id"] as? Int ?? 0
+        name = dictionary["name"] as? String
         sortOrder = dictionary["sort_order"] as? Int ?? 0
-	}
+    }
 
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         dictionary["id"] = id as AnyObject
         if let name = name {
             dictionary["name"] = name as AnyObject
         }
 
         dictionary["sort_order"] = sortOrder as AnyObject
-        
+
         return dictionary
     }
-    
-    func equitableCheckDictionary() -> [String : AnyObject] {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+
+    func equitableCheckDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         dictionary["id"] = id as AnyObject
 //        if let name = name {
 //            dictionary["name"] = name as AnyObject
@@ -86,13 +82,12 @@ public class ItemCategory : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }
 
 extension ItemCategory {
-    static internal func == (lhs: ItemCategory, rhs: ItemCategory) -> Bool {
-            return lhs.id  == rhs.id  &&
-                lhs.name  == rhs.name &&
-                lhs.sortOrder  == rhs.sortOrder
+    internal static func == (lhs: ItemCategory, rhs: ItemCategory) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.name == rhs.name &&
+            lhs.sortOrder == rhs.sortOrder
     }
 }

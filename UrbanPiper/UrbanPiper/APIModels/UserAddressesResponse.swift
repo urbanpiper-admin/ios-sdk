@@ -7,34 +7,30 @@
 
 import Foundation
 
+@objc public class UserAddressesResponse: NSObject, JSONDecodable {
+    @objc public var addresses: [Address]!
 
-@objc public class UserAddressesResponse : NSObject, JSONDecodable{
-
-	@objc public var addresses : [Address]!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		addresses = [Address]()
-		if let addressesArray: [[String : AnyObject]] = dictionary["addresses"] as? [[String : AnyObject]]{
-			for dic in addressesArray{
-				guard let value: Address = Address(fromDictionary: dic) else { continue }
-				addresses.append(value)
-			}
-		}
-	}
+        addresses = [Address]()
+        if let addressesArray: [[String: AnyObject]] = dictionary["addresses"] as? [[String: AnyObject]] {
+            for dic in addressesArray {
+                guard let value: Address = Address(fromDictionary: dic) else { continue }
+                addresses.append(value)
+            }
+        }
+    }
 
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    @objc public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    @objc public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let addresses = addresses {
-            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for addressesElement in addresses {
                 dictionaryElements.append(addressesElement.toDictionary())
             }
@@ -64,5 +60,4 @@ import Foundation
 //        }
 //
 //    }
-
 }

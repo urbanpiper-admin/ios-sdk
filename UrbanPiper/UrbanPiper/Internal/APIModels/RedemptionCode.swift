@@ -1,22 +1,19 @@
 //
 //  RedemptionCode.swift
-//  Model Generated using http://www.jsoncafe.com/ 
+//  Model Generated using http://www.jsoncafe.com/
 //  Created on March 14, 2019
 
 import Foundation
 
-
-public class RedemptionCode : NSObject, JSONDecodable, NSCoding{
-
-    public var expiresIn : Int?
-    public var redemptionCode : String!
-    public var validFrom : Int?
-
+public class RedemptionCode: NSObject, JSONDecodable, NSCoding {
+    public var expiresIn: Int?
+    public var redemptionCode: String!
+    public var validFrom: Int?
 
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
         expiresIn = dictionary["expires_in"] as? Int
         redemptionCode = dictionary["redemption_code"] as? String
@@ -26,9 +23,8 @@ public class RedemptionCode : NSObject, JSONDecodable, NSCoding{
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    @objc public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary = [String : AnyObject]()
+    @objc public func toDictionary() -> [String: AnyObject] {
+        var dictionary = [String: AnyObject]()
         if let expiresIn = expiresIn {
             dictionary["expires_in"] = expiresIn as AnyObject
         }
@@ -45,8 +41,7 @@ public class RedemptionCode : NSObject, JSONDecodable, NSCoding{
      * NSCoding required initializer.
      * Fills the data from the passed decoder
      */
-    @objc required public init(coder aDecoder: NSCoder)
-    {
+    @objc public required init(coder aDecoder: NSCoder) {
         expiresIn = aDecoder.decodeObject(forKey: "expires_in") as? Int
         redemptionCode = aDecoder.decodeObject(forKey: "redemption_code") as? String
         validFrom = aDecoder.decodeObject(forKey: "valid_from") as? Int
@@ -56,8 +51,7 @@ public class RedemptionCode : NSObject, JSONDecodable, NSCoding{
      * NSCoding required method.
      * Encodes mode properties into the decoder
      */
-    @objc public func encode(with aCoder: NSCoder)
-    {
+    @objc public func encode(with aCoder: NSCoder) {
         if let expiresIn = expiresIn {
             aCoder.encode(expiresIn, forKey: "expires_in")
         }

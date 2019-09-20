@@ -14,7 +14,6 @@ public struct StockQuantity {
 }
 
 extension Item {
-
     @objc public enum FoodType: Int, RawRepresentable {
         case veg = 1
         case nonVeg = 2
@@ -22,7 +21,7 @@ extension Item {
     }
 
     public var foodTypeEnum: FoodType? {
-        guard let intVal: Int = Int(foodType), let foodTypeEnum: FoodType = FoodType(rawValue: intVal) else { return  nil }
+        guard let intVal: Int = Int(foodType), let foodTypeEnum: FoodType = FoodType(rawValue: intVal) else { return nil }
         return foodTypeEnum
     }
 
@@ -33,11 +32,10 @@ extension Item {
         guard currentStock >= currentCartStock + quantity else { return false }
         return true
     }
-
 }
 
-//extension Item: NSCopying {
-//    
+// extension Item: NSCopying {
+//
 //    public private(set) var totalAmount: Decimal {
 //        var totalAmount: Decimal = itemPrice ?? Decimal.zero
 //        for group in optionGroups {
@@ -47,15 +45,15 @@ extension Item {
 //        }
 //        return totalAmount
 //    }
-//    
+//
 //    public private(set) var isComboItem: Bool {
 //        return optionGroups.count > 1
 //    }
-//    
+//
 //    public private(set) var isOptionGroupItem: Bool {
 //        return !isNestedOptionItem && optionGroups != nil && optionGroups.count == 1 && optionGroups.last!.options.count > 0
 //    }
-//    
+//
 //    public private(set) var isNestedOptionItem: Bool {
 //        return optionGroups.filter ({ (optionGroup) -> Bool in
 //            guard let options = optionGroup.options else { return false }
@@ -136,10 +134,10 @@ extension Item {
 //
 //        return itemDictionary
 //    }
-//    
+//
 //    @objc public convenience init(historicalOrderItemDictionary dictionary: [String: Any]) {
 //        self.init(fromDictionary: dictionary)
-//        
+//
 //        optionGroups = [ItemOptionGroup]()
 //        if let optionGroupsArray: [[String:Any]] = dictionary["option_groups"] as? [[String:Any]]{
 //            for dic in optionGroupsArray{
@@ -147,13 +145,13 @@ extension Item {
 //                optionGroups.append(value)
 //            }
 //        }
-//        
+//
 //        quantity = dictionary["quantity"] as? Int ?? 0
 //    }
-//    
-//}
 //
-//extension Item {
+// }
+//
+// extension Item {
 //
 //    public func copy(with zone: NSZone? = nil) -> Any {
 //        var dictionary = toDictionary()
@@ -192,4 +190,4 @@ extension Item {
 //
 //        return NSDictionary(dictionary: lhsDictionary).isEqual(to: rhsDictionary)
 //    }
-//}
+// }

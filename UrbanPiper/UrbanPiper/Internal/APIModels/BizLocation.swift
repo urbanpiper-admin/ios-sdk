@@ -7,70 +7,66 @@
 
 import Foundation
 
-
-public class BizLocation : NSObject, JSONDecodable{
-
-	public var address : String!
-	public var bizLocationId : Int?
-	public var city : String!
-    public var closingDay : Bool
-	public var closingTime : AnyObject!
+public class BizLocation: NSObject, JSONDecodable {
+    public var address: String!
+    public var bizLocationId: Int?
+    public var city: String!
+    public var closingDay: Bool
+    public var closingTime: AnyObject!
 //    public var deliveryCharge : Float!
-	public var deliveryMinOffsetTime : Int?
-    public var hideStoreName : Bool
-	public var lat : Double!
-	public var lng : Double!
+    public var deliveryMinOffsetTime: Int?
+    public var hideStoreName: Bool
+    public var lat: Double!
+    public var lng: Double!
 //    public var minOrderTotal : Float!
-	public var name : String!
-	public var onCloseMsg : String!
-	public var onSelectMsg : AnyObject!
-	public var openingTime : AnyObject!
+    public var name: String!
+    public var onCloseMsg: String!
+    public var onSelectMsg: AnyObject!
+    public var openingTime: AnyObject!
 //    public var packagingCharge : Float!
-	public var pgKey : String!
-	public var phone : String!
-	public var pickupMinOffsetTime : Int?
-	public var sortOrder : Int?
+    public var pgKey: String!
+    public var phone: String!
+    public var pickupMinOffsetTime: Int?
+    public var sortOrder: Int?
 //    public var taxRate : Float!
-    public var temporarilyClosed : Bool
-	public var timeSlots : [AnyObject]!
+    public var temporarilyClosed: Bool
+    public var timeSlots: [AnyObject]!
 
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		address = dictionary["address"] as? String
-		bizLocationId = dictionary["biz_location_id"] as? Int
-		city = dictionary["city"] as? String
-		closingDay = dictionary["closing_day"] as? Bool ?? false
-		closingTime = dictionary["closing_time"] as AnyObject
+        address = dictionary["address"] as? String
+        bizLocationId = dictionary["biz_location_id"] as? Int
+        city = dictionary["city"] as? String
+        closingDay = dictionary["closing_day"] as? Bool ?? false
+        closingTime = dictionary["closing_time"] as AnyObject
 //        deliveryCharge = dictionary["delivery_charge"] as? Float
-		deliveryMinOffsetTime = dictionary["delivery_min_offset_time"] as? Int
-		hideStoreName = dictionary["hide_store_name"] as? Bool ?? false
-		lat = dictionary["lat"] as? Double
-		lng = dictionary["lng"] as? Double
+        deliveryMinOffsetTime = dictionary["delivery_min_offset_time"] as? Int
+        hideStoreName = dictionary["hide_store_name"] as? Bool ?? false
+        lat = dictionary["lat"] as? Double
+        lng = dictionary["lng"] as? Double
 //        minOrderTotal = dictionary["min_order_total"] as? Float
-		name = dictionary["name"] as? String
-		onCloseMsg = dictionary["on_close_msg"] as? String
-		onSelectMsg = dictionary["on_select_msg"] as AnyObject
-		openingTime = dictionary["opening_time"] as AnyObject
+        name = dictionary["name"] as? String
+        onCloseMsg = dictionary["on_close_msg"] as? String
+        onSelectMsg = dictionary["on_select_msg"] as AnyObject
+        openingTime = dictionary["opening_time"] as AnyObject
 //        packagingCharge = dictionary["packaging_charge"] as? Float
-		pgKey = dictionary["pg_key"] as? String
-		phone = dictionary["phone"] as? String
-		pickupMinOffsetTime = dictionary["pickup_min_offset_time"] as? Int
-		sortOrder = dictionary["sort_order"] as? Int
+        pgKey = dictionary["pg_key"] as? String
+        phone = dictionary["phone"] as? String
+        pickupMinOffsetTime = dictionary["pickup_min_offset_time"] as? Int
+        sortOrder = dictionary["sort_order"] as? Int
 //        taxRate = dictionary["tax_rate"] as? Float
-		temporarilyClosed = dictionary["temporarily_closed"] as? Bool ?? false
-		timeSlots = dictionary["time_slots"] as? [AnyObject]
-	}
+        temporarilyClosed = dictionary["temporarily_closed"] as? Bool ?? false
+        timeSlots = dictionary["time_slots"] as? [AnyObject]
+    }
 
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let address = address {
             dictionary["address"] = address as AnyObject
         }
@@ -246,5 +242,4 @@ public class BizLocation : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

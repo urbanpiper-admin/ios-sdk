@@ -7,27 +7,24 @@
 
 import Foundation
 
+public class MyOrderMeta: NSObject, JSONDecodable {
+    public var limit: Int = 20
+    public var next: String!
+    public var offset: Int = 0
+    public var previous: String!
+    public var totalCount: Int = 0
 
-public class MyOrderMeta : NSObject, JSONDecodable{
-
-	public var limit : Int = 20
-	public var next : String!
-	public var offset : Int = 0
-	public var previous : String!
-	public var totalCount : Int = 0
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		limit = dictionary["limit"] as? Int ?? 20
-		next = dictionary["next"] as? String
-		offset = dictionary["offset"] as? Int ?? 0
-		previous = dictionary["previous"] as? String
-		totalCount = dictionary["total_count"] as? Int ?? 0
-	}
+        limit = dictionary["limit"] as? Int ?? 20
+        next = dictionary["next"] as? String
+        offset = dictionary["offset"] as? Int ?? 0
+        previous = dictionary["previous"] as? String
+        totalCount = dictionary["total_count"] as? Int ?? 0
+    }
 
 //    /**
 //     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -90,5 +87,4 @@ public class MyOrderMeta : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

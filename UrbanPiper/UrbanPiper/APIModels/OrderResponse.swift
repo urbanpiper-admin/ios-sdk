@@ -8,22 +8,20 @@
 import UIKit
 
 public class OrderResponse: NSObject, JSONDecodable {
-
     public var status: String?
     public var message: String?
-    public var errorDetails: [String : AnyObject]?
+    public var errorDetails: [String: AnyObject]?
     public var orderId: String?
-    
-    
+
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
         status = dictionary["status"] as? String
         message = dictionary["message"] as? String
-        errorDetails = dictionary["error_details"] as? [String : AnyObject]
-        
+        errorDetails = dictionary["error_details"] as? [String: AnyObject]
+
         if let oid = dictionary["order_id"] as? String {
             orderId = oid
         } else if let oid = dictionary["order_id"] as? Int {
@@ -34,9 +32,8 @@ public class OrderResponse: NSObject, JSONDecodable {
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let status = status {
             dictionary["status"] = status as AnyObject
         }
@@ -51,5 +48,4 @@ public class OrderResponse: NSObject, JSONDecodable {
         }
         return dictionary
     }
-    
 }

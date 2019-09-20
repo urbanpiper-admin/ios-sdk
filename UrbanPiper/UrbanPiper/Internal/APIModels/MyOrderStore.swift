@@ -7,21 +7,18 @@
 
 import Foundation
 
+public class MyOrderStore: NSObject, JSONDecodable {
+    public var bizLocationId: Int?
+    public var name: String!
 
-public class MyOrderStore : NSObject, JSONDecodable{
-
-	public var bizLocationId : Int?
-	public var name : String!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		bizLocationId = dictionary["biz_location_id"] as? Int
-		name = dictionary["name"] as? String
-	}
+        bizLocationId = dictionary["biz_location_id"] as? Int
+        name = dictionary["name"] as? String
+    }
 
 //    /**
 //     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -63,5 +60,4 @@ public class MyOrderStore : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

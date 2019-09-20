@@ -7,38 +7,35 @@
 
 import Foundation
 
-
-public class MyOrderItem : NSObject, JSONDecodable{
-
-	public var id : Int = 0
-	public var image : String!
-	public var imageLandscape : String!
-	public var options : [MyOrderOption]!
-	public var optionsToRemove : [AnyObject]!
-	public var price : Decimal!
-	public var quantity : Int?
+public class MyOrderItem: NSObject, JSONDecodable {
+    public var id: Int = 0
+    public var image: String!
+    public var imageLandscape: String!
+    public var options: [MyOrderOption]!
+    public var optionsToRemove: [AnyObject]!
+    public var price: Decimal!
+    public var quantity: Int?
 //    public var srvcTaxRate : Float!
-	public var title : String!
+    public var title: String!
 //    public var vatRate : Float!
 
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		id = dictionary["id"] as? Int ?? 0
-		image = dictionary["image"] as? String
-		imageLandscape = dictionary["image_landscape"] as? String
-		options = [MyOrderOption]()
-		if let optionsArray: [[String : AnyObject]] = dictionary["options"] as? [[String : AnyObject]]{
-			for dic in optionsArray{
-				guard let value: MyOrderOption = MyOrderOption(fromDictionary: dic) else { continue }
-				options.append(value)
-			}
-		}
-		optionsToRemove = dictionary["options_to_remove"] as? [AnyObject]
-        
+        id = dictionary["id"] as? Int ?? 0
+        image = dictionary["image"] as? String
+        imageLandscape = dictionary["image_landscape"] as? String
+        options = [MyOrderOption]()
+        if let optionsArray: [[String: AnyObject]] = dictionary["options"] as? [[String: AnyObject]] {
+            for dic in optionsArray {
+                guard let value: MyOrderOption = MyOrderOption(fromDictionary: dic) else { continue }
+                options.append(value)
+            }
+        }
+        optionsToRemove = dictionary["options_to_remove"] as? [AnyObject]
+
         if let val: Decimal = dictionary["price"] as? Decimal {
             price = val
         } else if let val: Double = dictionary["price"] as? Double {
@@ -46,12 +43,12 @@ public class MyOrderItem : NSObject, JSONDecodable{
         } else {
             price = Decimal.zero
         }
-        
-		quantity = dictionary["quantity"] as? Int
+
+        quantity = dictionary["quantity"] as? Int
 //        srvcTaxRate = dictionary["srvc_tax_rate"] as? Float
-		title = dictionary["title"] as? String
+        title = dictionary["title"] as? String
 //        vatRate = dictionary["vat_rate"] as? Float
-	}
+    }
 
 //    /**
 //     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -157,5 +154,4 @@ public class MyOrderItem : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

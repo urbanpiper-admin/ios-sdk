@@ -7,31 +7,29 @@
 
 import Foundation
 
-public class LoginResponse : NSObject, JSONDecodable{//}, NSCoding {
-    
-    @objc public var message : String?
+public class LoginResponse: NSObject, JSONDecodable { // }, NSCoding {
+    @objc public var message: String?
 
     public var status: String?
 
     internal var token: String?
 
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-    @objc internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    @objc internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
         super.init()
         message = dictionary["message"] as? String
         status = dictionary["status"] as? String
         token = dictionary["token"] as? String
     }
-    
+
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let message = message {
             dictionary["message"] = message as AnyObject
         }
@@ -41,7 +39,7 @@ public class LoginResponse : NSObject, JSONDecodable{//}, NSCoding {
         if let token = token {
             dictionary["token"] = token as AnyObject
         }
-        
+
         return dictionary
     }
 
@@ -72,5 +70,4 @@ public class LoginResponse : NSObject, JSONDecodable{//}, NSCoding {
 //            aCoder.encode(token, forKey: "token")
 //        }
 //    }
-
 }

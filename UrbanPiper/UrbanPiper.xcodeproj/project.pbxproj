@@ -726,6 +726,7 @@
 				1876202920EB92030071FA25 /* Resources */,
 				1876204120EB92130071FA25 /* Embed Frameworks */,
 				FBFF59CE4B75359ED870AB53 /* [CP] Embed Pods Frameworks */,
+				185E5FEE2334A4DC007A63B8 /* SwiftFormat */,
 			);
 			buildRules = (
 			);
@@ -855,6 +856,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		185E5FEE2334A4DC007A63B8 /* SwiftFormat */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftFormat;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PODS_ROOT/SwiftFormat/CommandLineTool/swiftformat\" \"${SRCROOT}/UrbanPiper\"\n";
+		};
 		46ACCAC220933BA7001BD979 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

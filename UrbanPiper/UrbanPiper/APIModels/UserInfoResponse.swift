@@ -8,33 +8,29 @@
 import UIKit
 
 @objc public class UserInfoResponse: NSObject, JSONDecodable {
-    
-    public var phone : String!
-    public var firstName : String!
-    public var email : String!
-    
-    public var lastName : String?
-    public var gender : String?
-    public var currentCity : String?
-    public var birthday : Int?
-    public var anniversary : Int?
-    public var birthdayDate : String?
-    public var anniversaryDate : String?
-    public var address : String?
+    public var phone: String!
+    public var firstName: String!
+    public var email: String!
 
+    public var lastName: String?
+    public var gender: String?
+    public var currentCity: String?
+    public var birthday: Int?
+    public var anniversary: Int?
+    public var birthdayDate: String?
+    public var anniversaryDate: String?
+    public var address: String?
 
-
-    
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-       
+
         phone = dictionary["phone"] as? String
         firstName = dictionary["first_name"] as? String
         email = dictionary["email"] as? String
-        
+
         lastName = dictionary["last_name"] as? String
         gender = dictionary["gender"] as? String
         currentCity = dictionary["current_city"] as? String
@@ -48,9 +44,8 @@ import UIKit
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    @objc public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    @objc public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let phone = phone {
             dictionary["phone"] = phone as AnyObject
         }
@@ -84,7 +79,7 @@ import UIKit
         if let address = address {
             dictionary["address"] = address as AnyObject
         }
-        
+
         return dictionary
     }
 }

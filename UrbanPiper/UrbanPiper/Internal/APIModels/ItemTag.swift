@@ -7,38 +7,34 @@
 
 import Foundation
 
+public class ItemTag: NSObject, JSONDecodable {
+    public var id: Int = 0
+    public var title: String!
+    public var group: String!
+    public var tags: [ItemTag]!
 
-public class ItemTag : NSObject, JSONDecodable{
-
-	public var id : Int = 0
-	public var title : String!
-	public var group : String!
-	public var tags : [ItemTag]!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		id = dictionary["id"] as? Int ?? 0
-		title = dictionary["title"] as? String
-		group = dictionary["group"] as? String
-		tags = [ItemTag]()
-		if let tagsArray: [[String : AnyObject]] = dictionary["tags"] as? [[String : AnyObject]]{
-			for dic in tagsArray{
-				guard let value: ItemTag = ItemTag(fromDictionary: dic) else { continue }
-				tags.append(value)
-			}
-		}
-	}
+        id = dictionary["id"] as? Int ?? 0
+        title = dictionary["title"] as? String
+        group = dictionary["group"] as? String
+        tags = [ItemTag]()
+        if let tagsArray: [[String: AnyObject]] = dictionary["tags"] as? [[String: AnyObject]] {
+            for dic in tagsArray {
+                guard let value: ItemTag = ItemTag(fromDictionary: dic) else { continue }
+                tags.append(value)
+            }
+        }
+    }
 
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         dictionary["id"] = id as AnyObject
         if let title = title {
             dictionary["title"] = title as AnyObject
@@ -47,7 +43,7 @@ public class ItemTag : NSObject, JSONDecodable{
             dictionary["group"] = group as AnyObject
         }
         if let tags = tags {
-            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for tagsElement in tags {
                 dictionaryElements.append(tagsElement.toDictionary())
             }
@@ -93,5 +89,4 @@ public class ItemTag : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

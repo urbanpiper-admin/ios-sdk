@@ -7,48 +7,45 @@
 
 import Foundation
 
-
-public class OrderItem : NSObject, JSONDecodable{
-
-	public var category : ItemCategory!
-	public var charges : [AnyObject]!
-	public var currentStock : Int?
+public class OrderItem: NSObject, JSONDecodable {
+    public var category: ItemCategory!
+    public var charges: [AnyObject]!
+    public var currentStock: Int?
 //    public var extras : [AnyObject]!
     public var discount: Decimal?
-	public var foodType : String!
-	public var id : Int = 0
-	public var imageLandscapeUrl : String!
-	public var imageUrl : String!
-	public var itemDesc : String!
-	public var itemPrice : Decimal!
-	public var itemTitle : String!
-	public var likes : Int?
-	public var options : [ItemOption]!
-    public var optionsToRemove : [ItemOption]!
+    public var foodType: String!
+    public var id: Int = 0
+    public var imageLandscapeUrl: String!
+    public var imageUrl: String!
+    public var itemDesc: String!
+    public var itemPrice: Decimal!
+    public var itemTitle: String!
+    public var likes: Int?
+    public var options: [ItemOption]!
+    public var optionsToRemove: [ItemOption]!
 //    public var price : Decimal!
-	public var quantity : Int?
+    public var quantity: Int?
 //    public var slug : String!
-	public var sortOrder : Int?
-    public var subCategory : ItemCategory!
+    public var sortOrder: Int?
+    public var subCategory: ItemCategory!
 //    public var tags : [AnyObject]!
-	public var taxPercentage : Float!
+    public var taxPercentage: Float!
     public var toBeDiscounted: Bool = false
-	public var taxes : [ItemTaxes]!
+    public var taxes: [ItemTaxes]!
 //    public var totalCharge : Float!
-	public var totalTax : Float!
-	public var weight : Int?
+    public var totalTax: Float!
+    public var weight: Int?
 
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		if let categoryData: [String : AnyObject] = dictionary["category"] as? [String : AnyObject]{
-			category = ItemCategory(fromDictionary: categoryData)
-		}
-		charges = dictionary["charges"] as? [AnyObject]
-		currentStock = dictionary["current_stock"] as? Int
+        if let categoryData: [String: AnyObject] = dictionary["category"] as? [String: AnyObject] {
+            category = ItemCategory(fromDictionary: categoryData)
+        }
+        charges = dictionary["charges"] as? [AnyObject]
+        currentStock = dictionary["current_stock"] as? Int
 //        extras = dictionary["extras"] as? [AnyObject]
         if let val: Decimal = dictionary["discount"] as? Decimal {
             discount = val
@@ -59,12 +56,12 @@ public class OrderItem : NSObject, JSONDecodable{
         } else {
             discount = Decimal.zero
         }
-		foodType = dictionary["food_type"] as? String
-		id = dictionary["id"] as? Int ?? 0
-		imageLandscapeUrl = dictionary["image_landscape_url"] as? String
-		imageUrl = dictionary["image_url"] as? String
-		itemDesc = dictionary["item_desc"] as? String
-        
+        foodType = dictionary["food_type"] as? String
+        id = dictionary["id"] as? Int ?? 0
+        imageLandscapeUrl = dictionary["image_landscape_url"] as? String
+        imageUrl = dictionary["image_url"] as? String
+        itemDesc = dictionary["item_desc"] as? String
+
         if let val: Decimal = dictionary["item_price"] as? Decimal {
             itemPrice = val
         } else if let val: Double = dictionary["item_price"] as? Double {
@@ -73,18 +70,18 @@ public class OrderItem : NSObject, JSONDecodable{
             itemPrice = Decimal.zero
         }
 
-		itemTitle = dictionary["item_title"] as? String
-		likes = dictionary["likes"] as? Int
-		options = [ItemOption]()
-		if let optionsArray: [[String : AnyObject]] = dictionary["options"] as? [[String : AnyObject]]{
-			for dic in optionsArray{
-				guard let value: ItemOption = ItemOption(fromDictionary: dic) else { continue }
-				options.append(value)
-			}
-		}
+        itemTitle = dictionary["item_title"] as? String
+        likes = dictionary["likes"] as? Int
+        options = [ItemOption]()
+        if let optionsArray: [[String: AnyObject]] = dictionary["options"] as? [[String: AnyObject]] {
+            for dic in optionsArray {
+                guard let value: ItemOption = ItemOption(fromDictionary: dic) else { continue }
+                options.append(value)
+            }
+        }
         optionsToRemove = [ItemOption]()
-        if let optionsToRemoveArray: [[String : AnyObject]] = dictionary["options_to_remove"] as? [[String : AnyObject]]{
-            for dic in optionsToRemoveArray{
+        if let optionsToRemoveArray: [[String: AnyObject]] = dictionary["options_to_remove"] as? [[String: AnyObject]] {
+            for dic in optionsToRemoveArray {
                 guard let value: ItemOption = ItemOption(fromDictionary: dic) else { continue }
                 optionsToRemove.append(value)
             }
@@ -98,31 +95,30 @@ public class OrderItem : NSObject, JSONDecodable{
 //        }
         quantity = dictionary["quantity"] as? Int
 //        slug = dictionary["slug"] as? String
-		sortOrder = dictionary["sort_order"] as? Int ?? 0
-        if let categoryData: [String : AnyObject] = dictionary["sub_category"] as? [String : AnyObject]{
+        sortOrder = dictionary["sort_order"] as? Int ?? 0
+        if let categoryData: [String: AnyObject] = dictionary["sub_category"] as? [String: AnyObject] {
             subCategory = ItemCategory(fromDictionary: categoryData)
         }
 //        tags = dictionary["tags"] as? [AnyObject]
-		taxPercentage = dictionary["tax_percentage"] as? Float
+        taxPercentage = dictionary["tax_percentage"] as? Float
         toBeDiscounted = dictionary["to_be_discounted"] as? Bool ?? false
-		taxes = [ItemTaxes]()
-		if let taxesArray: [[String : AnyObject]] = dictionary["taxes"] as? [[String : AnyObject]]{
-			for dic in taxesArray{
-				guard let value: ItemTaxes = ItemTaxes(fromDictionary: dic) else { continue }
-				taxes.append(value)
-			}
-		}
+        taxes = [ItemTaxes]()
+        if let taxesArray: [[String: AnyObject]] = dictionary["taxes"] as? [[String: AnyObject]] {
+            for dic in taxesArray {
+                guard let value: ItemTaxes = ItemTaxes(fromDictionary: dic) else { continue }
+                taxes.append(value)
+            }
+        }
 //        totalCharge = dictionary["total_charge"] as? Float
-		totalTax = dictionary["total_tax"] as? Float
-		weight = dictionary["weight"] as? Int
-	}
+        totalTax = dictionary["total_tax"] as? Float
+        weight = dictionary["weight"] as? Int
+    }
 
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let category = category {
             dictionary["category"] = category.toDictionary() as AnyObject
         }
@@ -161,14 +157,14 @@ public class OrderItem : NSObject, JSONDecodable{
             dictionary["likes"] = likes as AnyObject
         }
         if let options = options {
-            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for optionsElement in options {
                 dictionaryElements.append(optionsElement.toDictionary())
             }
             dictionary["options"] = dictionaryElements as AnyObject
         }
         if let optionsToRemove = optionsToRemove {
-            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for optionsToRemoveElement in optionsToRemove {
                 dictionaryElements.append(optionsToRemoveElement.toDictionary())
             }
@@ -197,7 +193,7 @@ public class OrderItem : NSObject, JSONDecodable{
         }
         dictionary["to_be_discounted"] = toBeDiscounted as AnyObject
         if let taxes = taxes {
-            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for taxesElement in taxes {
                 dictionaryElements.append(taxesElement.toDictionary())
             }
@@ -239,7 +235,7 @@ public class OrderItem : NSObject, JSONDecodable{
 //         likes = aDecoder.decodeObject(forKey: "likes") as? Int
 //         options = aDecoder.decodeObject(forKey :"options") as? [ItemOption]
 //         optionsToRemove = aDecoder.decodeObject(forKey :"options_to_remove") as? [ItemOption]
-////         price = aDecoder.decodeObject(forKey: "price") as? Decimal
+    ////         price = aDecoder.decodeObject(forKey: "price") as? Decimal
 //         quantity = aDecoder.decodeObject(forKey: "quantity") as? Int
 //         slug = aDecoder.decodeObject(forKey: "slug") as? String
 //         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
@@ -300,9 +296,9 @@ public class OrderItem : NSObject, JSONDecodable{
 //        if let optionsToRemove = optionsToRemove {
 //            aCoder.encode(optionsToRemove, forKey: "options_to_remove")
 //        }
-////        if let price = price {
-////            aCoder.encode(price, forKey: "price")
-////        }
+    ////        if let price = price {
+    ////            aCoder.encode(price, forKey: "price")
+    ////        }
 //        if let quantity = quantity {
 //            aCoder.encode(quantity, forKey: "quantity")
 //        }
@@ -332,5 +328,4 @@ public class OrderItem : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

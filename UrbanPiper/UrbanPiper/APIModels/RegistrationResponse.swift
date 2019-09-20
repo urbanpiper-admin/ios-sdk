@@ -7,29 +7,26 @@
 
 import Foundation
 
-
-public class RegistrationResponse : NSObject, JSONDecodable{
-
+public class RegistrationResponse: NSObject, JSONDecodable {
 //    public var approvalCode : String!
 //    public var authKey : String!
 //    public var cardNumber : String!
 //    public var customerEmail : String!
 //    public var customerName : String!
 //    public var customerPhone : String!
-	public var message : String!
+    public var message: String!
 //    public var points : Float!
 //    public var prepaidBalance : Float!
-	public var result : String!
-    public var success : Bool
+    public var result: String!
+    public var success: Bool
 //    public var timestamp : String!
 //    public var totalBalance : Float!
-    public var token : String?
+    public var token: String?
 
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
 //        approvalCode = dictionary["approval_code"] as? String
 //        authKey = dictionary["auth_key"] as? String
@@ -37,18 +34,18 @@ public class RegistrationResponse : NSObject, JSONDecodable{
 //        customerEmail = dictionary["customer_email"] as? String
 //        customerName = dictionary["customer_name"] as? String
 //        customerPhone = dictionary["customer_phone"] as? String
-		message = dictionary["message"] as? String
+        message = dictionary["message"] as? String
 //        points = dictionary["points"] as? Float
 //        prepaidBalance = dictionary["prepaid_balance"] as? Float
-		result = dictionary["result"] as? String
-		success = dictionary["success"] as? Bool ?? false
+        result = dictionary["result"] as? String
+        success = dictionary["success"] as? Bool ?? false
 //        timestamp = dictionary["timestamp"] as? String
 //        totalBalance = dictionary["total_balance"] as? Float
         token = dictionary["access_token"] as? String
         if token == nil {
             token = dictionary["token"] as? String
         }
-	}
+    }
 
 //    /**
 //     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -88,7 +85,7 @@ public class RegistrationResponse : NSObject, JSONDecodable{
 //        }
 //
 //        dictionary["success"] = success as AnyObject
-//        
+//
 //        if let timestamp = timestamp {
 //            dictionary["timestamp"] = timestamp as AnyObject
 //        }
@@ -170,5 +167,4 @@ public class RegistrationResponse : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

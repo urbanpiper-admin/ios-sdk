@@ -7,70 +7,68 @@
 
 import Foundation
 
-public class ItemOptionGroup : NSObject, JSONDecodable {
+public class ItemOptionGroup: NSObject, JSONDecodable {
+    public var descriptionField: String!
+    public var id: Int = 0
+    public var isDefault: Bool
+    public var maxSelectable: Int = 0
+    public var minSelectable: Int = 0
+    public var options: [ItemOption]!
+    public var sortOrder: Int = 0
+    public var title: String!
 
-	public var descriptionField : String!
-	public var id : Int = 0
-    public var isDefault : Bool
-	public var maxSelectable : Int = 0
-	public var minSelectable : Int = 0
-	public var options : [ItemOption]!
-	public var sortOrder : Int = 0
-	public var title : String!
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		descriptionField = dictionary["description"] as? String
-		id = dictionary["id"] as? Int ?? 0
-		isDefault = dictionary["is_default"] as? Bool ?? false
-		maxSelectable = dictionary["max_selectable"] as? Int ?? 0
-		minSelectable = dictionary["min_selectable"] as? Int ?? 0
+        descriptionField = dictionary["description"] as? String
+        id = dictionary["id"] as? Int ?? 0
+        isDefault = dictionary["is_default"] as? Bool ?? false
+        maxSelectable = dictionary["max_selectable"] as? Int ?? 0
+        minSelectable = dictionary["min_selectable"] as? Int ?? 0
 //        if maxSelectable < 0 {
 //            maxSelectable = 1
 //        }
 //        if minSelectable < 0 {
 //            minSelectable = 1
 //        }
-		options = [ItemOption]()
-		if let optionsArray: [[String : AnyObject]] = dictionary["options"] as? [[String : AnyObject]]{
-			for dic in optionsArray{
-				guard let value: ItemOption = ItemOption(fromDictionary: dic) else { continue }
+        options = [ItemOption]()
+        if let optionsArray: [[String: AnyObject]] = dictionary["options"] as? [[String: AnyObject]] {
+            for dic in optionsArray {
+                guard let value: ItemOption = ItemOption(fromDictionary: dic) else { continue }
 //                let defaultVal = isDefault ?? false
 //                if (!defaultVal && value.quantity == 0) || (defaultVal && value.quantity > 0) {
 //                    value.quantity = isDefault ? 1 : 0
 //                }
-				options.append(value)
-			}
+                options.append(value)
+            }
             if options.count > 1 {
                 options.sort { $0.sortOrder < $1.sortOrder }
             }
-		}
-		sortOrder = dictionary["sort_order"] as? Int ?? 0
-		title = dictionary["title"] as? String
-	}
+        }
+        sortOrder = dictionary["sort_order"] as? Int ?? 0
+        title = dictionary["title"] as? String
+    }
 
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let descriptionField = descriptionField {
             dictionary["description"] = descriptionField as AnyObject
         }
         dictionary["id"] = id as AnyObject
 
         dictionary["is_default"] = isDefault as AnyObject
-        
+
         dictionary["max_selectable"] = maxSelectable as AnyObject
-        
+
         dictionary["min_selectable"] = minSelectable as AnyObject
-        
+
         if let options = options {
-            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for optionsElement in options {
                 dictionaryElements.append(optionsElement.toDictionary())
             }
@@ -134,37 +132,34 @@ public class ItemOptionGroup : NSObject, JSONDecodable {
 //        if let title = title {
 //            aCoder.encode(title, forKey: "title")
 //        }
-//        
+//
 //    }
-
 }
 
-
 extension ItemOptionGroup {
-    
-    internal func equitableCheckDictionary() -> [String : AnyObject] {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    internal func equitableCheckDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         //        if let isDefault = isDefault {
         //            dictionary["is_default"] = isDefault as AnyObject
         //        }
         if let options = options {
-            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for optionsElement in options {
                 guard optionsElement.quantity > 0 else { continue }
                 dictionaryElements.append(optionsElement.equitableCheckDictionary())
             }
             dictionary["options"] = dictionaryElements as AnyObject
         }
-        
+
         return dictionary
     }
-    
-    static internal func == (lhs: ItemOptionGroup, rhs: ItemOptionGroup) -> Bool {
+
+    internal static func == (lhs: ItemOptionGroup, rhs: ItemOptionGroup) -> Bool {
         let lhsDictionary = lhs.equitableCheckDictionary()
         let rhsDictionary = rhs.equitableCheckDictionary()
-        
+
         return NSDictionary(dictionary: lhsDictionary).isEqual(to: rhsDictionary)
-        
+
         //        return lhs.descriptionField == rhs.descriptionField &&
         //            lhs.id == rhs.id &&
         //            lhs.isDefault == rhs.isDefault &&

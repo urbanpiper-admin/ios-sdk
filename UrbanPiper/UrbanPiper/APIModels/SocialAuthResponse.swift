@@ -1,29 +1,26 @@
 //
 //  SocialLoginResponse.swift
-//  Model Generated using http://www.jsoncafe.com/ 
+//  Model Generated using http://www.jsoncafe.com/
 //  Created on February 6, 2019
 
 import Foundation
 
-
-public class SocialLoginResponse : NSObject, JSONDecodable {//}, NSCoding{
-
+public class SocialLoginResponse: NSObject, JSONDecodable { // }, NSCoding{
 //    vcvvgvc var authKey : String!
 //    public var biz : AnyObject!
 //    public var email : String!
-    public var message : String!
+    public var message: String!
 //    public var name : String!
-    public var phone : String!
-    public var success : Bool
-//   var timestamp : String!
-    internal var token : String!
+    public var phone: String!
+    public var success: Bool
+    //   var timestamp : String!
+    internal var token: String!
 //    public var username : String!
-
 
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
 //        authKey = dictionary["authKey"] as? String
 //        biz = dictionary["biz"] as AnyObject

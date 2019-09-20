@@ -1,39 +1,36 @@
 //
 //  ReorderItem.swift
-//  Model Generated using http://www.jsoncafe.com/ 
+//  Model Generated using http://www.jsoncafe.com/
 //  Created on February 21, 2019
 
 import Foundation
 
-
-@objc public class ReorderItem : NSObject, JSONDecodable, NSCoding{
-
-    public var category : ItemCategory!
-    public var currentStock : Int = 0
-    public var id : Int = 0
-    public var imageLandscapeUrl : String!
-    public var imageUrl : String!
-    public var itemCategory : ItemCategory!
-    public var itemPrice : Decimal!
-    @objc public var itemTitle : String!
-    public var optionGroups : [ItemOptionGroup]!
-    public var preOrderStartTime : Int?
-    public var preOrderEndTime : Int?
-    @objc public var quantity : Int = 0
-    public var serviceTaxRate : Int?
-    public var vatRate : Int?
-
+@objc public class ReorderItem: NSObject, JSONDecodable, NSCoding {
+    public var category: ItemCategory!
+    public var currentStock: Int = 0
+    public var id: Int = 0
+    public var imageLandscapeUrl: String!
+    public var imageUrl: String!
+    public var itemCategory: ItemCategory!
+    public var itemPrice: Decimal!
+    @objc public var itemTitle: String!
+    public var optionGroups: [ItemOptionGroup]!
+    public var preOrderStartTime: Int?
+    public var preOrderEndTime: Int?
+    @objc public var quantity: Int = 0
+    public var serviceTaxRate: Int?
+    public var vatRate: Int?
 
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
         currentStock = dictionary["current_stock"] as? Int ?? 0
         id = dictionary["id"] as? Int ?? 0
         imageLandscapeUrl = dictionary["image_landscape_url"] as? String
         imageUrl = dictionary["image_url"] as? String
-     
+
         let priceVal: Any = dictionary["item_price"] ?? Decimal.zero
         if let val: Decimal = priceVal as? Decimal {
             itemPrice = val
@@ -42,20 +39,20 @@ import Foundation
         } else {
             itemPrice = Decimal.zero
         }
-        
+
         itemTitle = dictionary["item_title"] as? String
         quantity = dictionary["quantity"] as? Int ?? 0
         serviceTaxRate = dictionary["service_tax_rate"] as? Int
         vatRate = dictionary["vat_rate"] as? Int
-        if let categoryData = dictionary["category"] as? [String : AnyObject]{
+        if let categoryData = dictionary["category"] as? [String: AnyObject] {
             category = ItemCategory(fromDictionary: categoryData)
         }
-        if let itemCategoryData = dictionary["item_category"] as? [String : AnyObject]{
+        if let itemCategoryData = dictionary["item_category"] as? [String: AnyObject] {
             itemCategory = ItemCategory(fromDictionary: itemCategoryData)
         }
         optionGroups = [ItemOptionGroup]()
-        if let optionGroupsArray = dictionary["option_groups"] as? [[String : AnyObject]]{
-            for dic in optionGroupsArray{
+        if let optionGroupsArray = dictionary["option_groups"] as? [[String: AnyObject]] {
+            for dic in optionGroupsArray {
                 guard let value = ItemOptionGroup(fromDictionary: dic) else { continue }
                 optionGroups.append(value)
             }
@@ -67,9 +64,8 @@ import Foundation
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary = [String : AnyObject]()
+    func toDictionary() -> [String: AnyObject] {
+        var dictionary = [String: AnyObject]()
         dictionary["current_stock"] = currentStock as AnyObject
         dictionary["id"] = id as AnyObject
         if let imageLandscapeUrl = imageLandscapeUrl {
@@ -86,7 +82,7 @@ import Foundation
         }
 
         dictionary["quantity"] = quantity as AnyObject
-        
+
         if let serviceTaxRate = serviceTaxRate {
             dictionary["service_tax_rate"] = serviceTaxRate as AnyObject
         }
@@ -100,7 +96,7 @@ import Foundation
             dictionary["itemCategory"] = itemCategory.toDictionary() as AnyObject
         }
         if let optionGroups = optionGroups {
-            var dictionaryElements = [[String : AnyObject]]()
+            var dictionaryElements = [[String: AnyObject]]()
             for optionGroupsElement in optionGroups {
                 dictionaryElements.append(optionGroupsElement.toDictionary())
             }
@@ -120,8 +116,7 @@ import Foundation
      * NSCoding required initializer.
      * Fills the data from the passed decoder
      */
-    @objc required public init(coder aDecoder: NSCoder)
-    {
+    @objc public required init(coder aDecoder: NSCoder) {
         category = aDecoder.decodeObject(forKey: "category") as? ItemCategory
         if let val = aDecoder.decodeObject(forKey: "current_stock") as? Int {
             currentStock = val
@@ -146,7 +141,7 @@ import Foundation
         }
         serviceTaxRate = aDecoder.decodeObject(forKey: "service_tax_rate") as? Int
         vatRate = aDecoder.decodeObject(forKey: "vat_rate") as? Int
-        
+
         preOrderStartTime = aDecoder.decodeObject(forKey: "pre_order_start_time") as? Int
         preOrderEndTime = aDecoder.decodeObject(forKey: "pre_order_end_time") as? Int
     }
@@ -155,8 +150,7 @@ import Foundation
      * NSCoding required method.
      * Encodes mode properties into the decoder
      */
-    @objc public func encode(with aCoder: NSCoder)
-    {
+    @objc public func encode(with aCoder: NSCoder) {
         if let category = category {
             aCoder.encode(category, forKey: "category")
         }
@@ -180,7 +174,7 @@ import Foundation
         if let optionGroups = optionGroups {
             aCoder.encode(optionGroups, forKey: "option_groups")
         }
-        
+
         aCoder.encode(quantity, forKey: "quantity")
 
         if let serviceTaxRate = serviceTaxRate {

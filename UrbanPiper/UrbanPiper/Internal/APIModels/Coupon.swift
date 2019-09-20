@@ -7,25 +7,22 @@
 
 import Foundation
 
+public class Coupon: NSObject, JSONDecodable {
+    public var descriptionField: String!
+    public var redemptionCode: String!
+    public var title: String!
+    public var validUntil: Int?
 
-public class Coupon : NSObject, JSONDecodable{
-
-	public var descriptionField : String!
-	public var redemptionCode : String!
-	public var title : String!
-	public var validUntil : Int?
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		descriptionField = dictionary["description"] as? String
-		redemptionCode = dictionary["redemption_code"] as? String
-		title = dictionary["title"] as? String
-		validUntil = dictionary["valid_until"] as? Int
-	}
+        descriptionField = dictionary["description"] as? String
+        redemptionCode = dictionary["redemption_code"] as? String
+        title = dictionary["title"] as? String
+        validUntil = dictionary["valid_until"] as? Int
+    }
 
 //    /**
 //     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -81,5 +78,4 @@ public class Coupon : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

@@ -25,23 +25,23 @@ extension SocialAuthAPI: UPAPI {
             return "api/v2/social_auth/me/"
         }
     }
-    
-    var parameters: [String : String]? {
+
+    var parameters: [String: String]? {
         switch self {
-        case .socialLogin(let email, let accessToken, let socialLoginProvider):
+        case let .socialLogin(email, accessToken, socialLoginProvider):
             var params = ["provider": socialLoginProvider.rawValue,
                           "access_token": accessToken]
             if let emailId = email {
                 params["email"] = emailId
             }
             return params
-        case .verifyPhone(let phone, let email, let accessToken, let socialLoginProvider):
+        case let .verifyPhone(phone, email, accessToken, socialLoginProvider):
             return ["email": email,
                     "provider": socialLoginProvider.rawValue,
                     "access_token": accessToken,
                     "action": "check_phone",
                     "phone": phone]
-        case .verifySocialOTP(let phone, let email, let accessToken, let socialLoginProvider, let otp):
+        case let .verifySocialOTP(phone, email, accessToken, socialLoginProvider, otp):
             return ["email": email,
                     "provider": socialLoginProvider.rawValue,
                     "access_token": accessToken,
@@ -50,8 +50,8 @@ extension SocialAuthAPI: UPAPI {
                     "otp": otp]
         }
     }
-    
-    var headers: [String : String]? {
+
+    var headers: [String: String]? {
         switch self {
         case .socialLogin:
             return nil
@@ -61,7 +61,7 @@ extension SocialAuthAPI: UPAPI {
             return nil
         }
     }
-    
+
     var method: HttpMethod {
         switch self {
         case .socialLogin:
@@ -72,8 +72,8 @@ extension SocialAuthAPI: UPAPI {
             return .GET
         }
     }
-    
-    var body: [String : AnyObject]? {
+
+    var body: [String: AnyObject]? {
         switch self {
         case .socialLogin:
             return nil
@@ -83,83 +83,82 @@ extension SocialAuthAPI: UPAPI {
             return nil
         }
     }
-    
 }
 
 //  MARK: Social Login
 
 /* extension APIManager {
-    
-    @discardableResult internal func socialLogin(email: String,
-                              socialLoginProvider: SocialLoginProvider,
-                                accessToken: String,
-                                completion: APICompletion<SocialLoginResponse>?,
-                                failure: APIFailure?) -> URLSessionDataTask {
 
-        let urlString: String = "\(APIManager.baseUrl)/api/v2/social_auth/me/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)"
+ @discardableResult internal func socialLogin(email: String,
+                           socialLoginProvider: SocialLoginProvider,
+                             accessToken: String,
+                             completion: APICompletion<SocialLoginResponse>?,
+                             failure: APIFailure?) -> URLSessionDataTask {
 
-        var cs: CharacterSet = CharacterSet.urlQueryAllowed
-        cs.remove(charactersIn: "@+")
-        let encodedURlString: String = urlString.addingPercentEncoding(withAllowedCharacters: cs)!
-        
-        let url: URL = URL(string: encodedURlString)!
-        
-        var urlRequest: URLRequest = URLRequest(url: url)
-        
-        urlRequest.httpMethod = "GET"
-        
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
-    }
-    
-}
+     let urlString: String = "\(APIManager.baseUrl)/api/v2/social_auth/me/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)"
 
-//  MARK: Mobile Verification
+     var cs: CharacterSet = CharacterSet.urlQueryAllowed
+     cs.remove(charactersIn: "@+")
+     let encodedURlString: String = urlString.addingPercentEncoding(withAllowedCharacters: cs)!
 
-extension APIManager {
-    
-    @discardableResult internal func verifyPhone(phone: String,
-                              email: String,
-                              socialLoginProvider: SocialLoginProvider,
-                              accessToken: String,
-                              completion: APICompletion<SocialLoginResponse>?,
-                              failure: APIFailure?) -> URLSessionDataTask {
-        
-        let urlString: String = "\(APIManager.baseUrl)/api/v2/social_auth/me/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)&action=check_phone&phone=\(phone)"
-        
-        var cs: CharacterSet = CharacterSet.urlQueryAllowed
-        cs.remove(charactersIn: "@+")
-        let encodedURlString: String = urlString.addingPercentEncoding(withAllowedCharacters: cs)!
-        
-        let url: URL = URL(string: encodedURlString)!
-        
-        var urlRequest: URLRequest = URLRequest(url: url)
-        
-        urlRequest.httpMethod = "GET"
-        
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
-    }
-    
-    @discardableResult internal func verifySocialOTP(phone: String,
-                                email: String,
-                                socialLoginProvider: SocialLoginProvider,
-                                accessToken: String,
-                                otp: String,
-                                completion: APICompletion<SocialLoginResponse>?,
-                                failure: APIFailure?) -> URLSessionDataTask {
-        
-        let urlString: String = "\(APIManager.baseUrl)/api/v2/social_auth/me/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)&action=verify_otp&phone=\(phone)&otp=\(otp)"
-        
-        var cs: CharacterSet = CharacterSet.urlQueryAllowed
-        cs.remove(charactersIn: "@+")
-        let encodedURlString: String = urlString.addingPercentEncoding(withAllowedCharacters: cs)!
-        
-        let url: URL = URL(string: encodedURlString)!
-        
-        var urlRequest: URLRequest = URLRequest(url: url)
-        
-        urlRequest.httpMethod = "GET"
-        
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
-    }
-    
-}*/
+     let url: URL = URL(string: encodedURlString)!
+
+     var urlRequest: URLRequest = URLRequest(url: url)
+
+     urlRequest.httpMethod = "GET"
+
+     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+ }
+
+ }
+
+ //  MARK: Mobile Verification
+
+ extension APIManager {
+
+ @discardableResult internal func verifyPhone(phone: String,
+                           email: String,
+                           socialLoginProvider: SocialLoginProvider,
+                           accessToken: String,
+                           completion: APICompletion<SocialLoginResponse>?,
+                           failure: APIFailure?) -> URLSessionDataTask {
+
+     let urlString: String = "\(APIManager.baseUrl)/api/v2/social_auth/me/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)&action=check_phone&phone=\(phone)"
+
+     var cs: CharacterSet = CharacterSet.urlQueryAllowed
+     cs.remove(charactersIn: "@+")
+     let encodedURlString: String = urlString.addingPercentEncoding(withAllowedCharacters: cs)!
+
+     let url: URL = URL(string: encodedURlString)!
+
+     var urlRequest: URLRequest = URLRequest(url: url)
+
+     urlRequest.httpMethod = "GET"
+
+     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+ }
+
+ @discardableResult internal func verifySocialOTP(phone: String,
+                             email: String,
+                             socialLoginProvider: SocialLoginProvider,
+                             accessToken: String,
+                             otp: String,
+                             completion: APICompletion<SocialLoginResponse>?,
+                             failure: APIFailure?) -> URLSessionDataTask {
+
+     let urlString: String = "\(APIManager.baseUrl)/api/v2/social_auth/me/?email=\(email)&provider=\(socialLoginProvider.rawValue)&access_token=\(accessToken)&action=verify_otp&phone=\(phone)&otp=\(otp)"
+
+     var cs: CharacterSet = CharacterSet.urlQueryAllowed
+     cs.remove(charactersIn: "@+")
+     let encodedURlString: String = urlString.addingPercentEncoding(withAllowedCharacters: cs)!
+
+     let url: URL = URL(string: encodedURlString)!
+
+     var urlRequest: URLRequest = URLRequest(url: url)
+
+     urlRequest.httpMethod = "GET"
+
+     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+ }
+
+ }*/

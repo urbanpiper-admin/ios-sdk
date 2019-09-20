@@ -19,63 +19,62 @@ extension VersionCheckAPI: UPAPI {
             return "api/v1/app/ios/"
         }
     }
-    
-    var parameters: [String : String]? {
+
+    var parameters: [String: String]? {
         switch self {
-        case .checkVersion(let username, let version):
-            var params = ["biz_id":APIManager.shared.bizId,
-                          "ver":version]
-            
+        case let .checkVersion(username, version):
+            var params = ["biz_id": APIManager.shared.bizId,
+                          "ver": version]
+
             if let username = username {
                 params["user"] = username
             }
-            
+
             return params
         }
     }
-    
-    var headers: [String : String]? {
+
+    var headers: [String: String]? {
         switch self {
         case .checkVersion:
             return nil
         }
     }
-    
+
     var method: HttpMethod {
         switch self {
         case .checkVersion:
             return .GET
         }
     }
-    
-    var body: [String : AnyObject]? {
+
+    var body: [String: AnyObject]? {
         switch self {
         case .checkVersion:
             return nil
         }
     }
-    
 }
 
 /* extension APIManager {
 
-    @objc internal func checkAppVersion(username: String?,
-                                      version: String,
-                                      completion: APICompletion<VersionCheckResponse>?,
-                                      failure: APIFailure?) -> URLSessionDataTask {
-        var urlString: String = "\(APIManager.baseUrl)/api/v1/app/ios/?biz_id=\(bizId)&ver=\(version)"
-        
-        if let usernameVal = username {
-            urlString = "\(urlString)&user=\(usernameVal)"
-        }
+ @objc internal func checkAppVersion(username: String?,
+                                   version: String,
+                                   completion: APICompletion<VersionCheckResponse>?,
+                                   failure: APIFailure?) -> URLSessionDataTask {
+     var urlString: String = "\(APIManager.baseUrl)/api/v1/app/ios/?biz_id=\(bizId)&ver=\(version)"
 
-        let url: URL = URL(string: urlString)!
+     if let usernameVal = username {
+         urlString = "\(urlString)&user=\(usernameVal)"
+     }
 
-        var urlRequest: URLRequest = URLRequest(url: url)
+     let url: URL = URL(string: urlString)!
 
-        urlRequest.httpMethod = "GET"
+     var urlRequest: URLRequest = URLRequest(url: url)
 
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
-    }
+     urlRequest.httpMethod = "GET"
 
-}*/
+     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+ }
+
+ }*/

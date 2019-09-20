@@ -18,55 +18,53 @@ extension WalletAPI: UPAPI {
             return "api/v2/ub/wallet/transactions/"
         }
     }
-    
-    var parameters: [String : String]? {
+
+    var parameters: [String: String]? {
         switch self {
-        case .walletTransactions(let offset, let limit):
-            return ["offset":String(offset),
-                    "limit":String(limit)]
+        case let .walletTransactions(offset, limit):
+            return ["offset": String(offset),
+                    "limit": String(limit)]
         }
     }
-    
-    var headers: [String : String]? {
+
+    var headers: [String: String]? {
         switch self {
         case .walletTransactions:
             return nil
         }
     }
-    
+
     var method: HttpMethod {
         switch self {
         case .walletTransactions:
             return .GET
         }
     }
-    
-    var body: [String : AnyObject]? {
+
+    var body: [String: AnyObject]? {
         switch self {
         case .walletTransactions:
             return nil
         }
     }
-    
 }
 
 /* extension APIManager {
 
-    @objc internal func getWalletTransactions(offset: Int = 0,
-                                              limit: Int = Constants.fetchLimit,
-                                              completion: APICompletion<WalletTransactionResponse>?,
-                                              failure: APIFailure?) -> URLSessionDataTask {
-        
-        let urlString: String = "\(APIManager.baseUrl)/api/v2/ub/wallet/transactions/"
-        
-        let url: URL = URL(string: urlString)!
-        
-        var urlRequest: URLRequest = URLRequest(url: url)
-        
-        urlRequest.httpMethod = "GET"
-        
-        
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
-    }
-    
-}*/
+ @objc internal func getWalletTransactions(offset: Int = 0,
+                                           limit: Int = Constants.fetchLimit,
+                                           completion: APICompletion<WalletTransactionResponse>?,
+                                           failure: APIFailure?) -> URLSessionDataTask {
+
+     let urlString: String = "\(APIManager.baseUrl)/api/v2/ub/wallet/transactions/"
+
+     let url: URL = URL(string: urlString)!
+
+     var urlRequest: URLRequest = URLRequest(url: url)
+
+     urlRequest.httpMethod = "GET"
+
+     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+ }
+
+ }*/

@@ -9,23 +9,19 @@
 import UIKit
 
 @objc public class GenericResponse: NSObject, JSONDecodable {
-    
     @objc public var status: String? = "success"
     public var message: String?
     public var errorMessage: String?
     internal var msg: String?
-    
-    
-    internal override init() {
-        
-    }
-    
+
+    internal override init() {}
+
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-        
+
         if let status = dictionary["status"] as? String {
             self.status = status
         }
@@ -34,9 +30,8 @@ import UIKit
         msg = dictionary["msg"] as? String
     }
 
-    @objc public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    @objc public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let status = status {
             dictionary["status"] = status as AnyObject
         }
@@ -51,5 +46,4 @@ import UIKit
         }
         return dictionary
     }
-    
 }

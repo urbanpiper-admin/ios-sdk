@@ -5,33 +5,30 @@
 
 import Foundation
 
+public class PastOrderItem: NSObject, JSONDecodable { // }, NSCoding{
+    public var charges: [OrderCharges]!
+    public var discount: Decimal!
+    public var foodType: String!
+    public var id: Int = 0
+    public var imageLandscapeUrl: String!
+    public var imageUrl: String!
+    public var merchantId: String!
+    public var optionsToAdd: [ItemOption]!
+    public var optionsToRemove: [ItemOption]!
+    public var price: Decimal!
+    public var quantity: Int?
+    public var taxes: [ItemTaxes]!
+    public var title: String!
+    public var total: Decimal!
+    public var totalWithTax: Decimal!
+    public var unitWeight: Int?
 
-public class PastOrderItem : NSObject, JSONDecodable {//}, NSCoding{
-    
-    public var charges : [OrderCharges]!
-    public var discount : Decimal!
-    public var foodType : String!
-    public var id : Int = 0
-    public var imageLandscapeUrl : String!
-    public var imageUrl : String!
-    public var merchantId : String!
-    public var optionsToAdd : [ItemOption]!
-    public var optionsToRemove : [ItemOption]!
-    public var price : Decimal!
-    public var quantity : Int?
-    public var taxes : [ItemTaxes]!
-    public var title : String!
-    public var total : Decimal!
-    public var totalWithTax : Decimal!
-    public var unitWeight : Int?
-    
-    
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-        
+
         var priceVal = dictionary["discount"] as Any
         if let val: Decimal = priceVal as? Decimal {
             discount = val
@@ -40,7 +37,7 @@ public class PastOrderItem : NSObject, JSONDecodable {//}, NSCoding{
         } else {
             discount = Decimal.zero
         }
-        
+
         foodType = dictionary["food_type"] as? String
         id = dictionary["id"] as? Int ?? 0
         imageLandscapeUrl = dictionary["image_landscape_url"] as? String
@@ -55,10 +52,10 @@ public class PastOrderItem : NSObject, JSONDecodable {//}, NSCoding{
         } else {
             price = Decimal.zero
         }
-        
+
         quantity = dictionary["quantity"] as? Int
         title = dictionary["title"] as? String
-        
+
         priceVal = dictionary["total"] as Any
         if let val: Decimal = priceVal as? Decimal {
             total = val
@@ -67,7 +64,7 @@ public class PastOrderItem : NSObject, JSONDecodable {//}, NSCoding{
         } else {
             total = Decimal.zero
         }
-        
+
         priceVal = dictionary["total_with_tax"] as Any
         if let val: Decimal = priceVal as? Decimal {
             totalWithTax = val
@@ -76,24 +73,23 @@ public class PastOrderItem : NSObject, JSONDecodable {//}, NSCoding{
         } else {
             totalWithTax = Decimal.zero
         }
-        
+
         unitWeight = dictionary["unit_weight"] as? Int
-        
+
         optionsToAdd = [ItemOption]()
-        if let optionsToAddArray = dictionary["options_to_add"] as? [[String : AnyObject]]{
-            for dic in optionsToAddArray{
+        if let optionsToAddArray = dictionary["options_to_add"] as? [[String: AnyObject]] {
+            for dic in optionsToAddArray {
                 guard let value = ItemOption(fromDictionary: dic) else { continue }
                 optionsToAdd.append(value)
             }
         }
     }
-    
+
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary = [String : AnyObject]()
+    func toDictionary() -> [String: AnyObject] {
+        var dictionary = [String: AnyObject]()
         if let discount = discount {
             dictionary["discount"] = discount as AnyObject
         }
@@ -129,7 +125,7 @@ public class PastOrderItem : NSObject, JSONDecodable {//}, NSCoding{
             dictionary["unit_weight"] = unitWeight as AnyObject
         }
         if let optionsToAdd = optionsToAdd {
-            var dictionaryElements = [[String : AnyObject]]()
+            var dictionaryElements = [[String: AnyObject]]()
             for optionsToAddElement in optionsToAdd {
                 dictionaryElements.append(optionsToAddElement.toDictionary())
             }
@@ -137,10 +133,10 @@ public class PastOrderItem : NSObject, JSONDecodable {//}, NSCoding{
         }
         return dictionary
     }
-    
-/*    /**
-     * NSCoding required initializer.
-     * Fills the data from the passed decoder
+
+    /*    /**
+       * NSCoding required initializer.
+       * Fills the data from the passed decoder
      */
     @objc required init(coder aDecoder: NSCoder)
     {
@@ -165,10 +161,10 @@ public class PastOrderItem : NSObject, JSONDecodable {//}, NSCoding{
         totalWithTax = aDecoder.decodeObject(forKey: "total_with_tax") as? Int
         unitWeight = aDecoder.decodeObject(forKey: "unit_weight") as? Int
     }
-    
+
     /**
-     * NSCoding required method.
-     * Encodes mode properties into the decoder
+       * NSCoding required method.
+       * Encodes mode properties into the decoder
      */
     @objc func encode(with aCoder: NSCoder)
     {

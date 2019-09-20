@@ -7,66 +7,64 @@
 
 import Foundation
 
-
-public class Order : NSObject, JSONDecodable{
-
-    public var orderType : String!
-    public var cartItems : [AnyObject]!
-    public var items : [OrderItem]!
-    public var orderSubtotal : Decimal!
-    public var packagingCharge : Decimal!
-    public var itemTaxes : Decimal!
-    public var discount : Discount?
-    public var discountApplied : Int?
-    public var deliveryCharge : Decimal!
-    public var payableAmount : Decimal!
+public class Order: NSObject, JSONDecodable {
+    public var orderType: String!
+    public var cartItems: [AnyObject]!
+    public var items: [OrderItem]!
+    public var orderSubtotal: Decimal!
+    public var packagingCharge: Decimal!
+    public var itemTaxes: Decimal!
+    public var discount: Discount?
+    public var discountApplied: Int?
+    public var deliveryCharge: Decimal!
+    public var payableAmount: Decimal!
     public var walletCreditApplicable: Bool?
-    public var walletCreditApplied : Decimal!
-	public var addressId : Int?
-	public var addressLat : Float!
-	public var addressLng : Float!
-    
-	public var bizLocationId : Int?
-	public var channel : String!
-	public var charges : [OrderCharges]!
-	public var combos : [AnyObject]!
-	public var deliveryDatetime : Int?
-	public var itemLevelTotalCharges : Decimal!
-//    public var itemLevelTotalTaxes : Float!
-	public var orderLevelTotalCharges : Decimal!
-//    public var orderLevelTotalTaxes : Float!
-	//public var orderTotal : Decimal!
-	public var paymentModes : [String]?
-	public var paymentOption : String!
-	public var taxes : [AnyObject]!
-    public var taxRate : Float!
-	public var totalWeight : Int?
+    public var walletCreditApplied: Decimal!
+    public var addressId: Int?
+    public var addressLat: Float!
+    public var addressLng: Float!
 
-/* store, order response, instructions, payment option, phone, delivery date, delivery time, coupon code, selected timeslot, payment transaction id */
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    public var bizLocationId: Int?
+    public var channel: String!
+    public var charges: [OrderCharges]!
+    public var combos: [AnyObject]!
+    public var deliveryDatetime: Int?
+    public var itemLevelTotalCharges: Decimal!
+//    public var itemLevelTotalTaxes : Float!
+    public var orderLevelTotalCharges: Decimal!
+//    public var orderLevelTotalTaxes : Float!
+    // public var orderTotal : Decimal!
+    public var paymentModes: [String]?
+    public var paymentOption: String!
+    public var taxes: [AnyObject]!
+    public var taxRate: Float!
+    public var totalWeight: Int?
+
+    /* store, order response, instructions, payment option, phone, delivery date, delivery time, coupon code, selected timeslot, payment transaction id */
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		addressId = dictionary["address_id"] as? Int
-		addressLat = dictionary["address_lat"] as? Float
-		addressLng = dictionary["address_lng"] as? Float
-		bizLocationId = dictionary["biz_location_id"] as? Int
-		cartItems = dictionary["cartItems"] as? [AnyObject]
-		channel = dictionary["channel"] as? String
-		charges = [OrderCharges]()
-		if let chargesArray: [[String : AnyObject]] = dictionary["charges"] as? [[String : AnyObject]]{
-			for dic in chargesArray{
-				guard let value: OrderCharges = OrderCharges(fromDictionary: dic) else { continue }
-				charges.append(value)
-			}
-		}
-		combos = dictionary["combos"] as? [AnyObject]
-        
-        if let discountData: [String : AnyObject] = dictionary["discount"] as? [String : AnyObject]{
+        addressId = dictionary["address_id"] as? Int
+        addressLat = dictionary["address_lat"] as? Float
+        addressLng = dictionary["address_lng"] as? Float
+        bizLocationId = dictionary["biz_location_id"] as? Int
+        cartItems = dictionary["cartItems"] as? [AnyObject]
+        channel = dictionary["channel"] as? String
+        charges = [OrderCharges]()
+        if let chargesArray: [[String: AnyObject]] = dictionary["charges"] as? [[String: AnyObject]] {
+            for dic in chargesArray {
+                guard let value: OrderCharges = OrderCharges(fromDictionary: dic) else { continue }
+                charges.append(value)
+            }
+        }
+        combos = dictionary["combos"] as? [AnyObject]
+
+        if let discountData: [String: AnyObject] = dictionary["discount"] as? [String: AnyObject] {
             discount = Discount(fromDictionary: discountData)
         }
-        
+
         var priceVal: Any? = dictionary["delivery_charge"]
         if let val: Decimal = priceVal as? Decimal {
             deliveryCharge = val
@@ -75,7 +73,7 @@ public class Order : NSObject, JSONDecodable{
         } else {
             deliveryCharge = Decimal.zero
         }
-        
+
         priceVal = dictionary["packaging_charge"]
         if let val: Decimal = priceVal as? Decimal {
             packagingCharge = val
@@ -85,9 +83,9 @@ public class Order : NSObject, JSONDecodable{
             packagingCharge = Decimal.zero
         }
 
-		deliveryDatetime = dictionary["delivery_datetime"] as? Int
-		discountApplied = dictionary["discount_applied"] as? Int
-        
+        deliveryDatetime = dictionary["delivery_datetime"] as? Int
+        discountApplied = dictionary["discount_applied"] as? Int
+
         priceVal = dictionary["item_level_total_charges"]
         if let val: Decimal = priceVal as? Decimal {
             itemLevelTotalCharges = val
@@ -96,9 +94,9 @@ public class Order : NSObject, JSONDecodable{
         } else {
             itemLevelTotalCharges = Decimal.zero
         }
-        
+
 //        itemLevelTotalTaxes = dictionary["item_level_total_taxes"] as? Float
-        
+
         priceVal = dictionary["item_taxes"]
         if let val: Decimal = priceVal as? Decimal {
             itemTaxes = val
@@ -107,15 +105,15 @@ public class Order : NSObject, JSONDecodable{
         } else {
             itemTaxes = Decimal.zero
         }
-        
-		items = [OrderItem]()
-		if let itemsArray: [[String : AnyObject]] = dictionary["items"] as? [[String : AnyObject]]{
-			for dic in itemsArray{
-				guard let value: OrderItem = OrderItem(fromDictionary: dic) else { continue }
-				items.append(value)
-			}
-		}
-        
+
+        items = [OrderItem]()
+        if let itemsArray: [[String: AnyObject]] = dictionary["items"] as? [[String: AnyObject]] {
+            for dic in itemsArray {
+                guard let value: OrderItem = OrderItem(fromDictionary: dic) else { continue }
+                items.append(value)
+            }
+        }
+
         priceVal = dictionary["order_level_total_charges"]
         if let val: Decimal = priceVal as? Decimal {
             orderLevelTotalCharges = val
@@ -124,9 +122,9 @@ public class Order : NSObject, JSONDecodable{
         } else {
             orderLevelTotalCharges = Decimal.zero
         }
-        
+
 //        orderLevelTotalTaxes = dictionary["order_level_total_taxes"] as? Float
-        
+
         priceVal = dictionary["order_subtotal"]
         if let val: Decimal = priceVal as? Decimal {
             orderSubtotal = val
@@ -135,7 +133,7 @@ public class Order : NSObject, JSONDecodable{
         } else {
             orderSubtotal = Decimal.zero
         }
-        
+
 //        priceVal = dictionary["order_total"]
 //        if let val: Decimal = priceVal as? Decimal {
 //            orderTotal = val
@@ -144,9 +142,9 @@ public class Order : NSObject, JSONDecodable{
 //        } else {
 //            orderTotal = Decimal.zero
 //        }
-        
+
         orderType = dictionary["order_type"] as? String
-        
+
         priceVal = dictionary["payable_amount"]
         if let val: Decimal = priceVal as? Decimal {
             payableAmount = val
@@ -155,9 +153,9 @@ public class Order : NSObject, JSONDecodable{
         } else {
             payableAmount = Decimal.zero
         }
-        
+
         walletCreditApplicable = dictionary["wallet_credit_applicable"] as? Bool
-        
+
         priceVal = dictionary["wallet_credit_applied"]
         if let val: Decimal = priceVal as? Decimal {
             walletCreditApplied = val
@@ -166,13 +164,13 @@ public class Order : NSObject, JSONDecodable{
         } else {
             walletCreditApplied = Decimal.zero
         }
-        
-		paymentModes = dictionary["payment_modes"] as? [String]
-		paymentOption = dictionary["payment_option"] as? String
-		taxes = dictionary["taxes"] as? [AnyObject]
+
+        paymentModes = dictionary["payment_modes"] as? [String]
+        paymentOption = dictionary["payment_option"] as? String
+        taxes = dictionary["taxes"] as? [AnyObject]
         taxRate = dictionary["tax_rate"] as? Float
-		totalWeight = dictionary["total_weight"] as? Int
-	}
+        totalWeight = dictionary["total_weight"] as? Int
+    }
 
 //    /**
 //     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -248,9 +246,9 @@ public class Order : NSObject, JSONDecodable{
 //        if let orderSubtotal = orderSubtotal {
 //            dictionary["order_subtotal"] = orderSubtotal as AnyObject
 //        }
-////        if let orderTotal = orderTotal {
-////            dictionary["order_total"] = orderTotal as AnyObject
-////        }
+    ////        if let orderTotal = orderTotal {
+    ////            dictionary["order_total"] = orderTotal as AnyObject
+    ////        }
 //        if let orderType = orderType {
 //            dictionary["order_type"] = orderType as AnyObject
 //        }
@@ -304,7 +302,7 @@ public class Order : NSObject, JSONDecodable{
 //         orderLevelTotalCharges = aDecoder.decodeObject(forKey: "order_level_total_charges") as? Decimal
 //         orderLevelTotalTaxes = aDecoder.decodeObject(forKey: "order_level_total_taxes") as? Float
 //         orderSubtotal = aDecoder.decodeObject(forKey: "order_subtotal") as? Decimal
-////         orderTotal = aDecoder.decodeObject(forKey: "order_total") as? Decimal
+    ////         orderTotal = aDecoder.decodeObject(forKey: "order_total") as? Decimal
 //         orderType = aDecoder.decodeObject(forKey: "order_type") as? String
 //         payableAmount = aDecoder.decodeObject(forKey: "payable_amount") as? Decimal
 //        walletCreditApplied = aDecoder.decodeObject(forKey: "wallet_credit_applied") as? Decimal
@@ -382,9 +380,9 @@ public class Order : NSObject, JSONDecodable{
 //        if let orderSubtotal = orderSubtotal {
 //            aCoder.encode(orderSubtotal, forKey: "order_subtotal")
 //        }
-////        if let orderTotal = orderTotal {
-////            aCoder.encode(orderTotal, forKey: "order_total")
-////        }
+    ////        if let orderTotal = orderTotal {
+    ////            aCoder.encode(orderTotal, forKey: "order_total")
+    ////        }
 //        if let orderType = orderType {
 //            aCoder.encode(orderType, forKey: "order_type")
 //        }
@@ -411,5 +409,4 @@ public class Order : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

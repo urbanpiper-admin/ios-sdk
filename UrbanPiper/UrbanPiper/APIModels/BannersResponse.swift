@@ -7,29 +7,26 @@
 
 import Foundation
 
+public class BannersResponse: NSObject, JSONDecodable {
+    public var images: [BannerImage]!
+    public var meta: Meta!
 
-public class BannersResponse : NSObject, JSONDecodable{
-
-	public var images : [BannerImage]!
-	public var meta : Meta!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		images = [BannerImage]()
-		if let imagesArray: [[String : AnyObject]] = dictionary["images"] as? [[String : AnyObject]]{
-			for dic in imagesArray{
-				guard let value: BannerImage = BannerImage(fromDictionary: dic) else { continue }
-				images.append(value)
-			}
-		}
-		if let metaData: [String : AnyObject] = dictionary["meta"] as? [String : AnyObject]{
-			meta = Meta(fromDictionary: metaData)
-		}
-	}
+        images = [BannerImage]()
+        if let imagesArray: [[String: AnyObject]] = dictionary["images"] as? [[String: AnyObject]] {
+            for dic in imagesArray {
+                guard let value: BannerImage = BannerImage(fromDictionary: dic) else { continue }
+                images.append(value)
+            }
+        }
+        if let metaData: [String: AnyObject] = dictionary["meta"] as? [String: AnyObject] {
+            meta = Meta(fromDictionary: metaData)
+        }
+    }
 
 //    /**
 //     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -75,5 +72,4 @@ public class BannersResponse : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

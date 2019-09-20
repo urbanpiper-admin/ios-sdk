@@ -8,11 +8,10 @@
 import UIKit
 
 class SharedPreferences: NSObject {
-
     private static let IsNotFirstLaunchKey: String = "IsNotFirstLaunchKey"
 
     private static let defaults = UserDefaults.standard
-    
+
     static var currentLocale: Locale = Locale(identifier: Language.english.rawValue)
 
     static var language: Language = Language.english {
@@ -21,7 +20,7 @@ class SharedPreferences: NSObject {
         }
     }
 
-    static var isNotFirstLaunch : Bool {
+    static var isNotFirstLaunch: Bool {
         get {
             return defaults.bool(forKey: SharedPreferences.IsNotFirstLaunchKey)
         }
@@ -29,5 +28,4 @@ class SharedPreferences: NSObject {
             defaults.set(newValue, forKey: SharedPreferences.IsNotFirstLaunchKey)
         }
     }
-    
 }

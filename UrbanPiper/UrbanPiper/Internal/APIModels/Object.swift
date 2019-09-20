@@ -7,44 +7,40 @@
 
 import Foundation
 
+public class Object: NSObject, JSONDecodable {
+    public var comboCount: Int?
+    public var descriptionField: String!
+    public var id: Int = 0
+    public var image: String!
+    public var itemCount: Int?
+    public var loadFromWeb: Bool
+    @objc public var name: String!
+    public var slug: String!
+    public var sortOrder: Int = 0
+    public var webUrl: String!
 
-public class Object : NSObject, JSONDecodable{
-
-	public var comboCount : Int?
-	public var descriptionField : String!
-	public var id : Int = 0
-	public var image : String!
-	public var itemCount : Int?
-    public var loadFromWeb : Bool
-	@objc public var name : String!
-	public var slug : String!
-	public var sortOrder : Int = 0
-	public var webUrl : String!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		comboCount = dictionary["combo_count"] as? Int
-		descriptionField = dictionary["description"] as? String
-		id = dictionary["id"] as? Int ?? 0
-		image = dictionary["image"] as? String
-		itemCount = dictionary["item_count"] as? Int
-		loadFromWeb = dictionary["load_from_web"] as? Bool ?? false
-		name = dictionary["name"] as? String
-		slug = dictionary["slug"] as? String
-		sortOrder = dictionary["sort_order"] as? Int ?? 0
-		webUrl = dictionary["web_url"] as? String
-	}
+        comboCount = dictionary["combo_count"] as? Int
+        descriptionField = dictionary["description"] as? String
+        id = dictionary["id"] as? Int ?? 0
+        image = dictionary["image"] as? String
+        itemCount = dictionary["item_count"] as? Int
+        loadFromWeb = dictionary["load_from_web"] as? Bool ?? false
+        name = dictionary["name"] as? String
+        slug = dictionary["slug"] as? String
+        sortOrder = dictionary["sort_order"] as? Int ?? 0
+        webUrl = dictionary["web_url"] as? String
+    }
 
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let comboCount = comboCount {
             dictionary["combo_count"] = comboCount as AnyObject
         }
@@ -59,7 +55,7 @@ public class Object : NSObject, JSONDecodable{
             dictionary["item_count"] = itemCount as AnyObject
         }
 //        if let loadFromWeb = loadFromWeb {
-            dictionary["load_from_web"] = loadFromWeb as AnyObject
+        dictionary["load_from_web"] = loadFromWeb as AnyObject
 //        }
         if let name = name {
             dictionary["name"] = name as AnyObject
@@ -139,5 +135,4 @@ public class Object : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

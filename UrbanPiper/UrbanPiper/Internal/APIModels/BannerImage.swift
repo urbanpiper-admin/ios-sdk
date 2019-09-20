@@ -7,27 +7,24 @@
 
 import Foundation
 
+public class BannerImage: NSObject, JSONDecodable {
+    public var created: String!
+    public var id: Int = 0
+    public var image: String!
+    public var imgType: String!
+    public var markups: String!
 
-public class BannerImage : NSObject, JSONDecodable{
-
-	public var created : String!
-	public var id : Int = 0
-	public var image : String!
-	public var imgType : String!
-	public var markups : String!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		created = dictionary["created"] as? String
-		id = dictionary["id"] as? Int ?? 0
-		image = dictionary["image"] as? String
-		imgType = dictionary["img_type"] as? String
-		markups = dictionary["markups"] as? String
-	}
+        created = dictionary["created"] as? String
+        id = dictionary["id"] as? Int ?? 0
+        image = dictionary["image"] as? String
+        imgType = dictionary["img_type"] as? String
+        markups = dictionary["markups"] as? String
+    }
 
 //    /**
 //     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -94,5 +91,4 @@ public class BannerImage : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

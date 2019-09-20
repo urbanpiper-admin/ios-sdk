@@ -1,32 +1,29 @@
 //
 //  Reward.swift
-//  Model Generated using http://www.jsoncafe.com/ 
+//  Model Generated using http://www.jsoncafe.com/
 //  Created on February 12, 2019
 
 import Foundation
 
-
-public class Reward : NSObject, JSONDecodable, NSCoding{
-
-    public var claimedCount : Int?
-    public var descriptionField : String!
-    public var expiresOn : Int?
-    public var id : Int = 0
-    public var imgLink : String!
-    public var inStoreCouponRewards : Bool = false
-    public var locked : Bool = false
-    public var points : Int?
-    public var redeemedCount : Int?
-    public var redemptionCodes : [RedemptionCode]!
-    public var title : String!
-    public var type : Int?
-    public var value : String!
-
+public class Reward: NSObject, JSONDecodable, NSCoding {
+    public var claimedCount: Int?
+    public var descriptionField: String!
+    public var expiresOn: Int?
+    public var id: Int = 0
+    public var imgLink: String!
+    public var inStoreCouponRewards: Bool = false
+    public var locked: Bool = false
+    public var points: Int?
+    public var redeemedCount: Int?
+    public var redemptionCodes: [RedemptionCode]!
+    public var title: String!
+    public var type: Int?
+    public var value: String!
 
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
         claimedCount = dictionary["claimed_count"] as? Int
         descriptionField = dictionary["description"] as? String
@@ -38,8 +35,8 @@ public class Reward : NSObject, JSONDecodable, NSCoding{
         points = dictionary["points"] as? Int
         redeemedCount = dictionary["redeemed_count"] as? Int
         redemptionCodes = [RedemptionCode]()
-        if let redemptionCodesArray = dictionary["redemption_codes"] as? [[String : AnyObject]]{
-            for dic in redemptionCodesArray{
+        if let redemptionCodesArray = dictionary["redemption_codes"] as? [[String: AnyObject]] {
+            for dic in redemptionCodesArray {
                 guard let value = RedemptionCode(fromDictionary: dic) else { continue }
                 redemptionCodes.append(value)
             }
@@ -52,9 +49,8 @@ public class Reward : NSObject, JSONDecodable, NSCoding{
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary = [String : AnyObject]()
+    func toDictionary() -> [String: AnyObject] {
+        var dictionary = [String: AnyObject]()
         if let claimedCount = claimedCount {
             dictionary["claimed_count"] = claimedCount as AnyObject
         }
@@ -70,9 +66,9 @@ public class Reward : NSObject, JSONDecodable, NSCoding{
         }
 
         dictionary["in_store_coupon_rewards"] = inStoreCouponRewards as AnyObject
-        
+
         dictionary["locked"] = locked as AnyObject
-        
+
         if let points = points {
             dictionary["points"] = points as AnyObject
         }
@@ -80,7 +76,7 @@ public class Reward : NSObject, JSONDecodable, NSCoding{
             dictionary["redeemed_count"] = redeemedCount as AnyObject
         }
         if let redemptionCodes = redemptionCodes {
-            var dictionaryElements = [[String : AnyObject]]()
+            var dictionaryElements = [[String: AnyObject]]()
             for redemptionCodesElement in redemptionCodes {
                 dictionaryElements.append(redemptionCodesElement.toDictionary())
             }
@@ -102,8 +98,7 @@ public class Reward : NSObject, JSONDecodable, NSCoding{
      * NSCoding required initializer.
      * Fills the data from the passed decoder
      */
-    @objc required public init(coder aDecoder: NSCoder)
-    {
+    @objc public required init(coder aDecoder: NSCoder) {
         claimedCount = aDecoder.decodeObject(forKey: "claimed_count") as? Int
         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
         expiresOn = aDecoder.decodeObject(forKey: "expires_on") as? Int
@@ -113,7 +108,7 @@ public class Reward : NSObject, JSONDecodable, NSCoding{
             id = aDecoder.decodeInteger(forKey: "id")
         }
         imgLink = aDecoder.decodeObject(forKey: "img_link") as? String
-        
+
         if let numberVal = aDecoder.decodeObject(forKey: "in_store_coupon_rewards") as? NSNumber {
             inStoreCouponRewards = numberVal == 0 ? false : true
         } else if aDecoder.containsValue(forKey: "in_store_coupon_rewards") {
@@ -142,8 +137,7 @@ public class Reward : NSObject, JSONDecodable, NSCoding{
      * NSCoding required method.
      * Encodes mode properties into the decoder
      */
-    @objc public func encode(with aCoder: NSCoder)
-    {
+    @objc public func encode(with aCoder: NSCoder) {
         if let claimedCount = claimedCount {
             aCoder.encode(claimedCount, forKey: "claimed_count")
         }
@@ -161,7 +155,7 @@ public class Reward : NSObject, JSONDecodable, NSCoding{
         aCoder.encode(inStoreCouponRewards, forKey: "in_store_coupon_rewards")
 
         aCoder.encode(locked, forKey: "locked")
-        
+
         if let points = points {
             aCoder.encode(points, forKey: "points")
         }

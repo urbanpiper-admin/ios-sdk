@@ -7,22 +7,19 @@
 
 import Foundation
 
+public class Discount: NSObject, JSONDecodable {
+    public var msg: String!
+    public var success: Bool
+    public var value: Decimal!
 
-public class Discount : NSObject, JSONDecodable{
-
-	public var msg : String!
-    public var success : Bool
-	public var value : Decimal!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		msg = dictionary["msg"] as? String
-		success = dictionary["success"] as? Bool ?? false
-        
+        msg = dictionary["msg"] as? String
+        success = dictionary["success"] as? Bool ?? false
+
         let priceVal = dictionary["value"]
         if let val: Decimal = priceVal as? Decimal {
             value = val
@@ -36,15 +33,14 @@ public class Discount : NSObject, JSONDecodable{
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let msg = msg {
             dictionary["msg"] = msg as AnyObject
         }
 
         dictionary["success"] = success as AnyObject
-        
+
         if let value = value {
             dictionary["value"] = value as AnyObject
         }
@@ -80,5 +76,4 @@ public class Discount : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

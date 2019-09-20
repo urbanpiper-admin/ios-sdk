@@ -7,32 +7,29 @@
 
 import Foundation
 
+public class Transaction: NSObject, JSONDecodable {
+    public var billNumber: String!
+    public var comments: String!
+    public var created: Int = 0
+    public var id: Int = 0
+    public var paymentAmount: Decimal!
+    public var paymentSrc: String!
+    public var paymentType: String!
+    public var posMcId: AnyObject!
+    public var posOperatorUname: AnyObject!
+    public var store: Store!
+    public var transactionId: String!
 
-public class Transaction : NSObject, JSONDecodable{
-
-	public var billNumber : String!
-	public var comments : String!
-	public var created : Int = 0
-	public var id : Int = 0
-	public var paymentAmount : Decimal!
-	public var paymentSrc : String!
-	public var paymentType : String!
-	public var posMcId : AnyObject!
-	public var posOperatorUname : AnyObject!
-	public var store : Store!
-	public var transactionId : String!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		billNumber = dictionary["bill_number"] as? String
-		comments = dictionary["comments"] as? String
-		created = dictionary["created"] as? Int ?? 0
-		id = dictionary["id"] as? Int ?? 0
-        
+        billNumber = dictionary["bill_number"] as? String
+        comments = dictionary["comments"] as? String
+        created = dictionary["created"] as? Int ?? 0
+        id = dictionary["id"] as? Int ?? 0
+
         let priceVal = dictionary["payment_amount"]
         if let val: Decimal = priceVal as? Decimal {
             paymentAmount = val
@@ -41,16 +38,16 @@ public class Transaction : NSObject, JSONDecodable{
         } else {
             paymentAmount = Decimal.zero
         }
-        
-		paymentSrc = dictionary["payment_src"] as? String
-		paymentType = dictionary["payment_type"] as? String
-		posMcId = dictionary["pos_mc_id"] as AnyObject
-		posOperatorUname = dictionary["pos_operator_uname"] as AnyObject
-		if let storeData: [String : AnyObject] = dictionary["store"] as? [String : AnyObject]{
-			store = Store(fromDictionary: storeData)
-		}
-		transactionId = dictionary["transaction_id"] as? String
-	}
+
+        paymentSrc = dictionary["payment_src"] as? String
+        paymentType = dictionary["payment_type"] as? String
+        posMcId = dictionary["pos_mc_id"] as AnyObject
+        posOperatorUname = dictionary["pos_operator_uname"] as AnyObject
+        if let storeData: [String: AnyObject] = dictionary["store"] as? [String: AnyObject] {
+            store = Store(fromDictionary: storeData)
+        }
+        transactionId = dictionary["transaction_id"] as? String
+    }
 
 //    /**
 //     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -159,5 +156,4 @@ public class Transaction : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

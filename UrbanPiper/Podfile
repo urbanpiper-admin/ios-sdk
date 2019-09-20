@@ -12,6 +12,7 @@ def common_pods
     pod 'AppsFlyerFramework'
     pod 'RxSwift', :git => 'https://github.com/ReactiveX/RxSwift'
 #    pod 'PhoneNumberKit', '~> 2.5'
+    pod 'SwiftFormat/CLI'
 end
 
 target 'UrbanPiper' do

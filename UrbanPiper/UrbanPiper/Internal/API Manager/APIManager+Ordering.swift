@@ -19,71 +19,69 @@ extension CategoriesAPI: UPAPI {
             return "api/v1/order/categories/"
         }
     }
-    
-    var parameters: [String : String]? {
+
+    var parameters: [String: String]? {
         switch self {
-        case .categories(let storeId, let offset, let limit):
-            var params = ["format":"json",
-                    "offset": String(offset),
-                    "limit": String(limit),
-                    "biz_id": APIManager.shared.bizId]
-            
+        case let .categories(storeId, offset, limit):
+            var params = ["format": "json",
+                          "offset": String(offset),
+                          "limit": String(limit),
+                          "biz_id": APIManager.shared.bizId]
+
             if let storeId = storeId {
                 params["location_id"] = String(storeId)
             }
-            
+
             return params
         }
     }
-    
-    var headers: [String : String]? {
+
+    var headers: [String: String]? {
         switch self {
         case .categories:
             return nil
         }
     }
-    
+
     var method: HttpMethod {
         switch self {
         case .categories:
             return .GET
         }
     }
-    
-    var body: [String : AnyObject]? {
+
+    var body: [String: AnyObject]? {
         switch self {
         case .categories:
             return nil
         }
     }
-    
 }
 
 /* extension APIManager {
 
-    func getCategories(storeId: Int?,
-                             offset: Int = 0,
-                             limit: Int = Constants.fetchLimit,
-//                             isForceRefresh: Bool,
-        completion: APICompletion<CategoriesResponse>?,
-        failure: APIFailure?) -> URLSessionDataTask {
+ func getCategories(storeId: Int?,
+                          offset: Int = 0,
+                          limit: Int = Constants.fetchLimit,
+ //                             isForceRefresh: Bool,
+     completion: APICompletion<CategoriesResponse>?,
+     failure: APIFailure?) -> URLSessionDataTask {
 
-//        /api/v1/order/categories/1419/items/?format=json&limit=50&offset=50&biz_id=14632907
-        var urlString: String = "\(APIManager.baseUrl)/api/v1/order/categories/?format=json&offset=\(offset)&limit=\(limit)&biz_id=\(bizId)"
+ //        /api/v1/order/categories/1419/items/?format=json&limit=50&offset=50&biz_id=14632907
+     var urlString: String = "\(APIManager.baseUrl)/api/v1/order/categories/?format=json&offset=\(offset)&limit=\(limit)&biz_id=\(bizId)"
 
-        if let id = storeId {
-            urlString = "\(urlString)&location_id=\(id)"
-        }
-        
-        let url: URL = URL(string: urlString)!
+     if let id = storeId {
+         urlString = "\(urlString)&location_id=\(id)"
+     }
 
-        var urlRequest: URLRequest = URLRequest(url: url)
-//        , cachePolicy: isForceRefresh ? .reloadIgnoringLocalAndRemoteCacheData : .useProtocolCachePolicy)
+     let url: URL = URL(string: urlString)!
 
-        urlRequest.httpMethod = "GET"
-        
-        
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
-    }
-    
-}*/
+     var urlRequest: URLRequest = URLRequest(url: url)
+ //        , cachePolicy: isForceRefresh ? .reloadIgnoringLocalAndRemoteCacheData : .useProtocolCachePolicy)
+
+     urlRequest.httpMethod = "GET"
+
+     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+ }
+
+ }*/

@@ -22,18 +22,18 @@ extension OffersAPI: UPAPI {
             return "api/v1/coupons/\(coupon)/"
         }
     }
-    
-    var parameters: [String : String]? {
+
+    var parameters: [String: String]? {
         switch self {
-        case .offers(let offset, let limit):
+        case let .offers(offset, limit):
             return ["offset": String(offset),
                     "limit": String(limit)]
         case .applyCoupon:
             return nil
         }
     }
-    
-    var headers: [String : String]? {
+
+    var headers: [String: String]? {
         switch self {
         case .offers:
             return nil
@@ -41,7 +41,7 @@ extension OffersAPI: UPAPI {
             return nil
         }
     }
-    
+
     var method: HttpMethod {
         switch self {
         case .offers:
@@ -50,72 +50,70 @@ extension OffersAPI: UPAPI {
             return .POST
         }
     }
-    
-    var body: [String : AnyObject]? {
+
+    var body: [String: AnyObject]? {
         switch self {
         case .offers:
             return nil
-        case .applyCoupon(_, let storeId, let deliveryOption, let cartItems, let applyWalletCredits):
+        case let .applyCoupon(_, storeId, deliveryOption, cartItems, applyWalletCredits):
             let order: [String: Any] = ["biz_location_id": storeId,
                                         "order_type": deliveryOption.rawValue,
                                         "channel": APIManager.channel,
                                         "items": cartItems.map { $0.toDictionary() },
                                         "apply_wallet_credit": applyWalletCredits] as [String: Any]
-            
+
             let params: [String: AnyObject] = ["order": order] as [String: AnyObject]
             return params
         }
     }
-    
 }
 
 /* extension APIManager {
-    
-    func getOffers(offset: Int = 0,
-                          limit: Int = Constants.fetchLimit,
-                          completion: APICompletion<OffersAPIResponse>?,
-                          failure: APIFailure?) -> URLSessionDataTask {
 
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/?offset=\(offset)&limit=\(limit)"
+ func getOffers(offset: Int = 0,
+                       limit: Int = Constants.fetchLimit,
+                       completion: APICompletion<OffersAPIResponse>?,
+                       failure: APIFailure?) -> URLSessionDataTask {
 
-        let url: URL = URL(string: urlString)!
-        
-        var urlRequest: URLRequest = URLRequest(url: url)
-        
-        urlRequest.httpMethod = "GET"
-        
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
-    }
+     let urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/?offset=\(offset)&limit=\(limit)"
 
-    @discardableResult internal func apply(coupon: String,
-                     storeId: Int,
-                     deliveryOption: DeliveryOption,
-                     cartItems: [CartItem],
-                     applyWalletCredit: Bool,
-                     completion: APICompletion<Order>?,
-                        failure: APIFailure?) -> URLSessionDataTask {
+     let url: URL = URL(string: urlString)!
 
-        let order: [String: Any] = ["biz_location_id": storeId,
-                                    "order_type": deliveryOption.rawValue,
-                                    "channel": APIManager.channel,
-                                    "items": cartItems.map { $0.toDictionary() },
-                                    "apply_wallet_credit": applyWalletCredit] as [String: Any]
-        
-        let params: [String: Any] = ["order": order] as [String: Any]
-        
-        var urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/\(coupon)/"
-        urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        
-        let url: URL = URL(string: urlString)!
-        
-        var urlRequest: URLRequest = URLRequest(url: url)
-        
-        urlRequest.httpMethod = "POST"
-        
-        urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+     var urlRequest: URLRequest = URLRequest(url: url)
 
-        
-        return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
-    }
-    
-}*/
+     urlRequest.httpMethod = "GET"
+
+     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+ }
+
+ @discardableResult internal func apply(coupon: String,
+                  storeId: Int,
+                  deliveryOption: DeliveryOption,
+                  cartItems: [CartItem],
+                  applyWalletCredit: Bool,
+                  completion: APICompletion<Order>?,
+                     failure: APIFailure?) -> URLSessionDataTask {
+
+     let order: [String: Any] = ["biz_location_id": storeId,
+                                 "order_type": deliveryOption.rawValue,
+                                 "channel": APIManager.channel,
+                                 "items": cartItems.map { $0.toDictionary() },
+                                 "apply_wallet_credit": applyWalletCredit] as [String: Any]
+
+     let params: [String: Any] = ["order": order] as [String: Any]
+
+     var urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/\(coupon)/"
+     urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+
+     let url: URL = URL(string: urlString)!
+
+     var urlRequest: URLRequest = URLRequest(url: url)
+
+     urlRequest.httpMethod = "POST"
+
+     urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+
+     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+ }
+
+ }*/

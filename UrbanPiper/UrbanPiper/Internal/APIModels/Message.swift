@@ -5,41 +5,38 @@
 import Foundation
 
 public enum MessageType: String {
-    case info = "info"
-    case alert = "alert"
-    case promo = "promo"
-    case coupon = "coupon"
-    case reward = "reward"
-    case cashback = "cashback"
+    case info
+    case alert
+    case promo
+    case coupon
+    case reward
+    case cashback
 }
 
+public class Message: NSObject, JSONDecodable {
+    public var bannerImg: String!
+    public var body: String!
+    public var channel: String!
+    public var created: Int = 0
+    public var id: Int = 0
+    public var target: AnyObject!
+    public var title: String!
+    public var type: String!
 
-public class Message : NSObject, JSONDecodable{
-
-	public var bannerImg : String!
-	public var body : String!
-	public var channel : String!
-	public var created : Int = 0
-	public var id : Int = 0
-	public var target : AnyObject!
-	public var title : String!
-	public var type : String!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		bannerImg = dictionary["banner_img"] as? String
-		body = dictionary["body"] as? String
-		channel = dictionary["channel"] as? String
-		created = dictionary["created"] as? Int ?? 0
-		id = dictionary["id"] as? Int ?? 0
-		target = dictionary["target"] as AnyObject
-		title = dictionary["title"] as? String
-		type = dictionary["type"] as? String
-	}
+        bannerImg = dictionary["banner_img"] as? String
+        body = dictionary["body"] as? String
+        channel = dictionary["channel"] as? String
+        created = dictionary["created"] as? Int ?? 0
+        id = dictionary["id"] as? Int ?? 0
+        target = dictionary["target"] as AnyObject
+        title = dictionary["title"] as? String
+        type = dictionary["type"] as? String
+    }
 
 //    /**
 //     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -127,5 +124,4 @@ public class Message : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

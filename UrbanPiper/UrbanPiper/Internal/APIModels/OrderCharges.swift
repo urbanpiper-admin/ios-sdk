@@ -7,21 +7,18 @@
 
 import Foundation
 
+public class OrderCharges: NSObject, JSONDecodable {
+    public var rate: Float!
+    public var title: String!
+    public var value: Decimal!
 
-public class OrderCharges : NSObject, JSONDecodable{
-
-	public var rate : Float!
-	public var title : String!
-	public var value : Decimal!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		rate = dictionary["rate"] as? Float
-		title = dictionary["title"] as? String
+        rate = dictionary["rate"] as? Float
+        title = dictionary["title"] as? String
 
         if let val: Decimal = dictionary["value"] as? Decimal {
             value = val
@@ -37,9 +34,8 @@ public class OrderCharges : NSObject, JSONDecodable{
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let rate = rate {
             dictionary["rate"] = rate as AnyObject
         }
@@ -81,5 +77,4 @@ public class OrderCharges : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

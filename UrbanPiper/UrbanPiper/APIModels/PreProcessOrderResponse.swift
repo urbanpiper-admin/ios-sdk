@@ -7,25 +7,22 @@
 
 import Foundation
 
-
-public class PreProcessOrderResponse : NSObject, JSONDecodable{
-
-	public var order : Order!
+public class PreProcessOrderResponse: NSObject, JSONDecodable {
+    public var order: Order!
 //    public var discount : Decimal?
-    public var notification : String?
-    public var status : String?
-    public var message : String?
+    public var notification: String?
+    public var status: String?
+    public var message: String?
 
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		if let orderData: [String : AnyObject] = dictionary["order"] as? [String : AnyObject]{
-			order = Order(fromDictionary: orderData)
-		}
-        
+        if let orderData: [String: AnyObject] = dictionary["order"] as? [String: AnyObject] {
+            order = Order(fromDictionary: orderData)
+        }
+
         notification = dictionary["notification"] as? String
         status = dictionary["status"] as? String
         message = dictionary["message"] as? String
@@ -38,7 +35,7 @@ public class PreProcessOrderResponse : NSObject, JSONDecodable{
 //        } else {
 //            discount = Decimal.zero
 //        }
-	}
+    }
 
 //    /**
 //     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -80,5 +77,4 @@ public class PreProcessOrderResponse : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

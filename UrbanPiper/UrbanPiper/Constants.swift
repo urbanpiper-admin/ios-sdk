@@ -26,16 +26,16 @@ public typealias APIFailure = (UPError?) -> Void
 /// - facebook: Facebook login
 public enum SocialLoginProvider: String {
     /// - google: Google login
-    case google = "google"
+    case google
     /// - facebook: Facebook login
-    case facebook = "facebook"
+    case facebook
     /// - apple: Apple login
-    case apple = "apple"
+    case apple
 }
 
 internal enum OnlinePaymentPurpose: String {
-    case reload = "reload"
-    case ordering = "ordering"
+    case reload
+    case ordering
 }
 
 /// Supported payment methods by UrbanPiper
@@ -49,20 +49,20 @@ internal enum OnlinePaymentPurpose: String {
 /// - select: Select a payment method, Deprecated will be remove in future
 public enum PaymentOption: String {
     /// - cash: Cash on delivery
-    case cash = "cash"
+    case cash
     /// - prepaid: Your business wallet payment
-    case prepaid = "prepaid"
+    case prepaid
     /// - paymentGateway: payment via payment gateway(i.e. razorpay, paytabs)
     case paymentGateway = "payment_gateway"
     /// - paytm: PayTm payment method
-    case paytm = "paytm"
+    case paytm
     /// - simpl: Simpl payment method
-    case simpl = "simpl"
+    case simpl
     /// - paypal: Paypal payment method
-    case paypal = "paypal"
+    case paypal
     /// - select: Select a payment method, Deprecated will be remove in future
     @available(*, deprecated, message: "the enum case will be removed in future")
-    case select = "select"
+    case select
 }
 
 /// Supported delivery methods by UrbanPiper
@@ -71,7 +71,7 @@ public enum PaymentOption: String {
 /// - pickUp: PickUp from store
 public enum DeliveryOption: String {
     /// - delivery: Delivery to home
-    case delivery = "delivery"
+    case delivery
     /// - pickUp: PickUp from store
     case pickUp = "pickup"
 }
@@ -99,9 +99,7 @@ struct Constants {
     static let fetchLimit: Int = 100
 }
 
-
 public extension NSNotification.Name {
-    
     /// Notification posted when the user's session has expired
     static let sessionExpired = NSNotification.Name("session-expired")
     /// Notification posted when the cart changes
@@ -110,6 +108,4 @@ public extension NSNotification.Name {
     static let userInfoChanged = NSNotification.Name("user-info-changed")
     /// Notification posted when the user biz details(i.e points, balance etc) are changed
     static let userBizInfoChanged = NSNotification.Name("user-biz-info-changed")
-
 }
-

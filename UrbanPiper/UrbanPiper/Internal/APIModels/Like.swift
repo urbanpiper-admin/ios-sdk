@@ -4,23 +4,20 @@
 
 import Foundation
 
+public class Like: NSObject, JSONDecodable {
+    public var item: Item!
+    public var likedOn: Int?
 
-public class Like : NSObject, JSONDecodable{
-
-	public var item : Item!
-	public var likedOn : Int?
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		if let itemData: [String : AnyObject] = dictionary["item"] as? [String : AnyObject]{
-			item = Item(fromDictionary: itemData)
-		}
-		likedOn = dictionary["liked_on"] as? Int
-	}
+        if let itemData: [String: AnyObject] = dictionary["item"] as? [String: AnyObject] {
+            item = Item(fromDictionary: itemData)
+        }
+        likedOn = dictionary["liked_on"] as? Int
+    }
 
 //    /**
 //     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
@@ -62,5 +59,4 @@ public class Like : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

@@ -7,38 +7,35 @@
 
 import Foundation
 
-
-public class ReorderResponse : NSObject, JSONDecodable{
-
-	public var bizLocation : BizLocation!
+public class ReorderResponse: NSObject, JSONDecodable {
+    public var bizLocation: BizLocation!
 //    public var deliveryCharge : Float!
-	@objc public var itemsAvailable : [ReorderItem]!
-	@objc public var itemsNotAvailable : [ReorderItem]!
+    @objc public var itemsAvailable: [ReorderItem]!
+    @objc public var itemsNotAvailable: [ReorderItem]!
 //    public var orderItemTaxes : Float!
 //    public var orderSubtotal : Float!
 //    public var orderTotal : Float!
 //    public var packagingCharge : Float!
 
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		if let bizLocationData: [String : AnyObject] = dictionary["biz_location"] as? [String : AnyObject]{
-			bizLocation = BizLocation(fromDictionary: bizLocationData)
-		}
+        if let bizLocationData: [String: AnyObject] = dictionary["biz_location"] as? [String: AnyObject] {
+            bizLocation = BizLocation(fromDictionary: bizLocationData)
+        }
 //        deliveryCharge = dictionary["delivery_charge"] as? Float
-		itemsAvailable = [ReorderItem]()
-		if let itemsAvailableArray: [[String : AnyObject]] = dictionary["items_available"] as? [[String : AnyObject]]{
-			for dic in itemsAvailableArray{
-				guard let value: ReorderItem = ReorderItem(fromDictionary: dic) else { continue }
-				itemsAvailable.append(value)
-			}
-		}
+        itemsAvailable = [ReorderItem]()
+        if let itemsAvailableArray: [[String: AnyObject]] = dictionary["items_available"] as? [[String: AnyObject]] {
+            for dic in itemsAvailableArray {
+                guard let value: ReorderItem = ReorderItem(fromDictionary: dic) else { continue }
+                itemsAvailable.append(value)
+            }
+        }
         itemsNotAvailable = [ReorderItem]()
-        if let itemsNotAvailableArray: [[String : AnyObject]] = dictionary["items_not_available"] as? [[String : AnyObject]]{
-            for dic in itemsNotAvailableArray{
+        if let itemsNotAvailableArray: [[String: AnyObject]] = dictionary["items_not_available"] as? [[String: AnyObject]] {
+            for dic in itemsNotAvailableArray {
                 guard let value: ReorderItem = ReorderItem(fromDictionary: dic) else { continue }
                 itemsNotAvailable.append(value)
             }
@@ -47,14 +44,13 @@ public class ReorderResponse : NSObject, JSONDecodable{
 //        orderSubtotal = dictionary["order_subtotal"] as? Float
 //        orderTotal = dictionary["order_total"] as? Float
 //        packagingCharge = dictionary["packaging_charge"] as? Float
-	}
+    }
 
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    @objc public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    @objc public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let bizLocation = bizLocation {
             dictionary["biz_location"] = bizLocation.toDictionary() as AnyObject
         }
@@ -62,7 +58,7 @@ public class ReorderResponse : NSObject, JSONDecodable{
 //            dictionary["delivery_charge"] = deliveryCharge as AnyObject
 //        }
         if let itemsAvailable = itemsAvailable {
-            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for itemsAvailableElement in itemsAvailable {
                 dictionaryElements.append(itemsAvailableElement.toDictionary())
             }
@@ -135,5 +131,4 @@ public class ReorderResponse : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }

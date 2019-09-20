@@ -7,56 +7,52 @@
 
 import Foundation
 
+@objc public class CategoriesResponse: NSObject, JSONDecodable {
+    private var biz: Biz!
+    public var clearCache: Bool
+    public var meta: Meta!
+    public var objects: [Object]!
 
-@objc public class CategoriesResponse : NSObject, JSONDecodable{
-
-	private var biz : Biz!
-    public var clearCache : Bool
-	public var meta : Meta!
-    public var objects : [Object]!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		if let bizData: [String : AnyObject] = dictionary["biz"] as? [String : AnyObject]{
-			biz = Biz(fromDictionary: bizData)
-		}
-        
+        if let bizData: [String: AnyObject] = dictionary["biz"] as? [String: AnyObject] {
+            biz = Biz(fromDictionary: bizData)
+        }
+
         Biz.shared = biz
 
-		clearCache = dictionary["clear_cache"] as? Bool ?? false
-		if let metaData: [String : AnyObject] = dictionary["meta"] as? [String : AnyObject]{
-			meta = Meta(fromDictionary: metaData)
-		}
-		objects = [Object]()
-		if let objectsArray: [[String : AnyObject]] = dictionary["objects"] as? [[String : AnyObject]]{
-			for dic in objectsArray{
-				guard let value: Object = Object(fromDictionary: dic) else { continue }
-				objects.append(value)
-			}
-		}
-	}
+        clearCache = dictionary["clear_cache"] as? Bool ?? false
+        if let metaData: [String: AnyObject] = dictionary["meta"] as? [String: AnyObject] {
+            meta = Meta(fromDictionary: metaData)
+        }
+        objects = [Object]()
+        if let objectsArray: [[String: AnyObject]] = dictionary["objects"] as? [[String: AnyObject]] {
+            for dic in objectsArray {
+                guard let value: Object = Object(fromDictionary: dic) else { continue }
+                objects.append(value)
+            }
+        }
+    }
 
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    @objc public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    @objc public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let biz = biz {
             dictionary["biz"] = biz.toDictionary() as AnyObject
         }
 //        if let clearCache = clearCache {
-            dictionary["clear_cache"] = clearCache as AnyObject
+        dictionary["clear_cache"] = clearCache as AnyObject
 //        }
         if let meta = meta {
             dictionary["meta"] = meta.toDictionary() as AnyObject
         }
         if let objects = objects {
-            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for objectsElement in objects {
                 dictionaryElements.append(objectsElement.toDictionary())
             }
@@ -98,5 +94,4 @@ import Foundation
 //        }
 //
 //    }
-
 }

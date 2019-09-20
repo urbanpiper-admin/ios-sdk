@@ -9,10 +9,10 @@
 import UIKit
 
 internal enum HttpMethod: String {
-    case GET = "GET"
-    case POST = "POST"
-    case PUT = "PUT"
-    case DELETE = "DELETE"
+    case GET
+    case POST
+    case PUT
+    case DELETE
 }
 
 internal protocol UPAPI {
@@ -24,32 +24,30 @@ internal protocol UPAPI {
 }
 
 internal extension UPAPI {
-    
     func requestWithBaseURL(baseURL: NSURL) -> URLRequest {
         let URL = baseURL.appendingPathComponent(path)!
-                
+
         guard var components = URLComponents(url: URL, resolvingAgainstBaseURL: false) else {
             fatalError("Unable to create URL components from \(URL)")
         }
-        
+
         if let parameters = parameters {
             components.queryItems = parameters.map {
                 URLQueryItem(name: String($0), value: String($1))
             }
         }
-        
+
         guard let finalURL = components.url else {
             fatalError("Unable to retrieve final URL")
         }
-        
+
         var request = URLRequest(url: finalURL)
         request.httpMethod = method.rawValue
-        
+
         if let body = body {
             request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
         }
-        
+
         return request
     }
-    
 }

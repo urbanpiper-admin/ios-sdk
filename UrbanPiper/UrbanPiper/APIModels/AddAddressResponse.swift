@@ -7,28 +7,24 @@
 
 import Foundation
 
+public class AddUpdateAddressResponse: NSObject, JSONDecodable {
+    public var addressId: Int?
+    public var msg: String!
 
-public class AddUpdateAddressResponse : NSObject, JSONDecodable{
-
-	public var addressId : Int?
-	public var msg : String!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	required init?(fromDictionary dictionary: [String : AnyObject]?) {
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-		addressId = dictionary["address_id"] as? Int
-		msg = dictionary["msg"] as? String
-	}
+        addressId = dictionary["address_id"] as? Int
+        msg = dictionary["msg"] as? String
+    }
 
     /**
      * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    @objc public func toDictionary() -> [String : AnyObject]
-    {
-        var dictionary: [String : AnyObject] = [String : AnyObject]()
+    @objc public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
         if let addressId = addressId {
             dictionary["address_id"] = addressId as AnyObject
         }
@@ -63,5 +59,4 @@ public class AddUpdateAddressResponse : NSObject, JSONDecodable{
 //        }
 //
 //    }
-
 }
