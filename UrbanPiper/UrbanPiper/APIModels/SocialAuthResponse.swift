@@ -8,9 +8,9 @@ import Foundation
 public class SocialLoginResponse: NSObject, JSONDecodable { // }, NSCoding{
 //    vcvvgvc var authKey : String!
 //    public var biz : AnyObject!
-    public var email : String!
+    public var email: String!
     public var message: String!
-    public var name : String!
+    public var name: String!
     public var phone: String!
     public var success: Bool
     //   var timestamp : String!

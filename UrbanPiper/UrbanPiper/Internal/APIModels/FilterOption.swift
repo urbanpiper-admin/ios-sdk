@@ -21,7 +21,7 @@ public class FilterOption: NSObject, JSONDecodable {
     }
 
     /*	/**
-       * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+         * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
     func toDictionary() -> [String : AnyObject]
     {
@@ -34,8 +34,8 @@ public class FilterOption: NSObject, JSONDecodable {
     }
 
     /**
-      * NSCoding required initializer.
-      * Fills the data from the passed decoder
+        * NSCoding required initializer.
+        * Fills the data from the passed decoder
      */
     @objc required public init(coder aDecoder: NSCoder)
     {
@@ -49,8 +49,8 @@ public class FilterOption: NSObject, JSONDecodable {
     }
 
     /**
-      * NSCoding required method.
-      * Encodes mode properties into the decoder
+        * NSCoding required method.
+        * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder)
     {

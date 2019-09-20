@@ -45,8 +45,8 @@ public class StatusUpdate: NSObject, JSONDecodable {
     }
 
     /*    /**
-      * NSCoding required initializer.
-      * Fills the data from the passed decoder
+        * NSCoding required initializer.
+        * Fills the data from the passed decoder
      */
     @objc required init(coder aDecoder: NSCoder)
     {
@@ -58,8 +58,8 @@ public class StatusUpdate: NSObject, JSONDecodable {
     }
 
     /**
-      * NSCoding required method.
-      * Encodes mode properties into the decoder
+        * NSCoding required method.
+        * Encodes mode properties into the decoder
      */
     @objc func encode(with aCoder: NSCoder)
     {

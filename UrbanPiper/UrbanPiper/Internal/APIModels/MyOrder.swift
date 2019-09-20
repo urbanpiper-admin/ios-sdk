@@ -316,8 +316,8 @@ public enum OrderStatus: String {
     }
 
     /*    /**
-      * NSCoding required initializer.
-      * Fills the data from the passed decoder
+        * NSCoding required initializer.
+        * Fills the data from the passed decoder
      */
     @objc required public init(coder aDecoder: NSCoder)
     {
@@ -357,8 +357,8 @@ public enum OrderStatus: String {
     }
 
     /**
-      * NSCoding required method.
-      * Encodes mode properties into the decoder
+        * NSCoding required method.
+        * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder)
     {

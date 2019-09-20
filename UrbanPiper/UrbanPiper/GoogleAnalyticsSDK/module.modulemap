@@ -1,7 +1,7 @@
 module GoogleAnalyticsSDK {
-    header "/Volumes/Mojave/Users/Vid/Developer/ios-newton/Newton/Pods/GoogleAnalytics/Sources/GAI.h"
-    header "/Volumes/Mojave/Users/Vid/Developer/ios-newton/Newton/Pods/GoogleAnalytics/Sources/GAIFields.h"
-    header "/Volumes/Mojave/Users/Vid/Developer/ios-newton/Newton/Pods/GoogleAnalytics/Sources/GAIEcommerceFields.h"
-    header "/Volumes/Mojave/Users/Vid/Developer/ios-newton/Newton/Pods/GoogleAnalytics/Sources/GAIDictionaryBuilder.h"
+    header "/Volumes/Mojave/Users/Vid/Developer/app.ios.whitelabel/WhiteLabel/Pods/GoogleAnalytics/Sources/GAI.h"
+    header "/Volumes/Mojave/Users/Vid/Developer/app.ios.whitelabel/WhiteLabel/Pods/GoogleAnalytics/Sources/GAIFields.h"
+    header "/Volumes/Mojave/Users/Vid/Developer/app.ios.whitelabel/WhiteLabel/Pods/GoogleAnalytics/Sources/GAIEcommerceFields.h"
+    header "/Volumes/Mojave/Users/Vid/Developer/app.ios.whitelabel/WhiteLabel/Pods/GoogleAnalytics/Sources/GAIDictionaryBuilder.h"
     export *
 }
