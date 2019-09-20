@@ -8,9 +8,9 @@ import Foundation
 public class SocialLoginResponse: NSObject, JSONDecodable { // }, NSCoding{
 //    vcvvgvc var authKey : String!
 //    public var biz : AnyObject!
-//    public var email : String!
+    public var email : String!
     public var message: String!
-//    public var name : String!
+    public var name : String!
     public var phone: String!
     public var success: Bool
     //   var timestamp : String!
@@ -24,9 +24,9 @@ public class SocialLoginResponse: NSObject, JSONDecodable { // }, NSCoding{
         guard let dictionary = dictionary else { return nil }
 //        authKey = dictionary["authKey"] as? String
 //        biz = dictionary["biz"] as AnyObject
-//        email = dictionary["email"] as? String
+        email = dictionary["email"] as? String
         message = dictionary["message"] as? String
-//        name = dictionary["name"] as? String
+        name = dictionary["name"] as? String
         phone = dictionary["phone"] as? String
         success = dictionary["success"] as? Bool ?? false
 //        timestamp = dictionary["timestamp"] as? String
