@@ -143,7 +143,7 @@ internal class UserManager: NSObject {
         }
 
         if let provider = appUser.provider {
-            let upAPI = SocialAuthAPI.socialLogin(email: appUser.email, accessToken: appUser.accessToken!, socialLoginProvider: provider)
+            let upAPI = SocialAuthAPI.socialLogin(name: appUser.firstName, email: appUser.email, accessToken: appUser.accessToken!, socialLoginProvider: provider)
             _ = APIManager.shared.apiDataTask(upAPI: upAPI, completion: { [weak self] socialLoginResponse in
                 guard let token = socialLoginResponse?.token else { return }
                 let user = User(jwtToken: token)
@@ -489,12 +489,13 @@ extension UserManager {
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
 
-    @discardableResult internal func socialLogin(email: String?,
+    @discardableResult internal func socialLogin(name: String?,
+                                                 email: String?,
                                                  socialLoginProvider: SocialLoginProvider,
                                                  accessToken: String,
                                                  completion: @escaping APICompletion<SocialLoginResponse>,
                                                  failure: @escaping APIFailure) -> URLSessionDataTask {
-        let upAPI = SocialAuthAPI.socialLogin(email: email, accessToken: accessToken, socialLoginProvider: socialLoginProvider)
+        let upAPI = SocialAuthAPI.socialLogin(name: name, email: email, accessToken: accessToken, socialLoginProvider: socialLoginProvider)
 
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: { [weak self] socialLoginResponse in
             if let token = socialLoginResponse?.token {
@@ -505,10 +506,11 @@ extension UserManager {
         } as APICompletion<SocialLoginResponse>, failure: failure)
     }
 
-    internal func socialLogin(email: String?,
+    internal func socialLogin(name: String?,
+                              email: String?,
                               socialLoginProvider: SocialLoginProvider,
                               accessToken: String) -> Observable<SocialLoginResponse> {
-        let upAPI = SocialAuthAPI.socialLogin(email: email, accessToken: accessToken, socialLoginProvider: socialLoginProvider)
+        let upAPI = SocialAuthAPI.socialLogin(name: name, email: email, accessToken: accessToken, socialLoginProvider: socialLoginProvider)
         return APIManager.shared.apiObservable(upAPI: upAPI)
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
             .observeOn(MainScheduler.instance)

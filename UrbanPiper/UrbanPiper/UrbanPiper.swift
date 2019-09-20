@@ -119,13 +119,13 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `SocialLoginResponse`, if the value `SocialLoginResponse.message` variable is "phone_number_required" the user's phone number needs to be verified by calling the `SocialRegBuilder.verifyPhone(...)`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult func socialLogin(email: String?, socialLoginProvider: SocialLoginProvider, accessToken: String,
+    @discardableResult func socialLogin(name: String?, email: String?, socialLoginProvider: SocialLoginProvider, accessToken: String,
                                         completion: @escaping APICompletion<SocialLoginResponse>, failure: @escaping APIFailure) -> URLSessionDataTask {
-        return UserManager.shared.socialLogin(email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken, completion: completion, failure: failure)
+        return UserManager.shared.socialLogin(name: name, email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken, completion: completion, failure: failure)
     }
 
-    func socialLogin(email: String?, socialLoginProvider: SocialLoginProvider, accessToken: String) -> Observable<SocialLoginResponse> {
-        return UserManager.shared.socialLogin(email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken)
+    func socialLogin(name: String?, email: String?, socialLoginProvider: SocialLoginProvider, accessToken: String) -> Observable<SocialLoginResponse> {
+        return UserManager.shared.socialLogin(name: name, email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken)
     }
 
     /// API call to retrieve the updated user info from the server, user needs to be logged in to make this call
