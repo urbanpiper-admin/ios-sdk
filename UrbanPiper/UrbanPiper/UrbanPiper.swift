@@ -653,7 +653,7 @@ extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func getAllStores() -> Observable<StoreListResponse> {
+    public func getAllStores() -> Observable<StoreListResponse> {
         let upAPI = StoreAPI.stores
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }

@@ -10,6 +10,13 @@ import Foundation
 @objc public class StoreResponse: NSObject, JSONDecodable, NSCoding {
     @objc public var biz: Biz!
     @objc public var store: Store?
+    
+    public convenience init(biz: Biz, store: Store?) {
+        self.init(fromDictionary: [:])!
+        
+        self.biz = biz
+        self.store = store
+    }
 
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values

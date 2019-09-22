@@ -16,6 +16,7 @@ public class Object: NSObject, JSONDecodable {
     public var loadFromWeb: Bool
     @objc public var name: String!
     public var slug: String!
+    public var subCategories: [Object]!
     public var sortOrder: Int = 0
     public var webUrl: String!
 
@@ -32,6 +33,13 @@ public class Object: NSObject, JSONDecodable {
         loadFromWeb = dictionary["load_from_web"] as? Bool ?? false
         name = dictionary["name"] as? String
         slug = dictionary["slug"] as? String
+        subCategories = [Object]()
+        if let objectsArray: [[String: AnyObject]] = dictionary["sub_categories"] as? [[String: AnyObject]] {
+            for dic in objectsArray {
+                guard let value: Object = Object(fromDictionary: dic) else { continue }
+                subCategories.append(value)
+            }
+        }
         sortOrder = dictionary["sort_order"] as? Int ?? 0
         webUrl = dictionary["web_url"] as? String
     }
@@ -62,6 +70,13 @@ public class Object: NSObject, JSONDecodable {
         }
         if let slug = slug {
             dictionary["slug"] = slug as AnyObject
+        }
+        if let objects = subCategories {
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
+            for objectsElement in objects {
+                dictionaryElements.append(objectsElement.toDictionary())
+            }
+            dictionary["sub_categories"] = dictionaryElements as AnyObject
         }
         dictionary["sort_order"] = sortOrder as AnyObject
         if let webUrl = webUrl {
