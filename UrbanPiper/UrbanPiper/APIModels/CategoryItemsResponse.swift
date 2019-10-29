@@ -7,58 +7,70 @@
 
 import Foundation
 
-
-public class CategoryItemsResponse : NSObject, NSCopying{
-
+public class CategoryItemsResponse: NSObject, JSONDecodable, NSCopying {
 //    public var combos : [AnyObject]!
-	public var meta : Meta!
-	public var objects : [Item]!
+    public var meta: Meta!
+    public var objects: [Item]!
 
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-    internal init(fromDictionary dictionary:  [String:Any], isUpsoldItems: Bool = false, isRecommendedItems: Bool = false){
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 //        combos = dictionary["combos"] as? [AnyObject]
-		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
-			meta = Meta(fromDictionary: metaData)
-		}
-		objects = [Item]()
-		if let objectsArray: [[String:Any]] = dictionary["objects"] as? [[String:Any]]{
-			for dic in objectsArray{
-				let value: Item = Item(fromDictionary: dic)
-                value.isUpsoldItem = isUpsoldItems
-                value.isRecommendedItem = isRecommendedItems
-				objects.append(value)
-			}
-		}
-	}
+        if let metaData: [String: AnyObject] = dictionary["meta"] as? [String: AnyObject] {
+            meta = Meta(fromDictionary: metaData)
+        }
+        objects = [Item]()
+        if let objectsArray: [[String: AnyObject]] = dictionary["objects"] as? [[String: AnyObject]] {
+            for dic in objectsArray {
+                guard let value: Item = Item(fromDictionary: dic) else { continue }
+                objects.append(value)
+            }
+        }
+    }
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    public func toDictionary() -> [String:Any]
-    {
-        var dictionary: [String: Any] = [String:Any]()
-//        if combos != nil{
-//            dictionary["combos"] = combos
-//        }
-        if meta != nil{
-            dictionary["meta"] = meta.toDictionary()
+    internal required init?(fromDictionary dictionary: [String: AnyObject], isUpsoldItems: Bool = false, isRecommendedItems: Bool = false) {
+//        combos = dictionary["combos"] as? [AnyObject]
+        if let metaData: [String: AnyObject] = dictionary["meta"] as? [String: AnyObject] {
+            meta = Meta(fromDictionary: metaData)
         }
-        if objects != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+        objects = [Item]()
+        if let objectsArray: [[String: AnyObject]] = dictionary["objects"] as? [[String: AnyObject]] {
+            for dic in objectsArray {
+                guard let value: Item = Item(fromDictionary: dic) else { continue }
+                value.isUpsoldItem = isUpsoldItems
+                value.isRecommendedItem = isRecommendedItems
+                objects.append(value)
+            }
+        }
+    }
+
+    /**
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+//        if let combos = combos {
+//            dictionary["combos"] = combos as AnyObject
+//        }
+        if let meta = meta {
+            dictionary["meta"] = meta.toDictionary() as AnyObject
+        }
+        if let objects = objects {
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for objectsElement in objects {
                 dictionaryElements.append(objectsElement.toDictionary())
             }
-            dictionary["objects"] = dictionaryElements
+            dictionary["objects"] = dictionaryElements as AnyObject
         }
         return dictionary
     }
 
-    public func copy(with zone: NSZone? = nil) -> Any {
-        return CategoryItemsResponse(fromDictionary: toDictionary())
+    public func copy(with _: NSZone? = nil) -> Any {
+        return CategoryItemsResponse(fromDictionary: toDictionary()) as Any
     }
+
 //    /**
 //    * NSCoding required initializer.
 //    * Fills the data from the passed decoder
@@ -77,16 +89,15 @@ public class CategoryItemsResponse : NSObject, NSCopying{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if combos != nil{
+//        if let combos = combos {
 //            aCoder.encode(combos, forKey: "combos")
 //        }
-//        if meta != nil{
+//        if let meta = meta {
 //            aCoder.encode(meta, forKey: "meta")
 //        }
-//        if objects != nil{
+//        if let objects = objects {
 //            aCoder.encode(objects, forKey: "objects")
 //        }
 //
 //    }
-
 }

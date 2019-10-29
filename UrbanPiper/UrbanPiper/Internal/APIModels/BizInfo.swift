@@ -7,71 +7,64 @@
 
 import Foundation
 
-
-public class UserBizInfoResponse : NSObject, NSCoding{
-
-	public var meta : Meta!
-	@objc public var userBizInfos : [UserBizInfo]!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
-			meta = Meta(fromDictionary: metaData)
-		}
-		userBizInfos = [UserBizInfo]()
-		if let objectsArray: [[String:Any]] = dictionary["objects"] as? [[String:Any]]{
-			for dic in objectsArray{
-				let value: UserBizInfo = UserBizInfo(fromDictionary: dic)
-				userBizInfos.append(value)
-			}
-		}
-	}
+public class UserBizInfoResponse: NSObject, JSONDecodable, NSCoding {
+    public var meta: Meta!
+    @objc public var userBizInfos: [UserBizInfo]!
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    public func toDictionary() -> [String:Any]
-    {
-        var dictionary: [String: Any] = [String:Any]()
-        if meta != nil{
-            dictionary["meta"] = meta.toDictionary()
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        if let metaData: [String: AnyObject] = dictionary["meta"] as? [String: AnyObject] {
+            meta = Meta(fromDictionary: metaData)
         }
-        if userBizInfos != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+        userBizInfos = [UserBizInfo]()
+        if let objectsArray: [[String: AnyObject]] = dictionary["objects"] as? [[String: AnyObject]] {
+            for dic in objectsArray {
+                guard let value: UserBizInfo = UserBizInfo(fromDictionary: dic) else { continue }
+                userBizInfos.append(value)
+            }
+        }
+    }
+
+    /**
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+        if let meta = meta {
+            dictionary["meta"] = meta.toDictionary() as AnyObject
+        }
+        if let userBizInfos = userBizInfos {
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for userBizInfo in userBizInfos {
                 dictionaryElements.append(userBizInfo.toDictionary())
             }
-            dictionary["objects"] = dictionaryElements
+            dictionary["objects"] = dictionaryElements as AnyObject
         }
         return dictionary
     }
 
     /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    @objc required public init(coder aDecoder: NSCoder)
-	{
+     * NSCoding required initializer.
+     * Fills the data from the passed decoder
+     */
+    @objc public required init(coder aDecoder: NSCoder) {
         meta = aDecoder.decodeObject(forKey: "meta") as? Meta
         userBizInfos = aDecoder.decodeObject(forKey: "objects") as? [UserBizInfo]
     }
 
     /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    @objc public func encode(with aCoder: NSCoder)
-	{
-		if meta != nil{
-			aCoder.encode(meta, forKey: "meta")
-		}
-		if userBizInfos != nil{
-			aCoder.encode(userBizInfos, forKey: "objects")
-		}
-
-	}
-
+     * NSCoding required method.
+     * Encodes mode properties into the decoder
+     */
+    @objc public func encode(with aCoder: NSCoder) {
+        if let meta = meta {
+            aCoder.encode(meta, forKey: "meta")
+        }
+        if let userBizInfos = userBizInfos {
+            aCoder.encode(userBizInfos, forKey: "objects")
+        }
+    }
 }

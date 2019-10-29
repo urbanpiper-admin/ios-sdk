@@ -7,45 +7,42 @@
 
 import Foundation
 
-
-public class StoreListResponse : NSObject{
-
-	public var biz : Biz!
-	public var stores : [Store]!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	init(fromDictionary dictionary: [String:Any]){
-		if let bizData = dictionary["biz"] as? [String:Any]{
-			biz = Biz(fromDictionary: bizData)
-		}
-		stores = [Store]()
-		if let storesArray = dictionary["stores"] as? [[String:Any]]{
-			for dic in storesArray{
-				let value = Store(fromDictionary: dic)
-                guard !value.hideStoreName else { continue }
-				stores.append(value)
-			}
-		}
-	}
+public class StoreListResponse: NSObject, JSONDecodable {
+    public var biz: Biz!
+    public var stores: [Store]!
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    @objc public func toDictionary() -> [String:Any]
-    {
-        var dictionary: [String: Any] = [String:Any]()
-        if biz != nil{
-            dictionary["biz"] = biz.toDictionary()
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        if let bizData = dictionary["biz"] as? [String: AnyObject] {
+            biz = Biz(fromDictionary: bizData)
         }
-        if stores != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+        stores = [Store]()
+        if let storesArray = dictionary["stores"] as? [[String: AnyObject]] {
+            for dic in storesArray {
+                guard let value = Store(fromDictionary: dic) else { continue }
+                guard !value.hideStoreName else { continue }
+                stores.append(value)
+            }
+        }
+    }
+
+    /**
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    @objc public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+        if let biz = biz {
+            dictionary["biz"] = biz.toDictionary() as AnyObject
+        }
+        if let stores = stores {
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for storesElement in stores {
                 dictionaryElements.append(storesElement.toDictionary())
             }
-            dictionary["stores"] = dictionaryElements
+            dictionary["stores"] = dictionaryElements as AnyObject
         }
         return dictionary
     }
@@ -67,13 +64,12 @@ public class StoreListResponse : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if biz != nil{
+//        if let biz = biz {
 //            aCoder.encode(biz, forKey: "biz")
 //        }
-//        if stores != nil{
+//        if let stores = stores {
 //            aCoder.encode(stores, forKey: "stores")
 //        }
 //
 //    }
-
 }

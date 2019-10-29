@@ -5,70 +5,68 @@
 import Foundation
 
 public enum MessageType: String {
-    case info = "info"
-    case alert = "alert"
-    case promo = "promo"
-    case coupon = "coupon"
-    case reward = "reward"
-    case cashback = "cashback"
+    case info
+    case alert
+    case promo
+    case coupon
+    case reward
+    case cashback
 }
 
+public class Message: NSObject, JSONDecodable {
+    public var bannerImg: String!
+    public var body: String!
+    public var channel: String!
+    public var created: Int = 0
+    public var id: Int = 0
+    public var target: AnyObject!
+    public var title: String!
+    public var type: String!
 
-public class Message : NSObject{
-
-	public var bannerImg : String!
-	public var body : String!
-	public var channel : String!
-	public var created : Int!
-	public var id : Int!
-	public var target : AnyObject!
-	public var title : String!
-	public var type : String!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		bannerImg = dictionary["banner_img"] as? String
-		body = dictionary["body"] as? String
-		channel = dictionary["channel"] as? String
-		created = dictionary["created"] as? Int
-		id = dictionary["id"] as? Int
-		target = dictionary["target"] as AnyObject
-		title = dictionary["title"] as? String
-		type = dictionary["type"] as? String
-	}
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        bannerImg = dictionary["banner_img"] as? String
+        body = dictionary["body"] as? String
+        channel = dictionary["channel"] as? String
+        created = dictionary["created"] as? Int ?? 0
+        id = dictionary["id"] as? Int ?? 0
+        target = dictionary["target"] as AnyObject
+        title = dictionary["title"] as? String
+        type = dictionary["type"] as? String
+    }
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    public func toDictionary() -> [String:Any]
+//    public func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if bannerImg != nil{
-//            dictionary["banner_img"] = bannerImg
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        if let bannerImg = bannerImg {
+//            dictionary["banner_img"] = bannerImg as AnyObject
 //        }
-//        if body != nil{
-//            dictionary["body"] = body
+//        if let body = body {
+//            dictionary["body"] = body as AnyObject
 //        }
-//        if channel != nil{
-//            dictionary["channel"] = channel
+//        if let channel = channel {
+//            dictionary["channel"] = channel as AnyObject
 //        }
-//        if created != nil{
-//            dictionary["created"] = created
+//        if let created = created {
+//            dictionary["created"] = created as AnyObject
 //        }
-//        if id != nil{
-//            dictionary["id"] = id
+//        if let id = id {
+//            dictionary["id"] = id as AnyObject
 //        }
-//        if target != nil{
-//            dictionary["target"] = target
+//        if let target = target {
+//            dictionary["target"] = target as AnyObject
 //        }
-//        if title != nil{
-//            dictionary["title"] = title
+//        if let title = title {
+//            dictionary["title"] = title as AnyObject
 //        }
-//        if type != nil{
-//            dictionary["type"] = type
+//        if let type = type {
+//            dictionary["type"] = type as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -83,7 +81,11 @@ public class Message : NSObject{
 //         body = aDecoder.decodeObject(forKey: "body") as? String
 //         channel = aDecoder.decodeObject(forKey: "channel") as? String
 //         created = aDecoder.decodeObject(forKey: "created") as? Int
-//         id = aDecoder.decodeObject(forKey: "id") as? Int
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         target = aDecoder.decodeObject(forKey: "target") as AnyObject
 //         title = aDecoder.decodeObject(forKey: "title") as? String
 //         type = aDecoder.decodeObject(forKey: "type") as? String
@@ -96,31 +98,30 @@ public class Message : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if bannerImg != nil{
+//        if let bannerImg = bannerImg {
 //            aCoder.encode(bannerImg, forKey: "banner_img")
 //        }
-//        if body != nil{
+//        if let body = body {
 //            aCoder.encode(body, forKey: "body")
 //        }
-//        if channel != nil{
+//        if let channel = channel {
 //            aCoder.encode(channel, forKey: "channel")
 //        }
-//        if created != nil{
+//        if let created = created {
 //            aCoder.encode(created, forKey: "created")
 //        }
-//        if id != nil{
+//        if let id = id {
 //            aCoder.encode(id, forKey: "id")
 //        }
-//        if target != nil{
+//        if let target = target {
 //            aCoder.encode(target, forKey: "target")
 //        }
-//        if title != nil{
+//        if let title = title {
 //            aCoder.encode(title, forKey: "title")
 //        }
-//        if type != nil{
+//        if let type = type {
 //            aCoder.encode(type, forKey: "type")
 //        }
 //
 //    }
-
 }

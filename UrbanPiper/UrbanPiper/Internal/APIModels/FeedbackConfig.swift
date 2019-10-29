@@ -7,71 +7,63 @@
 
 import Foundation
 
-
-public class FeedbackConfig : NSObject, NSCoding{
-
-	public var choices : [Choice]!
-	public var type : String!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		choices = [Choice]()
-		if let choicesArray: [[String:Any]] = dictionary["choices"] as? [[String:Any]]{
-			for dic in choicesArray{
-				let value: Choice = Choice(fromDictionary: dic)
-				choices.append(value)
-			}
-		}
-		type = dictionary["type"] as? String
-	}
-
-	/**
-	 * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
-	 */
-	public func toDictionary() -> [String:Any]
-	{
-		var dictionary: [String: Any] = [String:Any]()
-		if choices != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
-			for choicesElement in choices {
-				dictionaryElements.append(choicesElement.toDictionary())
-			}
-			dictionary["choices"] = dictionaryElements
-		}
-		if type != nil{
-			dictionary["type"] = type
-		}
-		return dictionary
-	}
+public class FeedbackConfig: NSObject, JSONDecodable, NSCoding {
+    public var choices: [Choice]!
+    public var type: String!
 
     /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    @objc required public init(coder aDecoder: NSCoder)
-	{
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        choices = [Choice]()
+        if let choicesArray: [[String: AnyObject]] = dictionary["choices"] as? [[String: AnyObject]] {
+            for dic in choicesArray {
+                guard let value: Choice = Choice(fromDictionary: dic) else { continue }
+                choices.append(value)
+            }
+        }
+        type = dictionary["type"] as? String
+    }
+
+    /**
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+        if let choices = choices {
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
+            for choicesElement in choices {
+                dictionaryElements.append(choicesElement.toDictionary())
+            }
+            dictionary["choices"] = dictionaryElements as AnyObject
+        }
+        if let type = type {
+            dictionary["type"] = type as AnyObject
+        }
+        return dictionary
+    }
+
+    /**
+     * NSCoding required initializer.
+     * Fills the data from the passed decoder
+     */
+    @objc public required init(coder aDecoder: NSCoder) {
         Choice.registerClass()
-         choices = aDecoder.decodeObject(forKey :"choices") as? [Choice]
-         type = aDecoder.decodeObject(forKey: "type") as? String
-
-	}
+        choices = aDecoder.decodeObject(forKey: "choices") as? [Choice]
+        type = aDecoder.decodeObject(forKey: "type") as? String
+    }
 
     /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    @objc public func encode(with aCoder: NSCoder)
-	{
-		if choices != nil{
-			aCoder.encode(choices, forKey: "choices")
-		}
-		if type != nil{
-			aCoder.encode(type, forKey: "type")
-		}
-
-	}
-
+     * NSCoding required method.
+     * Encodes mode properties into the decoder
+     */
+    @objc public func encode(with aCoder: NSCoder) {
+        if let choices = choices {
+            aCoder.encode(choices, forKey: "choices")
+        }
+        if let type = type {
+            aCoder.encode(type, forKey: "type")
+        }
+    }
 }

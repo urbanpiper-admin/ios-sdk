@@ -9,7 +9,6 @@
 import UIKit
 
 extension ItemOptionGroup {
-
     struct SelectionQuantity {
         static let unlimited = -1
         static let none = 0
@@ -35,21 +34,21 @@ extension ItemOptionGroup {
 //
 //        return isValidItem
 //    }
-    
+
     internal var reorderOptionsToAdd: [ItemOption] {
         var reorderOptionsToAdd = [ItemOption]()
 
         for option in options {
             let options = option.reorderOptionsToAdd
-            
+
             for optionItem in options {
                 optionItem.price = Decimal.zero
                 optionItem.quantity = isDefault ? 0 : 1
             }
-            
+
             reorderOptionsToAdd.append(contentsOf: options)
         }
-        
+
         return reorderOptionsToAdd
     }
 
@@ -99,5 +98,4 @@ extension ItemOptionGroup {
 //            }
 //        }
 //    }
-
 }

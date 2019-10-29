@@ -7,44 +7,42 @@
 
 import Foundation
 
+public class OffersAPIResponse: NSObject, JSONDecodable {
+    public var coupons: [Coupon]!
+    public var meta: Meta!
 
-public class OffersAPIResponse : NSObject{
-
-	public var coupons : [Coupon]!
-	public var meta : Meta!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	init(fromDictionary dictionary: [String:Any]){
-		coupons = [Coupon]()
-		if let couponsArray = dictionary["coupons"] as? [[String:Any]]{
-			for dic in couponsArray{
-				let value = Coupon(fromDictionary: dic)
-				coupons.append(value)
-			}
-		}
-		if let metaData = dictionary["meta"] as? [String:Any]{
-			meta = Meta(fromDictionary: metaData)
-		}
-	}
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        coupons = [Coupon]()
+        if let couponsArray = dictionary["coupons"] as? [[String: AnyObject]] {
+            for dic in couponsArray {
+                guard let value = Coupon(fromDictionary: dic) else { continue }
+                coupons.append(value)
+            }
+        }
+        if let metaData = dictionary["meta"] as? [String: AnyObject] {
+            meta = Meta(fromDictionary: metaData)
+        }
+    }
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    func toDictionary() -> [String:Any]
+//    func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary = [String:Any]()
-//        if coupons != nil{
-//            var dictionaryElements = [[String:Any]]()
+//        var dictionary = [String : AnyObject]()
+//        if let coupons = coupons {
+//            var dictionaryElements = [[String : AnyObject]]()
 //            for couponsElement in coupons {
 //                dictionaryElements.append(couponsElement.toDictionary())
 //            }
-//            dictionary["coupons"] = dictionaryElements
+//            dictionary["coupons"] = dictionaryElements as AnyObject
 //        }
-//        if meta != nil{
-//            dictionary["meta"] = meta.toDictionary()
+//        if let meta = meta {
+//            dictionary["meta"] = meta.toDictionary() as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -66,13 +64,12 @@ public class OffersAPIResponse : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if coupons != nil{
+//        if let coupons = coupons {
 //            aCoder.encode(coupons, forKey: "coupons")
 //        }
-//        if meta != nil{
+//        if let meta = meta {
 //            aCoder.encode(meta, forKey: "meta")
 //        }
 //
 //    }
-
 }

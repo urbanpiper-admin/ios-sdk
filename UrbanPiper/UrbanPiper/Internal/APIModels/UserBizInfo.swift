@@ -7,22 +7,20 @@
 
 import Foundation
 
-
-public class UserBizInfo : NSObject, NSCoding{
-
-	public var addresses : [AnyObject]!
-	@objc public var balance : NSDecimalNumber = NSDecimalNumber.zero
-	public var bizId : Int!
-	@objc public var cardNumbers : [String]!
-	public var daysSinceLastOrder : Int!
-	public var id : Int!
-	public var lastOrderDt : Int!
-	public var name : String!
-	public var numOfOrders : Int!
-	public var phone : String!
-	@objc public var points : NSNumber = NSNumber(integerLiteral: 0)
-	public var signupDt : Int!
-	public var totalOrderValue : Decimal!
+public class UserBizInfo: NSObject, JSONDecodable, NSCoding {
+    public var addresses: [AnyObject]!
+    @objc public var balance: NSDecimalNumber = NSDecimalNumber.zero
+    public var bizId: Int?
+    @objc public var cardNumbers: [String]!
+    public var daysSinceLastOrder: Int?
+    public var id: Int = 0
+    public var lastOrderDt: Int?
+    public var name: String!
+    public var numOfOrders: Int?
+    public var phone: String!
+    @objc public var points: NSNumber = NSNumber(integerLiteral: 0)
+    public var signupDt: Int?
+    public var totalOrderValue: Decimal!
     @objc public var lastUpdatedDateString: String?
     internal var lastOrderDateString: String? {
         if let val = lastOrderDt {
@@ -32,13 +30,13 @@ public class UserBizInfo : NSObject, NSCoding{
         return nil
     }
 
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        addresses = dictionary["addresses"] as? [AnyObject]
 
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		addresses = dictionary["addresses"] as? [AnyObject]
-        
         if let val: Decimal = dictionary["balance"] as? Decimal {
             balance = val as NSDecimalNumber
         } else if let val: Double = dictionary["balance"] as? Double {
@@ -46,18 +44,18 @@ public class UserBizInfo : NSObject, NSCoding{
         } else {
             balance = Decimal.zero as NSDecimalNumber
         }
-        
-		bizId = dictionary["biz_id"] as? Int
-		cardNumbers = dictionary["card_numbers"] as? [String]
-		daysSinceLastOrder = dictionary["days_since_last_order"] as? Int
-		id = dictionary["id"] as? Int
-		lastOrderDt = dictionary["last_order_dt"] as? Int
-		name = dictionary["name"] as? String
-		numOfOrders = dictionary["num_of_orders"] as? Int
-		phone = dictionary["phone"] as? String
-		points = dictionary["points"] as? NSNumber ?? NSNumber(integerLiteral: 0)
-		signupDt = dictionary["signup_dt"] as? Int
-        
+
+        bizId = dictionary["biz_id"] as? Int
+        cardNumbers = dictionary["card_numbers"] as? [String]
+        daysSinceLastOrder = dictionary["days_since_last_order"] as? Int
+        id = dictionary["id"] as? Int ?? 0
+        lastOrderDt = dictionary["last_order_dt"] as? Int
+        name = dictionary["name"] as? String
+        numOfOrders = dictionary["num_of_orders"] as? Int
+        phone = dictionary["phone"] as? String
+        points = dictionary["points"] as? NSNumber ?? NSNumber(integerLiteral: 0)
+        signupDt = dictionary["signup_dt"] as? Int
+
         if let val: Decimal = dictionary["total_order_value"] as? Decimal {
             totalOrderValue = val
         } else if let val: Double = dictionary["total_order_value"] as? Double {
@@ -67,126 +65,120 @@ public class UserBizInfo : NSObject, NSCoding{
         } else {
             totalOrderValue = Decimal.zero
         }
-        
+
         lastUpdatedDateString = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .short)
-	}
+    }
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any]
-    {
-        var dictionary: [String: Any] = [String:Any]()
-        if addresses != nil{
-            dictionary["addresses"] = addresses
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+        if let addresses = addresses {
+            dictionary["addresses"] = addresses as AnyObject
         }
-        dictionary["balance"] = balance
-        if bizId != nil{
-            dictionary["biz_id"] = bizId
+        dictionary["balance"] = balance as AnyObject
+        if let bizId = bizId {
+            dictionary["biz_id"] = bizId as AnyObject
         }
-        if cardNumbers != nil{
-            dictionary["card_numbers"] = cardNumbers
+        if let cardNumbers = cardNumbers {
+            dictionary["card_numbers"] = cardNumbers as AnyObject
         }
-        if daysSinceLastOrder != nil{
-            dictionary["days_since_last_order"] = daysSinceLastOrder
+        if let daysSinceLastOrder = daysSinceLastOrder {
+            dictionary["days_since_last_order"] = daysSinceLastOrder as AnyObject
         }
-        if id != nil{
-            dictionary["id"] = id
+        dictionary["id"] = id as AnyObject
+        if let lastOrderDt = lastOrderDt {
+            dictionary["last_order_dt"] = lastOrderDt as AnyObject
         }
-        if lastOrderDt != nil{
-            dictionary["last_order_dt"] = lastOrderDt
+        if let name = name {
+            dictionary["name"] = name as AnyObject
         }
-        if name != nil{
-            dictionary["name"] = name
+        if let lastUpdatedDateString = lastUpdatedDateString {
+            dictionary["lastUpdatedDateString"] = lastUpdatedDateString as AnyObject
         }
-        if lastUpdatedDateString != nil{
-            dictionary["lastUpdatedDateString"] = lastUpdatedDateString
+        if let numOfOrders = numOfOrders {
+            dictionary["num_of_orders"] = numOfOrders as AnyObject
         }
-        if numOfOrders != nil{
-            dictionary["num_of_orders"] = numOfOrders
+        if let phone = phone {
+            dictionary["phone"] = phone as AnyObject
         }
-        if phone != nil{
-            dictionary["phone"] = phone
+        dictionary["points"] = points as AnyObject
+        if let signupDt = signupDt {
+            dictionary["signup_dt"] = signupDt as AnyObject
         }
-        dictionary["points"] = points
-        if signupDt != nil{
-            dictionary["signup_dt"] = signupDt
-        }
-        if totalOrderValue != nil{
-            dictionary["total_order_value"] = totalOrderValue
+        if let totalOrderValue = totalOrderValue {
+            dictionary["total_order_value"] = totalOrderValue as AnyObject
         }
         return dictionary
     }
 
     /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    @objc required public init(coder aDecoder: NSCoder)
-	{
-         addresses = aDecoder.decodeObject(forKey: "addresses") as? [AnyObject]
+     * NSCoding required initializer.
+     * Fills the data from the passed decoder
+     */
+    @objc public required init(coder aDecoder: NSCoder) {
+        addresses = aDecoder.decodeObject(forKey: "addresses") as? [AnyObject]
         balance = aDecoder.decodeObject(forKey: "balance") as? NSDecimalNumber ?? NSDecimalNumber.zero
-         bizId = aDecoder.decodeObject(forKey: "biz_id") as? Int
-         cardNumbers = aDecoder.decodeObject(forKey: "card_numbers") as? [String]
-         daysSinceLastOrder = aDecoder.decodeObject(forKey: "days_since_last_order") as? Int
-         id = aDecoder.decodeObject(forKey: "id") as? Int
-         lastOrderDt = aDecoder.decodeObject(forKey: "last_order_dt") as? Int
-         name = aDecoder.decodeObject(forKey: "name") as? String
+        bizId = aDecoder.decodeObject(forKey: "biz_id") as? Int
+        cardNumbers = aDecoder.decodeObject(forKey: "card_numbers") as? [String]
+        daysSinceLastOrder = aDecoder.decodeObject(forKey: "days_since_last_order") as? Int
+        if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+            id = val
+        } else {
+            id = aDecoder.decodeInteger(forKey: "id")
+        }
+        lastOrderDt = aDecoder.decodeObject(forKey: "last_order_dt") as? Int
+        name = aDecoder.decodeObject(forKey: "name") as? String
         lastUpdatedDateString = aDecoder.decodeObject(forKey: "lastUpdatedDateString") as? String
-         numOfOrders = aDecoder.decodeObject(forKey: "num_of_orders") as? Int
-         phone = aDecoder.decodeObject(forKey: "phone") as? String
+        numOfOrders = aDecoder.decodeObject(forKey: "num_of_orders") as? Int
+        phone = aDecoder.decodeObject(forKey: "phone") as? String
         points = aDecoder.decodeObject(forKey: "points") as? NSNumber ?? NSNumber(integerLiteral: 0)
-         signupDt = aDecoder.decodeObject(forKey: "signup_dt") as? Int
-         totalOrderValue = aDecoder.decodeObject(forKey: "total_order_value") as? Decimal
-
-	}
+        signupDt = aDecoder.decodeObject(forKey: "signup_dt") as? Int
+        totalOrderValue = aDecoder.decodeObject(forKey: "total_order_value") as? Decimal
+    }
 
     /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    @objc public func encode(with aCoder: NSCoder)
-	{
-		if addresses != nil{
-			aCoder.encode(addresses, forKey: "addresses")
-		}
+     * NSCoding required method.
+     * Encodes mode properties into the decoder
+     */
+    @objc public func encode(with aCoder: NSCoder) {
+        if let addresses = addresses {
+            aCoder.encode(addresses, forKey: "addresses")
+        }
         aCoder.encode(balance, forKey: "balance")
 
-		if bizId != nil{
-			aCoder.encode(bizId, forKey: "biz_id")
-		}
-		if cardNumbers != nil{
-			aCoder.encode(cardNumbers, forKey: "card_numbers")
-		}
-		if daysSinceLastOrder != nil{
-			aCoder.encode(daysSinceLastOrder, forKey: "days_since_last_order")
-		}
-		if id != nil{
-			aCoder.encode(id, forKey: "id")
-		}
-		if lastOrderDt != nil{
-			aCoder.encode(lastOrderDt, forKey: "last_order_dt")
-		}
-		if name != nil{
-			aCoder.encode(name, forKey: "name")
-		}
-        if lastUpdatedDateString != nil{
+        if let bizId = bizId {
+            aCoder.encode(bizId, forKey: "biz_id")
+        }
+        if let cardNumbers = cardNumbers {
+            aCoder.encode(cardNumbers, forKey: "card_numbers")
+        }
+        if let daysSinceLastOrder = daysSinceLastOrder {
+            aCoder.encode(daysSinceLastOrder, forKey: "days_since_last_order")
+        }
+        aCoder.encode(id, forKey: "id")
+        if let lastOrderDt = lastOrderDt {
+            aCoder.encode(lastOrderDt, forKey: "last_order_dt")
+        }
+        if let name = name {
+            aCoder.encode(name, forKey: "name")
+        }
+        if let lastUpdatedDateString = lastUpdatedDateString {
             aCoder.encode(lastUpdatedDateString, forKey: "lastUpdatedDateString")
         }
-		if numOfOrders != nil{
-			aCoder.encode(numOfOrders, forKey: "num_of_orders")
-		}
-		if phone != nil{
-			aCoder.encode(phone, forKey: "phone")
-		}
+        if let numOfOrders = numOfOrders {
+            aCoder.encode(numOfOrders, forKey: "num_of_orders")
+        }
+        if let phone = phone {
+            aCoder.encode(phone, forKey: "phone")
+        }
         aCoder.encode(points, forKey: "points")
-		if signupDt != nil{
-			aCoder.encode(signupDt, forKey: "signup_dt")
-		}
-		if totalOrderValue != nil{
-			aCoder.encode(totalOrderValue, forKey: "total_order_value")
-		}
-
-	}
-
+        if let signupDt = signupDt {
+            aCoder.encode(signupDt, forKey: "signup_dt")
+        }
+        if let totalOrderValue = totalOrderValue {
+            aCoder.encode(totalOrderValue, forKey: "total_order_value")
+        }
+    }
 }

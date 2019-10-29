@@ -7,42 +7,40 @@
 
 import Foundation
 
+public class VersionCheckResponse: NSObject, JSONDecodable {
+    public var forceUpdate: Bool
+    public var latestVersion: String!
+    public var releaseDate: Int?
+    public var url: String!
 
-public class VersionCheckResponse : NSObject{
-
-    public var forceUpdate : Bool
-	public var latestVersion : String!
-	public var releaseDate : Int!
-	public var url : String!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	init(fromDictionary dictionary: [String:Any]){
-		forceUpdate = dictionary["force_update"] as? Bool ?? false
-		latestVersion = dictionary["latest_version"] as? String
-		releaseDate = dictionary["release_date"] as? Int
-		url = dictionary["url"] as? String
-	}
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        forceUpdate = dictionary["force_update"] as? Bool ?? false
+        latestVersion = dictionary["latest_version"] as? String
+        releaseDate = dictionary["release_date"] as? Int
+        url = dictionary["url"] as? String
+    }
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    func toDictionary() -> [String:Any]
+//    func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if forceUpdate != nil{
-//            dictionary["force_update"] = forceUpdate
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        if let forceUpdate = forceUpdate {
+//            dictionary["force_update"] = forceUpdate as AnyObject
 //        }
-//        if latestVersion != nil{
-//            dictionary["latest_version"] = latestVersion
+//        if let latestVersion = latestVersion {
+//            dictionary["latest_version"] = latestVersion as AnyObject
 //        }
-//        if releaseDate != nil{
-//            dictionary["release_date"] = releaseDate
+//        if let releaseDate = releaseDate {
+//            dictionary["release_date"] = releaseDate as AnyObject
 //        }
-//        if url != nil{
-//            dictionary["url"] = url
+//        if let url = url {
+//            dictionary["url"] = url as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -66,19 +64,18 @@ public class VersionCheckResponse : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if forceUpdate != nil{
+//        if let forceUpdate = forceUpdate {
 //            aCoder.encode(forceUpdate, forKey: "force_update")
 //        }
-//        if latestVersion != nil{
+//        if let latestVersion = latestVersion {
 //            aCoder.encode(latestVersion, forKey: "latest_version")
 //        }
-//        if releaseDate != nil{
+//        if let releaseDate = releaseDate {
 //            aCoder.encode(releaseDate, forKey: "release_date")
 //        }
-//        if url != nil{
+//        if let url = url {
 //            aCoder.encode(url, forKey: "url")
 //        }
 //
 //    }
-
 }

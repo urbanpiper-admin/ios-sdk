@@ -7,37 +7,34 @@
 
 import Foundation
 
-
-@objc public class UserAddressesResponse : NSObject{
-
-	@objc public var addresses : [Address]!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		addresses = [Address]()
-		if let addressesArray: [[String:Any]] = dictionary["addresses"] as? [[String:Any]]{
-			for dic in addressesArray{
-				let value: Address = Address(fromDictionary: dic)
-				addresses.append(value)
-			}
-		}
-	}
+@objc public class UserAddressesResponse: NSObject, JSONDecodable {
+    @objc public var addresses: [Address]!
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    @objc public func toDictionary() -> [String:Any]
-    {
-        var dictionary: [String: Any] = [String:Any]()
-        if addresses != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        addresses = [Address]()
+        if let addressesArray: [[String: AnyObject]] = dictionary["addresses"] as? [[String: AnyObject]] {
+            for dic in addressesArray {
+                guard let value: Address = Address(fromDictionary: dic) else { continue }
+                addresses.append(value)
+            }
+        }
+    }
+
+    /**
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    @objc public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+        if let addresses = addresses {
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for addressesElement in addresses {
                 dictionaryElements.append(addressesElement.toDictionary())
             }
-            dictionary["addresses"] = dictionaryElements
+            dictionary["addresses"] = dictionaryElements as AnyObject
         }
         return dictionary
     }
@@ -58,10 +55,9 @@ import Foundation
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if addresses != nil{
+//        if let addresses = addresses {
 //            aCoder.encode(addresses, forKey: "addresses")
 //        }
 //
 //    }
-
 }

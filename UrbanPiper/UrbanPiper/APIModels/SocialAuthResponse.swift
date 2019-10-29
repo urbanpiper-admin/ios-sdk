@@ -1,76 +1,74 @@
 //
 //  SocialLoginResponse.swift
-//  Model Generated using http://www.jsoncafe.com/ 
+//  Model Generated using http://www.jsoncafe.com/
 //  Created on February 6, 2019
 
 import Foundation
 
-
-public class SocialLoginResponse : NSObject {//}, NSCoding{
-
+public class SocialLoginResponse: NSObject, JSONDecodable { // }, NSCoding{
 //    vcvvgvc var authKey : String!
 //    public var biz : AnyObject!
-//    public var email : String!
-    public var message : String!
-//    public var name : String!
-    public var phone : String!
-    public var success : Bool!
-//   var timestamp : String!
-    internal var token : String!
+    public var email: String!
+    public var message: String!
+    public var name: String!
+    public var phone: String!
+    public var success: Bool
+    //   var timestamp : String!
+    internal var token: String!
 //    public var username : String!
-
 
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    init(fromDictionary dictionary: [String:Any]){
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 //        authKey = dictionary["authKey"] as? String
 //        biz = dictionary["biz"] as AnyObject
-//        email = dictionary["email"] as? String
+        email = dictionary["email"] as? String
         message = dictionary["message"] as? String
-//        name = dictionary["name"] as? String
+        name = dictionary["name"] as? String
         phone = dictionary["phone"] as? String
-        success = dictionary["success"] as? Bool
+        success = dictionary["success"] as? Bool ?? false
 //        timestamp = dictionary["timestamp"] as? String
         token = dictionary["token"] as? String
 //        username = dictionary["username"] as? String
     }
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    func toDictionary() -> [String:Any]
+//    func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary = [String:Any]()
-//        if authKey != nil{
-//            dictionary["authKey"] = authKey
+//        var dictionary = [String : AnyObject]()
+//        if let authKey = authKey {
+//            dictionary["authKey"] = authKey as AnyObject
 //        }
-//        if biz != nil{
-//            dictionary["biz"] = biz
+//        if let biz = biz {
+//            dictionary["biz"] = biz as AnyObject
 //        }
-//        if email != nil{
-//            dictionary["email"] = email
+//        if let email = email {
+//            dictionary["email"] = email as AnyObject
 //        }
-//        if message != nil{
-//            dictionary["message"] = message
+//        if let message = message {
+//            dictionary["message"] = message as AnyObject
 //        }
-//        if name != nil{
-//            dictionary["name"] = name
+//        if let name = name {
+//            dictionary["name"] = name as AnyObject
 //        }
-//        if phone != nil{
-//            dictionary["phone"] = phone
+//        if let phone = phone {
+//            dictionary["phone"] = phone as AnyObject
 //        }
-//        if success != nil{
-//            dictionary["success"] = success
+//        if let success = success {
+//            dictionary["success"] = success as AnyObject
 //        }
-//        if timestamp != nil{
-//            dictionary["timestamp"] = timestamp
+//        if let timestamp = timestamp {
+//            dictionary["timestamp"] = timestamp as AnyObject
 //        }
-//        if token != nil{
-//            dictionary["token"] = token
+//        if let token = token {
+//            dictionary["token"] = token as AnyObject
 //        }
-//        if username != nil{
-//            dictionary["username"] = username
+//        if let username = username {
+//            dictionary["username"] = username as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -87,7 +85,7 @@ public class SocialLoginResponse : NSObject {//}, NSCoding{
 //        message = aDecoder.decodeObject(forKey: "message") as? String
 //        name = aDecoder.decodeObject(forKey: "name") as? String
 //        phone = aDecoder.decodeObject(forKey: "phone") as? String
-//        success = aDecoder.decodeObject(forKey: "success") as? Bool
+//        success = aDecoder.decodeBool(forKey: "success")
 //        timestamp = aDecoder.decodeObject(forKey: "timestamp") as? String
 //        token = aDecoder.decodeObject(forKey: "token") as? String
 //        username = aDecoder.decodeObject(forKey: "username") as? String
@@ -99,34 +97,34 @@ public class SocialLoginResponse : NSObject {//}, NSCoding{
 //     */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if authKey != nil{
+//        if let authKey = authKey {
 //            aCoder.encode(authKey, forKey: "authKey")
 //        }
-//        if biz != nil{
+//        if let biz = biz {
 //            aCoder.encode(biz, forKey: "biz")
 //        }
-//        if email != nil{
+//        if let email = email {
 //            aCoder.encode(email, forKey: "email")
 //        }
-//        if message != nil{
+//        if let message = message {
 //            aCoder.encode(message, forKey: "message")
 //        }
-//        if name != nil{
+//        if let name = name {
 //            aCoder.encode(name, forKey: "name")
 //        }
-//        if phone != nil{
+//        if let phone = phone {
 //            aCoder.encode(phone, forKey: "phone")
 //        }
-//        if success != nil{
+//        if let success = success {
 //            aCoder.encode(success, forKey: "success")
 //        }
-//        if timestamp != nil{
+//        if let timestamp = timestamp {
 //            aCoder.encode(timestamp, forKey: "timestamp")
 //        }
-//        if token != nil{
+//        if let token = token {
 //            aCoder.encode(token, forKey: "token")
 //        }
-//        if username != nil{
+//        if let username = username {
 //            aCoder.encode(username, forKey: "username")
 //        }
 //    }

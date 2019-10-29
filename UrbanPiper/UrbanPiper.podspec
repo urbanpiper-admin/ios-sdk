@@ -18,6 +18,7 @@ Pod::Spec.new do |s|
     s.dependency 'Mixpanel-swift'
     s.dependency 'AppsFlyerFramework'
     s.dependency 'PhoneNumberKit'
+    s.dependency 'RxSwift'
 
     s.xcconfig = { 'SWIFT_INCLUDE_PATHS' => '"${PODS_TARGET_SRCROOT}/UrbanPiper/GoogleAnalyticsSDK/"' }
     s.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/GoogleAnalytics/Sources/"' }

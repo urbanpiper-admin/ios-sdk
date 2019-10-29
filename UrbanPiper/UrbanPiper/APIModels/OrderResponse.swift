@@ -7,22 +7,21 @@
 
 import UIKit
 
-public class OrderResponse: NSObject {
-
+public class OrderResponse: NSObject, JSONDecodable {
     public var status: String?
     public var message: String?
-    public var errorDetails: [String: Any]?
+    public var errorDetails: [String: AnyObject]?
     public var orderId: String?
-    
-    
+
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    internal init(fromDictionary dictionary:  [String:Any]){
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
         status = dictionary["status"] as? String
         message = dictionary["message"] as? String
-        errorDetails = dictionary["error_details"] as? [String: Any]
-        
+        errorDetails = dictionary["error_details"] as? [String: AnyObject]
+
         if let oid = dictionary["order_id"] as? String {
             orderId = oid
         } else if let oid = dictionary["order_id"] as? Int {
@@ -31,24 +30,22 @@ public class OrderResponse: NSObject {
     }
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any]
-    {
-        var dictionary: [String: Any] = [String:Any]()
-        if status != nil{
-            dictionary["status"] = status
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+        if let status = status {
+            dictionary["status"] = status as AnyObject
         }
-        if message != nil{
-            dictionary["message"] = message
+        if let message = message {
+            dictionary["message"] = message as AnyObject
         }
-        if errorDetails != nil{
-            dictionary["error_details"] = status
+        if let errorDetails = errorDetails {
+            dictionary["error_details"] = errorDetails as AnyObject
         }
-        if orderId != nil{
-            dictionary["order_id"] = orderId
+        if let orderId = orderId {
+            dictionary["order_id"] = orderId as AnyObject
         }
         return dictionary
     }
-    
 }

@@ -7,47 +7,45 @@
 
 import Foundation
 
-
-public class OrderItem : NSObject{
-
-	public var category : ItemCategory!
-	public var charges : [AnyObject]!
-	public var currentStock : Int!
+public class OrderItem: NSObject, JSONDecodable {
+    public var category: ItemCategory!
+    public var charges: [AnyObject]!
+    public var currentStock: Int?
 //    public var extras : [AnyObject]!
     public var discount: Decimal?
-	public var foodType : String!
-	public var id : Int!
-	public var imageLandscapeUrl : String!
-	public var imageUrl : String!
-	public var itemDesc : String!
-	public var itemPrice : Decimal!
-	public var itemTitle : String!
-	public var likes : Int!
-	public var options : [ItemOption]!
-    public var optionsToRemove : [ItemOption]!
+    public var foodType: String!
+    public var id: Int = 0
+    public var imageLandscapeUrl: String!
+    public var imageUrl: String!
+    public var itemDesc: String!
+    public var itemPrice: Decimal!
+    public var itemTitle: String!
+    public var likes: Int?
+    public var options: [ItemOption]!
+    public var optionsToRemove: [ItemOption]!
 //    public var price : Decimal!
-	public var quantity : Int!
+    public var quantity: Int?
 //    public var slug : String!
-	public var sortOrder : Int!
-    public var subCategory : ItemCategory!
+    public var sortOrder: Int?
+    public var subCategory: ItemCategory!
 //    public var tags : [AnyObject]!
-	public var taxPercentage : Float!
+    public var taxPercentage: Float!
     public var toBeDiscounted: Bool = false
-	public var taxes : [ItemTaxes]!
+    public var taxes: [ItemTaxes]!
 //    public var totalCharge : Float!
-	public var totalTax : Float!
-	public var weight : Int!
+    public var totalTax: Float!
+    public var weight: Int?
 
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		if let categoryData: [String:Any] = dictionary["category"] as? [String:Any]{
-			category = ItemCategory(fromDictionary: categoryData)
-		}
-		charges = dictionary["charges"] as? [AnyObject]
-		currentStock = dictionary["current_stock"] as? Int
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        if let categoryData: [String: AnyObject] = dictionary["category"] as? [String: AnyObject] {
+            category = ItemCategory(fromDictionary: categoryData)
+        }
+        charges = dictionary["charges"] as? [AnyObject]
+        currentStock = dictionary["current_stock"] as? Int
 //        extras = dictionary["extras"] as? [AnyObject]
         if let val: Decimal = dictionary["discount"] as? Decimal {
             discount = val
@@ -58,12 +56,12 @@ public class OrderItem : NSObject{
         } else {
             discount = Decimal.zero
         }
-		foodType = dictionary["food_type"] as? String
-		id = dictionary["id"] as? Int
-		imageLandscapeUrl = dictionary["image_landscape_url"] as? String
-		imageUrl = dictionary["image_url"] as? String
-		itemDesc = dictionary["item_desc"] as? String
-        
+        foodType = dictionary["food_type"] as? String
+        id = dictionary["id"] as? Int ?? 0
+        imageLandscapeUrl = dictionary["image_landscape_url"] as? String
+        imageUrl = dictionary["image_url"] as? String
+        itemDesc = dictionary["item_desc"] as? String
+
         if let val: Decimal = dictionary["item_price"] as? Decimal {
             itemPrice = val
         } else if let val: Double = dictionary["item_price"] as? Double {
@@ -72,19 +70,19 @@ public class OrderItem : NSObject{
             itemPrice = Decimal.zero
         }
 
-		itemTitle = dictionary["item_title"] as? String
-		likes = dictionary["likes"] as? Int
-		options = [ItemOption]()
-		if let optionsArray: [[String:Any]] = dictionary["options"] as? [[String:Any]]{
-			for dic in optionsArray{
-				let value: ItemOption = ItemOption(fromDictionary: dic)
-				options.append(value)
-			}
-		}
+        itemTitle = dictionary["item_title"] as? String
+        likes = dictionary["likes"] as? Int
+        options = [ItemOption]()
+        if let optionsArray: [[String: AnyObject]] = dictionary["options"] as? [[String: AnyObject]] {
+            for dic in optionsArray {
+                guard let value: ItemOption = ItemOption(fromDictionary: dic) else { continue }
+                options.append(value)
+            }
+        }
         optionsToRemove = [ItemOption]()
-        if let optionsToRemoveArray: [[String:Any]] = dictionary["options_to_remove"] as? [[String:Any]]{
-            for dic in optionsToRemoveArray{
-                let value: ItemOption = ItemOption(fromDictionary: dic)
+        if let optionsToRemoveArray: [[String: AnyObject]] = dictionary["options_to_remove"] as? [[String: AnyObject]] {
+            for dic in optionsToRemoveArray {
+                guard let value: ItemOption = ItemOption(fromDictionary: dic) else { continue }
                 optionsToRemove.append(value)
             }
         }
@@ -97,121 +95,118 @@ public class OrderItem : NSObject{
 //        }
         quantity = dictionary["quantity"] as? Int
 //        slug = dictionary["slug"] as? String
-		sortOrder = dictionary["sort_order"] as? Int ?? 0
-        if let categoryData: [String:Any] = dictionary["sub_category"] as? [String:Any]{
+        sortOrder = dictionary["sort_order"] as? Int ?? 0
+        if let categoryData: [String: AnyObject] = dictionary["sub_category"] as? [String: AnyObject] {
             subCategory = ItemCategory(fromDictionary: categoryData)
         }
 //        tags = dictionary["tags"] as? [AnyObject]
-		taxPercentage = dictionary["tax_percentage"] as? Float
+        taxPercentage = dictionary["tax_percentage"] as? Float
         toBeDiscounted = dictionary["to_be_discounted"] as? Bool ?? false
-		taxes = [ItemTaxes]()
-		if let taxesArray: [[String:Any]] = dictionary["taxes"] as? [[String:Any]]{
-			for dic in taxesArray{
-				let value: ItemTaxes = ItemTaxes(fromDictionary: dic)
-				taxes.append(value)
-			}
-		}
+        taxes = [ItemTaxes]()
+        if let taxesArray: [[String: AnyObject]] = dictionary["taxes"] as? [[String: AnyObject]] {
+            for dic in taxesArray {
+                guard let value: ItemTaxes = ItemTaxes(fromDictionary: dic) else { continue }
+                taxes.append(value)
+            }
+        }
 //        totalCharge = dictionary["total_charge"] as? Float
-		totalTax = dictionary["total_tax"] as? Float
-		weight = dictionary["weight"] as? Int
-	}
+        totalTax = dictionary["total_tax"] as? Float
+        weight = dictionary["weight"] as? Int
+    }
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any]
-    {
-        var dictionary: [String: Any] = [String:Any]()
-        if category != nil{
-            dictionary["category"] = category.toDictionary()
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+        if let category = category {
+            dictionary["category"] = category.toDictionary() as AnyObject
         }
-        if charges != nil{
-            dictionary["charges"] = charges
+        if let charges = charges {
+            dictionary["charges"] = charges as AnyObject
         }
-        if currentStock != nil{
-            dictionary["current_stock"] = currentStock
+        if let currentStock = currentStock {
+            dictionary["current_stock"] = currentStock as AnyObject
         }
-//        if extras != nil{
-//            dictionary["extras"] = extras
+//        if let extras = extras {
+//            dictionary["extras"] = extras as AnyObject
 //        }
         if discount != nil {
-            dictionary["discount"] = discount!
+            dictionary["discount"] = discount as AnyObject
         }
-        if foodType != nil{
-            dictionary["food_type"] = foodType
+        if let foodType = foodType {
+            dictionary["food_type"] = foodType as AnyObject
         }
-        if id != nil{
-            dictionary["id"] = id
+        dictionary["id"] = id as AnyObject
+        if let imageLandscapeUrl = imageLandscapeUrl {
+            dictionary["image_landscape_url"] = imageLandscapeUrl as AnyObject
         }
-        if imageLandscapeUrl != nil{
-            dictionary["image_landscape_url"] = imageLandscapeUrl
+        if let imageUrl = imageUrl {
+            dictionary["image_url"] = imageUrl as AnyObject
         }
-        if imageUrl != nil{
-            dictionary["image_url"] = imageUrl
+        if let itemDesc = itemDesc {
+            dictionary["item_desc"] = itemDesc as AnyObject
         }
-        if itemDesc != nil{
-            dictionary["item_desc"] = itemDesc
+        if let itemPrice = itemPrice {
+            dictionary["item_price"] = itemPrice as AnyObject
         }
-        if itemPrice != nil{
-            dictionary["item_price"] = itemPrice
+        if let itemTitle = itemTitle {
+            dictionary["item_title"] = itemTitle as AnyObject
         }
-        if itemTitle != nil{
-            dictionary["item_title"] = itemTitle
+        if let likes = likes {
+            dictionary["likes"] = likes as AnyObject
         }
-        if likes != nil{
-            dictionary["likes"] = likes
-        }
-        if options != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+        if let options = options {
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for optionsElement in options {
                 dictionaryElements.append(optionsElement.toDictionary())
             }
-            dictionary["options"] = dictionaryElements
+            dictionary["options"] = dictionaryElements as AnyObject
         }
-        if optionsToRemove != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+        if let optionsToRemove = optionsToRemove {
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for optionsToRemoveElement in optionsToRemove {
                 dictionaryElements.append(optionsToRemoveElement.toDictionary())
             }
-            dictionary["options_to_remove"] = dictionaryElements
+            dictionary["options_to_remove"] = dictionaryElements as AnyObject
         }
-//        if price != nil{
-//            dictionary["price"] = price
+//        if let price = price {
+//            dictionary["price"] = price as AnyObject
 //        }
-        if quantity != nil{
-            dictionary["quantity"] = quantity
+        if let quantity = quantity {
+            dictionary["quantity"] = quantity as AnyObject
         }
-//        if slug != nil{
-//            dictionary["slug"] = slug
+//        if let slug = slug {
+//            dictionary["slug"] = slug as AnyObject
 //        }
-        if sortOrder != nil{
-            dictionary["sort_order"] = sortOrder
+        if let sortOrder = sortOrder {
+            dictionary["sort_order"] = sortOrder as AnyObject
         }
-        if subCategory != nil{
-            dictionary["sub_category"] = subCategory.toDictionary()
+        if let subCategory = subCategory {
+            dictionary["sub_category"] = subCategory.toDictionary() as AnyObject
         }
-//        if tags != nil{
-//            dictionary["tags"] = tags
+//        if let tags = tags {
+//            dictionary["tags"] = tags as AnyObject
 //        }
-        if taxPercentage != nil{
-            dictionary["tax_percentage"] = taxPercentage
+        if let taxPercentage = taxPercentage {
+            dictionary["tax_percentage"] = taxPercentage as AnyObject
         }
-        dictionary["to_be_discounted"] = toBeDiscounted
-        if taxes != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+        dictionary["to_be_discounted"] = toBeDiscounted as AnyObject
+        if let taxes = taxes {
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for taxesElement in taxes {
                 dictionaryElements.append(taxesElement.toDictionary())
             }
-            dictionary["taxes"] = dictionaryElements
+            dictionary["taxes"] = dictionaryElements as AnyObject
         }
-//        if totalCharge != nil{
-//            dictionary["total_charge"] = totalCharge
+//        if let totalCharge = totalCharge {
+//            dictionary["total_charge"] = totalCharge as AnyObject
 //        }
-        if totalTax != nil{
-            dictionary["total_tax"] = totalTax
+        if let totalTax = totalTax {
+            dictionary["total_tax"] = totalTax as AnyObject
         }
-        if weight != nil{
-            dictionary["weight"] = weight
+        if let weight = weight {
+            dictionary["weight"] = weight as AnyObject
         }
         return dictionary
     }
@@ -227,7 +222,11 @@ public class OrderItem : NSObject{
 //         currentStock = aDecoder.decodeObject(forKey: "current_stock") as? Int
 //         extras = aDecoder.decodeObject(forKey: "extras") as? [AnyObject]
 //         foodType = aDecoder.decodeObject(forKey: "food_type") as? String
-//         id = aDecoder.decodeObject(forKey: "id") as? Int
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         imageLandscapeUrl = aDecoder.decodeObject(forKey: "image_landscape_url") as? String
 //         imageUrl = aDecoder.decodeObject(forKey: "image_url") as? String
 //         itemDesc = aDecoder.decodeObject(forKey: "item_desc") as? String
@@ -236,7 +235,7 @@ public class OrderItem : NSObject{
 //         likes = aDecoder.decodeObject(forKey: "likes") as? Int
 //         options = aDecoder.decodeObject(forKey :"options") as? [ItemOption]
 //         optionsToRemove = aDecoder.decodeObject(forKey :"options_to_remove") as? [ItemOption]
-////         price = aDecoder.decodeObject(forKey: "price") as? Decimal
+    ////         price = aDecoder.decodeObject(forKey: "price") as? Decimal
 //         quantity = aDecoder.decodeObject(forKey: "quantity") as? Int
 //         slug = aDecoder.decodeObject(forKey: "slug") as? String
 //         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
@@ -255,79 +254,78 @@ public class OrderItem : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if category != nil{
+//        if let category = category {
 //            aCoder.encode(category, forKey: "category")
 //        }
-//        if charges != nil{
+//        if let charges = charges {
 //            aCoder.encode(charges, forKey: "charges")
 //        }
-//        if currentStock != nil{
+//        if let currentStock = currentStock {
 //            aCoder.encode(currentStock, forKey: "current_stock")
 //        }
-//        if extras != nil{
+//        if let extras = extras {
 //            aCoder.encode(extras, forKey: "extras")
 //        }
-//        if foodType != nil{
+//        if let foodType = foodType {
 //            aCoder.encode(foodType, forKey: "food_type")
 //        }
-//        if id != nil{
+//        if let id = id {
 //            aCoder.encode(id, forKey: "id")
 //        }
-//        if imageLandscapeUrl != nil{
+//        if let imageLandscapeUrl = imageLandscapeUrl {
 //            aCoder.encode(imageLandscapeUrl, forKey: "image_landscape_url")
 //        }
-//        if imageUrl != nil{
+//        if let imageUrl = imageUrl {
 //            aCoder.encode(imageUrl, forKey: "image_url")
 //        }
-//        if itemDesc != nil{
+//        if let itemDesc = itemDesc {
 //            aCoder.encode(itemDesc, forKey: "item_desc")
 //        }
-//        if itemPrice != nil{
+//        if let itemPrice = itemPrice {
 //            aCoder.encode(itemPrice, forKey: "item_price")
 //        }
-//        if itemTitle != nil{
+//        if let itemTitle = itemTitle {
 //            aCoder.encode(itemTitle, forKey: "item_title")
 //        }
-//        if likes != nil{
+//        if let likes = likes {
 //            aCoder.encode(likes, forKey: "likes")
 //        }
-//        if options != nil{
+//        if let options = options {
 //            aCoder.encode(options, forKey: "options")
 //        }
-//        if optionsToRemove != nil{
+//        if let optionsToRemove = optionsToRemove {
 //            aCoder.encode(optionsToRemove, forKey: "options_to_remove")
 //        }
-////        if price != nil{
-////            aCoder.encode(price, forKey: "price")
-////        }
-//        if quantity != nil{
+    ////        if let price = price {
+    ////            aCoder.encode(price, forKey: "price")
+    ////        }
+//        if let quantity = quantity {
 //            aCoder.encode(quantity, forKey: "quantity")
 //        }
-//        if slug != nil{
+//        if let slug = slug {
 //            aCoder.encode(slug, forKey: "slug")
 //        }
-//        if sortOrder != nil{
+//        if let sortOrder = sortOrder {
 //            aCoder.encode(sortOrder, forKey: "sort_order")
 //        }
-//        if tags != nil{
+//        if let tags = tags {
 //            aCoder.encode(tags, forKey: "tags")
 //        }
-//        if taxPercentage != nil{
+//        if let taxPercentage = taxPercentage {
 //            aCoder.encode(taxPercentage, forKey: "tax_percentage")
 //        }
-//        if taxes != nil{
+//        if let taxes = taxes {
 //            aCoder.encode(taxes, forKey: "taxes")
 //        }
-//        if totalCharge != nil{
+//        if let totalCharge = totalCharge {
 //            aCoder.encode(totalCharge, forKey: "total_charge")
 //        }
-//        if totalTax != nil{
+//        if let totalTax = totalTax {
 //            aCoder.encode(totalTax, forKey: "total_tax")
 //        }
-//        if weight != nil{
+//        if let weight = weight {
 //            aCoder.encode(weight, forKey: "weight")
 //        }
 //
 //    }
-
 }

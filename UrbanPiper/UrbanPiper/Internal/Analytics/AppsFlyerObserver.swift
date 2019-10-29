@@ -5,25 +5,23 @@
 //  Created by Vid on 16/10/18.
 //
 
-import UIKit
 import AppsFlyerLib
+import UIKit
 
 public class AppsFlyerObserver: AnalyticsEventObserver {
-    
     var appsFlyerDevAppid: String?
     var appsFlyerDevKey: String?
 
-    
-    public init (appsFlyerDevAppid: String, appsFlyerDevKey: String) {
+    public init(appsFlyerDevAppid: String, appsFlyerDevKey: String) {
 //        guard let devKey: String = AppConfigManager.shared.firRemoteConfigDefaults.appsFlyerDevKey,
 //            let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.appsFlyerDevAppid else { return }
         AppsFlyerTracker.shared().appleAppID = appsFlyerDevAppid
         AppsFlyerTracker.shared().appsFlyerDevKey = appsFlyerDevKey
     }
-    
+
     public func track(event: AnalyticsEvent) {
         switch event {
-        case .appLaunch(_):
+        case .appLaunch:
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
             tracker.trackAppLaunch()
         case .addToCart(let cartItem, _, _):
@@ -31,9 +29,9 @@ public class AppsFlyerObserver: AnalyticsEventObserver {
             tracker.trackEvent(AFEventAddToCart,
                                withValues: [AFEventParamContentId: cartItem.id as Any,
                                             AFEventParamPrice: cartItem.totalAmount,
-                                            AFEventParamQuantity : cartItem.quantity,
+                                            AFEventParamQuantity: cartItem.quantity,
                                             AFEventParamCurrency: "INR"])
-        case .productClicked(let item):
+        case let .productClicked(item):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
             let itemPrice: Decimal
             if let price = item.itemPrice, price != 0 {
@@ -43,14 +41,14 @@ public class AppsFlyerObserver: AnalyticsEventObserver {
             } else {
                 itemPrice = Decimal.zero
             }
-            
+
             tracker.trackEvent(AFEventContentView,
                                withValues: [AFEventParamContentId: item.id as Any,
                                             AFEventParamPrice: itemPrice,
                                             AFEventParamContentType: "item_view",
                                             AFEventParamContent: item.itemTitle as Any,
                                             AFEventParamCurrency: "INR"])
-        case .purchaseCompleted(_,_,let checkoutBuilder, _):
+        case .purchaseCompleted(_, _, let checkoutBuilder, _):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
             let payableAmount = NSDecimalNumber(decimal: checkoutBuilder.order?.payableAmount ?? Decimal.zero)
 
@@ -59,7 +57,6 @@ public class AppsFlyerObserver: AnalyticsEventObserver {
                                             AFEventParamContentType: "",
                                             AFEventParamRevenue: payableAmount,
                                             AFEventParamCurrency: "INR"])
-            break
         case .checkoutInit:
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
             tracker.trackEvent(AFEventInitiatedCheckout,
@@ -67,5 +64,4 @@ public class AppsFlyerObserver: AnalyticsEventObserver {
         default: break
         }
     }
-    
 }

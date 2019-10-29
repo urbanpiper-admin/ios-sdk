@@ -7,47 +7,42 @@
 
 import Foundation
 
-
-public class ItemExtra : NSObject{
-
-	public var id : Int!
-	public var keyValues : [ItemKeyValue]!
-	public var name : String!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		id = dictionary["id"] as? Int
-		keyValues = [ItemKeyValue]()
-		if let keyValuesArray: [[String:Any]] = dictionary["key_values"] as? [[String:Any]]{
-			for dic in keyValuesArray{
-				let value: ItemKeyValue = ItemKeyValue(fromDictionary: dic)
-				keyValues.append(value)
-			}
-		}
-		name = dictionary["name"] as? String
-	}
+public class ItemExtra: NSObject, JSONDecodable {
+    public var id: Int = 0
+    public var keyValues: [ItemKeyValue]!
+    public var name: String!
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    public func toDictionary() -> [String:Any]
-    {
-        var dictionary: [String : Any] = [String:Any]()
-        if id != nil{
-            dictionary["id"] = id
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        id = dictionary["id"] as? Int ?? 0
+        keyValues = [ItemKeyValue]()
+        if let keyValuesArray: [[String: AnyObject]] = dictionary["key_values"] as? [[String: AnyObject]] {
+            for dic in keyValuesArray {
+                guard let value: ItemKeyValue = ItemKeyValue(fromDictionary: dic) else { continue }
+                keyValues.append(value)
+            }
         }
-        if keyValues != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+        name = dictionary["name"] as? String
+    }
+
+    /**
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+        dictionary["id"] = id as AnyObject
+        if let keyValues = keyValues {
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for keyValuesElement in keyValues {
                 dictionaryElements.append(keyValuesElement.toDictionary())
             }
-            dictionary["key_values"] = dictionaryElements
+            dictionary["key_values"] = dictionaryElements as AnyObject
         }
-        if name != nil{
-            dictionary["name"] = name
+        if let name = name {
+            dictionary["name"] = name as AnyObject
         }
         return dictionary
     }
@@ -58,7 +53,11 @@ public class ItemExtra : NSObject{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         id = aDecoder.decodeObject(forKey: "id") as? Int
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         keyValues = aDecoder.decodeObject(forKey :"key_values") as? [ItemKeyValue]
 //         name = aDecoder.decodeObject(forKey: "name") as? String
 //
@@ -70,16 +69,15 @@ public class ItemExtra : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if id != nil{
+//        if let id = id {
 //            aCoder.encode(id, forKey: "id")
 //        }
-//        if keyValues != nil{
+//        if let keyValues = keyValues {
 //            aCoder.encode(keyValues, forKey: "key_values")
 //        }
-//        if name != nil{
+//        if let name = name {
 //            aCoder.encode(name, forKey: "name")
 //        }
 //
 //    }
-
 }

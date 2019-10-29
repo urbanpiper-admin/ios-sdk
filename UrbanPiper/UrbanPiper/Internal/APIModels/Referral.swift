@@ -7,16 +7,16 @@
 
 import UIKit
 
-public class Referral: NSObject {
+public class Referral: NSObject, JSONDecodable {
+    public var codeLink: String!
+    public var referrerCard: String!
+    public var channel: String!
+    public var sharedOn: String!
+    public var platform: String!
 
-    public var codeLink : String!
-    public var referrerCard : String!
-    public var channel : String!
-    public var sharedOn : String!
-    public var platform : String!
+    public required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
 
-    public init(fromDictionary dictionary:  [String:Any]) {
-        
         var referralLink = dictionary["~referring_link"] as? String
         if referralLink == nil || referralLink!.count == 0 {
             referralLink = dictionary["link_to_share"] as? String
@@ -26,46 +26,45 @@ public class Referral: NSObject {
         channel = dictionary["~channel"] as? String
         sharedOn = dictionary["link_share_time"] as? String
         platform = dictionary["~creation_source"] as? String
-        
     }
-    
+
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any] {
-        var dictionary: [String: Any] = [String:Any]()
-        
-        if codeLink != nil{
-            dictionary["code_link"] = codeLink
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+
+        if let codeLink = codeLink {
+            dictionary["code_link"] = codeLink as AnyObject
         }
-        if referrerCard != nil{
-            dictionary["referrer_card"] = referrerCard
+        if let referrerCard = referrerCard {
+            dictionary["referrer_card"] = referrerCard as AnyObject
         }
-        if channel != nil{
-            dictionary["channel"] = channel
+        if let channel = channel {
+            dictionary["channel"] = channel as AnyObject
         }
-        if sharedOn != nil{
-            dictionary["shared_on"] = sharedOn
+        if let sharedOn = sharedOn {
+            dictionary["shared_on"] = sharedOn as AnyObject
         }
-        if platform != nil{
-            dictionary["platform"] = platform
+        if let platform = platform {
+            dictionary["platform"] = platform as AnyObject
         }
-        
+
         return dictionary
     }
-    
+
     /**
      * NSCoding required initializer.
      * Fills the data from the passed decoder
      */
-    @objc required public init(coder aDecoder: NSCoder) {
-        codeLink = aDecoder.decodeObject(forKey:"code_link") as? String
-        referrerCard = aDecoder.decodeObject(forKey:"referrer_card") as? String
-        channel = aDecoder.decodeObject(forKey:"channel") as? String
-        sharedOn = aDecoder.decodeObject(forKey:"shared_on") as? String
+    @objc public required init(coder aDecoder: NSCoder) {
+        codeLink = aDecoder.decodeObject(forKey: "code_link") as? String
+        referrerCard = aDecoder.decodeObject(forKey: "referrer_card") as? String
+        channel = aDecoder.decodeObject(forKey: "channel") as? String
+        sharedOn = aDecoder.decodeObject(forKey: "shared_on") as? String
         platform = aDecoder.decodeObject(forKey: "platform") as? String
     }
-    
+
     /**
      * NSCoding required method.
      * Encodes mode properties into the decoder

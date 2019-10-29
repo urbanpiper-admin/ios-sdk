@@ -7,45 +7,42 @@
 
 import Foundation
 
-
-public class ItemsSearchResponse : NSObject{
-
-	public var items : [Item]!
-    public var meta : Meta!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		items = [Item]()
-		if let itemsArray: [[String:Any]] = dictionary["items"] as? [[String:Any]]{
-			for dic in itemsArray{
-				let value: Item = Item(fromDictionary: dic)
-                value.isSearchItem = true
-				items.append(value)
-			}
-		}
-        if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
-            meta = Meta(fromDictionary: metaData)
-        }
-	}
+public class ItemsSearchResponse: NSObject, JSONDecodable {
+    public var items: [Item]!
+    public var meta: Meta!
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    public func toDictionary() -> [String:Any]
-    {
-        var dictionary: [String: Any] = [String:Any]()
-        if items != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        items = [Item]()
+        if let itemsArray: [[String: AnyObject]] = dictionary["items"] as? [[String: AnyObject]] {
+            for dic in itemsArray {
+                guard let value: Item = Item(fromDictionary: dic) else { continue }
+                value.isSearchItem = true
+                items.append(value)
+            }
+        }
+        if let metaData: [String: AnyObject] = dictionary["meta"] as? [String: AnyObject] {
+            meta = Meta(fromDictionary: metaData)
+        }
+    }
+
+    /**
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+        if let items = items {
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for itemsElement in items {
                 dictionaryElements.append(itemsElement.toDictionary())
             }
-            dictionary["items"] = dictionaryElements
+            dictionary["items"] = dictionaryElements as AnyObject
         }
-        if meta != nil{
-            dictionary["meta"] = meta.toDictionary()
+        if let meta = meta {
+            dictionary["meta"] = meta.toDictionary() as AnyObject
         }
         return dictionary
     }
@@ -66,13 +63,12 @@ public class ItemsSearchResponse : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if items != nil{
+//        if let items = items {
 //            aCoder.encode(items, forKey: "items")
 //        }
-//        if meta != nil{
+//        if let meta = meta {
 //            aCoder.encode(meta, forKey: "meta")
 //        }
 //
 //    }
-
 }

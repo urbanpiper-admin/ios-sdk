@@ -7,51 +7,64 @@
 
 import Foundation
 
-extension APIManager {
-
-    @objc internal func getWalletTransactions(offset: Int = 0,
-                                              limit: Int = Constants.fetchLimit,
-                                              completion: ((WalletTransactionResponse?) -> Void)?,
-                                              failure: APIFailure?) -> URLSessionDataTask {
-        
-        let urlString: String = "\(APIManager.baseUrl)/api/v2/ub/wallet/transactions/"
-        
-        let url: URL = URL(string: urlString)!
-        
-        var urlRequest: URLRequest = URLRequest(url: url)
-        
-        urlRequest.httpMethod = "GET"
-        
-        
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> WalletTransactionResponse? in
-            return WalletTransactionResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-                
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let walletTransactionResponse: WalletTransactionResponse = WalletTransactionResponse(fromDictionary: dictionary)
-
-                    DispatchQueue.main.async {
-                        completion?(walletTransactionResponse)
-                    }
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-            
-        }
-        
-        return dataTask*/
-    }
-    
+enum WalletAPI {
+    case walletTransactions(offset: Int, limit: Int)
 }
+
+extension WalletAPI: UPAPI {
+    var path: String {
+        switch self {
+        case .walletTransactions:
+            return "api/v2/ub/wallet/transactions/"
+        }
+    }
+
+    var parameters: [String: String]? {
+        switch self {
+        case let .walletTransactions(offset, limit):
+            return ["offset": String(offset),
+                    "limit": String(limit)]
+        }
+    }
+
+    var headers: [String: String]? {
+        switch self {
+        case .walletTransactions:
+            return nil
+        }
+    }
+
+    var method: HttpMethod {
+        switch self {
+        case .walletTransactions:
+            return .GET
+        }
+    }
+
+    var body: [String: AnyObject]? {
+        switch self {
+        case .walletTransactions:
+            return nil
+        }
+    }
+}
+
+/* extension APIManager {
+
+ @objc internal func getWalletTransactions(offset: Int = 0,
+                                           limit: Int = Constants.fetchLimit,
+                                           completion: APICompletion<WalletTransactionResponse>?,
+                                           failure: APIFailure?) -> URLSessionDataTask {
+
+     let urlString: String = "\(APIManager.baseUrl)/api/v2/ub/wallet/transactions/"
+
+     let url: URL = URL(string: urlString)!
+
+     var urlRequest: URLRequest = URLRequest(url: url)
+
+     urlRequest.httpMethod = "GET"
+
+     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+ }
+
+ }*/

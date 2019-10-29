@@ -8,52 +8,68 @@
 
 import Foundation
 
-extension APIManager {
-    
-    @objc internal func registerForFCMToken(token: String,
-                                       completion: ((GenericResponse?) -> Void)?,
-                                       failure: APIFailure?) -> URLSessionDataTask {
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/device/fcm/"
-        
-        let url: URL = URL(string: urlString)!
-        
-        var urlRequest: URLRequest = URLRequest(url: url)
-        
-        urlRequest.httpMethod = "POST"
-        
-        let params: [String: Any] = ["registration_id": token,
-                                     "device_id": APIManager.uuidString as Any,
-                                     "channel": APIManager.channel]
-        
-        urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+enum FCMAPI {
+    case registerForFCM(token: String)
+}
 
-        
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> GenericResponse? in
-            return GenericResponse(fromDictionary: dictionary) ?? GenericResponse.init()
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 201 {
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-
-                    DispatchQueue.main.async {
-                        completion?(dictionary)
-                    }
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-            
+extension FCMAPI: UPAPI {
+    var path: String {
+        switch self {
+        case .registerForFCM:
+            return "api/v1/device/fcm/"
         }
-        
-        return dataTask*/
+    }
+
+    var parameters: [String: String]? {
+        switch self {
+        case .registerForFCM:
+            return nil
+        }
+    }
+
+    var headers: [String: String]? {
+        switch self {
+        case .registerForFCM:
+            return nil
+        }
+    }
+
+    var method: HttpMethod {
+        switch self {
+        case .registerForFCM:
+            return .POST
+        }
+    }
+
+    var body: [String: AnyObject]? {
+        switch self {
+        case let .registerForFCM(token):
+            return ["registration_id": token,
+                    "device_id": APIManager.uuidString,
+                    "channel": APIManager.channel] as [String: AnyObject]
+        }
     }
 }
+
+/* extension APIManager {
+
+ @objc internal func registerForFCMToken(token: String,
+                                    completion: APICompletion<GenericResponse>?,
+                                    failure: APIFailure?) -> URLSessionDataTask {
+     let urlString: String = "\(APIManager.baseUrl)/api/v1/device/fcm/"
+
+     let url: URL = URL(string: urlString)!
+
+     var urlRequest: URLRequest = URLRequest(url: url)
+
+     urlRequest.httpMethod = "POST"
+
+     let params: [String: Any] = ["registration_id": token,
+                                  "device_id": APIManager.uuidString as Any,
+                                  "channel": APIManager.channel]
+
+     urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+
+     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+ }
+ }*/

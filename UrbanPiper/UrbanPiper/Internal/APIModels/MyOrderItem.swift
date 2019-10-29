@@ -7,37 +7,35 @@
 
 import Foundation
 
-
-public class MyOrderItem : NSObject{
-
-	public var id : Int!
-	public var image : String!
-	public var imageLandscape : String!
-	public var options : [MyOrderOption]!
-	public var optionsToRemove : [AnyObject]!
-	public var price : Decimal!
-	public var quantity : Int!
+public class MyOrderItem: NSObject, JSONDecodable {
+    public var id: Int = 0
+    public var image: String!
+    public var imageLandscape: String!
+    public var options: [MyOrderOption]!
+    public var optionsToRemove: [AnyObject]!
+    public var price: Decimal!
+    public var quantity: Int?
 //    public var srvcTaxRate : Float!
-	public var title : String!
+    public var title: String!
 //    public var vatRate : Float!
 
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        id = dictionary["id"] as? Int ?? 0
+        image = dictionary["image"] as? String
+        imageLandscape = dictionary["image_landscape"] as? String
+        options = [MyOrderOption]()
+        if let optionsArray: [[String: AnyObject]] = dictionary["options"] as? [[String: AnyObject]] {
+            for dic in optionsArray {
+                guard let value: MyOrderOption = MyOrderOption(fromDictionary: dic) else { continue }
+                options.append(value)
+            }
+        }
+        optionsToRemove = dictionary["options_to_remove"] as? [AnyObject]
 
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	init(fromDictionary dictionary: [String:Any]){
-		id = dictionary["id"] as? Int
-		image = dictionary["image"] as? String
-		imageLandscape = dictionary["image_landscape"] as? String
-		options = [MyOrderOption]()
-		if let optionsArray: [[String:Any]] = dictionary["options"] as? [[String:Any]]{
-			for dic in optionsArray{
-				let value: MyOrderOption = MyOrderOption(fromDictionary: dic)
-				options.append(value)
-			}
-		}
-		optionsToRemove = dictionary["options_to_remove"] as? [AnyObject]
-        
         if let val: Decimal = dictionary["price"] as? Decimal {
             price = val
         } else if let val: Double = dictionary["price"] as? Double {
@@ -45,52 +43,52 @@ public class MyOrderItem : NSObject{
         } else {
             price = Decimal.zero
         }
-        
-		quantity = dictionary["quantity"] as? Int
+
+        quantity = dictionary["quantity"] as? Int
 //        srvcTaxRate = dictionary["srvc_tax_rate"] as? Float
-		title = dictionary["title"] as? String
+        title = dictionary["title"] as? String
 //        vatRate = dictionary["vat_rate"] as? Float
-	}
+    }
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    func toDictionary() -> [String:Any]
+//    func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if id != nil{
-//            dictionary["id"] = id
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        if let id = id {
+//            dictionary["id"] = id as AnyObject
 //        }
-//        if image != nil{
-//            dictionary["image"] = image
+//        if let image = image {
+//            dictionary["image"] = image as AnyObject
 //        }
-//        if imageLandscape != nil{
-//            dictionary["image_landscape"] = imageLandscape
+//        if let imageLandscape = imageLandscape {
+//            dictionary["image_landscape"] = imageLandscape as AnyObject
 //        }
-//        if options != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//        if let options = options {
+//            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
 //            for optionsElement in options {
 //                dictionaryElements.append(optionsElement.toDictionary())
 //            }
-//            dictionary["options"] = dictionaryElements
+//            dictionary["options"] = dictionaryElements as AnyObject
 //        }
-//        if optionsToRemove != nil{
-//            dictionary["options_to_remove"] = optionsToRemove
+//        if let optionsToRemove = optionsToRemove {
+//            dictionary["options_to_remove"] = optionsToRemove as AnyObject
 //        }
-//        if price != nil{
-//            dictionary["price"] = price
+//        if let price = price {
+//            dictionary["price"] = price as AnyObject
 //        }
-//        if quantity != nil{
-//            dictionary["quantity"] = quantity
+//        if let quantity = quantity {
+//            dictionary["quantity"] = quantity as AnyObject
 //        }
-//        if srvcTaxRate != nil{
-//            dictionary["srvc_tax_rate"] = srvcTaxRate
+//        if let srvcTaxRate = srvcTaxRate {
+//            dictionary["srvc_tax_rate"] = srvcTaxRate as AnyObject
 //        }
-//        if title != nil{
-//            dictionary["title"] = title
+//        if let title = title {
+//            dictionary["title"] = title as AnyObject
 //        }
-//        if vatRate != nil{
-//            dictionary["vat_rate"] = vatRate
+//        if let vatRate = vatRate {
+//            dictionary["vat_rate"] = vatRate as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -101,7 +99,11 @@ public class MyOrderItem : NSObject{
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         id = aDecoder.decodeObject(forKey: "id") as? Int
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         image = aDecoder.decodeObject(forKey: "image") as? String
 //         imageLandscape = aDecoder.decodeObject(forKey: "image_landscape") as? String
 //         options = aDecoder.decodeObject(forKey :"options") as? [MyOrderOption]
@@ -120,37 +122,36 @@ public class MyOrderItem : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if id != nil{
+//        if let id = id {
 //            aCoder.encode(id, forKey: "id")
 //        }
-//        if image != nil{
+//        if let image = image {
 //            aCoder.encode(image, forKey: "image")
 //        }
-//        if imageLandscape != nil{
+//        if let imageLandscape = imageLandscape {
 //            aCoder.encode(imageLandscape, forKey: "image_landscape")
 //        }
-//        if options != nil{
+//        if let options = options {
 //            aCoder.encode(options, forKey: "options")
 //        }
-//        if optionsToRemove != nil{
+//        if let optionsToRemove = optionsToRemove {
 //            aCoder.encode(optionsToRemove, forKey: "options_to_remove")
 //        }
-//        if price != nil{
+//        if let price = price {
 //            aCoder.encode(price, forKey: "price")
 //        }
-//        if quantity != nil{
+//        if let quantity = quantity {
 //            aCoder.encode(quantity, forKey: "quantity")
 //        }
-//        if srvcTaxRate != nil{
+//        if let srvcTaxRate = srvcTaxRate {
 //            aCoder.encode(srvcTaxRate, forKey: "srvc_tax_rate")
 //        }
-//        if title != nil{
+//        if let title = title {
 //            aCoder.encode(title, forKey: "title")
 //        }
-//        if vatRate != nil{
+//        if let vatRate = vatRate {
 //            aCoder.encode(vatRate, forKey: "vat_rate")
 //        }
 //
 //    }
-
 }

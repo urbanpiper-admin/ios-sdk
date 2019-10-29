@@ -9,10 +9,9 @@
 import Foundation
 
 extension ItemOption {
-
 //    public private(set) var totalAmount: Decimal {
 //        var totalAmount: Decimal = price
-//                
+//
 //        if let nestedOptionGroups: [ItemOptionGroup] = nestedOptionGroups, nestedOptionGroups.count > 0 {
 //            for optionGroup: ItemOptionGroup in nestedOptionGroups {
 //                for item: ItemOption in optionGroup.options {
@@ -60,7 +59,7 @@ extension ItemOption {
 
     internal var reorderOptionsToAdd: [ItemOption] {
         var reorderOptionsToAdd = [ItemOption]()
-        
+
         if let optionGroups = nestedOptionGroups, optionGroups.count > 0 {
             for optionGroup in nestedOptionGroups {
                 reorderOptionsToAdd.append(contentsOf: optionGroup.reorderOptionsToAdd)
@@ -68,10 +67,10 @@ extension ItemOption {
         } else {
             reorderOptionsToAdd.append(self)
         }
-        
+
         return reorderOptionsToAdd
     }
-    
+
 //    public private(set) var optionsToAdd: [[String : Int]] {
 //        var options: [[String : Int]] = [[String : Int]]()
 //
@@ -124,5 +123,4 @@ extension ItemOption {
 //            }
 //        }
 //    }
-
 }

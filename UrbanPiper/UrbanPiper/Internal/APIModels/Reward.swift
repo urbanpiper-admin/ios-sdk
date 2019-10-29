@@ -1,45 +1,43 @@
 //
 //  Reward.swift
-//  Model Generated using http://www.jsoncafe.com/ 
+//  Model Generated using http://www.jsoncafe.com/
 //  Created on February 12, 2019
 
 import Foundation
 
-
-public class Reward : NSObject, NSCoding{
-
-    public var claimedCount : Int!
-    public var descriptionField : String!
-    public var expiresOn : Int!
-    public var id : Int!
-    public var imgLink : String!
-    public var inStoreCouponRewards : Bool = false
-    public var locked : Bool = false
-    public var points : Int!
-    public var redeemedCount : Int!
-    public var redemptionCodes : [RedemptionCode]!
-    public var title : String!
-    public var type : Int!
-    public var value : String!
-
+public class Reward: NSObject, JSONDecodable, NSCoding {
+    public var claimedCount: Int?
+    public var descriptionField: String!
+    public var expiresOn: Int?
+    public var id: Int = 0
+    public var imgLink: String!
+    public var inStoreCouponRewards: Bool = false
+    public var locked: Bool = false
+    public var points: Int?
+    public var redeemedCount: Int?
+    public var redemptionCodes: [RedemptionCode]!
+    public var title: String!
+    public var type: Int?
+    public var value: String!
 
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    init(fromDictionary dictionary: [String:Any]){
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
         claimedCount = dictionary["claimed_count"] as? Int
         descriptionField = dictionary["description"] as? String
         expiresOn = dictionary["expires_on"] as? Int
-        id = dictionary["id"] as? Int
+        id = dictionary["id"] as? Int ?? 0
         imgLink = dictionary["img_link"] as? String
         inStoreCouponRewards = dictionary["in_store_coupon_rewards"] as? Bool ?? false
         locked = dictionary["locked"] as? Bool ?? false
         points = dictionary["points"] as? Int
         redeemedCount = dictionary["redeemed_count"] as? Int
         redemptionCodes = [RedemptionCode]()
-        if let redemptionCodesArray = dictionary["redemption_codes"] as? [[String:Any]]{
-            for dic in redemptionCodesArray{
-                let value = RedemptionCode(fromDictionary: dic)
+        if let redemptionCodesArray = dictionary["redemption_codes"] as? [[String: AnyObject]] {
+            for dic in redemptionCodesArray {
+                guard let value = RedemptionCode(fromDictionary: dic) else { continue }
                 redemptionCodes.append(value)
             }
         }
@@ -49,52 +47,49 @@ public class Reward : NSObject, NSCoding{
     }
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    func toDictionary() -> [String:Any]
-    {
-        var dictionary = [String:Any]()
-        if claimedCount != nil{
-            dictionary["claimed_count"] = claimedCount
+    func toDictionary() -> [String: AnyObject] {
+        var dictionary = [String: AnyObject]()
+        if let claimedCount = claimedCount {
+            dictionary["claimed_count"] = claimedCount as AnyObject
         }
-        if descriptionField != nil{
-            dictionary["description"] = descriptionField
+        if let descriptionField = descriptionField {
+            dictionary["description"] = descriptionField as AnyObject
         }
-        if expiresOn != nil{
-            dictionary["expires_on"] = expiresOn
+        if let expiresOn = expiresOn {
+            dictionary["expires_on"] = expiresOn as AnyObject
         }
-        if id != nil{
-            dictionary["id"] = id
-        }
-        if imgLink != nil{
-            dictionary["img_link"] = imgLink
+        dictionary["id"] = id as AnyObject
+        if let imgLink = imgLink {
+            dictionary["img_link"] = imgLink as AnyObject
         }
 
-        dictionary["in_store_coupon_rewards"] = inStoreCouponRewards
-        
-        dictionary["locked"] = locked
-        
-        if points != nil{
-            dictionary["points"] = points
+        dictionary["in_store_coupon_rewards"] = inStoreCouponRewards as AnyObject
+
+        dictionary["locked"] = locked as AnyObject
+
+        if let points = points {
+            dictionary["points"] = points as AnyObject
         }
-        if redeemedCount != nil{
-            dictionary["redeemed_count"] = redeemedCount
+        if let redeemedCount = redeemedCount {
+            dictionary["redeemed_count"] = redeemedCount as AnyObject
         }
-        if redemptionCodes != nil{
-            var dictionaryElements = [[String:Any]]()
+        if let redemptionCodes = redemptionCodes {
+            var dictionaryElements = [[String: AnyObject]]()
             for redemptionCodesElement in redemptionCodes {
                 dictionaryElements.append(redemptionCodesElement.toDictionary())
             }
-            dictionary["redemption_codes"] = dictionaryElements
+            dictionary["redemption_codes"] = dictionaryElements as AnyObject
         }
-        if title != nil{
-            dictionary["title"] = title
+        if let title = title {
+            dictionary["title"] = title as AnyObject
         }
-        if type != nil{
-            dictionary["type"] = type
+        if let type = type {
+            dictionary["type"] = type as AnyObject
         }
-        if value != nil{
-            dictionary["value"] = value
+        if let value = value {
+            dictionary["value"] = value as AnyObject
         }
         return dictionary
     }
@@ -103,14 +98,17 @@ public class Reward : NSObject, NSCoding{
      * NSCoding required initializer.
      * Fills the data from the passed decoder
      */
-    @objc required public init(coder aDecoder: NSCoder)
-    {
+    @objc public required init(coder aDecoder: NSCoder) {
         claimedCount = aDecoder.decodeObject(forKey: "claimed_count") as? Int
         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
         expiresOn = aDecoder.decodeObject(forKey: "expires_on") as? Int
-        id = aDecoder.decodeObject(forKey: "id") as? Int
+        if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+            id = val
+        } else {
+            id = aDecoder.decodeInteger(forKey: "id")
+        }
         imgLink = aDecoder.decodeObject(forKey: "img_link") as? String
-        
+
         if let numberVal = aDecoder.decodeObject(forKey: "in_store_coupon_rewards") as? NSNumber {
             inStoreCouponRewards = numberVal == 0 ? false : true
         } else if aDecoder.containsValue(forKey: "in_store_coupon_rewards") {
@@ -139,44 +137,41 @@ public class Reward : NSObject, NSCoding{
      * NSCoding required method.
      * Encodes mode properties into the decoder
      */
-    @objc public func encode(with aCoder: NSCoder)
-    {
-        if claimedCount != nil{
+    @objc public func encode(with aCoder: NSCoder) {
+        if let claimedCount = claimedCount {
             aCoder.encode(claimedCount, forKey: "claimed_count")
         }
-        if descriptionField != nil{
+        if let descriptionField = descriptionField {
             aCoder.encode(descriptionField, forKey: "description")
         }
-        if expiresOn != nil{
+        if let expiresOn = expiresOn {
             aCoder.encode(expiresOn, forKey: "expires_on")
         }
-        if id != nil{
-            aCoder.encode(id, forKey: "id")
-        }
-        if imgLink != nil{
+        aCoder.encode(id, forKey: "id")
+        if let imgLink = imgLink {
             aCoder.encode(imgLink, forKey: "img_link")
         }
 
         aCoder.encode(inStoreCouponRewards, forKey: "in_store_coupon_rewards")
 
         aCoder.encode(locked, forKey: "locked")
-        
-        if points != nil{
+
+        if let points = points {
             aCoder.encode(points, forKey: "points")
         }
-        if redeemedCount != nil{
+        if let redeemedCount = redeemedCount {
             aCoder.encode(redeemedCount, forKey: "redeemed_count")
         }
-        if redemptionCodes != nil{
+        if let redemptionCodes = redemptionCodes {
             aCoder.encode(redemptionCodes, forKey: "redemption_codes")
         }
-        if title != nil{
+        if let title = title {
             aCoder.encode(title, forKey: "title")
         }
-        if type != nil{
+        if let type = type {
             aCoder.encode(type, forKey: "type")
         }
-        if value != nil{
+        if let value = value {
             aCoder.encode(value, forKey: "value")
         }
     }

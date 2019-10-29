@@ -9,44 +9,43 @@
 import UIKit
 
 public class CartItem: NSObject {
-
     private var optionBuilder: ItemOptionBuilder?
     public var optionsToAdd: [ItemOption] = []
     private var optionsToRemove: [ItemOption] = []
-    
-    public var category : ItemCategory!
-    public var currentStock : Int!
+
+    public var category: ItemCategory!
+    public var currentStock: Int = 0
 //    public var extras : [AnyObject]!
 //    public var foodType : String!
-    public var id : Int!
-    public var imageLandscapeUrl : String!
-    public var imageUrl : String!
+    public var id: Int = 0
+    public var imageLandscapeUrl: String!
+    public var imageUrl: String!
 //    public var itemDesc : String!
-    public var itemPrice : Decimal!
-    public var itemTitle : String!
-//    public var likes : Int!
-//   var optionGroups : [ItemOptionGroup]!
+    public var itemPrice: Decimal!
+    public var itemTitle: String!
+//    public var likes : Int?
+    //   var optionGroups : [ItemOptionGroup]!
 //    public var priceDescriptor : String!
-//   var serviceTaxRate : Float!
-    public var preOrderStartTime : Int?
-    public var preOrderEndTime : Int?
-    public var slug : String!
-    public var sortOrder : Int!
+    //   var serviceTaxRate : Float!
+    public var preOrderStartTime: Int?
+    public var preOrderEndTime: Int?
+    public var slug: String!
+    public var sortOrder: Int = 0
 //    public var subCategory : ItemCategory!
 //    public var tags : [ItemTag]!
-    
+
     public var isRecommendedItem: Bool = false
     public var isUpsoldItem: Bool = false
     public var isSearchItem: Bool = false
     public var isItemDetailsItem: Bool = false
     public internal(set) var isReorder: Bool = false
 
-//   var vatRate : Float!
-    
+    //   var vatRate : Float!
+
     public var quantity: Int = 0
-    
+
     public var notes: String?
-    
+
     public var totalAmount: Decimal {
         var totalAmount: Decimal = itemPrice ?? Decimal.zero
         for item in optionsToAdd {
@@ -54,236 +53,226 @@ public class CartItem: NSObject {
         }
         return totalAmount
     }
-    
+
     public var descriptionText: String? {
         let descriptionText = optionBuilder?.descriptionText
         guard descriptionText == nil else { return descriptionText }
         guard let optionsText = orderOptionsText else { return nil }
         return "• \(optionsText)"
     }
-    
+
     internal var orderOptionsText: String? {
         let sortedOptions = optionsToAdd.sorted { $0.title.count > $1.title.count }
-        
+
         let descriptionArray: [String] = sortedOptions.compactMap { $0.title }
         guard descriptionArray.count > 0 else { return nil }
         return descriptionArray.joined(separator: ", ")
     }
-    
-    @objc public init(reorderItem: ReorderItem) {
 
-        self.currentStock = reorderItem.currentStock
-        self.id = reorderItem.id
-        self.imageLandscapeUrl = reorderItem.imageLandscapeUrl
-        self.imageUrl = reorderItem.imageUrl
-        self.itemPrice = reorderItem.itemPrice
-        self.itemTitle = reorderItem.itemTitle
-        self.quantity = reorderItem.quantity
+    @objc public init(reorderItem: ReorderItem) {
+        currentStock = reorderItem.currentStock
+        id = reorderItem.id
+        imageLandscapeUrl = reorderItem.imageLandscapeUrl
+        imageUrl = reorderItem.imageUrl
+        itemPrice = reorderItem.itemPrice
+        itemTitle = reorderItem.itemTitle
+        quantity = reorderItem.quantity
 //        self.serviceTaxRate = reorderItem.serviceTaxRate
 //        self.vatRate = reorderItem.vatRate
-        self.category = reorderItem.category
+        category = reorderItem.category
 //        self.itemCategory = reorderItem.itemCategory
-        
+
 //        self.optionGroups = reorderItem.optionGroups
-        self.preOrderStartTime = reorderItem.preOrderStartTime
-        self.preOrderEndTime = reorderItem.preOrderEndTime
-        
+        preOrderStartTime = reorderItem.preOrderStartTime
+        preOrderEndTime = reorderItem.preOrderEndTime
+
         for group in reorderItem.optionGroups {
-            self.optionsToAdd.append(contentsOf: group.reorderOptionsToAdd)
+            optionsToAdd.append(contentsOf: group.reorderOptionsToAdd)
         }
-        
+
         isReorder = true
     }
 
-    
     @objc public init(item: Item) {
-        self.category = item.category
-        self.currentStock = item.currentStock
+        category = item.category
+        currentStock = item.currentStock
 //        self.extras = item.extras
 //        self.foodType = item.foodType
-        self.id = item.id
-        self.imageLandscapeUrl = item.imageLandscapeUrl
-        self.imageUrl = item.imageUrl
+        id = item.id
+        imageLandscapeUrl = item.imageLandscapeUrl
+        imageUrl = item.imageUrl
 //        self.itemDesc = item.itemDesc
-        
-        self.itemPrice = item.itemPrice ?? Decimal.zero
-        
-        self.itemTitle = item.itemTitle
+
+        itemPrice = item.itemPrice ?? Decimal.zero
+
+        itemTitle = item.itemTitle
 //        self.likes = item.likes
 //        self.optionGroups = item.optionGroups
 //        self.priceDescriptor = item.priceDescriptor
-        self.preOrderStartTime = item.preOrderStartTime
-        self.preOrderEndTime = item.preOrderEndTime
-        self.slug = item.slug
-        self.sortOrder = item.sortOrder
+        preOrderStartTime = item.preOrderStartTime
+        preOrderEndTime = item.preOrderEndTime
+        slug = item.slug
+        sortOrder = item.sortOrder
 //        self.subCategory = item.subCategory
 //        self.tags = item.tags
-        
-        self.isRecommendedItem = item.isRecommendedItem
-        self.isUpsoldItem = item.isUpsoldItem
-        self.isSearchItem = item.isSearchItem
-        self.isItemDetailsItem = item.isItemDetailsItem
-        
+
+        isRecommendedItem = item.isRecommendedItem
+        isUpsoldItem = item.isUpsoldItem
+        isSearchItem = item.isSearchItem
+        isItemDetailsItem = item.isItemDetailsItem
+
 //        self.quantity = item.quantity
-        
-        self.optionsToAdd = item.orderOptionsToAdd ?? []
-        self.optionsToRemove = item.orderOptionsToRemove ?? []
+
+        optionsToAdd = item.orderOptionsToAdd ?? []
+        optionsToRemove = item.orderOptionsToRemove ?? []
     }
-    
+
     convenience init(item: Item, optionBuilder: ItemOptionBuilder) {
         self.init(item: item)
 
         self.optionBuilder = optionBuilder
 
-        self.optionsToAdd = optionBuilder.optionsToAdd
-        self.optionsToRemove = optionBuilder.optionsToRemove
+        optionsToAdd = optionBuilder.optionsToAdd
+        optionsToRemove = optionBuilder.optionsToRemove
     }
-    
-    public func toDictionary() -> [String:Any]
-    {
-        var dictionary = [String:Any]()
 
-        if category != nil{
-            dictionary["category"] = category.toDictionary()
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary = [String: AnyObject]()
+
+        if let category = category {
+            dictionary["category"] = category.toDictionary() as AnyObject
         }
-        if currentStock != nil{
-            dictionary["current_stock"] = currentStock
-        }
-//        if extras != nil{
-//            dictionary["extras"] = extras
+        dictionary["current_stock"] = currentStock as AnyObject
+//        if let extras = extras {
+//            dictionary["extras"] = extras as AnyObject
 //        }
-//        if foodType != nil{
-//            dictionary["food_type"] = foodType
+//        if let foodType = foodType {
+//            dictionary["food_type"] = foodType as AnyObject
 //        }
-        if id != nil{
-            dictionary["id"] = id
+        dictionary["id"] = id as AnyObject
+        if let imageLandscapeUrl = imageLandscapeUrl {
+            dictionary["image_landscape_url"] = imageLandscapeUrl as AnyObject
         }
-        if imageLandscapeUrl != nil{
-            dictionary["image_landscape_url"] = imageLandscapeUrl
+        if let imageUrl = imageUrl {
+            dictionary["image_url"] = imageUrl as AnyObject
         }
-        if imageUrl != nil{
-            dictionary["image_url"] = imageUrl
-        }
-//        if itemDesc != nil{
-//            dictionary["item_desc"] = itemDesc
+//        if let itemDesc = itemDesc {
+//            dictionary["item_desc"] = itemDesc as AnyObject
 //        }
-        if itemPrice != nil{
-            dictionary["item_price"] = itemPrice
+        if let itemPrice = itemPrice {
+            dictionary["item_price"] = itemPrice as AnyObject
         }
-        if itemTitle != nil{
-            dictionary["item_title"] = itemTitle
+        if let itemTitle = itemTitle {
+            dictionary["item_title"] = itemTitle as AnyObject
         }
-//        if likes != nil{
-//            dictionary["likes"] = likes
+//        if let likes = likes {
+//            dictionary["likes"] = likes as AnyObject
 //        }
-        if optionsToAdd.count > 0{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+        if optionsToAdd.count > 0 {
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for orderOptionsToAddElement in optionsToAdd {
 //                dictionaryElements.append(orderOptionsToAddElement.toDictionary())
-                dictionaryElements.append(["id": orderOptionsToAddElement.id as Any])
+                dictionaryElements.append(["id": orderOptionsToAddElement.id as AnyObject])
             }
-            dictionary["options"] = dictionaryElements
+            dictionary["options"] = dictionaryElements as AnyObject
         }
         if optionsToRemove.count > 0 {
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for orderOptionsToRemoveElement in optionsToRemove {
 //                dictionaryElements.append(orderOptionsToRemoveElement.toDictionary())
-                dictionaryElements.append(["id": orderOptionsToRemoveElement.id as Any])
+                dictionaryElements.append(["id": orderOptionsToRemoveElement.id as AnyObject])
             }
-            dictionary["options_to_remove"] = dictionaryElements
+            dictionary["options_to_remove"] = dictionaryElements as AnyObject
         }
-//        if priceDescriptor != nil{
-//            dictionary["price_descriptor"] = priceDescriptor
+//        if let priceDescriptor = priceDescriptor {
+//            dictionary["price_descriptor"] = priceDescriptor as AnyObject
 //        }
-//        if serviceTaxRate != nil{
-//            dictionary["service_tax_rate"] = serviceTaxRate
+//        if let serviceTaxRate = serviceTaxRate {
+//            dictionary["service_tax_rate"] = serviceTaxRate as AnyObject
 //        }
-        if preOrderStartTime != nil{
-            dictionary["pre_order_start_time"] = preOrderStartTime
+        if let preOrderStartTime = preOrderStartTime {
+            dictionary["pre_order_start_time"] = preOrderStartTime as AnyObject
         }
-        if preOrderEndTime != nil{
-            dictionary["pre_order_end_time"] = preOrderEndTime
+        if let preOrderEndTime = preOrderEndTime {
+            dictionary["pre_order_end_time"] = preOrderEndTime as AnyObject
         }
-        if slug != nil{
-            dictionary["slug"] = slug
+        if let slug = slug {
+            dictionary["slug"] = slug as AnyObject
         }
-        if sortOrder != nil{
-            dictionary["sort_order"] = sortOrder
-        }
-//        if subCategory != nil{
-//            dictionary["sub_category"] = subCategory.toDictionary()
+
+        dictionary["sort_order"] = sortOrder as AnyObject
+
+//        if let subCategory = subCategory {
+//            dictionary["sub_category"] = subCategory.toDictionary() as AnyObject
 //        }
-//        if tags != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//        if let tags = tags {
+//            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
 //            for tagsElement in tags {
 //                dictionaryElements.append(tagsElement.toDictionary())
 //            }
-//            dictionary["tags"] = dictionaryElements
+//            dictionary["tags"] = dictionaryElements as AnyObject
 //        }
-//        if vatRate != nil{
-//            dictionary["vat_rate"] = vatRate
+//        if let vatRate = vatRate {
+//            dictionary["vat_rate"] = vatRate as AnyObject
 //        }
-        dictionary["quantity"] = quantity
-        
-        if notes != nil{
-            dictionary["notes"] = notes
+        dictionary["quantity"] = quantity as AnyObject
+
+        if let notes = notes {
+            dictionary["notes"] = notes as AnyObject
         }
-        
+
         return dictionary
     }
-    
+
     public func isItemQuantityAvailable(quantity: Int) -> Bool {
-        guard let stock = currentStock else { return true }
-        guard stock != StockQuantity.unlimited else { return true }
-        guard stock != StockQuantity.noStock else { return false }
+        guard currentStock != StockQuantity.unlimited else { return true }
+        guard currentStock != StockQuantity.noStock else { return false }
         let currentCartStock = CartManager.shared.cartCount(for: id)
-        guard stock >= currentCartStock + quantity else { return false }
+        guard currentStock >= currentCartStock + quantity else { return false }
         return true
     }
-    
-    internal func equitableCheckDictionary() -> [String: Any] {
-        var dictionary: [String: Any] = [String:Any]()
-//        if category != nil{
+
+    internal func equitableCheckDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+//        if let category = category {
 //            dictionary["category"] = category.equitableCheckDictionary()
 //        }
-//        if currentStock != nil{
-//            dictionary["current_stock"] = currentStock
+//        if let currentStock = currentStock {
+//            dictionary["current_stock"] = currentStock as AnyObject
 //        }
-        if id != nil{
-            dictionary["id"] = id
-        }
-        if optionsToAdd.count > 0{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+        dictionary["id"] = id as AnyObject
+        if optionsToAdd.count > 0 {
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for orderOptionsToAddElement in optionsToAdd {
                 dictionaryElements.append(orderOptionsToAddElement.equitableCheckDictionary())
             }
-            dictionary["options_to_add"] = dictionaryElements
+            dictionary["options_to_add"] = dictionaryElements as AnyObject
         }
         if optionsToRemove.count > 0 {
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for orderOptionsToRemoveElement in optionsToRemove {
                 dictionaryElements.append(orderOptionsToRemoveElement.equitableCheckDictionary())
             }
-            dictionary["options_to_remove"] = dictionaryElements
+            dictionary["options_to_remove"] = dictionaryElements as AnyObject
         }
-//        if itemTitle != nil{
-//            dictionary["item_title"] = itemTitle
+//        if let itemTitle = itemTitle {
+//            dictionary["item_title"] = itemTitle as AnyObject
 //        }
-//        if optionGroups != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//        if let optionGroups = optionGroups {
+//            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
 //            for optionGroupsElement in optionGroups {
 //                dictionaryElements.append(optionGroupsElement.equitableCheckDictionary())
 //            }
-//            dictionary["option_groups"] = dictionaryElements
+//            dictionary["option_groups"] = dictionaryElements as AnyObject
 //        }
         return dictionary
     }
-    
-    static internal func == (lhs: CartItem, rhs: CartItem) -> Bool {
+
+    internal static func == (lhs: CartItem, rhs: CartItem) -> Bool {
         guard lhs.id == rhs.id, lhs.itemTitle == rhs.itemTitle else { return false }
         let lhsDictionary = lhs.equitableCheckDictionary()
         let rhsDictionary = rhs.equitableCheckDictionary()
-        
+
         return NSDictionary(dictionary: lhsDictionary).isEqual(to: rhsDictionary)
     }
 }

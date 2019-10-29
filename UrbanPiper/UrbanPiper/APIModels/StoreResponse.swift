@@ -7,73 +7,73 @@
 
 import Foundation
 
-
-@objc public class StoreResponse : NSObject, NSCoding{
-
-    @objc public var biz : Biz!
-    @objc public var store : Store?
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		if let bizData: [String:Any] = dictionary["biz"] as? [String:Any]{
-			biz = Biz(fromDictionary: bizData)
-		}
+@objc public class StoreResponse: NSObject, JSONDecodable, NSCoding {
+    @objc public var biz: Biz!
+    @objc public var store: Store?
+    
+    public convenience init(biz: Biz, store: Store?) {
+        self.init(fromDictionary: [:])!
         
-        Biz.shared = biz
-        
-		if let storeData: [String:Any] = dictionary["store"] as? [String:Any]{
-			store = Store(fromDictionary: storeData)
-		}
-	}
+        self.biz = biz
+        self.store = store
+    }
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    @objc public func toDictionary() -> [String:Any]
-    {
-        var dictionary: [String: Any] = [String:Any]()
-        if biz != nil{
-            dictionary["biz"] = biz.toDictionary()
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        if let bizData: [String: AnyObject] = dictionary["biz"] as? [String: AnyObject] {
+            biz = Biz(fromDictionary: bizData)
         }
-        if store != nil{
-            dictionary["store"] = store!.toDictionary()
+
+        Biz.shared = biz
+
+        if let storeData: [String: AnyObject] = dictionary["store"] as? [String: AnyObject] {
+            store = Store(fromDictionary: storeData)
+        }
+    }
+
+    /**
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+     */
+    @objc public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+        if let biz = biz {
+            dictionary["biz"] = biz.toDictionary() as AnyObject
+        }
+        if let store = store {
+            dictionary["store"] = store.toDictionary() as AnyObject
         }
         return dictionary
     }
 
     /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    @objc required public init(coder aDecoder: NSCoder)
-	{
+     * NSCoding required initializer.
+     * Fills the data from the passed decoder
+     */
+    @objc public required init(coder aDecoder: NSCoder) {
         Biz.registerClass()
         Store.registerClass()
         biz = aDecoder.decodeObject(forKey: "biz") as? Biz
-        
+
 //      Remove this code after next release
         biz.supportedLanguages = ["en"]
-        
+
         Biz.shared = biz
         store = aDecoder.decodeObject(forKey: "store") as? Store
     }
 
     /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    @objc public func encode(with aCoder: NSCoder)
-	{
-		if biz != nil{
-			aCoder.encode(biz, forKey: "biz")
-		}
-		if store != nil{
-			aCoder.encode(store, forKey: "store")
-		}
-
-	}
-
+     * NSCoding required method.
+     * Encodes mode properties into the decoder
+     */
+    @objc public func encode(with aCoder: NSCoder) {
+        if let biz = biz {
+            aCoder.encode(biz, forKey: "biz")
+        }
+        if let store = store {
+            aCoder.encode(store, forKey: "store")
+        }
+    }
 }

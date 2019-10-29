@@ -7,47 +7,45 @@
 
 import Foundation
 
+public class MyOrderMeta: NSObject, JSONDecodable {
+    public var limit: Int = 20
+    public var next: String!
+    public var offset: Int = 0
+    public var previous: String!
+    public var totalCount: Int = 0
 
-public class MyOrderMeta : NSObject{
-
-	public var limit : Int!
-	public var next : String!
-	public var offset : Int!
-	public var previous : AnyObject!
-	public var totalCount : Int!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	init(fromDictionary dictionary: [String:Any]){
-		limit = dictionary["limit"] as? Int
-		next = dictionary["next"] as? String
-		offset = dictionary["offset"] as? Int
-		previous = dictionary["previous"] as AnyObject
-		totalCount = dictionary["total_count"] as? Int
-	}
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        limit = dictionary["limit"] as? Int ?? 20
+        next = dictionary["next"] as? String
+        offset = dictionary["offset"] as? Int ?? 0
+        previous = dictionary["previous"] as? String
+        totalCount = dictionary["total_count"] as? Int ?? 0
+    }
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    func toDictionary() -> [String:Any]
+//    func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if limit != nil{
-//            dictionary["limit"] = limit
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        if let limit = limit {
+//            dictionary["limit"] = limit as AnyObject
 //        }
-//        if next != nil{
-//            dictionary["next"] = next
+//        if let next = next {
+//            dictionary["next"] = next as AnyObject
 //        }
-//        if offset != nil{
-//            dictionary["offset"] = offset
+//        if let offset = offset {
+//            dictionary["offset"] = offset as AnyObject
 //        }
-//        if previous != nil{
-//            dictionary["previous"] = previous
+//        if let previous = previous {
+//            dictionary["previous"] = previous as AnyObject
 //        }
-//        if totalCount != nil{
-//            dictionary["total_count"] = totalCount
+//        if let totalCount = totalCount {
+//            dictionary["total_count"] = totalCount as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -72,22 +70,21 @@ public class MyOrderMeta : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if limit != nil{
+//        if let limit = limit {
 //            aCoder.encode(limit, forKey: "limit")
 //        }
-//        if next != nil{
+//        if let next = next {
 //            aCoder.encode(next, forKey: "next")
 //        }
-//        if offset != nil{
+//        if let offset = offset {
 //            aCoder.encode(offset, forKey: "offset")
 //        }
-//        if previous != nil{
+//        if let previous = previous {
 //            aCoder.encode(previous, forKey: "previous")
 //        }
-//        if totalCount != nil{
+//        if let totalCount = totalCount {
 //            aCoder.encode(totalCount, forKey: "total_count")
 //        }
 //
 //    }
-
 }

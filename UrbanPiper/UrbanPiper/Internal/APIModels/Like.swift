@@ -4,34 +4,32 @@
 
 import Foundation
 
+public class Like: NSObject, JSONDecodable {
+    public var item: Item!
+    public var likedOn: Int?
 
-public class Like : NSObject{
-
-	public var item : Item!
-	public var likedOn : Int!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		if let itemData: [String:Any] = dictionary["item"] as? [String:Any]{
-			item = Item(fromDictionary: itemData)
-		}
-		likedOn = dictionary["liked_on"] as? Int
-	}
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        if let itemData: [String: AnyObject] = dictionary["item"] as? [String: AnyObject] {
+            item = Item(fromDictionary: itemData)
+        }
+        likedOn = dictionary["liked_on"] as? Int
+    }
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    public func toDictionary() -> [String:Any]
+//    public func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if item != nil{
-//            dictionary["item"] = item.toDictionary()
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        if let item = item {
+//            dictionary["item"] = item.toDictionary() as AnyObject
 //        }
-//        if likedOn != nil{
-//            dictionary["liked_on"] = likedOn
+//        if let likedOn = likedOn {
+//            dictionary["liked_on"] = likedOn as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -53,13 +51,12 @@ public class Like : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if item != nil{
+//        if let item = item {
 //            aCoder.encode(item, forKey: "item")
 //        }
-//        if likedOn != nil{
+//        if let likedOn = likedOn {
 //            aCoder.encode(likedOn, forKey: "liked_on")
 //        }
 //
 //    }
-
 }

@@ -7,31 +7,29 @@
 
 import Foundation
 
+public class Transaction: NSObject, JSONDecodable {
+    public var billNumber: String!
+    public var comments: String!
+    public var created: Int = 0
+    public var id: Int = 0
+    public var paymentAmount: Decimal!
+    public var paymentSrc: String!
+    public var paymentType: String!
+    public var posMcId: AnyObject!
+    public var posOperatorUname: AnyObject!
+    public var store: Store!
+    public var transactionId: String!
 
-public class Transaction : NSObject{
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        billNumber = dictionary["bill_number"] as? String
+        comments = dictionary["comments"] as? String
+        created = dictionary["created"] as? Int ?? 0
+        id = dictionary["id"] as? Int ?? 0
 
-	public var billNumber : String!
-	public var comments : String!
-	public var created : Int!
-	public var id : Int!
-	public var paymentAmount : Decimal!
-	public var paymentSrc : String!
-	public var paymentType : String!
-	public var posMcId : AnyObject!
-	public var posOperatorUname : AnyObject!
-	public var store : Store!
-	public var transactionId : String!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	init(fromDictionary dictionary: [String:Any]){
-		billNumber = dictionary["bill_number"] as? String
-		comments = dictionary["comments"] as? String
-		created = dictionary["created"] as? Int
-		id = dictionary["id"] as? Int
-        
         let priceVal = dictionary["payment_amount"]
         if let val: Decimal = priceVal as? Decimal {
             paymentAmount = val
@@ -40,55 +38,55 @@ public class Transaction : NSObject{
         } else {
             paymentAmount = Decimal.zero
         }
-        
-		paymentSrc = dictionary["payment_src"] as? String
-		paymentType = dictionary["payment_type"] as? String
-		posMcId = dictionary["pos_mc_id"] as AnyObject
-		posOperatorUname = dictionary["pos_operator_uname"] as AnyObject
-		if let storeData: [String:Any] = dictionary["store"] as? [String:Any]{
-			store = Store(fromDictionary: storeData)
-		}
-		transactionId = dictionary["transaction_id"] as? String
-	}
+
+        paymentSrc = dictionary["payment_src"] as? String
+        paymentType = dictionary["payment_type"] as? String
+        posMcId = dictionary["pos_mc_id"] as AnyObject
+        posOperatorUname = dictionary["pos_operator_uname"] as AnyObject
+        if let storeData: [String: AnyObject] = dictionary["store"] as? [String: AnyObject] {
+            store = Store(fromDictionary: storeData)
+        }
+        transactionId = dictionary["transaction_id"] as? String
+    }
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    func toDictionary() -> [String:Any]
+//    func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if billNumber != nil{
-//            dictionary["bill_number"] = billNumber
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        if let billNumber = billNumber {
+//            dictionary["bill_number"] = billNumber as AnyObject
 //        }
-//        if comments != nil{
-//            dictionary["comments"] = comments
+//        if let comments = comments {
+//            dictionary["comments"] = comments as AnyObject
 //        }
-//        if created != nil{
-//            dictionary["created"] = created
+//        if let created = created {
+//            dictionary["created"] = created as AnyObject
 //        }
-//        if id != nil{
-//            dictionary["id"] = id
+//        if let id = id {
+//            dictionary["id"] = id as AnyObject
 //        }
-//        if paymentAmount != nil{
-//            dictionary["payment_amount"] = paymentAmount
+//        if let paymentAmount = paymentAmount {
+//            dictionary["payment_amount"] = paymentAmount as AnyObject
 //        }
-//        if paymentSrc != nil{
-//            dictionary["payment_src"] = paymentSrc
+//        if let paymentSrc = paymentSrc {
+//            dictionary["payment_src"] = paymentSrc as AnyObject
 //        }
-//        if paymentType != nil{
-//            dictionary["payment_type"] = paymentType
+//        if let paymentType = paymentType {
+//            dictionary["payment_type"] = paymentType as AnyObject
 //        }
-//        if posMcId != nil{
-//            dictionary["pos_mc_id"] = posMcId
+//        if let posMcId = posMcId {
+//            dictionary["pos_mc_id"] = posMcId as AnyObject
 //        }
-//        if posOperatorUname != nil{
-//            dictionary["pos_operator_uname"] = posOperatorUname
+//        if let posOperatorUname = posOperatorUname {
+//            dictionary["pos_operator_uname"] = posOperatorUname as AnyObject
 //        }
-//        if store != nil{
-//            dictionary["store"] = store.toDictionary()
+//        if let store = store {
+//            dictionary["store"] = store.toDictionary() as AnyObject
 //        }
-//        if transactionId != nil{
-//            dictionary["transaction_id"] = transactionId
+//        if let transactionId = transactionId {
+//            dictionary["transaction_id"] = transactionId as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -102,7 +100,11 @@ public class Transaction : NSObject{
 //         billNumber = aDecoder.decodeObject(forKey: "bill_number") as? String
 //         comments = aDecoder.decodeObject(forKey: "comments") as? String
 //         created = aDecoder.decodeObject(forKey: "created") as? Int
-//         id = aDecoder.decodeObject(forKey: "id") as? Int
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         paymentAmount = aDecoder.decodeObject(forKey: "payment_amount") as? Int
 //         paymentSrc = aDecoder.decodeObject(forKey: "payment_src") as? String
 //         paymentType = aDecoder.decodeObject(forKey: "payment_type") as? String
@@ -119,40 +121,39 @@ public class Transaction : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if billNumber != nil{
+//        if let billNumber = billNumber {
 //            aCoder.encode(billNumber, forKey: "bill_number")
 //        }
-//        if comments != nil{
+//        if let comments = comments {
 //            aCoder.encode(comments, forKey: "comments")
 //        }
-//        if created != nil{
+//        if let created = created {
 //            aCoder.encode(created, forKey: "created")
 //        }
-//        if id != nil{
+//        if let id = id {
 //            aCoder.encode(id, forKey: "id")
 //        }
-//        if paymentAmount != nil{
+//        if let paymentAmount = paymentAmount {
 //            aCoder.encode(paymentAmount, forKey: "payment_amount")
 //        }
-//        if paymentSrc != nil{
+//        if let paymentSrc = paymentSrc {
 //            aCoder.encode(paymentSrc, forKey: "payment_src")
 //        }
-//        if paymentType != nil{
+//        if let paymentType = paymentType {
 //            aCoder.encode(paymentType, forKey: "payment_type")
 //        }
-//        if posMcId != nil{
+//        if let posMcId = posMcId {
 //            aCoder.encode(posMcId, forKey: "pos_mc_id")
 //        }
-//        if posOperatorUname != nil{
+//        if let posOperatorUname = posOperatorUname {
 //            aCoder.encode(posOperatorUname, forKey: "pos_operator_uname")
 //        }
-//        if store != nil{
+//        if let store = store {
 //            aCoder.encode(store, forKey: "store")
 //        }
-//        if transactionId != nil{
+//        if let transactionId = transactionId {
 //            aCoder.encode(transactionId, forKey: "transaction_id")
 //        }
 //
 //    }
-
 }

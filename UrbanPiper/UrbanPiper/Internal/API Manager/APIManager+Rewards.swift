@@ -7,38 +7,84 @@
 
 import UIKit
 
-extension APIManager {
-    
-    internal func getRewards(completion: ((RewardsResponse?) -> Void)?, failure: APIFailure?) -> URLSessionDataTask {
-        let urlString: String = "\(APIManager.baseUrl)/api/v2/rewards/"
-
-        let url: URL = URL(string: urlString)!
-
-        var urlRequest: URLRequest = URLRequest(url: url)
-
-        urlRequest.httpMethod = "GET"
-
-
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> RewardsResponse? in
-            return RewardsResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-    }
-
-    internal func redeemReward(rewardId: Int, completion: ((RedeemRewardResponse?) -> Void)?,
-                                              failure: APIFailure?) -> URLSessionDataTask {
-        
-        let urlString: String = "\(APIManager.baseUrl)/api/v2/rewards/\(rewardId)/redeem/"
-        
-        let url: URL = URL(string: urlString)!
-        
-        var urlRequest: URLRequest = URLRequest(url: url)
-        
-        urlRequest.httpMethod = "POST"
-        
-        
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> RedeemRewardResponse? in
-            return RedeemRewardResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-    }
-    
+enum RewardsAPI {
+    case rewards(offset: Int, limit: Int)
+    case reedemRewards(rewardId: Int)
 }
+
+extension RewardsAPI: UPAPI {
+    var path: String {
+        switch self {
+        case .rewards:
+            return "api/v2/rewards/"
+        case let .reedemRewards(rewardId):
+            return "api/v2/rewards/\(rewardId)/redeem/"
+        }
+    }
+
+    var parameters: [String: String]? {
+        switch self {
+        case .rewards:
+            return nil
+        case .reedemRewards:
+            return nil
+        }
+    }
+
+    var headers: [String: String]? {
+        switch self {
+        case .rewards:
+            return nil
+        case .reedemRewards:
+            return nil
+        }
+    }
+
+    var method: HttpMethod {
+        switch self {
+        case .rewards:
+            return .GET
+        case .reedemRewards:
+            return .POST
+        }
+    }
+
+    var body: [String: AnyObject]? {
+        switch self {
+        case .rewards:
+            return nil
+        case .reedemRewards:
+            return nil
+        }
+    }
+}
+
+/* extension APIManager {
+
+ internal func getRewards(completion: APICompletion<RewardsResponse>?, failure: APIFailure?) -> URLSessionDataTask {
+     let urlString: String = "\(APIManager.baseUrl)/api/v2/rewards/"
+
+     let url: URL = URL(string: urlString)!
+
+     var urlRequest: URLRequest = URLRequest(url: url)
+
+     urlRequest.httpMethod = "GET"
+
+     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+ }
+
+ internal func redeemReward(rewardId: Int, completion: APICompletion<RedeemRewardResponse>?,
+                                           failure: APIFailure?) -> URLSessionDataTask {
+
+     let urlString: String = "\(APIManager.baseUrl)/api/v2/rewards/\(rewardId)/redeem/"
+
+     let url: URL = URL(string: urlString)!
+
+     var urlRequest: URLRequest = URLRequest(url: url)
+
+     urlRequest.httpMethod = "POST"
+
+     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+ }
+
+ }*/

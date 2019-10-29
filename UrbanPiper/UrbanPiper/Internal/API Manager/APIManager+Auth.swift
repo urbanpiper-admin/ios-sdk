@@ -8,322 +8,349 @@
 
 import Foundation
 
-extension APIManager {
+enum AuthAPI {
+    case refreshToken(token: String)
+    case login(phone: String, password: String)
+    case forgotPassword(phone: String)
+    case resetPassword(phone: String, otp: String, password: String, confirmPassword: String)
+    case registerUser(name: String, phone: String, email: String, password: String, referral: Referral?)
+    case createSocialUser(name: String, phone: String, email: String, gender: String?, accessToken: String, referral: Referral?)
+    case verifyRegOTP(phone: String, pin: String)
+    case resendOTP(phone: String)
+}
 
-    static let cardBaseUrl: String = "\(APIManager.baseUrl)/api/v2/card"
-    
-    @discardableResult internal func refreshToken(token: String,
-                               completion: ((String?) -> Void)?,
-                               failure: APIFailure?) -> URLSessionDataTask {
-        
-        let urlString: String = "\(APIManager.baseUrl)/api/v2/auth/refresh-token/"
-        
-        let url: URL = URL(string: urlString)!
-        
-        var urlRequest: URLRequest = URLRequest(url: url)
-
-        urlRequest.httpMethod = "POST"
-        
-        let params: [String: Any] = ["token": token]
-        
-        urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
-        
-        
-        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()],
-                          responseParser: { (dictionary) -> String? in
-                            return dictionary["token"] as? String
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-                
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any], let newToken = dictionary["token"] as? String {
-                    DispatchQueue.main.async {
-                        completion?(newToken)
-                    }
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-            
+extension AuthAPI: UPAPI {
+    var path: String {
+        switch self {
+        case .refreshToken:
+            return "api/v2/auth/refresh-token/"
+        case .login:
+            return "api/v2/auth/token/"
+        case .forgotPassword:
+            return "api/v1/user/password/token/"
+        case .resetPassword:
+            return "api/v1/user/password/"
+        case .registerUser:
+            return "api/v2/card/"
+        case .createSocialUser:
+            return "api/v2/card/"
+        case .verifyRegOTP:
+            return "api/v2/card/"
+        case .resendOTP:
+            return "api/v2/card/"
         }
-        
-        return dataTask*/
     }
-    
-    @objc internal func login(phone: String,
-                            password: String,
-                            completion: ((LoginResponse?) -> Void)?,
+
+    var parameters: [String: String]? {
+        var params: [String: String]?
+        switch self {
+        case .refreshToken:
+            params = nil
+        case .login:
+            params = nil
+        case .forgotPassword:
+            params = nil
+        case .resetPassword:
+            params = nil
+        case .registerUser(let name, let phone, let email, let password, _):
+            params = ["customer_name": name,
+                      "customer_phone": phone,
+                      "email": email,
+                      "password": password,
+                      "channel": APIManager.channel]
+        case .createSocialUser(let name, let phone, let email, let gender, let accessToken, _):
+            params = ["customer_name": name,
+                      "customer_phone": phone,
+                      "email": email,
+                      "password": accessToken,
+                      "channel": APIManager.channel]
+
+            if let gender = gender, gender.count > 0 {
+                params?["gender"] = gender
+            }
+        case let .verifyRegOTP(phone, pin):
+            params = ["customer_phone": phone,
+                      "pin": pin,
+                      "nopinsend": "true"]
+        case let .resendOTP(phone):
+            params = ["customer_phone": phone,
+                      "pin": "resendotp"]
+        }
+
+        return params
+    }
+
+    var headers: [String: String]? {
+        switch self {
+        case .refreshToken:
+            return ["Authorization": APIManager.shared.bizAuth()]
+        case .login:
+            return nil
+        case .forgotPassword:
+            return nil
+        case .resetPassword:
+            return nil
+        case .registerUser:
+            return ["Authorization": APIManager.shared.bizAuth()]
+        case .createSocialUser:
+            return ["Authorization": APIManager.shared.bizAuth()]
+        case .verifyRegOTP:
+            return ["Authorization": APIManager.shared.bizAuth()]
+        case .resendOTP:
+            return ["Authorization": APIManager.shared.bizAuth()]
+        }
+    }
+
+    var method: HttpMethod {
+        switch self {
+        case .refreshToken:
+            return .POST
+        case .login:
+            return .POST
+        case .forgotPassword:
+            return .POST
+        case .resetPassword:
+            return .POST
+        case .registerUser:
+            return .POST
+        case .createSocialUser:
+            return .POST
+        case .verifyRegOTP:
+            return .POST
+        case .resendOTP:
+            return .POST
+        }
+    }
+
+    var body: [String: AnyObject]? {
+        switch self {
+        case let .refreshToken(token):
+            return ["token": token] as [String: AnyObject]
+        case let .login(phone, password):
+            return ["username": phone,
+                    "pass": password] as [String: AnyObject]
+        case let .forgotPassword(phone):
+            return ["biz_id": APIManager.shared.bizId,
+                    "phone": phone] as [String: AnyObject]
+        case let .resetPassword(phone, otp, password, confirmPassword):
+            return ["biz_id": APIManager.shared.bizId,
+                    "phone": phone,
+                    "token": otp,
+                    "new_password1": password,
+                    "new_password2": confirmPassword] as [String: AnyObject]
+        case let .registerUser(_, _, _, _, referral):
+            if let params = referral?.toDictionary() {
+                return ["referral": params] as [String: AnyObject]
+            } else {
+                return nil
+            }
+        case let .createSocialUser(_, _, _, _, _, referral):
+            if let params = referral?.toDictionary() {
+                return ["referral": params] as [String: AnyObject]
+            } else {
+                return nil
+            }
+        case .verifyRegOTP:
+            return nil
+        case .resendOTP:
+            return nil
+        }
+    }
+}
+
+/* extension APIManager {
+
+ @discardableResult internal func refreshToken(token: String,
+                            completion: APICompletion<RefreshTokenResponse>?,
                             failure: APIFailure?) -> URLSessionDataTask {
 
-        let urlString: String = "\(APIManager.baseUrl)/api/v2/auth/token/"
+     let urlString: String = "\(APIManager.baseUrl)/api/v2/auth/refresh-token/"
 
-        let url: URL = URL(string: urlString)!
-        
-        var urlRequest: URLRequest = URLRequest(url: url)
-        
-        urlRequest.httpMethod = "POST"
+     let url: URL = URL(string: urlString)!
 
-        let params: [String: Any] = ["username": phone,
-                                     "pass": password]
-        
-        urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+     var urlRequest: URLRequest = URLRequest(url: url)
 
-        
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> LoginResponse? in
-            return LoginResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-                
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    var appUser: User? = nil
-                    
-                    if let token = dictionary["token"] as? String {
-                        appUser = User(jwtToken: token)
-                    }
-                    
-                    DispatchQueue.main.async {
-                        completion?(appUser)
-                    }
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-            
-        }
-        
-        return dataTask*/
-    }
-    
-    @objc internal func forgotPassword(phone: String,
-                                     completion: ((GenericResponse?) -> Void)?,
-                                     failure: APIFailure?) -> URLSessionDataTask {
-        
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/user/password/token/"
-        
-        let url: URL = URL(string: urlString)!
-        
-        var urlRequest: URLRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "POST"
-                
-        let params: [String: Any] = ["biz_id": bizId,
-                                     "phone": phone]
+     urlRequest.httpMethod = "POST"
 
-        urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
-        
-        
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> GenericResponse? in
-            return GenericResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-                
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    
-                    DispatchQueue.main.async {
-                        completion?(dictionary)
-                    }
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-            
-        }
-        
-        return dataTask*/
-    }
-    
-    @objc internal func resetPassword(phone: String,
-                                    otp: String,
-                                    password: String,
-                                    confirmPassword: String,
-                                    completion: ((GenericResponse?) -> Void)?,
+     let params: [String: Any] = ["token": token]
+
+     urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+
+     return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
+ }
+
+ @objc internal func login(phone: String,
+                         password: String,
+                         completion: APICompletion<LoginResponse>?,
+                         failure: APIFailure?) -> URLSessionDataTask {
+
+     let urlString: String = "\(APIManager.baseUrl)/api/v2/auth/token/"
+
+     let url: URL = URL(string: urlString)!
+
+     var urlRequest: URLRequest = URLRequest(url: url)
+
+     urlRequest.httpMethod = "POST"
+
+     let params: [String: Any] = ["username": phone,
+                                  "pass": password]
+
+     urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+
+     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+ }
+
+ @objc internal func forgotPassword(phone: String,
+                                  completion: APICompletion<GenericResponse>?,
+                                  failure: APIFailure?) -> URLSessionDataTask {
+
+     let urlString: String = "\(APIManager.baseUrl)/api/v1/user/password/token/"
+
+     let url: URL = URL(string: urlString)!
+
+     var urlRequest: URLRequest = URLRequest(url: url)
+     urlRequest.httpMethod = "POST"
+
+     let params: [String: Any] = ["biz_id": bizId,
+                                  "phone": phone]
+
+     urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+
+     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+ }
+
+ @objc internal func resetPassword(phone: String,
+                                 otp: String,
+                                 password: String,
+                                 confirmPassword: String,
+                                 completion: APICompletion<GenericResponse>?,
+                                 failure: APIFailure?) -> URLSessionDataTask {
+
+     let urlString: String = "\(APIManager.baseUrl)/api/v1/user/password/"
+
+     let url: URL = URL(string: urlString)!
+
+     var urlRequest: URLRequest = URLRequest(url: url)
+     urlRequest.httpMethod = "POST"
+
+     let params: [String: Any] = ["biz_id": bizId,
+                   "phone": phone,
+                   "token": otp,
+                   "new_password1": password,
+                   "new_password2": confirmPassword]
+
+     urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+
+     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
+ }
+
+ }
+
+ //  MARK: Create User
+
+ extension APIManager {
+
+ @objc internal func registerUser(name: String,
+                              phone: String,
+                              email: String,
+                              password: String,
+                              referralObject: Referral? = nil,
+                              completion: APICompletion<RegistrationResponse>?,
+                              failure: APIFailure?) -> URLSessionDataTask {
+     AnalyticsManager.shared.track(event: .signupStart(phone: phone))
+     let urlString: String = "\(APIManager.baseUrl)/api/v2/card/?customer_name=\(name)&customer_phone=\(phone)&email=\(email)&password=\(password)&channel=\(APIManager.channel)"
+
+     var cs: CharacterSet = CharacterSet.urlQueryAllowed
+     cs.remove(charactersIn: "@+")
+     let encodedURlString: String = urlString.addingPercentEncoding(withAllowedCharacters: cs)!
+
+     let url: URL = URL(string: encodedURlString)!
+
+     var urlRequest: URLRequest = URLRequest(url: url)
+
+     urlRequest.httpMethod = "POST"
+
+     if let params = referralObject {
+         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: ["referral": params.toDictionary()], options: [])
+     }
+
+     return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
+ }
+
+ @objc internal func createSocialUser(name: String,
+                                    phone: String,
+                                    email: String,
+                                    gender: String? = nil,
+                                    accessToken: String,
+                                    referralObject: Referral? = nil,
+                                    completion: APICompletion<RegistrationResponse>?,
                                     failure: APIFailure?) -> URLSessionDataTask {
 
-        let urlString: String = "\(APIManager.baseUrl)/api/v1/user/password/"
-        
-        let url: URL = URL(string: urlString)!
-        
-        var urlRequest: URLRequest = URLRequest(url: url)
-        urlRequest.httpMethod = "POST"
+     var urlString: String = "\(APIManager.baseUrl)/api/v2/card/?customer_name=\(name)&customer_phone=\(phone)&email=\(email)&password=\(accessToken)&channel=\(APIManager.channel)"
 
-        let params: [String: Any] = ["biz_id": bizId,
-                      "phone": phone,
-                      "token": otp,
-                      "new_password1": password,
-                      "new_password2": confirmPassword]
-        
-        urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+     if gender != nil {
+         urlString = "\(urlString)&gender=\(gender!)"
+     }
 
-        
-        return apiRequest(urlRequest: &urlRequest, responseParser: { (dictionary) -> GenericResponse? in
-            return GenericResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, code == 200 {
-                
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    
-                    DispatchQueue.main.async {
-                        completion?(dictionary)
-                    }
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-            
-        }
-        
-        return dataTask*/
-    }
-    
-    @objc internal func card(urlString: String,
-                           referralParams: Referral? = nil,
-                           completion: ((RegistrationResponse?) -> Void)?,
-                           failure: APIFailure?) -> URLSessionDataTask {
-        
-        var cs: CharacterSet = CharacterSet.urlQueryAllowed
-        cs.remove(charactersIn: "@+")
-        let encodedURlString: String = urlString.addingPercentEncoding(withAllowedCharacters: cs)!
+     var cs: CharacterSet = CharacterSet.urlQueryAllowed
+     cs.remove(charactersIn: "@+")
+     let encodedURlString: String = urlString.addingPercentEncoding(withAllowedCharacters: cs)!
 
-        let url: URL = URL(string: encodedURlString)!
-        
-        var urlRequest: URLRequest = URLRequest(url: url)
-        
-        urlRequest.httpMethod = "POST"
-        
-        if let params = referralParams {
-            urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: ["referral": params.toDictionary()], options: [])
-        }
+     let url: URL = URL(string: encodedURlString)!
 
-        
-        return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()],
-                          responseParser: { (dictionary) -> RegistrationResponse? in
-                            return RegistrationResponse(fromDictionary: dictionary)
-        }, completion: completion, failure: failure)!
-        
-        /*let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode
-            if let code = statusCode, (code == 200 || code == 201) {
-                if let jsonData: Data = data, let JSON: Any = try? JSONSerialization.jsonObject(with: jsonData, options: []), let dictionary: [String: Any] = JSON as? [String: Any] {
-                    let registrationResponse: RegistrationResponse = RegistrationResponse(fromDictionary: dictionary)
-                    
-                    DispatchQueue.main.async {
-                        completion?(registrationResponse)
-                    }
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    completion?(nil)
-                }
-            } else {
-                let errorCode = (error as NSError?)?.code
-                self?.handleAPIError(httpStatusCode: statusCode, errorCode: errorCode, data: data, failureClosure: failure)
-            }
-            
-        }
-        
-        return dataTask*/
-    }
-    
-}
+     var urlRequest: URLRequest = URLRequest(url: url)
 
-//  MARK: Create User
+     urlRequest.httpMethod = "POST"
 
-extension APIManager {
-    
-    @objc internal func registerUser(name: String,
-                                 phone: String,
-                                 email: String,
-                                 password: String,
-                                 referralObject: Referral? = nil,
-                                 completion: ((RegistrationResponse?) -> Void)?,
-                                 failure: APIFailure?) -> URLSessionDataTask {
-        AnalyticsManager.shared.track(event: .signupStart(phone: phone))
-        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_name=\(name)&customer_phone=\(phone)&email=\(email)&password=\(password)&channel=\(APIManager.channel)"
-        
-        return card(urlString: urlString, referralParams: referralObject, completion: completion, failure: failure)
-    }
-    
-    @objc internal func createSocialUser(name: String,
-                                       phone: String,
-                                       email: String,
-                                       gender: String? = nil,
-                                       accessToken: String,
-                                       referralObject: Referral? = nil,
-                                       completion: ((RegistrationResponse?) -> Void)?,
-                                       failure: APIFailure?) -> URLSessionDataTask {
-        
-        var urlString: String = "\(APIManager.cardBaseUrl)/?customer_name=\(name)&customer_phone=\(phone)&email=\(email)&password=\(accessToken)&channel=\(APIManager.channel)"
-        
-        if gender != nil {
-            urlString = "\(urlString)&gender=\(gender!)"
-        }
-        
-        return card(urlString: urlString, referralParams: referralObject, completion: completion, failure: failure)
-    }
-    
-}
+     if let params = referralObject {
+         urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: ["referral": params.toDictionary()], options: [])
+     }
 
-//  MARK: Mobile Verification
+     return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
+ }
 
-extension APIManager {
-    
-    @objc internal func verifyRegOTP(phone: String,
-                                   pin: String,
-                                   completion: ((RegistrationResponse?) -> Void)?,
-                                   failure: APIFailure?) -> URLSessionDataTask {
-        
-        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(phone)&pin=\(pin)&nopinsend=true"
-        
-        return card(urlString: urlString, completion: completion, failure: failure)
-    }
-    
-    @objc internal func resendOTP(phone: String,
-                                completion: ((RegistrationResponse?) -> Void)?,
+ }
+
+ //  MARK: Mobile Verification
+
+ extension APIManager {
+
+ @objc internal func verifyRegOTP(phone: String,
+                                pin: String,
+                                completion: APICompletion<RegistrationResponse>?,
                                 failure: APIFailure?) -> URLSessionDataTask {
-        let urlString: String = "\(APIManager.cardBaseUrl)/?customer_phone=\(phone)&pin=resendotp"
-        
-        return card(urlString: urlString, completion: completion, failure: failure)
-    }
-    
-}
 
+     let urlString: String = "\(APIManager.baseUrl)/api/v2/card/?customer_phone=\(phone)&pin=\(pin)&nopinsend=true"
+
+     var cs: CharacterSet = CharacterSet.urlQueryAllowed
+     cs.remove(charactersIn: "@+")
+     let encodedURlString: String = urlString.addingPercentEncoding(withAllowedCharacters: cs)!
+
+     let url: URL = URL(string: encodedURlString)!
+
+     var urlRequest: URLRequest = URLRequest(url: url)
+
+     urlRequest.httpMethod = "POST"
+
+     return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
+ }
+
+ @objc internal func resendOTP(phone: String,
+                             completion: APICompletion<RegistrationResponse>?,
+                             failure: APIFailure?) -> URLSessionDataTask {
+     let urlString: String = "\(APIManager.baseUrl)/api/v2/card/?customer_phone=\(phone)&pin=resendotp"
+
+     var cs: CharacterSet = CharacterSet.urlQueryAllowed
+     cs.remove(charactersIn: "@+")
+     let encodedURlString: String = urlString.addingPercentEncoding(withAllowedCharacters: cs)!
+
+     let url: URL = URL(string: encodedURlString)!
+
+     var urlRequest: URLRequest = URLRequest(url: url)
+
+     urlRequest.httpMethod = "POST"
+
+     return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
+ }
+
+ }*/

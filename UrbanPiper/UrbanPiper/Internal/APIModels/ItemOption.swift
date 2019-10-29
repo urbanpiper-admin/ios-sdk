@@ -7,31 +7,29 @@
 
 import Foundation
 
-
-public class ItemOption : NSObject {
-
-	public var currentStock : Int!
-	public var descriptionField : String!
-	public var foodType : String!
-	public var id : Int!
-	public var imageUrl : String!
-	public var price : Decimal!
-    public var recommended : Bool = false
-	public var sortOrder : Int!
-	@objc public var title : String!
-	public var nestedOptionGroups : [ItemOptionGroup]!
+public class ItemOption: NSObject, JSONDecodable {
+    public var currentStock: Int?
+    public var descriptionField: String!
+    public var foodType: String!
+    public var id: Int = 0
+    public var imageUrl: String!
+    public var price: Decimal!
+    public var recommended: Bool = false
+    public var sortOrder: Int = 0
+    @objc public var title: String!
+    public var nestedOptionGroups: [ItemOptionGroup]!
     internal var quantity: Int = 0
 
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		currentStock = dictionary["current_stock"] as? Int
-		descriptionField = dictionary["description"] as? String
-		foodType = dictionary["food_type"] as? String
-		id = dictionary["id"] as? Int
-		imageUrl = dictionary["image_url"] as? String
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        currentStock = dictionary["current_stock"] as? Int
+        descriptionField = dictionary["description"] as? String
+        foodType = dictionary["food_type"] as? String
+        id = dictionary["id"] as? Int ?? 0
+        imageUrl = dictionary["image_url"] as? String
 
         if let val: Decimal = dictionary["price"] as? Decimal {
             price = val
@@ -42,58 +40,53 @@ public class ItemOption : NSObject {
         }
 
         recommended = dictionary["recommended"] as? Bool ?? false
-		sortOrder = dictionary["sort_order"] as? Int ?? 0
-		title = dictionary["title"] as? String
-		nestedOptionGroups = [ItemOptionGroup]()
-		if let nestedOptionGroupsArray: [[String:Any]] = dictionary["nested_option_groups"] as? [[String:Any]]{
-			for dic in nestedOptionGroupsArray{
-				let value: ItemOptionGroup = ItemOptionGroup(fromDictionary: dic)
-				nestedOptionGroups.append(value)
-			}
-		}
+        sortOrder = dictionary["sort_order"] as? Int ?? 0
+        title = dictionary["title"] as? String
+        nestedOptionGroups = [ItemOptionGroup]()
+        if let nestedOptionGroupsArray: [[String: AnyObject]] = dictionary["nested_option_groups"] as? [[String: AnyObject]] {
+            for dic in nestedOptionGroupsArray {
+                guard let value: ItemOptionGroup = ItemOptionGroup(fromDictionary: dic) else { continue }
+                nestedOptionGroups.append(value)
+            }
+        }
 
         quantity = dictionary["quantity"] as? Int ?? 0
-	}
+    }
 
     /**
-     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
      */
-    public func toDictionary() -> [String:Any]
-    {
-        var dictionary: [String: Any] = [String:Any]()
-        if currentStock != nil{
-            dictionary["current_stock"] = currentStock
+    public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+        if let currentStock = currentStock {
+            dictionary["current_stock"] = currentStock as AnyObject
         }
-        if descriptionField != nil{
-            dictionary["description"] = descriptionField
+        if let descriptionField = descriptionField {
+            dictionary["description"] = descriptionField as AnyObject
         }
-        if foodType != nil{
-            dictionary["food_type"] = foodType
+        if let foodType = foodType {
+            dictionary["food_type"] = foodType as AnyObject
         }
-        if id != nil{
-            dictionary["id"] = id
+        dictionary["id"] = id as AnyObject
+        if let imageUrl = imageUrl {
+            dictionary["image_url"] = imageUrl as AnyObject
         }
-        if imageUrl != nil{
-            dictionary["image_url"] = imageUrl
+        if let price = price {
+            dictionary["price"] = price as AnyObject
         }
-        if price != nil{
-            dictionary["price"] = price
+        dictionary["recommended"] = recommended as AnyObject
+        dictionary["sort_order"] = sortOrder as AnyObject
+        if let title = title {
+            dictionary["title"] = title as AnyObject
         }
-        dictionary["recommended"] = recommended
-        if sortOrder != nil{
-            dictionary["sort_order"] = sortOrder
-        }
-        if title != nil{
-            dictionary["title"] = title
-        }
-//        if nestedOptionGroups != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//        if let nestedOptionGroups = nestedOptionGroups {
+//            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
 //            for nestedOptionGroupsElement in nestedOptionGroups {
 //                dictionaryElements.append(nestedOptionGroupsElement.toDictionary())
 //            }
-//            dictionary["nested_option_groups"] = dictionaryElements
+//            dictionary["nested_option_groups"] = dictionaryElements as AnyObject
 //        }
-        dictionary["quantity"] = quantity
+        dictionary["quantity"] = quantity as AnyObject
         return dictionary
     }
 
@@ -106,14 +99,22 @@ public class ItemOption : NSObject {
 //         currentStock = aDecoder.decodeObject(forKey: "current_stock") as? Int
 //         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
 //         foodType = aDecoder.decodeObject(forKey: "food_type") as? String
-//         id = aDecoder.decodeObject(forKey: "id") as? Int
+//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
+//            id = val
+//         } else {
+//            id = aDecoder.decodeInteger(forKey: "id")
+//         }
 //         imageUrl = aDecoder.decodeObject(forKey: "image_url") as? String
-//         recommended = aDecoder.decodeObject(forKey: "recommended") as? Bool ?? false
+//         recommended = aDecoder.decodeBool(forKey: "recommended") ?? false
 //         price = aDecoder.decodeObject(forKey: "price") as? Decimal
 //         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
 //         title = aDecoder.decodeObject(forKey: "title") as? String
 //         nestedOptionGroups = aDecoder.decodeObject(forKey :"nested_option_groups") as? [ItemOptionGroup]
-//        quantity = aDecoder.decodeObject(forKey: "quantity") as? Int ?? 0
+//        if let val = aDecoder.decodeObject(forKey: "quantity") as? Int {
+//            quantity = val
+//        } else {
+//            quantity = aDecoder.decodeInteger(forKey: "quantity")
+//        }
 //    }
 //
 //    /**
@@ -122,72 +123,68 @@ public class ItemOption : NSObject {
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if currentStock != nil{
+//        if let currentStock = currentStock {
 //            aCoder.encode(currentStock, forKey: "current_stock")
 //        }
-//        if descriptionField != nil{
+//        if let descriptionField = descriptionField {
 //            aCoder.encode(descriptionField, forKey: "description")
 //        }
-//        if foodType != nil{
+//        if let foodType = foodType {
 //            aCoder.encode(foodType, forKey: "food_type")
 //        }
-//        if id != nil{
+//        if let id = id {
 //            aCoder.encode(id, forKey: "id")
 //        }
-//        if imageUrl != nil{
+//        if let imageUrl = imageUrl {
 //            aCoder.encode(imageUrl, forKey: "image_url")
 //        }
-//        if price != nil{
+//        if let price = price {
 //            aCoder.encode(price, forKey: "price")
 //        }
 //        aCoder.encode(recommended, forKey: "recommended")
-//        if sortOrder != nil{
+//        if let sortOrder = sortOrder {
 //            aCoder.encode(sortOrder, forKey: "sort_order")
 //        }
-//        if title != nil{
+//        if let title = title {
 //            aCoder.encode(title, forKey: "title")
 //        }
-//        if nestedOptionGroups != nil{
+//        if let nestedOptionGroups = nestedOptionGroups {
 //            aCoder.encode(nestedOptionGroups, forKey: "nested_option_groups")
 //        }
 //        aCoder.encode(quantity, forKey: "quantity")
 //    }
-
 }
 
 extension ItemOption {
-    
-    internal func equitableCheckDictionary() -> [String: Any] {
-        var dictionary: [String: Any] = [String:Any]()
-        //        if currentStock != nil{
-        //            dictionary["current_stock"] = currentStock
+    internal func equitableCheckDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+        //        if let currentStock = currentStock {
+        //            dictionary["current_stock"] = currentStock as AnyObject
         //        }
-        if id != nil{
-            dictionary["id"] = id
-        }
-        //        if price != nil{
-        //            dictionary["price"] = price
+        dictionary["id"] = id as AnyObject
+        //        if let price = price {
+        //            dictionary["price"] = price as AnyObject
         //        }
-        //        if title != nil{
-        //            dictionary["title"] = title
+        //        if let title = title {
+        //            dictionary["title"] = title as AnyObject
         //        }
-        //        dictionary["quantity"] = quantity
-        if nestedOptionGroups != nil{
-            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+        //        dictionary["quantity"] = quantity as AnyObject
+        if let nestedOptionGroups = nestedOptionGroups {
+            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
             for nestedOptionGroupsElement in nestedOptionGroups {
                 dictionaryElements.append(nestedOptionGroupsElement.equitableCheckDictionary())
             }
-            dictionary["nested_option_groups"] = dictionaryElements
+            dictionary["nested_option_groups"] = dictionaryElements as AnyObject
         }
         return dictionary
     }
-    
-    static internal func == (lhs: ItemOption, rhs: ItemOption) -> Bool {
+
+    internal static func == (lhs: ItemOption, rhs: ItemOption) -> Bool {
         let lhsDictionary = lhs.equitableCheckDictionary()
         let rhsDictionary = rhs.equitableCheckDictionary()
-        
+
         return NSDictionary(dictionary: lhsDictionary).isEqual(to: rhsDictionary)
-        
+
         //        return lhs.currentStock == rhs.currentStock  &&
         //            lhs.descriptionField == rhs.descriptionField  &&
         //            lhs.foodType == rhs.foodType  &&
@@ -200,5 +197,3 @@ extension ItemOption {
         //            lhs.quantity  == rhs.quantity
     }
 }
-
-

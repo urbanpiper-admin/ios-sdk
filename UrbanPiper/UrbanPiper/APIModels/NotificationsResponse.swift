@@ -4,44 +4,42 @@
 
 import Foundation
 
+public class NotificationsResponse: NSObject, JSONDecodable {
+    public var messages: [Message]!
+    public var meta: Meta!
 
-public class NotificationsResponse : NSObject{
-
-	public var messages : [Message]!
-	public var meta : Meta!
-
-
-	/**
-	 * Instantiate the instance using the passed dictionary values to set the properties values
-	 */
-	internal init(fromDictionary dictionary:  [String:Any]){
-		messages = [Message]()
-		if let messagesArray: [[String:Any]] = dictionary["messages"] as? [[String:Any]]{
-			for dic in messagesArray{
-				let value: Message = Message(fromDictionary: dic)
-				messages.append(value)
-			}
-		}
-		if let metaData: [String:Any] = dictionary["meta"] as? [String:Any]{
-			meta = Meta(fromDictionary: metaData)
-		}
-	}
+    /**
+     * Instantiate the instance using the passed dictionary values to set the properties values
+     */
+    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+        messages = [Message]()
+        if let messagesArray: [[String: AnyObject]] = dictionary["messages"] as? [[String: AnyObject]] {
+            for dic in messagesArray {
+                guard let value: Message = Message(fromDictionary: dic) else { continue }
+                messages.append(value)
+            }
+        }
+        if let metaData: [String: AnyObject] = dictionary["meta"] as? [String: AnyObject] {
+            meta = Meta(fromDictionary: metaData)
+        }
+    }
 
 //    /**
-//     * Returns all the available property values in the form of [String:Any] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    public func toDictionary() -> [String:Any]
+//    public func toDictionary() -> [String : AnyObject]
 //    {
-//        var dictionary: [String: Any] = [String:Any]()
-//        if messages != nil{
-//            var dictionaryElements: [[String:Any]] = [[String:Any]]()
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        if let messages = messages {
+//            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
 //            for messagesElement in messages {
 //                dictionaryElements.append(messagesElement.toDictionary())
 //            }
-//            dictionary["messages"] = dictionaryElements
+//            dictionary["messages"] = dictionaryElements as AnyObject
 //        }
-//        if meta != nil{
-//            dictionary["meta"] = meta.toDictionary()
+//        if let meta = meta {
+//            dictionary["meta"] = meta.toDictionary() as AnyObject
 //        }
 //        return dictionary
 //    }
@@ -63,13 +61,12 @@ public class NotificationsResponse : NSObject{
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if messages != nil{
+//        if let messages = messages {
 //            aCoder.encode(messages, forKey: "messages")
 //        }
-//        if meta != nil{
+//        if let meta = meta {
 //            aCoder.encode(meta, forKey: "meta")
 //        }
 //
 //    }
-
 }

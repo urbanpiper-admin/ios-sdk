@@ -8,48 +8,42 @@
 
 import UIKit
 
-@objc public class GenericResponse: NSObject {
-    
+@objc public class GenericResponse: NSObject, JSONDecodable {
     @objc public var status: String? = "success"
     public var message: String?
     public var errorMessage: String?
     internal var msg: String?
-    
-    
-    internal override init() {
-        
-    }
-    
+
+    internal override init() {}
+
     /**
      * Instantiate the instance using the passed dictionary values to set the properties values
      */
-    init?(fromDictionary dictionary: [String: Any]?) {
-        guard dictionary != nil else { return nil }
-        
-        if let status = dictionary?["status"] as? String {
+    required init?(fromDictionary dictionary: [String: AnyObject]?) {
+        guard let dictionary = dictionary else { return nil }
+
+        if let status = dictionary["status"] as? String {
             self.status = status
         }
-        message = dictionary?["message"] as? String
-        errorMessage = dictionary?["error_message"] as? String
-        msg = dictionary?["msg"] as? String
+        message = dictionary["message"] as? String
+        errorMessage = dictionary["error_message"] as? String
+        msg = dictionary["msg"] as? String
     }
 
-    @objc public func toDictionary() -> [String:Any]
-    {
-        var dictionary: [String: Any] = [String:Any]()
-        if status != nil{
-            dictionary["status"] = status
+    @objc public func toDictionary() -> [String: AnyObject] {
+        var dictionary: [String: AnyObject] = [String: AnyObject]()
+        if let status = status {
+            dictionary["status"] = status as AnyObject
         }
-        if message != nil{
-            dictionary["message"] = message
+        if let message = message {
+            dictionary["message"] = message as AnyObject
         }
-        if errorMessage != nil{
-            dictionary["error_message"] = errorMessage
+        if let errorMessage = errorMessage {
+            dictionary["error_message"] = errorMessage as AnyObject
         }
-        if msg != nil{
-            dictionary["msg"] = msg
+        if let msg = msg {
+            dictionary["msg"] = msg as AnyObject
         }
         return dictionary
     }
-    
 }
