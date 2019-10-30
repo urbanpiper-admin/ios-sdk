@@ -54,14 +54,14 @@ public class TimeSlot: NSObject, JSONDecodable, NSCoding {
      * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder) {
-        if let day = day {
+        // if let day = day {
             aCoder.encode(day, forKey: "day")
-        }
-        if let endTime = endTime {
+        // }
+        // if let endTime = endTime {
             aCoder.encode(endTime, forKey: "end_time")
-        }
-        if let startTime = startTime {
+        // }
+        // if let startTime = startTime {
             aCoder.encode(startTime, forKey: "start_time")
-        }
+        // }
     }
 }

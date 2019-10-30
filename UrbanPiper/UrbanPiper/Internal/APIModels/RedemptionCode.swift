@@ -52,14 +52,14 @@ public class RedemptionCode: NSObject, JSONDecodable, NSCoding {
      * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder) {
-        if let expiresIn = expiresIn {
+        // if let expiresIn = expiresIn {
             aCoder.encode(expiresIn, forKey: "expires_in")
-        }
-        if let redemptionCode = redemptionCode {
+        // }
+        // if let redemptionCode = redemptionCode {
             aCoder.encode(redemptionCode, forKey: "redemption_code")
-        }
-        if let validFrom = validFrom {
+        // }
+        // if let validFrom = validFrom {
             aCoder.encode(validFrom, forKey: "valid_from")
-        }
+        // }
     }
 }

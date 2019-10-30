@@ -59,11 +59,11 @@ public class FeedbackConfig: NSObject, JSONDecodable, NSCoding {
      * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder) {
-        if let choices = choices {
+        // if let choices = choices {
             aCoder.encode(choices, forKey: "choices")
-        }
-        if let type = type {
+        // }
+        // if let type = type {
             aCoder.encode(type, forKey: "type")
-        }
+        // }
     }
 }

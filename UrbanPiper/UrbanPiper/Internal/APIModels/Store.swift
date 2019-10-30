@@ -252,73 +252,73 @@ public class Store: NSObject, JSONDecodable, NSCoding {
      * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder) {
-        if let address = address {
+        // if let address = address {
             aCoder.encode(address, forKey: "address")
-        }
+        // }
         aCoder.encode(bizLocationId, forKey: "biz_location_id")
-        if let city = city {
+        // if let city = city {
             aCoder.encode(city, forKey: "city")
-        }
+        // }
         aCoder.encode(closingDay, forKey: "closing_day")
-        if let closingTime = closingTime {
+        // if let closingTime = closingTime {
             aCoder.encode(closingTime, forKey: "closing_time")
-        }
-        if let deliveryCharge = deliveryCharge {
+        // }
+        // if let deliveryCharge = deliveryCharge {
             aCoder.encode(deliveryCharge, forKey: "delivery_charge")
-        }
-        if let deliveryMinOffsetTime = deliveryMinOffsetTime {
+        // }
+//        // if let deliveryMinOffsetTime = deliveryMinOffsetTime {
             aCoder.encode(deliveryMinOffsetTime, forKey: "delivery_min_offset_time")
-        }
-        if let discount = discount {
+//        // }
+        // if let discount = discount {
             aCoder.encode(discount, forKey: "discount")
-        }
+        // }
 
         aCoder.encode(hideStoreName, forKey: "hide_store_name")
 
-        if let itemTaxes = itemTaxes {
+        // if let itemTaxes = itemTaxes {
             aCoder.encode(itemTaxes, forKey: "item_taxes")
-        }
+        // }
         aCoder.encode(lat, forKey: "lat")
         aCoder.encode(lng, forKey: "lng")
-        if let minOrderTotal = minOrderTotal {
+        // if let minOrderTotal = minOrderTotal {
             aCoder.encode(minOrderTotal, forKey: "min_order_total")
-        }
-        if let name = name {
+        // }
+        // if let name = name {
             aCoder.encode(name, forKey: "name")
-        }
-        if let onCloseMsg = onCloseMsg {
+        // }
+        // if let onCloseMsg = onCloseMsg {
             aCoder.encode(onCloseMsg, forKey: "on_close_msg")
-        }
-        if let onSelectMsg = onSelectMsg {
+        // }
+        // if let onSelectMsg = onSelectMsg {
             aCoder.encode(onSelectMsg, forKey: "on_select_msg")
-        }
-        if let openingTime = openingTime {
+        // }
+        // if let openingTime = openingTime {
             aCoder.encode(openingTime, forKey: "opening_time")
-        }
-        if let packagingCharge = packagingCharge {
+        // }
+        // if let packagingCharge = packagingCharge {
             aCoder.encode(packagingCharge, forKey: "packaging_charge")
-        }
-        if let pgKey = pgKey {
+        // }
+        // if let pgKey = pgKey {
             aCoder.encode(pgKey, forKey: "pg_key")
-        }
-        if let phone = phone {
+        // }
+        // if let phone = phone {
             aCoder.encode(phone, forKey: "phone")
-        }
-        if let pickupMinOffsetTime = pickupMinOffsetTime {
+        // }
+        // if let pickupMinOffsetTime = pickupMinOffsetTime {
             aCoder.encode(pickupMinOffsetTime, forKey: "pickup_min_offset_time")
-        }
-        if let sortOrder = sortOrder {
+        // }
+        // if let sortOrder = sortOrder {
             aCoder.encode(sortOrder, forKey: "sort_order")
-        }
-        if let taxRate = taxRate {
+        // }
+        // if let taxRate = taxRate {
             aCoder.encode(taxRate, forKey: "tax_rate")
-        }
+        // }
         aCoder.encode(temporarilyClosed, forKey: "temporarily_closed")
-        if let timeSlots = timeSlots {
+        // if let timeSlots = timeSlots {
             aCoder.encode(timeSlots, forKey: "time_slots")
-        }
-        if let merchantRefId = merchantRefId {
+        // }
+        // if let merchantRefId = merchantRefId {
             aCoder.encode(merchantRefId, forKey: "merchant_ref_id")
-        }
+        // }
     }
 }

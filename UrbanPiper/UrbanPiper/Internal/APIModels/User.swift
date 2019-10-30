@@ -323,43 +323,43 @@ public class User: NSObject, NSCoding {
      * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder) {
-        if let authKey = authKey {
+        // if let authKey = authKey {
             aCoder.encode(authKey, forKey: "authKey")
-        }
-        if let userBizInfoResponse = userBizInfoResponse {
+        // }
+        // if let userBizInfoResponse = userBizInfoResponse {
             aCoder.encode(userBizInfoResponse, forKey: "biz")
-        }
-        if let email = email {
+        // }
+        // if let email = email {
             aCoder.encode(email, forKey: "email")
-        }
-        if let message = message {
+        // }
+        // if let message = message {
             aCoder.encode(message, forKey: "message")
-        }
-        if let gender = gender {
+        // }
+        // if let gender = gender {
             aCoder.encode(gender, forKey: "gender")
-        }
-        if let phone = phone {
+        // }
+        // if let phone = phone {
             aCoder.encode(phone, forKey: "phone")
-        }
+        // }
 
 //        if success != nil {
 //            aCoder.encode(success, forKey: "success")
 //        }
 
-        if let timestamp = timestamp {
+        // if let timestamp = timestamp {
             aCoder.encode(timestamp, forKey: "timestamp")
-        }
-        if let username = username {
+        // }
+        // if let username = username {
             aCoder.encode(username, forKey: "username")
-        }
+        // }
 
-        if provider != nil {
-            aCoder.encode(provider!.rawValue, forKey: "provider")
-        }
+        // if provider != nil {
+            aCoder.encode(provider?.rawValue, forKey: "provider")
+        // }
 
-        if accessToken != nil {
-            aCoder.encode(accessToken!, forKey: "accessToken")
-        }
+        // if accessToken != nil {
+            aCoder.encode(accessToken, forKey: "accessToken")
+        // }
 
 //        aCoder.encode(countryCode, forKey: "countryCode")
 
@@ -367,27 +367,27 @@ public class User: NSObject, NSCoding {
 //            aCoder.encode(password!, forKey: "password")
 //        }
 
-        if let address = address {
+        // if let address = address {
             aCoder.encode(address, forKey: "address")
-        }
-        if let anniversary = anniversary {
+        // }
+        // if let anniversary = anniversary {
             aCoder.encode(anniversary, forKey: "anniversary")
-        }
-        if let birthday = birthday {
+        // }
+        // if let birthday = birthday {
             aCoder.encode(birthday, forKey: "birthday")
-        }
-        if let currentCity = currentCity {
+        // }
+        // if let currentCity = currentCity {
             aCoder.encode(currentCity, forKey: "current_city")
-        }
+        // }
         aCoder.encode(phoneVerified, forKey: "phone_verified")
-        if let firstName = firstName {
+        // if let firstName = firstName {
             aCoder.encode(firstName, forKey: "first_name")
-        }
-        if let lastName = lastName {
+        // }
+        // if let lastName = lastName {
             aCoder.encode(lastName, forKey: "last_name")
-        }
-        if let jwt = jwt {
+        // }
+        // if let jwt = jwt {
             aCoder.encode(jwt, forKey: "jwt")
-        }
+        // }
     }
 }

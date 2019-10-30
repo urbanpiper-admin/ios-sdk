@@ -151,43 +151,43 @@ import Foundation
      * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder) {
-        if let category = category {
+        // if let category = category {
             aCoder.encode(category, forKey: "category")
-        }
+        // }
         aCoder.encode(currentStock, forKey: "current_stock")
         aCoder.encode(id, forKey: "id")
-        if let imageLandscapeUrl = imageLandscapeUrl {
+        // if let imageLandscapeUrl = imageLandscapeUrl {
             aCoder.encode(imageLandscapeUrl, forKey: "image_landscape_url")
-        }
-        if let imageUrl = imageUrl {
+        // }
+        // if let imageUrl = imageUrl {
             aCoder.encode(imageUrl, forKey: "image_url")
-        }
-        if let itemCategory = itemCategory {
+        // }
+        // if let itemCategory = itemCategory {
             aCoder.encode(itemCategory, forKey: "item_category")
-        }
-        if let itemPrice = itemPrice {
+        // }
+        // if let itemPrice = itemPrice {
             aCoder.encode(itemPrice, forKey: "item_price")
-        }
-        if let itemTitle = itemTitle {
+        // }
+        // if let itemTitle = itemTitle {
             aCoder.encode(itemTitle, forKey: "item_title")
-        }
-        if let optionGroups = optionGroups {
+        // }
+        // if let optionGroups = optionGroups {
             aCoder.encode(optionGroups, forKey: "option_groups")
-        }
+        // }
 
         aCoder.encode(quantity, forKey: "quantity")
 
-        if let serviceTaxRate = serviceTaxRate {
+        // if let serviceTaxRate = serviceTaxRate {
             aCoder.encode(serviceTaxRate, forKey: "service_tax_rate")
-        }
-        if let vatRate = vatRate {
+        // }
+        // if let vatRate = vatRate {
             aCoder.encode(vatRate, forKey: "vat_rate")
-        }
-        if let preOrderStartTime = preOrderStartTime {
+        // }
+        // if let preOrderStartTime = preOrderStartTime {
             aCoder.encode(preOrderStartTime, forKey: "pre_order_start_time")
-        }
-        if let preOrderEndTime = preOrderEndTime {
+        // }
+        // if let preOrderEndTime = preOrderEndTime {
             aCoder.encode(preOrderEndTime, forKey: "pre_order_end_time")
-        }
+        // }
     }
 }

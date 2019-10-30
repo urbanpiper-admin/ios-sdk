@@ -60,11 +60,11 @@ public class UserBizInfoResponse: NSObject, JSONDecodable, NSCoding {
      * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder) {
-        if let meta = meta {
+        // if let meta = meta {
             aCoder.encode(meta, forKey: "meta")
-        }
-        if let userBizInfos = userBizInfos {
+        // }
+        // if let userBizInfos = userBizInfos {
             aCoder.encode(userBizInfos, forKey: "objects")
-        }
+        // }
     }
 }

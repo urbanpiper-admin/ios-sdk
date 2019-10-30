@@ -72,15 +72,15 @@ public class Meta: NSObject, JSONDecodable, NSCoding {
     @objc public func encode(with aCoder: NSCoder) {
         aCoder.encode(limit, forKey: "limit")
 
-        if let next = next {
+        // if let next = next {
             aCoder.encode(next, forKey: "next")
-        }
+        // }
 
         aCoder.encode(offset, forKey: "offset")
 
-        if let previous = previous {
+        // if let previous = previous {
             aCoder.encode(previous, forKey: "previous")
-        }
+        // }
 
         aCoder.encode(totalCount, forKey: "total_count")
     }

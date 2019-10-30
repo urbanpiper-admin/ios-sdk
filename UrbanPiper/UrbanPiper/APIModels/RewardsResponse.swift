@@ -106,20 +106,20 @@ public class RewardsResponse: NSObject, JSONDecodable, NSCoding {
      * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder) {
-        if let claimed = claimed {
+        // if let claimed = claimed {
             aCoder.encode(claimed, forKey: "claimed")
-        }
-        if let locked = locked {
+        // }
+        // if let locked = locked {
             aCoder.encode(locked, forKey: "locked")
-        }
-        if let meta = meta {
+        // }
+        // if let meta = meta {
             aCoder.encode(meta, forKey: "meta")
-        }
-        if let redeemed = redeemed {
+        // }
+        // if let redeemed = redeemed {
             aCoder.encode(redeemed, forKey: "redeemed")
-        }
-        if let unlocked = unlocked {
+        // }
+        // if let unlocked = unlocked {
             aCoder.encode(unlocked, forKey: "unlocked")
-        }
+        // }
     }
 }

@@ -57,11 +57,11 @@ public class Choice: NSObject, JSONDecodable, NSCoding {
      */
     @objc public func encode(with aCoder: NSCoder) {
         aCoder.encode(id, forKey: "id")
-        if let sortOrder = sortOrder {
+        // if let sortOrder = sortOrder {
             aCoder.encode(sortOrder, forKey: "sort_order")
-        }
-        if let text = text {
+        // }
+        // if let text = text {
             aCoder.encode(text, forKey: "text")
-        }
+        // }
     }
 }

@@ -143,42 +143,42 @@ public class UserBizInfo: NSObject, JSONDecodable, NSCoding {
      * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder) {
-        if let addresses = addresses {
+        // if let addresses = addresses {
             aCoder.encode(addresses, forKey: "addresses")
-        }
+        // }
         aCoder.encode(balance, forKey: "balance")
 
-        if let bizId = bizId {
+        // if let bizId = bizId {
             aCoder.encode(bizId, forKey: "biz_id")
-        }
-        if let cardNumbers = cardNumbers {
+        // }
+        // if let cardNumbers = cardNumbers {
             aCoder.encode(cardNumbers, forKey: "card_numbers")
-        }
-        if let daysSinceLastOrder = daysSinceLastOrder {
+        // }
+        // if let daysSinceLastOrder = daysSinceLastOrder {
             aCoder.encode(daysSinceLastOrder, forKey: "days_since_last_order")
-        }
+        // }
         aCoder.encode(id, forKey: "id")
-        if let lastOrderDt = lastOrderDt {
+        // if let lastOrderDt = lastOrderDt {
             aCoder.encode(lastOrderDt, forKey: "last_order_dt")
-        }
-        if let name = name {
+        // }
+        // if let name = name {
             aCoder.encode(name, forKey: "name")
-        }
-        if let lastUpdatedDateString = lastUpdatedDateString {
+        // }
+        // if let lastUpdatedDateString = lastUpdatedDateString {
             aCoder.encode(lastUpdatedDateString, forKey: "lastUpdatedDateString")
-        }
-        if let numOfOrders = numOfOrders {
+        // }
+        // if let numOfOrders = numOfOrders {
             aCoder.encode(numOfOrders, forKey: "num_of_orders")
-        }
-        if let phone = phone {
+        // }
+        // if let phone = phone {
             aCoder.encode(phone, forKey: "phone")
-        }
+        // }
         aCoder.encode(points, forKey: "points")
-        if let signupDt = signupDt {
+        // if let signupDt = signupDt {
             aCoder.encode(signupDt, forKey: "signup_dt")
-        }
-        if let totalOrderValue = totalOrderValue {
+        // }
+        // if let totalOrderValue = totalOrderValue {
             aCoder.encode(totalOrderValue, forKey: "total_order_value")
-        }
+        // }
     }
 }

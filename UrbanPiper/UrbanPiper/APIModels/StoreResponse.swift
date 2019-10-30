@@ -27,8 +27,10 @@ import Foundation
             biz = Biz(fromDictionary: bizData)
         }
 
-        Biz.shared = biz
-
+        if biz != nil {
+            Biz.shared = biz
+        }
+        
         if let storeData: [String: AnyObject] = dictionary["store"] as? [String: AnyObject] {
             store = Store(fromDictionary: storeData)
         }
@@ -60,7 +62,9 @@ import Foundation
 //      Remove this code after next release
         biz.supportedLanguages = ["en"]
 
-        Biz.shared = biz
+        if biz != nil {
+            Biz.shared = biz
+        }
         store = aDecoder.decodeObject(forKey: "store") as? Store
     }
 
@@ -69,11 +73,11 @@ import Foundation
      * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder) {
-        if let biz = biz {
+        // if let biz = biz {
             aCoder.encode(biz, forKey: "biz")
-        }
-        if let store = store {
+        // }
+        // if let store = store {
             aCoder.encode(store, forKey: "store")
-        }
+        // }
     }
 }

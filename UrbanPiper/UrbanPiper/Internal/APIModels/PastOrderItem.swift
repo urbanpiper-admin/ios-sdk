@@ -168,53 +168,53 @@ public class PastOrderItem: NSObject, JSONDecodable { // }, NSCoding{
      */
     @objc func encode(with aCoder: NSCoder)
     {
-        if let charges = charges {
+        // if let charges = charges {
             aCoder.encode(charges, forKey: "charges")
-        }
-        if let discount = discount {
+        // }
+        // if let discount = discount {
             aCoder.encode(discount, forKey: "discount")
-        }
-        if let foodType = foodType {
+        // }
+        // if let foodType = foodType {
             aCoder.encode(foodType, forKey: "food_type")
-        }
-        if let id = id {
+        // }
+        // if let id = id {
             aCoder.encode(id, forKey: "id")
-        }
-        if let imageLandscapeUrl = imageLandscapeUrl {
+        // }
+        // if let imageLandscapeUrl = imageLandscapeUrl {
             aCoder.encode(imageLandscapeUrl, forKey: "image_landscape_url")
-        }
-        if let imageUrl = imageUrl {
+        // }
+        // if let imageUrl = imageUrl {
             aCoder.encode(imageUrl, forKey: "image_url")
-        }
-        if let merchantId = merchantId {
+        // }
+        // if let merchantId = merchantId {
             aCoder.encode(merchantId, forKey: "merchant_id")
-        }
-        if let optionsToAdd = optionsToAdd {
+        // }
+        // if let optionsToAdd = optionsToAdd {
             aCoder.encode(optionsToAdd, forKey: "options_to_add")
-        }
-        if let optionsToRemove = optionsToRemove {
+        // }
+        // if let optionsToRemove = optionsToRemove {
             aCoder.encode(optionsToRemove, forKey: "options_to_remove")
-        }
-        if let price = price {
+        // }
+        // if let price = price {
             aCoder.encode(price, forKey: "price")
-        }
-        if let quantity = quantity {
+        // }
+        // if let quantity = quantity {
             aCoder.encode(quantity, forKey: "quantity")
-        }
-        if let taxes = taxes {
+        // }
+        // if let taxes = taxes {
             aCoder.encode(taxes, forKey: "taxes")
-        }
-        if let title = title {
+        // }
+        // if let title = title {
             aCoder.encode(title, forKey: "title")
-        }
-        if let total = total {
+        // }
+        // if let total = total {
             aCoder.encode(total, forKey: "total")
-        }
-        if let totalWithTax = totalWithTax {
+        // }
+        // if let totalWithTax = totalWithTax {
             aCoder.encode(totalWithTax, forKey: "total_with_tax")
-        }
-        if let unitWeight = unitWeight {
+        // }
+        // if let unitWeight = unitWeight {
             aCoder.encode(unitWeight, forKey: "unit_weight")
-        }
+        // }
     }*/
 }

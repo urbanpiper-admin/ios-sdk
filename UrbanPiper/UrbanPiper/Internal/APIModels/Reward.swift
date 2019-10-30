@@ -138,41 +138,41 @@ public class Reward: NSObject, JSONDecodable, NSCoding {
      * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder) {
-        if let claimedCount = claimedCount {
+        // if let claimedCount = claimedCount {
             aCoder.encode(claimedCount, forKey: "claimed_count")
-        }
-        if let descriptionField = descriptionField {
+        // }
+        // if let descriptionField = descriptionField {
             aCoder.encode(descriptionField, forKey: "description")
-        }
-        if let expiresOn = expiresOn {
+        // }
+        // if let expiresOn = expiresOn {
             aCoder.encode(expiresOn, forKey: "expires_on")
-        }
+        // }
         aCoder.encode(id, forKey: "id")
-        if let imgLink = imgLink {
+        // if let imgLink = imgLink {
             aCoder.encode(imgLink, forKey: "img_link")
-        }
+        // }
 
         aCoder.encode(inStoreCouponRewards, forKey: "in_store_coupon_rewards")
 
         aCoder.encode(locked, forKey: "locked")
 
-        if let points = points {
+        // if let points = points {
             aCoder.encode(points, forKey: "points")
-        }
-        if let redeemedCount = redeemedCount {
+        // }
+        // if let redeemedCount = redeemedCount {
             aCoder.encode(redeemedCount, forKey: "redeemed_count")
-        }
-        if let redemptionCodes = redemptionCodes {
+        // }
+        // if let redemptionCodes = redemptionCodes {
             aCoder.encode(redemptionCodes, forKey: "redemption_codes")
-        }
-        if let title = title {
+        // }
+        // if let title = title {
             aCoder.encode(title, forKey: "title")
-        }
-        if let type = type {
+        // }
+        // if let type = type {
             aCoder.encode(type, forKey: "type")
-        }
-        if let value = value {
+        // }
+        // if let value = value {
             aCoder.encode(value, forKey: "value")
-        }
+        // }
     }
 }

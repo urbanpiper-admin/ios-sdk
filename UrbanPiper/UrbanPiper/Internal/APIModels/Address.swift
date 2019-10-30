@@ -190,37 +190,37 @@ public enum AddressTag: String {
      * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder) {
-        if let address1 = address1 {
+        // if let address1 = address1 {
             aCoder.encode(address1, forKey: "address_1")
-        }
-        if let landmark = landmark {
+        // }
+        // if let landmark = landmark {
             aCoder.encode(landmark, forKey: "landmark")
-        }
+        // }
 
         aCoder.encode(deliverable, forKey: "deliverable")
 
-        if let city = city {
+        // if let city = city {
             aCoder.encode(city, forKey: "city")
-        }
-        if let id = id {
+        // }
+        // if let id = id {
             aCoder.encode(id, forKey: "id")
-        }
+        // }
 
         aCoder.encode(lat, forKey: "lat")
 
         aCoder.encode(lng, forKey: "lng")
 
-        if let pin = pin {
+        // if let pin = pin {
             aCoder.encode(pin, forKey: "pin")
-        }
-        if let podId = podId {
+        // }
+        // if let podId = podId {
             aCoder.encode(podId, forKey: "pod_id")
-        }
-        if let subLocality = subLocality {
+        // }
+        // if let subLocality = subLocality {
             aCoder.encode(subLocality, forKey: "sub_locality")
-        }
-        if let tag = tag {
+        // }
+        // if let tag = tag {
             aCoder.encode(tag, forKey: "tag")
-        }
+        // }
     }
 }

@@ -22,7 +22,9 @@ import Foundation
             biz = Biz(fromDictionary: bizData)
         }
 
-        Biz.shared = biz
+        if biz != nil {
+            Biz.shared = biz
+        }
 
         clearCache = dictionary["clear_cache"] as? Bool ?? false
         if let metaData: [String: AnyObject] = dictionary["meta"] as? [String: AnyObject] {

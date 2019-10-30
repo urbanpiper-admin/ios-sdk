@@ -264,75 +264,75 @@ public enum Language: String {
      * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder) {
-        if let contactPhone = contactPhone {
+        // if let contactPhone = contactPhone {
             aCoder.encode(contactPhone, forKey: "contact_phone")
-        }
-        if let currency = currency {
+        // }
+        // if let currency = currency {
             aCoder.encode(currency, forKey: "currency")
-        }
+        // }
 
         aCoder.encode(deliveryMinOffsetTime, forKey: "delivery_min_offset_time")
 
-        if let feedbackConfig = feedbackConfig {
+        // if let feedbackConfig = feedbackConfig {
             aCoder.encode(feedbackConfig, forKey: "feedback_config")
-        }
-        if let gst = gst {
+        // }
+        // if let gst = gst {
             aCoder.encode(gst, forKey: "gst")
-        }
+        // }
         aCoder.encode(isPickupEnabled, forKey: "is_pickup_enabled")
-        if let minOrderTotal = minOrderTotal {
+        // if let minOrderTotal = minOrderTotal {
             aCoder.encode(minOrderTotal, forKey: "min_order_total")
-        }
+        // }
 //        if let minimumWalletCreditThreshold = minimumWalletCreditThreshold {
 //            aCoder.encode(minimumWalletCreditThreshold, forKey: "minimum_wallet_credit_threshold")
-//        }
-        if let msgNearestStoreClosed = msgNearestStoreClosed {
+//        // }
+        // if let msgNearestStoreClosed = msgNearestStoreClosed {
             aCoder.encode(msgNearestStoreClosed, forKey: "msg_nearest_store_closed")
-        }
-        if let msgNoStoresNearby = msgNoStoresNearby {
+        // }
+        // if let msgNoStoresNearby = msgNoStoresNearby {
             aCoder.encode(msgNoStoresNearby, forKey: "msg_no_stores_nearby")
-        }
-        if let msgStoreClosedTemporary = msgStoreClosedTemporary {
+        // }
+        // if let msgStoreClosedTemporary = msgStoreClosedTemporary {
             aCoder.encode(msgStoreClosedTemporary, forKey: "msg_store_closed_temporary")
-        }
-        if let orderDeliveryRadius = orderDeliveryRadius {
+        // }
+        // if let orderDeliveryRadius = orderDeliveryRadius {
             aCoder.encode(orderDeliveryRadius, forKey: "order_delivery_radius")
-        }
-        if let paymentOptions = paymentOptions {
+        // }
+        // if let paymentOptions = paymentOptions {
             aCoder.encode(paymentOptions, forKey: "payment_options")
-        }
-        if let supportedLanguages = supportedLanguages {
+        // }
+        // if let supportedLanguages = supportedLanguages {
             aCoder.encode(supportedLanguages, forKey: "supported_languages")
-        }
-        if let paypalClientToken = paypalClientToken {
+        // }
+        // if let paypalClientToken = paypalClientToken {
             aCoder.encode(paypalClientToken, forKey: "paypal_client_token")
-        }
-        if let pgProvider = pgProvider {
+        // }
+        // if let pgProvider = pgProvider {
             aCoder.encode(pgProvider, forKey: "pg_provider")
-        }
+        // }
 
         aCoder.encode(pickupMinOffsetTime, forKey: "pickup_min_offset_time")
 
         aCoder.encode(preProcess, forKey: "pre_process")
 
-        if let referralShareLbl = referralShareLbl {
+        // if let referralShareLbl = referralShareLbl {
             aCoder.encode(referralShareLbl, forKey: "referral_share_lbl")
-        }
-        if let referralUiLbl = referralUiLbl {
+        // }
+        // if let referralUiLbl = referralUiLbl {
             aCoder.encode(referralUiLbl, forKey: "referral_ui_lbl")
-        }
-        if let simplClientId = simplClientId {
+        // }
+        // if let simplClientId = simplClientId {
             aCoder.encode(simplClientId, forKey: "simpl_client_id")
-        }
-        if let timeSlots = timeSlots {
+        // }
+        // if let timeSlots = timeSlots {
             aCoder.encode(timeSlots, forKey: "time_slots")
-        }
-        if let timezone = timezone {
+        // }
+        // if let timezone = timezone {
             aCoder.encode(timezone, forKey: "timezone")
-        }
-        if let tin = tin {
+        // }
+        // if let tin = tin {
             aCoder.encode(tin, forKey: "tin")
-        }
+        // }
 
         aCoder.encode(usePointOfDelivery, forKey: "use_point_of_delivery")
     }

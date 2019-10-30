@@ -97,17 +97,17 @@ public class JWT: NSObject, NSCoding {
      * Encodes mode properties into the decoder
      */
     @objc public func encode(with aCoder: NSCoder) {
-        if let exp = exp {
+        // if let exp = exp {
             aCoder.encode(exp, forKey: "exp")
-        }
-        if let iat = iat {
+        // }
+        // if let iat = iat {
             aCoder.encode(iat, forKey: "iat")
-        }
-        if let jit = jit {
+        // }
+        // if let jit = jit {
             aCoder.encode(jit, forKey: "jit")
-        }
-        if let token = token {
+        // }
+        // if let token = token {
             aCoder.encode(token, forKey: "token")
-        }
+        // }
     }
 }
