@@ -1,73 +1,61 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	CategoryOptionsResponse.swift
-//
-//	Create by Vidhyadharan Mohanram on 11/9/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let categoryOptionsResponse = try CategoryOptionsResponse(json)
 
 import Foundation
 
-public class CategoryOptionsResponse: NSObject, JSONDecodable {
-    public var filters: [Filter]!
-    public var sortBy: [String]!
+// MARK: - CategoryOptionsResponse
+@objc public class CategoryOptionsResponse: NSObject, JSONDecodable {
+    @objc public let filters: [Filter]
+    @objc public let sortBy: [String]
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        filters = [Filter]()
-        if let filtersArray = dictionary["filters"] as? [[String: AnyObject]] {
-            for dic in filtersArray {
-                guard let value = Filter(fromDictionary: dic) else { continue }
-                filters.append(value)
-            }
+    enum CodingKeys: String, CodingKey {
+        case filters
+        case sortBy = "sort_by"
+    }
+
+    init(filters: [Filter], sortBy: [String]) {
+        self.filters = filters
+        self.sortBy = sortBy
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(CategoryOptionsResponse.self, from: data)
+        self.init(filters: me.filters, sortBy: me.sortBy)
+    }
+}
+
+// MARK: CategoryOptionsResponse convenience initializers and mutators
+
+extension CategoryOptionsResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
-        sortBy = dictionary["sort_by"] as? [String]
+        try self.init(data: data)
     }
 
-    /*	/**
-         * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    func toDictionary() -> [String : AnyObject]
-    {
-    	var dictionary = [String : AnyObject]()
-    	if let filters = filters {
-    		var dictionaryElements = [[String : AnyObject]]()
-    		for filtersElement in filters {
-    			dictionaryElements.append(filtersElement.toDictionary())
-    		}
-    		dictionary["filters"] = dictionaryElements as AnyObject
-    	}
-    	if let sortBy = sortBy {
-    		dictionary["sort_by"] = sortBy as AnyObject
-    	}
-    	return dictionary
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
     }
 
-    /**
-        * NSCoding required initializer.
-        * Fills the data from the passed decoder
-     */
-    @objc required public init(coder aDecoder: NSCoder)
-    {
-    filters = aDecoder.decodeObject(forKey :"filters") as? [Filter]
-    sortBy = aDecoder.decodeObject(forKey: "sort_by") as? [String]
-
+    public func with(
+        filters: [Filter]? = nil,
+        sortBy: [String]? = nil
+    ) -> CategoryOptionsResponse {
+        return CategoryOptionsResponse(
+            filters: filters ?? self.filters,
+            sortBy: sortBy ?? self.sortBy
+        )
     }
 
-    /**
-        * NSCoding required method.
-        * Encodes mode properties into the decoder
-     */
-    @objc public func encode(with aCoder: NSCoder)
-    {
-    	if let filters = filters {
-    		aCoder.encode(filters, forKey: "filters")
-    	}
-    	if let sortBy = sortBy {
-    		aCoder.encode(sortBy, forKey: "sort_by")
-    	}
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
 
-    }*/
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

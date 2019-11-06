@@ -176,7 +176,7 @@ extension UserAPI: UPAPI {
             return addressDict
         case let .updateAddress(address):
             var addressDict = ["tag": address.tag as Any,
-                               "id": address.id!,
+                               "id": address.id,
                                "biz_id": APIManager.shared.bizId,
                                "sub_locality": address.subLocality as Any,
                                "address_1": address.address1 as Any,

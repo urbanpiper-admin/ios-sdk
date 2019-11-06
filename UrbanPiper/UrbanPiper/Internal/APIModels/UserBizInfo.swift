@@ -1,184 +1,231 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	UserBizInfo.swift
-//
-//	Create by Vidhyadharan Mohanram on 17/1/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let userBizInfo = try UserBizInfo(json)
 
 import Foundation
 
-public class UserBizInfo: NSObject, JSONDecodable, NSCoding {
-    public var addresses: [AnyObject]!
-    @objc public var balance: NSDecimalNumber = NSDecimalNumber.zero
-    public var bizId: Int?
-    @objc public var cardNumbers: [String]!
-    public var daysSinceLastOrder: Int?
-    public var id: Int = 0
-    public var lastOrderDt: Int?
-    public var name: String!
-    public var numOfOrders: Int?
-    public var phone: String!
-    @objc public var points: NSNumber = NSNumber(integerLiteral: 0)
-    public var signupDt: Int?
-    public var totalOrderValue: Decimal!
-    @objc public var lastUpdatedDateString: String?
+// MARK: - UserBizInfo
+@objc public class UserBizInfo: NSObject, JSONDecodable, NSCoding {
+    @objc public let addresses: [Address]
+    @objc public let balance: Double
+    @objc public let bizid: Int
+    @objc public let cardNumbers: [String]
+    @objc public let daysSinceLastOrder: Int
+    @objc public let email: String
+    @objc public let id: Int
+    @objc public let lastOrderDt: Date?
+    @objc public let name: String
+    @objc public let numOfOrders: Int
+    @objc public let phone: String
+    @objc public let points: Int
+    @objc public let signupDt: Date
+    @objc public let totalOrderValue: Double
+    @objc public let username: String
+    @objc public var lastUpdatedDateString: String? = nil
     internal var lastOrderDateString: String? {
         if let val = lastOrderDt {
-            let date: Date = Date(timeIntervalSince1970: TimeInterval(val / 1000))
-            return DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .short)
+            return DateFormatter.localizedString(from: val, dateStyle: .medium, timeStyle: .short)
         }
         return nil
     }
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        addresses = dictionary["addresses"] as? [AnyObject]
 
-        if let val: Decimal = dictionary["balance"] as? Decimal {
-            balance = val as NSDecimalNumber
-        } else if let val: Double = dictionary["balance"] as? Double {
-            balance = Decimal(val).rounded as NSDecimalNumber
-        } else {
-            balance = Decimal.zero as NSDecimalNumber
-        }
-
-        bizId = dictionary["biz_id"] as? Int
-        cardNumbers = dictionary["card_numbers"] as? [String]
-        daysSinceLastOrder = dictionary["days_since_last_order"] as? Int
-        id = dictionary["id"] as? Int ?? 0
-        lastOrderDt = dictionary["last_order_dt"] as? Int
-        name = dictionary["name"] as? String
-        numOfOrders = dictionary["num_of_orders"] as? Int
-        phone = dictionary["phone"] as? String
-        points = dictionary["points"] as? NSNumber ?? NSNumber(integerLiteral: 0)
-        signupDt = dictionary["signup_dt"] as? Int
-
-        if let val: Decimal = dictionary["total_order_value"] as? Decimal {
-            totalOrderValue = val
-        } else if let val: Double = dictionary["total_order_value"] as? Double {
-            totalOrderValue = Decimal(val).rounded
-        } else if let val: Float = dictionary["total_order_value"] as? Float {
-            totalOrderValue = Decimal(Double(val)).rounded
-        } else {
-            totalOrderValue = Decimal.zero
-        }
-
-        lastUpdatedDateString = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .short)
+    enum CodingKeys: String, CodingKey {
+        case addresses, balance
+        case bizid = "biz_id"
+        case cardNumbers = "card_numbers"
+        case daysSinceLastOrder = "days_since_last_order"
+        case email, id
+        case lastOrderDt = "last_order_dt"
+        case name
+        case numOfOrders = "num_of_orders"
+        case phone, points
+        case signupDt = "signup_dt"
+        case totalOrderValue = "total_order_value"
+        case username
     }
-
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let addresses = addresses {
-            dictionary["addresses"] = addresses as AnyObject
-        }
-        dictionary["balance"] = balance as AnyObject
-        if let bizId = bizId {
-            dictionary["biz_id"] = bizId as AnyObject
-        }
-        if let cardNumbers = cardNumbers {
-            dictionary["card_numbers"] = cardNumbers as AnyObject
-        }
-        if let daysSinceLastOrder = daysSinceLastOrder {
-            dictionary["days_since_last_order"] = daysSinceLastOrder as AnyObject
-        }
-        dictionary["id"] = id as AnyObject
-        if let lastOrderDt = lastOrderDt {
-            dictionary["last_order_dt"] = lastOrderDt as AnyObject
-        }
-        if let name = name {
-            dictionary["name"] = name as AnyObject
-        }
-        if let lastUpdatedDateString = lastUpdatedDateString {
-            dictionary["lastUpdatedDateString"] = lastUpdatedDateString as AnyObject
-        }
-        if let numOfOrders = numOfOrders {
-            dictionary["num_of_orders"] = numOfOrders as AnyObject
-        }
-        if let phone = phone {
-            dictionary["phone"] = phone as AnyObject
-        }
-        dictionary["points"] = points as AnyObject
-        if let signupDt = signupDt {
-            dictionary["signup_dt"] = signupDt as AnyObject
-        }
-        if let totalOrderValue = totalOrderValue {
-            dictionary["total_order_value"] = totalOrderValue as AnyObject
-        }
-        return dictionary
+    
+    required public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        addresses = try values.decode([Address].self, forKey: .addresses)
+        balance = try values.decode(Double.self, forKey: .balance)
+        bizid = try values.decode(Int.self, forKey: .bizid)
+        cardNumbers = try values.decode([String].self, forKey: .cardNumbers)
+        daysSinceLastOrder = try values.decodeIfPresent(Int.self, forKey: .daysSinceLastOrder) ?? 0
+        email = try values.decode(String.self, forKey: .email)
+        id = try values.decode(Int.self, forKey: .id)
+        lastOrderDt = try values.decodeIfPresent(Date.self, forKey: .lastOrderDt)
+        name = try values.decode(String.self, forKey: .name)
+        numOfOrders = try values.decode(Int.self, forKey: .numOfOrders)
+        phone = try values.decode(String.self, forKey: .phone)
+        points = try values.decode(Int.self, forKey: .points)
+        signupDt = try values.decode(Date.self, forKey: .signupDt)
+        totalOrderValue = try values.decode(Double.self, forKey: .totalOrderValue)
+        username = try values.decode(String.self, forKey: .username)
+        
+        self.lastUpdatedDateString = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .short)
     }
+        
 
+    init(addresses: [Address], balance: Double, bizid: Int, cardNumbers: [String], daysSinceLastOrder: Int, email: String, id: Int, lastOrderDt: Date?, name: String, numOfOrders: Int, phone: String, points: Int, signupDt: Date, totalOrderValue: Double, username: String) {
+        self.addresses = addresses
+        self.balance = balance
+        self.bizid = bizid
+        self.cardNumbers = cardNumbers
+        self.daysSinceLastOrder = daysSinceLastOrder
+        self.email = email
+        self.id = id
+        self.lastOrderDt = lastOrderDt
+        self.name = name
+        self.numOfOrders = numOfOrders
+        self.phone = phone
+        self.points = points
+        self.signupDt = signupDt
+        self.totalOrderValue = totalOrderValue
+        self.username = username
+        
+        self.lastUpdatedDateString = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .short)
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(UserBizInfo.self, from: data)
+        self.init(addresses: me.addresses, balance: me.balance, bizid: me.bizid, cardNumbers: me.cardNumbers, daysSinceLastOrder: me.daysSinceLastOrder, email: me.email, id: me.id, lastOrderDt: me.lastOrderDt, name: me.name, numOfOrders: me.numOfOrders, phone: me.phone, points: me.points, signupDt: me.signupDt, totalOrderValue: me.totalOrderValue, username: me.username)
+    }
+    
     /**
      * NSCoding required initializer.
      * Fills the data from the passed decoder
      */
-    @objc public required init(coder aDecoder: NSCoder) {
-        addresses = aDecoder.decodeObject(forKey: "addresses") as? [AnyObject]
-        balance = aDecoder.decodeObject(forKey: "balance") as? NSDecimalNumber ?? NSDecimalNumber.zero
-        bizId = aDecoder.decodeObject(forKey: "biz_id") as? Int
-        cardNumbers = aDecoder.decodeObject(forKey: "card_numbers") as? [String]
-        daysSinceLastOrder = aDecoder.decodeObject(forKey: "days_since_last_order") as? Int
-        if let val = aDecoder.decodeObject(forKey: "id") as? Int {
-            id = val
-        } else {
-            id = aDecoder.decodeInteger(forKey: "id")
-        }
-        lastOrderDt = aDecoder.decodeObject(forKey: "last_order_dt") as? Int
-        name = aDecoder.decodeObject(forKey: "name") as? String
+    public required init(coder aDecoder: NSCoder) {
+        addresses = (aDecoder.decodeObject(forKey: "addresses") as? [Address])!
+        balance = (aDecoder.decodeObject(forKey: "balance") as? Double)!
+        bizid = aDecoder.decodeInteger(forKey: "biz_id")
+        cardNumbers = (aDecoder.decodeObject(forKey: "card_numbers") as? [String])!
+        daysSinceLastOrder = (aDecoder.decodeObject(forKey: "days_since_last_order") as? Int)!
+        id = (aDecoder.decodeObject(forKey: "id") as? Int)!
+        lastOrderDt = aDecoder.decodeObject(forKey: "last_order_dt") as? Date
+        name = (aDecoder.decodeObject(forKey: "name") as? String)!
+        username = (aDecoder.decodeObject(forKey: "username") as? String)!
+        email = (aDecoder.decodeObject(forKey: "email") as? String)!
         lastUpdatedDateString = aDecoder.decodeObject(forKey: "lastUpdatedDateString") as? String
-        numOfOrders = aDecoder.decodeObject(forKey: "num_of_orders") as? Int
-        phone = aDecoder.decodeObject(forKey: "phone") as? String
-        points = aDecoder.decodeObject(forKey: "points") as? NSNumber ?? NSNumber(integerLiteral: 0)
-        signupDt = aDecoder.decodeObject(forKey: "signup_dt") as? Int
-        totalOrderValue = aDecoder.decodeObject(forKey: "total_order_value") as? Decimal
+        numOfOrders = (aDecoder.decodeObject(forKey: "num_of_orders") as? Int)!
+        phone = (aDecoder.decodeObject(forKey: "phone") as? String)!
+        points = (aDecoder.decodeObject(forKey: "points") as? Int)!
+        signupDt = (aDecoder.decodeObject(forKey: "signup_dt") as? Date)!
+        totalOrderValue = (aDecoder.decodeObject(forKey: "total_order_value") as? Double)!
+    }
+}
+
+// MARK: UserBizInfo convenience initializers and mutators
+
+extension UserBizInfo {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
     }
 
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        addresses: [Address]? = nil,
+        balance: Double? = nil,
+        bizid: Int? = nil,
+        cardNumbers: [String]? = nil,
+        daysSinceLastOrder: Int? = nil,
+        email: String? = nil,
+        id: Int? = nil,
+        lastOrderDt: Date? = nil,
+        name: String? = nil,
+        numOfOrders: Int? = nil,
+        phone: String? = nil,
+        points: Int? = nil,
+        signupDt: Date? = nil,
+        totalOrderValue: Double? = nil,
+        username: String? = nil
+    ) -> UserBizInfo {
+        return UserBizInfo(
+            addresses: addresses ?? self.addresses,
+            balance: balance ?? self.balance,
+            bizid: bizid ?? self.bizid,
+            cardNumbers: cardNumbers ?? self.cardNumbers,
+            daysSinceLastOrder: daysSinceLastOrder ?? self.daysSinceLastOrder,
+            email: email ?? self.email,
+            id: id ?? self.id,
+            lastOrderDt: lastOrderDt ?? self.lastOrderDt,
+            name: name ?? self.name,
+            numOfOrders: numOfOrders ?? self.numOfOrders,
+            phone: phone ?? self.phone,
+            points: points ?? self.points,
+            signupDt: signupDt ?? self.signupDt,
+            totalOrderValue: totalOrderValue ?? self.totalOrderValue,
+            username: username ?? self.username
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+    
+//    /**
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    // public func toDictionary() -> [String: AnyObject] {
+//        var dictionary: [String: AnyObject] = [String: AnyObject]()
+//        dictionary["addresses"] = addresses as AnyObject
+//        dictionary["balance"] = balance as AnyObject
+//        dictionary["biz_id"] = bizid as AnyObject
+//        dictionary["card_numbers"] = cardNumbers as AnyObject
+//        if let daysSinceLastOrder = daysSinceLastOrder {
+//            dictionary["days_since_last_order"] = daysSinceLastOrder as AnyObject
+//        }
+//        dictionary["id"] = id as AnyObject
+//        if let lastOrderDt = lastOrderDt {
+//            dictionary["last_order_dt"] = lastOrderDt as AnyObject
+//        }
+//        dictionary["name"] = name as AnyObject
+////        if let lastUpdatedDateString = lastUpdatedDateString {
+////            dictionary["lastUpdatedDateString"] = lastUpdatedDateString as AnyObject
+////        }
+//        dictionary["num_of_orders"] = numOfOrders as AnyObject
+//
+//        dictionary["phone"] = phone as AnyObject
+//        dictionary["points"] = points as AnyObject
+//        dictionary["signup_dt"] = signupDt as AnyObject
+//        dictionary["total_order_value"] = totalOrderValue as AnyObject
+//        return dictionary
+//    }
+    
     /**
      * NSCoding required method.
      * Encodes mode properties into the decoder
      */
-    @objc public func encode(with aCoder: NSCoder) {
-        // if let addresses = addresses {
-            aCoder.encode(addresses, forKey: "addresses")
-        // }
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(addresses, forKey: "addresses")
         aCoder.encode(balance, forKey: "balance")
-
-        // if let bizId = bizId {
-            aCoder.encode(bizId, forKey: "biz_id")
-        // }
-        // if let cardNumbers = cardNumbers {
-            aCoder.encode(cardNumbers, forKey: "card_numbers")
-        // }
-        // if let daysSinceLastOrder = daysSinceLastOrder {
-            aCoder.encode(daysSinceLastOrder, forKey: "days_since_last_order")
-        // }
+        aCoder.encode(bizid, forKey: "biz_id")
+        aCoder.encode(cardNumbers, forKey: "card_numbers")
+        aCoder.encode(daysSinceLastOrder, forKey: "days_since_last_order")
         aCoder.encode(id, forKey: "id")
-        // if let lastOrderDt = lastOrderDt {
-            aCoder.encode(lastOrderDt, forKey: "last_order_dt")
-        // }
-        // if let name = name {
-            aCoder.encode(name, forKey: "name")
-        // }
-        // if let lastUpdatedDateString = lastUpdatedDateString {
-            aCoder.encode(lastUpdatedDateString, forKey: "lastUpdatedDateString")
-        // }
-        // if let numOfOrders = numOfOrders {
-            aCoder.encode(numOfOrders, forKey: "num_of_orders")
-        // }
-        // if let phone = phone {
-            aCoder.encode(phone, forKey: "phone")
-        // }
+        aCoder.encode(lastOrderDt, forKey: "last_order_dt")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(username, forKey: "username")
+        aCoder.encode(email, forKey: "email")
+        aCoder.encode(lastUpdatedDateString, forKey: "lastUpdatedDateString")
+        aCoder.encode(numOfOrders, forKey: "num_of_orders")
+        aCoder.encode(phone, forKey: "phone")
         aCoder.encode(points, forKey: "points")
-        // if let signupDt = signupDt {
-            aCoder.encode(signupDt, forKey: "signup_dt")
-        // }
-        // if let totalOrderValue = totalOrderValue {
-            aCoder.encode(totalOrderValue, forKey: "total_order_value")
-        // }
+        aCoder.encode(signupDt, forKey: "signup_dt")
+        aCoder.encode(totalOrderValue, forKey: "total_order_value")
     }
 }

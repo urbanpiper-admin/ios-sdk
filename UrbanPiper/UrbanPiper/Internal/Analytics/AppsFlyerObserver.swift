@@ -33,13 +33,13 @@ public class AppsFlyerObserver: AnalyticsEventObserver {
                                             AFEventParamCurrency: "INR"])
         case let .productClicked(item):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
-            let itemPrice: Decimal
-            if let price = item.itemPrice, price != 0 {
-                itemPrice = price
-            } else if let options: [ItemOption] = item.optionGroups?.first?.options, let optionPrice: Decimal = ((options.compactMap { $0.price }).sorted { $0 < $1 }).first, optionPrice > 0 {
+            let itemPrice: Double
+            if item.itemPrice != 0 {
+                itemPrice = item.itemPrice
+            } else if let options: [OptionGroupOption] = item.optionGroups?.first?.options, let optionPrice = ((options.compactMap { $0.price }).sorted { $0 < $1 }).first, optionPrice > 0 {
                 itemPrice = optionPrice
             } else {
-                itemPrice = Decimal.zero
+                itemPrice = Double.zero
             }
 
             tracker.trackEvent(AFEventContentView,
@@ -50,7 +50,7 @@ public class AppsFlyerObserver: AnalyticsEventObserver {
                                             AFEventParamCurrency: "INR"])
         case .purchaseCompleted(_, _, let checkoutBuilder, _):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
-            let payableAmount = NSDecimalNumber(decimal: checkoutBuilder.order?.payableAmount ?? Decimal.zero)
+            let payableAmount = NSDecimalNumber(value: checkoutBuilder.order?.payableAmount ?? Double.zero)
 
             tracker.trackEvent(AFEventPurchase,
                                withValues: [AFEventParamContentId: "",

@@ -1,81 +1,69 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	Coupon.swift
-//
-//	Create by Vidhyadharan Mohanram on 10/7/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let coupon = try Coupon(json)
 
 import Foundation
 
-public class Coupon: NSObject, JSONDecodable {
-    public var descriptionField: String!
-    public var redemptionCode: String!
-    public var title: String!
-    public var validUntil: Int?
+// MARK: - Coupon
+@objc public class Coupon: NSObject, Codable {
+    @objc public let couponDescription, redemptionCode, title: String
+    @objc public let validUntil: Date?
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        descriptionField = dictionary["description"] as? String
-        redemptionCode = dictionary["redemption_code"] as? String
-        title = dictionary["title"] as? String
-        validUntil = dictionary["valid_until"] as? Int
+    enum CodingKeys: String, CodingKey {
+        case couponDescription = "description"
+        case redemptionCode = "redemption_code"
+        case title
+        case validUntil = "valid_until"
     }
 
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    func toDictionary() -> [String : AnyObject]
-//    {
-//        var dictionary = [String : AnyObject]()
-//        if let descriptionField = descriptionField {
-//            dictionary["description"] = descriptionField as AnyObject
-//        }
-//        if let redemptionCode = redemptionCode {
-//            dictionary["redemption_code"] = redemptionCode as AnyObject
-//        }
-//        if let title = title {
-//            dictionary["title"] = title as AnyObject
-//        }
-//        if let validUntil = validUntil {
-//            dictionary["valid_until"] = validUntil as AnyObject
-//        }
-//        return dictionary
-//    }
-//
-//    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
-//    {
-//         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
-//         redemptionCode = aDecoder.decodeObject(forKey: "redemption_code") as? String
-//         title = aDecoder.decodeObject(forKey: "title") as? String
-//         validUntil = aDecoder.decodeObject(forKey: "valid_until") as? Int
-//
-//    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let descriptionField = descriptionField {
-//            aCoder.encode(descriptionField, forKey: "description")
-//        }
-//        if let redemptionCode = redemptionCode {
-//            aCoder.encode(redemptionCode, forKey: "redemption_code")
-//        }
-//        if let title = title {
-//            aCoder.encode(title, forKey: "title")
-//        }
-//        if let validUntil = validUntil {
-//            aCoder.encode(validUntil, forKey: "valid_until")
-//        }
-//
-//    }
+    init(couponDescription: String, redemptionCode: String, title: String, validUntil: Date?) {
+        self.couponDescription = couponDescription
+        self.redemptionCode = redemptionCode
+        self.title = title
+        self.validUntil = validUntil
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(Coupon.self, from: data)
+        self.init(couponDescription: me.couponDescription, redemptionCode: me.redemptionCode, title: me.title, validUntil: me.validUntil)
+    }
+}
+
+// MARK: Coupon convenience initializers and mutators
+
+extension Coupon {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        couponDescription: String? = nil,
+        redemptionCode: String? = nil,
+        title: String? = nil,
+        validUntil: Date? = nil
+    ) -> Coupon {
+        return Coupon(
+            couponDescription: couponDescription ?? self.couponDescription,
+            redemptionCode: redemptionCode ?? self.redemptionCode,
+            title: title ?? self.title,
+            validUntil: validUntil ?? self.validUntil
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

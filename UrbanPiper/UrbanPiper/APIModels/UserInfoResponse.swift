@@ -1,85 +1,138 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//  UserInfoResponse.swift
-//  UrbanPiper
-//
-//  Created by Vid on 09/02/19.
-//
+//   @objc public let userInfoResponse = try UserInfoResponse(json)
 
-import UIKit
+import Foundation
 
+// MARK: - UserInfoResponse
 @objc public class UserInfoResponse: NSObject, JSONDecodable {
-    public var phone: String!
-    public var firstName: String!
-    public var email: String!
+    @objc public let active: Bool
+    @objc public let address: String
+    @objc public let anniversary, birthday: Date?
+    @objc public let anniversaryDate, birthdate: String?
+    @objc public let currentCity: String?
+    @objc public let email, firstName: String
+    @objc public let gender, lastName: String?
+    @objc public let phone: String
 
-    public var lastName: String?
-    public var gender: String?
-    public var currentCity: String?
-    public var birthday: Int?
-    public var anniversary: Int?
-    public var birthdayDate: String?
-    public var anniversaryDate: String?
-    public var address: String?
-
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-
-        phone = dictionary["phone"] as? String
-        firstName = dictionary["first_name"] as? String
-        email = dictionary["email"] as? String
-
-        lastName = dictionary["last_name"] as? String
-        gender = dictionary["gender"] as? String
-        currentCity = dictionary["current_city"] as? String
-        birthday = dictionary["birthday"] as? Int
-        anniversary = dictionary["anniversary"] as? Int
-        birthdayDate = dictionary["birthday_date"] as? String
-        anniversaryDate = dictionary["anniversary_date"] as? String
-        address = dictionary["address"] as? String
+    enum CodingKeys: String, CodingKey {
+        case active, address, anniversary
+        case anniversaryDate = "anniversary_date"
+        case birthdate, birthday
+        case currentCity = "current_city"
+        case email
+        case firstName = "first_name"
+        case gender
+        case lastName = "last_name"
+        case phone
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    @objc public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let phone = phone {
-            dictionary["phone"] = phone as AnyObject
-        }
-        if let firstName = firstName {
-            dictionary["first_name"] = firstName as AnyObject
-        }
-        if let email = email {
-            dictionary["email"] = email as AnyObject
-        }
-        if let lastName = lastName {
-            dictionary["last_name"] = lastName as AnyObject
-        }
-        if let gender = gender {
-            dictionary["gender"] = gender as AnyObject
-        }
-        if let currentCity = currentCity {
-            dictionary["current_city"] = currentCity as AnyObject
-        }
-        if let birthday = birthday {
-            dictionary["birthday"] = birthday as AnyObject
-        }
-        if let anniversary = anniversary {
-            dictionary["anniversary"] = anniversary as AnyObject
-        }
-        if let birthdayDate = birthdayDate {
-            dictionary["birthday_date"] = birthdayDate as AnyObject
-        }
-        if let anniversaryDate = anniversaryDate {
-            dictionary["anniversary_date"] = anniversaryDate as AnyObject
-        }
-        if let address = address {
-            dictionary["address"] = address as AnyObject
-        }
-
-        return dictionary
+    init(active: Bool, address: String, anniversary: Date?, anniversaryDate: String?, birthdate: String?, birthday: Date?, currentCity: String?, email: String, firstName: String, gender: String?, lastName: String?, phone: String) {
+        self.active = active
+        self.address = address
+        self.anniversary = anniversary
+        self.anniversaryDate = anniversaryDate
+        self.birthdate = birthdate
+        self.birthday = birthday
+        self.currentCity = currentCity
+        self.email = email
+        self.firstName = firstName
+        self.gender = gender
+        self.lastName = lastName
+        self.phone = phone
     }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(UserInfoResponse.self, from: data)
+        self.init(active: me.active, address: me.address, anniversary: me.anniversary, anniversaryDate: me.anniversaryDate, birthdate: me.birthdate, birthday: me.birthday, currentCity: me.currentCity, email: me.email, firstName: me.firstName, gender: me.gender, lastName: me.lastName, phone: me.phone)
+    }
+}
+
+// MARK: UserInfoResponse convenience initializers and mutators
+
+extension UserInfoResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        active: Bool? = nil,
+        address: String? = nil,
+        anniversary: Date? = nil,
+        anniversaryDate: String? = nil,
+        birthdate: String? = nil,
+        birthday: Date? = nil,
+        currentCity: String? = nil,
+        email: String? = nil,
+        firstName: String? = nil,
+        gender: String? = nil,
+        lastName: String? = nil,
+        phone: String? = nil
+    ) -> UserInfoResponse {
+        return UserInfoResponse(
+            active: active ?? self.active,
+            address: address ?? self.address,
+            anniversary: anniversary ?? self.anniversary,
+            anniversaryDate: anniversaryDate ?? self.anniversaryDate,
+            birthdate: birthdate ?? self.birthdate,
+            birthday: birthday ?? self.birthday,
+            currentCity: currentCity ?? self.currentCity,
+            email: email ?? self.email,
+            firstName: firstName ?? self.firstName,
+            gender: gender ?? self.gender,
+            lastName: lastName ?? self.lastName,
+            phone: phone ?? self.phone
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+    
+//    /**
+//         * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+//    */
+//    @objc // public func toDictionary() -> [String: AnyObject] {
+//        var dictionary: [String: AnyObject] = [String: AnyObject]()
+//        dictionary["phone"] = phone as AnyObject
+//        dictionary["first_name"] = firstName as AnyObject
+//        dictionary["email"] = email as AnyObject
+//        if let lastName = lastName {
+//            dictionary["last_name"] = lastName as AnyObject
+//        }
+//        if let gender = gender {
+//            dictionary["gender"] = gender as AnyObject
+//        }
+//        if let currentCity = currentCity {
+//            dictionary["current_city"] = currentCity as AnyObject
+//        }
+//        if let birthday = birthday {
+//            dictionary["birthday"] = birthday as AnyObject
+//        }
+//        if let anniversary = anniversary {
+//            dictionary["anniversary"] = anniversary as AnyObject
+//        }
+//        if let birthdayDate = birthdate {
+//            dictionary["birthday_date"] = birthdayDate as AnyObject
+//        }
+//        if let anniversaryDate = anniversaryDate {
+//            dictionary["anniversary_date"] = anniversaryDate as AnyObject
+//        }
+//        dictionary["address"] = address as AnyObject
+//        return dictionary
+//    }
+
 }

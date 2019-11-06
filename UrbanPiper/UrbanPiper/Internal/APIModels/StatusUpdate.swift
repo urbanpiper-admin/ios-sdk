@@ -1,80 +1,67 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	StatusUpdate.swift
-//
-//	Create by Vidhyadharan Mohanram on 18/7/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let statusUpdate = try StatusUpdate(json)
 
 import Foundation
 
-public class StatusUpdate: NSObject, JSONDecodable {
-    public var created: Int?
-    public var message: String!
-    public var status: String!
-    public var updatedBy: String!
+// MARK: - StatusUpdate
+@objc public class StatusUpdate: NSObject, Codable {
+    @objc public let created: Int
+    @objc public let message, status, updatedBy: String
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        created = dictionary["created"] as? Int
-        message = dictionary["message"] as? String
-        status = dictionary["status"] as? String
-        updatedBy = dictionary["updated_by"] as? String
+    enum CodingKeys: String, CodingKey {
+        case created, message, status
+        case updatedBy = "updated_by"
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    func toDictionary() -> [String: AnyObject] {
-        var dictionary = [String: AnyObject]()
-        if let created = created {
-            dictionary["created"] = created as AnyObject
+    init(created: Int, message: String, status: String, updatedBy: String) {
+        self.created = created
+        self.message = message
+        self.status = status
+        self.updatedBy = updatedBy
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(StatusUpdate.self, from: data)
+        self.init(created: me.created, message: me.message, status: me.status, updatedBy: me.updatedBy)
+    }
+}
+
+// MARK: StatusUpdate convenience initializers and mutators
+
+extension StatusUpdate {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
-        if let message = message {
-            dictionary["message"] = message as AnyObject
-        }
-        if let status = status {
-            dictionary["status"] = status as AnyObject
-        }
-        if let updatedBy = updatedBy {
-            dictionary["updated_by"] = updatedBy as AnyObject
-        }
-        return dictionary
+        try self.init(data: data)
     }
 
-    /*    /**
-        * NSCoding required initializer.
-        * Fills the data from the passed decoder
-     */
-    @objc required init(coder aDecoder: NSCoder)
-    {
-    created = aDecoder.decodeObject(forKey: "created") as? Int
-    message = aDecoder.decodeObject(forKey: "message") as? String
-    status = aDecoder.decodeObject(forKey: "status") as? String
-    updatedBy = aDecoder.decodeObject(forKey: "updated_by") as? String
-
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
     }
 
-    /**
-        * NSCoding required method.
-        * Encodes mode properties into the decoder
-     */
-    @objc func encode(with aCoder: NSCoder)
-    {
-    	if let created = created {
-    		aCoder.encode(created, forKey: "created")
-    	}
-    	if let message = message {
-    		aCoder.encode(message, forKey: "message")
-    	}
-    	if let status = status {
-    		aCoder.encode(status, forKey: "status")
-    	}
-    	if let updatedBy = updatedBy {
-    		aCoder.encode(updatedBy, forKey: "updated_by")
-    	}
+    public func with(
+        created: Int? = nil,
+        message: String? = nil,
+        status: String? = nil,
+        updatedBy: String? = nil
+    ) -> StatusUpdate {
+        return StatusUpdate(
+            created: created ?? self.created,
+            message: message ?? self.message,
+            status: status ?? self.status,
+            updatedBy: updatedBy ?? self.updatedBy
+        )
+    }
 
-    }*/
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

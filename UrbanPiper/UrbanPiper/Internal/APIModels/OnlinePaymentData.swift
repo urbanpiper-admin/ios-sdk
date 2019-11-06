@@ -1,9 +1,7 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	OnlinePaymentData.swift
-//
-//	Create by Vidhyadharan Mohanram on 1/2/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let dataClass = try DataClass(json)
 
 import Foundation
 
@@ -12,150 +10,129 @@ public enum PaymentType: String {
     case paytabs
 }
 
-public class OnlinePaymentData: NSObject, JSONDecodable {
-    public var cALLBACKURL: String!
-    public var cHANNELID: String!
-    public var cHECKSUMHASH: String!
-    public var cUSTID: String!
-    public var iNDUSTRYTYPEID: String!
-    public var mID: String!
-    public var oRDERID: String!
-    public var tXNAMOUNT: String!
-    public var wEBSITE: String!
-    public var paymentUrl: String!
-    public var type: String!
-    public var key: String!
-
+// MARK: - DataClass
+@objc public class DataClass: NSObject, Codable {
+    @objc public let website: String?
+    @objc public let paymenturl: String?
+    @objc public let orderID, mid: String?
+    @objc public let overrideurl: Bool
+    @objc public let channelID, industryTypeID, custID: String?
+    @objc public let callbackURL: String?
+    @objc public let type, checksumhash, txnAmount: String?
+    @objc public let key: String?
+    
     public var paymentType: PaymentType {
-        return PaymentType(rawValue: type)!
+        return PaymentType(rawValue: type!)!
     }
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        key = dictionary["key"] as? String
-        cALLBACKURL = dictionary["CALLBACK_URL"] as? String
-        cHANNELID = dictionary["CHANNEL_ID"] as? String
-        cHECKSUMHASH = dictionary["CHECKSUMHASH"] as? String
-        cUSTID = dictionary["CUST_ID"] as? String
-        iNDUSTRYTYPEID = dictionary["INDUSTRY_TYPE_ID"] as? String
-        mID = dictionary["MID"] as? String
-        oRDERID = dictionary["ORDER_ID"] as? String
-        tXNAMOUNT = dictionary["TXN_AMOUNT"] as? String
-        wEBSITE = dictionary["WEBSITE"] as? String
-        paymentUrl = dictionary["payment_url"] as? String
-        type = dictionary["type"] as? String
+    enum CodingKeys: String, CodingKey {
+        case website = "WEBSITE"
+        case paymenturl = "payment_url"
+        case orderID = "ORDER_ID"
+        case mid = "MID"
+        case overrideurl = "override_url"
+        case channelID = "CHANNEL_ID"
+        case industryTypeID = "INDUSTRY_TYPE_ID"
+        case custID = "CUST_ID"
+        case callbackURL = "CALLBACK_URL"
+        case type, key
+        case checksumhash = "CHECKSUMHASH"
+        case txnAmount = "TXN_AMOUNT"
+    }
+    
+    required public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.website = try values.decodeIfPresent(String.self, forKey: .website)
+        self.paymenturl = try values.decodeIfPresent(String.self, forKey: .paymenturl)
+        self.orderID = try values.decodeIfPresent(String.self, forKey: .orderID)
+        self.mid = try values.decodeIfPresent(String.self, forKey: .mid)
+        self.overrideurl = try values.decodeIfPresent(Bool.self, forKey: .overrideurl) ?? false
+        self.channelID = try values.decodeIfPresent(String.self, forKey: .channelID)
+        self.industryTypeID = try values.decodeIfPresent(String.self, forKey: .industryTypeID)
+        self.custID = try values.decodeIfPresent(String.self, forKey: .custID)
+        self.callbackURL = try values.decodeIfPresent(String.self, forKey: .callbackURL)
+        self.type = try values.decodeIfPresent(String.self, forKey: .type)
+        self.checksumhash = try values.decodeIfPresent(String.self, forKey: .checksumhash)
+        self.txnAmount = try values.decodeIfPresent(String.self, forKey: .txnAmount)
+        self.key = try values.decodeIfPresent(String.self, forKey: .key)
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let key = key {
-            dictionary["key"] = key as AnyObject
-        }
-        if let cALLBACKURL = cALLBACKURL {
-            dictionary["CALLBACK_URL"] = cALLBACKURL as AnyObject
-        }
-        if let cHANNELID = cHANNELID {
-            dictionary["CHANNEL_ID"] = cHANNELID as AnyObject
-        }
-        if let cHECKSUMHASH = cHECKSUMHASH {
-            dictionary["CHECKSUMHASH"] = cHECKSUMHASH as AnyObject
-        }
-        if let cUSTID = cUSTID {
-            dictionary["CUST_ID"] = cUSTID as AnyObject
-        }
-        if let iNDUSTRYTYPEID = iNDUSTRYTYPEID {
-            dictionary["INDUSTRY_TYPE_ID"] = iNDUSTRYTYPEID as AnyObject
-        }
-        if let mID = mID {
-            dictionary["MID"] = mID as AnyObject
-        }
-        if let oRDERID = oRDERID {
-            dictionary["ORDER_ID"] = oRDERID as AnyObject
-        }
-        if let tXNAMOUNT = tXNAMOUNT {
-            dictionary["TXN_AMOUNT"] = tXNAMOUNT as AnyObject
-        }
-        if let wEBSITE = wEBSITE {
-            dictionary["WEBSITE"] = wEBSITE as AnyObject
-        }
-        if let paymentUrl = paymentUrl {
-            dictionary["payment_url"] = paymentUrl as AnyObject
-        }
-        if let type = type {
-            dictionary["type"] = type as AnyObject
-        }
-        return dictionary
+    init(website: String?, paymenturl: String?, orderID: String?, mid: String?, overrideurl: Bool, channelID: String?, industryTypeID: String?, custID: String?, callbackURL: String?, type: String?, checksumhash: String?, txnAmount: String?, key: String?) {
+        self.website = website
+        self.paymenturl = paymenturl
+        self.orderID = orderID
+        self.mid = mid
+        self.overrideurl = overrideurl
+        self.channelID = channelID
+        self.industryTypeID = industryTypeID
+        self.custID = custID
+        self.callbackURL = callbackURL
+        self.type = type
+        self.checksumhash = checksumhash
+        self.txnAmount = txnAmount
+        self.key = key
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(DataClass.self, from: data)
+        self.init(website: me.website, paymenturl: me.paymenturl, orderID: me.orderID, mid: me.mid, overrideurl: me.overrideurl, channelID: me.channelID, industryTypeID: me.industryTypeID, custID: me.custID, callbackURL: me.callbackURL, type: me.type, checksumhash: me.checksumhash, txnAmount: me.txnAmount, key: me.key)
     }
 
-//    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
-//    {
-//        key = aDecoder.decodeObject(forKey: "key") as? String
-//         cALLBACKURL = aDecoder.decodeObject(forKey: "CALLBACK_URL") as? String
-//         cHANNELID = aDecoder.decodeObject(forKey: "CHANNEL_ID") as? String
-//         cHECKSUMHASH = aDecoder.decodeObject(forKey: "CHECKSUMHASH") as? String
-//         cUSTID = aDecoder.decodeObject(forKey: "CUST_ID") as? String
-//         iNDUSTRYTYPEID = aDecoder.decodeObject(forKey: "INDUSTRY_TYPE_ID") as? String
-//         mID = aDecoder.decodeObject(forKey: "MID") as? String
-//         oRDERID = aDecoder.decodeObject(forKey: "ORDER_ID") as? String
-//         tXNAMOUNT = aDecoder.decodeObject(forKey: "TXN_AMOUNT") as? String
-//         wEBSITE = aDecoder.decodeObject(forKey: "WEBSITE") as? String
-//         paymentUrl = aDecoder.decodeObject(forKey: "payment_url") as? String
-//         type = aDecoder.decodeObject(forKey: "type") as? String
-//
-//    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let key = key {
-//            aCoder.encode(key, forKey: "key")
-//        }
-//        if let cALLBACKURL = cALLBACKURL {
-//            aCoder.encode(cALLBACKURL, forKey: "CALLBACK_URL")
-//        }
-//        if let cHANNELID = cHANNELID {
-//            aCoder.encode(cHANNELID, forKey: "CHANNEL_ID")
-//        }
-//        if let cHECKSUMHASH = cHECKSUMHASH {
-//            aCoder.encode(cHECKSUMHASH, forKey: "CHECKSUMHASH")
-//        }
-//        if let cUSTID = cUSTID {
-//            aCoder.encode(cUSTID, forKey: "CUST_ID")
-//        }
-//        if let iNDUSTRYTYPEID = iNDUSTRYTYPEID {
-//            aCoder.encode(iNDUSTRYTYPEID, forKey: "INDUSTRY_TYPE_ID")
-//        }
-//        if let mID = mID {
-//            aCoder.encode(mID, forKey: "MID")
-//        }
-//        if let oRDERID = oRDERID {
-//            aCoder.encode(oRDERID, forKey: "ORDER_ID")
-//        }
-//        if let tXNAMOUNT = tXNAMOUNT {
-//            aCoder.encode(tXNAMOUNT, forKey: "TXN_AMOUNT")
-//        }
-//        if let wEBSITE = wEBSITE {
-//            aCoder.encode(wEBSITE, forKey: "WEBSITE")
-//        }
-//        if let paymentUrl = paymentUrl {
-//            aCoder.encode(paymentUrl, forKey: "payment_url")
-//        }
-//        if let type = type {
-//            aCoder.encode(type, forKey: "type")
-//        }
-//
-//    }
+}
+
+// MARK: DataClass convenience initializers and mutators
+
+extension DataClass {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        website: String? = nil,
+        paymenturl: String? = nil,
+        orderID: String? = nil,
+        mid: String? = nil,
+        overrideurl: Bool? = nil,
+        channelID: String? = nil,
+        industryTypeID: String? = nil,
+        custID: String? = nil,
+        callbackURL: String? = nil,
+        type: String? = nil,
+        checksumhash: String? = nil,
+        txnAmount: String? = nil,
+        key: String? = nil
+    ) -> DataClass {
+        return DataClass(
+            website: website ?? self.website,
+            paymenturl: paymenturl ?? self.paymenturl,
+            orderID: orderID ?? self.orderID,
+            mid: mid ?? self.mid,
+            overrideurl: overrideurl ?? self.overrideurl,
+            channelID: channelID ?? self.channelID,
+            industryTypeID: industryTypeID ?? self.industryTypeID,
+            custID: custID ?? self.custID,
+            callbackURL: callbackURL ?? self.callbackURL,
+            type: type ?? self.type,
+            checksumhash: checksumhash ?? self.checksumhash,
+            txnAmount: txnAmount ?? self.txnAmount,
+            key: key ?? self.key
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

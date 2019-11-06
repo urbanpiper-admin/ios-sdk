@@ -9,14 +9,14 @@
 import Foundation
 
 enum PaymentsAPI {
-    case preProcessOrder(storeId: Int, applyWalletCredit: Bool, deliveryOption: DeliveryOption, cartItems: [CartItem], orderTotal: Decimal)
-    case initiateOnlinePayment(paymentOption: PaymentOption, totalAmount: Decimal, storeId: Int)
-    case initiateWalletReload(paymentOption: PaymentOption, totalAmount: Decimal)
+    case preProcessOrder(storeId: Int, applyWalletCredit: Bool, deliveryOption: DeliveryOption, cartItems: [CartItem], orderTotal: Double)
+    case initiateOnlinePayment(paymentOption: PaymentOption, totalAmount: Double, storeId: Int)
+    case initiateWalletReload(paymentOption: PaymentOption, totalAmount: Double)
 
     case placeOrder(address: Address?, cartItems: [CartItem], deliveryDate: Date, timeSlot: TimeSlot?, deliveryOption: DeliveryOption,
                     instructions: String, phone: String, storeId: Int, paymentOption: PaymentOption, taxRate: Float, couponCode: String?,
-                    deliveryCharge: Decimal, discountApplied: Decimal, itemTaxes: Decimal, packagingCharge: Decimal, orderSubTotal: Decimal,
-                    orderTotal: Decimal, applyWalletCredit: Bool, walletCreditApplied: Decimal, payableAmount: Decimal, paymentInitResponse: PaymentInitResponse?)
+                    deliveryCharge: Double, discountApplied: Double, itemTaxes: Double, packagingCharge: Double, orderSubTotal: Double,
+                    orderTotal: Double, applyWalletCredit: Bool, walletCreditApplied: Double, payableAmount: Double, paymentInitResponse: PaymentInitResponse?)
     case verifyPayment(pid: String, orderId: String, transactionId: String)
 }
 
@@ -43,7 +43,7 @@ extension PaymentsAPI: UPAPI {
                     "pre_proc": "1",
                     "biz_id": APIManager.shared.bizId]
         case .initiateOnlinePayment(let paymentOption, let totalAmount, _):
-            var params = ["amount": "\(totalAmount * 100)",
+            var params = ["amount": "\(Int(totalAmount * 100))",
                           "purpose": OnlinePaymentPurpose.ordering.rawValue,
                           "channel": APIManager.channel] as [String: String]
 
@@ -58,7 +58,7 @@ extension PaymentsAPI: UPAPI {
             return params
 
         case let .initiateWalletReload(paymentOption, totalAmount):
-            var params = ["amount": "\(totalAmount * 100)",
+            var params = ["amount": "\(Int(totalAmount * 100))",
                           "purpose": OnlinePaymentPurpose.reload.rawValue,
                           "channel": APIManager.channel] as [String: String]
 
@@ -151,7 +151,7 @@ extension PaymentsAPI: UPAPI {
                           "packaging_charge": packagingCharge,
                           "item_taxes": itemTaxes,
                           "discount_applied": discountApplied,
-                          "delivery_charge": deliveryOption == DeliveryOption.pickUp ? Decimal.zero : deliveryCharge,
+                          "delivery_charge": deliveryOption == DeliveryOption.pickUp ? Double.zero : deliveryCharge,
                           "order_total": orderTotal] as [String: AnyObject]
 
             if applyWalletCredit {
@@ -175,7 +175,7 @@ extension PaymentsAPI: UPAPI {
                 params["time_slot_start"] = timeSlotObject.startTime as AnyObject
             }
 
-            if let trxId = paymentInitResponse?.transactionId {
+            if let trxId = paymentInitResponse?.transactionid {
                 params["payment_server_trx_id"] = trxId as AnyObject
                 params["state"] = "awaiting_payment" as AnyObject
             }

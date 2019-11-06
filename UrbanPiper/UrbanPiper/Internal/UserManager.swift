@@ -50,14 +50,14 @@ internal class UserManager: NSObject {
         get {
             guard let userData = UserManager.keychain.data(forKey: KeychainAppUserKeys.AppUserKey) else { return nil }
 
-            User.registerClass()
-            Meta.registerClass()
-            UserBizInfo.registerClass()
-            UserBizInfo.registerClass(name: "UserBizInfo")
-            UserBizInfo.registerClass(name: "BizObject")
-            UserBizInfoResponse.registerClass()
-            UserBizInfoResponse.registerClass(name: "BizInfo")
-            JWT.registerClass()
+//            User.registerClass()
+//            Meta.registerClass()
+//            UserBizInfo.registerClass()
+//            UserBizInfo.registerClass(name: "UserBizInfo")
+//            UserBizInfo.registerClass(name: "BizObject")
+//            UserBizInfoResponse.registerClass()
+//            UserBizInfoResponse.registerClass(name: "BizInfo")
+//            JWT.registerClass()
 
             let obj = NSKeyedUnarchiver.unarchiveObject(with: userData)
             guard let user: User = obj as? User else { return nil }
@@ -142,7 +142,7 @@ internal class UserManager: NSObject {
             return
         }
 
-        if let provider = appUser.provider {
+        if let providerString = appUser.provider, let provider = SocialLoginProvider(rawValue: providerString) {
             let upAPI = SocialAuthAPI.socialLogin(name: appUser.firstName, email: appUser.email, accessToken: appUser.accessToken!, socialLoginProvider: provider)
             _ = APIManager.shared.apiDataTask(upAPI: upAPI, completion: { [weak self] socialLoginResponse in
                 guard let token = socialLoginResponse?.token else { return }
@@ -170,7 +170,7 @@ internal class UserManager: NSObject {
         let upAPI = AuthAPI.refreshToken(token: jwt.token)
         _ = APIManager.shared.apiDataTask(upAPI: upAPI, completion: { [weak self] refreshTokenResponse in
             guard let token = refreshTokenResponse?.token else { return }
-            let user = self?.currentUser?.update(fromJWTToken: token)
+            let user = self?.currentUser?.with(jwtToken: token)
             self?.currentUser = user
         } as APICompletion<RefreshTokenResponse>, failure: nil)
     }
@@ -203,7 +203,7 @@ extension UserManager {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: { [weak self] response in
             guard let responseObject = response else { return }
 
-            let user = self?.currentUser?.update(fromDictionary: responseObject.toDictionary())
+            let user = self?.currentUser?.with(userInfoResponse: responseObject)
             self?.currentUser = user
 
             completion?(response)
@@ -219,7 +219,7 @@ extension UserManager {
             .subscribeOn(MainScheduler.instance)
             .do(onNext: { [weak self] userInfoResponse in
 
-                let user = self?.currentUser?.update(fromDictionary: userInfoResponse.toDictionary())
+                let user = self?.currentUser?.with(userInfoResponse: userInfoResponse)
                 self?.currentUser = user
 
             })
@@ -269,20 +269,8 @@ extension UserManager {
                                        gender: String? = nil,
                                        aniversary: Date? = nil,
                                        birthday: Date? = nil) {
-        let user = currentUser
-
-        user?.firstName = name
-        user?.phone = phone
-        user?.email = email
-        if gender != nil {
-            user?.gender = gender
-        }
-        if aniversary != nil {
-            user?.anniversary = Int(aniversary!.timeIntervalSince1970 * 1000)
-        }
-        if birthday != nil {
-            user?.birthday = Int(birthday!.timeIntervalSince1970 * 1000)
-        }
+        
+        let user = currentUser?.with(anniversary: aniversary, birthday: birthday, email: email, firstName: name, gender: gender, phone: phone)
 
         currentUser = user
     }
@@ -320,9 +308,9 @@ extension UserManager {
         let upAPI = UserBizInfoAPI.userBizInfo
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: { [weak self] info in
             guard let user = self?.currentUser else { return }
-            user.userBizInfoResponse = info
+            let newUser = user.with(userBizInfoResponse: info)
 
-            self?.saveToKeyChain(user: user)
+            self?.saveToKeyChain(user: newUser)
             AnalyticsManager.shared.track(event: .bizInfoUpdated)
             NotificationCenter.default.post(name: NSNotification.Name.userBizInfoChanged, object: nil)
 
@@ -339,9 +327,9 @@ extension UserManager {
             .subscribeOn(MainScheduler.instance)
             .do(onNext: { [weak self] userBizInfoResponse in
                 guard let user = self?.currentUser else { return }
-                user.userBizInfoResponse = userBizInfoResponse
+                let newUser = user.with(userBizInfoResponse: userBizInfoResponse)
 
-                self?.saveToKeyChain(user: user)
+                self?.saveToKeyChain(user: newUser)
                 AnalyticsManager.shared.track(event: .bizInfoUpdated)
                 NotificationCenter.default.post(name: NSNotification.Name.userBizInfoChanged, object: nil)
             })
@@ -395,13 +383,13 @@ extension UserManager {
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
             .observeOn(MainScheduler.instance)
             .do(onNext: { [weak self] loginResponse in
-                if let token = loginResponse.token {
-                    let user = User(jwtToken: token)
-                    self?.currentUser = user
-                    AnalyticsManager.shared.track(event: .loginSuccess(phone: phone))
-                } else {
-                    AnalyticsManager.shared.track(event: .loginFailed(phone: phone))
-                }
+//                if let token = loginResponse.token {
+                let user = User(jwtToken: loginResponse.token)
+                self?.currentUser = user
+                AnalyticsManager.shared.track(event: .loginSuccess(phone: phone))
+//                } else {
+//                    AnalyticsManager.shared.track(event: .loginFailed(phone: phone))
+//                }
             }, onError: { _ in
                 AnalyticsManager.shared.track(event: .loginFailed(phone: phone))
             })

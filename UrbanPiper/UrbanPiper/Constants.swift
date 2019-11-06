@@ -82,7 +82,7 @@ public enum DeliveryOption: String {
 /// - maxItemOptionsSelected: This error is thrown by the addOption function when a item option is added to a group beyond maxSelectable variable in the ItemOptionGroup
 public enum ItemOptionBuilderError: Error {
     /// - invalid: This error is thrown by the build function if ItemOptions are not added as specified by the minSelectable and maxSelectable variables in the ItemOptionGroup
-    case invalid(group: ItemOptionGroup)
+    case invalid(group: OptionGroup)
     /// - maxItemOptionsSelected: This error is thrown by the addOption function when a item option is added to a group beyond maxSelectable variable in the ItemOptionGroup
     case maxItemOptionsSelected(Int)
 }

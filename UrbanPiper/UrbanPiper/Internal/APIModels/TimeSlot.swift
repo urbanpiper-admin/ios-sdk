@@ -1,67 +1,84 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	TimeSlot.swift
-//
-//	Create by Vidhyadharan Mohanram on 29/1/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let timeSlot = try TimeSlot(json)
 
 import Foundation
 
-public class TimeSlot: NSObject, JSONDecodable, NSCoding {
-    public var day: String!
-    public var endTime: String!
-    public var startTime: String!
+// MARK: - TimeSlot
+@objc public class TimeSlot: NSObject, Codable, NSCoding {
+    @objc public let day, endTime, startTime: String
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        day = dictionary["day"] as? String
-        endTime = dictionary["end_time"] as? String
-        startTime = dictionary["start_time"] as? String
+    enum CodingKeys: String, CodingKey {
+        case day
+        case endTime = "end_time"
+        case startTime = "start_time"
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let day = day {
-            dictionary["day"] = day as AnyObject
-        }
-        if let endTime = endTime {
-            dictionary["end_time"] = endTime as AnyObject
-        }
-        if let startTime = startTime {
-            dictionary["start_time"] = startTime as AnyObject
-        }
-        return dictionary
+    init(day: String, endTime: String, startTime: String) {
+        self.day = day
+        self.endTime = endTime
+        self.startTime = startTime
     }
-
+    
     /**
      * NSCoding required initializer.
      * Fills the data from the passed decoder
      */
-    @objc public required init(coder aDecoder: NSCoder) {
-        day = aDecoder.decodeObject(forKey: "day") as? String
-        endTime = aDecoder.decodeObject(forKey: "end_time") as? String
-        startTime = aDecoder.decodeObject(forKey: "start_time") as? String
+    public required init(coder aDecoder: NSCoder) {
+        day = (aDecoder.decodeObject(forKey: "day") as? String)!
+        endTime = (aDecoder.decodeObject(forKey: "end_time") as? String)!
+        startTime = (aDecoder.decodeObject(forKey: "start_time") as? String)!
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(TimeSlot.self, from: data)
+        self.init(day: me.day, endTime: me.endTime, startTime: me.startTime)
+    }
+}
+
+// MARK: TimeSlot convenience initializers and mutators
+
+extension TimeSlot {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        day: String? = nil,
+        endTime: String? = nil,
+        startTime: String? = nil
+    ) -> TimeSlot {
+        return TimeSlot(
+            day: day ?? self.day,
+            endTime: endTime ?? self.endTime,
+            startTime: startTime ?? self.startTime
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
     }
 
     /**
      * NSCoding required method.
      * Encodes mode properties into the decoder
      */
-    @objc public func encode(with aCoder: NSCoder) {
-        // if let day = day {
-            aCoder.encode(day, forKey: "day")
-        // }
-        // if let endTime = endTime {
-            aCoder.encode(endTime, forKey: "end_time")
-        // }
-        // if let startTime = startTime {
-            aCoder.encode(startTime, forKey: "start_time")
-        // }
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(day, forKey: "day")
+        aCoder.encode(endTime, forKey: "end_time")
+        aCoder.encode(startTime, forKey: "start_time")
     }
 }

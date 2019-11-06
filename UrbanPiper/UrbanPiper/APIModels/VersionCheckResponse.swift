@@ -1,81 +1,71 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	VersionCheckResponse.swift
-//
-//	Create by Vidhyadharan Mohanram on 30/4/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let versionCheckResponse = try VersionCheckResponse(json)
 
 import Foundation
 
-public class VersionCheckResponse: NSObject, JSONDecodable {
-    public var forceUpdate: Bool
-    public var latestVersion: String!
-    public var releaseDate: Int?
-    public var url: String!
+// MARK: - VersionCheckResponse
+@objc public class VersionCheckResponse: NSObject, JSONDecodable {
+    @objc public let forceUpdate: Bool
+    @objc public let latestVersion: String
+    @objc public let releaseDate: Date?
+    @objc public let url: String?
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        forceUpdate = dictionary["force_update"] as? Bool ?? false
-        latestVersion = dictionary["latest_version"] as? String
-        releaseDate = dictionary["release_date"] as? Int
-        url = dictionary["url"] as? String
+    enum CodingKeys: String, CodingKey {
+        case forceUpdate = "force_update"
+        case latestVersion = "latest_version"
+        case releaseDate = "release_date"
+        case url
     }
 
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    func toDictionary() -> [String : AnyObject]
-//    {
-//        var dictionary: [String : AnyObject] = [String : AnyObject]()
-//        if let forceUpdate = forceUpdate {
-//            dictionary["force_update"] = forceUpdate as AnyObject
-//        }
-//        if let latestVersion = latestVersion {
-//            dictionary["latest_version"] = latestVersion as AnyObject
-//        }
-//        if let releaseDate = releaseDate {
-//            dictionary["release_date"] = releaseDate as AnyObject
-//        }
-//        if let url = url {
-//            dictionary["url"] = url as AnyObject
-//        }
-//        return dictionary
-//    }
-//
-//    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
-//    {
-//         forceUpdate = val as? Bool ?? false
-//         latestVersion = aDecoder.decodeObject(forKey: "latest_version") as? String
-//         releaseDate = aDecoder.decodeObject(forKey: "release_date") as? Int
-//         url = aDecoder.decodeObject(forKey: "url") as? String
-//
-//    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let forceUpdate = forceUpdate {
-//            aCoder.encode(forceUpdate, forKey: "force_update")
-//        }
-//        if let latestVersion = latestVersion {
-//            aCoder.encode(latestVersion, forKey: "latest_version")
-//        }
-//        if let releaseDate = releaseDate {
-//            aCoder.encode(releaseDate, forKey: "release_date")
-//        }
-//        if let url = url {
-//            aCoder.encode(url, forKey: "url")
-//        }
-//
-//    }
+    init(forceUpdate: Bool, latestVersion: String, releaseDate: Date?, url: String?) {
+        self.forceUpdate = forceUpdate
+        self.latestVersion = latestVersion
+        self.releaseDate = releaseDate
+        self.url = url
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(VersionCheckResponse.self, from: data)
+        self.init(forceUpdate: me.forceUpdate, latestVersion: me.latestVersion, releaseDate: me.releaseDate, url: me.url)
+    }
+}
+
+// MARK: VersionCheckResponse convenience initializers and mutators
+
+extension VersionCheckResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        forceUpdate: Bool? = nil,
+        latestVersion: String? = nil,
+        releaseDate: Date? = nil,
+        url: String? = nil
+    ) -> VersionCheckResponse {
+        return VersionCheckResponse(
+            forceUpdate: forceUpdate ?? self.forceUpdate,
+            latestVersion: latestVersion ?? self.latestVersion,
+            releaseDate: releaseDate ?? self.releaseDate,
+            url: url ?? self.url
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

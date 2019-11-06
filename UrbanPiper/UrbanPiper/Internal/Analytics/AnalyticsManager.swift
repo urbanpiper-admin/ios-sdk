@@ -20,29 +20,29 @@ public enum AnalyticsEvent {
     case nearestStoreClosedTemp(lat: CLLocationDegrees, lng: CLLocationDegrees, storeName: String)
     case nearestStoreClosed(lat: CLLocationDegrees, lng: CLLocationDegrees, storeName: String)
     case itemSearch(query: String, storeName: String?, results: [String: Any])
-    case couponSuccess(discount: Decimal, couponCode: String, isSuggested: Bool, preSelected: Bool)
-    case couponFailed(discount: Decimal, couponCode: String, isSuggested: Bool, preSelected: Bool)
+    case couponSuccess(discount: Double, couponCode: String, isSuggested: Bool, preSelected: Bool)
+    case couponFailed(discount: Double, couponCode: String, isSuggested: Bool, preSelected: Bool)
     case passwordReset(phone: String)
     case loginSuccess(phone: String)
     case loginFailed(phone: String)
     case resendOTP(phone: String)
     case signupStart(phone: String)
     case signupComplete(phone: String)
-    case walletReloadInit(amount: NSDecimalNumber, paymentMode: String)
-    case successfulWalletReload(amount: NSDecimalNumber, paymentMode: String)
-    case failedWalletReload(amount: NSDecimalNumber, paymentMode: String)
+    case walletReloadInit(amount: Double, paymentMode: String)
+    case successfulWalletReload(amount: Double, paymentMode: String)
+    case failedWalletReload(amount: Double, paymentMode: String)
     case referralSent(phone: String, shareChannel: String?, shareLink: String?)
     case logout(phone: String)
     case cartInit
     case addToCart(item: CartItem, checkoutPageItemAdd: Bool, itemDetailsPageItemAdd: Bool)
     case removeFromCart(item: CartItem)
     case productClicked(item: Item)
-    case purchaseCompleted(orderID: String, userWalletBalance: Decimal, checkoutBuilder: CheckoutBuilder, isReorder: Bool)
-    case reorderInit(amount: Decimal)
+    case purchaseCompleted(orderID: String, userWalletBalance: Double, checkoutBuilder: CheckoutBuilder, isReorder: Bool)
+    case reorderInit(amount: Double)
     case itemLiked(itemTitle: String)
     case itemUnliked(itemTitle: String)
     case feedbackSubmitted(rating: Double, reason: String?)
-    case checkoutInit(payableAmt: Decimal, walletCreditsApplied: Bool)
+    case checkoutInit(payableAmt: Double, walletCreditsApplied: Bool)
     case profileUpdated(phone: String, pwdChanged: Bool)
     case bannerClicked
     case addressSelected
@@ -340,20 +340,20 @@ public class AnalyticsManager: NSObject {
 //        #endif
 //    }
 
-    @objc public func initiateWalletReload(amount: NSDecimalNumber, paymentMode: String) {
+    @objc public func initiateWalletReload(amount: Double, paymentMode: String) {
         track(event: .walletReloadInit(amount: amount, paymentMode: paymentMode))
     }
 
-    @objc public func walletReloadSuccess(amount: NSDecimalNumber, paymentMode: String) {
+    @objc public func walletReloadSuccess(amount: Double, paymentMode: String) {
         track(event: .successfulWalletReload(amount: amount, paymentMode: paymentMode))
     }
 
-    @objc public func walletReloadFailed(amount: NSDecimalNumber, paymentMode: String) {
+    @objc public func walletReloadFailed(amount: Double, paymentMode: String) {
         track(event: .failedWalletReload(amount: amount, paymentMode: paymentMode))
     }
 
-    @objc public func reorderInit(amount: NSDecimalNumber) {
-        track(event: .reorderInit(amount: amount.decimalValue))
+    @objc public func reorderInit(amount: Double) {
+        track(event: .reorderInit(amount: amount))
     }
 
     @objc public func feedbackSubmitted(rating: Float, reason: String?) {
@@ -680,7 +680,7 @@ public class AnalyticsManager: NSObject {
 //        if let token: String = AppConfigManager.shared.firRemoteConfigDefaults.mixpanelProjectToken, token.count > 0, sdksInitialized {
 //            var properties: Properties = ["query" : query]
 //
-//            if let storeId = OrderingStoreManager.shared.orderingStore?.bizLocationId {
+//            if let storeId = OrderingStoreManager.shared.orderingStore?.bizLocationid {
 //                properties["store_id"] = "\(storeId)"
 //            }
 //

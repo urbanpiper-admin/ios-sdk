@@ -9,7 +9,7 @@
 import CoreLocation
 import UIKit
 
-public class OrderDeliveryAddress: NSObject, NSCoding {
+@objc public class OrderDeliveryAddress: NSObject, NSCoding {
     @objc public var coordLatitude: CLLocationDegrees = 0
     @objc public var coordLongitude: CLLocationDegrees = 0
 

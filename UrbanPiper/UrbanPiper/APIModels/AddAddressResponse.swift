@@ -1,62 +1,61 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	AddUpdateAddressResponse.swift
-//
-//	Create by Vidhyadharan Mohanram on 4/6/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let addUpdateAddressResponse = try AddUpdateAddressResponse(json)
 
 import Foundation
 
-public class AddUpdateAddressResponse: NSObject, JSONDecodable {
-    public var addressId: Int?
-    public var msg: String!
+// MARK: - AddUpdateAddressResponse
+@objc public class AddUpdateAddressResponse: NSObject, JSONDecodable {
+    @objc public let addressid: Int
+    @objc public let msg: String
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        addressId = dictionary["address_id"] as? Int
-        msg = dictionary["msg"] as? String
+    enum CodingKeys: String, CodingKey {
+        case addressid = "address_id"
+        case msg
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    @objc public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let addressId = addressId {
-            dictionary["address_id"] = addressId as AnyObject
+    init(addressid: Int, msg: String) {
+        self.addressid = addressid
+        self.msg = msg
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(AddUpdateAddressResponse.self, from: data)
+        self.init(addressid: me.addressid, msg: me.msg)
+    }
+}
+
+// MARK: AddUpdateAddressResponse convenience initializers and mutators
+
+extension AddUpdateAddressResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
-        if let msg = msg {
-            dictionary["msg"] = msg as AnyObject
-        }
-        return dictionary
+        try self.init(data: data)
     }
 
-//    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
-//    {
-//         addressId = aDecoder.decodeObject(forKey: "address_id") as? Int
-//         msg = aDecoder.decodeObject(forKey: "msg") as? String
-//
-//    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let addressId = addressId {
-//            aCoder.encode(addressId, forKey: "address_id")
-//        }
-//        if let msg = msg {
-//            aCoder.encode(msg, forKey: "msg")
-//        }
-//
-//    }
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        addressid: Int? = nil,
+        msg: String? = nil
+    ) -> AddUpdateAddressResponse {
+        return AddUpdateAddressResponse(
+            addressid: addressid ?? self.addressid,
+            msg: msg ?? self.msg
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

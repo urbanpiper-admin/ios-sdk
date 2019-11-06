@@ -23,7 +23,7 @@ public class CheckoutBuilder: NSObject {
     internal var useWalletCredits: Bool!
     internal var deliveryOption: DeliveryOption!
     internal var cartItems: [CartItem]!
-    internal var orderTotal: Decimal!
+    internal var orderTotal: Double!
 
     internal var paymentOption: PaymentOption?
 
@@ -89,7 +89,7 @@ public class CheckoutBuilder: NSObject {
                                                 useWalletCredits: Bool,
                                                 deliveryOption: DeliveryOption,
                                                 cartItems: [CartItem],
-                                                orderTotal: Decimal,
+                                                orderTotal: Double,
                                                 completion: APICompletion<PreProcessOrderResponse>?, failure: APIFailure?) -> URLSessionDataTask? {
         assert(cartItems.count > 0, "Provided cart items variable is empty")
         guard cartItems.count > 0 else { return nil }
@@ -104,7 +104,7 @@ public class CheckoutBuilder: NSObject {
 
         clearCoupon()
 
-        let upAPI = PaymentsAPI.preProcessOrder(storeId: store.bizLocationId, applyWalletCredit: useWalletCredits,
+        let upAPI = PaymentsAPI.preProcessOrder(storeId: store.bizLocationid, applyWalletCredit: useWalletCredits,
                                                 deliveryOption: deliveryOption, cartItems: cartItems, orderTotal: orderTotal)
 
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: { [weak self] preProcessOrderResponse in
@@ -123,7 +123,7 @@ public class CheckoutBuilder: NSObject {
                       useWalletCredits: Bool,
                       deliveryOption: DeliveryOption,
                       cartItems: [CartItem],
-                      orderTotal: Decimal) -> Observable<PreProcessOrderResponse>? {
+                      orderTotal: Double) -> Observable<PreProcessOrderResponse>? {
         assert(cartItems.count > 0, "Provided cart items variable is empty")
         guard cartItems.count > 0 else { return nil }
 
@@ -137,7 +137,7 @@ public class CheckoutBuilder: NSObject {
 
         clearCoupon()
 
-        let upAPI = PaymentsAPI.preProcessOrder(storeId: store.bizLocationId, applyWalletCredit: useWalletCredits,
+        let upAPI = PaymentsAPI.preProcessOrder(storeId: store.bizLocationid, applyWalletCredit: useWalletCredits,
                                                 deliveryOption: deliveryOption, cartItems: cartItems, orderTotal: orderTotal)
         return APIManager.shared.apiObservable(upAPI: upAPI)
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
@@ -169,7 +169,7 @@ public class CheckoutBuilder: NSObject {
         assert(validateCartResponse != nil, "validateCartResponse is nil, call validateCart method first")
         guard validateCartResponse != nil else { return nil }
 
-        let upAPI = OffersAPI.applyCoupon(coupon: code, storeId: store.bizLocationId, deliveryOption: deliveryOption, cartItems: cartItems, applyWalletCredits: useWalletCredits)
+        let upAPI = OffersAPI.applyCoupon(coupon: code, storeId: store.bizLocationid, deliveryOption: deliveryOption, cartItems: cartItems, applyWalletCredits: useWalletCredits)
 
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: { [weak self] validateCouponResponse in
             self?.validateCouponResponse = validateCouponResponse
@@ -185,7 +185,7 @@ public class CheckoutBuilder: NSObject {
         assert(validateCartResponse != nil, "validateCartResponse is nil, call validateCart method first")
         guard validateCartResponse != nil else { return nil }
 
-        let upAPI = OffersAPI.applyCoupon(coupon: code, storeId: store.bizLocationId, deliveryOption: deliveryOption, cartItems: cartItems, applyWalletCredits: useWalletCredits)
+        let upAPI = OffersAPI.applyCoupon(coupon: code, storeId: store.bizLocationid, deliveryOption: deliveryOption, cartItems: cartItems, applyWalletCredits: useWalletCredits)
         return APIManager.shared.apiObservable(upAPI: upAPI)
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
             .observeOn(MainScheduler.instance)
@@ -226,7 +226,7 @@ public class CheckoutBuilder: NSObject {
 
         guard let payableAmount = order?.payableAmount else { return nil }
 
-        let upAPI = PaymentsAPI.initiateOnlinePayment(paymentOption: paymentOption, totalAmount: payableAmount, storeId: store.bizLocationId)
+        let upAPI = PaymentsAPI.initiateOnlinePayment(paymentOption: paymentOption, totalAmount: payableAmount, storeId: store.bizLocationid)
 
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: { [weak self] paymentInitResponse in
             self?.paymentOption = paymentOption
@@ -252,7 +252,7 @@ public class CheckoutBuilder: NSObject {
 
         guard let payableAmount = order?.payableAmount else { return nil }
 
-        let upAPI = PaymentsAPI.initiateOnlinePayment(paymentOption: paymentOption, totalAmount: payableAmount, storeId: store.bizLocationId)
+        let upAPI = PaymentsAPI.initiateOnlinePayment(paymentOption: paymentOption, totalAmount: payableAmount, storeId: store.bizLocationid)
         return APIManager.shared.apiObservable(upAPI: upAPI)
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
             .observeOn(MainScheduler.instance)
@@ -323,7 +323,7 @@ public class CheckoutBuilder: NSObject {
                                            deliveryOption: deliveryOption,
                                            instructions: instructions,
                                            phone: phone,
-                                           storeId: store.bizLocationId,
+                                           storeId: store.bizLocationid,
                                            paymentOption: paymentOption,
                                            taxRate: order?.taxRate ?? store.taxRate ?? 0,
                                            couponCode: couponCode,
@@ -380,7 +380,7 @@ public class CheckoutBuilder: NSObject {
                                            deliveryOption: deliveryOption,
                                            instructions: instructions,
                                            phone: phone,
-                                           storeId: store.bizLocationId,
+                                           storeId: store.bizLocationid,
                                            paymentOption: paymentOption,
                                            taxRate: order?.taxRate ?? store.taxRate ?? 0,
                                            couponCode: couponCode,
@@ -421,8 +421,8 @@ public class CheckoutBuilder: NSObject {
         assert(paymentOption! == .paymentGateway, "verify payment method should be called only for the paymentGateway paymentOption")
         guard paymentOption! == .paymentGateway else { return nil }
 
-        guard let orderId = orderResponse?.orderId, let transactionId = paymentInitResponse?.transactionId else { return nil }
-        let upAPI = PaymentsAPI.verifyPayment(pid: pid, orderId: orderId, transactionId: transactionId)
+        guard let orderId = orderResponse?.orderid, let transactionId = paymentInitResponse?.transactionid else { return nil }
+        let upAPI = PaymentsAPI.verifyPayment(pid: pid, orderId: String(orderId), transactionId: transactionId)
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
@@ -436,9 +436,9 @@ public class CheckoutBuilder: NSObject {
         assert(paymentOption! == .paymentGateway, "verify payment method should be called only for the paymentGateway paymentOption")
         guard paymentOption! == .paymentGateway else { return nil }
 
-        guard let orderId = orderResponse?.orderId, let transactionId = paymentInitResponse?.transactionId else { return nil }
+        guard let orderId = orderResponse?.orderid, let transactionId = paymentInitResponse?.transactionid else { return nil }
 
-        let upAPI = PaymentsAPI.verifyPayment(pid: pid, orderId: orderId, transactionId: transactionId)
+        let upAPI = PaymentsAPI.verifyPayment(pid: pid, orderId: String(orderId), transactionId: transactionId)
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
 }

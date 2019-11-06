@@ -1,75 +1,56 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	StoreListResponse.swift
-//
-//	Create by Vidhyadharan Mohanram on 4/7/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let storeListResponse = try StoreListResponse(json)
 
 import Foundation
 
-public class StoreListResponse: NSObject, JSONDecodable {
-    public var biz: Biz!
-    public var stores: [Store]!
+// MARK: - StoreLocatorResponse
+@objc public class StoreListResponse: NSObject, JSONDecodable {
+    @objc public let stores: [Store]
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        if let bizData = dictionary["biz"] as? [String: AnyObject] {
-            biz = Biz(fromDictionary: bizData)
+    init(stores: [Store]) {
+        self.stores = stores
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(StoreListResponse.self, from: data)
+        self.init(stores: me.stores)
+    }
+}
+
+// MARK: StoreLocatorResponse convenience initializers and mutators
+
+extension StoreListResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
-        stores = [Store]()
-        if let storesArray = dictionary["stores"] as? [[String: AnyObject]] {
-            for dic in storesArray {
-                guard let value = Store(fromDictionary: dic) else { continue }
-                guard !value.hideStoreName else { continue }
-                stores.append(value)
-            }
-        }
+        try self.init(data: data)
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    @objc public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let biz = biz {
-            dictionary["biz"] = biz.toDictionary() as AnyObject
-        }
-        if let stores = stores {
-            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
-            for storesElement in stores {
-                dictionaryElements.append(storesElement.toDictionary())
-            }
-            dictionary["stores"] = dictionaryElements as AnyObject
-        }
-        return dictionary
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
     }
 
-//    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
-//    {
-//         biz = aDecoder.decodeObject(forKey: "biz") as? Biz
-//         stores = aDecoder.decodeObject(forKey :"stores") as? [Store]
-//
-//    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let biz = biz {
-//            aCoder.encode(biz, forKey: "biz")
-//        }
-//        if let stores = stores {
-//            aCoder.encode(stores, forKey: "stores")
-//        }
-//
-//    }
+    public func with(
+        stores: [Store]? = nil
+    ) -> StoreListResponse {
+        return StoreListResponse(
+            stores: stores ?? self.stores
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+    
+    @objc public func toObjcDictionary() -> [String : AnyObject] {
+        return toDictionary()
+    }
 }

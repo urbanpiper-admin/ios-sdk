@@ -7,68 +7,69 @@
 
 import Foundation
 
-public class ItemsSearchResponse: NSObject, JSONDecodable {
-    public var items: [Item]!
-    public var meta: Meta!
+@objc public class ItemsSearchResponse: NSObject, JSONDecodable {
+    @objc public let meta: Meta
+    @objc public let items: [Item]
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        items = [Item]()
-        if let itemsArray: [[String: AnyObject]] = dictionary["items"] as? [[String: AnyObject]] {
-            for dic in itemsArray {
-                guard let value: Item = Item(fromDictionary: dic) else { continue }
-                value.isSearchItem = true
-                items.append(value)
-            }
+init(meta: Meta, items: [Item]) {
+        self.meta = meta
+        self.items = items
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(ItemsSearchResponse.self, from: data)
+        self.init(meta: me.meta, items: me.items)
+    }
+}
+
+// MARK: CategoryItemsResponse convenience initializers and mutators
+
+extension ItemsSearchResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
-        if let metaData: [String: AnyObject] = dictionary["meta"] as? [String: AnyObject] {
-            meta = Meta(fromDictionary: metaData)
-        }
+        try self.init(data: data)
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let items = items {
-            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
-            for itemsElement in items {
-                dictionaryElements.append(itemsElement.toDictionary())
-            }
-            dictionary["items"] = dictionaryElements as AnyObject
-        }
-        if let meta = meta {
-            dictionary["meta"] = meta.toDictionary() as AnyObject
-        }
-        return dictionary
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
     }
 
+    public func with(
+        meta: Meta? = nil,
+        items: [Item]? = nil
+    ) -> ItemsSearchResponse {
+        return ItemsSearchResponse(
+            meta: meta ?? self.meta,
+            items: items ?? self.items
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+    
 //    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    // public func toDictionary() -> [String : AnyObject]
 //    {
-//         items = aDecoder.decodeObject(forKey :"items") as? [Item]
-//         meta = aDecoder.decodeObject(forKey: "meta") as? Meta
-//    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let items = items {
-//            aCoder.encode(items, forKey: "items")
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        
+//        var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+//        for itemsElement in items {
+//            dictionaryElements.append(itemsElement.toDictionary())
 //        }
-//        if let meta = meta {
-//            aCoder.encode(meta, forKey: "meta")
-//        }
-//
+//        dictionary["items"] = dictionaryElements as AnyObject
+//        
+//        dictionary["meta"] = meta.toDictionary() as AnyObject
+//        
+//        return dictionary
 //    }
 }

@@ -1,51 +1,90 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//  OrderResponse.swift
-//  UrbanPiper
-//
-//  Created by Vid on 09/02/19.
-//
+//   @objc public let orderResponse = try OrderResponse(json)
 
-import UIKit
+import Foundation
 
-public class OrderResponse: NSObject, JSONDecodable {
-    public var status: String?
-    public var message: String?
-    public var errorDetails: [String: AnyObject]?
-    public var orderId: String?
+// MARK: - OrderResponse
+@objc public class OrderResponse: NSObject, JSONDecodable {
+    @objc public let message: String?
+    @objc public let errorDetails: String?
+    @objc public let orderid: Int
+    @objc public let status: String
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        status = dictionary["status"] as? String
-        message = dictionary["message"] as? String
-        errorDetails = dictionary["error_details"] as? [String: AnyObject]
-
-        if let oid = dictionary["order_id"] as? String {
-            orderId = oid
-        } else if let oid = dictionary["order_id"] as? Int {
-            orderId = "\(oid)"
-        }
+    enum CodingKeys: String, CodingKey {
+        case message
+        case orderid = "order_id"
+        case status
+        case errorDetails = "error_details"
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let status = status {
-            dictionary["status"] = status as AnyObject
-        }
-        if let message = message {
-            dictionary["message"] = message as AnyObject
-        }
-        if let errorDetails = errorDetails {
-            dictionary["error_details"] = errorDetails as AnyObject
-        }
-        if let orderId = orderId {
-            dictionary["order_id"] = orderId as AnyObject
-        }
-        return dictionary
+    init(message: String?, orderid: Int, status: String, errorDetails: String?) {
+        self.message = message
+        self.orderid = orderid
+        self.status = status
+        self.errorDetails = errorDetails
     }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(OrderResponse.self, from: data)
+        self.init(message: me.message, orderid: me.orderid, status: me.status, errorDetails: me.errorDetails)
+    }
+}
+
+// MARK: OrderResponse convenience initializers and mutators
+
+extension OrderResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        message: String? = nil,
+        orderid: Int? = nil,
+        status: String? = nil,
+        errorDetails: String? = nil
+    ) -> OrderResponse {
+        return OrderResponse(
+            message: message ?? self.message,
+            orderid: orderid ?? self.orderid,
+            status: status ?? self.status,
+            errorDetails: errorDetails ?? self.errorDetails
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+    
+//    /**
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    // public func toDictionary() -> [String : AnyObject]
+//    {
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        dictionary["status"] = status as AnyObject
+//        
+//        if let message = message {
+//            dictionary["message"] = message as AnyObject
+//        }
+//        if let errorDetails = errorDetails {
+//            dictionary["error_details"] = errorDetails as AnyObject
+//        }
+//        dictionary["order_id"] = orderid as AnyObject
+//        return dictionary
+//    }
+
 }

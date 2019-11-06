@@ -1,63 +1,56 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	UserAddressesResponse.swift
-//
-//	Create by Vidhyadharan Mohanram on 24/1/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let userAddressesResponse = try UserAddressesResponse(json)
 
 import Foundation
 
+// MARK: - UserAddressesResponse
 @objc public class UserAddressesResponse: NSObject, JSONDecodable {
-    @objc public var addresses: [Address]!
+    @objc public let addresses: [Address]
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        addresses = [Address]()
-        if let addressesArray: [[String: AnyObject]] = dictionary["addresses"] as? [[String: AnyObject]] {
-            for dic in addressesArray {
-                guard let value: Address = Address(fromDictionary: dic) else { continue }
-                addresses.append(value)
-            }
+    init(addresses: [Address]) {
+        self.addresses = addresses
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(UserAddressesResponse.self, from: data)
+        self.init(addresses: me.addresses)
+    }
+}
+
+// MARK: UserAddressesResponse convenience initializers and mutators
+
+extension UserAddressesResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
+        try self.init(data: data)
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    @objc public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let addresses = addresses {
-            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
-            for addressesElement in addresses {
-                dictionaryElements.append(addressesElement.toDictionary())
-            }
-            dictionary["addresses"] = dictionaryElements as AnyObject
-        }
-        return dictionary
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
     }
 
-//    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
-//    {
-//         addresses = aDecoder.decodeObject(forKey :"addresses") as? [Address]
-//
-//    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let addresses = addresses {
-//            aCoder.encode(addresses, forKey: "addresses")
-//        }
-//
-//    }
+    public func with(
+        addresses: [Address]? = nil
+    ) -> UserAddressesResponse {
+        return UserAddressesResponse(
+            addresses: addresses ?? self.addresses
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+    
+    @objc public func toObjcDictionary() -> [String : AnyObject] {
+        return toDictionary()
+    }
 }

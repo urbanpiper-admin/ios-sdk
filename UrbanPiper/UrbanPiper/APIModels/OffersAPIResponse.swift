@@ -1,75 +1,56 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	OffersAPIResponse.swift
-//
-//	Create by Vidhyadharan Mohanram on 10/7/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let offersAPIResponse = try OffersAPIResponse(json)
 
 import Foundation
 
-public class OffersAPIResponse: NSObject, JSONDecodable {
-    public var coupons: [Coupon]!
-    public var meta: Meta!
+// MARK: - OffersAPIResponse
+@objc public class OffersAPIResponse: NSObject, JSONDecodable {
+    @objc public let coupons: [Coupon]
+    @objc public let meta: Meta
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        coupons = [Coupon]()
-        if let couponsArray = dictionary["coupons"] as? [[String: AnyObject]] {
-            for dic in couponsArray {
-                guard let value = Coupon(fromDictionary: dic) else { continue }
-                coupons.append(value)
-            }
+    init(coupons: [Coupon], meta: Meta) {
+        self.coupons = coupons
+        self.meta = meta
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(OffersAPIResponse.self, from: data)
+        self.init(coupons: me.coupons, meta: me.meta)
+    }
+}
+
+// MARK: OffersAPIResponse convenience initializers and mutators
+
+extension OffersAPIResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
-        if let metaData = dictionary["meta"] as? [String: AnyObject] {
-            meta = Meta(fromDictionary: metaData)
-        }
+        try self.init(data: data)
     }
 
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    func toDictionary() -> [String : AnyObject]
-//    {
-//        var dictionary = [String : AnyObject]()
-//        if let coupons = coupons {
-//            var dictionaryElements = [[String : AnyObject]]()
-//            for couponsElement in coupons {
-//                dictionaryElements.append(couponsElement.toDictionary())
-//            }
-//            dictionary["coupons"] = dictionaryElements as AnyObject
-//        }
-//        if let meta = meta {
-//            dictionary["meta"] = meta.toDictionary() as AnyObject
-//        }
-//        return dictionary
-//    }
-//
-//    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
-//    {
-//         coupons = aDecoder.decodeObject(forKey :"coupons") as? [Coupon]
-//         meta = aDecoder.decodeObject(forKey: "meta") as? Meta
-//
-//    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let coupons = coupons {
-//            aCoder.encode(coupons, forKey: "coupons")
-//        }
-//        if let meta = meta {
-//            aCoder.encode(meta, forKey: "meta")
-//        }
-//
-//    }
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        coupons: [Coupon]? = nil,
+        meta: Meta? = nil
+    ) -> OffersAPIResponse {
+        return OffersAPIResponse(
+            coupons: coupons ?? self.coupons,
+            meta: meta ?? self.meta
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

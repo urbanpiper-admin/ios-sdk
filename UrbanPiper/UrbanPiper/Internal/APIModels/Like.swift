@@ -1,62 +1,61 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	Like.swift
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let like = try Like(json)
 
 import Foundation
 
-public class Like: NSObject, JSONDecodable {
-    public var item: Item!
-    public var likedOn: Int?
+// MARK: - Like
+@objc public class Like: NSObject, Codable {
+    @objc public let item: LikedItem
+    @objc public let likedOn: Int
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        if let itemData: [String: AnyObject] = dictionary["item"] as? [String: AnyObject] {
-            item = Item(fromDictionary: itemData)
-        }
-        likedOn = dictionary["liked_on"] as? Int
+    enum CodingKeys: String, CodingKey {
+        case item
+        case likedOn = "liked_on"
     }
 
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    public func toDictionary() -> [String : AnyObject]
-//    {
-//        var dictionary: [String : AnyObject] = [String : AnyObject]()
-//        if let item = item {
-//            dictionary["item"] = item.toDictionary() as AnyObject
-//        }
-//        if let likedOn = likedOn {
-//            dictionary["liked_on"] = likedOn as AnyObject
-//        }
-//        return dictionary
-//    }
-//
-//    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
-//    {
-//         item = aDecoder.decodeObject(forKey: "item") as? Item
-//         likedOn = aDecoder.decodeObject(forKey: "liked_on") as? Int
-//
-//    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let item = item {
-//            aCoder.encode(item, forKey: "item")
-//        }
-//        if let likedOn = likedOn {
-//            aCoder.encode(likedOn, forKey: "liked_on")
-//        }
-//
-//    }
+    init(item: LikedItem, likedOn: Int) {
+        self.item = item
+        self.likedOn = likedOn
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(Like.self, from: data)
+        self.init(item: me.item, likedOn: me.likedOn)
+    }
+}
+
+// MARK: Like convenience initializers and mutators
+
+extension Like {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        item: LikedItem? = nil,
+        likedOn: Int? = nil
+    ) -> Like {
+        return Like(
+            item: item ?? self.item,
+            likedOn: likedOn ?? self.likedOn
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

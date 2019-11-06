@@ -1,67 +1,89 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	Choice.swift
-//
-//	Create by Vidhyadharan Mohanram on 29/1/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let choice = try Choice(json)
 
 import Foundation
 
-public class Choice: NSObject, JSONDecodable, NSCoding {
-    public var id: Int = 0
-    public var sortOrder: Int?
-    public var text: String!
+// MARK: - Choice
+@objc public class Choice: NSObject, Codable, NSCoding {
+    @objc public let id, sortOrder: Int
+    @objc public let text: String
 
+    enum CodingKeys: String, CodingKey {
+        case id
+        case sortOrder = "sort_order"
+        case text
+    }
+
+    init(id: Int, sortOrder: Int, text: String) {
+        self.id = id
+        self.sortOrder = sortOrder
+        self.text = text
+    }
+    
     /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        id = dictionary["id"] as? Int ?? 0
-        sortOrder = dictionary["sort_order"] as? Int ?? 0
-        text = dictionary["text"] as? String
+    * NSCoding required initializer.
+    * Fills the data from the passed decoder
+    */
+    required public init(coder aDecoder: NSCoder)
+    {
+        id = aDecoder.decodeInteger(forKey: "id")
+        sortOrder = aDecoder.decodeInteger(forKey: "sort_order")
+        text = (aDecoder.decodeObject(forKey: "text") as? String)!
+
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(Choice.self, from: data)
+        self.init(id: me.id, sortOrder: me.sortOrder, text: me.text)
+    }
+}
+
+// MARK: Choice convenience initializers and mutators
+
+extension Choice {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        id: Int? = nil,
+        sortOrder: Int? = nil,
+        text: String? = nil
+    ) -> Choice {
+        return Choice(
+            id: id ?? self.id,
+            sortOrder: sortOrder ?? self.sortOrder,
+            text: text ?? self.text
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
     }
 
     /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        dictionary["id"] = id as AnyObject
-        if let sortOrder = sortOrder {
-            dictionary["sort_order"] = sortOrder as AnyObject
-        }
-        if let text = text {
-            dictionary["text"] = text as AnyObject
-        }
-        return dictionary
-    }
-
-    /**
-     * NSCoding required initializer.
-     * Fills the data from the passed decoder
-     */
-    @objc public required init(coder aDecoder: NSCoder) {
-        if let val = aDecoder.decodeObject(forKey: "id") as? Int {
-            id = val
-        } else {
-            id = aDecoder.decodeInteger(forKey: "id")
-        }
-        sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
-        text = aDecoder.decodeObject(forKey: "text") as? String
-    }
-
-    /**
-     * NSCoding required method.
-     * Encodes mode properties into the decoder
-     */
-    @objc public func encode(with aCoder: NSCoder) {
+    * NSCoding required method.
+    * Encodes mode properties into the decoder
+    */
+    public func encode(with aCoder: NSCoder)
+    {
         aCoder.encode(id, forKey: "id")
-        // if let sortOrder = sortOrder {
-            aCoder.encode(sortOrder, forKey: "sort_order")
-        // }
-        // if let text = text {
-            aCoder.encode(text, forKey: "text")
-        // }
+        aCoder.encode(sortOrder, forKey: "sort_order")
+        aCoder.encode(text, forKey: "text")
     }
+
 }

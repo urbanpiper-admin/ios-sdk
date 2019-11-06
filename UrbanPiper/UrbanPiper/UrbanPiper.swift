@@ -11,6 +11,10 @@ import UIKit
 
 /// The primary class for integrating UrbanPiper in your app
 public class UrbanPiper: NSObject {
+    public static var isInitialized: Bool {
+        return shared != nil
+    }
+    
     static var shared: UrbanPiper!
     internal var callback: (SDKEvent) -> Void
 
@@ -224,7 +228,7 @@ public extension UrbanPiper {
     /// Get the user's saved deliverable address for the provided store id, user needs to be logged in to make this call
     ///
     /// - Parameters:
-    ///   - storeId: The store id from the nearest store to user's location `Store.bizLocationId`
+    ///   - storeId: The store id from the nearest store to user's location `Store.bizLocationid`
     ///   - completion: `APICompletion` with `UserAddressesResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
@@ -538,7 +542,7 @@ public extension UrbanPiper {
     ///   - amount: The amount to be reloaded into the wallet
     ///   - completion: `APICompletion` with `PaymentInitResponse`, the response contains the payment gateway details
     ///   - failure: Return an instance of URLSessionDataTask
-    @discardableResult @objc func initWalletReload(amount: Decimal,
+    @discardableResult @objc func initWalletReload(amount: Double,
                                                    completion: APICompletion<PaymentInitResponse>?,
                                                    failure: APIFailure?) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
@@ -549,7 +553,7 @@ public extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func initWalletReload(amount: Decimal) -> Observable<PaymentInitResponse>? {
+    func initWalletReload(amount: Double) -> Observable<PaymentInitResponse>? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
@@ -890,7 +894,7 @@ extension UrbanPiper {
     /// The total value of the cart factoring the item quantities and the options selected
     ///
     /// - Returns: Returns an Decimal value representing the total value of the cart
-    @objc public func getCartValue() -> Decimal {
+    @objc public func getCartValue() -> Double {
         return CartManager.shared.cartValue
     }
 

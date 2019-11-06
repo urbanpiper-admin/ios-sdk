@@ -1,170 +1,121 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	RegistrationResponse.swift
-//
-//	Create by Vidhyadharan Mohanram on 11/1/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let registrationResponse = try RegistrationResponse(json)
 
 import Foundation
 
-public class RegistrationResponse: NSObject, JSONDecodable {
-//    public var approvalCode : String!
-//    public var authKey : String!
-//    public var cardNumber : String!
-//    public var customerEmail : String!
-//    public var customerName : String!
-//    public var customerPhone : String!
-    public var message: String!
-//    public var points : Float!
-//    public var prepaidBalance : Float!
-    public var result: String!
-    public var success: Bool
-//    public var timestamp : String!
-//    public var totalBalance : Float!
-    public var token: String?
+// MARK: - RegistrationResponse
+@objc public class RegistrationResponse: NSObject, JSONDecodable {
+    @objc public let accessToken, activeOtp, approvalCode, authKey: String
+    @objc public let cardNumber, customerEmail, customerName, customerPhone: String
+    @objc public let message: String
+    @objc public let points, prepaidBalance: Int
+    @objc public let result: String
+    @objc public let success: Bool
+    @objc public let timestamp: String
+    @objc public let totalBalance: Int
+    @objc public let token: String?
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-//        approvalCode = dictionary["approval_code"] as? String
-//        authKey = dictionary["auth_key"] as? String
-//        cardNumber = dictionary["card_number"] as? String
-//        customerEmail = dictionary["customer_email"] as? String
-//        customerName = dictionary["customer_name"] as? String
-//        customerPhone = dictionary["customer_phone"] as? String
-        message = dictionary["message"] as? String
-//        points = dictionary["points"] as? Float
-//        prepaidBalance = dictionary["prepaid_balance"] as? Float
-        result = dictionary["result"] as? String
-        success = dictionary["success"] as? Bool ?? false
-//        timestamp = dictionary["timestamp"] as? String
-//        totalBalance = dictionary["total_balance"] as? Float
-        token = dictionary["access_token"] as? String
-        if token == nil {
-            token = dictionary["token"] as? String
-        }
+    enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+        case activeOtp = "active_otp"
+        case approvalCode = "approval_code"
+        case authKey = "auth_key"
+        case cardNumber = "card_number"
+        case customerEmail = "customer_email"
+        case customerName = "customer_name"
+        case customerPhone = "customer_phone"
+        case message, points
+        case prepaidBalance = "prepaid_balance"
+        case result, success, timestamp
+        case totalBalance = "total_balance"
+        case token
     }
 
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    public func toDictionary() -> [String : AnyObject]
-//    {
-//        var dictionary: [String : AnyObject] = [String : AnyObject]()
-//        if let approvalCode = approvalCode {
-//            dictionary["approval_code"] = approvalCode as AnyObject
-//        }
-//        if let authKey = authKey {
-//            dictionary["auth_key"] = authKey as AnyObject
-//        }
-//        if let cardNumber = cardNumber {
-//            dictionary["card_number"] = cardNumber as AnyObject
-//        }
-//        if let customerEmail = customerEmail {
-//            dictionary["customer_email"] = customerEmail as AnyObject
-//        }
-//        if let customerName = customerName {
-//            dictionary["customer_name"] = customerName as AnyObject
-//        }
-//        if let customerPhone = customerPhone {
-//            dictionary["customer_phone"] = customerPhone as AnyObject
-//        }
-//        if let message = message {
-//            dictionary["message"] = message as AnyObject
-//        }
-//        if let points = points {
-//            dictionary["points"] = points as AnyObject
-//        }
-//        if let prepaidBalance = prepaidBalance {
-//            dictionary["prepaid_balance"] = prepaidBalance as AnyObject
-//        }
-//        if let result = result {
-//            dictionary["result"] = result as AnyObject
-//        }
-//
-//        dictionary["success"] = success as AnyObject
-//
-//        if let timestamp = timestamp {
-//            dictionary["timestamp"] = timestamp as AnyObject
-//        }
-//        if let totalBalance = totalBalance {
-//            dictionary["total_balance"] = totalBalance as AnyObject
-//        }
-//        if let token = token {
-//            dictionary["token"] = token as AnyObject
-//        }
-//        return dictionary
-//    }
-//
-//    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
-//    {
-//         approvalCode = aDecoder.decodeObject(forKey: "approval_code") as? String
-//         authKey = aDecoder.decodeObject(forKey: "auth_key") as? String
-//         cardNumber = aDecoder.decodeObject(forKey: "card_number") as? String
-//         customerEmail = aDecoder.decodeObject(forKey: "customer_email") as? String
-//         customerName = aDecoder.decodeObject(forKey: "customer_name") as? String
-//         customerPhone = aDecoder.decodeObject(forKey: "customer_phone") as? String
-//         message = aDecoder.decodeObject(forKey: "message") as? String
-//         points = aDecoder.decodeObject(forKey: "points") as? Float
-//         prepaidBalance = aDecoder.decodeObject(forKey: "prepaid_balance") as? Float
-//         result = aDecoder.decodeObject(forKey: "result") as? String
-//         success = val as? Bool ?? false
-//         timestamp = aDecoder.decodeObject(forKey: "timestamp") as? String
-//         totalBalance = aDecoder.decodeObject(forKey: "total_balance") as? Float
-//
-//    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let approvalCode = approvalCode {
-//            aCoder.encode(approvalCode, forKey: "approval_code")
-//        }
-//        if let authKey = authKey {
-//            aCoder.encode(authKey, forKey: "auth_key")
-//        }
-//        if let cardNumber = cardNumber {
-//            aCoder.encode(cardNumber, forKey: "card_number")
-//        }
-//        if let customerEmail = customerEmail {
-//            aCoder.encode(customerEmail, forKey: "customer_email")
-//        }
-//        if let customerName = customerName {
-//            aCoder.encode(customerName, forKey: "customer_name")
-//        }
-//        if let customerPhone = customerPhone {
-//            aCoder.encode(customerPhone, forKey: "customer_phone")
-//        }
-//        if let message = message {
-//            aCoder.encode(message, forKey: "message")
-//        }
-//        if let points = points {
-//            aCoder.encode(points, forKey: "points")
-//        }
-//        if let prepaidBalance = prepaidBalance {
-//            aCoder.encode(prepaidBalance, forKey: "prepaid_balance")
-//        }
-//        if let result = result {
-//            aCoder.encode(result, forKey: "result")
-//        }
-//        if let success = success {
-//            aCoder.encode(success, forKey: "success")
-//        }
-//        if let timestamp = timestamp {
-//            aCoder.encode(timestamp, forKey: "timestamp")
-//        }
-//        if let totalBalance = totalBalance {
-//            aCoder.encode(totalBalance, forKey: "total_balance")
-//        }
-//
-//    }
+    init(accessToken: String, activeOtp: String, approvalCode: String, authKey: String, cardNumber: String, customerEmail: String, customerName: String, customerPhone: String, message: String, points: Int, prepaidBalance: Int, result: String, success: Bool, timestamp: String, totalBalance: Int, token: String?) {
+        self.accessToken = accessToken
+        self.activeOtp = activeOtp
+        self.approvalCode = approvalCode
+        self.authKey = authKey
+        self.cardNumber = cardNumber
+        self.customerEmail = customerEmail
+        self.customerName = customerName
+        self.customerPhone = customerPhone
+        self.message = message
+        self.points = points
+        self.prepaidBalance = prepaidBalance
+        self.result = result
+        self.success = success
+        self.timestamp = timestamp
+        self.totalBalance = totalBalance
+        self.token = token
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(RegistrationResponse.self, from: data)
+        self.init(accessToken: me.accessToken, activeOtp: me.activeOtp, approvalCode: me.approvalCode, authKey: me.authKey, cardNumber: me.cardNumber, customerEmail: me.customerEmail, customerName: me.customerName, customerPhone: me.customerPhone, message: me.message, points: me.points, prepaidBalance: me.prepaidBalance, result: me.result, success: me.success, timestamp: me.timestamp, totalBalance: me.totalBalance, token: me.token)
+    }
+}
+
+// MARK: RegistrationResponse convenience initializers and mutators
+
+extension RegistrationResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        accessToken: String? = nil,
+        activeOtp: String? = nil,
+        approvalCode: String? = nil,
+        authKey: String? = nil,
+        cardNumber: String? = nil,
+        customerEmail: String? = nil,
+        customerName: String? = nil,
+        customerPhone: String? = nil,
+        message: String? = nil,
+        points: Int? = nil,
+        prepaidBalance: Int? = nil,
+        result: String? = nil,
+        success: Bool? = nil,
+        timestamp: String? = nil,
+        totalBalance: Int? = nil,
+        token: String? = nil
+    ) -> RegistrationResponse {
+        return RegistrationResponse(
+            accessToken: accessToken ?? self.accessToken,
+            activeOtp: activeOtp ?? self.activeOtp,
+            approvalCode: approvalCode ?? self.approvalCode,
+            authKey: authKey ?? self.authKey,
+            cardNumber: cardNumber ?? self.cardNumber,
+            customerEmail: customerEmail ?? self.customerEmail,
+            customerName: customerName ?? self.customerName,
+            customerPhone: customerPhone ?? self.customerPhone,
+            message: message ?? self.message,
+            points: points ?? self.points,
+            prepaidBalance: prepaidBalance ?? self.prepaidBalance,
+            result: result ?? self.result,
+            success: success ?? self.success,
+            timestamp: timestamp ?? self.timestamp,
+            totalBalance: totalBalance ?? self.totalBalance,
+            token: token ?? self.token
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

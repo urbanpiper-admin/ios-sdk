@@ -1,49 +1,73 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//  GenericResponse.swift
-//  UrbanPiper
-//
-//  Created by Vid on 06/02/19.
-//  Copyright © 2019 UrbanPiper. All rights reserved.
-//
+//   @objc public let genericResponse = try GenericResponse(json)
 
-import UIKit
+import Foundation
 
+// MARK: - GenericResponse
 @objc public class GenericResponse: NSObject, JSONDecodable {
-    @objc public var status: String? = "success"
-    public var message: String?
-    public var errorMessage: String?
-    internal var msg: String?
+    @objc public let status: String?
+    @objc public let message: String?
+    @objc public let errorMessage: String?
+    @objc public let msg: String?
 
-    internal override init() {}
-
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-
-        if let status = dictionary["status"] as? String {
-            self.status = status
-        }
-        message = dictionary["message"] as? String
-        errorMessage = dictionary["error_message"] as? String
-        msg = dictionary["msg"] as? String
+    enum CodingKeys: String, CodingKey {
+        case status, message, msg
+        case errorMessage = "error_message"
     }
 
-    @objc public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let status = status {
-            dictionary["status"] = status as AnyObject
+    init(status: String? = "success", message: String? = nil, errorMessage: String? = nil, msg: String? = nil) {
+        self.message = message
+        self.status = status
+        self.msg = msg
+        self.errorMessage = errorMessage
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(GenericResponse.self, from: data)
+        self.init(status: me.status, message: me.message, errorMessage: me.errorMessage, msg: me.msg)
+    }
+}
+
+// MARK: GenericResponse convenience initializers and mutators
+
+extension GenericResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
-        if let message = message {
-            dictionary["message"] = message as AnyObject
-        }
-        if let errorMessage = errorMessage {
-            dictionary["error_message"] = errorMessage as AnyObject
-        }
-        if let msg = msg {
-            dictionary["msg"] = msg as AnyObject
-        }
-        return dictionary
+        try self.init(data: data)
+    }
+
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        status: String? = nil,
+        msg: String? = nil,
+        message: String? = nil,
+        errorMessage: String? = nil
+    ) -> GenericResponse {
+        return GenericResponse(
+            status: status ?? self.status,
+            message: message ?? self.message,
+            errorMessage: errorMessage ?? self.errorMessage,
+            msg: msg ?? self.msg
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+    
+    @objc public func toObjcDictionary() -> [String : AnyObject] {
+        return toDictionary()
     }
 }

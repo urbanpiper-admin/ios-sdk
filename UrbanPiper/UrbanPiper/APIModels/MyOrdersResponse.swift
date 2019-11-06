@@ -1,74 +1,56 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	MyOrdersResponse.swift
-//
-//	Create by Vidhyadharan Mohanram on 18/7/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   let pastOrdersResponse = try PastOrdersResponse(json)
 
 import Foundation
 
-public class PastOrdersResponse: NSObject, JSONDecodable {
-    public var meta: Meta!
-    @objc public var orders: [PastOrder]!
+// MARK: - PastOrdersResponse
+@objc public class PastOrdersResponse: NSObject, JSONDecodable {
+    @objc public let meta: Meta
+    @objc public let orders: [PastOrder]
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        if let metaData = dictionary["meta"] as? [String: AnyObject] {
-            meta = Meta(fromDictionary: metaData)
+    init(meta: Meta, orders: [PastOrder]) {
+        self.meta = meta
+        self.orders = orders
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(PastOrdersResponse.self, from: data)
+        self.init(meta: me.meta, orders: me.orders)
+    }
+}
+
+// MARK: PastOrdersResponse convenience initializers and mutators
+
+extension PastOrdersResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
-        orders = [PastOrder]()
-        if let ordersArray = dictionary["orders"] as? [[String: AnyObject]] {
-            for dic in ordersArray {
-                guard let value = PastOrder(fromDictionary: dic) else { continue }
-                orders.append(value)
-            }
-        }
+        try self.init(data: data)
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    @objc public func toDictionary() -> [String: AnyObject] {
-        var dictionary = [String: AnyObject]()
-        if let meta = meta {
-            dictionary["meta"] = meta.toDictionary() as AnyObject
-        }
-        if let orders = orders {
-            var dictionaryElements = [[String: AnyObject]]()
-            for ordersElement in orders {
-                dictionaryElements.append(ordersElement.toDictionary())
-            }
-            dictionary["orders"] = dictionaryElements as AnyObject
-        }
-        return dictionary
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
     }
 
-    /*    /**
-        * NSCoding required initializer.
-        * Fills the data from the passed decoder
-     */
-    @objc required init(coder aDecoder: NSCoder)
-    {
-    meta = aDecoder.decodeObject(forKey: "meta") as? Meta
-    orders = aDecoder.decodeObject(forKey :"orders") as? [MyOrder]
-
+    public func with(
+        meta: Meta? = nil,
+        orders: [PastOrder]? = nil
+    ) -> PastOrdersResponse {
+        return PastOrdersResponse(
+            meta: meta ?? self.meta,
+            orders: orders ?? self.orders
+        )
     }
 
-    /**
-        * NSCoding required method.
-        * Encodes mode properties into the decoder
-     */
-    @objc func encode(with aCoder: NSCoder)
-    {
-    	if let meta = meta {
-    		aCoder.encode(meta, forKey: "meta")
-    	}
-    	if let orders = orders {
-    		aCoder.encode(orders, forKey: "orders")
-    	}
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
 
-    }*/
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

@@ -1,73 +1,60 @@
+// LoginResponse.swift
+
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	LoginResponse.swift
-//
-//	Create by Vidhyadharan Mohanram on 11/1/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let loginResponse = try LoginResponse(json)
 
 import Foundation
 
-public class LoginResponse: NSObject, JSONDecodable { // }, NSCoding {
-    @objc public var message: String?
+// MARK: - LoginResponse
+@objc public class LoginResponse: NSObject, JSONDecodable {
+    @objc public let status, message, token: String
 
-    public var status: String?
+    init(status: String, message: String, token: String) {
+        self.status = status
+        self.message = message
+        self.token = token
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(LoginResponse.self, from: data)
+        self.init(status: me.status, message: me.message, token: me.token)
+    }
+}
 
-    internal var token: String?
+// MARK: LoginResponse convenience initializers and mutators
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    @objc internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        super.init()
-        message = dictionary["message"] as? String
-        status = dictionary["status"] as? String
-        token = dictionary["token"] as? String
+extension LoginResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let message = message {
-            dictionary["message"] = message as AnyObject
-        }
-        if let status = status {
-            dictionary["status"] = status as AnyObject
-        }
-        if let token = token {
-            dictionary["token"] = token as AnyObject
-        }
-
-        return dictionary
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
     }
 
-//    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
-//    {
-//         message = aDecoder.decodeObject(forKey: "message") as? String
-//        status = aDecoder.decodeObject(forKey: "status") as? String
-//         token = aDecoder.decodeObject(forKey: "token") as? String
-//    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let message = message {
-//            aCoder.encode(message, forKey: "message")
-//        }
-//        if let status = status {
-//            aCoder.encode(status, forKey: "status")
-//        }
-//        if let token = token {
-//            aCoder.encode(token, forKey: "token")
-//        }
-//    }
+    public func with(
+        status: String? = nil,
+        message: String? = nil,
+        token: String? = nil
+    ) -> LoginResponse {
+        return LoginResponse(
+            status: status ?? self.status,
+            message: message ?? self.message,
+            token: token ?? self.token
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

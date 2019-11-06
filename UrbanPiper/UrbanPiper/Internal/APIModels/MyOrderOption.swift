@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class MyOrderOption: NSObject, JSONDecodable {
+@objc public class MyOrderOption: NSObject, Codable {
     public var id: Int = 0
     public var title: String!
 

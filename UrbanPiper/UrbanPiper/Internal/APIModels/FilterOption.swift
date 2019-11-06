@@ -1,63 +1,57 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	FilterOption.swift
-//
-//	Create by Vidhyadharan Mohanram on 11/9/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let filterOption = try FilterOption(json)
 
 import Foundation
 
-public class FilterOption: NSObject, JSONDecodable {
-    public var id: Int = 0
-    public var title: String!
+// MARK: - FilterOption
+@objc public class FilterOption: NSObject, Codable {
+    @objc public let id: Int
+    @objc public let title: String
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        id = dictionary["id"] as? Int ?? 0
-        title = dictionary["title"] as? String
+    init(id: Int, title: String) {
+        self.id = id
+        self.title = title
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(FilterOption.self, from: data)
+        self.init(id: me.id, title: me.title)
     }
 
-    /*	/**
-         * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    func toDictionary() -> [String : AnyObject]
-    {
-    	var dictionary = [String : AnyObject]()
-    dictionary["id"] = id as AnyObject
-    	if let title = title {
-    		dictionary["title"] = title as AnyObject
-    	}
-    	return dictionary
+}
+
+// MARK: Option convenience initializers and mutators
+
+extension FilterOption {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
     }
 
-    /**
-        * NSCoding required initializer.
-        * Fills the data from the passed decoder
-     */
-    @objc required public init(coder aDecoder: NSCoder)
-    {
-    if let val = aDecoder.decodeObject(forKey: "id") as? Int {
-    id = val
-    } else {
-    id = aDecoder.decodeInteger(forKey: "id")
-    }
-    title = aDecoder.decodeObject(forKey: "title") as? String
-
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
     }
 
-    /**
-        * NSCoding required method.
-        * Encodes mode properties into the decoder
-     */
-    @objc public func encode(with aCoder: NSCoder)
-    {
-    	aCoder.encode(id, forKey: "id")
-    	if let title = title {
-    		aCoder.encode(title, forKey: "title")
-    	}
+    public func with(
+        id: Int? = nil,
+        title: String? = nil
+    ) -> FilterOption {
+        return FilterOption(
+            id: id ?? self.id,
+            title: title ?? self.title
+        )
+    }
 
-    }*/
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

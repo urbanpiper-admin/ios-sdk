@@ -1,67 +1,60 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	PastOrderDetailsResponse.swift
-//
-//	Create by Vidhyadharan Mohanram on 18/7/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let pastOrderDetailsResponse = try PastOrderDetailsResponse(json)
 
 import Foundation
 
-public class PastOrderDetailsResponse: NSObject, JSONDecodable {
-    @objc public var customer: Customer!
-    @objc public var order: OrderDetails!
+// MARK: - PastOrderDetailsResponse
+@objc public class PastOrderDetailsResponse: NSObject, JSONDecodable {
+    @objc public let customer: Customer
+    @objc public let order: OrderDetails
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        if let customerData = dictionary["customer"] as? [String: AnyObject] {
-            customer = Customer(fromDictionary: customerData)
+    init(customer: Customer, order: OrderDetails) {
+        self.customer = customer
+        self.order = order
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(PastOrderDetailsResponse.self, from: data)
+        self.init(customer: me.customer, order: me.order)
+    }
+}
+
+// MARK: PastOrderDetailsResponse convenience initializers and mutators
+
+extension PastOrderDetailsResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
-        if let orderData = dictionary["order"] as? [String: AnyObject] {
-            order = OrderDetails(fromDictionary: orderData)
-        }
+        try self.init(data: data)
     }
 
-    /*	/**
-         * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    func toDictionary() -> [String : AnyObject]
-    {
-    	var dictionary = [String : AnyObject]()
-    	if let customer = customer {
-    		dictionary["customer"] = customer.toDictionary() as AnyObject
-    	}
-    	if let order = order {
-    		dictionary["order"] = order.toDictionary() as AnyObject
-    	}
-    	return dictionary
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
     }
 
-    /**
-        * NSCoding required initializer.
-        * Fills the data from the passed decoder
-     */
-    @objc required init(coder aDecoder: NSCoder)
-    {
-    customer = aDecoder.decodeObject(forKey: "customer") as? Customer
-    order = aDecoder.decodeObject(forKey: "order") as? Order
-
+    public func with(
+        customer: Customer? = nil,
+        order: OrderDetails? = nil
+    ) -> PastOrderDetailsResponse {
+        return PastOrderDetailsResponse(
+            customer: customer ?? self.customer,
+            order: order ?? self.order
+        )
     }
 
-    /**
-        * NSCoding required method.
-        * Encodes mode properties into the decoder
-     */
-    @objc func encode(with aCoder: NSCoder)
-    {
-    	if let customer = customer {
-    		aCoder.encode(customer, forKey: "customer")
-    	}
-    	if let order = order {
-    		aCoder.encode(order, forKey: "order")
-    	}
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
 
-    }*/
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+    
+    @objc public func toObjcDictionary() -> [String : AnyObject] {
+        return toDictionary()
+    }
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension ItemOption {
+extension OptionGroupOption {
 //    public private(set) var totalAmount: Decimal {
 //        var totalAmount: Decimal = price
 //
@@ -57,11 +57,11 @@ extension ItemOption {
 //        return false
 //    }
 
-    internal var reorderOptionsToAdd: [ItemOption] {
-        var reorderOptionsToAdd = [ItemOption]()
+    internal var reorderOptionsToAdd: [OptionGroupOption] {
+        var reorderOptionsToAdd = [OptionGroupOption]()
 
-        if let optionGroups = nestedOptionGroups, optionGroups.count > 0 {
-            for optionGroup in nestedOptionGroups {
+        if let optionGroups = optionGroups, optionGroups.count > 0 {
+            for optionGroup in optionGroups {
                 reorderOptionsToAdd.append(contentsOf: optionGroup.reorderOptionsToAdd)
             }
         } else {

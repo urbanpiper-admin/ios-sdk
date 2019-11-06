@@ -1,72 +1,56 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	NotificationsResponse.swift
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let notificationsResponse = try NotificationsResponse(json)
 
 import Foundation
 
-public class NotificationsResponse: NSObject, JSONDecodable {
-    public var messages: [Message]!
-    public var meta: Meta!
+// MARK: - NotificationsResponse
+@objc public class NotificationsResponse: NSObject, JSONDecodable {
+    @objc public let messages: [Message]
+    @objc public let meta: Meta
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        messages = [Message]()
-        if let messagesArray: [[String: AnyObject]] = dictionary["messages"] as? [[String: AnyObject]] {
-            for dic in messagesArray {
-                guard let value: Message = Message(fromDictionary: dic) else { continue }
-                messages.append(value)
-            }
+    init(messages: [Message], meta: Meta) {
+        self.messages = messages
+        self.meta = meta
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(NotificationsResponse.self, from: data)
+        self.init(messages: me.messages, meta: me.meta)
+    }
+}
+
+// MARK: NotificationsResponse convenience initializers and mutators
+
+extension NotificationsResponse {
+    
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
-        if let metaData: [String: AnyObject] = dictionary["meta"] as? [String: AnyObject] {
-            meta = Meta(fromDictionary: metaData)
-        }
+        try self.init(data: data)
     }
 
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    public func toDictionary() -> [String : AnyObject]
-//    {
-//        var dictionary: [String : AnyObject] = [String : AnyObject]()
-//        if let messages = messages {
-//            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
-//            for messagesElement in messages {
-//                dictionaryElements.append(messagesElement.toDictionary())
-//            }
-//            dictionary["messages"] = dictionaryElements as AnyObject
-//        }
-//        if let meta = meta {
-//            dictionary["meta"] = meta.toDictionary() as AnyObject
-//        }
-//        return dictionary
-//    }
-//
-//    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
-//    {
-//         messages = aDecoder.decodeObject(forKey :"messages") as? [Message]
-//         meta = aDecoder.decodeObject(forKey: "meta") as? Meta
-//
-//    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let messages = messages {
-//            aCoder.encode(messages, forKey: "messages")
-//        }
-//        if let meta = meta {
-//            aCoder.encode(meta, forKey: "meta")
-//        }
-//
-//    }
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        messages: [Message]? = nil,
+        meta: Meta? = nil
+    ) -> NotificationsResponse {
+        return NotificationsResponse(
+            messages: messages ?? self.messages,
+            meta: meta ?? self.meta
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

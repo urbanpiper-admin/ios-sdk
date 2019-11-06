@@ -12,13 +12,13 @@ import UIKit
 public class ItemOptionBuilder: NSObject {
     fileprivate var selectedNestedOptions: [Int: ItemOptionBuilder] = [:]
 
-    fileprivate var itemsToAdd: [Int: [ItemOption]] = [:]
+    fileprivate var itemsToAdd: [Int: [OptionGroupOption]] = [:]
 
-    fileprivate let itemOption: ItemOption?
+    fileprivate let itemOption: OptionGroupOption?
 
-    fileprivate let optionGroups: [ItemOptionGroup]
+    fileprivate let optionGroups: [OptionGroup]
 
-    internal var isValidOptionGroup: (Bool, ItemOptionGroup?) {
+    internal var isValidOptionGroup: (Bool, OptionGroup?) {
         var isValidItem: Bool = true
 
         for group in optionGroups {
@@ -32,7 +32,7 @@ public class ItemOptionBuilder: NSObject {
         return (isValidItem, nil)
     }
 
-    internal func isOptionGroupValid(group: ItemOptionGroup) -> (Bool, ItemOptionGroup?) {
+    internal func isOptionGroupValid(group: OptionGroup) -> (Bool, OptionGroup?) {
         var isValidItem: Bool = group.minSelectable == 0
 
         if let groupOptionBuilder = selectedNestedOptions[group.id], groupOptionBuilder.optionsToAdd.count > 0 {
@@ -49,8 +49,8 @@ public class ItemOptionBuilder: NSObject {
         }
     }
 
-    internal var optionsToAdd: [ItemOption] {
-        var options: [ItemOption] = []
+    internal var optionsToAdd: [OptionGroupOption] {
+        var options: [OptionGroupOption] = []
 
         for (_, itemOptionBuilder) in selectedNestedOptions {
             guard itemOptionBuilder.itemOption != nil else { continue }
@@ -71,10 +71,10 @@ public class ItemOptionBuilder: NSObject {
         return options
     }
 
-    internal var optionsToRemove: [ItemOption] {
-        var options: [ItemOption] = []
+    internal var optionsToRemove: [OptionGroupOption] {
+        var options: [OptionGroupOption] = []
 
-        let selectedOptions: [ItemOption] = optionsToAdd
+        let selectedOptions: [OptionGroupOption] = optionsToAdd
 
         guard selectedOptions.count > 0 else { return options }
 
@@ -103,7 +103,7 @@ public class ItemOptionBuilder: NSObject {
             descriptionArray.append(text)
         }
 
-        var itemOptionGroupDict: [ItemOptionGroup: [ItemOption]] = [:]
+        var itemOptionGroupDict: [OptionGroup: [OptionGroupOption]] = [:]
 
         for (groupId, itemOptions) in itemsToAdd {
             let group = optionGroups.filter { $0.id == groupId }.last!
@@ -112,10 +112,10 @@ public class ItemOptionBuilder: NSObject {
             itemOptionGroupDict[group] = sortedItemOptions
         }
 
-        let sortedDictionary = itemOptionGroupDict.sorted { $0.key.sortOrder < $1.key.sortOrder }
+        let sortedDictionary = itemOptionGroupDict.sorted { ($0.key.sortOrder ?? 0) < ($1.key.sortOrder ?? 0) }
 
         for (group, itemOptions) in sortedDictionary {
-            descriptionArray.append("• \(group.title!): \(itemOptions.map { $0.title }.joined(separator: ", "))")
+            descriptionArray.append("• \(group.title): \(itemOptions.map { $0.title }.joined(separator: ", "))")
         }
 
         return descriptionArray.joined(separator: "\n")
@@ -124,8 +124,8 @@ public class ItemOptionBuilder: NSObject {
     internal let item: Item?
 
     /// the current total value of the item factoring the added options
-    public var totalAmount: Decimal {
-        var totalAmount: Decimal = item?.itemPrice ?? Decimal.zero
+    public var totalAmount: Double {
+        var totalAmount: Double = item?.itemPrice ?? Double.zero
         for option in optionsToAdd {
             totalAmount += option.price
         }
@@ -136,18 +136,18 @@ public class ItemOptionBuilder: NSObject {
     ///
     /// - Parameter item: An `Item` object that contains nested options
     @objc public init?(item: Item) {
-        guard item.optionGroups != nil, item.optionGroups.count > 0 else { return nil }
+        guard let optionGroups = item.optionGroups, optionGroups.count > 0 else { return nil }
         self.item = item
-        optionGroups = item.optionGroups
+        self.optionGroups = optionGroups
 
         itemOption = nil
     }
 
-    internal init(itemOption: ItemOption) {
+    internal init(itemOption: OptionGroupOption) {
         item = nil
 
         self.itemOption = itemOption
-        optionGroups = itemOption.nestedOptionGroups
+        self.optionGroups = itemOption.optionGroups ?? [OptionGroup]()
     }
 }
 
@@ -156,8 +156,8 @@ extension ItemOptionBuilder {
     ///
     /// - Parameter groupId: The group id to filter the added `ItemOption` objects by
     /// - Returns: Returns an list of `ItemOption` objects that belong to the passed in group id
-    public func selectedOptionsFor(groupId: Int) -> [ItemOption] {
-        var options: [ItemOption] = []
+    public func selectedOptionsFor(groupId: Int) -> [OptionGroupOption] {
+        var options: [OptionGroupOption] = []
 
         guard let _ = optionGroups.filter({ $0.id == groupId }).last else {
             for (_, itemOptionBuilder) in selectedNestedOptions {
@@ -188,7 +188,7 @@ extension ItemOptionBuilder {
     ///   - groupId: The group id to which the `ItemOption` belongs to
     ///   - option: The `ItemOption` that is to be added to the ItemOptionBuilder
     /// - Throws: Throws an error if the added `ItemOption` count for a group exceeds that of the specified `ItemOptionGroup.maxSelectable` value of the group
-    public func addOption(groupId: Int, option: ItemOption) throws {
+    public func addOption(groupId: Int, option: OptionGroupOption) throws {
         guard let optionGroup = optionGroups.filter({ $0.id == groupId }).last else {
             for (_, itemOptionBuilder) in selectedNestedOptions {
                 guard itemOptionBuilder.itemOption != nil else { continue }
@@ -201,7 +201,7 @@ extension ItemOptionBuilder {
             return
         }
 
-        if let options = option.nestedOptionGroups, options.count > 0 {
+        if (option.optionGroups?.count ?? 0) > 0 {
             guard optionGroup.options.filter({ $0.id == option.id }).last != nil else {
 //                optionGroupHandler?(nil, UPError(type: .invalidOption))
                 return
@@ -247,7 +247,7 @@ extension ItemOptionBuilder {
     /// - Parameters:
     ///   - groupId: The group id to which the `ItemOption` belongs to
     ///   - option: The `ItemOption` to be removed from the ItemOptionBuilder
-    public func removeOption(groupId: Int, option: ItemOption) {
+    public func removeOption(groupId: Int, option: OptionGroupOption) {
         guard let _ = optionGroups.filter({ $0.id == groupId }).last else {
             for (_, itemOptionBuilder) in selectedNestedOptions {
                 guard itemOptionBuilder.itemOption != nil else { continue }
@@ -256,7 +256,7 @@ extension ItemOptionBuilder {
             return
         }
 
-        if let options = option.nestedOptionGroups, options.count > 0, selectedNestedOptions[groupId] != nil {
+        if (option.optionGroups?.count ?? 0) > 0, selectedNestedOptions[groupId] != nil {
             selectedNestedOptions.removeValue(forKey: groupId)
         } else if var selectedOptionGroupOptions = itemsToAdd[groupId], let index = selectedOptionGroupOptions.firstIndex(of: option) {
             selectedOptionGroupOptions.remove(at: index)

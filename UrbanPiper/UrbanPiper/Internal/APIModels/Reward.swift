@@ -1,178 +1,112 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//  Reward.swift
-//  Model Generated using http://www.jsoncafe.com/
-//  Created on February 12, 2019
+//   @objc public let redeemed = try Redeemed(json)
 
 import Foundation
 
-public class Reward: NSObject, JSONDecodable, NSCoding {
-    public var claimedCount: Int?
-    public var descriptionField: String!
-    public var expiresOn: Int?
-    public var id: Int = 0
-    public var imgLink: String!
-    public var inStoreCouponRewards: Bool = false
-    public var locked: Bool = false
-    public var points: Int?
-    public var redeemedCount: Int?
-    public var redemptionCodes: [RedemptionCode]!
-    public var title: String!
-    public var type: Int?
-    public var value: String!
+// MARK: - Redeemed
+@objc public class Reward: NSObject, Codable {
+    @objc public let claimedCount: Int
+    @objc public let rewardDescription: String
+    @objc public let expiresOn: Date?
+    @objc public let id: Int
+    @objc public let imgLink: String?
+    @objc public let inStoreCouponRewards, locked: Bool
+    @objc public let points, redeemedCount: Int
+    @objc public let redemptionCodes: [RedemptionCode]
+    @objc public let title: String
+    @objc public let type: Int
+    @objc public let value: String
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        claimedCount = dictionary["claimed_count"] as? Int
-        descriptionField = dictionary["description"] as? String
-        expiresOn = dictionary["expires_on"] as? Int
-        id = dictionary["id"] as? Int ?? 0
-        imgLink = dictionary["img_link"] as? String
-        inStoreCouponRewards = dictionary["in_store_coupon_rewards"] as? Bool ?? false
-        locked = dictionary["locked"] as? Bool ?? false
-        points = dictionary["points"] as? Int
-        redeemedCount = dictionary["redeemed_count"] as? Int
-        redemptionCodes = [RedemptionCode]()
-        if let redemptionCodesArray = dictionary["redemption_codes"] as? [[String: AnyObject]] {
-            for dic in redemptionCodesArray {
-                guard let value = RedemptionCode(fromDictionary: dic) else { continue }
-                redemptionCodes.append(value)
-            }
-        }
-        title = dictionary["title"] as? String
-        type = dictionary["type"] as? Int
-        value = dictionary["value"] as? String
+    enum CodingKeys: String, CodingKey {
+        case claimedCount = "claimed_count"
+        case rewardDescription = "description"
+        case expiresOn = "expires_on"
+        case id
+        case imgLink = "img_link"
+        case inStoreCouponRewards = "in_store_coupon_rewards"
+        case locked, points
+        case redeemedCount = "redeemed_count"
+        case redemptionCodes = "redemption_codes"
+        case title, type, value
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    func toDictionary() -> [String: AnyObject] {
-        var dictionary = [String: AnyObject]()
-        if let claimedCount = claimedCount {
-            dictionary["claimed_count"] = claimedCount as AnyObject
-        }
-        if let descriptionField = descriptionField {
-            dictionary["description"] = descriptionField as AnyObject
-        }
-        if let expiresOn = expiresOn {
-            dictionary["expires_on"] = expiresOn as AnyObject
-        }
-        dictionary["id"] = id as AnyObject
-        if let imgLink = imgLink {
-            dictionary["img_link"] = imgLink as AnyObject
-        }
-
-        dictionary["in_store_coupon_rewards"] = inStoreCouponRewards as AnyObject
-
-        dictionary["locked"] = locked as AnyObject
-
-        if let points = points {
-            dictionary["points"] = points as AnyObject
-        }
-        if let redeemedCount = redeemedCount {
-            dictionary["redeemed_count"] = redeemedCount as AnyObject
-        }
-        if let redemptionCodes = redemptionCodes {
-            var dictionaryElements = [[String: AnyObject]]()
-            for redemptionCodesElement in redemptionCodes {
-                dictionaryElements.append(redemptionCodesElement.toDictionary())
-            }
-            dictionary["redemption_codes"] = dictionaryElements as AnyObject
-        }
-        if let title = title {
-            dictionary["title"] = title as AnyObject
-        }
-        if let type = type {
-            dictionary["type"] = type as AnyObject
-        }
-        if let value = value {
-            dictionary["value"] = value as AnyObject
-        }
-        return dictionary
+    init(claimedCount: Int, rewardDescription: String, expiresOn: Date?, id: Int, imgLink: String?, inStoreCouponRewards: Bool, locked: Bool, points: Int, redeemedCount: Int, redemptionCodes: [RedemptionCode], title: String, type: Int, value: String) {
+        self.claimedCount = claimedCount
+        self.rewardDescription = rewardDescription
+        self.expiresOn = expiresOn
+        self.id = id
+        self.imgLink = imgLink
+        self.inStoreCouponRewards = inStoreCouponRewards
+        self.locked = locked
+        self.points = points
+        self.redeemedCount = redeemedCount
+        self.redemptionCodes = redemptionCodes
+        self.title = title
+        self.type = type
+        self.value = value
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(Reward.self, from: data)
+        self.init(claimedCount: me.claimedCount, rewardDescription: me.rewardDescription, expiresOn: me.expiresOn, id: me.id, imgLink: me.imgLink, inStoreCouponRewards: me.inStoreCouponRewards, locked: me.locked, points: me.points, redeemedCount: me.redeemedCount, redemptionCodes: me.redemptionCodes, title: me.title, type: me.type, value: me.value)
     }
 
-    /**
-     * NSCoding required initializer.
-     * Fills the data from the passed decoder
-     */
-    @objc public required init(coder aDecoder: NSCoder) {
-        claimedCount = aDecoder.decodeObject(forKey: "claimed_count") as? Int
-        descriptionField = aDecoder.decodeObject(forKey: "description") as? String
-        expiresOn = aDecoder.decodeObject(forKey: "expires_on") as? Int
-        if let val = aDecoder.decodeObject(forKey: "id") as? Int {
-            id = val
-        } else {
-            id = aDecoder.decodeInteger(forKey: "id")
-        }
-        imgLink = aDecoder.decodeObject(forKey: "img_link") as? String
+}
 
-        if let numberVal = aDecoder.decodeObject(forKey: "in_store_coupon_rewards") as? NSNumber {
-            inStoreCouponRewards = numberVal == 0 ? false : true
-        } else if aDecoder.containsValue(forKey: "in_store_coupon_rewards") {
-            inStoreCouponRewards = aDecoder.decodeBool(forKey: "in_store_coupon_rewards")
-        } else {
-            inStoreCouponRewards = false
-        }
+// MARK: Redeemed convenience initializers and mutators
 
-        if let numberVal = aDecoder.decodeObject(forKey: "locked") as? NSNumber {
-            locked = numberVal == 0 ? false : true
-        } else if aDecoder.containsValue(forKey: "locked") {
-            locked = aDecoder.decodeBool(forKey: "locked")
-        } else {
-            locked = false
-        }
+extension Reward {
 
-        points = aDecoder.decodeObject(forKey: "points") as? Int
-        redeemedCount = aDecoder.decodeObject(forKey: "redeemed_count") as? Int
-        redemptionCodes = aDecoder.decodeObject(forKey: "redemption_codes") as? [RedemptionCode]
-        title = aDecoder.decodeObject(forKey: "title") as? String
-        type = aDecoder.decodeObject(forKey: "type") as? Int
-        value = aDecoder.decodeObject(forKey: "value") as? String
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
     }
 
-    /**
-     * NSCoding required method.
-     * Encodes mode properties into the decoder
-     */
-    @objc public func encode(with aCoder: NSCoder) {
-        // if let claimedCount = claimedCount {
-            aCoder.encode(claimedCount, forKey: "claimed_count")
-        // }
-        // if let descriptionField = descriptionField {
-            aCoder.encode(descriptionField, forKey: "description")
-        // }
-        // if let expiresOn = expiresOn {
-            aCoder.encode(expiresOn, forKey: "expires_on")
-        // }
-        aCoder.encode(id, forKey: "id")
-        // if let imgLink = imgLink {
-            aCoder.encode(imgLink, forKey: "img_link")
-        // }
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
 
-        aCoder.encode(inStoreCouponRewards, forKey: "in_store_coupon_rewards")
+    public func with(
+        claimedCount: Int? = nil,
+        rewardDescription: String? = nil,
+        expiresOn: Date? = nil,
+        id: Int? = nil,
+        imgLink: String? = nil,
+        inStoreCouponRewards: Bool? = nil,
+        locked: Bool? = nil,
+        points: Int? = nil,
+        redeemedCount: Int? = nil,
+        redemptionCodes: [RedemptionCode]? = nil,
+        title: String? = nil,
+        type: Int? = nil,
+        value: String? = nil
+    ) -> Reward {
+        return Reward(
+            claimedCount: claimedCount ?? self.claimedCount,
+            rewardDescription: rewardDescription ?? self.rewardDescription,
+            expiresOn: expiresOn ?? self.expiresOn,
+            id: id ?? self.id,
+            imgLink: imgLink ?? self.imgLink,
+            inStoreCouponRewards: inStoreCouponRewards ?? self.inStoreCouponRewards,
+            locked: locked ?? self.locked,
+            points: points ?? self.points,
+            redeemedCount: redeemedCount ?? self.redeemedCount,
+            redemptionCodes: redemptionCodes ?? self.redemptionCodes,
+            title: title ?? self.title,
+            type: type ?? self.type,
+            value: value ?? self.value
+        )
+    }
 
-        aCoder.encode(locked, forKey: "locked")
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
 
-        // if let points = points {
-            aCoder.encode(points, forKey: "points")
-        // }
-        // if let redeemedCount = redeemedCount {
-            aCoder.encode(redeemedCount, forKey: "redeemed_count")
-        // }
-        // if let redemptionCodes = redemptionCodes {
-            aCoder.encode(redemptionCodes, forKey: "redemption_codes")
-        // }
-        // if let title = title {
-            aCoder.encode(title, forKey: "title")
-        // }
-        // if let type = type {
-            aCoder.encode(type, forKey: "type")
-        // }
-        // if let value = value {
-            aCoder.encode(value, forKey: "value")
-        // }
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
     }
 }

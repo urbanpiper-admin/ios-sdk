@@ -237,8 +237,15 @@ import RxSwift
                 }
                 return
             }
+            
+            guard httpResponse.statusCode != 204 || (httpResponse.statusCode != 201 && (data?.count ?? 0) > 0) else {
+                DispatchQueue.main.async {
+                    completion?(GenericResponse() as? T)
+                }
+                return
+            }
 
-            guard httpResponse.statusCode != 204 else {
+            guard httpResponse.statusCode != 201 && (data?.count ?? 0) > 0 else {
                 DispatchQueue.main.async {
                     completion?(GenericResponse() as? T)
                 }
@@ -252,27 +259,28 @@ import RxSwift
                 }
                 return
             }
-
-            guard let jsonObject: Any = try? JSONSerialization.jsonObject(with: responseData, options: []),
-                let dictionary: [String: AnyObject] = jsonObject as? [String: AnyObject] else {
+            
+            do {
+                let result = try T(data: responseData)
                 DispatchQueue.main.async {
-                    completion?(GenericResponse() as? T)
+                    completion?(result)
                 }
-                return
-            }
+            } catch (let error) {
+                let upError = UPError(data: data, response: response, error: error)
+                print("\nData type \(T.Type.self))\n")
+                print("\nAPI Response parsing failure for url \(String(describing: apiUrl?.absoluteString))\n")
+                print("\nresponse \(response.debugDescription)")
+                print("\nparsing error \(error)")
 
-            guard let result = T(fromDictionary: dictionary) else {
-                let upError = UPError(type: .responseParseError, data: data, response: response, error: error)
-                print("API Response parsing failure for url \(String(describing: apiUrl?.absoluteString))")
+                if let jsonObject = String(data: responseData, encoding: String.Encoding.utf8) {
+                    print("\njsonObject \(jsonObject as AnyObject)\n")
+                }
+
                 DispatchQueue.main.async {
                     failure?(upError)
                 }
-                return
             }
-
-            DispatchQueue.main.async {
-                completion?(result)
-            }
+            
         }
 
         dataTask.resume()
@@ -322,7 +330,13 @@ import RxSwift
                     return
                 }
 
-                guard httpResponse.statusCode != 204 else {
+                guard httpResponse.statusCode != 204 || (httpResponse.statusCode != 201 && (data?.count ?? 0) > 0) else {
+                    observer.onNext(GenericResponse() as! T)
+                    observer.onCompleted()
+                    return
+                }
+                
+                guard httpResponse.statusCode != 201 && (data?.count ?? 0) > 0 else {
                     observer.onNext(GenericResponse() as! T)
                     observer.onCompleted()
                     return
@@ -333,23 +347,24 @@ import RxSwift
                     observer.onError(upError)
                     return
                 }
-
-                guard let jsonObject: Any = try? JSONSerialization.jsonObject(with: responseData, options: []),
-                    let dictionary: [String: AnyObject] = jsonObject as? [String: AnyObject] else {
-                    observer.onNext(GenericResponse() as! T)
+                
+                do {
+                    let result = try T(data: responseData)
+                    observer.onNext(result)
                     observer.onCompleted()
-                    return
-                }
+                } catch (let error) {
+                    let upError = UPError(data: data, response: response, error: error)
+                    print("\nData type \(T.Type.self))\n")
+                    print("\nAPI Response parsing failure for url \(String(describing: apiUrl?.absoluteString))\n")
+                    print("\nresponse \(response.debugDescription)")
+                    print("\nparsing error \(error)")
 
-                guard let result = T(fromDictionary: dictionary) else {
-                    let upError = UPError(type: .responseParseError, data: data, response: response, error: error)
-                    print("API Response parsing failure for url \(String(describing: apiUrl?.absoluteString))")
+                    if let jsonObject = String(data: responseData, encoding: String.Encoding.utf8) {
+                        print("\njsonObject \(jsonObject as AnyObject)\n")
+                    }
+                    
                     observer.onError(upError)
-                    return
                 }
-
-                observer.onNext(result)
-                observer.onCompleted()
             }
 
             dataTask.resume()

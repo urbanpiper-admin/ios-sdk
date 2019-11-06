@@ -1,73 +1,56 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	Filter.swift
-//
-//	Create by Vidhyadharan Mohanram on 11/9/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let filter = try Filter(json)
 
 import Foundation
 
-public class Filter: NSObject, JSONDecodable {
-    public var filterOptions: [FilterOption]!
-    public var group: String!
+// MARK: - Filter
+@objc public class Filter: NSObject, Codable {
+    @objc public let group: String
+    @objc public let options: [FilterOption]
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        filterOptions = [FilterOption]()
-        if let filterOptionsArray = dictionary["options"] as? [[String: AnyObject]] {
-            for dic in filterOptionsArray {
-                guard let value = FilterOption(fromDictionary: dic) else { continue }
-                filterOptions.append(value)
-            }
+    init(group: String, options: [FilterOption]) {
+        self.group = group
+        self.options = options
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(Filter.self, from: data)
+        self.init(group: me.group, options: me.options)
+    }
+}
+
+// MARK: Filter convenience initializers and mutators
+
+extension Filter {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
-        group = dictionary["group"] as? String
+        try self.init(data: data)
     }
 
-    /*	/**
-         * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    func toDictionary() -> [String : AnyObject]
-    {
-    	var dictionary = [String : AnyObject]()
-    	if let filterOptions = filterOptions {
-    		var dictionaryElements = [[String : AnyObject]]()
-    		for filterOptionsElement in filterOptions {
-    			dictionaryElements.append(filterOptionsElement.toDictionary())
-    		}
-    		dictionary["filter_options"] = dictionaryElements as AnyObject
-    	}
-    	if let group = group {
-    		dictionary["group"] = group as AnyObject
-    	}
-    	return dictionary
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
     }
 
-    /**
-        * NSCoding required initializer.
-        * Fills the data from the passed decoder
-     */
-    @objc required public init(coder aDecoder: NSCoder)
-    {
-    filterOptions = aDecoder.decodeObject(forKey :"filter_options") as? [FilterOption]
-    group = aDecoder.decodeObject(forKey: "group") as? String
-
+    public func with(
+        group: String? = nil,
+        options: [FilterOption]? = nil
+    ) -> Filter {
+        return Filter(
+            group: group ?? self.group,
+            options: options ?? self.options
+        )
     }
 
-    /**
-        * NSCoding required method.
-        * Encodes mode properties into the decoder
-     */
-    @objc public func encode(with aCoder: NSCoder)
-    {
-    	if let filterOptions = filterOptions {
-    		aCoder.encode(filterOptions, forKey: "filter_options")
-    	}
-    	if let group = group {
-    		aCoder.encode(group, forKey: "group")
-    	}
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
 
-    }*/
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

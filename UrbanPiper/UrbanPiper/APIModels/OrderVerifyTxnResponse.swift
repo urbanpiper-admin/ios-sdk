@@ -1,38 +1,69 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//  OrderVerifyTxnResponse.swift
-//  UrbanPiper
-//
-//  Created by Vid on 09/02/19.
-//
+//   @objc public let orderVerifyTxnResponse = try OrderVerifyTxnResponse(json)
 
-import UIKit
+import Foundation
 
-public class OrderVerifyTxnResponse: NSObject, JSONDecodable {
-    public var txnId: String?
-    public var pid: String?
-    public var status: String?
+// MARK: - OrderVerifyTxnResponse
+@objc public class OrderVerifyTxnResponse: NSObject, JSONDecodable {
+    @objc public let txnId: String?
+    @objc public let pid: String?
+    @objc public let status: String?
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        txnId = dictionary["txn_id"] as? String
-        pid = dictionary["pid"] as? String
-        status = dictionary["status"] as? String
+    enum CodingKeys: String, CodingKey {
+        case txnId = "txn_id"
+        case pid, status
     }
 
-    @objc public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let txnId = txnId {
-            dictionary["txn_id"] = txnId as AnyObject
+    init(txnId: String?, pid: String?, status: String?) {
+        self.txnId = txnId
+        self.pid = pid
+        self.status = status
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(OrderVerifyTxnResponse.self, from: data)
+        self.init(txnId: me.txnId, pid: me.pid, status: me.status)
+    }
+}
+
+// MARK: OrderVerifyTxnResponse convenience initializers and mutators
+
+extension OrderVerifyTxnResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
-        if let pid = pid {
-            dictionary["pid"] = pid as AnyObject
-        }
-        if let status = status {
-            dictionary["status"] = status as AnyObject
-        }
-        return dictionary
+        try self.init(data: data)
+    }
+
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        txnId: String? = nil,
+        pid: String? = nil,
+        status: String? = nil
+    ) -> OrderVerifyTxnResponse {
+        return OrderVerifyTxnResponse(
+            txnId: txnId ?? self.txnId,
+            pid: pid ?? self.pid,
+            status: status ?? self.status
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+    
+    @objc public func toObjcDictionary() -> [String : AnyObject] {
+        return toDictionary()
     }
 }

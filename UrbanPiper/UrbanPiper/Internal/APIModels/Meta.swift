@@ -1,86 +1,126 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	Meta.swift
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let meta = try Meta(json)
 
 import Foundation
 
-public class Meta: NSObject, JSONDecodable, NSCoding {
-    public var limit: Int = 20
-    public var next: String!
-    public var offset: Int = 0
-    public var previous: String!
-    public var totalCount: Int = 0
+// MARK: - Meta
+@objc public class Meta: NSObject, Codable, NSCoding {
+    @objc public let limit: Int
+    @objc public let next: String?
+    @objc public let offset: Int
+    @objc public let previous: String?
+    @objc public let totalCount: Int
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        limit = dictionary["limit"] as? Int ?? 20
-        next = dictionary["next"] as? String
-        offset = dictionary["offset"] as? Int ?? 0
-        previous = dictionary["previous"] as? String
-        totalCount = dictionary["total_count"] as? Int ?? 0
+    enum CodingKeys: String, CodingKey {
+        case limit, next, offset, previous
+        case totalCount = "total_count"
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        dictionary["limit"] = limit as AnyObject
-
-        if let next = next {
-            dictionary["next"] = next as AnyObject
-        }
-
-        dictionary["offset"] = offset as AnyObject
-
-        if let previous = previous {
-            dictionary["previous"] = previous as AnyObject
-        }
-
-        dictionary["total_count"] = totalCount as AnyObject
-
-        return dictionary
+    init(limit: Int, next: String?, offset: Int, previous: String?, totalCount: Int) {
+        self.limit = limit
+        self.next = next
+        self.offset = offset
+        self.previous = previous
+        self.totalCount = totalCount
     }
-
+    
     /**
      * NSCoding required initializer.
      * Fills the data from the passed decoder
      */
-    @objc public required init(coder aDecoder: NSCoder) {
-        limit = aDecoder.decodeObject(forKey: "limit") as? Int ?? 20
+    public required init(coder aDecoder: NSCoder) {
+        limit = aDecoder.decodeInteger(forKey: "limit")
         next = aDecoder.decodeObject(forKey: "next") as? String
-        if let val = aDecoder.decodeObject(forKey: "offset") as? Int {
-            offset = val
-        } else {
-            offset = aDecoder.decodeInteger(forKey: "offset")
-        }
+        offset = aDecoder.decodeInteger(forKey: "offset")
         previous = aDecoder.decodeObject(forKey: "previous") as? String
-        if let val = aDecoder.decodeObject(forKey: "total_count") as? Int {
-            totalCount = val
-        } else {
-            totalCount = aDecoder.decodeInteger(forKey: "total_count")
-        }
+        totalCount = aDecoder.decodeInteger(forKey: "total_count")
     }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(Meta.self, from: data)
+        self.init(limit: me.limit, next: me.next, offset: me.offset, previous: me.previous, totalCount: me.totalCount)
+    }
+}
+
+// MARK: Meta convenience initializers and mutators
+
+extension Meta {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        limit: Int? = nil,
+        next: String? = nil,
+        offset: Int? = nil,
+        previous: String? = nil,
+        totalCount: Int? = nil
+    ) -> Meta {
+        return Meta(
+            limit: limit ?? self.limit,
+            next: next ?? self.next,
+            offset: offset ?? self.offset,
+            previous: previous ?? self.previous,
+            totalCount: totalCount ?? self.totalCount
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+    
+//    /**
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    // public func toDictionary() -> [String: AnyObject] {
+//        var dictionary: [String: AnyObject] = [String: AnyObject]()
+//        dictionary["limit"] = limit as AnyObject
+//
+//        if let next = next {
+//            dictionary["next"] = next as AnyObject
+//        }
+//
+//        dictionary["offset"] = offset as AnyObject
+//
+//        if let previous = previous {
+//            dictionary["previous"] = previous as AnyObject
+//        }
+//
+//        dictionary["total_count"] = totalCount as AnyObject
+//
+//        return dictionary
+//    }
 
     /**
      * NSCoding required method.
      * Encodes mode properties into the decoder
      */
-    @objc public func encode(with aCoder: NSCoder) {
+    public func encode(with aCoder: NSCoder) {
         aCoder.encode(limit, forKey: "limit")
 
-        // if let next = next {
+        if let next = next {
             aCoder.encode(next, forKey: "next")
-        // }
+        }
 
         aCoder.encode(offset, forKey: "offset")
 
-        // if let previous = previous {
+        if let previous = previous {
             aCoder.encode(previous, forKey: "previous")
-        // }
+        }
 
         aCoder.encode(totalCount, forKey: "total_count")
     }

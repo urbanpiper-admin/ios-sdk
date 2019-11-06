@@ -8,6 +8,6 @@
 
 import UIKit
 
-@objc protocol JSONDecodable {
-    @objc init?(fromDictionary dictionary: [String: AnyObject]?)
+protocol JSONDecodable: Codable {
+    init(data: Data) throws
 }

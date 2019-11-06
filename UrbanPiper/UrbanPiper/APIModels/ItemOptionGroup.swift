@@ -1,172 +1,149 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	ItemOptionGroup.swift
-//
-//	Create by Vidhyadharan Mohanram on 11/12/2017
-//	Copyright © 2017. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let optionGroup = try OptionGroup(json)
 
 import Foundation
 
-public class ItemOptionGroup: NSObject, JSONDecodable {
-    public var descriptionField: String!
-    public var id: Int = 0
-    public var isDefault: Bool
-    public var maxSelectable: Int = 0
-    public var minSelectable: Int = 0
-    public var options: [ItemOption]!
-    public var sortOrder: Int = 0
-    public var title: String!
+// MARK: - OptionGroup
+@objc public class OptionGroup: NSObject, JSONDecodable {
+    @objc public let optionGroupDescription: String
+    @objc public let displayInline: Bool
+    @objc public let id: Int
+    @objc public let isDefault: Bool
+    @objc public let maxSelectable, minSelectable: Int
+    @objc public let options: [OptionGroupOption]
+    @objc public let sortOrder: Int
+    @objc public let title: String
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        descriptionField = dictionary["description"] as? String
-        id = dictionary["id"] as? Int ?? 0
-        isDefault = dictionary["is_default"] as? Bool ?? false
-        maxSelectable = dictionary["max_selectable"] as? Int ?? 0
-        minSelectable = dictionary["min_selectable"] as? Int ?? 0
-//        if maxSelectable < 0 {
-//            maxSelectable = 1
-//        }
-//        if minSelectable < 0 {
-//            minSelectable = 1
-//        }
-        options = [ItemOption]()
-        if let optionsArray: [[String: AnyObject]] = dictionary["options"] as? [[String: AnyObject]] {
-            for dic in optionsArray {
-                guard let value: ItemOption = ItemOption(fromDictionary: dic) else { continue }
-//                let defaultVal = isDefault ?? false
-//                if (!defaultVal && value.quantity == 0) || (defaultVal && value.quantity > 0) {
-//                    value.quantity = isDefault ? 1 : 0
-//                }
-                options.append(value)
-            }
-            if options.count > 1 {
-                options.sort { $0.sortOrder < $1.sortOrder }
-            }
-        }
-        sortOrder = dictionary["sort_order"] as? Int ?? 0
-        title = dictionary["title"] as? String
+    enum CodingKeys: String, CodingKey {
+        case optionGroupDescription = "description"
+        case displayInline = "display_inline"
+        case id
+        case isDefault = "is_default"
+        case maxSelectable = "max_selectable"
+        case minSelectable = "min_selectable"
+        case options
+        case sortOrder = "sort_order"
+        case title
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let descriptionField = descriptionField {
-            dictionary["description"] = descriptionField as AnyObject
-        }
-        dictionary["id"] = id as AnyObject
-
-        dictionary["is_default"] = isDefault as AnyObject
-
-        dictionary["max_selectable"] = maxSelectable as AnyObject
-
-        dictionary["min_selectable"] = minSelectable as AnyObject
-
-        if let options = options {
-            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
-            for optionsElement in options {
-                dictionaryElements.append(optionsElement.toDictionary())
-            }
-            dictionary["options"] = dictionaryElements as AnyObject
-        }
-        dictionary["sort_order"] = sortOrder as AnyObject
-        if let title = title {
-            dictionary["title"] = title as AnyObject
-        }
-
-        return dictionary
+    init(optionGroupDescription: String, displayInline: Bool, id: Int, isDefault: Bool, maxSelectable: Int, minSelectable: Int, options: [OptionGroupOption], sortOrder: Int, title: String) {
+        self.optionGroupDescription = optionGroupDescription
+        self.displayInline = displayInline
+        self.id = id
+        self.isDefault = isDefault
+        self.maxSelectable = maxSelectable
+        self.minSelectable = minSelectable
+        self.options = options
+        self.sortOrder = sortOrder
+        self.title = title
     }
-
-//    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
-//    {
-//         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
-//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
-//            id = val
-//         } else {
-//            id = aDecoder.decodeInteger(forKey: "id")
-//         }
-//         isDefault = aDecoder.decodeBool(forKey: "is_default")
-//         maxSelectable = aDecoder.decodeObject(forKey: "max_selectable") as? Int
-//         minSelectable = aDecoder.decodeObject(forKey: "min_selectable") as? Int
-//         options = aDecoder.decodeObject(forKey :"options") as? [ItemOption]
-//         sortOrder = aDecoder.decodeObject(forKey: "sort_order") as? Int
-//         title = aDecoder.decodeObject(forKey: "title") as? String
-//    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let descriptionField = descriptionField {
-//            aCoder.encode(descriptionField, forKey: "description")
-//        }
-//        if let id = id {
-//            aCoder.encode(id, forKey: "id")
-//        }
-//        if let isDefault = isDefault {
-//            aCoder.encode(isDefault, forKey: "is_default")
-//        }
-//        if let maxSelectable = maxSelectable {
-//            aCoder.encode(maxSelectable, forKey: "max_selectable")
-//        }
-//        if let minSelectable = minSelectable {
-//            aCoder.encode(minSelectable, forKey: "min_selectable")
-//        }
-//        if let options = options {
-//            aCoder.encode(options, forKey: "options")
-//        }
-//        if let sortOrder = sortOrder {
-//            aCoder.encode(sortOrder, forKey: "sort_order")
-//        }
-//        if let title = title {
-//            aCoder.encode(title, forKey: "title")
-//        }
-//
-//    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(OptionGroup.self, from: data)
+        self.init(optionGroupDescription: me.optionGroupDescription, displayInline: me.displayInline, id: me.id, isDefault: me.isDefault, maxSelectable: me.maxSelectable, minSelectable: me.minSelectable, options: me.options, sortOrder: me.sortOrder, title: me.title)
+    }
 }
 
-extension ItemOptionGroup {
+// MARK: OptionGroup convenience initializers and mutators
+
+extension OptionGroup {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        optionGroupDescription: String? = nil,
+        displayInline: Bool? = nil,
+        id: Int? = nil,
+        isDefault: Bool? = nil,
+        maxSelectable: Int? = nil,
+        minSelectable: Int? = nil,
+        options: [OptionGroupOption]? = nil,
+        sortOrder: Int? = nil,
+        title: String? = nil
+    ) -> OptionGroup {
+        return OptionGroup(
+            optionGroupDescription: optionGroupDescription ?? self.optionGroupDescription,
+            displayInline: displayInline ?? self.displayInline,
+            id: id ?? self.id,
+            isDefault: isDefault ?? self.isDefault,
+            maxSelectable: maxSelectable ?? self.maxSelectable,
+            minSelectable: minSelectable ?? self.minSelectable,
+            options: options ?? self.options,
+            sortOrder: sortOrder ?? self.sortOrder,
+            title: title ?? self.title
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+}
+
+extension OptionGroup {
+    
     internal func equitableCheckDictionary() -> [String: AnyObject] {
         var dictionary: [String: AnyObject] = [String: AnyObject]()
         //        if let isDefault = isDefault {
         //            dictionary["is_default"] = isDefault as AnyObject
         //        }
-        if let options = options {
-            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
-            for optionsElement in options {
-                guard optionsElement.quantity > 0 else { continue }
-                dictionaryElements.append(optionsElement.equitableCheckDictionary())
-            }
-            dictionary["options"] = dictionaryElements as AnyObject
+        var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
+        for optionsElement in options {
+            guard optionsElement.quantity > 0 else { continue }
+            dictionaryElements.append(optionsElement.equitableCheckDictionary())
         }
+        dictionary["options"] = dictionaryElements as AnyObject
 
         return dictionary
     }
 
-    internal static func == (lhs: ItemOptionGroup, rhs: ItemOptionGroup) -> Bool {
+    public static func == (lhs: OptionGroup, rhs: OptionGroup) -> Bool {
         let lhsDictionary = lhs.equitableCheckDictionary()
         let rhsDictionary = rhs.equitableCheckDictionary()
 
         return NSDictionary(dictionary: lhsDictionary).isEqual(to: rhsDictionary)
-
-        //        return lhs.descriptionField == rhs.descriptionField &&
-        //            lhs.id == rhs.id &&
-        //            lhs.isDefault == rhs.isDefault &&
-        //            lhs.maxSelectable == rhs.maxSelectable &&
-        //            lhs.minSelectable == rhs.minSelectable &&
-        //            lhs.options == rhs.options &&
-        //            lhs.sortOrder == rhs.sortOrder &&
-        //            lhs.title == rhs.title
     }
+    
+//    /**
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    // public func toDictionary() -> [String : AnyObject]
+//    {
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        
+//        dictionary["description"] = optionGroupDescription as AnyObject
+//        
+//        dictionary["id"] = id as AnyObject
+//
+//        dictionary["is_default"] = isDefault as AnyObject
+//        
+//        dictionary["max_selectable"] = maxSelectable as AnyObject
+//        
+//        dictionary["min_selectable"] = minSelectable as AnyObject
+//        
+//        var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
+//        for optionsElement in options {
+//            dictionaryElements.append(optionsElement.toDictionary())
+//        }
+//        dictionary["options"] = dictionaryElements as AnyObject
+//
+//        dictionary["sort_order"] = sortOrder as AnyObject
+//        dictionary["title"] = title as AnyObject
+//
+//        return dictionary
+//    }
 }

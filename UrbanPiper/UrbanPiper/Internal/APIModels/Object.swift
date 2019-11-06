@@ -1,153 +1,103 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	Object.swift
-//
-//	Create by Vidhyadharan Mohanram on 8/11/2017
-//	Copyright © 2017. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let object = try Object(json)
 
 import Foundation
 
-public class Object: NSObject, JSONDecodable {
-    public var comboCount: Int?
-    public var descriptionField: String!
-    public var id: Int = 0
-    public var image: String!
-    public var itemCount: Int?
-    public var loadFromWeb: Bool
-    @objc public var name: String!
-    public var slug: String!
-    public var subCategories: [Object]!
-    public var sortOrder: Int = 0
-    public var webUrl: String!
+// MARK: - Object
+@objc public class Object: NSObject, Codable {
+    @objc public let comboCount: Int
+    @objc public let objectDescription: String?
+    @objc public let id: Int
+    @objc public let image: String?
+    @objc public let itemCount: Int
+    @objc public let loadFromWeb: Bool
+    @objc public let name, slug: String
+    @objc public let sortOrder: Int
+    @objc public let weburl: String?
+    @objc public let subCategories: [SubCategory]?
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        comboCount = dictionary["combo_count"] as? Int
-        descriptionField = dictionary["description"] as? String
-        id = dictionary["id"] as? Int ?? 0
-        image = dictionary["image"] as? String
-        itemCount = dictionary["item_count"] as? Int
-        loadFromWeb = dictionary["load_from_web"] as? Bool ?? false
-        name = dictionary["name"] as? String
-        slug = dictionary["slug"] as? String
-        subCategories = [Object]()
-        if let objectsArray: [[String: AnyObject]] = dictionary["sub_categories"] as? [[String: AnyObject]] {
-            for dic in objectsArray {
-                guard let value: Object = Object(fromDictionary: dic) else { continue }
-                subCategories.append(value)
-            }
-        }
-        sortOrder = dictionary["sort_order"] as? Int ?? 0
-        webUrl = dictionary["web_url"] as? String
+    enum CodingKeys: String, CodingKey {
+        case comboCount = "combo_count"
+        case objectDescription = "description"
+        case id, image
+        case itemCount = "item_count"
+        case loadFromWeb = "load_from_web"
+        case name, slug
+        case sortOrder = "sort_order"
+        case weburl = "web_url"
+        case subCategories = "sub_categories"
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let comboCount = comboCount {
-            dictionary["combo_count"] = comboCount as AnyObject
+    init(comboCount: Int, objectDescription: String?, id: Int, image: String?, itemCount: Int, loadFromWeb: Bool, name: String, slug: String, sortOrder: Int, weburl: String?, subCategories: [SubCategory]?) {
+        self.comboCount = comboCount
+        self.objectDescription = objectDescription
+        self.id = id
+        self.image = image
+        self.itemCount = itemCount
+        self.loadFromWeb = loadFromWeb
+        self.name = name
+        self.slug = slug
+        self.sortOrder = sortOrder
+        self.weburl = weburl
+        self.subCategories = subCategories
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(Object.self, from: data)
+        self.init(comboCount: me.comboCount, objectDescription: me.objectDescription, id: me.id, image: me.image, itemCount: me.itemCount, loadFromWeb: me.loadFromWeb, name: me.name, slug: me.slug, sortOrder: me.sortOrder, weburl: me.weburl, subCategories: me.subCategories)
+    }
+}
+
+// MARK: Object convenience initializers and mutators
+
+extension Object {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
-        if let descriptionField = descriptionField {
-            dictionary["description"] = descriptionField as AnyObject
-        }
-        dictionary["id"] = id as AnyObject
-        if let image = image {
-            dictionary["image"] = image as AnyObject
-        }
-        if let itemCount = itemCount {
-            dictionary["item_count"] = itemCount as AnyObject
-        }
-//        if let loadFromWeb = loadFromWeb {
-        dictionary["load_from_web"] = loadFromWeb as AnyObject
-//        }
-        if let name = name {
-            dictionary["name"] = name as AnyObject
-        }
-        if let slug = slug {
-            dictionary["slug"] = slug as AnyObject
-        }
-        if let objects = subCategories {
-            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
-            for objectsElement in objects {
-                dictionaryElements.append(objectsElement.toDictionary())
-            }
-            dictionary["sub_categories"] = dictionaryElements as AnyObject
-        }
-        dictionary["sort_order"] = sortOrder as AnyObject
-        if let webUrl = webUrl {
-            dictionary["web_url"] = webUrl as AnyObject
-        }
-        return dictionary
+        try self.init(data: data)
     }
 
-//    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
-//    {
-//         comboCount = aDecoder.decodeObject(forKey: "combo_count") as? Int
-//         descriptionField = aDecoder.decodeObject(forKey: "description") as? String
-//         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
-//            id = val
-//         } else {
-//            id = aDecoder.decodeInteger(forKey: "id")
-//         }
-//         image = aDecoder.decodeObject(forKey: "image") as? String
-//         itemCount = aDecoder.decodeObject(forKey: "item_count") as? Int
-//         loadFromWeb = val as? Bool ?? false
-//         name = aDecoder.decodeObject(forKey: "name") as? String
-//         slug = aDecoder.decodeObject(forKey: "slug") as? String
-//         if let val = aDecoder.decodeObject(forKey: "sort_order") as? Int {
-//             sortOrder = val
-//         } else {
-//             sortOrder = aDecoder.decodeInteger(forKey: "sort_order")
-//         }
-//         webUrl = aDecoder.decodeObject(forKey: "web_url") as? String
-//
-//    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let comboCount = comboCount {
-//            aCoder.encode(comboCount, forKey: "combo_count")
-//        }
-//        if let descriptionField = descriptionField {
-//            aCoder.encode(descriptionField, forKey: "description")
-//        }
-//        if let id = id {
-//            aCoder.encode(id, forKey: "id")
-//        }
-//        if let image = image {
-//            aCoder.encode(image, forKey: "image")
-//        }
-//        if let itemCount = itemCount {
-//            aCoder.encode(itemCount, forKey: "item_count")
-//        }
-//        if let loadFromWeb = loadFromWeb {
-//            aCoder.encode(loadFromWeb, forKey: "load_from_web")
-//        }
-//        if let name = name {
-//            aCoder.encode(name, forKey: "name")
-//        }
-//        if let slug = slug {
-//            aCoder.encode(slug, forKey: "slug")
-//        }
-//        if let sortOrder = sortOrder {
-//            aCoder.encode(sortOrder, forKey: "sort_order")
-//        }
-//        if let webUrl = webUrl {
-//            aCoder.encode(webUrl, forKey: "web_url")
-//        }
-//
-//    }
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        comboCount: Int? = nil,
+        objectDescription: String? = nil,
+        id: Int? = nil,
+        image: String? = nil,
+        itemCount: Int? = nil,
+        loadFromWeb: Bool? = nil,
+        name: String? = nil,
+        slug: String? = nil,
+        sortOrder: Int? = nil,
+        weburl: String? = nil,
+        subCategories: [SubCategory]?? = nil
+    ) -> Object {
+        return Object(
+            comboCount: comboCount ?? self.comboCount,
+            objectDescription: objectDescription ?? self.objectDescription,
+            id: id ?? self.id,
+            image: image ?? self.image,
+            itemCount: itemCount ?? self.itemCount,
+            loadFromWeb: loadFromWeb ?? self.loadFromWeb,
+            name: name ?? self.name,
+            slug: slug ?? self.slug,
+            sortOrder: sortOrder ?? self.sortOrder,
+            weburl: weburl ?? self.weburl,
+            subCategories: subCategories ?? self.subCategories
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

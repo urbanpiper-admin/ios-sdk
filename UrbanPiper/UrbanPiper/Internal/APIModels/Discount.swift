@@ -1,79 +1,78 @@
+// Discount.swift
+
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	Discount.swift
-//
-//	Create by Vidhyadharan Mohanram on 30/1/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let discount = try Discount(json)
 
 import Foundation
 
-public class Discount: NSObject, JSONDecodable {
-    public var msg: String!
-    public var success: Bool
-    public var value: Decimal!
+// MARK: - Discount
+@objc public class Discount: NSObject, Codable {
+    @objc public let msg: String?
+    @objc public let success: Bool
+    @objc public let value: Double
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        msg = dictionary["msg"] as? String
-        success = dictionary["success"] as? Bool ?? false
+    init(msg: String?, success: Bool, value: Double) {
+        self.msg = msg
+        self.success = success
+        self.value = value
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(Discount.self, from: data)
+        self.init(msg: me.msg, success: me.success, value: me.value)
+    }
+}
 
-        let priceVal = dictionary["value"]
-        if let val: Decimal = priceVal as? Decimal {
-            value = val
-        } else if let val: Double = priceVal as? Double {
-            value = Decimal(val).rounded
-        } else {
-            value = Decimal.zero
+// MARK: Discount convenience initializers and mutators
+
+extension Discount {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
+        try self.init(data: data)
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let msg = msg {
-            dictionary["msg"] = msg as AnyObject
-        }
-
-        dictionary["success"] = success as AnyObject
-
-        if let value = value {
-            dictionary["value"] = value as AnyObject
-        }
-        return dictionary
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
     }
 
+    public func with(
+        msg: String? = nil,
+        success: Bool? = nil,
+        value: Double? = nil
+    ) -> Discount {
+        return Discount(
+            msg: msg ?? self.msg,
+            success: success ?? self.success,
+            value: value ?? self.value
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+    
 //    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
+//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
+//     */
+//    // public func toDictionary() -> [String : AnyObject]
 //    {
-//         msg = aDecoder.decodeObject(forKey: "msg") as? String
-//         success = val as? Bool ?? false
-//         value = aDecoder.decodeObject(forKey: "value") as? Decimal
+//        var dictionary: [String : AnyObject] = [String : AnyObject]()
+//        dictionary["msg"] = msg as AnyObject
 //
+//        dictionary["success"] = success as AnyObject
+//        
+//        dictionary["value"] = value as AnyObject
+//
+//        return dictionary
 //    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let msg = msg {
-//            aCoder.encode(msg, forKey: "msg")
-//        }
-//        if let success = success {
-//            aCoder.encode(success, forKey: "success")
-//        }
-//        if let value = value {
-//            aCoder.encode(value, forKey: "value")
-//        }
-//
-//    }
+
 }

@@ -4,26 +4,36 @@ PODS:
   - Mixpanel-swift (2.6.5):
     - Mixpanel-swift/Complete (= 2.6.5)
   - Mixpanel-swift/Complete (2.6.5)
+  - RxSwift (5.0.1)
+  - SwiftFormat/CLI (0.40.13)
   - Vinyl (0.10.4)
 
 DEPENDENCIES:
   - AppsFlyerFramework
   - GoogleAnalytics
   - Mixpanel-swift
+  - RxSwift (from `https://github.com/ReactiveX/RxSwift`)
+  - SwiftFormat/CLI
   - Vinyl (from `https://github.com/Velhotes/Vinyl.git`, branch `master`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - AppsFlyerFramework
     - GoogleAnalytics
     - Mixpanel-swift
+    - SwiftFormat
 
 EXTERNAL SOURCES:
+  RxSwift:
+    :git: https://github.com/ReactiveX/RxSwift
   Vinyl:
     :branch: master
     :git: https://github.com/Velhotes/Vinyl.git
 
 CHECKOUT OPTIONS:
+  RxSwift:
+    :commit: 9b31a15520306b073cb9d46456f64826c1d6dcab
+    :git: https://github.com/ReactiveX/RxSwift
   Vinyl:
     :commit: ebcec23c80087dc6539b8fb262316b4cfd8e772d
     :git: https://github.com/Velhotes/Vinyl.git
@@ -32,8 +42,10 @@ SPEC CHECKSUMS:
   AppsFlyerFramework: aeb793095c1b33170ae30bef66652c0645f409be
   GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
   Mixpanel-swift: 1542908cda2c3858027e1d38f31f34fb6b16f4fc
+  RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
+  SwiftFormat: d548b3585a6dbe64390177b386e95375b8c300b6
   Vinyl: 7df5f28a0fa95c87a039624f7a356ab9875ff2e1
 
-PODFILE CHECKSUM: c252496476025c7baa9647bed6c01edbfa94dea4
+PODFILE CHECKSUM: 1baec56bea0905fec9af0821184dec91e39c7111
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.4

@@ -1,83 +1,79 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	StoreResponse.swift
-//
-//	Create by Vidhyadharan Mohanram on 29/1/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let storeResponse = try StoreResponse(json)
 
 import Foundation
 
+// MARK: - StoreResponse
 @objc public class StoreResponse: NSObject, JSONDecodable, NSCoding {
-    @objc public var biz: Biz!
-    @objc public var store: Store?
-    
-    public convenience init(biz: Biz, store: Store?) {
-        self.init(fromDictionary: [:])!
-        
+    @objc public let biz: Biz
+    @objc public let store: Store?
+
+    init(biz: Biz, store: Store?) {
         self.biz = biz
         self.store = store
     }
-
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(StoreResponse.self, from: data)
+        self.init(biz: me.biz, store: me.store)
+    }
+    
     /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        if let bizData: [String: AnyObject] = dictionary["biz"] as? [String: AnyObject] {
-            biz = Biz(fromDictionary: bizData)
-        }
+         * NSCoding required initializer.
+         * Fills the data from the passed decoder
+         */
+        public required init(coder aDecoder: NSCoder) {
+            let biz = (aDecoder.decodeObject(forKey: "biz") as? Biz)!
+    //      Remove this code after next release
+            self.biz = biz.with(supportedLanguages: ["en"])
 
-        if biz != nil {
-            Biz.shared = biz
+            Biz.shared = self.biz
+            store = aDecoder.decodeObject(forKey: "store") as? Store
         }
-        
-        if let storeData: [String: AnyObject] = dictionary["store"] as? [String: AnyObject] {
-            store = Store(fromDictionary: storeData)
+}
+
+// MARK: StoreResponse convenience initializers and mutators
+
+extension StoreResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
+        try self.init(data: data)
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    @objc public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let biz = biz {
-            dictionary["biz"] = biz.toDictionary() as AnyObject
-        }
-        if let store = store {
-            dictionary["store"] = store.toDictionary() as AnyObject
-        }
-        return dictionary
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
     }
 
-    /**
-     * NSCoding required initializer.
-     * Fills the data from the passed decoder
-     */
-    @objc public required init(coder aDecoder: NSCoder) {
-        Biz.registerClass()
-        Store.registerClass()
-        biz = aDecoder.decodeObject(forKey: "biz") as? Biz
-
-//      Remove this code after next release
-        biz.supportedLanguages = ["en"]
-
-        if biz != nil {
-            Biz.shared = biz
-        }
-        store = aDecoder.decodeObject(forKey: "store") as? Store
+    public func with(
+        biz: Biz? = nil,
+        store: Store? = nil
+    ) -> StoreResponse {
+        return StoreResponse(
+            biz: biz ?? self.biz,
+            store: store ?? self.store
+        )
     }
 
-    /**
-     * NSCoding required method.
-     * Encodes mode properties into the decoder
-     */
-    @objc public func encode(with aCoder: NSCoder) {
-        // if let biz = biz {
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+    
+    
+        /**
+         * NSCoding required method.
+         * Encodes mode properties into the decoder
+         */
+        public func encode(with aCoder: NSCoder) {
             aCoder.encode(biz, forKey: "biz")
-        // }
-        // if let store = store {
             aCoder.encode(store, forKey: "store")
-        // }
-    }
+        }
 }

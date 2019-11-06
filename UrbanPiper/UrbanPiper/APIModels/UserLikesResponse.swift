@@ -1,72 +1,56 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	UserLikesResponse.swift
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let userLikesResponse = try UserLikesResponse(json)
 
 import Foundation
 
-public class UserLikesResponse: NSObject, JSONDecodable {
-    public var likes: [Like]!
-    public var meta: Meta!
+// MARK: - UserLikesResponse
+@objc public class UserLikesResponse: NSObject, JSONDecodable {
+    @objc public let likes: [Like]
+    @objc public let meta: Meta
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        likes = [Like]()
-        if let likesArray: [[String: AnyObject]] = dictionary["likes"] as? [[String: AnyObject]] {
-            for dic in likesArray {
-                guard let value: Like = Like(fromDictionary: dic) else { continue }
-                likes.append(value)
-            }
+    init(likes: [Like], meta: Meta) {
+        self.likes = likes
+        self.meta = meta
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(UserLikesResponse.self, from: data)
+        self.init(likes: me.likes, meta: me.meta)
+    }
+}
+
+// MARK: UserLikesResponse convenience initializers and mutators
+
+extension UserLikesResponse {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
-        if let metaData: [String: AnyObject] = dictionary["meta"] as? [String: AnyObject] {
-            meta = Meta(fromDictionary: metaData)
-        }
+        try self.init(data: data)
     }
 
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    public func toDictionary() -> [String : AnyObject]
-//    {
-//        var dictionary: [String : AnyObject] = [String : AnyObject]()
-//        if let likes = likes {
-//            var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
-//            for likesElement in likes {
-//                dictionaryElements.append(likesElement.toDictionary())
-//            }
-//            dictionary["likes"] = dictionaryElements as AnyObject
-//        }
-//        if let meta = meta {
-//            dictionary["meta"] = meta.toDictionary() as AnyObject
-//        }
-//        return dictionary
-//    }
-//
-//    /**
-//    * NSCoding required initializer.
-//    * Fills the data from the passed decoder
-//    */
-//    @objc required public init(coder aDecoder: NSCoder)
-//    {
-//         likes = aDecoder.decodeObject(forKey :"likes") as? [Like]
-//         meta = aDecoder.decodeObject(forKey: "meta") as? Meta
-//
-//    }
-//
-//    /**
-//    * NSCoding required method.
-//    * Encodes mode properties into the decoder
-//    */
-//    @objc public func encode(with aCoder: NSCoder)
-//    {
-//        if let likes = likes {
-//            aCoder.encode(likes, forKey: "likes")
-//        }
-//        if let meta = meta {
-//            aCoder.encode(meta, forKey: "meta")
-//        }
-//
-//    }
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        likes: [Like]? = nil,
+        meta: Meta? = nil
+    ) -> UserLikesResponse {
+        return UserLikesResponse(
+            likes: likes ?? self.likes,
+            meta: meta ?? self.meta
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
 }

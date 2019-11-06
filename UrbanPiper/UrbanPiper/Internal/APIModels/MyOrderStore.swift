@@ -7,8 +7,8 @@
 
 import Foundation
 
-public class MyOrderStore: NSObject, JSONDecodable {
-    public var bizLocationId: Int?
+@objc public class MyOrderStore: NSObject, Codable {
+    public var bizLocationid: Int?
     public var name: String!
 
     /**
@@ -16,7 +16,7 @@ public class MyOrderStore: NSObject, JSONDecodable {
      */
     required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
-        bizLocationId = dictionary["biz_location_id"] as? Int
+        bizLocationid = dictionary["biz_location_id"] as? Int
         name = dictionary["name"] as? String
     }
 
@@ -26,8 +26,8 @@ public class MyOrderStore: NSObject, JSONDecodable {
 //    func toDictionary() -> [String : AnyObject]
 //    {
 //        var dictionary: [String : AnyObject] = [String : AnyObject]()
-//        if let bizLocationId = bizLocationId {
-//            dictionary["biz_location_id"] = bizLocationId as AnyObject
+//        if let bizLocationid = bizLocationid {
+//            dictionary["biz_location_id"] = bizLocationid as AnyObject
 //        }
 //        if let name = name {
 //            dictionary["name"] = name as AnyObject
@@ -41,7 +41,7 @@ public class MyOrderStore: NSObject, JSONDecodable {
 //    */
 //    @objc required public init(coder aDecoder: NSCoder)
 //    {
-//         bizLocationId = aDecoder.decodeObject(forKey: "biz_location_id") as? Int
+//         bizLocationid = aDecoder.decodeObject(forKey: "biz_location_id") as? Int
 //         name = aDecoder.decodeObject(forKey: "name") as? String
 //
 //    }
@@ -52,8 +52,8 @@ public class MyOrderStore: NSObject, JSONDecodable {
 //    */
 //    @objc public func encode(with aCoder: NSCoder)
 //    {
-//        if let bizLocationId = bizLocationId {
-//            aCoder.encode(bizLocationId, forKey: "biz_location_id")
+//        if let bizLocationid = bizLocationid {
+//            aCoder.encode(bizLocationid, forKey: "biz_location_id")
 //        }
 //        if let name = name {
 //            aCoder.encode(name, forKey: "name")

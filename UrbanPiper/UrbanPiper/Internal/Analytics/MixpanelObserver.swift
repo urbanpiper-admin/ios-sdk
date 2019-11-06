@@ -70,7 +70,7 @@ public class MixpanelObserver: AnalyticsEventObserver {
             guard let token: String = mixpanelToken, token.count > 0 else { return }
             Mixpanel.mainInstance().track(event: "ppr-coupon-applied",
                                           properties: ["success": true,
-                                                       "discount": NSDecimalNumber(decimal: discount).doubleValue,
+                                                       "discount": discount,
                                                        "coupon_code": couponCode,
                                                        "is_suggested": isSuggested,
                                                        "pre_selected": preSelected])
@@ -78,7 +78,7 @@ public class MixpanelObserver: AnalyticsEventObserver {
             guard let token: String = mixpanelToken, token.count > 0 else { return }
             Mixpanel.mainInstance().track(event: "ppr-coupon-applied",
                                           properties: ["success": false,
-                                                       "discount": NSDecimalNumber(decimal: discount).doubleValue,
+                                                       "discount": discount,
                                                        "coupon_code": couponCode,
                                                        "is_suggested": isSuggested,
                                                        "pre_selected": preSelected])
@@ -115,19 +115,19 @@ public class MixpanelObserver: AnalyticsEventObserver {
         case let .walletReloadInit(amount, paymentMode):
             guard let token: String = mixpanelToken, token.count > 0 else { return }
             Mixpanel.mainInstance().track(event: "ppr-wallet-reload-init",
-                                          properties: ["amount": amount.doubleValue,
+                                          properties: ["amount": amount,
                                                        "payment_mode": paymentMode])
         case let .successfulWalletReload(amount, paymentMode):
             guard let token: String = mixpanelToken, token.count > 0 else { return }
             Mixpanel.mainInstance().track(event: "ppr-wallet-reload-complete",
                                           properties: ["success": true,
-                                                       "amount": amount.doubleValue,
+                                                       "amount": amount,
                                                        "payment_mode": paymentMode])
         case let .failedWalletReload(amount, paymentMode):
             guard let token: String = mixpanelToken, token.count > 0 else { return }
             Mixpanel.mainInstance().track(event: "ppr-wallet-reload-complete",
                                           properties: ["success": false,
-                                                       "amount": amount.doubleValue,
+                                                       "amount": amount,
                                                        "payment_mode": paymentMode])
         case let .referralSent(phone, shareChannel, shareLink):
             guard let token: String = mixpanelToken, token.count > 0 else { return }
@@ -163,14 +163,14 @@ public class MixpanelObserver: AnalyticsEventObserver {
         case let .purchaseCompleted(_, userWalletBalance, checkoutBuilder, isReorder):
             guard let token: String = mixpanelToken, let paymentOption = checkoutBuilder.paymentOption, token.count > 0 else { return }
             Mixpanel.mainInstance().track(event: "ppr-order-placed",
-                                          properties: ["payable_amt": NSDecimalNumber(decimal: checkoutBuilder.order?.payableAmount ?? Decimal.zero).doubleValue,
-                                                       "discount": NSDecimalNumber(decimal: checkoutBuilder.order?.discount?.value ?? Decimal.zero).doubleValue,
+                                          properties: ["payable_amt": checkoutBuilder.order?.payableAmount ?? Double.zero,
+                                                       "discount": checkoutBuilder.order?.discount?.value ?? Double.zero,
                                                        "coupon": checkoutBuilder.couponCode ?? "NA",
                                                        "interval_of_day": Date.currentHourRangeString,
                                                        "reorder": isReorder,
-                                                       "taxes": NSDecimalNumber(decimal: checkoutBuilder.order?.itemTaxes ?? Decimal.zero).doubleValue,
+                                                       "taxes": checkoutBuilder.order?.itemTaxes ?? Double.zero,
                                                        "wallet_credit_applied": checkoutBuilder.useWalletCredits,
-                                                       "wallet_credit_amt": NSDecimalNumber(decimal: userWalletBalance).doubleValue,
+                                                       "wallet_credit_amt": userWalletBalance,
                                                        "is_pickup": checkoutBuilder.deliveryOption == .pickUp,
                                                        "payment_mode": paymentOption.rawValue])
         case .reorderInit:
@@ -192,7 +192,7 @@ public class MixpanelObserver: AnalyticsEventObserver {
         case let .checkoutInit(payableAmt, walletCreditsApplied):
             guard let token: String = mixpanelToken, token.count > 0 else { return }
             Mixpanel.mainInstance().track(event: "ppr-checkout-init",
-                                          properties: ["payable_amt": NSDecimalNumber(decimal: payableAmt).doubleValue,
+                                          properties: ["payable_amt": payableAmt,
                                                        "wallet_credits_applied": walletCreditsApplied])
         case let .profileUpdated(phone, pwdChanged):
             guard let token: String = mixpanelToken, token.count > 0 else { return }
@@ -228,14 +228,14 @@ public class MixpanelObserver: AnalyticsEventObserver {
                                                        "username": phone,
                                                        "social_auth": platform])
         case .bizInfoUpdated:
-            guard let user = UserManager.shared.currentUser, let userBizInfo = user.userBizInfoResponse?.userBizInfos?.last,
+            guard let user = UserManager.shared.currentUser, let userBizInfo = user.userBizInfoResponse?.userBizInfos.last,
                 let token: String = mixpanelToken, token.count > 0 else { return }
             let mixpanel = Mixpanel.mainInstance()
             mixpanel.identify(distinctId: user.phone)
             mixpanel.identify(distinctId: mixpanel.distinctId)
 
             var properties: Properties = ["$email": user.email,
-                                          "balance": userBizInfo.balance.doubleValue,
+                                          "balance": userBizInfo.balance,
                                           "$name": user.firstName] as [String: MixpanelType]
 
             if let val = userBizInfo.lastOrderDateString {
@@ -245,19 +245,10 @@ public class MixpanelObserver: AnalyticsEventObserver {
             if let val = userBizInfo.cardNumbers.first {
                 properties["cardNumber"] = val
             }
-
-            if let val = userBizInfo.totalOrderValue {
-                let decimalNumber = val as NSDecimalNumber
-                properties["total_order_value"] = decimalNumber.floatValue
-            }
-
-            if let val = userBizInfo.numOfOrders {
-                properties["num_of_orders"] = val
-            }
-
-            if let val = userBizInfo.daysSinceLastOrder {
-                properties["days_since_last_order"] = val
-            }
+            
+            properties["total_order_value"] = userBizInfo.totalOrderValue
+            properties["num_of_orders"] = userBizInfo.numOfOrders
+            properties["days_since_last_order"] = userBizInfo.daysSinceLastOrder
 
             mixpanel.people.set(properties: properties)
         }

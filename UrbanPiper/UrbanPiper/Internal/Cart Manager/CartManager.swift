@@ -32,8 +32,8 @@ internal class CartManager: NSObject {
         return isReorder
     }
 
-    @objc internal var cartValue: Decimal {
-        return cartItems.reduce(0.0) { $0 + ($1.totalAmount * Decimal($1.quantity)).rounded }
+    @objc internal var cartValue: Double {
+        return cartItems.reduce(0.0) { $0 + ($1.totalAmount * Double($1.quantity)) }
     }
 
     @objc internal var cartCount: Int {
@@ -49,7 +49,7 @@ internal class CartManager: NSObject {
         }
 
         let earliestTime = preOrderItems.last!.preOrderStartTime!
-        return Date(timeIntervalSince1970: TimeInterval(earliestTime / 1000))
+        return earliestTime
     }
 
     @objc internal func cartCount(for itemId: Int) -> Int {

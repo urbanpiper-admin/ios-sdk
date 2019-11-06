@@ -1,69 +1,76 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//	FeedbackConfig.swift
-//
-//	Create by Vidhyadharan Mohanram on 29/1/2018
-//	Copyright © 2018. All rights reserved.
-//	Model file generated using JSONExport: https://github.com/Ahmed-Ali/JSONExport
+//   @objc public let feedbackConfig = try FeedbackConfig(json)
 
 import Foundation
 
-public class FeedbackConfig: NSObject, JSONDecodable, NSCoding {
-    public var choices: [Choice]!
-    public var type: String!
+// MARK: - FeedbackConfig
+@objc public class FeedbackConfig: NSObject, Codable, NSCoding {
+    @objc public let choices: [Choice]
+    @objc public let type: String
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    internal required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        choices = [Choice]()
-        if let choicesArray: [[String: AnyObject]] = dictionary["choices"] as? [[String: AnyObject]] {
-            for dic in choicesArray {
-                guard let value: Choice = Choice(fromDictionary: dic) else { continue }
-                choices.append(value)
-            }
-        }
-        type = dictionary["type"] as? String
+    init(choices: [Choice], type: String) {
+        self.choices = choices
+        self.type = type
     }
-
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    public func toDictionary() -> [String: AnyObject] {
-        var dictionary: [String: AnyObject] = [String: AnyObject]()
-        if let choices = choices {
-            var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
-            for choicesElement in choices {
-                dictionaryElements.append(choicesElement.toDictionary())
-            }
-            dictionary["choices"] = dictionaryElements as AnyObject
-        }
-        if let type = type {
-            dictionary["type"] = type as AnyObject
-        }
-        return dictionary
-    }
-
+    
     /**
      * NSCoding required initializer.
      * Fills the data from the passed decoder
      */
-    @objc public required init(coder aDecoder: NSCoder) {
+    public required init(coder aDecoder: NSCoder) {
         Choice.registerClass()
-        choices = aDecoder.decodeObject(forKey: "choices") as? [Choice]
-        type = aDecoder.decodeObject(forKey: "type") as? String
+        choices = (aDecoder.decodeObject(forKey: "choices") as? [Choice])!
+        type = (aDecoder.decodeObject(forKey: "type") as? String)!
     }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(FeedbackConfig.self, from: data)
+        self.init(choices: me.choices, type: me.type)
+    }
+}
+
+// MARK: FeedbackConfig convenience initializers and mutators
+
+extension FeedbackConfig {
+
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    public func with(
+        choices: [Choice]? = nil,
+        type: String? = nil
+    ) -> FeedbackConfig {
+        return FeedbackConfig(
+            choices: choices ?? self.choices,
+            type: type ?? self.type
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+    
 
     /**
      * NSCoding required method.
      * Encodes mode properties into the decoder
      */
-    @objc public func encode(with aCoder: NSCoder) {
-        // if let choices = choices {
-            aCoder.encode(choices, forKey: "choices")
-        // }
-        // if let type = type {
-            aCoder.encode(type, forKey: "type")
-        // }
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(choices, forKey: "choices")
+        aCoder.encode(type, forKey: "type")
     }
 }

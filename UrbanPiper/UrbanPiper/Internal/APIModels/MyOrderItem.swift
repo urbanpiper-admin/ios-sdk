@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class MyOrderItem: NSObject, JSONDecodable {
+@objc public class MyOrderItem: NSObject, JSONDecodable {
     public var id: Int = 0
     public var image: String!
     public var imageLandscape: String!

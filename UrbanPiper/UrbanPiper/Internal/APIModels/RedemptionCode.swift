@@ -1,65 +1,66 @@
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
 //
-//  RedemptionCode.swift
-//  Model Generated using http://www.jsoncafe.com/
-//  Created on March 14, 2019
+//   @objc public let redemptionCode = try RedemptionCode(json)
 
 import Foundation
 
-public class RedemptionCode: NSObject, JSONDecodable, NSCoding {
-    public var expiresIn: Int?
-    public var redemptionCode: String!
-    public var validFrom: Int?
+// MARK: - RedemptionCode
+@objc public class RedemptionCode: NSObject, Codable {
+    @objc public let expiresIn: Int
+    @objc public let redemptionCode: String
+    @objc public let validFrom: Int
 
-    /**
-     * Instantiate the instance using the passed dictionary values to set the properties values
-     */
-    required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        expiresIn = dictionary["expires_in"] as? Int
-        redemptionCode = dictionary["redemption_code"] as? String
-        validFrom = dictionary["valid_from"] as? Int
+    enum CodingKeys: String, CodingKey {
+        case expiresIn = "expires_in"
+        case redemptionCode = "redemption_code"
+        case validFrom = "valid_from"
     }
 
-    /**
-     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-     */
-    @objc public func toDictionary() -> [String: AnyObject] {
-        var dictionary = [String: AnyObject]()
-        if let expiresIn = expiresIn {
-            dictionary["expires_in"] = expiresIn as AnyObject
+    init(expiresIn: Int, redemptionCode: String, validFrom: Int) {
+        self.expiresIn = expiresIn
+        self.redemptionCode = redemptionCode
+        self.validFrom = validFrom
+    }
+    
+    required convenience init(data: Data) throws {
+        let me = try newJSONDecoder().decode(RedemptionCode.self, from: data)
+        self.init(expiresIn: me.expiresIn, redemptionCode: me.redemptionCode, validFrom: me.validFrom)
+    }
+}
+
+// MARK: RedemptionCode convenience initializers and mutators
+
+extension RedemptionCode {
+    
+    convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
         }
-        if let redemptionCode = redemptionCode {
-            dictionary["redemption_code"] = redemptionCode as AnyObject
-        }
-        if let validFrom = validFrom {
-            dictionary["valid_from"] = validFrom as AnyObject
-        }
-        return dictionary
+        try self.init(data: data)
     }
 
-    /**
-     * NSCoding required initializer.
-     * Fills the data from the passed decoder
-     */
-    @objc public required init(coder aDecoder: NSCoder) {
-        expiresIn = aDecoder.decodeObject(forKey: "expires_in") as? Int
-        redemptionCode = aDecoder.decodeObject(forKey: "redemption_code") as? String
-        validFrom = aDecoder.decodeObject(forKey: "valid_from") as? Int
+    convenience init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
     }
 
-    /**
-     * NSCoding required method.
-     * Encodes mode properties into the decoder
-     */
-    @objc public func encode(with aCoder: NSCoder) {
-        // if let expiresIn = expiresIn {
-            aCoder.encode(expiresIn, forKey: "expires_in")
-        // }
-        // if let redemptionCode = redemptionCode {
-            aCoder.encode(redemptionCode, forKey: "redemption_code")
-        // }
-        // if let validFrom = validFrom {
-            aCoder.encode(validFrom, forKey: "valid_from")
-        // }
+    public func with(
+        expiresIn: Int? = nil,
+        redemptionCode: String? = nil,
+        validFrom: Int? = nil
+    ) -> RedemptionCode {
+        return RedemptionCode(
+            expiresIn: expiresIn ?? self.expiresIn,
+            redemptionCode: redemptionCode ?? self.redemptionCode,
+            validFrom: validFrom ?? self.validFrom
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
     }
 }

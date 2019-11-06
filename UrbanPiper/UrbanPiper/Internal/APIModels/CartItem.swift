@@ -8,27 +8,27 @@
 
 import UIKit
 
-public class CartItem: NSObject {
+@objc public class CartItem: NSObject {
     private var optionBuilder: ItemOptionBuilder?
-    public var optionsToAdd: [ItemOption] = []
-    private var optionsToRemove: [ItemOption] = []
+    public var optionsToAdd: [OptionGroupOption] = []
+    private var optionsToRemove: [OptionGroupOption] = []
 
     public var category: ItemCategory!
     public var currentStock: Int = 0
 //    public var extras : [AnyObject]!
 //    public var foodType : String!
     public var id: Int = 0
-    public var imageLandscapeUrl: String!
+    public var imageLandscapeurl: String!
     public var imageUrl: String!
 //    public var itemDesc : String!
-    public var itemPrice: Decimal!
+    public var itemPrice: Double!
     public var itemTitle: String!
 //    public var likes : Int?
     //   var optionGroups : [ItemOptionGroup]!
 //    public var priceDescriptor : String!
     //   var serviceTaxRate : Float!
-    public var preOrderStartTime: Int?
-    public var preOrderEndTime: Int?
+    public var preOrderStartTime: Date?
+    public var preOrderEndTime: Date?
     public var slug: String!
     public var sortOrder: Int = 0
 //    public var subCategory : ItemCategory!
@@ -46,8 +46,8 @@ public class CartItem: NSObject {
 
     public var notes: String?
 
-    public var totalAmount: Decimal {
-        var totalAmount: Decimal = itemPrice ?? Decimal.zero
+    public var totalAmount: Double {
+        var totalAmount: Double = itemPrice ?? Double.zero
         for item in optionsToAdd {
             totalAmount += item.price
         }
@@ -72,8 +72,8 @@ public class CartItem: NSObject {
     @objc public init(reorderItem: ReorderItem) {
         currentStock = reorderItem.currentStock
         id = reorderItem.id
-        imageLandscapeUrl = reorderItem.imageLandscapeUrl
-        imageUrl = reorderItem.imageUrl
+        imageLandscapeurl = reorderItem.imageLandscapeurl
+        imageUrl = reorderItem.imageurl
         itemPrice = reorderItem.itemPrice
         itemTitle = reorderItem.itemTitle
         quantity = reorderItem.quantity
@@ -99,11 +99,11 @@ public class CartItem: NSObject {
 //        self.extras = item.extras
 //        self.foodType = item.foodType
         id = item.id
-        imageLandscapeUrl = item.imageLandscapeUrl
-        imageUrl = item.imageUrl
+        imageLandscapeurl = item.imageLandscapeurl
+        imageUrl = item.imageurl
 //        self.itemDesc = item.itemDesc
 
-        itemPrice = item.itemPrice ?? Decimal.zero
+        itemPrice = item.itemPrice
 
         itemTitle = item.itemTitle
 //        self.likes = item.likes
@@ -150,8 +150,8 @@ public class CartItem: NSObject {
 //            dictionary["food_type"] = foodType as AnyObject
 //        }
         dictionary["id"] = id as AnyObject
-        if let imageLandscapeUrl = imageLandscapeUrl {
-            dictionary["image_landscape_url"] = imageLandscapeUrl as AnyObject
+        if let imageLandscapeurl = imageLandscapeurl {
+            dictionary["image_landscape_url"] = imageLandscapeurl as AnyObject
         }
         if let imageUrl = imageUrl {
             dictionary["image_url"] = imageUrl as AnyObject
