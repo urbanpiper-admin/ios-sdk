@@ -1,17 +1,17 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let subCategory = try SubCategory(json)
+//   public let subCategory = try SubCategory(json)
 
 import Foundation
 
 // MARK: - SubCategory
-@objc public class SubCategory: NSObject, Codable {
-    @objc public let subCategoryDescription: String
-    @objc public let id: Int
-    @objc public let image: String
-    @objc public let name, slug: String
-    @objc public let sortOrder: Int
+@objcMembers public class SubCategory: NSObject, Codable {
+    public let subCategoryDescription: String
+    public let id: Int
+    public let image: String
+    public let name, slug: String
+    public let sortOrder: Int
 
     enum CodingKeys: String, CodingKey {
         case subCategoryDescription = "description"

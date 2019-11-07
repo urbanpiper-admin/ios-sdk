@@ -6,14 +6,14 @@
 import Foundation
 
 // MARK: - OrderDetails
-@objc public class OrderDetails: NSObject, Codable {
-    @objc public let details: PastOrderDetails
-    @objc public let items: [PastOrderItem]
-    @objc public let nextState: String?
-    @objc public let nextStates: [String]
-    @objc public let payment: [OrderPayment]
-    @objc public let statusUpdates: [StatusUpdate]
-    @objc public let store: PastOrderStore
+@objcMembers public class OrderDetails: NSObject, Codable {
+    public let details: PastOrderDetails
+    public let items: [PastOrderItem]
+    public let nextState: String?
+    public let nextStates: [String]
+    public let payment: [OrderPayment]
+    public let statusUpdates: [StatusUpdate]
+    public let store: PastOrderStore
 
     enum CodingKeys: String, CodingKey {
         case details, items
@@ -86,7 +86,7 @@ extension OrderDetails {
 //    /**
 //     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //     */
-//    @objc // public func toDictionary() -> [String: AnyObject] {
+//    // public func toDictionary() -> [String: AnyObject] {
 //        var dictionary = [String: AnyObject]()
 //        dictionary["details"] = details.toDictionary() as AnyObject
 //        
@@ -117,7 +117,7 @@ extension OrderDetails {
 //        return dictionary
 //    }
     
-    @objc public func toObjcDictionary() -> [String : AnyObject] {
+    public func toObjcDictionary() -> [String : AnyObject] {
         return toDictionary()
     }
 }

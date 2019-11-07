@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc public class MyOrderOption: NSObject, Codable {
+@objcMembers public class MyOrderOption: NSObject, Codable {
     public var id: Int = 0
     public var title: String!
 
@@ -39,7 +39,7 @@ import Foundation
 //    * NSCoding required initializer.
 //    * Fills the data from the passed decoder
 //    */
-//    @objc required public init(coder aDecoder: NSCoder)
+//    required public init(coder aDecoder: NSCoder)
 //    {
 //         if let val = aDecoder.decodeObject(forKey: "id") as? Int {
 //            id = val
@@ -54,7 +54,7 @@ import Foundation
 //    * NSCoding required method.
 //    * Encodes mode properties into the decoder
 //    */
-//    @objc public func encode(with aCoder: NSCoder)
+//    public func encode(with aCoder: NSCoder)
 //    {
 //        if let id = id {
 //            aCoder.encode(id, forKey: "id")

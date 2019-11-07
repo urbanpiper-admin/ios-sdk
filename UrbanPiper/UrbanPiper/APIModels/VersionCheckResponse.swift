@@ -1,16 +1,16 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let versionCheckResponse = try VersionCheckResponse(json)
+//   public let versionCheckResponse = try VersionCheckResponse(json)
 
 import Foundation
 
 // MARK: - VersionCheckResponse
-@objc public class VersionCheckResponse: NSObject, JSONDecodable {
-    @objc public let forceUpdate: Bool
-    @objc public let latestVersion: String
-    @objc public let releaseDate: Date?
-    @objc public let url: String?
+@objcMembers public class VersionCheckResponse: NSObject, JSONDecodable {
+    public let forceUpdate: Bool
+    public let latestVersion: String
+    public let releaseDate: Date?
+    public let url: String?
 
     enum CodingKeys: String, CodingKey {
         case forceUpdate = "force_update"

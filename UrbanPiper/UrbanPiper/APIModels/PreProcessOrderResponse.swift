@@ -1,13 +1,13 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let preProcessOrderResponse = try PreProcessOrderResponse(json)
+//   public let preProcessOrderResponse = try PreProcessOrderResponse(json)
 
 import Foundation
 
 // MARK: - PreProcessOrderResponse
-@objc public class PreProcessOrderResponse: NSObject, JSONDecodable {
-    @objc public let order: Order
+@objcMembers public class PreProcessOrderResponse: NSObject, JSONDecodable {
+    public let order: Order
 
     init(order: Order) {
         self.order = order

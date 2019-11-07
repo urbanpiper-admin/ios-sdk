@@ -1,15 +1,15 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let tax = try Tax(json)
+//   public let tax = try Tax(json)
 
 import Foundation
 
 // MARK: - Tax
-@objc public class Tax: NSObject, Codable {
-    @objc public let rate: Int
-    @objc public let title: String
-    @objc public let value: Double
+@objcMembers public class Tax: NSObject, Codable {
+    public let rate: Int
+    public let title: String
+    public let value: Double
 
     init(rate: Int, title: String, value: Double) {
         self.rate = rate

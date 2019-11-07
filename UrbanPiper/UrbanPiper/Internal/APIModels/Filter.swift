@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let filter = try Filter(json)
+//   public let filter = try Filter(json)
 
 import Foundation
 
 // MARK: - Filter
-@objc public class Filter: NSObject, Codable {
-    @objc public let group: String
-    @objc public let options: [FilterOption]
+@objcMembers public class Filter: NSObject, Codable {
+    public let group: String
+    public let options: [FilterOption]
 
     init(group: String, options: [FilterOption]) {
         self.group = group

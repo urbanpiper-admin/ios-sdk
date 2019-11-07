@@ -9,19 +9,19 @@
 import CoreLocation
 import UIKit
 
-@objc public class OrderDeliveryAddress: NSObject, NSCoding {
-    @objc public var coordLatitude: CLLocationDegrees = 0
-    @objc public var coordLongitude: CLLocationDegrees = 0
+@objcMembers public class OrderDeliveryAddress: NSObject, NSCoding {
+    public var coordLatitude: CLLocationDegrees = 0
+    public var coordLongitude: CLLocationDegrees = 0
 
 //    public var thoroughfare: String!
 
-    @objc public var locality: String!
+    public var locality: String!
 
 //    public var subLocality: String!
 
 //    public var administrativeArea: String!
 
-    @objc public var postalCode: String!
+    public var postalCode: String!
 
 //    public var country: String!
 
@@ -43,7 +43,7 @@ import UIKit
         return nil
     }
 
-    @objc public var displayAddress: String {
+    public var displayAddress: String {
         if let address: [String?] = lines {
             var filteredAddress: [String] = address.compactMap { $0 }
             filteredAddress = filteredAddress.filter { $0.count > 0 }
@@ -93,7 +93,7 @@ import UIKit
         aCoder.encode(lines, forKey: "lines")
     }
 
-    @objc public required init(coder aDecoder: NSCoder) {
+    public required init(coder aDecoder: NSCoder) {
         coordLatitude = (aDecoder.decodeObject(forKey: "coordLatitude") as? NSNumber)?.doubleValue ?? 0
         coordLongitude = (aDecoder.decodeObject(forKey: "coordLongitude") as? NSNumber)?.doubleValue ?? 0
 //        thoroughfare = aDecoder.decodeObject(forKey: "thoroughfare") as? String ?? ""

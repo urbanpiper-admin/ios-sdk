@@ -1,39 +1,39 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let store = try Store(json)
+//   public let store = try Store(json)
 
 import Foundation
 
 // MARK: - Store
-@objc public class Store: NSObject, Codable, NSCoding {
-    @objc public let address: String
-    @objc public let bizLocationid: Int
-    @objc public let city: String
-    @objc public let closingDay: Bool
-    @objc public let closingTime: String
-    @objc public let deliveryCharge: Double
+@objcMembers public class Store: NSObject, Codable, NSCoding {
+    public let address: String
+    public let bizLocationid: Int
+    public let city: String
+    public let closingDay: Bool
+    public let closingTime: String
+    public let deliveryCharge: Double
     public let deliveryMinOffsetTime: Int?
-    @objc public let gst: String?
-    @objc public let hideStoreName: Bool
+    public let gst: String?
+    public let hideStoreName: Bool
     public let itemTaxes: Double?
-    @objc public let lat, lng: Double
+    public let lat, lng: Double
     public let minOrderTotal: Double?
-    @objc public let name: String
-    @objc public let onCloseMsg: String?
-    @objc public let onSelectMsg: String?
-    @objc public let openingTime: String
-    @objc public let packagingCharge: Double
-    @objc public let pgKey: String
-    @objc public let phone: String?
+    public let name: String
+    public let onCloseMsg: String?
+    public let onSelectMsg: String?
+    public let openingTime: String
+    public let packagingCharge: Double
+    public let pgKey: String
+    public let phone: String?
     public let pickupMinOffsetTime: Int?
-    @objc public let sortOrder: Int
-    @objc public let taxRate: Float
-    @objc public let temporarilyClosed: Bool
-    @objc public let timeSlots: [TimeSlot]
-    @objc public let fulfillmentModes: [String]?
+    public let sortOrder: Int
+    public let taxRate: Float
+    public let temporarilyClosed: Bool
+    public let timeSlots: [TimeSlot]
+    public let fulfillmentModes: [String]?
 
-    @objc public var storeId: NSNumber {
+    public var storeId: NSNumber {
         return NSNumber(integerLiteral: bizLocationid)
     }
 

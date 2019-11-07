@@ -1,15 +1,15 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let categoryItemsResponse = try CategoryItemsResponse(json)
+//   public let categoryItemsResponse = try CategoryItemsResponse(json)
 
 import Foundation
 
 // MARK: - CategoryItemsResponse
-@objc public class CategoryItemsResponse: NSObject, JSONDecodable {
-    @objc public let combos: [JSONAny]?
-    @objc public let meta: Meta
-    @objc public let objects: [Item]
+@objcMembers public class CategoryItemsResponse: NSObject, JSONDecodable {
+    public let combos: [JSONAny]?
+    public let meta: Meta
+    public let objects: [Item]
 
     init(combos: [JSONAny]?, meta: Meta, objects: [Item]) {
         self.combos = combos

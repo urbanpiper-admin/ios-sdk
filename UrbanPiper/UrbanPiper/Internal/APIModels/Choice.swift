@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let choice = try Choice(json)
+//   public let choice = try Choice(json)
 
 import Foundation
 
 // MARK: - Choice
-@objc public class Choice: NSObject, Codable, NSCoding {
-    @objc public let id, sortOrder: Int
-    @objc public let text: String
+@objcMembers public class Choice: NSObject, Codable, NSCoding {
+    public let id, sortOrder: Int
+    public let text: String
 
     enum CodingKeys: String, CodingKey {
         case id

@@ -1,35 +1,35 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let item = try Item(json)
+//   public let item = try Item(json)
 
 import Foundation
 
 // MARK: - Item
-@objc public class Item: NSObject, JSONDecodable {
-    @objc public let category: ItemCategory
-    @objc public let currentStock: Int
-    @objc public let extras: [Extra]
-    @objc public let foodType: String
-    @objc public let fulfillmentModes: [String]?
-    @objc public let id: Int
-    @objc public let imageLandscapeurl, imageurl: String?
-    @objc public let itemDesc: String
-    @objc public let itemPrice: Double
-    @objc public let itemTitle: String
-    @objc public let likes: Int
-    @objc public let optionGroups: [OptionGroup]?
-    @objc public let orderOptionsToAdd: [OptionGroupOption]?
-    @objc public let orderOptionsToRemove: [OptionGroupOption]?
-    @objc public let priceDescriptor: String?
-    @objc public let serviceTaxRate: Float
-    @objc public let slug: String
-    @objc public let sortOrder: Int
-    @objc public let tags: [ItemTag]
-    @objc public let vatRate: Float
-    @objc public let preOrderStartTime: Date?
-    @objc public let preOrderEndTime: Date?
-    @objc public let subCategory: SubCategory?
+@objcMembers public class Item: NSObject, JSONDecodable {
+    public let category: ItemCategory
+    public let currentStock: Int
+    public let extras: [Extra]
+    public let foodType: String
+    public let fulfillmentModes: [String]?
+    public let id: Int
+    public let imageLandscapeurl, imageurl: String?
+    public let itemDesc: String
+    public let itemPrice: Double
+    public let itemTitle: String
+    public let likes: Int
+    public let optionGroups: [OptionGroup]?
+    public let orderOptionsToAdd: [OptionGroupOption]?
+    public let orderOptionsToRemove: [OptionGroupOption]?
+    public let priceDescriptor: String?
+    public let serviceTaxRate: Float
+    public let slug: String
+    public let sortOrder: Int
+    public let tags: [ItemTag]
+    public let vatRate: Float
+    public let preOrderStartTime: Date?
+    public let preOrderEndTime: Date?
+    public let subCategory: SubCategory?
     
     internal var isRecommendedItem: Bool = false
     internal var isUpsoldItem: Bool = false

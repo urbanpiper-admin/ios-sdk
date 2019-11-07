@@ -1,21 +1,21 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let registrationResponse = try RegistrationResponse(json)
+//   public let registrationResponse = try RegistrationResponse(json)
 
 import Foundation
 
 // MARK: - RegistrationResponse
-@objc public class RegistrationResponse: NSObject, JSONDecodable {
-    @objc public let accessToken, activeOtp, approvalCode, authKey: String
-    @objc public let cardNumber, customerEmail, customerName, customerPhone: String
-    @objc public let message: String
-    @objc public let points, prepaidBalance: Int
-    @objc public let result: String
-    @objc public let success: Bool
-    @objc public let timestamp: String
-    @objc public let totalBalance: Int
-    @objc public let token: String?
+@objcMembers public class RegistrationResponse: NSObject, JSONDecodable {
+    public let accessToken, activeOtp, approvalCode, authKey: String
+    public let cardNumber, customerEmail, customerName, customerPhone: String
+    public let message: String
+    public let points, prepaidBalance: Int
+    public let result: String
+    public let success: Bool
+    public let timestamp: String
+    public let totalBalance: Int
+    public let token: String?
 
     enum CodingKeys: String, CodingKey {
         case accessToken = "access_token"

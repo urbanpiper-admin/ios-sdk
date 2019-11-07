@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let addUpdateAddressResponse = try AddUpdateAddressResponse(json)
+//   public let addUpdateAddressResponse = try AddUpdateAddressResponse(json)
 
 import Foundation
 
 // MARK: - AddUpdateAddressResponse
-@objc public class AddUpdateAddressResponse: NSObject, JSONDecodable {
-    @objc public let addressid: Int
-    @objc public let msg: String
+@objcMembers public class AddUpdateAddressResponse: NSObject, JSONDecodable {
+    public let addressid: Int
+    public let msg: String
 
     enum CodingKeys: String, CodingKey {
         case addressid = "address_id"

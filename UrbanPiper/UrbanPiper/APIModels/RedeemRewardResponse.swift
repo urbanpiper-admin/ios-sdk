@@ -1,17 +1,17 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let redeemRewardResponse = try RedeemRewardResponse(json)
+//   public let redeemRewardResponse = try RedeemRewardResponse(json)
 
 import Foundation
 
 // MARK: - RedeemRewardResponse
-@objc public class RedeemRewardResponse: NSObject, JSONDecodable {
-    @objc public let expiresIn: Int
-    @objc public let ptsRemaining: Int
-    @objc public let redemptionCode: String
-    @objc public let status: String
-    @objc public let message: String
+@objcMembers public class RedeemRewardResponse: NSObject, JSONDecodable {
+    public let expiresIn: Int?
+    public let ptsRemaining: Int?
+    public let redemptionCode: String
+    public let status: String
+    public let message: String
 
     enum CodingKeys: String, CodingKey {
         case expiresIn = "expires_in"
@@ -20,27 +20,7 @@ import Foundation
         case status, message
     }
     
-    // This entire method could have been omitted if children is not omitted
-    required public init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        redemptionCode = try values.decode(String.self, forKey: .redemptionCode)
-        status = try values.decode(String.self, forKey: .status)
-        message = try values.decode(String.self, forKey: .message)
-
-        if let val = try values.decodeIfPresent(Int.self, forKey: .expiresIn) {
-            expiresIn = val
-        } else {
-            expiresIn = 0
-        }
-        
-        if let val = try values.decodeIfPresent(Int.self, forKey: .ptsRemaining) {
-            ptsRemaining = val
-        } else {
-            ptsRemaining = 0
-        }
-    }
-    
-    init(expiresIn: Int, ptsRemaining: Int, redemptionCode: String, status: String, message: String) {
+    init(expiresIn: Int?, ptsRemaining: Int?, redemptionCode: String, status: String, message: String) {
         self.expiresIn = expiresIn
         self.ptsRemaining = ptsRemaining
         self.redemptionCode = redemptionCode

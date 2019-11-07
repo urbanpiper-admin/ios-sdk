@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc public class CartItem: NSObject {
+@objcMembers public class CartItem: NSObject {
     private var optionBuilder: ItemOptionBuilder?
     public var optionsToAdd: [OptionGroupOption] = []
     private var optionsToRemove: [OptionGroupOption] = []
@@ -69,7 +69,7 @@ import UIKit
         return descriptionArray.joined(separator: ", ")
     }
 
-    @objc public init(reorderItem: ReorderItem) {
+    public init(reorderItem: ReorderItem) {
         currentStock = reorderItem.currentStock
         id = reorderItem.id
         imageLandscapeurl = reorderItem.imageLandscapeurl
@@ -93,7 +93,7 @@ import UIKit
         isReorder = true
     }
 
-    @objc public init(item: Item) {
+    public init(item: Item) {
         category = item.category
         currentStock = item.currentStock
 //        self.extras = item.extras

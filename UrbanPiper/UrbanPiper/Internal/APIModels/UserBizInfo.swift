@@ -1,28 +1,28 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let userBizInfo = try UserBizInfo(json)
+//   public let userBizInfo = try UserBizInfo(json)
 
 import Foundation
 
 // MARK: - UserBizInfo
-@objc public class UserBizInfo: NSObject, JSONDecodable, NSCoding {
-    @objc public let addresses: [Address]
-    @objc public let balance: Double
-    @objc public let bizid: Int
-    @objc public let cardNumbers: [String]
-    @objc public let daysSinceLastOrder: Int
-    @objc public let email: String
-    @objc public let id: Int
-    @objc public let lastOrderDt: Date?
-    @objc public let name: String
-    @objc public let numOfOrders: Int
-    @objc public let phone: String
-    @objc public let points: Int
-    @objc public let signupDt: Date
-    @objc public let totalOrderValue: Double
-    @objc public let username: String
-    @objc public var lastUpdatedDateString: String? = nil
+@objcMembers public class UserBizInfo: NSObject, JSONDecodable, NSCoding {
+    public let addresses: [Address]
+    public let balance: Double
+    public let bizid: Int
+    public let cardNumbers: [String]
+    public let daysSinceLastOrder: Int?
+    public let email: String
+    public let id: Int
+    public let lastOrderDt: Date?
+    public let name: String
+    public let numOfOrders: Int
+    public let phone: String
+    public let points: Int
+    public let signupDt: Date
+    public let totalOrderValue: Double
+    public let username: String
+    public var lastUpdatedDateString: String? = nil
     internal var lastOrderDateString: String? {
         if let val = lastOrderDt {
             return DateFormatter.localizedString(from: val, dateStyle: .medium, timeStyle: .short)
@@ -53,7 +53,7 @@ import Foundation
         balance = try values.decode(Double.self, forKey: .balance)
         bizid = try values.decode(Int.self, forKey: .bizid)
         cardNumbers = try values.decode([String].self, forKey: .cardNumbers)
-        daysSinceLastOrder = try values.decodeIfPresent(Int.self, forKey: .daysSinceLastOrder) ?? 0
+        daysSinceLastOrder = try values.decodeIfPresent(Int.self, forKey: .daysSinceLastOrder)
         email = try values.decode(String.self, forKey: .email)
         id = try values.decode(Int.self, forKey: .id)
         lastOrderDt = try values.decodeIfPresent(Date.self, forKey: .lastOrderDt)
@@ -69,7 +69,7 @@ import Foundation
     }
         
 
-    init(addresses: [Address], balance: Double, bizid: Int, cardNumbers: [String], daysSinceLastOrder: Int, email: String, id: Int, lastOrderDt: Date?, name: String, numOfOrders: Int, phone: String, points: Int, signupDt: Date, totalOrderValue: Double, username: String) {
+    init(addresses: [Address], balance: Double, bizid: Int, cardNumbers: [String], daysSinceLastOrder: Int?, email: String, id: Int, lastOrderDt: Date?, name: String, numOfOrders: Int, phone: String, points: Int, signupDt: Date, totalOrderValue: Double, username: String) {
         self.addresses = addresses
         self.balance = balance
         self.bizid = bizid

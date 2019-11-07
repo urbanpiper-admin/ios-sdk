@@ -1,21 +1,21 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let optionGroupOption = try OptionGroupOption(json)
+//   public let optionGroupOption = try OptionGroupOption(json)
 
 import Foundation
 
 // MARK: - OptionGroupOption
-@objc public class OptionGroupOption: NSObject, Codable {
-    @objc public let currentStock: Int
-    @objc public let optionDescription, foodType: String
-    @objc public let id: Int
-    @objc public let imageurl: String?
-    @objc public let optionGroups: [OptionGroup]?
-    @objc public let price: Double
-    @objc public let recommended: Bool
-    @objc public let sortOrder: Int
-    @objc public let title: String
+@objcMembers public class OptionGroupOption: NSObject, Codable {
+    public let currentStock: Int
+    public let optionDescription, foodType: String
+    public let id: Int
+    public let imageurl: String?
+    public let optionGroups: [OptionGroup]?
+    public let price: Double
+    public let recommended: Bool
+    public let sortOrder: Int
+    public let title: String
     var quantity: Int = 0
 
     enum CodingKeys: String, CodingKey {

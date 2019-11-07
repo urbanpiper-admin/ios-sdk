@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let statusUpdate = try StatusUpdate(json)
+//   public let statusUpdate = try StatusUpdate(json)
 
 import Foundation
 
 // MARK: - StatusUpdate
-@objc public class StatusUpdate: NSObject, Codable {
-    @objc public let created: Int
-    @objc public let message, status, updatedBy: String
+@objcMembers public class StatusUpdate: NSObject, Codable {
+    public let created: Int
+    public let message, status, updatedBy: String
 
     enum CodingKeys: String, CodingKey {
         case created, message, status

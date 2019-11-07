@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let feedbackConfig = try FeedbackConfig(json)
+//   public let feedbackConfig = try FeedbackConfig(json)
 
 import Foundation
 
 // MARK: - FeedbackConfig
-@objc public class FeedbackConfig: NSObject, Codable, NSCoding {
-    @objc public let choices: [Choice]
-    @objc public let type: String
+@objcMembers public class FeedbackConfig: NSObject, Codable, NSCoding {
+    public let choices: [Choice]
+    public let type: String
 
     init(choices: [Choice], type: String) {
         self.choices = choices

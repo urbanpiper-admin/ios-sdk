@@ -1,17 +1,17 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let reorderResponse = try ReorderResponse(json)
+//   public let reorderResponse = try ReorderResponse(json)
 
 import Foundation
 
 // MARK: - ReorderResponse
-@objc public class ReorderResponse: NSObject, JSONDecodable {
-    @objc public let bizLocation: BizLocation
-    @objc public let deliveryCharge: Int
-    @objc public let itemsAvailable: [ReorderItem]?
-    @objc public let itemsNotAvailable: [ReorderItem]?
-    @objc public let orderItemTaxes, orderSubtotal, orderTotal, packagingCharge: Double
+@objcMembers public class ReorderResponse: NSObject, JSONDecodable {
+    public let bizLocation: BizLocation
+    public let deliveryCharge: Int
+    public let itemsAvailable: [ReorderItem]?
+    public let itemsNotAvailable: [ReorderItem]?
+    public let orderItemTaxes, orderSubtotal, orderTotal, packagingCharge: Double
 
     enum CodingKeys: String, CodingKey {
         case bizLocation = "biz_location"

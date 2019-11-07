@@ -1,18 +1,18 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let socialAuthResponse = try SocialLoginResponse(json)
+//   public let socialAuthResponse = try SocialLoginResponse(json)
 
 import Foundation
 
 // MARK: - SocialLoginResponse
-@objc public class SocialLoginResponse: NSObject, JSONDecodable {
-    @objc public let authKey: String
-    @objc public let biz: JSONNull?
-    @objc public let email, message, name, phone: String
-    @objc public let success: Bool
-    @objc public let timestamp, username: String
-    @objc public let token: String?
+@objcMembers public class SocialLoginResponse: NSObject, JSONDecodable {
+    public let authKey: String
+    public let biz: JSONNull?
+    public let email, message, name, phone: String
+    public let success: Bool
+    public let timestamp, username: String
+    public let token: String?
 
     init(authKey: String, biz: JSONNull?, email: String, message: String, name: String, phone: String, success: Bool, timestamp: String, token: String?, username: String) {
         self.authKey = authKey

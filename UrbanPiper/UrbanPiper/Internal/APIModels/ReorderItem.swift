@@ -1,23 +1,23 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let itemsAvailable = try ReorderItem(json)
+//   public let itemsAvailable = try ReorderItem(json)
 
 import Foundation
 
 // MARK: - ReorderItem
-@objc public class ReorderItem: NSObject, Codable {
-    @objc public let category: ItemCategory
-    @objc public let currentStock, id: Int
-    @objc public let imageLandscapeurl, imageurl: String
-    @objc public let itemCategory: ItemCategory
-    @objc public let itemPrice: Double
-    @objc public let itemTitle: String
-    @objc public let optionGroups: [OptionGroup]
-    @objc public let quantity: Int
-    @objc public let serviceTaxRate, vatRate: Float
-    @objc public let preOrderStartTime: Date?
-    @objc public let preOrderEndTime: Date?
+@objcMembers public class ReorderItem: NSObject, Codable {
+    public let category: ItemCategory
+    public let currentStock, id: Int
+    public let imageLandscapeurl, imageurl: String
+    public let itemCategory: ItemCategory
+    public let itemPrice: Double
+    public let itemTitle: String
+    public let optionGroups: [OptionGroup]
+    public let quantity: Int
+    public let serviceTaxRate, vatRate: Float
+    public let preOrderStartTime: Date?
+    public let preOrderEndTime: Date?
 
 
     enum CodingKeys: String, CodingKey {

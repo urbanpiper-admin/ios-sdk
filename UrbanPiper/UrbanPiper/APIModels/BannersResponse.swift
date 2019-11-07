@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let bannersResponse = try BannersResponse(json)
+//   public let bannersResponse = try BannersResponse(json)
 
 import Foundation
 
 // MARK: - BannersResponse
-@objc public class BannersResponse: NSObject, JSONDecodable {
-    @objc public let images: [BannerImage]
-    @objc public let meta: Meta
+@objcMembers public class BannersResponse: NSObject, JSONDecodable {
+    public let images: [BannerImage]
+    public let meta: Meta
 
     init(images: [BannerImage], meta: Meta) {
         self.images = images

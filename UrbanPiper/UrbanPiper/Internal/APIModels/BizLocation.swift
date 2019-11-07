@@ -1,30 +1,30 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let bizLocation = try BizLocation(json)
+//   public let bizLocation = try BizLocation(json)
 
 import Foundation
 
 // MARK: - BizLocation
-@objc public class BizLocation: NSObject, Codable {
-    @objc public let address: String
-    @objc public let bizLocationid: Int
-    @objc public let city: String
-    @objc public let closingDay: Bool
-    @objc public let closingTime: Date?
-    @objc public let deliveryCharge, deliveryMinOffsetTime: Int
-    @objc public let gst: String?
-    @objc public let hideStoreName: Bool
-    @objc public let lat, lng: Double
-    @objc public let minOrderTotal: Int
-    @objc public let name, onCloseMsg: String
-    @objc public let onSelectMsg: String?
-    @objc public let openingTime: Date?
-    @objc public let packagingCharge: Int
-    @objc public let pgKey, phone: String
-    @objc public let pickupMinOffsetTime, sortOrder, taxRate: Int
-    @objc public let temporarilyClosed: Bool
-    @objc public let timeSlots: [TimeSlot]
+@objcMembers public class BizLocation: NSObject, Codable {
+    public let address: String
+    public let bizLocationid: Int
+    public let city: String
+    public let closingDay: Bool
+    public let closingTime: Date?
+    public let deliveryCharge, deliveryMinOffsetTime: Int
+    public let gst: String?
+    public let hideStoreName: Bool
+    public let lat, lng: Double
+    public let minOrderTotal: Int
+    public let name, onCloseMsg: String
+    public let onSelectMsg: String?
+    public let openingTime: Date?
+    public let packagingCharge: Int
+    public let pgKey, phone: String
+    public let pickupMinOffsetTime, sortOrder, taxRate: Int
+    public let temporarilyClosed: Bool
+    public let timeSlots: [TimeSlot]
 
     enum CodingKeys: String, CodingKey {
         case address

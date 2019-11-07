@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let customer = try Customer(json)
+//   public let customer = try Customer(json)
 
 import Foundation
 
 // MARK: - Customer
-@objc public class Customer: NSObject, Codable {
-    @objc public let address: Address
-    @objc public let email, name, phone: String
+@objcMembers public class Customer: NSObject, Codable {
+    public let address: Address
+    public let email, name, phone: String
 
     init(address: Address, email: String, name: String, phone: String) {
         self.address = address

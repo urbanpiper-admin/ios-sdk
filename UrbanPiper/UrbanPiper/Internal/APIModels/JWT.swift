@@ -8,18 +8,18 @@
 import Foundation
 
 // MARK: - JWT
-@objc public class JWT: NSObject, Codable {
-    @objc public let username, lastName: String
-    @objc public let userbizid: Int
-    @objc public let phone: String
-    @objc public let phoneVerified: Bool
-    @objc public let firstName: String
-    @objc public let emailVerified: Bool
-    @objc public let jit: String
-    @objc public let points: Int
-    @objc public let tKey: String
-    @objc public let exp, iat, balance: Int
-    @objc public let email: String
+@objcMembers public class JWT: NSObject, Codable {
+    public let username, lastName: String
+    public let userbizid: Int
+    public let phone: String
+    public let phoneVerified: Bool
+    public let firstName: String
+    public let emailVerified: Bool
+    public let jit: String
+    public let points: Int
+    public let tKey: String
+    public let exp, iat, balance: Int
+    public let email: String
     let token: String
 
     enum CodingKeys: String, CodingKey {

@@ -1,7 +1,7 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let dataClass = try DataClass(json)
+//   public let dataClass = try DataClass(json)
 
 import Foundation
 
@@ -11,15 +11,15 @@ public enum PaymentType: String {
 }
 
 // MARK: - DataClass
-@objc public class DataClass: NSObject, Codable {
-    @objc public let website: String?
-    @objc public let paymenturl: String?
-    @objc public let orderID, mid: String?
-    @objc public let overrideurl: Bool
-    @objc public let channelID, industryTypeID, custID: String?
-    @objc public let callbackURL: String?
-    @objc public let type, checksumhash, txnAmount: String?
-    @objc public let key: String?
+@objcMembers public class DataClass: NSObject, Codable {
+    public let website: String?
+    public let paymenturl: String?
+    public let orderID, mid: String?
+    public let overrideurl: Bool?
+    public let channelID, industryTypeID, custID: String?
+    public let callbackURL: String?
+    public let type, checksumhash, txnAmount: String?
+    public let key: String?
     
     public var paymentType: PaymentType {
         return PaymentType(rawValue: type!)!
@@ -39,26 +39,8 @@ public enum PaymentType: String {
         case checksumhash = "CHECKSUMHASH"
         case txnAmount = "TXN_AMOUNT"
     }
-    
-    required public init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.website = try values.decodeIfPresent(String.self, forKey: .website)
-        self.paymenturl = try values.decodeIfPresent(String.self, forKey: .paymenturl)
-        self.orderID = try values.decodeIfPresent(String.self, forKey: .orderID)
-        self.mid = try values.decodeIfPresent(String.self, forKey: .mid)
-        self.overrideurl = try values.decodeIfPresent(Bool.self, forKey: .overrideurl) ?? false
-        self.channelID = try values.decodeIfPresent(String.self, forKey: .channelID)
-        self.industryTypeID = try values.decodeIfPresent(String.self, forKey: .industryTypeID)
-        self.custID = try values.decodeIfPresent(String.self, forKey: .custID)
-        self.callbackURL = try values.decodeIfPresent(String.self, forKey: .callbackURL)
-        self.type = try values.decodeIfPresent(String.self, forKey: .type)
-        self.checksumhash = try values.decodeIfPresent(String.self, forKey: .checksumhash)
-        self.txnAmount = try values.decodeIfPresent(String.self, forKey: .txnAmount)
-        self.key = try values.decodeIfPresent(String.self, forKey: .key)
-    }
 
-    init(website: String?, paymenturl: String?, orderID: String?, mid: String?, overrideurl: Bool, channelID: String?, industryTypeID: String?, custID: String?, callbackURL: String?, type: String?, checksumhash: String?, txnAmount: String?, key: String?) {
+    init(website: String?, paymenturl: String?, orderID: String?, mid: String?, overrideurl: Bool?, channelID: String?, industryTypeID: String?, custID: String?, callbackURL: String?, type: String?, checksumhash: String?, txnAmount: String?, key: String?) {
         self.website = website
         self.paymenturl = paymenturl
         self.orderID = orderID

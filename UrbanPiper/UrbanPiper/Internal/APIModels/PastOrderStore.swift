@@ -8,11 +8,11 @@
 import Foundation
 
 // MARK: - PastOrderStore
-@objc public class PastOrderStore: NSObject, Codable {
-    @objc public let address: String
-    @objc public let id: Int
-    @objc public let latitude, longitude: Double
-    @objc public let merchantRefid, name: String
+@objcMembers public class PastOrderStore: NSObject, Codable {
+    public let address: String
+    public let id: Int
+    public let latitude, longitude: Double
+    public let merchantRefid, name: String
 
     enum CodingKeys: String, CodingKey {
         case address, id, latitude, longitude

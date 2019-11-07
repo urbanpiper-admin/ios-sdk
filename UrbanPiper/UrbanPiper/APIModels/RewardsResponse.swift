@@ -1,16 +1,16 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let rewardsResponse = try RewardsResponse(json)
+//   public let rewardsResponse = try RewardsResponse(json)
 
 import Foundation
 
 // MARK: - RewardsResponse
-@objc public class RewardsResponse: NSObject, JSONDecodable {
-    @objc public let claimed, locked: [Reward]
-    @objc public let meta: Meta
-    @objc public let redeemed: [Reward]
-    @objc public let unlocked: [Reward]
+@objcMembers public class RewardsResponse: NSObject, JSONDecodable {
+    public let claimed, locked: [Reward]
+    public let meta: Meta
+    public let redeemed: [Reward]
+    public let unlocked: [Reward]
 
     init(claimed: [Reward], locked: [Reward], meta: Meta, redeemed: [Reward], unlocked: [Reward]) {
         self.claimed = claimed

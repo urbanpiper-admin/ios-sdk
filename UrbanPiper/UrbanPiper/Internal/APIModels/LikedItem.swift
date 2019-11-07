@@ -8,9 +8,9 @@
 import Foundation
 
 // MARK: - LikedItem
-@objc public class LikedItem: NSObject, Codable {
-    @objc public let id: Int
-    @objc public let itemTitle: String
+@objcMembers public class LikedItem: NSObject, Codable {
+    public let id: Int
+    public let itemTitle: String
 
     enum CodingKeys: String, CodingKey {
         case id

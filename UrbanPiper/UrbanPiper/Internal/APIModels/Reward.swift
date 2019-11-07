@@ -1,23 +1,23 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let redeemed = try Redeemed(json)
+//   public let redeemed = try Redeemed(json)
 
 import Foundation
 
 // MARK: - Redeemed
-@objc public class Reward: NSObject, Codable {
-    @objc public let claimedCount: Int
-    @objc public let rewardDescription: String
-    @objc public let expiresOn: Date?
-    @objc public let id: Int
-    @objc public let imgLink: String?
-    @objc public let inStoreCouponRewards, locked: Bool
-    @objc public let points, redeemedCount: Int
-    @objc public let redemptionCodes: [RedemptionCode]
-    @objc public let title: String
-    @objc public let type: Int
-    @objc public let value: String
+@objcMembers public class Reward: NSObject, Codable {
+    public let claimedCount: Int
+    public let rewardDescription: String
+    public let expiresOn: Date?
+    public let id: Int
+    public let imgLink: String?
+    public let inStoreCouponRewards, locked: Bool
+    public let points, redeemedCount: Int
+    public let redemptionCodes: [RedemptionCode]
+    public let title: String
+    public let type: Int
+    public let value: String
 
     enum CodingKeys: String, CodingKey {
         case claimedCount = "claimed_count"

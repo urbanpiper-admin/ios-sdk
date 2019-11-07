@@ -1,15 +1,15 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let orderVerifyTxnResponse = try OrderVerifyTxnResponse(json)
+//   public let orderVerifyTxnResponse = try OrderVerifyTxnResponse(json)
 
 import Foundation
 
 // MARK: - OrderVerifyTxnResponse
-@objc public class OrderVerifyTxnResponse: NSObject, JSONDecodable {
-    @objc public let txnId: String?
-    @objc public let pid: String?
-    @objc public let status: String?
+@objcMembers public class OrderVerifyTxnResponse: NSObject, JSONDecodable {
+    public let txnId: String?
+    public let pid: String?
+    public let status: String?
 
     enum CodingKeys: String, CodingKey {
         case txnId = "txn_id"
@@ -63,7 +63,7 @@ extension OrderVerifyTxnResponse {
         return String(data: try self.jsonData(), encoding: encoding)
     }
     
-    @objc public func toObjcDictionary() -> [String : AnyObject] {
+    public func toObjcDictionary() -> [String : AnyObject] {
         return toDictionary()
     }
 }

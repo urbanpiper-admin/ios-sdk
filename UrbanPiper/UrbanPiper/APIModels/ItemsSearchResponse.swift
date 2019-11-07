@@ -7,9 +7,9 @@
 
 import Foundation
 
-@objc public class ItemsSearchResponse: NSObject, JSONDecodable {
-    @objc public let meta: Meta
-    @objc public let items: [Item]
+@objcMembers public class ItemsSearchResponse: NSObject, JSONDecodable {
+    public let meta: Meta
+    public let items: [Item]
 
 init(meta: Meta, items: [Item]) {
         self.meta = meta

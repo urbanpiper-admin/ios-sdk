@@ -6,9 +6,9 @@
 import Foundation
 
 // MARK: - PastOrdersResponse
-@objc public class PastOrdersResponse: NSObject, JSONDecodable {
-    @objc public let meta: Meta
-    @objc public let orders: [PastOrder]
+@objcMembers public class PastOrdersResponse: NSObject, JSONDecodable {
+    public let meta: Meta
+    public let orders: [PastOrder]
 
     init(meta: Meta, orders: [PastOrder]) {
         self.meta = meta

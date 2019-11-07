@@ -1,7 +1,7 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let pastOrder = try PastOrder(json)
+//   public let pastOrder = try PastOrder(json)
 
 import Foundation
 
@@ -57,31 +57,31 @@ public enum OrderStatus: String {
 }
 
 // MARK: - PastOrder
-@objc public class PastOrder: NSObject, Codable {
-    @objc public let address: String?
-    @objc public let bizLocationid: Int
-    @objc public let bizLocationName, channel: String
-    @objc public let charges: [Charge]
-    @objc public let coupon: String?
-    @objc public let created: Date
-    @objc public let customerName: String
+@objcMembers public class PastOrder: NSObject, Codable {
+    public let address: String?
+    public let bizLocationid: Int
+    public let bizLocationName, channel: String
+    public let charges: [Charge]
+    public let coupon: String?
+    public let created: Date
+    public let customerName: String
     public let deliveryAddressRef: Int?
-    @objc public let deliveryDatetime: Int
+    public let deliveryDatetime: Int
     public let discount: Double?
     public let extPlatformid: Int?
-    @objc public let id: Int
-    @objc public let instructions: String
-    @objc public let itemLevelTotalCharges, itemLevelTotalTaxes: Double
+    public let id: Int
+    public let instructions: String
+    public let itemLevelTotalCharges, itemLevelTotalTaxes: Double
     public let merchantRefid: Int?
-    @objc public let orderLevelTotalCharges, orderLevelTotalTaxes: Double
-    @objc public let orderState: String
-    @objc public let orderSubtotal, orderTotal: Double
-    @objc public let orderType, paymentOption, phone: String
-    @objc public let taxAmt: Double
-    @objc public let taxRate: Float
-    @objc public let taxes: [JSONAny]
-    @objc public let totalCharges, totalTaxes: Double
-    @objc public let timeSlotEnd, timeSlotStart: String?
+    public let orderLevelTotalCharges, orderLevelTotalTaxes: Double
+    public let orderState: String
+    public let orderSubtotal, orderTotal: Double
+    public let orderType, paymentOption, phone: String
+    public let taxAmt: Double
+    public let taxRate: Float
+    public let taxes: [JSONAny]
+    public let totalCharges, totalTaxes: Double
+    public let timeSlotEnd, timeSlotStart: String?
     public var myOrderDetailsResponse: PastOrderDetailsResponse?
 
     public var packagingCharge: Double? {
@@ -104,7 +104,7 @@ public enum OrderStatus: String {
         return charge
     }
     
-    @objc public var merchantRefIdNum: NSNumber? {
+    public var merchantRefIdNum: NSNumber? {
         guard let val = merchantRefid else { return nil }
         return NSNumber(value: val)
     }

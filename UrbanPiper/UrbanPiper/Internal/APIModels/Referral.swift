@@ -7,13 +7,13 @@
 
 import UIKit
 
-@objc public class Referral: NSObject, Codable {
+@objcMembers public class Referral: NSObject, Codable {
     
-    @objc public let codeLink: String
-    @objc public let referrerCard: String
-    @objc public let channel: String
-    @objc public let sharedOn: String
-    @objc public let platform: String
+    public let codeLink: String
+    public let referrerCard: String
+    public let channel: String
+    public let sharedOn: String
+    public let platform: String
 
     public required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
@@ -54,7 +54,7 @@ import UIKit
      * NSCoding required initializer.
      * Fills the data from the passed decoder
      */
-    @objc public required init(coder aDecoder: NSCoder) {
+    public required init(coder aDecoder: NSCoder) {
         codeLink = aDecoder.decodeObject(forKey: "code_link") as! String
         referrerCard = aDecoder.decodeObject(forKey: "referrer_card") as! String
         channel = aDecoder.decodeObject(forKey: "channel") as! String
@@ -66,7 +66,7 @@ import UIKit
      * NSCoding required method.
      * Encodes mode properties into the decoder
      */
-    @objc public func encode(with aCoder: NSCoder) {
+    public func encode(with aCoder: NSCoder) {
         aCoder.encode(codeLink, forKey: "code_link")
         aCoder.encode(referrerCard, forKey: "referrer_card")
         aCoder.encode(channel, forKey: "channel")

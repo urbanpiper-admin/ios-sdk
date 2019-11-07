@@ -1,7 +1,7 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let address = try Address(json)
+//   public let address = try Address(json)
 
 import Foundation
 
@@ -12,18 +12,18 @@ public enum AddressTag: String {
 }
 
 // MARK: - Address
-@objc public class Address: NSObject, Codable, NSCoding {
-    @objc public let address1: String?
-    @objc public let address2: String?
-    @objc public let city: String?
-    @objc public let deliverable: Bool
-    @objc public let id: Int
-    @objc public let landmark: String?
-    @objc public let lat, lng: Double
-    @objc public let name, phone, pin: String?
+@objcMembers public class Address: NSObject, Codable, NSCoding {
+    public let address1: String?
+    public let address2: String?
+    public let city: String?
+    public let deliverable: Bool?
+    public let id: Int?
+    public let landmark: String?
+    public let lat, lng: Double
+    public let name, phone, pin: String?
     public let podid: Int?
-    @objc public let subLocality: String?
-    @objc public let tag: String?
+    public let subLocality: String?
+    public let tag: String?
 
     enum CodingKeys: String, CodingKey {
         case address1 = "address_1"
@@ -33,27 +33,8 @@ public enum AddressTag: String {
         case subLocality = "sub_locality"
         case tag
     }
-    
-    required public init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.address1 = try values.decodeIfPresent(String.self, forKey: .address1)
-        self.address2 = try values.decodeIfPresent(String.self, forKey: .address2)
-        self.city = try values.decodeIfPresent(String.self, forKey: .city)
-        self.deliverable = try values.decodeIfPresent(Bool.self, forKey: .deliverable) ?? false
-        self.id = try values.decode(Int.self, forKey: .id)
-        self.landmark = try values.decodeIfPresent(String.self, forKey: .landmark)
-        self.lat = try values.decodeIfPresent(Double.self, forKey: .lat) ?? 0
-        self.lng = try values.decodeIfPresent(Double.self, forKey: .lng) ?? 0
-        self.name = try values.decodeIfPresent(String.self, forKey: .name)
-        self.phone = try values.decodeIfPresent(String.self, forKey: .phone)
-        self.pin = try values.decodeIfPresent(String.self, forKey: .pin)
-        self.podid = try values.decodeIfPresent(Int.self, forKey: .podid)
-        self.subLocality = try values.decodeIfPresent(String.self, forKey: .subLocality)
-        self.tag = try values.decodeIfPresent(String.self, forKey: .tag)
-    }
 
-    public init(address1: String?, address2: String?, city: String?, deliverable: Bool, id: Int, landmark: String?, lat: Double, lng: Double, name: String?, phone: String?, pin: String?, podid: Int?, subLocality: String?, tag: String?) {
+    public init(address1: String?, address2: String?, city: String?, deliverable: Bool?, id: Int?, landmark: String?, lat: Double, lng: Double, name: String?, phone: String?, pin: String?, podid: Int?, subLocality: String?, tag: String?) {
         self.address1 = address1
         self.address2 = address2
         self.city = city
@@ -70,7 +51,7 @@ public enum AddressTag: String {
         self.tag = tag
     }
     
-    @objc public required init?(fromDictionary dictionary: [String: AnyObject]?) {
+    public required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
         city = dictionary["city"] as? String
 
@@ -116,7 +97,7 @@ public enum AddressTag: String {
      * NSCoding required initializer.
      * Fills the data from the passed decoder
      */
-    @objc public required init(coder aDecoder: NSCoder) {
+    public required init(coder aDecoder: NSCoder) {
         address1 = aDecoder.decodeObject(forKey: "address_1") as? String
         landmark = aDecoder.decodeObject(forKey: "landmark") as? String
         name = aDecoder.decodeObject(forKey: "name") as? String
@@ -202,11 +183,11 @@ extension Address {
         return addressTagVal
     }
 
-    @objc public var addressString: String? {
+    public var addressString: String? {
         return fullAddress?.replacingOccurrences(of: "\n", with: ", ")
     }
 
-    @objc public var fullAddress: String? {
+    public var fullAddress: String? {
         var fullAddress: String = ""
         if let string = address1 {
             fullAddress = "\(fullAddress + string)\n"
@@ -231,7 +212,7 @@ extension Address {
      * NSCoding required method.
      * Encodes mode properties into the decoder
      */
-    @objc public func encode(with aCoder: NSCoder) {
+    public func encode(with aCoder: NSCoder) {
         aCoder.encode(address1, forKey: "address_1")
         aCoder.encode(landmark, forKey: "landmark")
         aCoder.encode(name, forKey: "name")
@@ -247,7 +228,7 @@ extension Address {
         aCoder.encode(tag, forKey: "tag")
     }
     
-    @objc public func toObjcDictionary() -> [String : AnyObject] {
+    public func toObjcDictionary() -> [String : AnyObject] {
         return toDictionary()
     }
 }

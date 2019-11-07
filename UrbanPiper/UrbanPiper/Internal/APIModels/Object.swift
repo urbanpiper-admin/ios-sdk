@@ -1,22 +1,22 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let object = try Object(json)
+//   public let object = try Object(json)
 
 import Foundation
 
 // MARK: - Object
-@objc public class Object: NSObject, Codable {
-    @objc public let comboCount: Int
-    @objc public let objectDescription: String?
-    @objc public let id: Int
-    @objc public let image: String?
-    @objc public let itemCount: Int
-    @objc public let loadFromWeb: Bool
-    @objc public let name, slug: String
-    @objc public let sortOrder: Int
-    @objc public let weburl: String?
-    @objc public let subCategories: [SubCategory]?
+@objcMembers public class Object: NSObject, Codable {
+    public let comboCount: Int
+    public let objectDescription: String?
+    public let id: Int
+    public let image: String?
+    public let itemCount: Int
+    public let loadFromWeb: Bool
+    public let name, slug: String
+    public let sortOrder: Int
+    public let weburl: String?
+    public let subCategories: [SubCategory]?
 
     enum CodingKeys: String, CodingKey {
         case comboCount = "combo_count"

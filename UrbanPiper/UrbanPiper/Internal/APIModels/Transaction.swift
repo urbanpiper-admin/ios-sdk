@@ -1,20 +1,20 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let transaction = try Transaction(json)
+//   public let transaction = try Transaction(json)
 
 import Foundation
 
 // MARK: - Transaction
-@objc public class Transaction: NSObject, Codable {
-    @objc public let billNumber, comments: String?
-    @objc public let created: Date
-    @objc public let id: Int
-    @objc public let paymentAmount: Double
-    @objc public let paymentSrc, paymentType: String
-    @objc public let posMcid, posOperatorUname: JSONNull?
-    @objc public let store: Store?
-    @objc public let transactionid: String
+@objcMembers public class Transaction: NSObject, Codable {
+    public let billNumber, comments: String?
+    public let created: Date
+    public let id: Int
+    public let paymentAmount: Double
+    public let paymentSrc, paymentType: String
+    public let posMcid, posOperatorUname: JSONNull?
+    public let store: Store?
+    public let transactionid: String
 
     enum CodingKeys: String, CodingKey {
         case billNumber = "bill_number"

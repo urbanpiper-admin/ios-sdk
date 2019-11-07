@@ -1,13 +1,13 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let storeListResponse = try StoreListResponse(json)
+//   public let storeListResponse = try StoreListResponse(json)
 
 import Foundation
 
 // MARK: - StoreLocatorResponse
-@objc public class StoreListResponse: NSObject, JSONDecodable {
-    @objc public let stores: [Store]
+@objcMembers public class StoreListResponse: NSObject, JSONDecodable {
+    public let stores: [Store]
 
     init(stores: [Store]) {
         self.stores = stores
@@ -50,7 +50,7 @@ extension StoreListResponse {
         return String(data: try self.jsonData(), encoding: encoding)
     }
     
-    @objc public func toObjcDictionary() -> [String : AnyObject] {
+    public func toObjcDictionary() -> [String : AnyObject] {
         return toDictionary()
     }
 }

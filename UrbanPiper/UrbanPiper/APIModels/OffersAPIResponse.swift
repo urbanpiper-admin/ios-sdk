@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let offersAPIResponse = try OffersAPIResponse(json)
+//   public let offersAPIResponse = try OffersAPIResponse(json)
 
 import Foundation
 
 // MARK: - OffersAPIResponse
-@objc public class OffersAPIResponse: NSObject, JSONDecodable {
-    @objc public let coupons: [Coupon]
-    @objc public let meta: Meta
+@objcMembers public class OffersAPIResponse: NSObject, JSONDecodable {
+    public let coupons: [Coupon]
+    public let meta: Meta
 
     init(coupons: [Coupon], meta: Meta) {
         self.coupons = coupons

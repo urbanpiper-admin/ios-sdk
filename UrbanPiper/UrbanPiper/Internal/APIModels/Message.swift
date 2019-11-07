@@ -1,7 +1,7 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let message = try Message(json)
+//   public let message = try Message(json)
 
 import Foundation
 
@@ -15,15 +15,15 @@ public enum MessageType: String {
 }
 
 // MARK: - Message
-@objc public class Message: NSObject, Codable {
-    @objc public let bannerImg: String?
-    @objc public let body: String
-    @objc public let campaignid: String?
-    @objc public let channel: String
-    @objc public let created: Date
-    @objc public let id: Int
-    @objc public let target: String?
-    @objc public let title, type: String
+@objcMembers public class Message: NSObject, Codable {
+    public let bannerImg: String?
+    public let body: String
+    public let campaignid: String?
+    public let channel: String
+    public let created: Date
+    public let id: Int
+    public let target: String?
+    public let title, type: String
 
     enum CodingKeys: String, CodingKey {
         case bannerImg = "banner_img"

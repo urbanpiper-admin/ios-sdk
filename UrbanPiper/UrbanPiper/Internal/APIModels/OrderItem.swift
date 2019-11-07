@@ -6,19 +6,19 @@
 import Foundation
 
 // MARK: - OrderItem
-@objc public class OrderItem: NSObject, Codable {
-    @objc public let category: ItemCategory
-    @objc public let charges: [Charge]
-    @objc public let currentStock, id: Int
-    @objc public let imageLandscapeurl, imageurl: String
-    @objc public let itemPrice: Double
-    @objc public let itemTitle: String
-    @objc public let price: Double
-    @objc public let quantity, sortOrder: Int
-    @objc public let taxPercentage: Float
-    @objc public let taxes: [Tax]
-    @objc public let totalCharge, totalTax: Double
-    @objc public let weight: Int
+@objcMembers public class OrderItem: NSObject, Codable {
+    public let category: ItemCategory
+    public let charges: [Charge]
+    public let currentStock, id: Int
+    public let imageLandscapeurl, imageurl: String
+    public let itemPrice: Double
+    public let itemTitle: String
+    public let price: Double
+    public let quantity, sortOrder: Int
+    public let taxPercentage: Float
+    public let taxes: [Tax]
+    public let totalCharge, totalTax: Double
+    public let weight: Int
 
     enum CodingKeys: String, CodingKey {
         case category, charges
@@ -225,7 +225,7 @@ extension OrderItem {
 //    * NSCoding required initializer.
 //    * Fills the data from the passed decoder
 //    */
-//    @objc required public init(coder aDecoder: NSCoder)
+//    required public init(coder aDecoder: NSCoder)
 //    {
 //         category = aDecoder.decodeObject(forKey: "category") as? ItemCategory
 //         charges = aDecoder.decodeObject(forKey: "charges") as? [AnyObject]
@@ -262,7 +262,7 @@ extension OrderItem {
 //    * NSCoding required method.
 //    * Encodes mode properties into the decoder
 //    */
-//    @objc public func encode(with aCoder: NSCoder)
+//    public func encode(with aCoder: NSCoder)
 //    {
 //        if let category = category {
 //            aCoder.encode(category, forKey: "category")

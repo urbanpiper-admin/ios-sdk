@@ -1,16 +1,16 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let genericResponse = try GenericResponse(json)
+//   public let genericResponse = try GenericResponse(json)
 
 import Foundation
 
 // MARK: - GenericResponse
-@objc public class GenericResponse: NSObject, JSONDecodable {
-    @objc public let status: String?
-    @objc public let message: String?
-    @objc public let errorMessage: String?
-    @objc public let msg: String?
+@objcMembers public class GenericResponse: NSObject, JSONDecodable {
+    public let status: String?
+    public let message: String?
+    public let errorMessage: String?
+    public let msg: String?
 
     enum CodingKeys: String, CodingKey {
         case status, message, msg
@@ -67,7 +67,7 @@ extension GenericResponse {
         return String(data: try self.jsonData(), encoding: encoding)
     }
     
-    @objc public func toObjcDictionary() -> [String : AnyObject] {
+    public func toObjcDictionary() -> [String : AnyObject] {
         return toDictionary()
     }
 }

@@ -1,15 +1,15 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let bannerImage = try BannerImage(json)
+//   public let bannerImage = try BannerImage(json)
 
 import Foundation
 
 // MARK: - BannerImage
-@objc public class BannerImage: NSObject, Codable {
-    @objc public let created, id: Int
-    @objc public let image: String
-    @objc public let imgType, markups: String
+@objcMembers public class BannerImage: NSObject, Codable {
+    public let created, id: Int
+    public let image: String
+    public let imgType, markups: String
 
     enum CodingKeys: String, CodingKey {
         case created, id, image

@@ -1,13 +1,13 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let timeSlot = try TimeSlot(json)
+//   public let timeSlot = try TimeSlot(json)
 
 import Foundation
 
 // MARK: - TimeSlot
-@objc public class TimeSlot: NSObject, Codable, NSCoding {
-    @objc public let day, endTime, startTime: String
+@objcMembers public class TimeSlot: NSObject, Codable, NSCoding {
+    public let day, endTime, startTime: String
 
     enum CodingKeys: String, CodingKey {
         case day

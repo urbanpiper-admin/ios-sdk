@@ -1,31 +1,22 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let itemCategory = try ItemCategory(json)
+//   public let itemCategory = try ItemCategory(json)
 
 import Foundation
 
 // MARK: - ItemCategory
-@objc public class ItemCategory: NSObject, Codable {
-    @objc public let id: Int
-    @objc public let name: String
-    @objc public let sortOrder: Int
+@objcMembers public class ItemCategory: NSObject, Codable {
+    public let id: Int
+    public let name: String
+    public let sortOrder: Int?
 
     enum CodingKeys: String, CodingKey {
         case id, name
         case sortOrder = "sort_order"
     }
-    
-    required public init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.id = try values.decode(Int.self, forKey: .id)
-        self.name = try values.decode(String.self, forKey: .name)
-        self.sortOrder = try values.decodeIfPresent(Int.self, forKey: .sortOrder) ?? 0
-    }
-    
 
-    init(id: Int, name: String, sortOrder: Int) {
+    init(id: Int, name: String, sortOrder: Int?) {
         self.id = id
         self.name = name
         self.sortOrder = sortOrder

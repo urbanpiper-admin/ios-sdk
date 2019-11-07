@@ -1,15 +1,15 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let redemptionCode = try RedemptionCode(json)
+//   public let redemptionCode = try RedemptionCode(json)
 
 import Foundation
 
 // MARK: - RedemptionCode
-@objc public class RedemptionCode: NSObject, Codable {
-    @objc public let expiresIn: Int
-    @objc public let redemptionCode: String
-    @objc public let validFrom: Int
+@objcMembers public class RedemptionCode: NSObject, Codable {
+    public let expiresIn: Int
+    public let redemptionCode: String
+    public let validFrom: Int
 
     enum CodingKeys: String, CodingKey {
         case expiresIn = "expires_in"

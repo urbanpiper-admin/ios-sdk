@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let notificationsResponse = try NotificationsResponse(json)
+//   public let notificationsResponse = try NotificationsResponse(json)
 
 import Foundation
 
 // MARK: - NotificationsResponse
-@objc public class NotificationsResponse: NSObject, JSONDecodable {
-    @objc public let messages: [Message]
-    @objc public let meta: Meta
+@objcMembers public class NotificationsResponse: NSObject, JSONDecodable {
+    public let messages: [Message]
+    public let meta: Meta
 
     init(messages: [Message], meta: Meta) {
         self.messages = messages

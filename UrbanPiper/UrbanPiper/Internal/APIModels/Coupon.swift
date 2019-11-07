@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let coupon = try Coupon(json)
+//   public let coupon = try Coupon(json)
 
 import Foundation
 
 // MARK: - Coupon
-@objc public class Coupon: NSObject, Codable {
-    @objc public let couponDescription, redemptionCode, title: String
-    @objc public let validUntil: Date?
+@objcMembers public class Coupon: NSObject, Codable {
+    public let couponDescription, redemptionCode, title: String
+    public let validUntil: Date?
 
     enum CodingKeys: String, CodingKey {
         case couponDescription = "description"

@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let like = try Like(json)
+//   public let like = try Like(json)
 
 import Foundation
 
 // MARK: - Like
-@objc public class Like: NSObject, Codable {
-    @objc public let item: LikedItem
-    @objc public let likedOn: Int
+@objcMembers public class Like: NSObject, Codable {
+    public let item: LikedItem
+    public let likedOn: Int
 
     enum CodingKeys: String, CodingKey {
         case item

@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let itemTag = try ItemTag(json)
+//   public let itemTag = try ItemTag(json)
 
 import Foundation
 
 // MARK: - ItemTag
-@objc public class ItemTag: NSObject, Codable {
-    @objc public let group: String
-    @objc public let tags: [Tag]
+@objcMembers public class ItemTag: NSObject, Codable {
+    public let group: String
+    public let tags: [Tag]
 
     init(group: String, tags: [Tag]) {
         self.group = group

@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc public enum UserStatus: Int, RawRepresentable {
+public enum UserStatus: Int, RawRepresentable {
     case registrationRequired
     case phoneNumberRequired
     case verifyPhoneNumber
@@ -43,19 +43,19 @@ import Foundation
 }
 
 // MARK: - User
-@objc public class User: NSObject, Codable {
-    @objc public let active: Bool
-    @objc public let address: String?
-    @objc public let anniversary: Date?
-    @objc public let anniversaryDate, birthdate: String?
-    @objc public let birthday: Date?
-    @objc public let currentCity: String?
-    @objc public let email, firstName: String
-    @objc public let gender: String?
-    @objc public let lastName: String?
-    @objc public let phone: String
+@objcMembers public class User: NSObject, Codable {
+    public let active: Bool
+    public let address: String?
+    public let anniversary: Date?
+    public let anniversaryDate, birthdate: String?
+    public let birthday: Date?
+    public let currentCity: String?
+    public let email, firstName: String
+    public let gender: String?
+    public let lastName: String?
+    public let phone: String
     internal let provider: String?
-    @objc public let userBizInfoResponse: UserBizInfoResponse?
+    public let userBizInfoResponse: UserBizInfoResponse?
     internal let jwt: JWT?
     internal let accessToken: String?
     
@@ -63,11 +63,11 @@ import Foundation
         return jwt!.username
     }
     
-    @objc public var authKey: String {
+    public var authKey: String {
         return jwt!.tKey
     }
     
-    @objc public var phoneVerified: Bool {
+    public var phoneVerified: Bool {
         return jwt!.phoneVerified
     }
 

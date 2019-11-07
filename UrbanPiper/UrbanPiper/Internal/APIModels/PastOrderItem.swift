@@ -1,25 +1,25 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let pastOrderItem = try PastOrderItem(json)
+//   public let pastOrderItem = try PastOrderItem(json)
 
 import Foundation
 
 // MARK: - PastOrderItem
-@objc public class PastOrderItem: NSObject, Codable {
-    @objc public let charges: [Charge]
-    @objc public let discount: Int
-    @objc public let foodType: String
-    @objc public let id: Int
-    @objc public let imageLandscapeurl, imageurl: String?
-    @objc public let merchantid: String
-    @objc public let optionsToAdd: [OptionGroupOption]
-    @objc public let optionsToRemove: [OptionGroupOption]
-    @objc public let price, quantity: Int
-    @objc public let taxes: [Tax]
-    @objc public let title: String
-    @objc public let total, totalWithTax: Double
-    @objc public let unitWeight: Int
+@objcMembers public class PastOrderItem: NSObject, Codable {
+    public let charges: [Charge]
+    public let discount: Int
+    public let foodType: String
+    public let id: Int
+    public let imageLandscapeurl, imageurl: String?
+    public let merchantid: String
+    public let optionsToAdd: [OptionGroupOption]
+    public let optionsToRemove: [OptionGroupOption]
+    public let price, quantity: Int
+    public let taxes: [Tax]
+    public let title: String
+    public let total, totalWithTax: Double
+    public let unitWeight: Int
 
     enum CodingKeys: String, CodingKey {
         case charges, discount

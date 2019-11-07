@@ -1,15 +1,15 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let extra = try Extra(json)
+//   public let extra = try Extra(json)
 
 import Foundation
 
 // MARK: - Extra
-@objc public class Extra: NSObject, Codable {
-    @objc public let id: Int
-    @objc public let keyValues: [KeyValue]
-    @objc public let name: String
+@objcMembers public class Extra: NSObject, Codable {
+    public let id: Int
+    public let keyValues: [KeyValue]
+    public let name: String
 
     enum CodingKeys: String, CodingKey {
         case id

@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let storeResponse = try StoreResponse(json)
+//   public let storeResponse = try StoreResponse(json)
 
 import Foundation
 
 // MARK: - StoreResponse
-@objc public class StoreResponse: NSObject, JSONDecodable, NSCoding {
-    @objc public let biz: Biz
-    @objc public let store: Store?
+@objcMembers public class StoreResponse: NSObject, JSONDecodable, NSCoding {
+    public let biz: Biz
+    public let store: Store?
 
     init(biz: Biz, store: Store?) {
         self.biz = biz

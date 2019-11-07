@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let walletTransactionResponse = try WalletTransactionResponse(json)
+//   public let walletTransactionResponse = try WalletTransactionResponse(json)
 
 import Foundation
 
 // MARK: - WalletTransactionResponse
-@objc public class WalletTransactionResponse: NSObject, JSONDecodable {
-    @objc public let meta: Meta
-    @objc public let transactions: [Transaction]
+@objcMembers public class WalletTransactionResponse: NSObject, JSONDecodable {
+    public let meta: Meta
+    public let transactions: [Transaction]
 
     init(meta: Meta, transactions: [Transaction]) {
         self.meta = meta

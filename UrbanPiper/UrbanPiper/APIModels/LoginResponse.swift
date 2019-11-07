@@ -3,13 +3,13 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let loginResponse = try LoginResponse(json)
+//   public let loginResponse = try LoginResponse(json)
 
 import Foundation
 
 // MARK: - LoginResponse
-@objc public class LoginResponse: NSObject, JSONDecodable {
-    @objc public let status, message, token: String
+@objcMembers public class LoginResponse: NSObject, JSONDecodable {
+    public let status, message, token: String
 
     init(status: String, message: String, token: String) {
         self.status = status

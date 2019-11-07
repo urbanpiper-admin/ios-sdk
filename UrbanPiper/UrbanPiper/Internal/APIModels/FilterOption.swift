@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let filterOption = try FilterOption(json)
+//   public let filterOption = try FilterOption(json)
 
 import Foundation
 
 // MARK: - FilterOption
-@objc public class FilterOption: NSObject, Codable {
-    @objc public let id: Int
-    @objc public let title: String
+@objcMembers public class FilterOption: NSObject, Codable {
+    public let id: Int
+    public let title: String
 
     init(id: Int, title: String) {
         self.id = id

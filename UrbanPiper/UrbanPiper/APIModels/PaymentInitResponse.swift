@@ -1,17 +1,17 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let paymentInitResponse = try PaymentInitResponse(json)
+//   public let paymentInitResponse = try PaymentInitResponse(json)
 
 import Foundation
 
 // MARK: - PaymentInitResponse
-@objc public class PaymentInitResponse: NSObject, JSONDecodable {
-    @objc public let url: String?
-    @objc public let message: String
-    @objc public let data: DataClass
-    @objc public let transactionid: String
-    @objc public let success: Bool
+@objcMembers public class PaymentInitResponse: NSObject, JSONDecodable {
+    public let url: String?
+    public let message: String
+    public let data: DataClass
+    public let transactionid: String
+    public let success: Bool
 
     enum CodingKeys: String, CodingKey {
         case url, message, data
@@ -72,7 +72,7 @@ extension PaymentInitResponse {
         return String(data: try self.jsonData(), encoding: encoding)
     }
     
-    @objc public func toObjcDictionary() -> [String : AnyObject] {
+    public func toObjcDictionary() -> [String : AnyObject] {
         return toDictionary()
     }
 }

@@ -8,25 +8,25 @@
 import Foundation
 
 // MARK: - PastOrderDetails
-@objc public class PastOrderDetails: NSObject, Codable {
-    @objc public let channel: String
-    @objc public let charges: [Charge]
-    @objc public let coupon: String?
-    @objc public let created, deliveryDatetime: Int
+@objcMembers public class PastOrderDetails: NSObject, Codable {
+    public let channel: String
+    public let charges: [Charge]
+    public let coupon: String?
+    public let created, deliveryDatetime: Int
     public let discount: Double?
-    @objc public let extPlatforms: [String]
-    @objc public let id: Int
-    @objc public let instructions: String
-    @objc public let itemLevelTotalCharges, itemLevelTotalTaxes, itemTaxes: Double
+    public let extPlatforms: [String]
+    public let id: Int
+    public let instructions: String
+    public let itemLevelTotalCharges, itemLevelTotalTaxes, itemTaxes: Double
     public let merchantRefid: Int?
-    @objc public let orderLevelTotalCharges, orderLevelTotalTaxes: Double
-    @objc public let orderState: String
-    @objc public let orderSubtotal, orderTotal: Double
-    @objc public let orderType, state: String
-    @objc public let taxes: [JSONAny]
+    public let orderLevelTotalCharges, orderLevelTotalTaxes: Double
+    public let orderState: String
+    public let orderSubtotal, orderTotal: Double
+    public let orderType, state: String
+    public let taxes: [JSONAny]
     public let taxAmt: Double?
-    @objc public let timeSlotEnd, timeSlotStart: String?
-    @objc public let totalCharges, totalExternalDiscount, totalTaxes: Double
+    public let timeSlotEnd, timeSlotStart: String?
+    public let totalCharges, totalExternalDiscount, totalTaxes: Double
 
     public var packagingCharge: Double? {
         var charge = charges.filter { $0.title == "Packaging charge" }.last?.value
@@ -48,31 +48,31 @@ import Foundation
         return charge
     }
     
-    @objc public var merchantRefIdNum: NSNumber? {
+    public var merchantRefIdNum: NSNumber? {
         guard let val = merchantRefid else { return nil }
         return NSNumber(value: val)
     }
     
-    @objc public var discountDecimalNumber: NSDecimalNumber? {
+    public var discountDecimalNumber: NSDecimalNumber? {
         guard let val = discount else { return nil }
         return NSDecimalNumber(value: val)
     }
 
-    @objc public var packingChargeDecimalNumber: NSDecimalNumber? {
+    public var packingChargeDecimalNumber: NSDecimalNumber? {
         guard let charge = packagingCharge else { return nil }
         return NSDecimalNumber(value: charge)
     }
 
-    @objc public var deliveryChargeDecimalNumber: NSDecimalNumber? {
+    public var deliveryChargeDecimalNumber: NSDecimalNumber? {
         guard let charge = deliveryCharge else { return nil }
         return NSDecimalNumber(value: charge)
     }
     
-    @objc public var itemTaxesDecimalNumber: NSDecimalNumber? {
+    public var itemTaxesDecimalNumber: NSDecimalNumber? {
         return NSDecimalNumber(value: totalTaxes)
     }
 
-    @objc public var taxAmtDecimalNumber: NSDecimalNumber? {
+    public var taxAmtDecimalNumber: NSDecimalNumber? {
         guard let val = taxAmt else { return nil }
         return NSDecimalNumber(value: val)
     }

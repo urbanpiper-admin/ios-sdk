@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let categoryOptionsResponse = try CategoryOptionsResponse(json)
+//   public let categoryOptionsResponse = try CategoryOptionsResponse(json)
 
 import Foundation
 
 // MARK: - CategoryOptionsResponse
-@objc public class CategoryOptionsResponse: NSObject, JSONDecodable {
-    @objc public let filters: [Filter]
-    @objc public let sortBy: [String]
+@objcMembers public class CategoryOptionsResponse: NSObject, JSONDecodable {
+    public let filters: [Filter]
+    public let sortBy: [String]
 
     enum CodingKeys: String, CodingKey {
         case filters

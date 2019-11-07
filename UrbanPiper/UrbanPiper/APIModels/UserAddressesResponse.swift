@@ -1,13 +1,13 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let userAddressesResponse = try UserAddressesResponse(json)
+//   public let userAddressesResponse = try UserAddressesResponse(json)
 
 import Foundation
 
 // MARK: - UserAddressesResponse
-@objc public class UserAddressesResponse: NSObject, JSONDecodable {
-    @objc public let addresses: [Address]
+@objcMembers public class UserAddressesResponse: NSObject, JSONDecodable {
+    public let addresses: [Address]
 
     init(addresses: [Address]) {
         self.addresses = addresses
@@ -50,7 +50,7 @@ extension UserAddressesResponse {
         return String(data: try self.jsonData(), encoding: encoding)
     }
     
-    @objc public func toObjcDictionary() -> [String : AnyObject] {
+    public func toObjcDictionary() -> [String : AnyObject] {
         return toDictionary()
     }
 }

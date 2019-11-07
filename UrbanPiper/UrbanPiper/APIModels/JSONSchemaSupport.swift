@@ -20,7 +20,7 @@ func newJSONEncoder() -> JSONEncoder {
 
 // MARK: - Encode/decode helpers
 
-@objc public class JSONNull: NSObject, Codable {
+@objcMembers public class JSONNull: NSObject, Codable {
 
     public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
         return true
@@ -46,7 +46,7 @@ func newJSONEncoder() -> JSONEncoder {
 }
 
 class JSONCodingKey: CodingKey {
-    @objc public let key: String
+    public let key: String
 
     required init?(intValue: Int) {
         return nil
@@ -65,9 +65,9 @@ class JSONCodingKey: CodingKey {
     }
 }
 
-@objc public class JSONAny: NSObject, Codable {
+@objcMembers public class JSONAny: NSObject, Codable {
 
-    @objc public let value: Any
+    public let value: Any
 
     static func decodingError(forCodingPath codingPath: [CodingKey]) -> DecodingError {
         let context = DecodingError.Context(codingPath: codingPath, debugDescription: "Cannot decode JSONAny")

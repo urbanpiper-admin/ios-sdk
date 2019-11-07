@@ -1,29 +1,29 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let order = try Order(json)
+//   public let order = try Order(json)
 
 import Foundation
 
 // MARK: - Order
-@objc public class Order: NSObject, JSONDecodable {
-    @objc public let applyWalletCredit: Bool
-    @objc public let bizLocationid: Int
-    @objc public let channel: String
-    @objc public let charges: [Charge]
-    @objc public let deliveryCharge: Double
-    @objc public let discount: Discount?
-    @objc public let itemLevelTotalCharges, itemLevelTotalTaxes, itemTaxes: Double
-    @objc public let items: [OrderItem]
-    @objc public let orderLevelTotalCharges, orderLevelTotalTaxes, orderSubtotal, orderTotal: Double
-    @objc public let orderType: String
-    @objc public let packagingCharge, payableAmount: Double
-    @objc public let paymentModes: [String]?
-    @objc public let taxes: [JSONAny]
-    @objc public let totalCharges, totalTaxes, totalWeight: Double
-    @objc public let walletCreditApplicable: Bool
-    @objc public let taxRate: Float
-    @objc public let walletCreditApplied: Double
+@objcMembers public class Order: NSObject, JSONDecodable {
+    public let applyWalletCredit: Bool
+    public let bizLocationid: Int
+    public let channel: String
+    public let charges: [Charge]
+    public let deliveryCharge: Double
+    public let discount: Discount?
+    public let itemLevelTotalCharges, itemLevelTotalTaxes, itemTaxes: Double
+    public let items: [OrderItem]
+    public let orderLevelTotalCharges, orderLevelTotalTaxes, orderSubtotal, orderTotal: Double
+    public let orderType: String
+    public let packagingCharge, payableAmount: Double
+    public let paymentModes: [String]?
+    public let taxes: [JSONAny]
+    public let totalCharges, totalTaxes, totalWeight: Double
+    public let walletCreditApplicable: Bool
+    public let taxRate: Float?
+    public let walletCreditApplied: Double
 
     enum CodingKeys: String, CodingKey {
         case applyWalletCredit = "apply_wallet_credit"
@@ -52,7 +52,7 @@ import Foundation
         case taxRate = "tax_rate"
     }
 
-    init(applyWalletCredit: Bool, bizLocationid: Int, channel: String, charges: [Charge], deliveryCharge: Double, discount: Discount?, itemLevelTotalCharges: Double, itemLevelTotalTaxes: Double, itemTaxes: Double, items: [OrderItem], orderLevelTotalCharges: Double, orderLevelTotalTaxes: Double, orderSubtotal: Double, orderTotal: Double, orderType: String, packagingCharge: Double, payableAmount: Double, paymentModes: [String]?, taxes: [JSONAny], totalCharges: Double, totalTaxes: Double, totalWeight: Double, walletCreditApplicable: Bool, walletCreditApplied: Double, taxRate: Float) {
+    init(applyWalletCredit: Bool, bizLocationid: Int, channel: String, charges: [Charge], deliveryCharge: Double, discount: Discount?, itemLevelTotalCharges: Double, itemLevelTotalTaxes: Double, itemTaxes: Double, items: [OrderItem], orderLevelTotalCharges: Double, orderLevelTotalTaxes: Double, orderSubtotal: Double, orderTotal: Double, orderType: String, packagingCharge: Double, payableAmount: Double, paymentModes: [String]?, taxes: [JSONAny], totalCharges: Double, totalTaxes: Double, totalWeight: Double, walletCreditApplicable: Bool, walletCreditApplied: Double, taxRate: Float?) {
         self.applyWalletCredit = applyWalletCredit
         self.bizLocationid = bizLocationid
         self.channel = channel
@@ -78,37 +78,6 @@ import Foundation
         self.walletCreditApplicable = walletCreditApplicable
         self.walletCreditApplied = walletCreditApplied
         self.taxRate = taxRate
-    }
-    
-    // This entire method could have been omitted if children is not omitted
-    required public init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.applyWalletCredit = try values.decode(Bool.self, forKey: .applyWalletCredit)
-        self.bizLocationid = try values.decode(Int.self, forKey: .bizLocationid)
-        self.channel = try values.decode(String.self, forKey: .channel)
-        self.charges = try values.decode([Charge].self, forKey: .charges)
-        self.deliveryCharge = try values.decode(Double.self, forKey: .deliveryCharge)
-        self.discount = try values.decodeIfPresent(Discount.self, forKey: .discount)
-        self.itemLevelTotalCharges = try values.decode(Double.self, forKey: .itemLevelTotalCharges)
-        self.itemLevelTotalTaxes = try values.decode(Double.self, forKey: .itemLevelTotalTaxes)
-        self.itemTaxes = try values.decode(Double.self, forKey: .itemTaxes)
-        self.items = try values.decode([OrderItem].self, forKey: .items)
-        self.orderLevelTotalCharges = try values.decode(Double.self, forKey: .orderLevelTotalCharges)
-        self.orderLevelTotalTaxes = try values.decode(Double.self, forKey: .orderLevelTotalTaxes)
-        self.orderSubtotal = try values.decode(Double.self, forKey: .orderSubtotal)
-        self.orderTotal = try values.decode(Double.self, forKey: .orderTotal)
-        self.orderType = try values.decode(String.self, forKey: .orderType)
-        self.packagingCharge = try values.decode(Double.self, forKey: .packagingCharge)
-        self.payableAmount = try values.decode(Double.self, forKey: .payableAmount)
-        self.paymentModes = try values.decodeIfPresent([String].self, forKey: .paymentModes)
-        self.taxes = try values.decode([JSONAny].self, forKey: .taxes)
-        self.totalCharges = try values.decode(Double.self, forKey: .totalCharges)
-        self.totalTaxes = try values.decode(Double.self, forKey: .totalTaxes)
-        self.totalWeight = try values.decode(Double.self, forKey: .totalWeight)
-        self.walletCreditApplicable = try values.decode(Bool.self, forKey: .walletCreditApplicable)
-        self.walletCreditApplied = try values.decode(Double.self, forKey: .walletCreditApplied)
-        self.taxRate = try values.decodeIfPresent(Float.self, forKey: .taxRate) ?? 0
     }
     
     required convenience init(data: Data) throws {

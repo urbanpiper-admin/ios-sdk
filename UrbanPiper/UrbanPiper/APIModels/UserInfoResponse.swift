@@ -1,20 +1,20 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let userInfoResponse = try UserInfoResponse(json)
+//   public let userInfoResponse = try UserInfoResponse(json)
 
 import Foundation
 
 // MARK: - UserInfoResponse
-@objc public class UserInfoResponse: NSObject, JSONDecodable {
-    @objc public let active: Bool
-    @objc public let address: String
-    @objc public let anniversary, birthday: Date?
-    @objc public let anniversaryDate, birthdate: String?
-    @objc public let currentCity: String?
-    @objc public let email, firstName: String
-    @objc public let gender, lastName: String?
-    @objc public let phone: String
+@objcMembers public class UserInfoResponse: NSObject, JSONDecodable {
+    public let active: Bool
+    public let address: String
+    public let anniversary, birthday: Date?
+    public let anniversaryDate, birthdate: String?
+    public let currentCity: String?
+    public let email, firstName: String
+    public let gender, lastName: String?
+    public let phone: String
 
     enum CodingKeys: String, CodingKey {
         case active, address, anniversary
@@ -105,7 +105,7 @@ extension UserInfoResponse {
 //    /**
 //         * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
 //    */
-//    @objc // public func toDictionary() -> [String: AnyObject] {
+//    // public func toDictionary() -> [String: AnyObject] {
 //        var dictionary: [String: AnyObject] = [String: AnyObject]()
 //        dictionary["phone"] = phone as AnyObject
 //        dictionary["first_name"] = firstName as AnyObject

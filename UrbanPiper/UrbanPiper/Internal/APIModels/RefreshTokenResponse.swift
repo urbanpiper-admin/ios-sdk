@@ -1,15 +1,15 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let subCategory = try SubCategory(json)
+//   public let subCategory = try SubCategory(json)
 
 import Foundation
 
 // MARK: - SubCategory
-@objc public class RefreshTokenResponse: NSObject, JSONDecodable {
-    @objc public let status: String
-    @objc public let message: String
-    @objc public let token: String
+@objcMembers public class RefreshTokenResponse: NSObject, JSONDecodable {
+    public let status: String
+    public let message: String
+    public let token: String
 
     init(status: String, message: String, token: String) {
         self.status = status

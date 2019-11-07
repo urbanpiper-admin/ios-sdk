@@ -3,15 +3,15 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let discount = try Discount(json)
+//   public let discount = try Discount(json)
 
 import Foundation
 
 // MARK: - Discount
-@objc public class Discount: NSObject, Codable {
-    @objc public let msg: String?
-    @objc public let success: Bool
-    @objc public let value: Double
+@objcMembers public class Discount: NSObject, Codable {
+    public let msg: String?
+    public let success: Bool
+    public let value: Double
 
     init(msg: String?, success: Bool, value: Double) {
         self.msg = msg

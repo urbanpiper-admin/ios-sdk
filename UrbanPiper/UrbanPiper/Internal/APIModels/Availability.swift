@@ -1,14 +1,14 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let availability = try Availability(json)
+//   public let availability = try Availability(json)
 
 import Foundation
 
 // MARK: - Availability
-@objc public class Availability: NSObject, Codable {
-    @objc public let isAvailable: Bool
-    @objc public let name: String
+@objcMembers public class Availability: NSObject, Codable {
+    public let isAvailable: Bool
+    public let name: String
 
     enum CodingKeys: String, CodingKey {
         case isAvailable = "is_available"

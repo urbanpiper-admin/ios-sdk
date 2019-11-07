@@ -1,17 +1,17 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let meta = try Meta(json)
+//   public let meta = try Meta(json)
 
 import Foundation
 
 // MARK: - Meta
-@objc public class Meta: NSObject, Codable, NSCoding {
-    @objc public let limit: Int
-    @objc public let next: String?
-    @objc public let offset: Int
-    @objc public let previous: String?
-    @objc public let totalCount: Int
+@objcMembers public class Meta: NSObject, Codable, NSCoding {
+    public let limit: Int
+    public let next: String?
+    public let offset: Int
+    public let previous: String?
+    public let totalCount: Int
 
     enum CodingKeys: String, CodingKey {
         case limit, next, offset, previous

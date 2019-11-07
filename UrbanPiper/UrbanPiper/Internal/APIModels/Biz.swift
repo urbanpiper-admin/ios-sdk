@@ -1,7 +1,7 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   @objc public let biz = try Biz(json)
+//   public let biz = try Biz(json)
 
 import Foundation
 
@@ -26,31 +26,31 @@ public enum Language: String {
 }
 
 // MARK: - Biz
-@objc public class Biz: NSObject, Codable, NSCoding {
-    @objc public static var shared: Biz!
+@objcMembers public class Biz: NSObject, Codable, NSCoding {
+    public static var shared: Biz!
 
-    @objc public let contactPhone: String?
-    @objc public let currency: String
-    @objc public let deliveryMinOffsetTime: Int
-    @objc public let feedbackConfig: [FeedbackConfig]
-    @objc public let gst: String?
-    @objc public let isPickupEnabled: Bool
-    @objc public let isdCode: String
-    @objc public let minOrderTotal, minimumWalletCreditThreshold: Double
-    @objc public let msgNearestStoreClosed, msgNoStoresNearby, msgStoreClosedTemporary: String?
-    @objc public let orderDeliveryRadius: Int
-    @objc public let paymentOptions: [String]
-    @objc public let paypalClientToken: String?
-    @objc public let pgProvider: String?
-    @objc public let pickupMinOffsetTime: Int
-    @objc public let preProcess: Bool
-    @objc public let referralShareLbl, referraluiLbl: String
-    @objc public let simplClientid: String?
-    @objc public let supportedLanguages: [String]
-    @objc public let timeSlots: [TimeSlot]
-    @objc public let timezone: String
-    @objc public let tin: String?
-    @objc public let usePointOfDelivery: Bool
+    public let contactPhone: String?
+    public let currency: String
+    public let deliveryMinOffsetTime: Int
+    public let feedbackConfig: [FeedbackConfig]
+    public let gst: String?
+    public let isPickupEnabled: Bool
+    public let isdCode: String
+    public let minOrderTotal, minimumWalletCreditThreshold: Double
+    public let msgNearestStoreClosed, msgNoStoresNearby, msgStoreClosedTemporary: String?
+    public let orderDeliveryRadius: Int
+    public let paymentOptions: [String]
+    public let paypalClientToken: String?
+    public let pgProvider: String?
+    public let pickupMinOffsetTime: Int
+    public let preProcess: Bool
+    public let referralShareLbl, referraluiLbl: String
+    public let simplClientid: String?
+    public let supportedLanguages: [String]
+    public let timeSlots: [TimeSlot]
+    public let timezone: String
+    public let tin: String?
+    public let usePointOfDelivery: Bool
 
     enum CodingKeys: String, CodingKey {
         case contactPhone = "contact_phone"
@@ -264,7 +264,7 @@ extension Biz {
             aCoder.encode(isdCode, forKey: "isd_code")
     }
     
-    @objc public func toObjcDictionary() -> [String : AnyObject] {
+    public func toObjcDictionary() -> [String : AnyObject] {
         return toDictionary()
     }
 }
