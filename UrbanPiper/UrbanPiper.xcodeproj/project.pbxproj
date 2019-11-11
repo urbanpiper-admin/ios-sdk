@@ -154,7 +154,6 @@
 		4607A9FB208F1E2800128010 /* Choice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A98B208F1E2700128010 /* Choice.swift */; };
 		4607A9FD208F1E2800128010 /* Extra.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A98D208F1E2700128010 /* Extra.swift */; };
 		4607A9FE208F1E2800128010 /* CartManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A98F208F1E2700128010 /* CartManager.swift */; };
-		4607A9FF208F1E2800128010 /* UPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A991208F1E2700128010 /* UPError.swift */; };
 		460AE5D420D257F400098507 /* APIManager+MyOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460AE5D320D257F400098507 /* APIManager+MyOrders.swift */; };
 		4623DB1D208F8D3200BD7537 /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4623DB1B208F854A00BD7537 /* AnalyticsManager.swift */; };
 		463A529020C5346F0099E162 /* AddAddressResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463A528F20C5346E0099E162 /* AddAddressResponse.swift */; };
@@ -352,7 +351,6 @@
 		4607A98B208F1E2700128010 /* Choice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Choice.swift; sourceTree = "<group>"; };
 		4607A98D208F1E2700128010 /* Extra.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extra.swift; sourceTree = "<group>"; };
 		4607A98F208F1E2700128010 /* CartManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartManager.swift; sourceTree = "<group>"; };
-		4607A991208F1E2700128010 /* UPError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UPError.swift; sourceTree = "<group>"; };
 		460AE5D320D257F400098507 /* APIManager+MyOrders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIManager+MyOrders.swift"; sourceTree = "<group>"; };
 		4623DB1B208F854A00BD7537 /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
 		4623DB1E20901BB300BD7537 /* UrbanPiper.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = UrbanPiper.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -610,14 +608,6 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		4607A990208F1E2700128010 /* Error */ = {
-			isa = PBXGroup;
-			children = (
-				4607A991208F1E2700128010 /* UPError.swift */,
-			);
-			path = Error;
-			sourceTree = "<group>";
-		};
 		4623DB1C208F854A00BD7537 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -672,7 +662,6 @@
 				18978EDF2202E62200189AB4 /* Constants.swift */,
 				188886E2220F39D50001FE72 /* Builders */,
 				189BF4C222366DF700FD5D72 /* APIModels */,
-				4607A990208F1E2700128010 /* Error */,
 				189BF4BF2235551400FD5D72 /* Internal */,
 				46E4F722208DAB810045ED21 /* Info.plist */,
 			);
@@ -1122,7 +1111,6 @@
 				188886BE220E9DA50001FE72 /* UserInfoResponse.swift in Sources */,
 				4607A9FD208F1E2800128010 /* Extra.swift in Sources */,
 				4607A9E3208F1E2700128010 /* KeyValue.swift in Sources */,
-				4607A9FF208F1E2800128010 /* UPError.swift in Sources */,
 				4607A9A4208F1E2700128010 /* APIManager+Auth.swift in Sources */,
 				4607A9CF208F1E2700128010 /* ItemTag.swift in Sources */,
 				4607A9ED208F1E2700128010 /* PaymentInitResponse.swift in Sources */,

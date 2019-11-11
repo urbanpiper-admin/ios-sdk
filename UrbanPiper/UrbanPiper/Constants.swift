@@ -18,7 +18,7 @@ public enum SDKEvent {
 /// Callback that is called when the api call succeeds with the relevant response object
 public typealias APICompletion<T> = (T?) -> Void
 /// Callback that is called when the api call fails with an error object
-public typealias APIFailure = (UPError?) -> Void
+public typealias APIFailure = (Error?) -> Void
 
 /// Supported social login providers by UrbanPiper
 ///

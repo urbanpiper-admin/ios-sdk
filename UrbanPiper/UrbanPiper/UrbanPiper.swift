@@ -350,7 +350,7 @@ public extension UrbanPiper {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
-        let upAPI = PastOrdersAPI.pastOrders(offset: offset, limit: limit ?? Constants.fetchLimit)
+        let upAPI = PastOrdersAPI.pastOrders(offset: offset, limit: limit)
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 

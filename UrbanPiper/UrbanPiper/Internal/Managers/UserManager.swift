@@ -9,7 +9,7 @@
 import RxSwift
 import UIKit
 
-internal typealias CompletionHandler<T> = (T?, UPError?) -> Void
+internal typealias CompletionHandler<T> = (T?, Error?) -> Void
 
 internal class UserManager: NSObject {
     private struct KeychainAppUserKeys {
@@ -113,7 +113,7 @@ internal class UserManager: NSObject {
                 self?.currentUser = user
 
             } as APICompletion<SocialLoginResponse>, failure: { [weak self] error in
-                guard let msg = error?.errorMessage, msg == "email_check_failed" else { return }
+                guard let msg = error?.localizedDescription, msg == "email_check_failed" else { return }
                 self?.logout()
             })
         } else {
