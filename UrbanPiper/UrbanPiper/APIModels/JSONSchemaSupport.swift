@@ -21,13 +21,12 @@ func newJSONEncoder() -> JSONEncoder {
 // MARK: - Encode/decode helpers
 
 @objcMembers public class JSONNull: NSObject, Codable {
-
-    public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
-        return true
+    public static func == (_: JSONNull, _: JSONNull) -> Bool {
+        true
     }
 
     public override var hash: Int {
-        return 0
+        0
     }
 
     public override init() {}
@@ -48,8 +47,8 @@ func newJSONEncoder() -> JSONEncoder {
 class JSONCodingKey: CodingKey {
     public let key: String
 
-    required init?(intValue: Int) {
-        return nil
+    required init?(intValue _: Int) {
+        nil
     }
 
     required init?(stringValue: String) {
@@ -57,16 +56,15 @@ class JSONCodingKey: CodingKey {
     }
 
     var intValue: Int? {
-        return nil
+        nil
     }
 
     var stringValue: String {
-        return key
+        key
     }
 }
 
 @objcMembers public class JSONAny: NSObject, Codable {
-
     public let value: Any
 
     static func decodingError(forCodingPath codingPath: [CodingKey]) -> DecodingError {
@@ -237,12 +235,12 @@ class JSONCodingKey: CodingKey {
 
     public required init(from decoder: Decoder) throws {
         if var arrayContainer = try? decoder.unkeyedContainer() {
-            self.value = try JSONAny.decodeArray(from: &arrayContainer)
+            value = try JSONAny.decodeArray(from: &arrayContainer)
         } else if var container = try? decoder.container(keyedBy: JSONCodingKey.self) {
-            self.value = try JSONAny.decodeDictionary(from: &container)
+            value = try JSONAny.decodeDictionary(from: &container)
         } else {
             let container = try decoder.singleValueContainer()
-            self.value = try JSONAny.decode(from: container)
+            value = try JSONAny.decode(from: container)
         }
     }
 
@@ -255,7 +253,7 @@ class JSONCodingKey: CodingKey {
             try JSONAny.encode(to: &container, dictionary: dict)
         } else {
             var container = encoder.singleValueContainer()
-            try JSONAny.encode(to: &container, value: self.value)
+            try JSONAny.encode(to: &container, value: value)
         }
     }
 }

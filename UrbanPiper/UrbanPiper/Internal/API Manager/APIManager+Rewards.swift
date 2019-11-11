@@ -58,33 +58,3 @@ extension RewardsAPI: UPAPI {
         }
     }
 }
-
-/* extension APIManager {
-
- internal func getRewards(completion: APICompletion<RewardsResponse>?, failure: APIFailure?) -> URLSessionDataTask {
-     let urlString: String = "\(APIManager.baseUrl)/api/v2/rewards/"
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "GET"
-
-     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
- }
-
- internal func redeemReward(rewardId: Int, completion: APICompletion<RedeemRewardResponse>?,
-                                           failure: APIFailure?) -> URLSessionDataTask {
-
-     let urlString: String = "\(APIManager.baseUrl)/api/v2/rewards/\(rewardId)/redeem/"
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "POST"
-
-     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
- }
-
- }*/

@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: - PastOrderStore
+
 @objcMembers public class PastOrderStore: NSObject, Codable {
     public let address: String
     public let id: Int
@@ -28,7 +29,7 @@ import Foundation
         self.merchantRefid = merchantRefid
         self.name = name
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(PastOrderStore.self, from: data)
         self.init(address: me.address, id: me.id, latitude: me.latitude, longitude: me.longitude, merchantRefid: me.merchantRefid, name: me.name)
@@ -38,7 +39,6 @@ import Foundation
 // MARK: PastOrderStore convenience initializers and mutators
 
 extension PastOrderStore {
-    
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -58,7 +58,7 @@ extension PastOrderStore {
         merchantRefid: String? = nil,
         name: String? = nil
     ) -> PastOrderStore {
-        return PastOrderStore(
+        PastOrderStore(
             address: address ?? self.address,
             id: id ?? self.id,
             latitude: latitude ?? self.latitude,
@@ -69,10 +69,10 @@ extension PastOrderStore {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

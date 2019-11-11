@@ -5,58 +5,10 @@
 
 import Foundation
 
-
 import Foundation
 
-public enum OrderStatus: String {
-    case cancelled
-    case expired
-    case completed
-    case placed
-    case acknowledged
-    case dispatched
-    case awaitingPayment = "awaiting_payment"
-
-    public var displayName: String {
-        switch self {
-        case .cancelled:
-            return "Cancelled"
-        case .expired:
-            return "Expired"
-        case .completed:
-            return "Completed"
-        case .placed:
-            return "Placed"
-        case .acknowledged:
-            return "Acknowledged"
-        case .dispatched:
-            return "Dispatched"
-        case .awaitingPayment:
-            return "Awaiting Payment"
-        }
-    }
-
-    public var displayColor: UIColor {
-        switch self {
-        case .cancelled:
-            return #colorLiteral(red: 0.631372549, green: 0.1529411765, blue: 0, alpha: 1)
-        case .expired:
-            return #colorLiteral(red: 0.7529411765, green: 0.2235294118, blue: 0.168627451, alpha: 1)
-        case .completed:
-            return #colorLiteral(red: 0, green: 0.4235294118, blue: 0.2235294118, alpha: 1)
-        case .placed:
-            return #colorLiteral(red: 0.5568627451, green: 0.2666666667, blue: 0.6784313725, alpha: 1)
-        case .acknowledged:
-            return #colorLiteral(red: 0.1607843137, green: 0.5019607843, blue: 0.7254901961, alpha: 1)
-        case .dispatched:
-            return #colorLiteral(red: 0.1725490196, green: 0.2431372549, blue: 0.3137254902, alpha: 1)
-        case .awaitingPayment:
-            return #colorLiteral(red: 0.0862745098, green: 0.6274509804, blue: 0.5215686275, alpha: 1.0)
-        }
-    }
-}
-
 // MARK: - PastOrder
+
 @objcMembers public class PastOrder: NSObject, Codable {
     public let address: String?
     public let bizLocationid: Int
@@ -103,7 +55,7 @@ public enum OrderStatus: String {
 
         return charge
     }
-    
+
     public var merchantRefIdNum: NSNumber? {
         guard let val = merchantRefid else { return nil }
         return NSNumber(value: val)
@@ -174,7 +126,7 @@ public enum OrderStatus: String {
         self.timeSlotEnd = timeSlotEnd
         self.timeSlotStart = timeSlotStart
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(PastOrder.self, from: data)
         self.init(address: me.address, bizLocationid: me.bizLocationid, bizLocationName: me.bizLocationName, channel: me.channel, charges: me.charges, coupon: me.coupon, created: me.created, customerName: me.customerName, deliveryAddressRef: me.deliveryAddressRef, deliveryDatetime: me.deliveryDatetime, discount: me.discount, extPlatformid: me.extPlatformid, id: me.id, instructions: me.instructions, itemLevelTotalCharges: me.itemLevelTotalCharges, itemLevelTotalTaxes: me.itemLevelTotalTaxes, merchantRefid: me.merchantRefid, orderLevelTotalCharges: me.orderLevelTotalCharges, orderLevelTotalTaxes: me.orderLevelTotalTaxes, orderState: me.orderState, orderSubtotal: me.orderSubtotal, orderTotal: me.orderTotal, orderType: me.orderType, paymentOption: me.paymentOption, phone: me.phone, taxAmt: me.taxAmt, taxRate: me.taxRate, taxes: me.taxes, totalCharges: me.totalCharges, totalTaxes: me.totalTaxes, timeSlotEnd: me.timeSlotEnd, timeSlotStart: me.timeSlotStart)
@@ -184,7 +136,6 @@ public enum OrderStatus: String {
 // MARK: Order convenience initializers and mutators
 
 extension PastOrder {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -230,7 +181,7 @@ extension PastOrder {
         timeSlotEnd: String? = nil,
         timeSlotStart: String? = nil
     ) -> PastOrder {
-        return PastOrder(
+        PastOrder(
             address: address ?? self.address,
             bizLocationid: bizLocationid ?? self.bizLocationid,
             bizLocationName: bizLocationName ?? self.bizLocationName,
@@ -267,10 +218,10 @@ extension PastOrder {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

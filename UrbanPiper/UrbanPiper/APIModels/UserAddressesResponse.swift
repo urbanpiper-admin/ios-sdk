@@ -6,13 +6,14 @@
 import Foundation
 
 // MARK: - UserAddressesResponse
+
 @objcMembers public class UserAddressesResponse: NSObject, JSONDecodable {
     public let addresses: [Address]
 
     init(addresses: [Address]) {
         self.addresses = addresses
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(UserAddressesResponse.self, from: data)
         self.init(addresses: me.addresses)
@@ -22,7 +23,6 @@ import Foundation
 // MARK: UserAddressesResponse convenience initializers and mutators
 
 extension UserAddressesResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -37,20 +37,20 @@ extension UserAddressesResponse {
     public func with(
         addresses: [Address]? = nil
     ) -> UserAddressesResponse {
-        return UserAddressesResponse(
+        UserAddressesResponse(
             addresses: addresses ?? self.addresses
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-    public func toObjcDictionary() -> [String : AnyObject] {
-        return toDictionary()
+
+    public func toObjcDictionary() -> [String: AnyObject] {
+        toDictionary()
     }
 }

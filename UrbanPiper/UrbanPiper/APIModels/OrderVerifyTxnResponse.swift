@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - OrderVerifyTxnResponse
+
 @objcMembers public class OrderVerifyTxnResponse: NSObject, JSONDecodable {
     public let txnId: String?
     public let pid: String?
@@ -21,7 +22,7 @@ import Foundation
         self.pid = pid
         self.status = status
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(OrderVerifyTxnResponse.self, from: data)
         self.init(txnId: me.txnId, pid: me.pid, status: me.status)
@@ -31,7 +32,6 @@ import Foundation
 // MARK: OrderVerifyTxnResponse convenience initializers and mutators
 
 extension OrderVerifyTxnResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -48,7 +48,7 @@ extension OrderVerifyTxnResponse {
         pid: String? = nil,
         status: String? = nil
     ) -> OrderVerifyTxnResponse {
-        return OrderVerifyTxnResponse(
+        OrderVerifyTxnResponse(
             txnId: txnId ?? self.txnId,
             pid: pid ?? self.pid,
             status: status ?? self.status
@@ -56,14 +56,14 @@ extension OrderVerifyTxnResponse {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-    public func toObjcDictionary() -> [String : AnyObject] {
-        return toDictionary()
+
+    public func toObjcDictionary() -> [String: AnyObject] {
+        toDictionary()
     }
 }

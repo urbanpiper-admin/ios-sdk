@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - Like
+
 @objcMembers public class Like: NSObject, Codable {
     public let item: LikedItem
     public let likedOn: Int
@@ -19,7 +20,7 @@ import Foundation
         self.item = item
         self.likedOn = likedOn
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Like.self, from: data)
         self.init(item: me.item, likedOn: me.likedOn)
@@ -29,7 +30,6 @@ import Foundation
 // MARK: Like convenience initializers and mutators
 
 extension Like {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -45,17 +45,17 @@ extension Like {
         item: LikedItem? = nil,
         likedOn: Int? = nil
     ) -> Like {
-        return Like(
+        Like(
             item: item ?? self.item,
             likedOn: likedOn ?? self.likedOn
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

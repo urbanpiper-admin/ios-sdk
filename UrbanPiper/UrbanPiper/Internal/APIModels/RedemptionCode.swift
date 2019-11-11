@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - RedemptionCode
+
 @objcMembers public class RedemptionCode: NSObject, Codable {
     public let expiresIn: Int
     public let redemptionCode: String
@@ -22,7 +23,7 @@ import Foundation
         self.redemptionCode = redemptionCode
         self.validFrom = validFrom
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(RedemptionCode.self, from: data)
         self.init(expiresIn: me.expiresIn, redemptionCode: me.redemptionCode, validFrom: me.validFrom)
@@ -32,7 +33,6 @@ import Foundation
 // MARK: RedemptionCode convenience initializers and mutators
 
 extension RedemptionCode {
-    
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -49,7 +49,7 @@ extension RedemptionCode {
         redemptionCode: String? = nil,
         validFrom: Int? = nil
     ) -> RedemptionCode {
-        return RedemptionCode(
+        RedemptionCode(
             expiresIn: expiresIn ?? self.expiresIn,
             redemptionCode: redemptionCode ?? self.redemptionCode,
             validFrom: validFrom ?? self.validFrom
@@ -57,10 +57,10 @@ extension RedemptionCode {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

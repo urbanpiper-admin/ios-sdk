@@ -8,7 +8,8 @@
 import Foundation
 
 // MARK: - JWT
-@objcMembers public class JWT: NSObject, Codable {
+
+@objcMembers public class JWT: NSObject, Codable, NSCoding {
     public let username, lastName: String
     public let userbizid: Int
     public let phone: String
@@ -52,20 +53,43 @@ import Foundation
         self.email = email
         self.token = token
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(JWT.self, from: data)
         self.init(username: me.username, lastName: me.lastName, userbizid: me.userbizid, phone: me.phone, phoneVerified: me.phoneVerified, firstName: me.firstName, emailVerified: me.emailVerified, jit: me.jit, points: me.points, tKey: me.tKey, exp: me.exp, iat: me.iat, balance: me.balance, email: me.email, token: me.token)
+    }
+
+    /**
+     * NSCoding required initializer.
+     * Fills the data from the passed decoder
+     */
+    public required init(coder aDecoder: NSCoder) {
+        token = aDecoder.decodeObject(forKey: "token") as! String
+        let dictionary = JWT.decode(jwtToken: token)
+
+        username = dictionary["username"] as! String
+        lastName = dictionary["last_name"] as! String
+        userbizid = dictionary["userbiz_id"] as! Int
+        phone = dictionary["phone"] as! String
+        phoneVerified = dictionary["phone_verified"] as! Bool
+        firstName = dictionary["first_name"] as! String
+        emailVerified = dictionary["email_verified"] as! Bool
+        jit = dictionary["jit"] as! String
+        points = dictionary["points"] as! Int
+        tKey = dictionary["t_key"] as! String
+        exp = dictionary["exp"] as! Int
+        iat = dictionary["iat"] as! Int
+        balance = dictionary["balance"] as! Int
+        email = dictionary["email"] as! String
     }
 }
 
 // MARK: JWT convenience initializers and mutators
 
 extension JWT {
-    
     convenience init(jwtToken: String) {
         let dictionary = JWT.decode(jwtToken: jwtToken)
-        
+
         self.init(username: dictionary["username"] as! String,
                   lastName: dictionary["last_name"] as! String,
                   userbizid: dictionary["userbiz_id"] as! Int,
@@ -97,7 +121,7 @@ extension JWT {
 
         return payload
     }
-    
+
     static func base64UrlDecode(_ value: String) -> Data? {
         var base64 = value
             .replacingOccurrences(of: "-", with: "+")
@@ -112,7 +136,7 @@ extension JWT {
         }
         return Data(base64Encoded: base64, options: .ignoreUnknownCharacters)
     }
-    
+
     var shouldRefreshToken: Bool {
         let utcTime: Int = Int(Date().timeIntervalSince1970)
         return Int(0.8 * Double(exp - iat)) < (utcTime - iat)
@@ -140,7 +164,7 @@ extension JWT {
         email: String? = nil,
         token: String? = nil
     ) -> JWT {
-        return JWT(
+        JWT(
             username: username ?? self.username,
             lastName: lastName ?? self.lastName,
             userbizid: userbizid ?? self.userbizid,
@@ -157,5 +181,16 @@ extension JWT {
             email: email ?? self.email,
             token: token ?? self.token
         )
+    }
+
+    /**
+     * NSCoding required method.
+     * Encodes mode properties into the decoder
+     */
+    @objc public func encode(with aCoder: NSCoder) {
+        aCoder.encode(exp, forKey: "exp")
+        aCoder.encode(iat, forKey: "iat")
+        aCoder.encode(jit, forKey: "jit")
+        aCoder.encode(token, forKey: "token")
     }
 }

@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - BizLocation
+
 @objcMembers public class BizLocation: NSObject, Codable {
     public let address: String
     public let bizLocationid: Int
@@ -78,7 +79,7 @@ import Foundation
         self.temporarilyClosed = temporarilyClosed
         self.timeSlots = timeSlots
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(BizLocation.self, from: data)
         self.init(address: me.address, bizLocationid: me.bizLocationid, city: me.city, closingDay: me.closingDay, closingTime: me.closingTime, deliveryCharge: me.deliveryCharge, deliveryMinOffsetTime: me.deliveryMinOffsetTime, gst: me.gst, hideStoreName: me.hideStoreName, lat: me.lat, lng: me.lng, minOrderTotal: me.minOrderTotal, name: me.name, onCloseMsg: me.onCloseMsg, onSelectMsg: me.onSelectMsg, openingTime: me.openingTime, packagingCharge: me.packagingCharge, pgKey: me.pgKey, phone: me.phone, pickupMinOffsetTime: me.pickupMinOffsetTime, sortOrder: me.sortOrder, taxRate: me.taxRate, temporarilyClosed: me.temporarilyClosed, timeSlots: me.timeSlots)
@@ -88,7 +89,6 @@ import Foundation
 // MARK: BizLocation convenience initializers and mutators
 
 extension BizLocation {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -126,7 +126,7 @@ extension BizLocation {
         temporarilyClosed: Bool? = nil,
         timeSlots: [TimeSlot]? = nil
     ) -> BizLocation {
-        return BizLocation(
+        BizLocation(
             address: address ?? self.address,
             bizLocationid: bizLocationid ?? self.bizLocationid,
             city: city ?? self.city,
@@ -155,10 +155,10 @@ extension BizLocation {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

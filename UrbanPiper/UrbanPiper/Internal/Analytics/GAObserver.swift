@@ -6,12 +6,14 @@
 //
 
 import GoogleAnalyticsSDK
+import RxSwift
 import UIKit
 
-public class GAObserver: AnalyticsEventObserver {
+public class GAObserver: AppAnalyticsEventObserver, SDKAnalyticsEventObserver {
     var gaTrackingId: String?
+    var disposeBag: DisposeBag = DisposeBag()
 
-    public init(gaTrackingId: String) {
+    @discardableResult public init(gaTrackingId: String) {
         self.gaTrackingId = gaTrackingId
 
         let gai: GAI = GAI.sharedInstance()
@@ -20,9 +22,25 @@ public class GAObserver: AnalyticsEventObserver {
         gai.trackUncaughtExceptions = true
 
         gai.logger.logLevel = .error
+
+        AnalyticsManager.shared.appAnalyticsSubject
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] event in
+                self?.track(event: event)
+            })
+            .disposed(by: disposeBag)
+
+        AnalyticsManager.shared.sdkAnalyticsSubject
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] event in
+                self?.track(event: event)
+            })
+            .disposed(by: disposeBag)
     }
 
-    public func track(event: AnalyticsEvent) {
+    public func track(event: AppAnalyticsEvent) {
         switch event {
         case .nearestStoreFound:
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
@@ -52,13 +70,6 @@ public class GAObserver: AnalyticsEventObserver {
                                                                    label: "nearest-store-closed",
                                                                    value: 0).build() as! [AnyHashable: Any]
             tracker.send(eventDictionary)
-//        case .nearestStoreClosedToday:
-//            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
-//            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
-//                                                                   action: nil,
-//                                                                   label: "nearest-store-closed",
-//                                                                   value: 0).build() as! [AnyHashable : Any]
-//            tracker.send(eventDictionary)
         case .itemSearch:
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
             let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
@@ -66,20 +77,104 @@ public class GAObserver: AnalyticsEventObserver {
                                                                    label: "item-search",
                                                                    value: 0).build() as! [AnyHashable: Any]
             tracker.send(eventDictionary)
-        case .couponSuccess(let discount, let couponCode, _, _):
+        case let .couponSuccess(discount, couponCode, _, _):
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
             let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "coupon-success",
                                                                    action: nil,
                                                                    label: couponCode,
                                                                    value: NSDecimalNumber(value: discount)).build() as! [AnyHashable: Any]
             tracker.send(eventDictionary)
-        case .couponFailed(_, let couponCode, _, _):
+        case let .couponFailed(_, couponCode, _, _):
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
             let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "coupon-failure",
                                                                    action: nil,
                                                                    label: couponCode,
                                                                    value: 0).build() as! [AnyHashable: Any]
             tracker.send(eventDictionary)
+        case .signupComplete:
+            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "signup-complete",
+                                                                   value: 0).build() as! [AnyHashable: Any]
+            tracker.send(eventDictionary)
+        case let .walletReloadInit(amount, _):
+            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "reload-init",
+                                                                   value: NSDecimalNumber(value: amount)).build() as! [AnyHashable: Any]
+            tracker.send(eventDictionary)
+        case let .successfulWalletReload(amount, _):
+            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "reload-success",
+                                                                   value: NSDecimalNumber(value: amount)).build() as! [AnyHashable: Any]
+            tracker.send(eventDictionary)
+        case let .failedWalletReload(amount, _):
+            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "reload-failed",
+                                                                   value: NSDecimalNumber(value: amount)).build() as! [AnyHashable: Any]
+            tracker.send(eventDictionary)
+        case .referralSent:
+            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "referral-sent",
+                                                                   value: 0).build() as! [AnyHashable: Any]
+            tracker.send(eventDictionary)
+        case let .productClicked(item):
+            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
+            let product: GAIEcommerceProduct = GAIEcommerceProduct()
+            product.setId("\(item.id)")
+            product.setName(item.itemTitle)
+            product.setCategory(item.category.name)
+
+            let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
+            productAction.setAction(kGAIPADetail)
+
+            let screenBuilder: GAIDictionaryBuilder = GAIDictionaryBuilder.createScreenView()!
+            screenBuilder.add(product)
+            screenBuilder.setProductAction(productAction)
+
+            tracker.send((screenBuilder.build() as! [AnyHashable: Any]))
+        case let .reorderInit(amount):
+            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
+                                                                   action: nil,
+                                                                   label: "re-order",
+                                                                   value: NSDecimalNumber(value: amount)).build() as! [AnyHashable: Any]
+            tracker.send(eventDictionary)
+        case let .socialAuthSignupComplete(_, platform):
+            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "social-signup-complete",
+                                                                   value: platform == "google" ? 1 : 2).build() as! [AnyHashable: Any]
+            tracker.send(eventDictionary)
+        case let .socialLoginSuccess(_, platform):
+            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "social-login-success",
+                                                                   value: platform == "google" ? 1 : 2).build() as! [AnyHashable: Any]
+            tracker.send(eventDictionary)
+        case let .socialLoginFailed(_, platform):
+            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
+                                                                   action: nil,
+                                                                   label: "social-login-failed",
+                                                                   value: platform == "google" ? 1 : 2).build() as! [AnyHashable: Any]
+            tracker.send(eventDictionary)
+        default: break
+        }
+    }
+
+    public func track(event: SDKAnalyticsEvent) {
+        switch event {
         case .passwordReset:
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
             let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
@@ -115,41 +210,6 @@ public class GAObserver: AnalyticsEventObserver {
                                                                    label: "signup-start",
                                                                    value: 0).build() as! [AnyHashable: Any]
             tracker.send(eventDictionary)
-        case .signupComplete:
-            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
-                                                                   action: nil,
-                                                                   label: "signup-complete",
-                                                                   value: 0).build() as! [AnyHashable: Any]
-            tracker.send(eventDictionary)
-        case .walletReloadInit(let amount, _):
-            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
-                                                                   action: nil,
-                                                                   label: "reload-init",
-                                                                   value: NSDecimalNumber(value: amount)).build() as! [AnyHashable: Any]
-            tracker.send(eventDictionary)
-        case .successfulWalletReload(let amount, _):
-            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
-                                                                   action: nil,
-                                                                   label: "reload-success",
-                                                                   value: NSDecimalNumber(value: amount)).build() as! [AnyHashable: Any]
-            tracker.send(eventDictionary)
-        case .failedWalletReload(let amount, _):
-            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
-                                                                   action: nil,
-                                                                   label: "reload-failed",
-                                                                   value: NSDecimalNumber(value: amount)).build() as! [AnyHashable: Any]
-            tracker.send(eventDictionary)
-        case .referralSent:
-            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
-                                                                   action: nil,
-                                                                   label: "referral-sent",
-                                                                   value: 0).build() as! [AnyHashable: Any]
-            tracker.send(eventDictionary)
         case .logout:
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
             let eventDictionary: [AnyHashable: Any] = GAIDictionaryBuilder.createEvent(withCategory: "user",
@@ -157,7 +217,7 @@ public class GAObserver: AnalyticsEventObserver {
                                                                                        label: "logout",
                                                                                        value: 0).build() as! [AnyHashable: Any]
             tracker.send(eventDictionary)
-        case .addToCart(let cartItem, _, _):
+        case let .addToCart(cartItem, _, _):
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
             let product: GAIEcommerceProduct = GAIEcommerceProduct()
             product.setId("\(cartItem.id)")
@@ -173,7 +233,7 @@ public class GAObserver: AnalyticsEventObserver {
             screenBuilder.add(product)
             screenBuilder.setProductAction(productAction)
 
-            tracker.send(screenBuilder.build() as! [AnyHashable: Any])
+            tracker.send((screenBuilder.build() as! [AnyHashable: Any]))
         case let .removeFromCart(cartItem):
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
             let product: GAIEcommerceProduct = GAIEcommerceProduct()
@@ -190,23 +250,9 @@ public class GAObserver: AnalyticsEventObserver {
             screenBuilder.add(product)
             screenBuilder.setProductAction(productAction)
 
-            tracker.send(screenBuilder.build() as! [AnyHashable: Any])
-        case let .productClicked(item):
-            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
-            let product: GAIEcommerceProduct = GAIEcommerceProduct()
-            product.setId("\(item.id)")
-            product.setName(item.itemTitle)
-            product.setCategory(item.category.name)
+            tracker.send((screenBuilder.build() as! [AnyHashable: Any]))
 
-            let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
-            productAction.setAction(kGAIPADetail)
-
-            let screenBuilder: GAIDictionaryBuilder = GAIDictionaryBuilder.createScreenView()!
-            screenBuilder.add(product)
-            screenBuilder.setProductAction(productAction)
-
-            tracker.send(screenBuilder.build() as! [AnyHashable: Any])
-        case .purchaseCompleted(let orderID, _, let checkoutBuilder, _):
+        case let .purchaseCompleted(orderID, _, checkoutBuilder, _):
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker, let paymentOption = checkoutBuilder.paymentOption else { return }
             let payableAmount = NSDecimalNumber(value: checkoutBuilder.order?.payableAmount ?? Double.zero)
             let eventDictionary: [AnyHashable: Any] = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
@@ -242,40 +288,13 @@ public class GAObserver: AnalyticsEventObserver {
             }
 
             eventBuilder.setProductAction(productAction)
-            tracker.send(eventBuilder.build() as! [AnyHashable: Any])
-        case let .reorderInit(amount):
-            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "ordering",
-                                                                   action: nil,
-                                                                   label: "re-order",
-                                                                   value: NSDecimalNumber(value: amount)).build() as! [AnyHashable: Any]
-            tracker.send(eventDictionary)
+            tracker.send((eventBuilder.build() as! [AnyHashable: Any]))
+
         case let .socialAuthSignupStart(_, platform):
             guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
             let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
                                                                    action: nil,
                                                                    label: "social-signup-start",
-                                                                   value: platform == "google" ? 1 : 2).build() as! [AnyHashable: Any]
-            tracker.send(eventDictionary)
-        case let .socialAuthSignupComplete(_, platform):
-            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
-                                                                   action: nil,
-                                                                   label: "social-signup-complete",
-                                                                   value: platform == "google" ? 1 : 2).build() as! [AnyHashable: Any]
-            tracker.send(eventDictionary)
-        case let .socialLoginSuccess(_, platform):
-            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
-                                                                   action: nil,
-                                                                   label: "social-login-success",
-                                                                   value: platform == "google" ? 1 : 2).build() as! [AnyHashable: Any]
-            tracker.send(eventDictionary)
-        case let .socialLoginFailed(_, platform):
-            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
-            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "user",
-                                                                   action: nil,
-                                                                   label: "social-login-failed",
                                                                    value: platform == "google" ? 1 : 2).build() as! [AnyHashable: Any]
             tracker.send(eventDictionary)
         default: break

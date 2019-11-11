@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - PastOrderItem
+
 @objcMembers public class PastOrderItem: NSObject, Codable {
     public let charges: [Charge]
     public let discount: Int
@@ -53,7 +54,7 @@ import Foundation
         self.totalWithTax = totalWithTax
         self.unitWeight = unitWeight
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(PastOrderItem.self, from: data)
         self.init(charges: me.charges, discount: me.discount, foodType: me.foodType, id: me.id, imageLandscapeurl: me.imageLandscapeurl, imageurl: me.imageurl, merchantid: me.merchantid, optionsToAdd: me.optionsToAdd, optionsToRemove: me.optionsToRemove, price: me.price, quantity: me.quantity, taxes: me.taxes, title: me.title, total: me.total, totalWithTax: me.totalWithTax, unitWeight: me.unitWeight)
@@ -63,7 +64,6 @@ import Foundation
 // MARK: Item convenience initializers and mutators
 
 extension PastOrderItem {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -93,7 +93,7 @@ extension PastOrderItem {
         totalWithTax: Double? = nil,
         unitWeight: Int? = nil
     ) -> PastOrderItem {
-        return PastOrderItem(
+        PastOrderItem(
             charges: charges ?? self.charges,
             discount: discount ?? self.discount,
             foodType: foodType ?? self.foodType,
@@ -114,10 +114,10 @@ extension PastOrderItem {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - OrderResponse
+
 @objcMembers public class OrderResponse: NSObject, JSONDecodable {
     public let message: String?
     public let errorDetails: String?
@@ -25,7 +26,7 @@ import Foundation
         self.status = status
         self.errorDetails = errorDetails
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(OrderResponse.self, from: data)
         self.init(message: me.message, orderid: me.orderid, status: me.status, errorDetails: me.errorDetails)
@@ -35,7 +36,6 @@ import Foundation
 // MARK: OrderResponse convenience initializers and mutators
 
 extension OrderResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -53,7 +53,7 @@ extension OrderResponse {
         status: String? = nil,
         errorDetails: String? = nil
     ) -> OrderResponse {
-        return OrderResponse(
+        OrderResponse(
             message: message ?? self.message,
             orderid: orderid ?? self.orderid,
             status: status ?? self.status,
@@ -62,29 +62,10 @@ extension OrderResponse {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    // public func toDictionary() -> [String : AnyObject]
-//    {
-//        var dictionary: [String : AnyObject] = [String : AnyObject]()
-//        dictionary["status"] = status as AnyObject
-//        
-//        if let message = message {
-//            dictionary["message"] = message as AnyObject
-//        }
-//        if let errorDetails = errorDetails {
-//            dictionary["error_details"] = errorDetails as AnyObject
-//        }
-//        dictionary["order_id"] = orderid as AnyObject
-//        return dictionary
-//    }
-
 }

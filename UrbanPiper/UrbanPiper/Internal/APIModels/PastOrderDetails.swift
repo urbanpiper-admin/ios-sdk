@@ -8,11 +8,12 @@
 import Foundation
 
 // MARK: - PastOrderDetails
+
 @objcMembers public class PastOrderDetails: NSObject, Codable {
     public let channel: String
     public let charges: [Charge]
     public let coupon: String?
-    public let created, deliveryDatetime: Int
+    public let created, deliveryDatetime: Date
     public let discount: Double?
     public let extPlatforms: [String]
     public let id: Int
@@ -47,12 +48,12 @@ import Foundation
 
         return charge
     }
-    
+
     public var merchantRefIdNum: NSNumber? {
         guard let val = merchantRefid else { return nil }
         return NSNumber(value: val)
     }
-    
+
     public var discountDecimalNumber: NSDecimalNumber? {
         guard let val = discount else { return nil }
         return NSDecimalNumber(value: val)
@@ -67,16 +68,16 @@ import Foundation
         guard let charge = deliveryCharge else { return nil }
         return NSDecimalNumber(value: charge)
     }
-    
+
     public var itemTaxesDecimalNumber: NSDecimalNumber? {
-        return NSDecimalNumber(value: totalTaxes)
+        NSDecimalNumber(value: totalTaxes)
     }
 
     public var taxAmtDecimalNumber: NSDecimalNumber? {
         guard let val = taxAmt else { return nil }
         return NSDecimalNumber(value: val)
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case channel, charges, coupon, created
         case deliveryDatetime = "delivery_datetime"
@@ -102,7 +103,43 @@ import Foundation
         case totalTaxes = "total_taxes"
     }
 
-    init(channel: String, charges: [Charge], coupon: String?, created: Int, deliveryDatetime: Int, discount: Double?, extPlatforms: [String], id: Int, instructions: String, itemLevelTotalCharges: Double, itemLevelTotalTaxes: Double, itemTaxes: Double, merchantRefid: Int?, orderLevelTotalCharges: Double, orderLevelTotalTaxes: Double, orderState: String, orderSubtotal: Double, orderTotal: Double, orderType: String, state: String, taxes: [JSONAny], timeSlotEnd: String?, timeSlotStart: String?, totalCharges: Double, totalExternalDiscount: Double, totalTaxes: Double, taxAmt: Double?) {
+//    required init(from decoder: Decoder) throws {
+//        let values = try decoder.container(keyedBy: CodingKeys.self)
+//
+//        self.channel = try values.decode(String.self, forKey: CodingKeys.channel)
+//        self.charges = try values.decode([Charge].self, forKey: CodingKeys.charges)
+//        self.coupon = try values.decode(String.self, forKey: CodingKeys.coupon)
+//        self.created = try values.decode(Date.self, forKey: CodingKeys.created)
+//        self.deliveryDatetime = try values.decode(Date.self, forKey: CodingKeys.deliveryDatetime)
+//        self.discount = try values.decode(Double.self, forKey: CodingKeys.discount)
+//        self.extPlatforms = try values.decode([String].self, forKey: CodingKeys.extPlatforms)
+//        self.id = try values.decode(Int.self, forKey: CodingKeys.id)
+//        self.instructions = try values.decode(String.self, forKey: CodingKeys.instructions)
+//        self.itemLevelTotalCharges = try values.decode(Double.self, forKey: CodingKeys.itemLevelTotalCharges)
+//        self.itemLevelTotalTaxes = try values.decode(Double.self, forKey: CodingKeys.itemLevelTotalTaxes)
+//        self.itemTaxes = try values.decode(Double.self, forKey: CodingKeys.itemTaxes)
+//        if let val = try values.decodeIfPresent(Int.self, forKey: CodingKeys.merchantRefid) {
+//            merchantRefid = NSNumber(value: val)
+//        } else {
+//            merchantRefid = nil
+//        }
+//        self.orderLevelTotalCharges = try values.decode(Double.self, forKey: CodingKeys.orderLevelTotalCharges)
+//        self.orderLevelTotalTaxes = try values.decode(Double.self, forKey: CodingKeys.orderLevelTotalTaxes)
+//        self.orderState = try values.decode(String.self, forKey: CodingKeys.orderState)
+//        self.orderSubtotal = try values.decode(Double.self, forKey: CodingKeys.orderSubtotal)
+//        self.orderTotal = try values.decode(Double.self, forKey: CodingKeys.orderTotal)
+//        self.orderType = try values.decode(String.self, forKey: CodingKeys.orderType)
+//        self.state = try values.decode(String.self, forKey: CodingKeys.state)
+//        self.taxes = try values.decode([JSONAny].self, forKey: CodingKeys.taxes)
+//        self.timeSlotEnd = try values.decodeIfPresent(String.self, forKey: CodingKeys.timeSlotEnd)
+//        self.timeSlotStart = try values.decodeIfPresent(String.self, forKey: CodingKeys.timeSlotStart)
+//        self.totalCharges = try values.decode(Double.self, forKey: CodingKeys.totalCharges)
+//        self.totalExternalDiscount = try values.decode(Double.self, forKey: CodingKeys.totalExternalDiscount)
+//        self.totalTaxes = try values.decode(Double.self, forKey: CodingKeys.totalTaxes)
+//        self.taxAmt = try values.decodeIfPresent(Double.self, forKey: CodingKeys.taxAmt)
+//    }
+
+    init(channel: String, charges: [Charge], coupon: String?, created: Date, deliveryDatetime: Date, discount: Double?, extPlatforms: [String], id: Int, instructions: String, itemLevelTotalCharges: Double, itemLevelTotalTaxes: Double, itemTaxes: Double, merchantRefid: Int?, orderLevelTotalCharges: Double, orderLevelTotalTaxes: Double, orderState: String, orderSubtotal: Double, orderTotal: Double, orderType: String, state: String, taxes: [JSONAny], timeSlotEnd: String?, timeSlotStart: String?, totalCharges: Double, totalExternalDiscount: Double, totalTaxes: Double, taxAmt: Double?) {
         self.channel = channel
         self.charges = charges
         self.coupon = coupon
@@ -131,7 +168,7 @@ import Foundation
         self.totalTaxes = totalTaxes
         self.taxAmt = taxAmt
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(PastOrderDetails.self, from: data)
         self.init(channel: me.channel, charges: me.charges, coupon: me.coupon, created: me.created, deliveryDatetime: me.deliveryDatetime, discount: me.discount, extPlatforms: me.extPlatforms, id: me.id, instructions: me.instructions, itemLevelTotalCharges: me.itemLevelTotalCharges, itemLevelTotalTaxes: me.itemLevelTotalTaxes, itemTaxes: me.itemTaxes, merchantRefid: me.merchantRefid, orderLevelTotalCharges: me.orderLevelTotalCharges, orderLevelTotalTaxes: me.orderLevelTotalTaxes, orderState: me.orderState, orderSubtotal: me.orderSubtotal, orderTotal: me.orderTotal, orderType: me.orderType, state: me.state, taxes: me.taxes, timeSlotEnd: me.timeSlotEnd, timeSlotStart: me.timeSlotStart, totalCharges: me.totalCharges, totalExternalDiscount: me.totalExternalDiscount, totalTaxes: me.totalTaxes, taxAmt: me.taxAmt)
@@ -141,7 +178,6 @@ import Foundation
 // MARK: PastOrderDetails convenience initializers and mutators
 
 extension PastOrderDetails {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -157,8 +193,8 @@ extension PastOrderDetails {
         channel: String? = nil,
         charges: [Charge]? = nil,
         coupon: String? = nil,
-        created: Int? = nil,
-        deliveryDatetime: Int? = nil,
+        created: Date? = nil,
+        deliveryDatetime: Date? = nil,
         discount: Double? = nil,
         extPlatforms: [String]? = nil,
         id: Int? = nil,
@@ -182,7 +218,7 @@ extension PastOrderDetails {
         totalTaxes: Double? = nil,
         taxAmt: Double?
     ) -> PastOrderDetails {
-        return PastOrderDetails(
+        PastOrderDetails(
             channel: channel ?? self.channel,
             charges: charges ?? self.charges,
             coupon: coupon ?? self.coupon,
@@ -214,61 +250,10 @@ extension PastOrderDetails {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-//    /**
-//         * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//    */
-//    func toDictionary() -> [String: AnyObject] {
-//        var dictionary = [String: AnyObject]()
-//        dictionary["channel"] = channel as AnyObject
-//        
-//        var dictionaryElements = [[String: AnyObject]]()
-//        for chargesElement in charges {
-//            dictionaryElements.append(chargesElement.toDictionary())
-//        }
-//        dictionary["charges"] = dictionaryElements as AnyObject
-//        
-//        if let coupon = coupon {
-//            dictionary["coupon"] = coupon as AnyObject
-//        }
-//        dictionary["created"] = created as AnyObject
-//        dictionary["delivery_datetime"] = deliveryDatetime as AnyObject
-//        if let discount = discount {
-//            dictionary["discount"] = discount as AnyObject
-//        }
-//        dictionary["id"] = id as AnyObject
-//
-//        dictionary["instructions"] = instructions as AnyObject
-////        if let itemLevelTotalCharges = itemLevelTotalCharges {
-////            dictionary["item_level_total_charges"] = itemLevelTotalCharges as AnyObject
-////        }
-////        if let itemLevelTotalTaxes = itemLevelTotalTaxes {
-////            dictionary["item_level_total_taxes"] = itemLevelTotalTaxes as AnyObject
-////        }
-////        if let orderLevelTotalCharges = orderLevelTotalCharges {
-////            dictionary["order_level_total_charges"] = orderLevelTotalCharges as AnyObject
-////        }
-////        if let orderLevelTotalTaxes = orderLevelTotalTaxes {
-////            dictionary["order_level_total_taxes"] = orderLevelTotalTaxes as AnyObject
-////        }
-//        dictionary["order_state"] = orderState as AnyObject
-//
-//        dictionary["order_subtotal"] = orderSubtotal as AnyObject
-//
-//        dictionary["order_total"] = orderTotal as AnyObject
-//        dictionary["order_type"] = orderType as AnyObject
-////        if let taxRate = taxRate {
-////            dictionary["tax_rate"] = taxRate as AnyObject
-////        }
-//            dictionary["taxes"] = taxes as AnyObject
-//            dictionary["total_charges"] = totalCharges as AnyObject
-//        dictionary["total_taxes"] = totalTaxes as AnyObject
-//        return dictionary
-//    }
 }

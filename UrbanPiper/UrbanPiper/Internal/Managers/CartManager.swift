@@ -10,14 +10,10 @@ import UIKit
 
 @objc internal protocol CartManagerDelegate {
     func refreshCartUI()
-//    func handleCart(error: CartError?)
 }
 
 internal class CartManager: NSObject {
     @objc internal static let shared: CartManager = CartManager()
-
-//    private typealias WeakRefCartManagerDelegate = WeakRef<CartManagerDelegate>
-//    private var cartManagerObservers: [WeakRefCartManagerDelegate] = [WeakRefCartManagerDelegate]()
 
     @objc internal var cartItems = [CartItem]()
 
@@ -33,11 +29,11 @@ internal class CartManager: NSObject {
     }
 
     @objc internal var cartValue: Double {
-        return cartItems.reduce(0.0) { $0 + ($1.totalAmount * Double($1.quantity)) }
+        cartItems.reduce(0.0) { $0 + ($1.totalAmount * Double($1.quantity)) }
     }
 
     @objc internal var cartCount: Int {
-        return cartItems.reduce(0) { $0 + $1.quantity }
+        cartItems.reduce(0) { $0 + $1.quantity }
     }
 
     @objc internal var cartPreOrderStartTime: Date? {
@@ -53,34 +49,21 @@ internal class CartManager: NSObject {
     }
 
     @objc internal func cartCount(for itemId: Int) -> Int {
-        return cartItems.reduce(0) { $0 + ($1.id == itemId ? $1.quantity : 0) }
+        cartItems.reduce(0) { $0 + ($1.id == itemId ? $1.quantity : 0) }
     }
 
     internal func notesFor(itemId: Int) -> String {
-        return cartItems.filter { $0.id == itemId }.last?.notes ?? ""
+        cartItems.filter { $0.id == itemId }.last?.notes ?? ""
     }
 
     internal func updateNotesFor(id: Int, notes: String?) {
-        cartItems.filter { $0.id == id }.last?.notes = notes
+        guard let item = cartItems.filter({ $0.id == id }).last else { return }
+        guard let index = cartItems.firstIndex(of: item) else { return }
+        let newItem = item.with(notes: notes)
+        cartItems.remove(at: index)
+        cartItems.insert(newItem, at: index)
     }
 }
-
-//// Cart Observer Management
-//
-// extension CartManager {
-//
-//    @objc internal static func addObserver(delegate: CartManagerDelegate) {
-//        let weakRefCartManagerDelegate: WeakRefCartManagerDelegate = WeakRefCartManagerDelegate(value: delegate)
-//        shared.cartManagerObservers.append(weakRefCartManagerDelegate)
-//    }
-//
-//
-//    @objc internal static func removeObserver(delegate: CartManagerDelegate) {
-//        guard let index = (shared.cartManagerObservers.index { $0.value === delegate }) else { return }
-//        shared.cartManagerObservers.remove(at: index)
-//    }
-//
-// }
 
 // MARK: Cart Management
 
@@ -94,19 +77,19 @@ extension CartManager {
 
         if let item = cartItems.filter({ $0 == cartItem }).last {
             if item.isItemQuantityAvailable(quantity: quantity) {
-                item.quantity += quantity
-                item.notes = notes
+                guard let index = cartItems.firstIndex(of: item) else { return }
+                let newItem = item.with(quantity: item.quantity + quantity, notes: notes)
+                cartItems.remove(at: index)
+                cartItems.insert(newItem, at: index)
             } else {
                 let error = CartError.itemQuantityNotAvaialble(cartItem.currentStock - item.quantity)
                 throw error
-//                let _ = cartManagerObservers.map { $0.value?.handleCart(error: upError) }
             }
             isCartItem = cartItem === item
         } else {
-            cartItem.quantity = quantity
-            cartItem.notes = notes
+            let newCartItem = cartItem.with(quantity: quantity, notes: notes)
 
-            cartItems.append(cartItem)
+            cartItems.append(newCartItem)
 
             isCartItem = false
         }
@@ -116,7 +99,6 @@ extension CartManager {
                                                         itemDetailsPageItemAdd: cartItem.isItemDetailsItem))
 
         NotificationCenter.default.post(name: Notification.Name.cartChanged, object: nil)
-//        let _ = cartManagerObservers.map { $0.value?.refreshCartUI() }
     }
 
     internal func remove(itemId: Int, quantity: Int) {
@@ -124,28 +106,19 @@ extension CartManager {
 
         AnalyticsManager.shared.track(event: .removeFromCart(item: cartItem))
 
-        cartItem.quantity -= quantity
-
-        guard cartItem.quantity <= 0 else {
-            NotificationCenter.default.post(name: Notification.Name.cartChanged, object: nil)
-//            let _ = cartManagerObservers.map { $0.value?.refreshCartUI() }
-            return
-        }
-        guard let index = cartItems.firstIndex(of: cartItem) else {
-            NotificationCenter.default.post(name: Notification.Name.cartChanged, object: nil)
-//            let _ = cartManagerObservers.map { $0.value?.refreshCartUI() }
-            return
-        }
+        guard let index = cartItems.firstIndex(of: cartItem) else { return }
+        let newCartItem = cartItem.with(quantity: cartItem.quantity - quantity)
         cartItems.remove(at: index)
 
+        if newCartItem.quantity > 0 {
+            cartItems.insert(newCartItem, at: index)
+        }
+
         NotificationCenter.default.post(name: Notification.Name.cartChanged, object: nil)
-//        let _ = cartManagerObservers.map { $0.value?.refreshCartUI() }
     }
 
     @objc internal func clearCart() {
-//        isReorder = false
         cartItems.removeAll()
         NotificationCenter.default.post(name: Notification.Name.cartChanged, object: nil)
-//        let _ = cartManagerObservers.map { $0.value?.refreshCartUI() }
     }
 }

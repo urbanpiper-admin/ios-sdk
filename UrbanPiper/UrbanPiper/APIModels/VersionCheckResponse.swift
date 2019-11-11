@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - VersionCheckResponse
+
 @objcMembers public class VersionCheckResponse: NSObject, JSONDecodable {
     public let forceUpdate: Bool
     public let latestVersion: String
@@ -25,7 +26,7 @@ import Foundation
         self.releaseDate = releaseDate
         self.url = url
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(VersionCheckResponse.self, from: data)
         self.init(forceUpdate: me.forceUpdate, latestVersion: me.latestVersion, releaseDate: me.releaseDate, url: me.url)
@@ -35,7 +36,6 @@ import Foundation
 // MARK: VersionCheckResponse convenience initializers and mutators
 
 extension VersionCheckResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -53,7 +53,7 @@ extension VersionCheckResponse {
         releaseDate: Date? = nil,
         url: String? = nil
     ) -> VersionCheckResponse {
-        return VersionCheckResponse(
+        VersionCheckResponse(
             forceUpdate: forceUpdate ?? self.forceUpdate,
             latestVersion: latestVersion ?? self.latestVersion,
             releaseDate: releaseDate ?? self.releaseDate,
@@ -62,10 +62,10 @@ extension VersionCheckResponse {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

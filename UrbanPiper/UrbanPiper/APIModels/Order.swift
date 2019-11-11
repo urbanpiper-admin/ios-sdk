@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - Order
+
 @objcMembers public class Order: NSObject, JSONDecodable {
     public let applyWalletCredit: Bool
     public let bizLocationid: Int
@@ -79,7 +80,7 @@ import Foundation
         self.walletCreditApplied = walletCreditApplied
         self.taxRate = taxRate
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Order.self, from: data)
         self.init(applyWalletCredit: me.applyWalletCredit, bizLocationid: me.bizLocationid, channel: me.channel, charges: me.charges, deliveryCharge: me.deliveryCharge, discount: me.discount, itemLevelTotalCharges: me.itemLevelTotalCharges, itemLevelTotalTaxes: me.itemLevelTotalTaxes, itemTaxes: me.itemTaxes, items: me.items, orderLevelTotalCharges: me.orderLevelTotalCharges, orderLevelTotalTaxes: me.orderLevelTotalTaxes, orderSubtotal: me.orderSubtotal, orderTotal: me.orderTotal, orderType: me.orderType, packagingCharge: me.packagingCharge, payableAmount: me.payableAmount, paymentModes: me.paymentModes, taxes: me.taxes, totalCharges: me.totalCharges, totalTaxes: me.totalTaxes, totalWeight: me.totalWeight, walletCreditApplicable: me.walletCreditApplicable, walletCreditApplied: me.walletCreditApplied, taxRate: me.taxRate)
@@ -89,7 +90,6 @@ import Foundation
 // MARK: Order convenience initializers and mutators
 
 extension Order {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -128,7 +128,7 @@ extension Order {
         walletCreditApplied: Double? = nil,
         taxRate: Float? = nil
     ) -> Order {
-        return Order(
+        Order(
             applyWalletCredit: applyWalletCredit ?? self.applyWalletCredit,
             bizLocationid: bizLocationid ?? self.bizLocationid,
             channel: channel ?? self.channel,
@@ -158,10 +158,10 @@ extension Order {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

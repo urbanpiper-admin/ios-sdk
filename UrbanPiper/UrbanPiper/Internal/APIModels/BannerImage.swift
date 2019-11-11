@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - BannerImage
+
 @objcMembers public class BannerImage: NSObject, Codable {
     public let created, id: Int
     public let image: String
@@ -24,7 +25,7 @@ import Foundation
         self.imgType = imgType
         self.markups = markups
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(BannerImage.self, from: data)
         self.init(created: me.created, id: me.id, image: me.image, imgType: me.imgType, markups: me.markups)
@@ -34,7 +35,6 @@ import Foundation
 // MARK: BannerImage convenience initializers and mutators
 
 extension BannerImage {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -53,7 +53,7 @@ extension BannerImage {
         imgType: String? = nil,
         markups: String? = nil
     ) -> BannerImage {
-        return BannerImage(
+        BannerImage(
             created: created ?? self.created,
             id: id ?? self.id,
             image: image ?? self.image,
@@ -63,10 +63,10 @@ extension BannerImage {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

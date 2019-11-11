@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - WalletTransactionResponse
+
 @objcMembers public class WalletTransactionResponse: NSObject, JSONDecodable {
     public let meta: Meta
     public let transactions: [Transaction]
@@ -14,7 +15,7 @@ import Foundation
         self.meta = meta
         self.transactions = transactions
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(WalletTransactionResponse.self, from: data)
         self.init(meta: me.meta, transactions: me.transactions)
@@ -24,7 +25,6 @@ import Foundation
 // MARK: WalletTransactionResponse convenience initializers and mutators
 
 extension WalletTransactionResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -40,17 +40,17 @@ extension WalletTransactionResponse {
         meta: Meta? = nil,
         transactions: [Transaction]? = nil
     ) -> WalletTransactionResponse {
-        return WalletTransactionResponse(
+        WalletTransactionResponse(
             meta: meta ?? self.meta,
             transactions: transactions ?? self.transactions
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

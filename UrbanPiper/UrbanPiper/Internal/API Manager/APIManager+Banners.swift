@@ -48,24 +48,3 @@ extension BannersAPI: UPAPI {
         }
     }
 }
-
-/* extension APIManager {
-
- @objc internal func getBanners(completion: APICompletion<BannersResponse>?,
-                             failure: APIFailure?) -> URLSessionDataTask {
-
-     let urlString: String = "\(APIManager.baseUrl)/api/v1/galleries/?type=app_banner"
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "GET"
-
-     return apiRequest(urlRequest: &urlRequest,
-                       headers: ["Authorization" : bizAuth()],
-                       completion: completion,
-                       failure: failure)
- }
-
- }*/

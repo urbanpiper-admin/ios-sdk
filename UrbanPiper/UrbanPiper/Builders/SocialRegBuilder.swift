@@ -91,7 +91,7 @@ public class SocialRegBuilder: NSObject {
         assert(verifyPhoneResponse != nil, "verifyPhone method should be called first")
 
         var referralObject: Referral?
-        if let responseData: Data = UserDefaults.standard.object(forKey: "referral dictionary") as? Data, let referralParams = NSKeyedUnarchiver.unarchiveObject(with: responseData) as? Referral {
+        if let responseData: Data = UserDefaults.standard.object(forKey: "referral dictionary") as? Data, let referralParams = try? newJSONDecoder().decode(Referral.self, from: responseData) {
             referralObject = referralParams
         }
 
@@ -105,7 +105,7 @@ public class SocialRegBuilder: NSObject {
         assert(verifyPhoneResponse != nil, "verifyPhone method should be called first")
 
         var referralObject: Referral?
-        if let responseData: Data = UserDefaults.standard.object(forKey: "referral dictionary") as? Data, let referralParams = NSKeyedUnarchiver.unarchiveObject(with: responseData) as? Referral {
+        if let responseData: Data = UserDefaults.standard.object(forKey: "referral dictionary") as? Data, let referralParams = try? newJSONDecoder().decode(Referral.self, from: responseData) {
             referralObject = referralParams
         }
 

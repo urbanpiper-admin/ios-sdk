@@ -9,10 +9,8 @@
 import Foundation
 
 extension Encodable {
-    
-    public func toDictionary() -> [String: AnyObject] {
+    internal func toDictionary() -> [String: AnyObject] {
         let data = try! newJSONEncoder().encode(self)
         return try! JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: AnyObject]
     }
-    
 }

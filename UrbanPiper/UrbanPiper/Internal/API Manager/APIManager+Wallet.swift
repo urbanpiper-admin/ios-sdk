@@ -48,23 +48,3 @@ extension WalletAPI: UPAPI {
         }
     }
 }
-
-/* extension APIManager {
-
- @objc internal func getWalletTransactions(offset: Int = 0,
-                                           limit: Int = Constants.fetchLimit,
-                                           completion: APICompletion<WalletTransactionResponse>?,
-                                           failure: APIFailure?) -> URLSessionDataTask {
-
-     let urlString: String = "\(APIManager.baseUrl)/api/v2/ub/wallet/transactions/"
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "GET"
-
-     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
- }
-
- }*/

@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - OptionGroup
+
 @objcMembers public class OptionGroup: NSObject, JSONDecodable {
     public let optionGroupDescription: String
     public let displayInline: Bool
@@ -39,7 +40,7 @@ import Foundation
         self.sortOrder = sortOrder
         self.title = title
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(OptionGroup.self, from: data)
         self.init(optionGroupDescription: me.optionGroupDescription, displayInline: me.displayInline, id: me.id, isDefault: me.isDefault, maxSelectable: me.maxSelectable, minSelectable: me.minSelectable, options: me.options, sortOrder: me.sortOrder, title: me.title)
@@ -49,7 +50,6 @@ import Foundation
 // MARK: OptionGroup convenience initializers and mutators
 
 extension OptionGroup {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -72,7 +72,7 @@ extension OptionGroup {
         sortOrder: Int? = nil,
         title: String? = nil
     ) -> OptionGroup {
-        return OptionGroup(
+        OptionGroup(
             optionGroupDescription: optionGroupDescription ?? self.optionGroupDescription,
             displayInline: displayInline ?? self.displayInline,
             id: id ?? self.id,
@@ -86,21 +86,17 @@ extension OptionGroup {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }
 
 extension OptionGroup {
-    
     internal func equitableCheckDictionary() -> [String: AnyObject] {
         var dictionary: [String: AnyObject] = [String: AnyObject]()
-        //        if let isDefault = isDefault {
-        //            dictionary["is_default"] = isDefault as AnyObject
-        //        }
         var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
         for optionsElement in options {
             guard optionsElement.quantity > 0 else { continue }
@@ -117,33 +113,4 @@ extension OptionGroup {
 
         return NSDictionary(dictionary: lhsDictionary).isEqual(to: rhsDictionary)
     }
-    
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    // public func toDictionary() -> [String : AnyObject]
-//    {
-//        var dictionary: [String : AnyObject] = [String : AnyObject]()
-//        
-//        dictionary["description"] = optionGroupDescription as AnyObject
-//        
-//        dictionary["id"] = id as AnyObject
-//
-//        dictionary["is_default"] = isDefault as AnyObject
-//        
-//        dictionary["max_selectable"] = maxSelectable as AnyObject
-//        
-//        dictionary["min_selectable"] = minSelectable as AnyObject
-//        
-//        var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
-//        for optionsElement in options {
-//            dictionaryElements.append(optionsElement.toDictionary())
-//        }
-//        dictionary["options"] = dictionaryElements as AnyObject
-//
-//        dictionary["sort_order"] = sortOrder as AnyObject
-//        dictionary["title"] = title as AnyObject
-//
-//        return dictionary
-//    }
 }

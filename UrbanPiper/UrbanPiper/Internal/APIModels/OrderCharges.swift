@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - Charge
+
 @objcMembers public class Charge: NSObject, Codable {
     public let title: String
     public let value: Double
@@ -14,7 +15,7 @@ import Foundation
         self.title = title
         self.value = value
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Charge.self, from: data)
         self.init(title: me.title, value: me.value)
@@ -24,7 +25,6 @@ import Foundation
 // MARK: Charge convenience initializers and mutators
 
 extension Charge {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -40,17 +40,17 @@ extension Charge {
         title: String? = nil,
         value: Double? = nil
     ) -> Charge {
-        return Charge(
+        Charge(
             title: title ?? self.title,
             value: value ?? self.value
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

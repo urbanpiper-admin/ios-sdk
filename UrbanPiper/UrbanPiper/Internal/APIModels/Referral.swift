@@ -8,7 +8,6 @@
 import UIKit
 
 @objcMembers public class Referral: NSObject, Codable {
-    
     public let codeLink: String
     public let referrerCard: String
     public let channel: String
@@ -28,15 +27,15 @@ import UIKit
         sharedOn = dictionary["link_share_time"] as! String
         platform = dictionary["~creation_source"] as! String
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case codeLink = "code_link"
         case referrerCard = "referrer_card"
-        case channel = "channel"
+        case channel
         case sharedOn = "shared_on"
-        case platform = "platform"
+        case platform
     }
-    
+
     init(codeLink: String, referrerCard: String, channel: String, sharedOn: String, platform: String) {
         self.codeLink = codeLink
         self.referrerCard = referrerCard
@@ -49,28 +48,5 @@ import UIKit
         let me = try newJSONDecoder().decode(Referral.self, from: data)
         self.init(codeLink: me.codeLink, referrerCard: me.referrerCard, channel: me.channel, sharedOn: me.sharedOn, platform: me.platform)
     }
-    
-    /**
-     * NSCoding required initializer.
-     * Fills the data from the passed decoder
-     */
-    public required init(coder aDecoder: NSCoder) {
-        codeLink = aDecoder.decodeObject(forKey: "code_link") as! String
-        referrerCard = aDecoder.decodeObject(forKey: "referrer_card") as! String
-        channel = aDecoder.decodeObject(forKey: "channel") as! String
-        sharedOn = aDecoder.decodeObject(forKey: "shared_on") as! String
-        platform = aDecoder.decodeObject(forKey: "platform") as! String
-    }
 
-    /**
-     * NSCoding required method.
-     * Encodes mode properties into the decoder
-     */
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(codeLink, forKey: "code_link")
-        aCoder.encode(referrerCard, forKey: "referrer_card")
-        aCoder.encode(channel, forKey: "channel")
-        aCoder.encode(sharedOn, forKey: "shared_on")
-        aCoder.encode(platform, forKey: "platform")
-    }
 }

@@ -18,7 +18,7 @@ extension OffersAPI: UPAPI {
         switch self {
         case .offers:
             return "api/v1/coupons/"
-        case .applyCoupon(let coupon, _, _, _, _):
+        case let .applyCoupon(coupon, _, _, _, _):
             return "api/v1/coupons/\(coupon)/"
         }
     }
@@ -67,53 +67,3 @@ extension OffersAPI: UPAPI {
         }
     }
 }
-
-/* extension APIManager {
-
- func getOffers(offset: Int = 0,
-                       limit: Int = Constants.fetchLimit,
-                       completion: APICompletion<OffersAPIResponse>?,
-                       failure: APIFailure?) -> URLSessionDataTask {
-
-     let urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/?offset=\(offset)&limit=\(limit)"
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "GET"
-
-     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
- }
-
- @discardableResult internal func apply(coupon: String,
-                  storeId: Int,
-                  deliveryOption: DeliveryOption,
-                  cartItems: [CartItem],
-                  applyWalletCredit: Bool,
-                  completion: APICompletion<Order>?,
-                     failure: APIFailure?) -> URLSessionDataTask {
-
-     let order: [String: Any] = ["biz_location_id": storeId,
-                                 "order_type": deliveryOption.rawValue,
-                                 "channel": APIManager.channel,
-                                 "items": cartItems.map { $0.toDictionary() },
-                                 "apply_wallet_credit": applyWalletCredit] as [String: Any]
-
-     let params: [String: Any] = ["order": order] as [String: Any]
-
-     var urlString: String = "\(APIManager.baseUrl)/api/v1/coupons/\(coupon)/"
-     urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "POST"
-
-     urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
-
-     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
- }
-
- }*/

@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - UserInfoUpdateResponse
+
 @objcMembers public class UserInfoUpdateResponse: NSObject, JSONDecodable {
     public let success: Bool
     public let msg: String?
@@ -14,7 +15,7 @@ import Foundation
         self.msg = msg
         self.success = success
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(UserInfoUpdateResponse.self, from: data)
         self.init(msg: me.msg, success: me.success)
@@ -24,7 +25,6 @@ import Foundation
 // MARK: UserInfoUpdateResponse convenience initializers and mutators
 
 extension UserInfoUpdateResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -40,21 +40,21 @@ extension UserInfoUpdateResponse {
         success: Bool? = nil,
         msg: String? = nil
     ) -> UserInfoUpdateResponse {
-        return UserInfoUpdateResponse(
+        UserInfoUpdateResponse(
             msg: msg ?? self.msg,
             success: success ?? self.success
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-    public func toObjcDictionary() -> [String : AnyObject] {
-        return toDictionary()
+
+    public func toObjcDictionary() -> [String: AnyObject] {
+        toDictionary()
     }
 }

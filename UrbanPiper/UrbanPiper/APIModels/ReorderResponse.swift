@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - ReorderResponse
+
 @objcMembers public class ReorderResponse: NSObject, JSONDecodable {
     public let bizLocation: BizLocation
     public let deliveryCharge: Int
@@ -34,7 +35,7 @@ import Foundation
         self.orderTotal = orderTotal
         self.packagingCharge = packagingCharge
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(ReorderResponse.self, from: data)
         self.init(bizLocation: me.bizLocation, deliveryCharge: me.deliveryCharge, itemsAvailable: me.itemsAvailable, itemsNotAvailable: me.itemsNotAvailable, orderItemTaxes: me.orderItemTaxes, orderSubtotal: me.orderSubtotal, orderTotal: me.orderTotal, packagingCharge: me.packagingCharge)
@@ -44,7 +45,6 @@ import Foundation
 // MARK: ReorderResponse convenience initializers and mutators
 
 extension ReorderResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -66,7 +66,7 @@ extension ReorderResponse {
         orderTotal: Double? = nil,
         packagingCharge: Double? = nil
     ) -> ReorderResponse {
-        return ReorderResponse(
+        ReorderResponse(
             bizLocation: bizLocation ?? self.bizLocation,
             deliveryCharge: deliveryCharge ?? self.deliveryCharge,
             itemsAvailable: itemsAvailable ?? self.itemsAvailable,
@@ -79,10 +79,10 @@ extension ReorderResponse {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - UserBizInfoResponse
+
 @objcMembers public class UserBizInfoResponse: NSObject, JSONDecodable, NSCoding {
     public let meta: Meta
     public let userBizInfos: [UserBizInfo]
@@ -14,17 +15,17 @@ import Foundation
         case meta
         case userBizInfos = "objects"
     }
-    
+
     init(meta: Meta, userBizInfos: [UserBizInfo]) {
         self.meta = meta
         self.userBizInfos = userBizInfos
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(UserBizInfoResponse.self, from: data)
         self.init(meta: me.meta, userBizInfos: me.userBizInfos)
     }
-    
+
     /**
      * NSCoding required initializer.
      * Fills the data from the passed decoder
@@ -38,7 +39,6 @@ import Foundation
 // MARK: UserBizInfoResponse convenience initializers and mutators
 
 extension UserBizInfoResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -54,35 +54,19 @@ extension UserBizInfoResponse {
         meta: Meta? = nil,
         userBizInfos: [UserBizInfo]? = nil
     ) -> UserBizInfoResponse {
-        return UserBizInfoResponse(
+        UserBizInfoResponse(
             meta: meta ?? self.meta,
             userBizInfos: userBizInfos ?? self.userBizInfos
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    // public func toDictionary() -> [String: AnyObject] {
-//        var dictionary: [String: AnyObject] = [String: AnyObject]()
-//        dictionary["meta"] = meta.toDictionary() as AnyObject
-//        
-//        var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
-//        for userBizInfo in userBizInfos {
-//            dictionaryElements.append(userBizInfo.toDictionary())
-//        }
-//        dictionary["objects"] = dictionaryElements as AnyObject
-//        
-//        return dictionary
-//    }
 
     /**
      * NSCoding required method.

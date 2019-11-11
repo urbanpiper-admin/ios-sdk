@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - Meta
+
 @objcMembers public class Meta: NSObject, Codable, NSCoding {
     public let limit: Int
     public let next: String?
@@ -25,7 +26,7 @@ import Foundation
         self.previous = previous
         self.totalCount = totalCount
     }
-    
+
     /**
      * NSCoding required initializer.
      * Fills the data from the passed decoder
@@ -37,7 +38,7 @@ import Foundation
         previous = aDecoder.decodeObject(forKey: "previous") as? String
         totalCount = aDecoder.decodeInteger(forKey: "total_count")
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Meta.self, from: data)
         self.init(limit: me.limit, next: me.next, offset: me.offset, previous: me.previous, totalCount: me.totalCount)
@@ -47,7 +48,6 @@ import Foundation
 // MARK: Meta convenience initializers and mutators
 
 extension Meta {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -66,7 +66,7 @@ extension Meta {
         previous: String? = nil,
         totalCount: Int? = nil
     ) -> Meta {
-        return Meta(
+        Meta(
             limit: limit ?? self.limit,
             next: next ?? self.next,
             offset: offset ?? self.offset,
@@ -76,34 +76,12 @@ extension Meta {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    // public func toDictionary() -> [String: AnyObject] {
-//        var dictionary: [String: AnyObject] = [String: AnyObject]()
-//        dictionary["limit"] = limit as AnyObject
-//
-//        if let next = next {
-//            dictionary["next"] = next as AnyObject
-//        }
-//
-//        dictionary["offset"] = offset as AnyObject
-//
-//        if let previous = previous {
-//            dictionary["previous"] = previous as AnyObject
-//        }
-//
-//        dictionary["total_count"] = totalCount as AnyObject
-//
-//        return dictionary
-//    }
 
     /**
      * NSCoding required method.

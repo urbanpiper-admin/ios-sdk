@@ -55,26 +55,3 @@ extension VersionCheckAPI: UPAPI {
         }
     }
 }
-
-/* extension APIManager {
-
- @objc internal func checkAppVersion(username: String?,
-                                   version: String,
-                                   completion: APICompletion<VersionCheckResponse>?,
-                                   failure: APIFailure?) -> URLSessionDataTask {
-     var urlString: String = "\(APIManager.baseUrl)/api/v1/app/ios/?biz_id=\(bizId)&ver=\(version)"
-
-     if let usernameVal = username {
-         urlString = "\(urlString)&user=\(usernameVal)"
-     }
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "GET"
-
-     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
- }
-
- }*/

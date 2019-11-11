@@ -6,16 +6,19 @@
 import Foundation
 
 // MARK: - RegistrationResponse
+
 @objcMembers public class RegistrationResponse: NSObject, JSONDecodable {
     public let accessToken, activeOtp, approvalCode, authKey: String
     public let cardNumber, customerEmail, customerName, customerPhone: String
     public let message: String
-    public let points, prepaidBalance: Int
+    public let points: Int
+    public let prepaidBalance: Double
     public let result: String
     public let success: Bool
     public let timestamp: String
-    public let totalBalance: Int
+    public let totalBalance: Double
     public let token: String?
+    public let user: User?
 
     enum CodingKeys: String, CodingKey {
         case accessToken = "access_token"
@@ -31,9 +34,10 @@ import Foundation
         case result, success, timestamp
         case totalBalance = "total_balance"
         case token
+        case user
     }
 
-    init(accessToken: String, activeOtp: String, approvalCode: String, authKey: String, cardNumber: String, customerEmail: String, customerName: String, customerPhone: String, message: String, points: Int, prepaidBalance: Int, result: String, success: Bool, timestamp: String, totalBalance: Int, token: String?) {
+    init(accessToken: String, activeOtp: String, approvalCode: String, authKey: String, cardNumber: String, customerEmail: String, customerName: String, customerPhone: String, message: String, points: Int, prepaidBalance: Double, result: String, success: Bool, timestamp: String, totalBalance: Double, token: String?, user: User?) {
         self.accessToken = accessToken
         self.activeOtp = activeOtp
         self.approvalCode = approvalCode
@@ -50,18 +54,45 @@ import Foundation
         self.timestamp = timestamp
         self.totalBalance = totalBalance
         self.token = token
+        self.user = user
     }
     
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.accessToken = try container.decode(String.self, forKey: CodingKeys.accessToken)
+        self.activeOtp = try container.decode(String.self, forKey: CodingKeys.activeOtp)
+        self.approvalCode = try container.decode(String.self, forKey: CodingKeys.approvalCode)
+        self.authKey = try container.decode(String.self, forKey: CodingKeys.authKey)
+        self.cardNumber = try container.decode(String.self, forKey: CodingKeys.cardNumber)
+        self.customerEmail = try container.decode(String.self, forKey: CodingKeys.customerEmail)
+        self.customerName = try container.decode(String.self, forKey: CodingKeys.customerName)
+        self.customerPhone = try container.decode(String.self, forKey: CodingKeys.customerPhone)
+        self.message = try container.decode(String.self, forKey: CodingKeys.message)
+        self.points = try container.decode(Int.self, forKey: CodingKeys.points)
+        self.prepaidBalance = try container.decode(Double.self, forKey: CodingKeys.prepaidBalance)
+        self.result = try container.decode(String.self, forKey: CodingKeys.result)
+        self.success = try container.decode(Bool.self, forKey: CodingKeys.success)
+        self.timestamp = try container.decode(String.self, forKey: CodingKeys.timestamp)
+        self.totalBalance = try container.decode(Double.self, forKey: CodingKeys.totalBalance)
+        self.token = try container.decode(String.self, forKey: CodingKeys.token)
+        
+        if let token = token {
+            self.user = User(jwtToken: token)
+        } else {
+            self.user = nil
+        }
+    }
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(RegistrationResponse.self, from: data)
-        self.init(accessToken: me.accessToken, activeOtp: me.activeOtp, approvalCode: me.approvalCode, authKey: me.authKey, cardNumber: me.cardNumber, customerEmail: me.customerEmail, customerName: me.customerName, customerPhone: me.customerPhone, message: me.message, points: me.points, prepaidBalance: me.prepaidBalance, result: me.result, success: me.success, timestamp: me.timestamp, totalBalance: me.totalBalance, token: me.token)
+        self.init(accessToken: me.accessToken, activeOtp: me.activeOtp, approvalCode: me.approvalCode, authKey: me.authKey, cardNumber: me.cardNumber, customerEmail: me.customerEmail, customerName: me.customerName, customerPhone: me.customerPhone, message: me.message, points: me.points, prepaidBalance: me.prepaidBalance, result: me.result, success: me.success, timestamp: me.timestamp, totalBalance: me.totalBalance, token: me.token, user: me.user)
     }
 }
 
 // MARK: RegistrationResponse convenience initializers and mutators
 
 extension RegistrationResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -84,14 +115,15 @@ extension RegistrationResponse {
         customerPhone: String? = nil,
         message: String? = nil,
         points: Int? = nil,
-        prepaidBalance: Int? = nil,
+        prepaidBalance: Double? = nil,
         result: String? = nil,
         success: Bool? = nil,
         timestamp: String? = nil,
-        totalBalance: Int? = nil,
-        token: String? = nil
+        totalBalance: Double? = nil,
+        token: String? = nil,
+        user: User? = nil
     ) -> RegistrationResponse {
-        return RegistrationResponse(
+        RegistrationResponse(
             accessToken: accessToken ?? self.accessToken,
             activeOtp: activeOtp ?? self.activeOtp,
             approvalCode: approvalCode ?? self.approvalCode,
@@ -107,15 +139,16 @@ extension RegistrationResponse {
             success: success ?? self.success,
             timestamp: timestamp ?? self.timestamp,
             totalBalance: totalBalance ?? self.totalBalance,
-            token: token ?? self.token
+            token: token ?? self.token,
+            user: user ?? self.user
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

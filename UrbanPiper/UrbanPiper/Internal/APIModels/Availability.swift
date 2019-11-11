@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - Availability
+
 @objcMembers public class Availability: NSObject, Codable {
     public let isAvailable: Bool
     public let name: String
@@ -19,7 +20,7 @@ import Foundation
         self.isAvailable = isAvailable
         self.name = name
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Availability.self, from: data)
         self.init(isAvailable: me.isAvailable, name: me.name)
@@ -29,7 +30,6 @@ import Foundation
 // MARK: Availability convenience initializers and mutators
 
 extension Availability {
-    
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -45,17 +45,17 @@ extension Availability {
         isAvailable: Bool? = nil,
         name: String? = nil
     ) -> Availability {
-        return Availability(
+        Availability(
             isAvailable: isAvailable ?? self.isAvailable,
             name: name ?? self.name
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - StatusUpdate
+
 @objcMembers public class StatusUpdate: NSObject, Codable {
     public let created: Int
     public let message, status, updatedBy: String
@@ -21,7 +22,7 @@ import Foundation
         self.status = status
         self.updatedBy = updatedBy
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(StatusUpdate.self, from: data)
         self.init(created: me.created, message: me.message, status: me.status, updatedBy: me.updatedBy)
@@ -31,7 +32,6 @@ import Foundation
 // MARK: StatusUpdate convenience initializers and mutators
 
 extension StatusUpdate {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -49,7 +49,7 @@ extension StatusUpdate {
         status: String? = nil,
         updatedBy: String? = nil
     ) -> StatusUpdate {
-        return StatusUpdate(
+        StatusUpdate(
             created: created ?? self.created,
             message: message ?? self.message,
             status: status ?? self.status,
@@ -58,10 +58,10 @@ extension StatusUpdate {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

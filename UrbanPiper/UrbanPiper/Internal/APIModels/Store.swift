@@ -6,7 +6,8 @@
 import Foundation
 
 // MARK: - Store
-@objcMembers public class Store: NSObject, Codable, NSCoding {
+
+@objcMembers public class Store: NSObject, Codable {
     public let address: String
     public let bizLocationid: Int
     public let city: String
@@ -34,7 +35,7 @@ import Foundation
     public let fulfillmentModes: [String]?
 
     public var storeId: NSNumber {
-        return NSNumber(integerLiteral: bizLocationid)
+        NSNumber(integerLiteral: bizLocationid)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -93,42 +94,7 @@ import Foundation
         self.timeSlots = timeSlots
         self.fulfillmentModes = fulfillmentModes
     }
-    
-    /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    required public init(coder aDecoder: NSCoder)
-    {
-        address = (aDecoder.decodeObject(forKey: "address") as? String)!
-        bizLocationid = aDecoder.decodeInteger(forKey: "biz_location_id")
-        gst = aDecoder.decodeObject(forKey: "gst") as? String
-        fulfillmentModes = aDecoder.decodeObject(forKey: "fulfillment_modes") as? [String]
-        city = (aDecoder.decodeObject(forKey: "city") as? String)!
-        closingDay = aDecoder.decodeBool(forKey: "closing_day")
-        closingTime = (aDecoder.decodeObject(forKey: "closing_time") as? String)!
-        deliveryCharge = aDecoder.decodeDouble(forKey: "delivery_charge")
-         deliveryMinOffsetTime = aDecoder.decodeObject(forKey: "delivery_min_offset_time") as? Int
-        hideStoreName = aDecoder.decodeBool(forKey: "hide_store_name")
-        itemTaxes = aDecoder.decodeObject(forKey: "item_taxes") as? Double
-         lat = aDecoder.decodeDouble(forKey: "lat")
-         lng = aDecoder.decodeDouble(forKey: "lng")
-         minOrderTotal = aDecoder.decodeObject(forKey: "min_order_total") as? Double
-        name = (aDecoder.decodeObject(forKey: "name") as? String)!
-        onCloseMsg = aDecoder.decodeObject(forKey: "on_close_msg") as? String
-         onSelectMsg = aDecoder.decodeObject(forKey: "on_select_msg") as? String
-        openingTime = (aDecoder.decodeObject(forKey: "opening_time") as? String)!
-        packagingCharge = aDecoder.decodeDouble(forKey: "packaging_charge")
-        pgKey = (aDecoder.decodeObject(forKey: "pg_key") as? String)!
-         phone = aDecoder.decodeObject(forKey: "phone") as? String
-         pickupMinOffsetTime = aDecoder.decodeObject(forKey: "pickup_min_offset_time") as? Int
-        sortOrder = aDecoder.decodeInteger(forKey: "sort_order")
-        taxRate = aDecoder.decodeFloat(forKey: "tax_rate")
-        
-        temporarilyClosed = aDecoder.decodeBool(forKey: "temporarily_closed")
 
-        timeSlots = (aDecoder.decodeObject(forKey: "time_slots") as? [TimeSlot])!
-    }
 
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Store.self, from: data)
@@ -139,7 +105,6 @@ import Foundation
 // MARK: Store convenience initializers and mutators
 
 extension Store {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -159,7 +124,7 @@ extension Store {
         closingTime: String? = nil,
         deliveryCharge: Double? = nil,
         deliveryMinOffsetTime: Int? = nil,
-        enabledForOrdering: Int? = nil,
+        enabledForOrdering _: Int? = nil,
         gst: String? = nil,
         hideStoreName: Bool? = nil,
         lat: Double? = nil,
@@ -179,7 +144,7 @@ extension Store {
         timeSlots: [TimeSlot]? = nil,
         fulfillmentModes: [String]? = nil
     ) -> Store {
-        return Store(
+        Store(
             address: address ?? self.address,
             bizLocationid: bizLocationid ?? self.bizLocationid,
             city: city ?? self.city,
@@ -189,7 +154,7 @@ extension Store {
             deliveryMinOffsetTime: deliveryMinOffsetTime ?? self.deliveryMinOffsetTime,
             gst: gst ?? self.gst,
             hideStoreName: hideStoreName ?? self.hideStoreName,
-            itemTaxes: itemTaxes ?? self.itemTaxes,
+            itemTaxes: itemTaxes ?? itemTaxes,
             lat: lat ?? self.lat,
             lng: lng ?? self.lng,
             minOrderTotal: minOrderTotal ?? self.minOrderTotal,
@@ -210,45 +175,11 @@ extension Store {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-    
-    /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    public func encode(with aCoder: NSCoder)
-    {
-            aCoder.encode(address, forKey: "address")
-        aCoder.encode(bizLocationid, forKey: "biz_location_id")
-            aCoder.encode(city, forKey: "city")
-        aCoder.encode(closingDay, forKey: "closing_day")
-            aCoder.encode(closingTime, forKey: "closing_time")
-            aCoder.encode(deliveryCharge, forKey: "delivery_charge")
-            aCoder.encode(deliveryMinOffsetTime, forKey: "delivery_min_offset_time")
-        aCoder.encode(hideStoreName, forKey: "hide_store_name")
-            aCoder.encode(itemTaxes, forKey: "item_taxes")
-        aCoder.encode(lat, forKey: "lat")
-        aCoder.encode(lng, forKey: "lng")
-            aCoder.encode(minOrderTotal, forKey: "min_order_total")
-            aCoder.encode(name, forKey: "name")
-            aCoder.encode(onCloseMsg, forKey: "on_close_msg")
-            aCoder.encode(onSelectMsg, forKey: "on_select_msg")
-            aCoder.encode(openingTime, forKey: "opening_time")
-            aCoder.encode(packagingCharge, forKey: "packaging_charge")
-            aCoder.encode(pgKey, forKey: "pg_key")
-            aCoder.encode(phone, forKey: "phone")
-            aCoder.encode(pickupMinOffsetTime, forKey: "pickup_min_offset_time")
-            aCoder.encode(sortOrder, forKey: "sort_order")
-            aCoder.encode(taxRate, forKey: "tax_rate")
-        aCoder.encode(temporarilyClosed, forKey: "temporarily_closed")
-        aCoder.encode(timeSlots, forKey: "time_slots")
-        aCoder.encode(gst, forKey: "gst")
-        aCoder.encode(fulfillmentModes, forKey: "fulfillment_modes")
-    }
+
 }

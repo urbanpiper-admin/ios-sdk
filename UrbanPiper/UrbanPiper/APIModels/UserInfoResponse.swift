@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - UserInfoResponse
+
 @objcMembers public class UserInfoResponse: NSObject, JSONDecodable {
     public let active: Bool
     public let address: String
@@ -42,7 +43,7 @@ import Foundation
         self.lastName = lastName
         self.phone = phone
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(UserInfoResponse.self, from: data)
         self.init(active: me.active, address: me.address, anniversary: me.anniversary, anniversaryDate: me.anniversaryDate, birthdate: me.birthdate, birthday: me.birthday, currentCity: me.currentCity, email: me.email, firstName: me.firstName, gender: me.gender, lastName: me.lastName, phone: me.phone)
@@ -52,7 +53,6 @@ import Foundation
 // MARK: UserInfoResponse convenience initializers and mutators
 
 extension UserInfoResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -78,7 +78,7 @@ extension UserInfoResponse {
         lastName: String? = nil,
         phone: String? = nil
     ) -> UserInfoResponse {
-        return UserInfoResponse(
+        UserInfoResponse(
             active: active ?? self.active,
             address: address ?? self.address,
             anniversary: anniversary ?? self.anniversary,
@@ -95,44 +95,10 @@ extension UserInfoResponse {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-//    /**
-//         * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//    */
-//    // public func toDictionary() -> [String: AnyObject] {
-//        var dictionary: [String: AnyObject] = [String: AnyObject]()
-//        dictionary["phone"] = phone as AnyObject
-//        dictionary["first_name"] = firstName as AnyObject
-//        dictionary["email"] = email as AnyObject
-//        if let lastName = lastName {
-//            dictionary["last_name"] = lastName as AnyObject
-//        }
-//        if let gender = gender {
-//            dictionary["gender"] = gender as AnyObject
-//        }
-//        if let currentCity = currentCity {
-//            dictionary["current_city"] = currentCity as AnyObject
-//        }
-//        if let birthday = birthday {
-//            dictionary["birthday"] = birthday as AnyObject
-//        }
-//        if let anniversary = anniversary {
-//            dictionary["anniversary"] = anniversary as AnyObject
-//        }
-//        if let birthdayDate = birthdate {
-//            dictionary["birthday_date"] = birthdayDate as AnyObject
-//        }
-//        if let anniversaryDate = anniversaryDate {
-//            dictionary["anniversary_date"] = anniversaryDate as AnyObject
-//        }
-//        dictionary["address"] = address as AnyObject
-//        return dictionary
-//    }
-
 }

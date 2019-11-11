@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - GenericResponse
+
 @objcMembers public class GenericResponse: NSObject, JSONDecodable {
     public let status: String?
     public let message: String?
@@ -23,7 +24,7 @@ import Foundation
         self.msg = msg
         self.errorMessage = errorMessage
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(GenericResponse.self, from: data)
         self.init(status: me.status, message: me.message, errorMessage: me.errorMessage, msg: me.msg)
@@ -33,7 +34,6 @@ import Foundation
 // MARK: GenericResponse convenience initializers and mutators
 
 extension GenericResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -51,7 +51,7 @@ extension GenericResponse {
         message: String? = nil,
         errorMessage: String? = nil
     ) -> GenericResponse {
-        return GenericResponse(
+        GenericResponse(
             status: status ?? self.status,
             message: message ?? self.message,
             errorMessage: errorMessage ?? self.errorMessage,
@@ -60,14 +60,14 @@ extension GenericResponse {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-    public func toObjcDictionary() -> [String : AnyObject] {
-        return toDictionary()
+
+    public func toObjcDictionary() -> [String: AnyObject] {
+        toDictionary()
     }
 }

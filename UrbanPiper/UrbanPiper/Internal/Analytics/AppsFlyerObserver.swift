@@ -6,31 +6,40 @@
 //
 
 import AppsFlyerLib
+import RxSwift
 import UIKit
 
-public class AppsFlyerObserver: AnalyticsEventObserver {
+public class AppsFlyerObserver: AppAnalyticsEventObserver, SDKAnalyticsEventObserver {
     var appsFlyerDevAppid: String?
     var appsFlyerDevKey: String?
+    var disposeBag: DisposeBag = DisposeBag()
 
-    public init(appsFlyerDevAppid: String, appsFlyerDevKey: String) {
-//        guard let devKey: String = AppConfigManager.shared.firRemoteConfigDefaults.appsFlyerDevKey,
-//            let appId: String = AppConfigManager.shared.firRemoteConfigDefaults.appsFlyerDevAppid else { return }
+    @discardableResult public init(appsFlyerDevAppid: String, appsFlyerDevKey: String) {
         AppsFlyerTracker.shared().appleAppID = appsFlyerDevAppid
         AppsFlyerTracker.shared().appsFlyerDevKey = appsFlyerDevKey
+
+        AnalyticsManager.shared.appAnalyticsSubject
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] event in
+                self?.track(event: event)
+            })
+            .disposed(by: disposeBag)
+
+        AnalyticsManager.shared.sdkAnalyticsSubject
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] event in
+                self?.track(event: event)
+            })
+            .disposed(by: disposeBag)
     }
 
-    public func track(event: AnalyticsEvent) {
+    public func track(event: AppAnalyticsEvent) {
         switch event {
         case .appLaunch:
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
             tracker.trackAppLaunch()
-        case .addToCart(let cartItem, _, _):
-            guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
-            tracker.trackEvent(AFEventAddToCart,
-                               withValues: [AFEventParamContentId: cartItem.id as Any,
-                                            AFEventParamPrice: cartItem.totalAmount,
-                                            AFEventParamQuantity: cartItem.quantity,
-                                            AFEventParamCurrency: "INR"])
         case let .productClicked(item):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
             let itemPrice: Double
@@ -48,7 +57,24 @@ public class AppsFlyerObserver: AnalyticsEventObserver {
                                             AFEventParamContentType: "item_view",
                                             AFEventParamContent: item.itemTitle as Any,
                                             AFEventParamCurrency: "INR"])
-        case .purchaseCompleted(_, _, let checkoutBuilder, _):
+        case .checkoutInit:
+            guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
+            tracker.trackEvent(AFEventInitiatedCheckout,
+                               withValues: [AFEventParamQuantity: CartManager.shared.cartCount])
+        default: break
+        }
+    }
+
+    public func track(event: SDKAnalyticsEvent) {
+        switch event {
+        case let .addToCart(cartItem, _, _):
+            guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
+            tracker.trackEvent(AFEventAddToCart,
+                               withValues: [AFEventParamContentId: cartItem.id as Any,
+                                            AFEventParamPrice: cartItem.totalAmount,
+                                            AFEventParamQuantity: cartItem.quantity,
+                                            AFEventParamCurrency: "INR"])
+        case let .purchaseCompleted(_, _, checkoutBuilder, _):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
             let payableAmount = NSDecimalNumber(value: checkoutBuilder.order?.payableAmount ?? Double.zero)
 
@@ -57,10 +83,6 @@ public class AppsFlyerObserver: AnalyticsEventObserver {
                                             AFEventParamContentType: "",
                                             AFEventParamRevenue: payableAmount,
                                             AFEventParamCurrency: "INR"])
-        case .checkoutInit:
-            guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
-            tracker.trackEvent(AFEventInitiatedCheckout,
-                               withValues: [AFEventParamQuantity: CartManager.shared.cartCount])
         default: break
         }
     }

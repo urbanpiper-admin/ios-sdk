@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - OrderDetails
+
 @objcMembers public class OrderDetails: NSObject, Codable {
     public let details: PastOrderDetails
     public let items: [PastOrderItem]
@@ -33,7 +34,7 @@ import Foundation
         self.statusUpdates = statusUpdates
         self.store = store
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(OrderDetails.self, from: data)
         self.init(details: me.details, items: me.items, nextState: me.nextState, nextStates: me.nextStates, payment: me.payment, statusUpdates: me.statusUpdates, store: me.store)
@@ -43,7 +44,6 @@ import Foundation
 // MARK: Order convenience initializers and mutators
 
 extension OrderDetails {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -64,7 +64,7 @@ extension OrderDetails {
         statusUpdates: [StatusUpdate]? = nil,
         store: PastOrderStore? = nil
     ) -> OrderDetails {
-        return OrderDetails(
+        OrderDetails(
             details: details ?? self.details,
             items: items ?? self.items,
             nextState: nextState ?? self.nextState,
@@ -76,48 +76,14 @@ extension OrderDetails {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    // public func toDictionary() -> [String: AnyObject] {
-//        var dictionary = [String: AnyObject]()
-//        dictionary["details"] = details.toDictionary() as AnyObject
-//        
-//        var dictionaryElements = [[String: AnyObject]]()
-//        for itemsElement in items {
-//            dictionaryElements.append(itemsElement.toDictionary())
-//        }
-//        dictionary["items"] = dictionaryElements as AnyObject
-//        if let nextState = nextState {
-//            dictionary["next_state"] = nextState as AnyObject
-//        }
-//        dictionary["next_states"] = nextStates as AnyObject
-//       
-//        dictionaryElements = [[String: AnyObject]]()
-//        for paymentElement in payment {
-//            dictionaryElements.append(paymentElement.toDictionary())
-//        }
-//        dictionary["payment"] = dictionaryElements as AnyObject
-//        
-//        dictionaryElements = [[String: AnyObject]]()
-//        for statusUpdatesElement in statusUpdates {
-//            dictionaryElements.append(statusUpdatesElement.toDictionary())
-//        }
-//        dictionary["status_updates"] = dictionaryElements as AnyObject
-//        
-//        dictionary["store"] = store.toDictionary() as AnyObject
-//        
-//        return dictionary
-//    }
-    
-    public func toObjcDictionary() -> [String : AnyObject] {
-        return toDictionary()
+
+    public func toObjcDictionary() -> [String: AnyObject] {
+        toDictionary()
     }
 }

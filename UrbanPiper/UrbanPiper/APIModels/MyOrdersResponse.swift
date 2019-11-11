@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - PastOrdersResponse
+
 @objcMembers public class PastOrdersResponse: NSObject, JSONDecodable {
     public let meta: Meta
     public let orders: [PastOrder]
@@ -14,7 +15,7 @@ import Foundation
         self.meta = meta
         self.orders = orders
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(PastOrdersResponse.self, from: data)
         self.init(meta: me.meta, orders: me.orders)
@@ -24,7 +25,6 @@ import Foundation
 // MARK: PastOrdersResponse convenience initializers and mutators
 
 extension PastOrdersResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -40,17 +40,17 @@ extension PastOrdersResponse {
         meta: Meta? = nil,
         orders: [PastOrder]? = nil
     ) -> PastOrdersResponse {
-        return PastOrdersResponse(
+        PastOrdersResponse(
             meta: meta ?? self.meta,
             orders: orders ?? self.orders
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - OptionGroupOption
+
 @objcMembers public class OptionGroupOption: NSObject, Codable {
     public let currentStock: Int
     public let optionDescription, foodType: String
@@ -42,7 +43,7 @@ import Foundation
         self.sortOrder = sortOrder
         self.title = title
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(OptionGroupOption.self, from: data)
         self.init(currentStock: me.currentStock, optionDescription: me.optionDescription, foodType: me.foodType, id: me.id, imageurl: me.imageurl, optionGroups: me.optionGroups, price: me.price, recommended: me.recommended, sortOrder: me.sortOrder, title: me.title)
@@ -52,7 +53,6 @@ import Foundation
 // MARK: OptionGroupOption convenience initializers and mutators
 
 extension OptionGroupOption {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -76,7 +76,7 @@ extension OptionGroupOption {
         sortOrder: Int? = nil,
         title: String? = nil
     ) -> OptionGroupOption {
-        return OptionGroupOption(
+        OptionGroupOption(
             currentStock: currentStock ?? self.currentStock,
             optionDescription: optionDescription ?? self.optionDescription,
             foodType: foodType ?? self.foodType,
@@ -91,29 +91,19 @@ extension OptionGroupOption {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }
 
 extension OptionGroupOption {
-    
     internal func equitableCheckDictionary() -> [String: AnyObject] {
         var dictionary: [String: AnyObject] = [String: AnyObject]()
-        //        if let currentStock = currentStock {
-        //            dictionary["current_stock"] = currentStock as AnyObject
-        //        }
         dictionary["id"] = id as AnyObject
-        //        if let price = price {
-        //            dictionary["price"] = price as AnyObject
-        //        }
-        //        if let title = title {
-        //            dictionary["title"] = title as AnyObject
-        //        }
-        //        dictionary["quantity"] = quantity as AnyObject
+
         var dictionaryElements: [[String: AnyObject]] = [[String: AnyObject]]()
         if let optionGroups = optionGroups {
             for optionGroupsElement in optionGroups {
@@ -130,45 +120,5 @@ extension OptionGroupOption {
         let rhsDictionary = rhs.equitableCheckDictionary()
 
         return NSDictionary(dictionary: lhsDictionary).isEqual(to: rhsDictionary)
-
-        //        return lhs.currentStock == rhs.currentStock  &&
-        //            lhs.descriptionField == rhs.descriptionField  &&
-        //            lhs.foodType == rhs.foodType  &&
-        //            lhs.id == rhs.id  &&
-        //            lhs.imageurl == rhs.imageurl  &&
-        //            lhs.price == rhs.price  &&
-        //            lhs.sortOrder == rhs.sortOrder  &&
-        //            lhs.title  == rhs.title  &&
-        //            lhs.nestedOptionGroups == rhs.nestedOptionGroups &&
-        //            lhs.quantity  == rhs.quantity
     }
-    
-//    /**
-//         * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//         */
-//        // public func toDictionary() -> [String : AnyObject]
-//        {
-//            var dictionary: [String : AnyObject] = [String : AnyObject]()
-//            dictionary["current_stock"] = currentStock as AnyObject
-//            dictionary["description"] = optionDescription as AnyObject
-//            dictionary["food_type"] = foodType as AnyObject
-//            dictionary["id"] = id as AnyObject
-//            if let imageurl = imageurl {
-//                dictionary["image_url"] = imageurl as AnyObject
-//            }
-//            dictionary["price"] = price as AnyObject
-//            dictionary["recommended"] = recommended as AnyObject
-//            dictionary["sort_order"] = sortOrder as AnyObject
-//            dictionary["title"] = title as AnyObject
-//            if let optionGroups = optionGroups {
-//                var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
-//                for optionGroupsElement in optionGroups {
-//                    dictionaryElements.append(optionGroupsElement.toDictionary())
-//                }
-//                dictionary["nested_option_groups"] = dictionaryElements as AnyObject
-//            }
-//            dictionary["quantity"] = quantity as AnyObject
-//            return dictionary
-//        }
-    
 }

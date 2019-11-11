@@ -50,23 +50,3 @@ extension NotificationsAPI: UPAPI {
         }
     }
 }
-
-/* extension APIManager {
-
- @objc internal func getNotifications(offset: Int = 0,
-                                      limit: Int = Constants.fetchLimit,
-                                      completion: APICompletion<NotificationsResponse>?,
-                                   failure: APIFailure?) -> URLSessionDataTask {
-
-     let urlString: String = "\(APIManager.baseUrl)/api/v1/ub/notifications/?channel__in=app_notification,all&offset=\(offset)&limit=\(limit)"
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "GET"
-
-     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
- }
-
- }*/

@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - Object
+
 @objcMembers public class Object: NSObject, Codable {
     public let comboCount: Int
     public let objectDescription: String?
@@ -43,7 +44,7 @@ import Foundation
         self.weburl = weburl
         self.subCategories = subCategories
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Object.self, from: data)
         self.init(comboCount: me.comboCount, objectDescription: me.objectDescription, id: me.id, image: me.image, itemCount: me.itemCount, loadFromWeb: me.loadFromWeb, name: me.name, slug: me.slug, sortOrder: me.sortOrder, weburl: me.weburl, subCategories: me.subCategories)
@@ -53,7 +54,6 @@ import Foundation
 // MARK: Object convenience initializers and mutators
 
 extension Object {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -78,7 +78,7 @@ extension Object {
         weburl: String? = nil,
         subCategories: [SubCategory]?? = nil
     ) -> Object {
-        return Object(
+        Object(
             comboCount: comboCount ?? self.comboCount,
             objectDescription: objectDescription ?? self.objectDescription,
             id: id ?? self.id,
@@ -94,10 +94,10 @@ extension Object {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

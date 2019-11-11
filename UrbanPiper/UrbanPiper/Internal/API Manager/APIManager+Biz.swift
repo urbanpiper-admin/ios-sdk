@@ -49,21 +49,3 @@ extension UserBizInfoAPI: UPAPI {
         }
     }
 }
-
-/* extension APIManager {
-
- @objc internal func refreshUserBizInfo(completion: APICompletion<UserBizInfoResponse>?,
-                             failure: APIFailure?) -> URLSessionDataTask {
-
-     let urlString: String = "\(APIManager.baseUrl)/api/v1/userbizinfo/?format=json&biz_id=\(bizId)"
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "GET"
-
-     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
- }
-
- }*/

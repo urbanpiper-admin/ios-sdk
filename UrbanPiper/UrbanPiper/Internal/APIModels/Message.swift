@@ -5,16 +5,8 @@
 
 import Foundation
 
-public enum MessageType: String {
-    case info
-    case alert
-    case promo
-    case coupon
-    case reward
-    case cashback
-}
-
 // MARK: - Message
+
 @objcMembers public class Message: NSObject, Codable {
     public let bannerImg: String?
     public let body: String
@@ -43,7 +35,7 @@ public enum MessageType: String {
         self.title = title
         self.type = type
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Message.self, from: data)
         self.init(bannerImg: me.bannerImg, body: me.body, campaignid: me.campaignid, channel: me.channel, created: me.created, id: me.id, target: me.target, title: me.title, type: me.type)
@@ -53,7 +45,6 @@ public enum MessageType: String {
 // MARK: Message convenience initializers and mutators
 
 extension Message {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -76,7 +67,7 @@ extension Message {
         title: String? = nil,
         type: String? = nil
     ) -> Message {
-        return Message(
+        Message(
             bannerImg: bannerImg ?? self.bannerImg,
             body: body ?? self.body,
             campaignid: campaignid ?? self.campaignid,
@@ -90,10 +81,10 @@ extension Message {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

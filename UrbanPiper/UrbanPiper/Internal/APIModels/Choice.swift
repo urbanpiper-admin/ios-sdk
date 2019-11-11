@@ -6,7 +6,8 @@
 import Foundation
 
 // MARK: - Choice
-@objcMembers public class Choice: NSObject, Codable, NSCoding {
+
+@objcMembers public class Choice: NSObject, Codable {
     public let id, sortOrder: Int
     public let text: String
 
@@ -21,19 +22,7 @@ import Foundation
         self.sortOrder = sortOrder
         self.text = text
     }
-    
-    /**
-    * NSCoding required initializer.
-    * Fills the data from the passed decoder
-    */
-    required public init(coder aDecoder: NSCoder)
-    {
-        id = aDecoder.decodeInteger(forKey: "id")
-        sortOrder = aDecoder.decodeInteger(forKey: "sort_order")
-        text = (aDecoder.decodeObject(forKey: "text") as? String)!
 
-    }
-    
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Choice.self, from: data)
         self.init(id: me.id, sortOrder: me.sortOrder, text: me.text)
@@ -43,7 +32,6 @@ import Foundation
 // MARK: Choice convenience initializers and mutators
 
 extension Choice {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -60,7 +48,7 @@ extension Choice {
         sortOrder: Int? = nil,
         text: String? = nil
     ) -> Choice {
-        return Choice(
+        Choice(
             id: id ?? self.id,
             sortOrder: sortOrder ?? self.sortOrder,
             text: text ?? self.text
@@ -68,22 +56,11 @@ extension Choice {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
-    }
-
-    /**
-    * NSCoding required method.
-    * Encodes mode properties into the decoder
-    */
-    public func encode(with aCoder: NSCoder)
-    {
-        aCoder.encode(id, forKey: "id")
-        aCoder.encode(sortOrder, forKey: "sort_order")
-        aCoder.encode(text, forKey: "text")
+        String(data: try jsonData(), encoding: encoding)
     }
 
 }

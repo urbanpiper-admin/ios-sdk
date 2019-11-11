@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - RewardsResponse
+
 @objcMembers public class RewardsResponse: NSObject, JSONDecodable {
     public let claimed, locked: [Reward]
     public let meta: Meta
@@ -19,7 +20,7 @@ import Foundation
         self.redeemed = redeemed
         self.unlocked = unlocked
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(RewardsResponse.self, from: data)
         self.init(claimed: me.claimed, locked: me.locked, meta: me.meta, redeemed: me.redeemed, unlocked: me.unlocked)
@@ -29,7 +30,6 @@ import Foundation
 // MARK: RewardsResponse convenience initializers and mutators
 
 extension RewardsResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -48,7 +48,7 @@ extension RewardsResponse {
         redeemed: [Reward]? = nil,
         unlocked: [Reward]? = nil
     ) -> RewardsResponse {
-        return RewardsResponse(
+        RewardsResponse(
             claimed: claimed ?? self.claimed,
             locked: locked ?? self.locked,
             meta: meta ?? self.meta,
@@ -58,10 +58,10 @@ extension RewardsResponse {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

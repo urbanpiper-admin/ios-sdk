@@ -6,25 +6,6 @@
 //  Copyright © 2017 UrbanPiper Inc. All rights reserved.
 //
 
-/*@GET("/api/v2/social_auth/me/")
- @GET("/api/v2/ub/wallet/transactions/")
- @POST("/api/v2/card/")
- @GET("/api/v2/items/0/recommendations/")
- @GET("/api/v2/order/{id}/reorder/")
-
- @GET("/api/v2/orders/")
- @GET("/api/v2/orders/{order_id}/")
-
- @GET("/api/v2/search/items/")
-
- @POST("/api/v2/feedback/")
-
- @GET("/api/v2/rewards/")
- @POST("/api/v2/rewards/{rewards_id}/redeem/")
-
- @GET("/api/v2/store/{store_id}/pod/")
- */
-
 import Foundation
 import RxSwift
 
@@ -87,7 +68,7 @@ import RxSwift
     }
 
     func bizAuth() -> String {
-        return "apikey \(apiUsername):\(apiKey)"
+        "apikey \(apiUsername):\(apiKey)"
     }
 
     @objc internal func authorizationKey() -> String {
@@ -98,99 +79,6 @@ import RxSwift
         }
     }
 
-//    @objc internal func updateHeaders(jwt: JWT?) {
-//        self.jwt = jwt
-//    }
-//
-//    func apiRequest<T: JSONDecodable>(urlRequest: inout URLRequest,
-//                       headers: [String : String]? = nil,
-//                       completion: APICompletion<T>?,
-//                       failure: APIFailure?) -> URLSessionDataTask {
-//
-//        var additionalHeaders: [String: String] = ["X-App-Src": "ios",
-//                                                "X-Bid": bizId,
-//                                                "X-App-Version": appVersion,
-//                                                "X-Use-Lang": SharedPreferences.language.rawValue,
-//                                                "Content-Type": "application/json",
-//                                                "Accept-Encoding": "gzip",
-//                                                "Authorization": authorizationKey()]
-//
-//        if let customHeaders: [String : String] = headers {
-//            for header in customHeaders {
-//                additionalHeaders[header.key] = header.value
-//            }
-//        }
-//
-//        urlRequest.allHTTPHeaderFields = additionalHeaders
-//
-//        let apiUrl = urlRequest.url
-//
-//        let dataTask: URLSessionDataTask = session.dataTask(with: urlRequest) { [weak self] (data: Data?, response: URLResponse?, error: Error?) in
-//            guard let httpResponse = response as? HTTPURLResponse else {
-//                let upError = UPError(data: data, response: response, error: error)
-//                DispatchQueue.main.async {
-//                    failure?(upError)
-//                }
-//                return
-//            }
-//
-//            guard 200 ... 204 ~= httpResponse.statusCode else {
-//                if let hasTokenExpired = self?.jwt?.tokenExpired, hasTokenExpired, httpResponse.statusCode == 401 {
-//                    DispatchQueue.main.async {
-//                        NotificationCenter.default.post(name: .sessionExpired, object: nil)
-//                        UrbanPiper.sharedInstance().callback(.sessionExpired)
-//                    }
-//                }
-//
-//                let upError = UPError(data: data, response: response, error: error)
-//                DispatchQueue.main.async {
-//                    failure?(upError)
-//                }
-//                return
-//            }
-//
-//            guard httpResponse.statusCode != 204 else {
-//                DispatchQueue.main.async {
-//                    completion?(GenericResponse.init() as? T)
-//                }
-//                return
-//            }
-//
-//            guard let responseData = data else {
-//                let upError = UPError(data: data, response: response, error: error)
-//                DispatchQueue.main.async {
-//                    failure?(upError)
-//                }
-//                return
-//            }
-//
-//            guard let jsonObject: Any = try? JSONSerialization.jsonObject(with: responseData, options: []),
-//                let dictionary: [String: AnyObject] = jsonObject as? [String: AnyObject] else {
-//                    DispatchQueue.main.async {
-//                        completion?(GenericResponse.init() as? T)
-//                    }
-//                return
-//            }
-//
-//            guard let result = T.init(fromDictionary: dictionary) else {
-//                let upError = UPError(type: .responseParseError, data: data, response: response, error: error)
-//                print("API Response parsing failure for url \(String(describing: apiUrl?.absoluteString))")
-//                DispatchQueue.main.async {
-//                    failure?(upError)
-//                }
-//                return
-//            }
-//
-//            DispatchQueue.main.async {
-//                completion?(result)
-//            }
-//        }
-//
-//        dataTask.resume()
-//        return dataTask
-//
-//    }
-//
     func apiDataTask<T: JSONDecodable>(upAPI: UPAPI,
                                        completion: APICompletion<T>?,
                                        failure: APIFailure?) -> URLSessionDataTask {
@@ -237,7 +125,7 @@ import RxSwift
                 }
                 return
             }
-            
+
             guard httpResponse.statusCode != 204 || (httpResponse.statusCode != 201 && (data?.count ?? 0) > 0) else {
                 DispatchQueue.main.async {
                     completion?(GenericResponse() as? T)
@@ -245,7 +133,7 @@ import RxSwift
                 return
             }
 
-            guard httpResponse.statusCode != 201 && (data?.count ?? 0) > 0 else {
+            guard httpResponse.statusCode != 201, (data?.count ?? 0) > 0 else {
                 DispatchQueue.main.async {
                     completion?(GenericResponse() as? T)
                 }
@@ -259,13 +147,13 @@ import RxSwift
                 }
                 return
             }
-            
+
             do {
                 let result = try T(data: responseData)
                 DispatchQueue.main.async {
                     completion?(result)
                 }
-            } catch (let error) {
+            } catch {
                 let upError = UPError(data: data, response: response, error: error)
                 print("\nData type \(T.Type.self))\n")
                 print("\nAPI Response parsing failure for url \(String(describing: apiUrl?.absoluteString))\n")
@@ -280,7 +168,6 @@ import RxSwift
                     failure?(upError)
                 }
             }
-            
         }
 
         dataTask.resume()
@@ -335,8 +222,8 @@ import RxSwift
                     observer.onCompleted()
                     return
                 }
-                
-                guard httpResponse.statusCode != 201 && (data?.count ?? 0) > 0 else {
+
+                guard httpResponse.statusCode != 201, (data?.count ?? 0) > 0 else {
                     observer.onNext(GenericResponse() as! T)
                     observer.onCompleted()
                     return
@@ -347,12 +234,12 @@ import RxSwift
                     observer.onError(upError)
                     return
                 }
-                
+
                 do {
                     let result = try T(data: responseData)
                     observer.onNext(result)
                     observer.onCompleted()
-                } catch (let error) {
+                } catch {
                     let upError = UPError(data: data, response: response, error: error)
                     print("\nData type \(T.Type.self))\n")
                     print("\nAPI Response parsing failure for url \(String(describing: apiUrl?.absoluteString))\n")
@@ -362,7 +249,7 @@ import RxSwift
                     if let jsonObject = String(data: responseData, encoding: String.Encoding.utf8) {
                         print("\njsonObject \(jsonObject as AnyObject)\n")
                     }
-                    
+
                     observer.onError(upError)
                 }
             }

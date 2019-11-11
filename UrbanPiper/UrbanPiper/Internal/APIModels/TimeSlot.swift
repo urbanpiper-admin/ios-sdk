@@ -6,7 +6,8 @@
 import Foundation
 
 // MARK: - TimeSlot
-@objcMembers public class TimeSlot: NSObject, Codable, NSCoding {
+
+@objcMembers public class TimeSlot: NSObject, Codable {
     public let day, endTime, startTime: String
 
     enum CodingKeys: String, CodingKey {
@@ -20,17 +21,7 @@ import Foundation
         self.endTime = endTime
         self.startTime = startTime
     }
-    
-    /**
-     * NSCoding required initializer.
-     * Fills the data from the passed decoder
-     */
-    public required init(coder aDecoder: NSCoder) {
-        day = (aDecoder.decodeObject(forKey: "day") as? String)!
-        endTime = (aDecoder.decodeObject(forKey: "end_time") as? String)!
-        startTime = (aDecoder.decodeObject(forKey: "start_time") as? String)!
-    }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(TimeSlot.self, from: data)
         self.init(day: me.day, endTime: me.endTime, startTime: me.startTime)
@@ -40,7 +31,6 @@ import Foundation
 // MARK: TimeSlot convenience initializers and mutators
 
 extension TimeSlot {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -57,7 +47,7 @@ extension TimeSlot {
         endTime: String? = nil,
         startTime: String? = nil
     ) -> TimeSlot {
-        return TimeSlot(
+        TimeSlot(
             day: day ?? self.day,
             endTime: endTime ?? self.endTime,
             startTime: startTime ?? self.startTime
@@ -65,20 +55,11 @@ extension TimeSlot {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 
-    /**
-     * NSCoding required method.
-     * Encodes mode properties into the decoder
-     */
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(day, forKey: "day")
-        aCoder.encode(endTime, forKey: "end_time")
-        aCoder.encode(startTime, forKey: "start_time")
-    }
 }

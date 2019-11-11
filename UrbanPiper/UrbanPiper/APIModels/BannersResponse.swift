@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - BannersResponse
+
 @objcMembers public class BannersResponse: NSObject, JSONDecodable {
     public let images: [BannerImage]
     public let meta: Meta
@@ -14,7 +15,7 @@ import Foundation
         self.images = images
         self.meta = meta
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(BannersResponse.self, from: data)
         self.init(images: me.images, meta: me.meta)
@@ -24,7 +25,6 @@ import Foundation
 // MARK: BannersResponse convenience initializers and mutators
 
 extension BannersResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -40,17 +40,17 @@ extension BannersResponse {
         images: [BannerImage]? = nil,
         meta: Meta? = nil
     ) -> BannersResponse {
-        return BannersResponse(
+        BannersResponse(
             images: images ?? self.images,
             meta: meta ?? self.meta
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

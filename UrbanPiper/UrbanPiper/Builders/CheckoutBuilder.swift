@@ -71,7 +71,7 @@ public class CheckoutBuilder: NSObject {
     }
 
     internal var order: Order? {
-        return validateCouponResponse ?? validateCartResponse?.order
+        validateCouponResponse ?? validateCartResponse?.order
     }
 
     /// API call to validate the items in cart, get the supported payments options, get order details such as taxes, delivery charges, payment charges etc.
@@ -325,12 +325,12 @@ public class CheckoutBuilder: NSObject {
                                            phone: phone,
                                            storeId: store.bizLocationid,
                                            paymentOption: paymentOption,
-                                           taxRate: order?.taxRate ?? store.taxRate ?? 0,
+                                           taxRate: order?.taxRate ?? 0,
                                            couponCode: couponCode,
-                                           deliveryCharge: order?.deliveryCharge ?? store.deliveryCharge ?? 0,
+                                           deliveryCharge: order?.deliveryCharge ?? 0,
                                            discountApplied: validateCouponResponse?.discount?.value ?? 0,
                                            itemTaxes: order?.itemTaxes ?? store.itemTaxes ?? 0,
-                                           packagingCharge: order?.packagingCharge ?? store.packagingCharge ?? 0,
+                                           packagingCharge: order?.packagingCharge ?? 0,
                                            orderSubTotal: order?.orderSubtotal ?? orderTotal ?? 0,
                                            orderTotal: order?.payableAmount ?? orderTotal ?? 0,
                                            applyWalletCredit: useWalletCredits,
@@ -382,12 +382,12 @@ public class CheckoutBuilder: NSObject {
                                            phone: phone,
                                            storeId: store.bizLocationid,
                                            paymentOption: paymentOption,
-                                           taxRate: order?.taxRate ?? store.taxRate ?? 0,
+                                           taxRate: order?.taxRate ?? 0,
                                            couponCode: couponCode,
-                                           deliveryCharge: order?.deliveryCharge ?? store.deliveryCharge ?? 0,
+                                           deliveryCharge: order?.deliveryCharge ?? 0,
                                            discountApplied: validateCouponResponse?.discount?.value ?? 0,
                                            itemTaxes: order?.itemTaxes ?? store.itemTaxes ?? 0,
-                                           packagingCharge: order?.packagingCharge ?? store.packagingCharge ?? 0,
+                                           packagingCharge: order?.packagingCharge ?? 0,
                                            orderSubTotal: order?.orderSubtotal ?? orderTotal ?? 0,
                                            orderTotal: order?.payableAmount ?? orderTotal ?? 0,
                                            applyWalletCredit: useWalletCredits,
@@ -440,5 +440,12 @@ public class CheckoutBuilder: NSObject {
 
         let upAPI = PaymentsAPI.verifyPayment(pid: pid, orderId: String(orderId), transactionId: transactionId)
         return APIManager.shared.apiObservable(upAPI: upAPI)
+    }
+
+    public func orderPlaced(orderId: String, phone _: String) {
+        AnalyticsManager.shared.track(event: .purchaseCompleted(orderID: orderId,
+                                                                userWalletBalance: UserManager.shared.currentUser?.userBizInfoResponse?.userBizInfos.last?.balance ?? Double.zero,
+                                                                checkoutBuilder: self,
+                                                                isReorder: CartManager.shared.isReorder))
     }
 }

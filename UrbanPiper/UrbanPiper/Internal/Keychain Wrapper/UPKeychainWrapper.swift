@@ -240,19 +240,19 @@ open class UPKeychainWrapper {
     // MARK: Public Setters
 
     @discardableResult open func set(_ value: Int, forKey key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> Bool {
-        return set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
+        set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
     }
 
     @discardableResult open func set(_ value: Float, forKey key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> Bool {
-        return set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
+        set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
     }
 
     @discardableResult open func set(_ value: Double, forKey key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> Bool {
-        return set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
+        set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
     }
 
     @discardableResult open func set(_ value: Bool, forKey key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> Bool {
-        return set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
+        set(NSNumber(value: value), forKey: key, withAccessibility: accessibility)
     }
 
     /// Save a String value to the keychain associated with a specified key. If a String value already exists for the given key, the string will be overwritten with the new value.
@@ -312,7 +312,7 @@ open class UPKeychainWrapper {
 
     @available(*, deprecated, message: "remove is deprecated, use removeObject instead")
     @discardableResult open func remove(key: String, withAccessibility accessibility: UPKeychainItemAccessibility? = nil) -> Bool {
-        return removeObject(forKey: key, withAccessibility: accessibility)
+        removeObject(forKey: key, withAccessibility: accessibility)
     }
 
     /// Remove an object associated with a specified key. If re-using a key but with a different accessibility, first remove the previous key value using removeObjectForKey(:withAccessibility) using the same accessibilty it was saved with.

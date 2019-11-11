@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - SubCategory
+
 @objcMembers public class RefreshTokenResponse: NSObject, JSONDecodable {
     public let status: String
     public let message: String
@@ -16,7 +17,7 @@ import Foundation
         self.message = message
         self.token = token
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(RefreshTokenResponse.self, from: data)
         self.init(status: me.status, message: me.message, token: me.token)
@@ -26,7 +27,6 @@ import Foundation
 // MARK: SubCategory convenience initializers and mutators
 
 extension RefreshTokenResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -43,7 +43,7 @@ extension RefreshTokenResponse {
         message: String? = nil,
         token: String? = nil
     ) -> RefreshTokenResponse {
-        return RefreshTokenResponse(
+        RefreshTokenResponse(
             status: status ?? self.status,
             message: message ?? self.message,
             token: token ?? self.token
@@ -51,11 +51,10 @@ extension RefreshTokenResponse {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }
-

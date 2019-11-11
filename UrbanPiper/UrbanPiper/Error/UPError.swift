@@ -20,7 +20,7 @@ public enum ErrorType {
     /// Optional. Returns the data object from the failed api call
     public let data: Data?
     /// Optional. Returns the response object from the failed api call
-    public let response: URLResponse?
+    private let response: URLResponse?
     internal let error: Error?
 
     /// Optional. Returns a dictionary instance de-serialized from the json data object of the failed api call

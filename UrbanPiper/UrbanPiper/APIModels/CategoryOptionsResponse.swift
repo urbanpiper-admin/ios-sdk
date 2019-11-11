@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - CategoryOptionsResponse
+
 @objcMembers public class CategoryOptionsResponse: NSObject, JSONDecodable {
     public let filters: [Filter]
     public let sortBy: [String]
@@ -19,7 +20,7 @@ import Foundation
         self.filters = filters
         self.sortBy = sortBy
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(CategoryOptionsResponse.self, from: data)
         self.init(filters: me.filters, sortBy: me.sortBy)
@@ -29,7 +30,6 @@ import Foundation
 // MARK: CategoryOptionsResponse convenience initializers and mutators
 
 extension CategoryOptionsResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -45,17 +45,17 @@ extension CategoryOptionsResponse {
         filters: [Filter]? = nil,
         sortBy: [String]? = nil
     ) -> CategoryOptionsResponse {
-        return CategoryOptionsResponse(
+        CategoryOptionsResponse(
             filters: filters ?? self.filters,
             sortBy: sortBy ?? self.sortBy
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

@@ -23,18 +23,18 @@ extension ItemsAPI: UPAPI {
         switch self {
         case let .filterAndSortOptions(categoryId):
             return "api/v2/categories/\(categoryId)/options/"
-        case .categoryItems(let categoryId, _, _, _, _, _):
+        case let .categoryItems(categoryId, _, _, _, _, _):
             return "api/v1/order/categories/\(categoryId)/items/"
         case .searchItems:
             return "api/v2/search/items/"
-        case .itemDetails(let itemId, _):
+        case let .itemDetails(itemId, _):
             return "api/v1/items/\(itemId)/"
         case .featuredItems:
             return "api/v2/items/0/recommendations/"
-        case .relatedItems(let itemIds, _, _, _):
+        case let .relatedItems(itemIds, _, _, _):
             let itemIdsString = itemIds.map { "\($0)" }.joined(separator: ",")
             return "api/v2/items/\(itemIdsString)/recommendations/"
-        case .associatedItems(let itemId, _, _, _):
+        case let .associatedItems(itemId, _, _, _):
             return "api/v2/items/\(itemId)/recommendations/"
         }
     }
@@ -174,195 +174,3 @@ extension ItemsAPI: UPAPI {
         }
     }
 }
-
-/* extension APIManager {
-
- func getFilterAndSortOptions(id: Int,
-                         completion: APICompletion<CategoryOptionsResponse>?,
-                         failure: APIFailure?) -> URLSessionDataTask {
-
-     var urlString: String = "\(APIManager.baseUrl)/api/v2/categories/\(id)/options/"
-     urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "GET"
-
-     return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
- }
-
- func getCategoryItems(categoryId: Int,
-                         storeId: Int?,
-                         offset: Int = 0,
-                         limit: Int = Constants.fetchLimit,
-                         sortKey: String? = nil,
-                         filterOptions: [FilterOption]? = nil,
- //                            isForcedRefresh: Bool,
- //                            next: String?,
-                         completion: APICompletion<CategoryItemsResponse>?,
-                         failure: APIFailure?) -> URLSessionDataTask {
-
-     var urlString: String = "\(APIManager.baseUrl)/api/v1/order/categories/\(categoryId)/items/?format=json&offset=\(offset)&limit=\(limit)&biz_id=\(bizId)"
-
-     if let id = storeId {
-         urlString = "\(urlString)&location_id=\(id)"
-     }
-
-     if let key = sortKey {
-         urlString = "\(urlString)&sort_by=\(key)"
-     }
-
-     if let options = filterOptions, options.count > 0 {
-         let keysArray = options.map { String($0.id!) }
-         let filterKeysString = keysArray.joined(separator: ",")
-         urlString = "\(urlString)&filter_by=\(filterKeysString)"
-     }
-
- //        if let nextUrlString: String = next {
- //            urlString = "\(APIManager.baseUrl)\(nextUrlString)"
- //        }
-
-     let url: URL = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
- //        , cachePolicy: isForcedRefresh ? .reloadIgnoringLocalAndRemoteCacheData : .useProtocolCachePolicy)
-
-     urlRequest.httpMethod = "GET"
-
-     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
- }
-
- func searchItems(query: String,
-                         storeId: Int?,
-                         offset: Int = 0,
-                         limit: Int = Constants.fetchLimit,
-                         completion: APICompletion<ItemsSearchResponse>?,
-                         failure: APIFailure?) -> URLSessionDataTask {
-
-     var urlString: String = "\(APIManager.baseUrl)/api/v2/search/items/?keyword=\(query)&offset=\(offset)&limit=\(limit)&biz_id=\(bizId)"
-
- //        if let nextUrlString: String = next {
- //            urlString = "\(APIManager.baseUrl)\(nextUrlString)"
- //        }
-
-     urlString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-
-     if let id = storeId {
-         urlString = urlString.appending("&location_id=\(id)")
-     }
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "GET"
-
-     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
- }
-
- func getItemDetails(itemId: Int,
-                       storeId: Int?,
-                       completion: APICompletion<Item>?,
-                       failure: APIFailure?) -> URLSessionDataTask {
-
-     var urlString: String = "\(APIManager.baseUrl)/api/v1/items/\(itemId)/"
-
-     let now: Date = Date()
-     let timeInt = now.timeIntervalSince1970 * 1000
-
-     if let id = storeId {
-         urlString = urlString.appending("?location_id=\(id)&cx=\(timeInt)")
-     } else {
-         urlString = urlString.appending("?cx=\(timeInt)")
-     }
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "GET"
-
-     return apiRequest(urlRequest: &urlRequest, completion: { (item: Item?) in
-         item?.isItemDetailsItem = true
-         completion?(item)
-     }, failure: failure)
- }
-
- func getFeaturedItems(storeId: Int?,
-                       offset: Int = 0,
-                       limit: Int = Constants.fetchLimit,
-                       completion: APICompletion<CategoryItemsResponse>?,
-                       failure: APIFailure?) -> URLSessionDataTask {
-     var urlString: String = "\(APIManager.baseUrl)/api/v2/items/0/recommendations/?offset=\(offset)&limit=\(limit)"
-
-     if let id = storeId {
-         urlString = "\(urlString)&location_id=\(id)"
-     }
-
-     //        if let nextUrlString: String = next {
-     //            urlString = "\(APIManager.baseUrl)\(nextUrlString)"
-     //        }
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "GET"
-
-     return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
- }
-
- func getRelatedItems(itemIds: [Int],
-                      storeId: Int?,
-                      offset: Int = 0,
-                      limit: Int = Constants.fetchLimit,
-                      completion: APICompletion<CategoryItemsResponse>?,
-                      failure: APIFailure?) -> URLSessionDataTask {
-     let itemIdsString = itemIds.map { "\($0)" }.joined(separator: ",")
-     var urlString: String = "\(APIManager.baseUrl)/api/v2/items/\(itemIdsString)/recommendations/?offset=\(offset)&limit=\(limit)"
-
-     if let id = storeId {
-         urlString = "\(urlString)&location_id=\(id)"
-     }
-
-     //        if let nextUrlString: String = next {
-     //            urlString = "\(APIManager.baseUrl)\(nextUrlString)"
-     //        }
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "GET"
-
-     return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
- }
-
- func getAssociatedItems(itemId: Int,
-                         storeId: Int?,
-                         offset: Int = 0,
-                         limit: Int = Constants.fetchLimit,
-                         completion: APICompletion<CategoryItemsResponse>?,
-                         failure: APIFailure?) -> URLSessionDataTask {
-     var urlString: String = "\(APIManager.baseUrl)/api/v2/items/\(itemId)/recommendations/?offset=\(offset)&limit=\(limit)"
-
-     if let id = storeId {
-         urlString = "\(urlString)&location_id=\(id)"
-     }
-
-     //        if let nextUrlString: String = next {
-     //            urlString = "\(APIManager.baseUrl)\(nextUrlString)"
-     //        }
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "GET"
-
-     return apiRequest(urlRequest: &urlRequest, headers: ["Authorization" : bizAuth()], completion: completion, failure: failure)
- }
-
- }*/

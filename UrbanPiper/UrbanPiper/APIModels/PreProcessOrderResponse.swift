@@ -6,13 +6,14 @@
 import Foundation
 
 // MARK: - PreProcessOrderResponse
+
 @objcMembers public class PreProcessOrderResponse: NSObject, JSONDecodable {
     public let order: Order
 
     init(order: Order) {
         self.order = order
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(PreProcessOrderResponse.self, from: data)
         self.init(order: me.order)
@@ -22,7 +23,6 @@ import Foundation
 // MARK: PreProcessOrderResponse convenience initializers and mutators
 
 extension PreProcessOrderResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -37,16 +37,16 @@ extension PreProcessOrderResponse {
     public func with(
         order: Order? = nil
     ) -> PreProcessOrderResponse {
-        return PreProcessOrderResponse(
+        PreProcessOrderResponse(
             order: order ?? self.order
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

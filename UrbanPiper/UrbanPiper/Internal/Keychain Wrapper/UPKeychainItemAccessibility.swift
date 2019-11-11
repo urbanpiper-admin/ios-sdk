@@ -119,6 +119,6 @@ private let keychainItemAccessibilityLookup: [UPKeychainItemAccessibility: CFStr
 
 extension UPKeychainItemAccessibility: KeychainAttrRepresentable {
     internal var keychainAttrValue: CFString {
-        return keychainItemAccessibilityLookup[self]!
+        keychainItemAccessibilityLookup[self]!
     }
 }

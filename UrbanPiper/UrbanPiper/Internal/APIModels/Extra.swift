@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - Extra
+
 @objcMembers public class Extra: NSObject, Codable {
     public let id: Int
     public let keyValues: [KeyValue]
@@ -22,7 +23,7 @@ import Foundation
         self.keyValues = keyValues
         self.name = name
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Extra.self, from: data)
         self.init(id: me.id, keyValues: me.keyValues, name: me.name)
@@ -32,7 +33,6 @@ import Foundation
 // MARK: Extra convenience initializers and mutators
 
 extension Extra {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -49,7 +49,7 @@ extension Extra {
         keyValues: [KeyValue]? = nil,
         name: String? = nil
     ) -> Extra {
-        return Extra(
+        Extra(
             id: id ?? self.id,
             keyValues: keyValues ?? self.keyValues,
             name: name ?? self.name
@@ -57,29 +57,10 @@ extension Extra {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    // public func toDictionary() -> [String : AnyObject]
-//    {
-//        var dictionary: [String : AnyObject] = [String : AnyObject]()
-//        dictionary["id"] = id as AnyObject
-//        
-//        var dictionaryElements: [[String : AnyObject]] = [[String : AnyObject]]()
-//        for itemExtraElement in keyValues {
-//            dictionaryElements.append(itemExtraElement.toDictionary())
-//        }
-//        dictionary["keyValues"] = dictionaryElements as AnyObject
-//
-//        dictionary["name"] = name as AnyObject
-//        
-//        return dictionary
-//    }
 }

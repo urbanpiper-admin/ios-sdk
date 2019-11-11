@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: - LikedItem
+
 @objcMembers public class LikedItem: NSObject, Codable {
     public let id: Int
     public let itemTitle: String
@@ -21,7 +22,7 @@ import Foundation
         self.id = id
         self.itemTitle = itemTitle
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Item.self, from: data)
         self.init(id: me.id, itemTitle: me.itemTitle)
@@ -31,7 +32,6 @@ import Foundation
 // MARK: LikedItem convenience initializers and mutators
 
 extension LikedItem {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -47,17 +47,17 @@ extension LikedItem {
         id: Int? = nil,
         itemTitle: String? = nil
     ) -> LikedItem {
-        return LikedItem(
+        LikedItem(
             id: id ?? self.id,
             itemTitle: itemTitle ?? self.itemTitle
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

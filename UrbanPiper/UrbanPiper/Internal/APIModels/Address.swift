@@ -5,14 +5,9 @@
 
 import Foundation
 
-public enum AddressTag: String {
-    case home
-    case office = "work"
-    case other
-}
-
 // MARK: - Address
-@objcMembers public class Address: NSObject, Codable, NSCoding {
+
+@objcMembers public class Address: NSObject, Codable {
     public let address1: String?
     public let address2: String?
     public let city: String?
@@ -50,7 +45,7 @@ public enum AddressTag: String {
         self.subLocality = subLocality
         self.tag = tag
     }
-    
+
     public required init?(fromDictionary dictionary: [String: AnyObject]?) {
         guard let dictionary = dictionary else { return nil }
         city = dictionary["city"] as? String
@@ -74,46 +69,25 @@ public enum AddressTag: String {
         } else {
             address1 = dictionary["address_1"] as? String
         }
-        
+
         if let line2: String = dictionary["line_2"] as? String {
             address2 = line2
         } else {
             address2 = dictionary["address_2"] as? String
         }
-        
+
         name = dictionary["name"] as? String
         phone = dictionary["phone"] as? String
 
         landmark = dictionary["landmark"] as? String
 
-        id = dictionary["id"] as! Int
+        id = dictionary["id"] as? Int
         pin = dictionary["pin"] as? String
         podid = dictionary["pod_id"] as? Int
         subLocality = dictionary["sub_locality"] as? String
         tag = dictionary["tag"] as? String ?? AddressTag.other.rawValue
     }
-    
-    /**
-     * NSCoding required initializer.
-     * Fills the data from the passed decoder
-     */
-    public required init(coder aDecoder: NSCoder) {
-        address1 = aDecoder.decodeObject(forKey: "address_1") as? String
-        landmark = aDecoder.decodeObject(forKey: "landmark") as? String
-        name = aDecoder.decodeObject(forKey: "name") as? String
-        phone = aDecoder.decodeObject(forKey: "phone") as? String
-        address2 = aDecoder.decodeObject(forKey: "address_2") as? String
-        deliverable = aDecoder.decodeObject(forKey: "deliverable") as! Bool
-        city = aDecoder.decodeObject(forKey: "city") as? String
-        id = aDecoder.decodeObject(forKey: "id") as! Int
-        lat = aDecoder.decodeObject(forKey: "lat") as? Double ?? Double(0)
-        lng = aDecoder.decodeObject(forKey: "lng") as? Double ?? Double(0)
-        pin = aDecoder.decodeObject(forKey: "pin") as? String
-        podid = aDecoder.decodeObject(forKey: "pod_id") as? Int
-        subLocality = aDecoder.decodeObject(forKey: "sub_locality") as? String
-        tag = aDecoder.decodeObject(forKey: "tag") as? String
-    }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Address.self, from: data)
         self.init(address1: me.address1, address2: me.address2, city: me.city, deliverable: me.deliverable, id: me.id, landmark: me.landmark, lat: me.lat, lng: me.lng, name: me.name, phone: me.phone, pin: me.pin, podid: me.podid, subLocality: me.subLocality, tag: me.tag)
@@ -123,8 +97,6 @@ public enum AddressTag: String {
 // MARK: Address convenience initializers and mutators
 
 extension Address {
-    
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -152,7 +124,7 @@ extension Address {
         subLocality: String? = nil,
         tag: String? = nil
     ) -> Address {
-        return Address(
+        Address(
             address1: address1 ?? self.address1,
             address2: address2 ?? self.address2,
             city: city ?? self.city,
@@ -171,20 +143,20 @@ extension Address {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
+
     public var addressTag: AddressTag {
         guard let tagString: String = tag, let addressTagVal: AddressTag = AddressTag(rawValue: tagString.lowercased()) else { return .other }
         return addressTagVal
     }
 
     public var addressString: String? {
-        return fullAddress?.replacingOccurrences(of: "\n", with: ", ")
+        fullAddress?.replacingOccurrences(of: "\n", with: ", ")
     }
 
     public var fullAddress: String? {
@@ -208,27 +180,7 @@ extension Address {
         return fullAddress
     }
 
-    /**
-     * NSCoding required method.
-     * Encodes mode properties into the decoder
-     */
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(address1, forKey: "address_1")
-        aCoder.encode(landmark, forKey: "landmark")
-        aCoder.encode(name, forKey: "name")
-        aCoder.encode(phone, forKey: "phone")
-        aCoder.encode(deliverable, forKey: "deliverable")
-        aCoder.encode(city, forKey: "city")
-        aCoder.encode(id, forKey: "id")
-        aCoder.encode(lat, forKey: "lat")
-        aCoder.encode(lng, forKey: "lng")
-        aCoder.encode(pin, forKey: "pin")
-        aCoder.encode(podid, forKey: "pod_id")
-        aCoder.encode(subLocality, forKey: "sub_locality")
-        aCoder.encode(tag, forKey: "tag")
-    }
-    
-    public func toObjcDictionary() -> [String : AnyObject] {
-        return toDictionary()
+    public func toObjcDictionary() -> [String: AnyObject] {
+        toDictionary()
     }
 }

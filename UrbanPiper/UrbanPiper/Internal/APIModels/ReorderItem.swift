@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - ReorderItem
+
 @objcMembers public class ReorderItem: NSObject, Codable {
     public let category: ItemCategory
     public let currentStock, id: Int
@@ -18,7 +19,6 @@ import Foundation
     public let serviceTaxRate, vatRate: Float
     public let preOrderStartTime: Date?
     public let preOrderEndTime: Date?
-
 
     enum CodingKeys: String, CodingKey {
         case category
@@ -53,18 +53,16 @@ import Foundation
         self.preOrderStartTime = preOrderStartTime
         self.preOrderEndTime = preOrderEndTime
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(ReorderItem.self, from: data)
         self.init(category: me.category, currentStock: me.currentStock, id: me.id, imageLandscapeurl: me.imageLandscapeurl, imageurl: me.imageurl, itemCategory: me.itemCategory, itemPrice: me.itemPrice, itemTitle: me.itemTitle, optionGroups: me.optionGroups, quantity: me.quantity, serviceTaxRate: me.serviceTaxRate, vatRate: me.vatRate, preOrderStartTime: me.preOrderStartTime, preOrderEndTime: me.preOrderEndTime)
     }
-
 }
 
 // MARK: ReorderItem convenience initializers and mutators
 
 extension ReorderItem {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -92,7 +90,7 @@ extension ReorderItem {
         preOrderStartTime: Date? = nil,
         preOrderEndTime: Date? = nil
     ) -> ReorderItem {
-        return ReorderItem(
+        ReorderItem(
             category: category ?? self.category,
             currentStock: currentStock ?? self.currentStock,
             id: id ?? self.id,
@@ -111,10 +109,10 @@ extension ReorderItem {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

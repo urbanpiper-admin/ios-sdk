@@ -10,11 +10,7 @@ import RxSwift
 import UIKit
 
 /// The primary class for integrating UrbanPiper in your app
-public class UrbanPiper: NSObject {
-    public static var isInitialized: Bool {
-        return shared != nil
-    }
-    
+public class UrbanPiper: NSObject {    
     static var shared: UrbanPiper!
     internal var callback: (SDKEvent) -> Void
 
@@ -58,7 +54,7 @@ public class UrbanPiper: NSObject {
     ///
     /// - Returns: Current `Language` set in the SDK
     public func currentLanguage() -> Language {
-        return SharedPreferences.language
+        SharedPreferences.language
     }
 }
 
@@ -69,28 +65,28 @@ public extension UrbanPiper {
     ///
     /// - Returns: An instance of `User`
     @objc func getUser() -> User? {
-        return UserManager.shared.currentUser
+        UserManager.shared.currentUser
     }
 
     /// Function returns a new instance of the helper class `RegistrationBuilder` that contains the api calls to perform a user registration
     ///
     /// - Returns: An instance of `RegistrationBuilder`
     func startRegistration() -> RegistrationBuilder {
-        return RegistrationBuilder()
+        RegistrationBuilder()
     }
 
     /// Function returns a new instance of the helper class `SocialRegBuilder` that contains the api calls to perform a social user registration
     ///
     /// - Returns: An instance of `SocialRegBuilder`
     func startSocialRegistration() -> SocialRegBuilder {
-        return SocialRegBuilder()
+        SocialRegBuilder()
     }
 
     /// Function returns a new instance of the helper class `ResetPasswordBuilder` that contains the api calls to perform a password reset
     ///
     /// - Returns: An instance of `ResetPasswordBuilder`
     func startPasswordReset() -> ResetPasswordBuilder {
-        return ResetPasswordBuilder()
+        ResetPasswordBuilder()
     }
 
     /// Function to logout the user and remove all the user related data from memory and persistant storage
@@ -107,11 +103,11 @@ public extension UrbanPiper {
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
     @discardableResult func login(phone: String, password: String, completion: @escaping APICompletion<LoginResponse>, failure: @escaping APIFailure) -> URLSessionDataTask {
-        return UserManager.shared.login(phone: phone, password: password, completion: completion, failure: failure)
+        UserManager.shared.login(phone: phone, password: password, completion: completion, failure: failure)
     }
 
     func login(phone: String, password: String) -> Observable<LoginResponse> {
-        return UserManager.shared.login(phone: phone, password: password)
+        UserManager.shared.login(phone: phone, password: password)
     }
 
     /// API call to login an social login user
@@ -125,11 +121,11 @@ public extension UrbanPiper {
     /// - Returns: An instance of URLSessionDataTask
     @discardableResult func socialLogin(name: String?, email: String?, socialLoginProvider: SocialLoginProvider, accessToken: String,
                                         completion: @escaping APICompletion<SocialLoginResponse>, failure: @escaping APIFailure) -> URLSessionDataTask {
-        return UserManager.shared.socialLogin(name: name, email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken, completion: completion, failure: failure)
+        UserManager.shared.socialLogin(name: name, email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken, completion: completion, failure: failure)
     }
 
     func socialLogin(name: String?, email: String?, socialLoginProvider: SocialLoginProvider, accessToken: String) -> Observable<SocialLoginResponse> {
-        return UserManager.shared.socialLogin(name: name, email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken)
+        UserManager.shared.socialLogin(name: name, email: email, socialLoginProvider: socialLoginProvider, accessToken: accessToken)
     }
 
     /// API call to retrieve the updated user info from the server, user needs to be logged in to make this call
@@ -139,11 +135,11 @@ public extension UrbanPiper {
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
     @discardableResult @objc func refreshUserInfo(completion: APICompletion<UserInfoResponse>?, failure: APIFailure?) -> URLSessionDataTask? {
-        return UserManager.shared.refreshUserInfo(completion: completion, failure: failure)
+        UserManager.shared.refreshUserInfo(completion: completion, failure: failure)
     }
 
     func refreshUserInfo() -> Observable<UserInfoResponse>? {
-        return UserManager.shared.refreshUserInfo()
+        UserManager.shared.refreshUserInfo()
     }
 
     /// API call to retrieve the user's updated biz info (i.e. balance, points) from the server, user needs to be logged in to make this call
@@ -153,11 +149,11 @@ public extension UrbanPiper {
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
     @objc @discardableResult func refreshUserBizInfo(completion: APICompletion<UserBizInfoResponse>? = nil, failure: APIFailure? = nil) -> URLSessionDataTask? {
-        return UserManager.shared.refreshUserBizInfo(completion: completion, failure: failure)
+        UserManager.shared.refreshUserBizInfo(completion: completion, failure: failure)
     }
 
     func refreshUserBizInfo() -> Observable<UserBizInfoResponse>? {
-        return UserManager.shared.refreshUserBizInfo()
+        UserManager.shared.refreshUserBizInfo()
     }
 
     /// API call to update the user info in the server, user needs to be logged in to make this call
@@ -866,21 +862,21 @@ extension UrbanPiper {
     ///
     /// - Returns: An instance of CheckoutBuilder
     public func startCheckout() -> CheckoutBuilder {
-        return CheckoutBuilder()
+        CheckoutBuilder()
     }
 
     /// Returns a list of items added to the cart
     ///
     /// - Returns: An instance of an array that contains the list of items added to the cart
     public func getCartItems() -> [CartItem] {
-        return CartManager.shared.cartItems
+        CartManager.shared.cartItems
     }
 
     /// Returns the total item quantity of the cart
     ///
     /// - Returns: Return an int value
     public func getCartCount() -> Int {
-        return CartManager.shared.cartCount
+        CartManager.shared.cartCount
     }
 
     /// Returns the item quantity added to the cart for a given item id
@@ -888,14 +884,14 @@ extension UrbanPiper {
     /// - Parameter itemId: Item id to get the cart quantity for
     /// - Returns: Returns an int value
     public func getItemCountFor(itemId: Int) -> Int {
-        return CartManager.shared.cartCount(for: itemId)
+        CartManager.shared.cartCount(for: itemId)
     }
 
     /// The total value of the cart factoring the item quantities and the options selected
     ///
     /// - Returns: Returns an Decimal value representing the total value of the cart
     @objc public func getCartValue() -> Double {
-        return CartManager.shared.cartValue
+        CartManager.shared.cartValue
     }
 
     /// Function call to add an cart item to the cart with the quantity to be added and the notes for the item

@@ -112,7 +112,7 @@ public class ItemOptionBuilder: NSObject {
             itemOptionGroupDict[group] = sortedItemOptions
         }
 
-        let sortedDictionary = itemOptionGroupDict.sorted { ($0.key.sortOrder ?? 0) < ($1.key.sortOrder ?? 0) }
+        let sortedDictionary = itemOptionGroupDict.sorted { ($0.key.sortOrder) < ($1.key.sortOrder) }
 
         for (group, itemOptions) in sortedDictionary {
             descriptionArray.append("• \(group.title): \(itemOptions.map { $0.title }.joined(separator: ", "))")
@@ -147,7 +147,7 @@ public class ItemOptionBuilder: NSObject {
         item = nil
 
         self.itemOption = itemOption
-        self.optionGroups = itemOption.optionGroups ?? [OptionGroup]()
+        optionGroups = itemOption.optionGroups ?? [OptionGroup]()
     }
 }
 

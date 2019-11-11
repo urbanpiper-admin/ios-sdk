@@ -16,7 +16,7 @@ enum ReorderAPI {
 extension ReorderAPI: UPAPI {
     var path: String {
         switch self {
-        case .reorder(let orderId, _, _):
+        case let .reorder(orderId, _, _):
             return "api/v2/order/\(orderId)/reorder/"
         }
     }
@@ -60,33 +60,3 @@ extension ReorderAPI: UPAPI {
         }
     }
 }
-
-/* extension APIManager {
-
- internal func reorder(orderId: Int,
-                     userLocation: CLLocationCoordinate2D?,
-                     storeId: Int?,
-                     completion: APICompletion<ReorderResponse>?,
-                     failure: APIFailure?) -> URLSessionDataTask {
-
-     var urlString: String = "\(APIManager.baseUrl)/api/v2/order/\(orderId)/reorder"
-
-     if let location: CLLocationCoordinate2D = userLocation, location.latitude != 0, location.longitude != 0 {
-         urlString = "\(urlString)/?lat=\(location.latitude)&lng=\(location.longitude)"
-         if let storeId: Int = storeId {
-             urlString = "\(urlString)&location_id=\(storeId)"
-         }
-     } else if let storeId: Int = storeId {
-         urlString = "\(urlString)/?location_id=\(storeId)"
-     }
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "GET"
-
-     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
- }
-
- }*/

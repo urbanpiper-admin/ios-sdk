@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - Filter
+
 @objcMembers public class Filter: NSObject, Codable {
     public let group: String
     public let options: [FilterOption]
@@ -14,7 +15,7 @@ import Foundation
         self.group = group
         self.options = options
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Filter.self, from: data)
         self.init(group: me.group, options: me.options)
@@ -24,7 +25,6 @@ import Foundation
 // MARK: Filter convenience initializers and mutators
 
 extension Filter {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -40,17 +40,17 @@ extension Filter {
         group: String? = nil,
         options: [FilterOption]? = nil
     ) -> Filter {
-        return Filter(
+        Filter(
             group: group ?? self.group,
             options: options ?? self.options
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

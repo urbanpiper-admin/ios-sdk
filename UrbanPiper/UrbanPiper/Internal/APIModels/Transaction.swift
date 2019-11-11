@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - Transaction
+
 @objcMembers public class Transaction: NSObject, Codable {
     public let billNumber, comments: String?
     public let created: Date
@@ -41,7 +42,7 @@ import Foundation
         self.store = store
         self.transactionid = transactionid
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Transaction.self, from: data)
         self.init(billNumber: me.billNumber, comments: me.comments, created: me.created, id: me.id, paymentAmount: me.paymentAmount, paymentSrc: me.paymentSrc, paymentType: me.paymentType, posMcid: me.posMcid, posOperatorUname: me.posOperatorUname, store: me.store, transactionid: me.transactionid)
@@ -51,7 +52,6 @@ import Foundation
 // MARK: Transaction convenience initializers and mutators
 
 extension Transaction {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -76,7 +76,7 @@ extension Transaction {
         store: Store? = nil,
         transactionid: String? = nil
     ) -> Transaction {
-        return Transaction(
+        Transaction(
             billNumber: billNumber ?? self.billNumber,
             comments: comments ?? self.comments,
             created: created ?? self.created,
@@ -92,10 +92,10 @@ extension Transaction {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

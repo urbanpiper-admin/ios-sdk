@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - KeyValue
+
 @objcMembers public class KeyValue: NSObject, Codable {
     public let id: Int
     public let key, value: String
@@ -15,7 +16,7 @@ import Foundation
         self.key = key
         self.value = value
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(KeyValue.self, from: data)
         self.init(id: me.id, key: me.key, value: me.value)
@@ -25,7 +26,6 @@ import Foundation
 // MARK: KeyValue convenience initializers and mutators
 
 extension KeyValue {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -42,7 +42,7 @@ extension KeyValue {
         key: String? = nil,
         value: String? = nil
     ) -> KeyValue {
-        return KeyValue(
+        KeyValue(
             id: id ?? self.id,
             key: key ?? self.key,
             value: value ?? self.value
@@ -50,25 +50,10 @@ extension KeyValue {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    // public func toDictionary() -> [String : AnyObject]
-//    {
-//        var dictionary: [String : AnyObject] = [String : AnyObject]()
-//        dictionary["id"] = id as AnyObject
-//        
-//        dictionary["key"] = key as AnyObject
-//
-//        dictionary["value"] = value as AnyObject
-//        
-//        return dictionary
-//    }
 }

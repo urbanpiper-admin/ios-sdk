@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - OrderPayment
+
 @objcMembers public class OrderPayment: NSObject, Codable {
     public let amount: Int
     public let option: String
@@ -21,7 +22,7 @@ import Foundation
         self.option = option
         self.srvrTrxid = srvrTrxid
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(OrderPayment.self, from: data)
         self.init(amount: me.amount, option: me.option, srvrTrxid: me.srvrTrxid)
@@ -31,7 +32,6 @@ import Foundation
 // MARK: OrderPayment convenience initializers and mutators
 
 extension OrderPayment {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -48,7 +48,7 @@ extension OrderPayment {
         option: String? = nil,
         srvrTrxid: String? = nil
     ) -> OrderPayment {
-        return OrderPayment(
+        OrderPayment(
             amount: amount ?? self.amount,
             option: option ?? self.option,
             srvrTrxid: srvrTrxid ?? self.srvrTrxid
@@ -56,10 +56,10 @@ extension OrderPayment {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

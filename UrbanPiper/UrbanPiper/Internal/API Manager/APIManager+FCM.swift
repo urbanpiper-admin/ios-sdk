@@ -50,26 +50,3 @@ extension FCMAPI: UPAPI {
         }
     }
 }
-
-/* extension APIManager {
-
- @objc internal func registerForFCMToken(token: String,
-                                    completion: APICompletion<GenericResponse>?,
-                                    failure: APIFailure?) -> URLSessionDataTask {
-     let urlString: String = "\(APIManager.baseUrl)/api/v1/device/fcm/"
-
-     let url: URL = URL(string: urlString)!
-
-     var urlRequest: URLRequest = URLRequest(url: url)
-
-     urlRequest.httpMethod = "POST"
-
-     let params: [String: Any] = ["registration_id": token,
-                                  "device_id": APIManager.uuidString as Any,
-                                  "channel": APIManager.channel]
-
-     urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
-
-     return apiRequest(urlRequest: &urlRequest, completion: completion, failure: failure)
- }
- }*/

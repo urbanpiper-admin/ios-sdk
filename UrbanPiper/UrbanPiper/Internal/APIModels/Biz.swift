@@ -5,30 +5,9 @@
 
 import Foundation
 
-public enum Language: String {
-    case english = "en"
-    case hindi = "hi"
-    case japanese = "ja"
-    case arabic = "ar"
-
-    public var displayName: String {
-        switch self {
-        case .english:
-            return "English"
-        case .hindi:
-            return "Hindi"
-        case .japanese:
-            return "Japanese"
-        case .arabic:
-            return "Arabic"
-        }
-    }
-}
-
 // MARK: - Biz
-@objcMembers public class Biz: NSObject, Codable, NSCoding {
-    public static var shared: Biz!
 
+@objcMembers public class Biz: NSObject, Codable {
     public let contactPhone: String?
     public let currency: String
     public let deliveryMinOffsetTime: Int
@@ -44,7 +23,7 @@ public enum Language: String {
     public let pgProvider: String?
     public let pickupMinOffsetTime: Int
     public let preProcess: Bool
-    public let referralShareLbl, referraluiLbl: String
+    public let referralShareLbl, referraluiLbl: String?
     public let simplClientid: String?
     public let supportedLanguages: [String]
     public let timeSlots: [TimeSlot]
@@ -80,7 +59,7 @@ public enum Language: String {
         case usePointOfDelivery = "use_point_of_delivery"
     }
 
-    init(contactPhone: String?, currency: String, deliveryMinOffsetTime: Int, feedbackConfig: [FeedbackConfig], gst: String?, isPickupEnabled: Bool, isdCode: String, minOrderTotal: Double, minimumWalletCreditThreshold: Double, msgNearestStoreClosed: String?, msgNoStoresNearby: String?, msgStoreClosedTemporary: String?, orderDeliveryRadius: Int, paymentOptions: [String], paypalClientToken: String?, pgProvider: String?, pickupMinOffsetTime: Int, preProcess: Bool, referralShareLbl: String, referraluiLbl: String, simplClientid: String?, supportedLanguages: [String], timeSlots: [TimeSlot], timezone: String, tin: String?, usePointOfDelivery: Bool) {
+    init(contactPhone: String?, currency: String, deliveryMinOffsetTime: Int, feedbackConfig: [FeedbackConfig], gst: String?, isPickupEnabled: Bool, isdCode: String, minOrderTotal: Double, minimumWalletCreditThreshold: Double, msgNearestStoreClosed: String?, msgNoStoresNearby: String?, msgStoreClosedTemporary: String?, orderDeliveryRadius: Int, paymentOptions: [String], paypalClientToken: String?, pgProvider: String?, pickupMinOffsetTime: Int, preProcess: Bool, referralShareLbl: String?, referraluiLbl: String?, simplClientid: String?, supportedLanguages: [String], timeSlots: [TimeSlot], timezone: String, tin: String?, usePointOfDelivery: Bool) {
         self.contactPhone = contactPhone
         self.currency = currency
         self.deliveryMinOffsetTime = deliveryMinOffsetTime
@@ -108,40 +87,7 @@ public enum Language: String {
         self.tin = tin
         self.usePointOfDelivery = usePointOfDelivery
     }
-    
-    /**
-         * NSCoding required initializer.
-         * Fills the data from the passed decoder
-         */
-        public required init(coder aDecoder: NSCoder) {
-            isdCode = (aDecoder.decodeObject(forKey: "isd_code") as? String)!
-            contactPhone = (aDecoder.decodeObject(forKey: "contact_phone") as? String)!
-            currency = (aDecoder.decodeObject(forKey: "currency") as? String)!
-            deliveryMinOffsetTime = aDecoder.decodeInteger(forKey: "delivery_min_offset_time")
-            feedbackConfig = (aDecoder.decodeObject(forKey: "feedback_config") as? [FeedbackConfig])!
-            gst = aDecoder.decodeObject(forKey: "gst") as? String 
-            isPickupEnabled = aDecoder.decodeBool(forKey: "is_pickup_enabled")
-            minOrderTotal = aDecoder.decodeDouble(forKey: "min_order_total")
-            minimumWalletCreditThreshold = aDecoder.decodeDouble(forKey: "minimum_wallet_credit_threshold")
-            msgNearestStoreClosed = aDecoder.decodeObject(forKey: "msg_nearest_store_closed") as? String
-            msgNoStoresNearby = aDecoder.decodeObject(forKey: "msg_no_stores_nearby") as? String
-            msgStoreClosedTemporary = aDecoder.decodeObject(forKey: "msg_store_closed_temporary") as? String
-            orderDeliveryRadius = aDecoder.decodeInteger(forKey: "order_delivery_radius")
-            paymentOptions = (aDecoder.decodeObject(forKey: "payment_options") as? [String])!
-            supportedLanguages = (aDecoder.decodeObject(forKey: "supported_languages") as? [String])!
-            paypalClientToken = aDecoder.decodeObject(forKey: "paypal_client_token") as? String
-            pgProvider = aDecoder.decodeObject(forKey: "pg_provider") as? String
-            pickupMinOffsetTime = aDecoder.decodeInteger(forKey: "pickup_min_offset_time")
-            preProcess = aDecoder.decodeBool(forKey: "pre_process")
-            referralShareLbl = (aDecoder.decodeObject(forKey: "referral_share_lbl") as? String)!
-            referraluiLbl = (aDecoder.decodeObject(forKey: "referral_ui_lbl") as? String)!
-            simplClientid = aDecoder.decodeObject(forKey: "simpl_client_id") as? String
-            timeSlots = (aDecoder.decodeObject(forKey: "time_slots") as? [TimeSlot])!
-            timezone = (aDecoder.decodeObject(forKey: "timezone") as? String)!
-            tin = aDecoder.decodeObject(forKey: "tin") as? String
-            usePointOfDelivery = aDecoder.decodeBool(forKey: "use_point_of_delivery")
-        }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Biz.self, from: data)
         self.init(contactPhone: me.contactPhone, currency: me.currency, deliveryMinOffsetTime: me.deliveryMinOffsetTime, feedbackConfig: me.feedbackConfig, gst: me.gst, isPickupEnabled: me.isPickupEnabled, isdCode: me.isdCode, minOrderTotal: me.minOrderTotal, minimumWalletCreditThreshold: me.minimumWalletCreditThreshold, msgNearestStoreClosed: me.msgNearestStoreClosed, msgNoStoresNearby: me.msgNoStoresNearby, msgStoreClosedTemporary: me.msgStoreClosedTemporary, orderDeliveryRadius: me.orderDeliveryRadius, paymentOptions: me.paymentOptions, paypalClientToken: me.paypalClientToken, pgProvider: me.pgProvider, pickupMinOffsetTime: me.pickupMinOffsetTime, preProcess: me.preProcess, referralShareLbl: me.referralShareLbl, referraluiLbl: me.referraluiLbl, simplClientid: me.simplClientid, supportedLanguages: me.supportedLanguages, timeSlots: me.timeSlots, timezone: me.timezone, tin: me.tin, usePointOfDelivery: me.usePointOfDelivery)
@@ -151,7 +97,6 @@ public enum Language: String {
 // MARK: Biz convenience initializers and mutators
 
 extension Biz {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -191,7 +136,7 @@ extension Biz {
         tin: String? = nil,
         usePointOfDelivery: Bool? = nil
     ) -> Biz {
-        return Biz(
+        Biz(
             contactPhone: contactPhone ?? self.contactPhone,
             currency: currency ?? self.currency,
             deliveryMinOffsetTime: deliveryMinOffsetTime ?? self.deliveryMinOffsetTime,
@@ -222,49 +167,14 @@ extension Biz {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-    
 
-        /**
-         * NSCoding required method.
-         * Encodes mode properties into the decoder
-         */
-        public func encode(with aCoder: NSCoder) {
-            aCoder.encode(contactPhone, forKey: "contact_phone")
-            aCoder.encode(currency, forKey: "currency")
-            aCoder.encode(deliveryMinOffsetTime, forKey: "delivery_min_offset_time")
-            aCoder.encode(feedbackConfig, forKey: "feedback_config")
-            aCoder.encode(gst, forKey: "gst")
-            aCoder.encode(isPickupEnabled, forKey: "is_pickup_enabled")
-            aCoder.encode(minOrderTotal, forKey: "min_order_total")
-            aCoder.encode(minimumWalletCreditThreshold, forKey: "minimum_wallet_credit_threshold")
-            aCoder.encode(msgNearestStoreClosed, forKey: "msg_nearest_store_closed")
-            aCoder.encode(msgNoStoresNearby, forKey: "msg_no_stores_nearby")
-            aCoder.encode(msgStoreClosedTemporary, forKey: "msg_store_closed_temporary")
-            aCoder.encode(orderDeliveryRadius, forKey: "order_delivery_radius")
-            aCoder.encode(paymentOptions, forKey: "payment_options")
-            aCoder.encode(supportedLanguages, forKey: "supported_languages")
-            aCoder.encode(paypalClientToken, forKey: "paypal_client_token")
-            aCoder.encode(pgProvider, forKey: "pg_provider")
-            aCoder.encode(pickupMinOffsetTime, forKey: "pickup_min_offset_time")
-            aCoder.encode(preProcess, forKey: "pre_process")
-            aCoder.encode(referralShareLbl, forKey: "referral_share_lbl")
-            aCoder.encode(referraluiLbl, forKey: "referral_ui_lbl")
-            aCoder.encode(simplClientid, forKey: "simpl_client_id")
-            aCoder.encode(timeSlots, forKey: "time_slots")
-            aCoder.encode(timezone, forKey: "timezone")
-            aCoder.encode(tin, forKey: "tin")
-            aCoder.encode(usePointOfDelivery, forKey: "use_point_of_delivery")
-            aCoder.encode(isdCode, forKey: "isd_code")
-    }
-    
-    public func toObjcDictionary() -> [String : AnyObject] {
-        return toDictionary()
+    public func toObjcDictionary() -> [String: AnyObject] {
+        toDictionary()
     }
 }

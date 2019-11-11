@@ -5,12 +5,8 @@
 
 import Foundation
 
-public enum PaymentType: String {
-    case paytm
-    case paytabs
-}
-
 // MARK: - DataClass
+
 @objcMembers public class DataClass: NSObject, Codable {
     public let website: String?
     public let paymenturl: String?
@@ -20,9 +16,9 @@ public enum PaymentType: String {
     public let callbackURL: String?
     public let type, checksumhash, txnAmount: String?
     public let key: String?
-    
+
     public var paymentType: PaymentType {
-        return PaymentType(rawValue: type!)!
+        PaymentType(rawValue: type!)!
     }
 
     enum CodingKeys: String, CodingKey {
@@ -55,18 +51,16 @@ public enum PaymentType: String {
         self.txnAmount = txnAmount
         self.key = key
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(DataClass.self, from: data)
         self.init(website: me.website, paymenturl: me.paymenturl, orderID: me.orderID, mid: me.mid, overrideurl: me.overrideurl, channelID: me.channelID, industryTypeID: me.industryTypeID, custID: me.custID, callbackURL: me.callbackURL, type: me.type, checksumhash: me.checksumhash, txnAmount: me.txnAmount, key: me.key)
     }
-
 }
 
 // MARK: DataClass convenience initializers and mutators
 
 extension DataClass {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -93,7 +87,7 @@ extension DataClass {
         txnAmount: String? = nil,
         key: String? = nil
     ) -> DataClass {
-        return DataClass(
+        DataClass(
             website: website ?? self.website,
             paymenturl: paymenturl ?? self.paymenturl,
             orderID: orderID ?? self.orderID,
@@ -111,10 +105,10 @@ extension DataClass {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

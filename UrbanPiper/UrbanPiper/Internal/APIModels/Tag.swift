@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - Tag
+
 @objcMembers public class Tag: NSObject, Codable {
     public let id: Int
     public let title: String
@@ -14,7 +15,7 @@ import Foundation
         self.id = id
         self.title = title
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Tag.self, from: data)
         self.init(id: me.id, title: me.title)
@@ -24,7 +25,6 @@ import Foundation
 // MARK: TagTag convenience initializers and mutators
 
 extension Tag {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -40,17 +40,17 @@ extension Tag {
         id: Int? = nil,
         title: String? = nil
     ) -> Tag {
-        return Tag(
+        Tag(
             id: id ?? self.id,
             title: title ?? self.title
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

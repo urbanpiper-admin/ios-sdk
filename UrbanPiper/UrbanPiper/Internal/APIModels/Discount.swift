@@ -8,6 +8,7 @@
 import Foundation
 
 // MARK: - Discount
+
 @objcMembers public class Discount: NSObject, Codable {
     public let msg: String?
     public let success: Bool
@@ -18,7 +19,7 @@ import Foundation
         self.success = success
         self.value = value
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(Discount.self, from: data)
         self.init(msg: me.msg, success: me.success, value: me.value)
@@ -28,7 +29,6 @@ import Foundation
 // MARK: Discount convenience initializers and mutators
 
 extension Discount {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -45,7 +45,7 @@ extension Discount {
         success: Bool? = nil,
         value: Double? = nil
     ) -> Discount {
-        return Discount(
+        Discount(
             msg: msg ?? self.msg,
             success: success ?? self.success,
             value: value ?? self.value
@@ -53,26 +53,10 @@ extension Discount {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    // public func toDictionary() -> [String : AnyObject]
-//    {
-//        var dictionary: [String : AnyObject] = [String : AnyObject]()
-//        dictionary["msg"] = msg as AnyObject
-//
-//        dictionary["success"] = success as AnyObject
-//        
-//        dictionary["value"] = value as AnyObject
-//
-//        return dictionary
-//    }
-
 }

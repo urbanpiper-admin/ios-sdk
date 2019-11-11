@@ -6,11 +6,13 @@
 import Foundation
 
 // MARK: - SubCategory
+
 @objcMembers public class SubCategory: NSObject, Codable {
-    public let subCategoryDescription: String
+    public let subCategoryDescription: String?
     public let id: Int
-    public let image: String
-    public let name, slug: String
+    public let image: String?
+    public let name: String
+    public let slug: String?
     public let sortOrder: Int
 
     enum CodingKeys: String, CodingKey {
@@ -19,7 +21,7 @@ import Foundation
         case sortOrder = "sort_order"
     }
 
-    init(subCategoryDescription: String, id: Int, image: String, name: String, slug: String, sortOrder: Int) {
+    init(subCategoryDescription: String?, id: Int, image: String?, name: String, slug: String?, sortOrder: Int) {
         self.subCategoryDescription = subCategoryDescription
         self.id = id
         self.image = image
@@ -27,7 +29,7 @@ import Foundation
         self.slug = slug
         self.sortOrder = sortOrder
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(SubCategory.self, from: data)
         self.init(subCategoryDescription: me.subCategoryDescription, id: me.id, image: me.image, name: me.name, slug: me.slug, sortOrder: me.sortOrder)
@@ -37,7 +39,6 @@ import Foundation
 // MARK: SubCategory convenience initializers and mutators
 
 extension SubCategory {
-    
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -57,7 +58,7 @@ extension SubCategory {
         slug: String? = nil,
         sortOrder: Int? = nil
     ) -> SubCategory {
-        return SubCategory(
+        SubCategory(
             subCategoryDescription: subCategoryDescription ?? self.subCategoryDescription,
             id: id ?? self.id,
             image: image ?? self.image,
@@ -68,25 +69,10 @@ extension SubCategory {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-//    /**
-//     * Returns all the available property values in the form of [String : AnyObject] object where the key is the approperiate json key and the value is the value of the corresponding property
-//     */
-//    // public func toDictionary() -> [String: AnyObject] {
-//        var dictionary: [String: AnyObject] = [String: AnyObject]()
-//        dictionary["id"] = id as AnyObject
-//        dictionary["image"] = image as AnyObject
-//        dictionary["name"] = name as AnyObject
-//        dictionary["slug"] = slug as AnyObject
-//        dictionary["sort_order"] = sortOrder as AnyObject
-//        dictionary["description"] = subCategoryDescription as AnyObject
-//
-//        return dictionary
-//    }
 }

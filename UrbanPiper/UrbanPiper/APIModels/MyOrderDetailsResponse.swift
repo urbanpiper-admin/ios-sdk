@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - PastOrderDetailsResponse
+
 @objcMembers public class PastOrderDetailsResponse: NSObject, JSONDecodable {
     public let customer: Customer
     public let order: OrderDetails
@@ -14,7 +15,7 @@ import Foundation
         self.customer = customer
         self.order = order
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(PastOrderDetailsResponse.self, from: data)
         self.init(customer: me.customer, order: me.order)
@@ -24,7 +25,6 @@ import Foundation
 // MARK: PastOrderDetailsResponse convenience initializers and mutators
 
 extension PastOrderDetailsResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -40,21 +40,21 @@ extension PastOrderDetailsResponse {
         customer: Customer? = nil,
         order: OrderDetails? = nil
     ) -> PastOrderDetailsResponse {
-        return PastOrderDetailsResponse(
+        PastOrderDetailsResponse(
             customer: customer ?? self.customer,
             order: order ?? self.order
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
-    
-    public func toObjcDictionary() -> [String : AnyObject] {
-        return toDictionary()
+
+    public func toObjcDictionary() -> [String: AnyObject] {
+        toDictionary()
     }
 }

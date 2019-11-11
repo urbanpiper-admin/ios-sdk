@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - ItemTag
+
 @objcMembers public class ItemTag: NSObject, Codable {
     public let group: String
     public let tags: [Tag]
@@ -14,7 +15,7 @@ import Foundation
         self.group = group
         self.tags = tags
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(ItemTag.self, from: data)
         self.init(group: me.group, tags: me.tags)
@@ -24,7 +25,6 @@ import Foundation
 // MARK: ObjectTag convenience initializers and mutators
 
 extension ItemTag {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -40,17 +40,17 @@ extension ItemTag {
         group: String? = nil,
         tags: [Tag]? = nil
     ) -> ItemTag {
-        return ItemTag(
+        ItemTag(
             group: group ?? self.group,
             tags: tags ?? self.tags
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

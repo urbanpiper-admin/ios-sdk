@@ -7,74 +7,42 @@
 
 import Foundation
 
-public enum UserStatus: Int, RawRepresentable {
-    case registrationRequired
-    case phoneNumberRequired
-    case verifyPhoneNumber
-    case registrationSuccessfullVerifyOTP
-    case otpSent
-    case valid
-
-    public typealias RawValue = String
-
-    public init?(rawValue: RawValue) {
-        switch rawValue {
-        case "new_registration_required": self = .registrationRequired
-        case "phone_number_required": self = .phoneNumberRequired
-        case "userbiz_phone_not_validated": self = .verifyPhoneNumber
-        case "User has successfully been registered and validated": self = .valid
-        case "User has successfully been registered.": self = .registrationSuccessfullVerifyOTP
-        case "otp_sent": self = .otpSent
-        default:
-            return nil
-        }
-    }
-
-    public var rawValue: RawValue {
-        switch self {
-        case .registrationRequired: return "new_registration_required"
-        case .phoneNumberRequired: return "phone_number_required"
-        case .verifyPhoneNumber: return "userbiz_phone_not_validated"
-        case .registrationSuccessfullVerifyOTP: return "User has successfully been registered."
-        case .otpSent: return "otp_sent"
-        case .valid: return "User has successfully been registered and validated"
-        }
-    }
-}
-
 // MARK: - User
-@objcMembers public class User: NSObject, Codable {
+
+@objcMembers public class User: NSObject, Codable, NSCoding {
     public let active: Bool
     public let address: String?
     public let anniversary: Date?
-    public let anniversaryDate, birthdate: String?
     public let birthday: Date?
     public let currentCity: String?
     public let email, firstName: String
     public let gender: String?
     public let lastName: String?
     public let phone: String
-    internal let provider: String?
+    public let provider: String?
     public let userBizInfoResponse: UserBizInfoResponse?
     internal let jwt: JWT?
     internal let accessToken: String?
-    
+
     public var username: String {
-        return jwt!.username
+        jwt!.username
     }
-    
+
     public var authKey: String {
-        return jwt!.tKey
+        jwt!.tKey
     }
-    
+
     public var phoneVerified: Bool {
-        return jwt!.phoneVerified
+        jwt!.phoneVerified
+    }
+
+    public var emailVerified: Bool {
+        jwt!.emailVerified
     }
 
     enum CodingKeys: String, CodingKey {
         case active, address, anniversary
-        case anniversaryDate = "anniversary_date"
-        case birthdate, birthday
+        case birthday
         case currentCity = "current_city"
         case email
         case firstName = "first_name"
@@ -82,16 +50,14 @@ public enum UserStatus: Int, RawRepresentable {
         case lastName = "last_name"
         case phone, provider
         case userBizInfoResponse = "user_biz_info_response"
-        case jwt = "jwt"
+        case jwt
         case accessToken = "access_token"
     }
 
-    init(active: Bool, address: String?, anniversary: Date?, anniversaryDate: String?, birthdate: String?, birthday: Date?, currentCity: String?, email: String, firstName: String, gender: String?, lastName: String?, phone: String, provider: String?, accessToken: String?, userBizInfoResponse: UserBizInfoResponse?, jwt: JWT?) {
+    init(active: Bool, address: String?, anniversary: Date?, birthday: Date?, currentCity: String?, email: String, firstName: String, gender: String?, lastName: String?, phone: String, provider: String?, accessToken: String?, userBizInfoResponse: UserBizInfoResponse?, jwt: JWT?) {
         self.active = active
         self.address = address
         self.anniversary = anniversary
-        self.anniversaryDate = anniversaryDate
-        self.birthdate = birthdate
         self.birthday = birthday
         self.currentCity = currentCity
         self.email = email
@@ -104,21 +70,41 @@ public enum UserStatus: Int, RawRepresentable {
         self.userBizInfoResponse = userBizInfoResponse
         self.jwt = jwt
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(User.self, from: data)
-        self.init(active: me.active, address: me.address, anniversary: me.anniversary, anniversaryDate: me.anniversaryDate, birthdate: me.birthdate, birthday: me.birthday, currentCity: me.currentCity, email: me.email, firstName: me.firstName, gender: me.gender, lastName: me.lastName, phone: me.phone, provider: me.provider, accessToken: me.accessToken, userBizInfoResponse: me.userBizInfoResponse, jwt: me.jwt)
+        self.init(active: me.active, address: me.address, anniversary: me.anniversary, birthday: me.birthday, currentCity: me.currentCity, email: me.email, firstName: me.firstName, gender: me.gender, lastName: me.lastName, phone: me.phone, provider: me.provider, accessToken: me.accessToken, userBizInfoResponse: me.userBizInfoResponse, jwt: me.jwt)
+    }
+
+    /**
+     * NSCoding required initializer.
+     * Fills the data from the passed decoder
+     */
+    public required init(coder aDecoder: NSCoder) {
+        active = true
+        firstName = aDecoder.decodeObject(forKey: "first_name") as! String
+        userBizInfoResponse = aDecoder.decodeObject(forKey: "biz") as? UserBizInfoResponse
+        email = aDecoder.decodeObject(forKey: "email") as! String
+        phone = aDecoder.decodeObject(forKey: "phone") as! String
+        gender = aDecoder.decodeObject(forKey: "gender") as? String
+        provider = aDecoder.decodeObject(forKey: "provider") as? String
+        accessToken = aDecoder.decodeObject(forKey: "accessToken") as? String
+        address = aDecoder.decodeObject(forKey: "address") as? String
+        anniversary = aDecoder.decodeObject(forKey: "anniversary") as? Date
+        birthday = aDecoder.decodeObject(forKey: "birthday") as? Date
+        currentCity = aDecoder.decodeObject(forKey: "current_city") as? String
+        lastName = aDecoder.decodeObject(forKey: "last_name") as? String
+        jwt = aDecoder.decodeObject(forKey: "jwt") as? JWT
     }
 }
 
 // MARK: User convenience initializers and mutators
 
 extension User {
-    
     convenience init(jwtToken: String) {
         let jwt = JWT(jwtToken: jwtToken)
-        
-        self.init(active: true, address: nil, anniversary: nil, anniversaryDate: nil, birthdate: nil, birthday: nil, currentCity: nil, email: jwt.email, firstName: jwt.firstName, gender: nil, lastName: nil, phone: jwt.phone, provider: nil, accessToken: nil, userBizInfoResponse: nil, jwt: jwt)
+
+        self.init(active: true, address: nil, anniversary: nil, birthday: nil, currentCity: nil, email: jwt.email, firstName: jwt.firstName, gender: nil, lastName: nil, phone: jwt.phone, provider: nil, accessToken: nil, userBizInfoResponse: nil, jwt: jwt)
     }
 
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
@@ -136,8 +122,6 @@ extension User {
         active: Bool? = nil,
         address: String? = nil,
         anniversary: Date? = nil,
-        anniversaryDate: String? = nil,
-        birthdate: String? = nil,
         birthday: Date? = nil,
         currentCity: String? = nil,
         email: String? = nil,
@@ -147,12 +131,10 @@ extension User {
         phone: String? = nil,
         userBizInfoResponse: UserBizInfoResponse? = nil
     ) -> User {
-        return User(
+        User(
             active: active ?? self.active,
             address: address ?? self.address,
             anniversary: anniversary ?? self.anniversary,
-            anniversaryDate: anniversaryDate ?? self.anniversaryDate,
-            birthdate: birthdate ?? self.birthdate,
             birthday: birthday ?? self.birthday,
             currentCity: currentCity ?? self.currentCity,
             email: email ?? self.email,
@@ -160,62 +142,78 @@ extension User {
             gender: gender ?? self.gender,
             lastName: lastName ?? self.lastName,
             phone: phone ?? self.phone,
-            provider: self.provider,
-            accessToken: self.accessToken,
-            userBizInfoResponse: userBizInfoResponse ?? self.userBizInfoResponse,
-            jwt: self.jwt
-        )
-    }
-    
-    func with(jwtToken: String) -> User {
-        let jwt = JWT(jwtToken: jwtToken)
-        
-        return User(
-            active: self.active,
-            address: self.address,
-            anniversary: self.anniversary,
-            anniversaryDate: self.anniversaryDate,
-            birthdate: self.birthdate,
-            birthday: self.birthday,
-            currentCity: self.currentCity,
-            email: jwt.email ?? self.email,
-            firstName: jwt.firstName ?? self.firstName,
-            gender: self.gender,
-            lastName: jwt.lastName ?? self.lastName,
-            phone: jwt.phone ?? self.phone,
-            provider: self.provider,
-            accessToken: self.accessToken,
+            provider: provider,
+            accessToken: accessToken,
             userBizInfoResponse: userBizInfoResponse ?? self.userBizInfoResponse,
             jwt: jwt
         )
     }
-    
-    func with(userInfoResponse: UserInfoResponse) -> User {
+
+    func with(jwtToken: String) -> User {
+        let jwt = JWT(jwtToken: jwtToken)
+
         return User(
-            active: userInfoResponse.active ?? self.active,
-            address: userInfoResponse.address ?? self.address,
-            anniversary: userInfoResponse.anniversary ?? self.anniversary,
-            anniversaryDate: userInfoResponse.anniversaryDate ?? self.anniversaryDate,
-            birthdate: userInfoResponse.birthdate ?? self.birthdate,
-            birthday: userInfoResponse.birthday ?? self.birthday,
-            currentCity: userInfoResponse.currentCity ?? self.currentCity,
-            email: userInfoResponse.email ?? self.email,
-            firstName: userInfoResponse.firstName ?? self.firstName,
-            gender: userInfoResponse.gender ?? self.gender,
-            lastName: userInfoResponse.lastName ?? self.lastName,
-            phone: userInfoResponse.phone ?? self.phone,
-            provider: self.provider,
-            accessToken: self.accessToken,
-            userBizInfoResponse: userBizInfoResponse ?? self.userBizInfoResponse,
-            jwt: self.jwt
+            active: active,
+            address: address,
+            anniversary: anniversary,
+            birthday: birthday,
+            currentCity: currentCity,
+            email: email,
+            firstName: firstName,
+            gender: gender,
+            lastName: lastName,
+            phone: phone,
+            provider: provider,
+            accessToken: accessToken,
+            userBizInfoResponse: userBizInfoResponse,
+            jwt: jwt
+        )
+    }
+
+    func with(userInfoResponse: UserInfoResponse) -> User {
+        User(
+            active: userInfoResponse.active,
+            address: userInfoResponse.address,
+            anniversary: userInfoResponse.anniversary ?? anniversary,
+            birthday: userInfoResponse.birthday ?? birthday,
+            currentCity: userInfoResponse.currentCity ?? currentCity,
+            email: userInfoResponse.email,
+            firstName: userInfoResponse.firstName,
+            gender: userInfoResponse.gender ?? gender,
+            lastName: userInfoResponse.lastName ?? lastName,
+            phone: userInfoResponse.phone,
+            provider: provider,
+            accessToken: accessToken,
+            userBizInfoResponse: userBizInfoResponse ?? userBizInfoResponse,
+            jwt: jwt
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
+    }
+
+    /**
+     * NSCoding required method.
+     * Encodes mode properties into the decoder
+     */
+    @objc public func encode(with aCoder: NSCoder) {
+        aCoder.encode(userBizInfoResponse, forKey: "biz")
+        aCoder.encode(email, forKey: "email")
+        aCoder.encode(gender, forKey: "gender")
+        aCoder.encode(phone, forKey: "phone")
+        aCoder.encode(provider, forKey: "provider")
+        aCoder.encode(accessToken, forKey: "accessToken")
+        aCoder.encode(address, forKey: "address")
+        aCoder.encode(anniversary, forKey: "anniversary")
+        aCoder.encode(birthday, forKey: "birthday")
+        aCoder.encode(currentCity, forKey: "current_city")
+        aCoder.encode(firstName, forKey: "first_name")
+        aCoder.encode(lastName, forKey: "last_name")
+        aCoder.encode(jwt, forKey: "jwt")
     }
 }

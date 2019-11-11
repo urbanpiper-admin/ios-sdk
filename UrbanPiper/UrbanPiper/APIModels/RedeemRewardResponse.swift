@@ -6,6 +6,7 @@
 import Foundation
 
 // MARK: - RedeemRewardResponse
+
 @objcMembers public class RedeemRewardResponse: NSObject, JSONDecodable {
     public let expiresIn: Int?
     public let ptsRemaining: Int?
@@ -15,11 +16,11 @@ import Foundation
 
     enum CodingKeys: String, CodingKey {
         case expiresIn = "expires_in"
-        case ptsRemaining = "ptsRemaining"
+        case ptsRemaining
         case redemptionCode = "redemption_code"
         case status, message
     }
-    
+
     init(expiresIn: Int?, ptsRemaining: Int?, redemptionCode: String, status: String, message: String) {
         self.expiresIn = expiresIn
         self.ptsRemaining = ptsRemaining
@@ -27,7 +28,7 @@ import Foundation
         self.status = status
         self.message = message
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(RedeemRewardResponse.self, from: data)
         self.init(expiresIn: me.expiresIn, ptsRemaining: me.ptsRemaining, redemptionCode: me.redemptionCode, status: me.status, message: me.message)
@@ -37,7 +38,6 @@ import Foundation
 // MARK: RedeemRewardResponse convenience initializers and mutators
 
 extension RedeemRewardResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -56,7 +56,7 @@ extension RedeemRewardResponse {
         status: String? = nil,
         message: String? = nil
     ) -> RedeemRewardResponse {
-        return RedeemRewardResponse(
+        RedeemRewardResponse(
             expiresIn: expiresIn ?? self.expiresIn,
             ptsRemaining: ptsRemaining ?? self.ptsRemaining,
             redemptionCode: redemptionCode ?? self.redemptionCode,
@@ -66,10 +66,10 @@ extension RedeemRewardResponse {
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
 }

@@ -6,7 +6,8 @@
 import Foundation
 
 // MARK: - StoreResponse
-@objcMembers public class StoreResponse: NSObject, JSONDecodable, NSCoding {
+
+@objcMembers public class StoreResponse: NSObject, JSONDecodable {
     public let biz: Biz
     public let store: Store?
 
@@ -14,30 +15,16 @@ import Foundation
         self.biz = biz
         self.store = store
     }
-    
+
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(StoreResponse.self, from: data)
         self.init(biz: me.biz, store: me.store)
     }
-    
-    /**
-         * NSCoding required initializer.
-         * Fills the data from the passed decoder
-         */
-        public required init(coder aDecoder: NSCoder) {
-            let biz = (aDecoder.decodeObject(forKey: "biz") as? Biz)!
-    //      Remove this code after next release
-            self.biz = biz.with(supportedLanguages: ["en"])
-
-            Biz.shared = self.biz
-            store = aDecoder.decodeObject(forKey: "store") as? Store
-        }
 }
 
 // MARK: StoreResponse convenience initializers and mutators
 
 extension StoreResponse {
-
     convenience init(_ json: String, using encoding: String.Encoding = .utf8) throws {
         guard let data = json.data(using: encoding) else {
             throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
@@ -53,27 +40,18 @@ extension StoreResponse {
         biz: Biz? = nil,
         store: Store? = nil
     ) -> StoreResponse {
-        return StoreResponse(
+        StoreResponse(
             biz: biz ?? self.biz,
             store: store ?? self.store
         )
     }
 
     func jsonData() throws -> Data {
-        return try newJSONEncoder().encode(self)
+        try newJSONEncoder().encode(self)
     }
 
     func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
-        return String(data: try self.jsonData(), encoding: encoding)
+        String(data: try jsonData(), encoding: encoding)
     }
     
-    
-        /**
-         * NSCoding required method.
-         * Encodes mode properties into the decoder
-         */
-        public func encode(with aCoder: NSCoder) {
-            aCoder.encode(biz, forKey: "biz")
-            aCoder.encode(store, forKey: "store")
-        }
 }
