@@ -224,6 +224,9 @@ public enum UserStatus: Int, RawRepresentable {
     case eggtarian = 3
 }
 
+public let UPAPIError: Int = -50
+public let UPAPIServerError: Int = -60
+
 struct Constants {
     static let fetchLimit: Int = 100
 }

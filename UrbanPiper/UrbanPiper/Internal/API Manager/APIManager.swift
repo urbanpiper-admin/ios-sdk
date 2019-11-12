@@ -113,7 +113,7 @@ import RxSwift
             guard let httpResponse = response as? HTTPURLResponse else {
                 DispatchQueue.main.async {
                     let userInfo = [NSLocalizedDescriptionKey: "Unknown error" as Any]
-                    let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: -50, userInfo: userInfo)
+                    let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: UPAPIError, userInfo: userInfo)
                     failure?(error)
                 }
                 return
@@ -132,11 +132,11 @@ import RxSwift
                     let dictionary: [String : Any] = try? JSONSerialization.jsonObject(with: responseData, options: []) as? [String : Any],
                     let msg = (dictionary["message"] ?? dictionary["error_message"] ?? dictionary["msg"]) as? String {
                     let userInfo = [NSLocalizedDescriptionKey: msg as Any]
-                    error = NSError(domain: "UrbanPiperAPIErrorDomain", code: -60, userInfo: userInfo)
+                    error = NSError(domain: "UrbanPiperAPIErrorDomain", code: UPAPIServerError, userInfo: userInfo)
                 } else {
                     let userInfo = [NSLocalizedDescriptionKey: "Invalid status code",
                                     "status_code": httpResponse.statusCode as Any]
-                    error = NSError(domain: "UrbanPiperAPIErrorDomain", code: -50, userInfo: userInfo)
+                    error = NSError(domain: "UrbanPiperAPIErrorDomain", code: UPAPIError, userInfo: userInfo)
                 }
                 
                 DispatchQueue.main.async {
@@ -156,7 +156,7 @@ import RxSwift
                 if let responseData = data, let dictionary: [String : Any] = try? JSONSerialization.jsonObject(with: responseData, options: []) as? [String : Any],
                     let msg = (dictionary["message"] ?? dictionary["error_message"] ?? dictionary["msg"]) as? String {
                     let userInfo = [NSLocalizedDescriptionKey: msg as Any]
-                    let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: -60, userInfo: userInfo)
+                    let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: UPAPIServerError, userInfo: userInfo)
                     
                     DispatchQueue.main.async {
                         failure?(error)
@@ -171,7 +171,7 @@ import RxSwift
 
             guard let responseData = data else {
                 let userInfo = [NSLocalizedDescriptionKey: "No data from server" as Any]
-                let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: -50, userInfo: userInfo)
+                let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: UPAPIError, userInfo: userInfo)
 
                 DispatchQueue.main.async {
                     failure?(error)
@@ -236,7 +236,7 @@ import RxSwift
                 
                 guard let httpResponse = response as? HTTPURLResponse else {
                     let userInfo = [NSLocalizedDescriptionKey: "Unknown error" as Any]
-                    let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: -50, userInfo: userInfo)
+                    let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: UPAPIError, userInfo: userInfo)
                     observer.onError(error)
                     return
                 }
@@ -254,11 +254,11 @@ import RxSwift
                         let dictionary: [String : Any] = try? JSONSerialization.jsonObject(with: responseData, options: []) as? [String : Any],
                         let msg = (dictionary["message"] ?? dictionary["error_message"] ?? dictionary["msg"]) as? String {
                         let userInfo = [NSLocalizedDescriptionKey: msg as Any]
-                        error = NSError(domain: "UrbanPiperAPIErrorDomain", code: -60, userInfo: userInfo)
+                        error = NSError(domain: "UrbanPiperAPIErrorDomain", code: UPAPIServerError, userInfo: userInfo)
                     } else {
                         let userInfo = [NSLocalizedDescriptionKey: "Invalid status code",
                                         "status_code": httpResponse.statusCode as Any]
-                        error = NSError(domain: "UrbanPiperAPIErrorDomain", code: -50, userInfo: userInfo)
+                        error = NSError(domain: "UrbanPiperAPIErrorDomain", code: UPAPIError, userInfo: userInfo)
                     }
                     
                     observer.onError(error)
@@ -275,7 +275,7 @@ import RxSwift
                     if let responseData = data, let dictionary: [String : Any] = try? JSONSerialization.jsonObject(with: responseData, options: []) as? [String : Any],
                         let msg = (dictionary["message"] ?? dictionary["error_message"] ?? dictionary["msg"]) as? String {
                         let userInfo = [NSLocalizedDescriptionKey: msg as Any]
-                        let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: -60, userInfo: userInfo)
+                        let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: UPAPIServerError, userInfo: userInfo)
                         
                         observer.onError(error)
                     } else {
@@ -287,7 +287,7 @@ import RxSwift
 
                 guard let responseData = data else {
                     let userInfo = [NSLocalizedDescriptionKey: "No data from server" as Any]
-                    let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: -50, userInfo: userInfo)
+                    let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: UPAPIError, userInfo: userInfo)
 
                     observer.onError(error)
                     return
