@@ -8,17 +8,18 @@ import Foundation
 // MARK: - Address
 
 @objcMembers public class Address: NSObject, Codable {
-    public let address1: String?
+    public let address1: String
     public let address2: String?
-    public let city: String?
-    public let deliverable: Bool?
-    public let id: Int?
-    public let landmark: String?
+    public let city: String
+    public let deliverable: Bool
+    public let id: Int
+    public let landmark: String
     public let lat, lng: Double
-    public let name, phone, pin: String?
+    public let name, phone: String?
+    public let pin: String
     public let podid: Int?
-    public let subLocality: String?
-    public let tag: String?
+    public let subLocality: String
+    public let tag: String
 
     enum CodingKeys: String, CodingKey {
         case address1 = "address_1"
@@ -29,7 +30,7 @@ import Foundation
         case tag
     }
 
-    public init(address1: String?, address2: String?, city: String?, deliverable: Bool?, id: Int?, landmark: String?, lat: Double, lng: Double, name: String?, phone: String?, pin: String?, podid: Int?, subLocality: String?, tag: String?) {
+    public init(address1: String, address2: String?, city: String, deliverable: Bool, id: Int, landmark: String, lat: Double, lng: Double, name: String?, phone: String?, pin: String, podid: Int?, subLocality: String, tag: String) {
         self.address1 = address1
         self.address2 = address2
         self.city = city
@@ -45,47 +46,24 @@ import Foundation
         self.subLocality = subLocality
         self.tag = tag
     }
+    
+    public required init(from decoder: Decoder) throws {
+    let values = try decoder.container(keyedBy: CodingKeys.self)
 
-    public required init?(fromDictionary dictionary: [String: AnyObject]?) {
-        guard let dictionary = dictionary else { return nil }
-        city = dictionary["city"] as? String
-
-        deliverable = dictionary["deliverable"] as? Bool ?? false
-
-        if let latitude: Double = dictionary["latitude"] as? Double {
-            lat = latitude
-        } else {
-            lat = dictionary["lat"] as? Double ?? Double.zero
-        }
-
-        if let longitude: Double = dictionary["longitude"] as? Double {
-            lng = longitude
-        } else {
-            lng = dictionary["lng"] as? Double ?? Double.zero
-        }
-
-        if let line1: String = dictionary["line_1"] as? String {
-            address1 = line1
-        } else {
-            address1 = dictionary["address_1"] as? String
-        }
-
-        if let line2: String = dictionary["line_2"] as? String {
-            address2 = line2
-        } else {
-            address2 = dictionary["address_2"] as? String
-        }
-
-        name = dictionary["name"] as? String
-        phone = dictionary["phone"] as? String
-
-        landmark = dictionary["landmark"] as? String
-
-        id = dictionary["id"] as? Int
-        pin = dictionary["pin"] as? String
-        podid = dictionary["pod_id"] as? Int
-        subLocality = dictionary["sub_locality"] as? String
-        tag = dictionary["tag"] as? String ?? AddressTag.other.rawValue
+        address1 = try values.decode(String.self, forKey: .address1)
+        address2 = try values.decodeIfPresent(String.self, forKey: .address2)
+        city = try values.decode(String.self, forKey: .city)
+        deliverable = try values.decodeIfPresent(Bool.self, forKey: .deliverable) ?? false
+        id = try values.decode(Int.self, forKey: .id)
+        landmark = try values.decode(String.self, forKey: .landmark)
+        lat = try values.decode(Double.self, forKey: .lat)
+        lng = try values.decode(Double.self, forKey: .lng)
+        name = try values.decodeIfPresent(String.self, forKey: .name)
+        phone = try values.decodeIfPresent(String.self, forKey: .phone)
+        pin = try values.decode(String.self, forKey: .pin)
+        podid = try values.decodeIfPresent(Int.self, forKey: .podid)
+        subLocality = try values.decode(String.self, forKey: .subLocality)
+        tag = try values.decode(String.self, forKey: .tag)
     }
 
     required convenience init(data: Data) throws {
@@ -120,7 +98,6 @@ extension Address {
         name: String? = nil,
         phone: String? = nil,
         pin: String? = nil,
-        podid: Int? = nil,
         subLocality: String? = nil,
         tag: String? = nil
     ) -> Address {
@@ -136,7 +113,7 @@ extension Address {
             name: name ?? self.name,
             phone: phone ?? self.phone,
             pin: pin ?? self.pin,
-            podid: podid ?? self.podid,
+            podid: self.podid,
             subLocality: subLocality ?? self.subLocality,
             tag: tag ?? self.tag
         )
@@ -151,7 +128,7 @@ extension Address {
     }
 
     public var addressTag: AddressTag {
-        guard let tagString: String = tag, let addressTagVal: AddressTag = AddressTag(rawValue: tagString.lowercased()) else { return .other }
+        guard let addressTagVal: AddressTag = AddressTag(rawValue: tag.lowercased()) else { return .other }
         return addressTagVal
     }
 
@@ -161,21 +138,21 @@ extension Address {
 
     public var fullAddress: String? {
         var fullAddress: String = ""
-        if let string = address1 {
-            fullAddress = "\(fullAddress + string)\n"
-        }
-        if let string = landmark {
-            fullAddress = "\(fullAddress + string)\n"
-        }
-        if let string = subLocality {
-            fullAddress = "\(fullAddress + string)\n"
-        }
-        if let string = city {
-            fullAddress = "\(fullAddress + string)"
-        }
-        if let string = pin {
-            fullAddress = "\(fullAddress) - \(string)"
-        }
+//        if let string = address1 {
+            fullAddress = "\(fullAddress + address1)\n"
+//        }
+//        if let string = landmark {
+            fullAddress = "\(fullAddress + landmark)\n"
+//        }
+//        if let string = subLocality {
+            fullAddress = "\(fullAddress + subLocality)\n"
+//        }
+//        if let string = city {
+            fullAddress = "\(fullAddress + city)"
+//        }
+//        if let string = pin {
+            fullAddress = "\(fullAddress) - \(pin)"
+//        }
         guard fullAddress.count > 0 else { return nil }
         return fullAddress
     }

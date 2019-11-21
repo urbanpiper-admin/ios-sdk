@@ -14,7 +14,7 @@ enum UserAPI {
     case changePassword(phone: String, oldPassword: String, newPassword: String)
     case savedAddresses
     case deliverableAddresses(storeId: String?)
-    case addAddress(address: Address)
+    case addAddress(newAddressBody: NewAddressBody)
     case updateAddress(address: Address)
     case deleteAddress(addressId: Int)
 }
@@ -148,59 +148,59 @@ extension UserAPI: UPAPI {
             return nil
         case .deliverableAddresses:
             return nil
-        case let .addAddress(address):
-            var addressDict = ["tag": address.tag as Any,
+        case let .addAddress(newAddressBody):
+            let addressDict = ["tag": newAddressBody.tag as Any,
                                "biz_id": APIManager.shared.bizId,
-                               "sub_locality": address.subLocality as Any,
-                               "address_1": address.address1 as Any,
-                               "landmark": "",
-                               "city": "",
-                               "pin": "",
-                               "lat": Double(0),
-                               "lng": Double(0)] as [String: AnyObject]
+                               "sub_locality": newAddressBody.subLocality as Any,
+                               "address_1": newAddressBody.address1 as Any,
+                               "landmark": newAddressBody.landmark as Any,
+                               "city": newAddressBody.city as Any,
+                               "pin": newAddressBody.pin as Any,
+                               "lat": newAddressBody.lat as Any,
+                               "lng": newAddressBody.lng as Any] as [String: AnyObject]
 
-            if let landmark = address.landmark {
-                addressDict["landmark"] = landmark as AnyObject
-            }
-
-            if let city = address.city {
-                addressDict["city"] = city as AnyObject
-            }
-
-            if let pin = address.pin {
-                addressDict["pin"] = pin as AnyObject
-            }
-
-            addressDict["lat"] = address.lat as AnyObject
-            addressDict["lng"] = address.lng as AnyObject
+//            if let landmark = address.landmark {
+//                addressDict["landmark"] = landmark as AnyObject
+//            }
+//
+//            if let city = address.city {
+//                addressDict["city"] = city as AnyObject
+//            }
+//
+//            if let pin = address.pin {
+//                addressDict["pin"] = pin as AnyObject
+//            }
+//
+//            addressDict["lat"] = address.lat as AnyObject
+//            addressDict["lng"] = address.lng as AnyObject
             return addressDict
         case let .updateAddress(address):
-            var addressDict = ["tag": address.tag as Any,
+            let addressDict = ["tag": address.tag as Any,
                                "id": address.id as Any,
                                "biz_id": APIManager.shared.bizId,
                                "sub_locality": address.subLocality as Any,
                                "address_1": address.address1 as Any,
-                               "landmark": "",
-                               "city": "",
-                               "pin": "",
-                               "lat": Double(0),
-                               "lng": Double(0)] as [String: AnyObject]
+                               "landmark": address.landmark as Any,
+                               "city": address.city as Any,
+                               "pin": address.pin as Any,
+                               "lat": address.lat as Any,
+                               "lng": address.lng as Any] as [String: AnyObject]
 
-            if let landmark = address.landmark {
-                addressDict["landmark"] = landmark as AnyObject
-            }
-
-            if let city = address.city {
-                addressDict["city"] = city as AnyObject
-            }
-
-            if let pin = address.pin {
-                addressDict["pin"] = pin as AnyObject
-            }
-
-            addressDict["lat"] = address.lat as AnyObject
-            addressDict["lng"] = address.lng as AnyObject
-
+//            if let landmark = address.landmark {
+//                addressDict["landmark"] = landmark as AnyObject
+//            }
+//
+//            if let city = address.city {
+//                addressDict["city"] = city as AnyObject
+//            }
+//
+//            if let pin = address.pin {
+//                addressDict["pin"] = pin as AnyObject
+//            }
+//
+//            addressDict["lat"] = address.lat as AnyObject
+//            addressDict["lng"] = address.lng as AnyObject
+//
             return addressDict
         case .deleteAddress:
             return nil

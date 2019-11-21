@@ -251,19 +251,19 @@ public extension UrbanPiper {
     ///   - completion: `APICompletion` with `AddUpdateAddressResponse`
     ///   - failure: `APIFailure` closure with `UPError`
     /// - Returns: An instance of URLSessionDataTask
-    @discardableResult @objc func addAddress(address: Address, completion: APICompletion<AddUpdateAddressResponse>?, failure: @escaping APIFailure) -> URLSessionDataTask? {
+    @discardableResult @objc func addAddress(newAddressBody: NewAddressBody, completion: APICompletion<AddUpdateAddressResponse>?, failure: @escaping APIFailure) -> URLSessionDataTask? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
-        let upAPI = UserAPI.addAddress(address: address)
+        let upAPI = UserAPI.addAddress(newAddressBody: newAddressBody)
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func addAddress(address: Address) -> Observable<AddUpdateAddressResponse>? {
+    func addAddress(newAddressBody: NewAddressBody) -> Observable<AddUpdateAddressResponse>? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
-        let upAPI = UserAPI.addAddress(address: address)
+        let upAPI = UserAPI.addAddress(newAddressBody: newAddressBody)
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
 
