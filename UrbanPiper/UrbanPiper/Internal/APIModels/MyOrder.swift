@@ -5,8 +5,6 @@
 
 import Foundation
 
-import Foundation
-
 // MARK: - PastOrder
 
 @objcMembers public class PastOrder: NSObject, Codable {
@@ -34,7 +32,6 @@ import Foundation
     public let taxes: [JSONAny]
     public let totalCharges, totalTaxes: Double
     public let timeSlotEnd, timeSlotStart: String?
-    public var myOrderDetailsResponse: PastOrderDetailsResponse?
 
     public var packagingCharge: Double? {
         var charge = charges.filter { $0.title == "Packaging charge" }.last?.value

@@ -601,7 +601,7 @@ extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func registerFCMToken(token: String) -> Observable<GenericResponse> {
+    public func registerFCMToken(token: String) -> Observable<GenericResponse> {
         let upAPI = FCMAPI.registerForFCM(token: token)
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
@@ -618,7 +618,7 @@ extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func checkAppVersion(version: String) -> Observable<VersionCheckResponse> {
+    public func checkAppVersion(version: String) -> Observable<VersionCheckResponse> {
         let upAPI = VersionCheckAPI.checkVersion(username: UserManager.shared.currentUser?.username, version: version)
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
@@ -676,7 +676,7 @@ extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func getCategories(storeId: Int?, offset: Int = 0, limit: Int? = nil) -> Observable<CategoriesResponse> {
+    public func getCategories(storeId: Int?, offset: Int = 0, limit: Int? = nil) -> Observable<CategoriesResponse> {
         let upAPI = CategoriesAPI.categories(storeId: storeId, offset: offset, limit: limit ?? Constants.fetchLimit)
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
@@ -699,7 +699,7 @@ extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func getCategoryItems(categoryId: Int, storeId: Int?, filterBy: [FilterOption]? = nil, sortBy: String? = nil, offset: Int = 0, limit: Int? = nil) -> Observable<CategoryItemsResponse> {
+    public func getCategoryItems(categoryId: Int, storeId: Int?, filterBy: [FilterOption]? = nil, sortBy: String? = nil, offset: Int = 0, limit: Int? = nil) -> Observable<CategoryItemsResponse> {
         let upAPI = ItemsAPI.categoryItems(categoryId: categoryId, storeId: storeId, offset: offset, limit: limit ?? Constants.fetchLimit, sortKey: sortBy, filterOptions: filterBy)
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
@@ -719,7 +719,7 @@ extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func searchItems(query: String, storeId: Int?, offset: Int = 0, limit: Int? = nil) -> Observable<ItemsSearchResponse> {
+    public func searchItems(query: String, storeId: Int?, offset: Int = 0, limit: Int? = nil) -> Observable<ItemsSearchResponse> {
         let upAPI = ItemsAPI.searchItems(query: query, storeId: storeId, offset: offset, limit: limit ?? Constants.fetchLimit)
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
@@ -736,7 +736,7 @@ extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func getFilterAndSortOptions(categoryId: Int) -> Observable<CategoryOptionsResponse> {
+    public func getFilterAndSortOptions(categoryId: Int) -> Observable<CategoryOptionsResponse> {
         let upAPI = ItemsAPI.filterAndSortOptions(categoryId: categoryId)
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
@@ -754,7 +754,7 @@ extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func getItemDetails(itemId: Int, storeId: Int?) -> Observable<Item> {
+    public func getItemDetails(itemId: Int, storeId: Int?) -> Observable<Item> {
         let upAPI = ItemsAPI.itemDetails(itemId: itemId, storeId: storeId)
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
@@ -771,7 +771,7 @@ extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func getFeaturedItems(storeId: Int) -> Observable<CategoryItemsResponse> {
+    public func getFeaturedItems(storeId: Int) -> Observable<CategoryItemsResponse> {
         let upAPI = ItemsAPI.featuredItems(storeId: storeId, offset: 0, limit: Constants.fetchLimit)
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
@@ -789,7 +789,7 @@ extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func getAssociatedItems(itemId: Int, storeId: Int) -> Observable<CategoryItemsResponse> {
+    public func getAssociatedItems(itemId: Int, storeId: Int) -> Observable<CategoryItemsResponse> {
         let upAPI = ItemsAPI.associatedItems(itemId: itemId, storeId: storeId, offset: 0, limit: Constants.fetchLimit)
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
@@ -812,7 +812,7 @@ extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func getRewards() -> Observable<RewardsResponse>? {
+    public func getRewards() -> Observable<RewardsResponse>? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
@@ -833,7 +833,7 @@ extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func getOffers(offset: Int = 0, limit: Int? = nil) -> Observable<OffersAPIResponse> {
+    public func getOffers(offset: Int = 0, limit: Int? = nil) -> Observable<OffersAPIResponse> {
         let upAPI = OffersAPI.offers(offset: offset, limit: limit ?? Constants.fetchLimit)
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
@@ -849,7 +849,7 @@ extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func getBanners() -> Observable<BannersResponse> {
+    public func getBanners() -> Observable<BannersResponse> {
         let upAPI = BannersAPI.banners
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
@@ -936,7 +936,7 @@ extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func getRelatedItemsForCart(itemIds: [Int], storeId: Int) -> Observable<CategoryItemsResponse> {
+    public func getRelatedItemsForCart(itemIds: [Int], storeId: Int) -> Observable<CategoryItemsResponse> {
         let upAPI = ItemsAPI.relatedItems(itemIds: itemIds, storeId: storeId, offset: 0, limit: Constants.fetchLimit)
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
@@ -960,7 +960,7 @@ extension UrbanPiper {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func reorder(orderId: Int, lat: CLLocationDegrees, lng: CLLocationDegrees, storeId: Int) -> Observable<ReorderResponse>? {
+    public func reorder(orderId: Int, lat: CLLocationDegrees, lng: CLLocationDegrees, storeId: Int) -> Observable<ReorderResponse>? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 

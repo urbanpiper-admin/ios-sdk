@@ -138,44 +138,6 @@ public enum OrderStatus: String {
     case acknowledged
     case dispatched
     case awaitingPayment = "awaiting_payment"
-
-    public var displayName: String {
-        switch self {
-        case .cancelled:
-            return "Cancelled"
-        case .expired:
-            return "Expired"
-        case .completed:
-            return "Completed"
-        case .placed:
-            return "Placed"
-        case .acknowledged:
-            return "Acknowledged"
-        case .dispatched:
-            return "Dispatched"
-        case .awaitingPayment:
-            return "Awaiting Payment"
-        }
-    }
-
-    public var displayColor: UIColor {
-        switch self {
-        case .cancelled:
-            return #colorLiteral(red: 0.631372549, green: 0.1529411765, blue: 0, alpha: 1)
-        case .expired:
-            return #colorLiteral(red: 0.7529411765, green: 0.2235294118, blue: 0.168627451, alpha: 1)
-        case .completed:
-            return #colorLiteral(red: 0, green: 0.4235294118, blue: 0.2235294118, alpha: 1)
-        case .placed:
-            return #colorLiteral(red: 0.5568627451, green: 0.2666666667, blue: 0.6784313725, alpha: 1)
-        case .acknowledged:
-            return #colorLiteral(red: 0.1607843137, green: 0.5019607843, blue: 0.7254901961, alpha: 1)
-        case .dispatched:
-            return #colorLiteral(red: 0.1725490196, green: 0.2431372549, blue: 0.3137254902, alpha: 1)
-        case .awaitingPayment:
-            return #colorLiteral(red: 0.0862745098, green: 0.6274509804, blue: 0.5215686275, alpha: 1.0)
-        }
-    }
 }
 
 public enum PaymentType: String {

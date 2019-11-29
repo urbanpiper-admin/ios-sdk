@@ -8,10 +8,10 @@ import Foundation
 // MARK: - Customer
 
 @objcMembers public class Customer: NSObject, Codable {
-    public let address: PastOrderAddress
+    public let address: PastOrderAddress?
     public let email, name, phone: String
 
-    init(address: PastOrderAddress, email: String, name: String, phone: String) {
+    init(address: PastOrderAddress?, email: String, name: String, phone: String) {
         self.address = address
         self.email = email
         self.name = name
