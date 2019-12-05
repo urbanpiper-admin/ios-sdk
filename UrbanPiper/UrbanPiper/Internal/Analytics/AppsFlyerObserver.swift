@@ -43,8 +43,8 @@ public class AppsFlyerObserver: AppAnalyticsEventObserver, SDKAnalyticsEventObse
         case let .productClicked(item):
             guard let tracker: AppsFlyerTracker = AppsFlyerTracker.shared() else { return }
             let itemPrice: Double
-            if item.itemPrice != 0 {
-                itemPrice = item.itemPrice
+            if let price = item.itemPrice, price != 0 {
+                itemPrice = price
             } else if let options: [OptionGroupOption] = item.optionGroups?.first?.options, let optionPrice = ((options.compactMap { $0.price }).sorted { $0 < $1 }).first, optionPrice > 0 {
                 itemPrice = optionPrice
             } else {

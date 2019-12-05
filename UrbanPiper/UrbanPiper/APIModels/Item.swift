@@ -16,7 +16,7 @@ import Foundation
     public let id: Int
     public let imageLandscapeurl, imageurl: String?
     public let itemDesc: String
-    public let itemPrice: Double
+    public let itemPrice: Double?
     public let itemTitle: String
     public let likes: Int
     public let optionGroups: [OptionGroup]?
@@ -60,7 +60,7 @@ import Foundation
         case subCategory = "sub_category"
     }
 
-    init(category: ItemCategory, extras: [Extra], currentStock: Int, foodType: String, fulfillmentModes: [String]?, id: Int, imageLandscapeurl: String?, imageurl: String?, itemDesc: String, itemPrice: Double, itemTitle: String, likes: Int, optionGroups: [OptionGroup]?, priceDescriptor: String?, serviceTaxRate: Float, slug: String, sortOrder: Int, tags: [ItemTag], vatRate: Float, preOrderStartTime: Date?, preOrderEndTime: Date?, subCategory: SubCategory?) {
+    init(category: ItemCategory, extras: [Extra], currentStock: Int, foodType: String, fulfillmentModes: [String]?, id: Int, imageLandscapeurl: String?, imageurl: String?, itemDesc: String, itemPrice: Double?, itemTitle: String, likes: Int, optionGroups: [OptionGroup]?, priceDescriptor: String?, serviceTaxRate: Float, slug: String, sortOrder: Int, tags: [ItemTag], vatRate: Float, preOrderStartTime: Date?, preOrderEndTime: Date?, subCategory: SubCategory?) {
         self.category = category
         self.currentStock = currentStock
         self.extras = extras

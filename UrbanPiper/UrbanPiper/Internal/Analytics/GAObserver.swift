@@ -281,7 +281,7 @@ public class GAObserver: AppAnalyticsEventObserver, SDKAnalyticsEventObserver {
                 product.setId("\(item.id)")
                 product.setName(item.itemTitle)
                 product.setQuantity(NSNumber(value: item.quantity))
-                product.setPrice(NSDecimalNumber(value: item.itemPrice))
+                product.setPrice(NSDecimalNumber(value: item.itemPrice ?? 0))
                 product.setCategory(item.category.name)
 
                 eventBuilder.add(product)

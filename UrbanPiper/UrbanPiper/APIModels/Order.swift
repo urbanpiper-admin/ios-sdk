@@ -22,9 +22,9 @@ import Foundation
     public let paymentModes: [String]?
     public let taxes: [JSONAny]
     public let totalCharges, totalTaxes, totalWeight: Double
-    public let walletCreditApplicable: Bool
+    public let walletCreditApplicable: Bool?
     public let taxRate: Float?
-    public let walletCreditApplied: Double
+    public let walletCreditApplied: Double?
 
     enum CodingKeys: String, CodingKey {
         case applyWalletCredit = "apply_wallet_credit"
@@ -53,7 +53,7 @@ import Foundation
         case taxRate = "tax_rate"
     }
 
-    init(applyWalletCredit: Bool, bizLocationid: Int, channel: String, charges: [Charge], deliveryCharge: Double, discount: Discount?, itemLevelTotalCharges: Double, itemLevelTotalTaxes: Double, itemTaxes: Double, items: [OrderItem], orderLevelTotalCharges: Double, orderLevelTotalTaxes: Double, orderSubtotal: Double, orderTotal: Double, orderType: String, packagingCharge: Double, payableAmount: Double, paymentModes: [String]?, taxes: [JSONAny], totalCharges: Double, totalTaxes: Double, totalWeight: Double, walletCreditApplicable: Bool, walletCreditApplied: Double, taxRate: Float?) {
+    init(applyWalletCredit: Bool, bizLocationid: Int, channel: String, charges: [Charge], deliveryCharge: Double, discount: Discount?, itemLevelTotalCharges: Double, itemLevelTotalTaxes: Double, itemTaxes: Double, items: [OrderItem], orderLevelTotalCharges: Double, orderLevelTotalTaxes: Double, orderSubtotal: Double, orderTotal: Double, orderType: String, packagingCharge: Double, payableAmount: Double, paymentModes: [String]?, taxes: [JSONAny], totalCharges: Double, totalTaxes: Double, totalWeight: Double, walletCreditApplicable: Bool?, walletCreditApplied: Double?, taxRate: Float?) {
         self.applyWalletCredit = applyWalletCredit
         self.bizLocationid = bizLocationid
         self.channel = channel

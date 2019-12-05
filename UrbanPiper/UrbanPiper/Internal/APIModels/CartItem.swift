@@ -18,7 +18,7 @@ import UIKit
     public let id: Int
     public let imageLandscapeurl: String?
     public let imageurl: String?
-    public let itemPrice: Double
+    public let itemPrice: Double?
     public let itemTitle: String
     public let preOrderStartTime: Date?
     public let preOrderEndTime: Date?
@@ -56,7 +56,7 @@ import UIKit
         self.init(optionBuilder: me.optionBuilder, category: me.category, currentStock: me.currentStock, id: me.id, imageLandscapeurl: me.imageLandscapeurl, imageurl: me.imageurl, itemPrice: me.itemPrice, itemTitle: me.itemTitle, optionsToAdd: me.optionsToAdd, optionsToRemove: me.optionsToRemove, preOrderStartTime: me.preOrderStartTime, preOrderEndTime: me.preOrderEndTime, slug: me.slug, sortOrder: me.sortOrder, quantity: me.quantity, notes: me.notes, isReorder: me.isReorder, isRecommendedItem: me.isRecommendedItem, isUpsoldItem: me.isUpsoldItem, isSearchItem: me.isSearchItem, isItemDetailsItem: me.isItemDetailsItem)
     }
 
-    private init(optionBuilder: ItemOptionBuilder? = nil, category: ItemCategory, currentStock: Int, id: Int, imageLandscapeurl: String?, imageurl: String?, itemPrice: Double, itemTitle: String, optionsToAdd: [OptionGroupOption], optionsToRemove: [OptionGroupOption], preOrderStartTime: Date?, preOrderEndTime: Date?, slug: String?, sortOrder: Int?, quantity: Int, notes: String?, isReorder: Bool = false, isRecommendedItem: Bool = false, isUpsoldItem: Bool = false, isSearchItem: Bool = false, isItemDetailsItem: Bool = false) {
+    private init(optionBuilder: ItemOptionBuilder? = nil, category: ItemCategory, currentStock: Int, id: Int, imageLandscapeurl: String?, imageurl: String?, itemPrice: Double?, itemTitle: String, optionsToAdd: [OptionGroupOption], optionsToRemove: [OptionGroupOption], preOrderStartTime: Date?, preOrderEndTime: Date?, slug: String?, sortOrder: Int?, quantity: Int, notes: String?, isReorder: Bool = false, isRecommendedItem: Bool = false, isUpsoldItem: Bool = false, isSearchItem: Bool = false, isItemDetailsItem: Bool = false) {
         self.optionBuilder = optionBuilder
         self.category = category
         self.currentStock = currentStock
@@ -175,7 +175,7 @@ import UIKit
 
 extension CartItem {
     public var totalAmount: Double {
-        var totalAmount: Double = itemPrice
+        var totalAmount: Double = itemPrice ?? 0
         for item in optionsToAdd {
             totalAmount += item.price
         }
