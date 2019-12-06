@@ -120,7 +120,7 @@ import RxSwift
             }
 
             guard 200 ... 204 ~= httpResponse.statusCode else {
-                if let hasTokenExpired = self?.jwt?.tokenExpired, hasTokenExpired, httpResponse.statusCode == 401 {
+                if self?.jwt != nil, httpResponse.statusCode == 401 {
                     DispatchQueue.main.async {
                         NotificationCenter.default.post(name: .sessionExpired, object: nil)
                         UrbanPiper.sharedInstance().callback(.sessionExpired)
@@ -242,7 +242,7 @@ import RxSwift
                 }
 
                 guard (200 ..< 300) ~= httpResponse.statusCode else {
-                    if let hasTokenExpired = self?.jwt?.tokenExpired, hasTokenExpired, httpResponse.statusCode == 401 {
+                    if self?.jwt != nil, httpResponse.statusCode == 401 {
                         DispatchQueue.main.async {
                             NotificationCenter.default.post(name: .sessionExpired, object: nil)
                             UrbanPiper.sharedInstance().callback(.sessionExpired)
