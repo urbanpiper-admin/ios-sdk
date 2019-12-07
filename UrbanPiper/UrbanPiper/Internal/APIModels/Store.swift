@@ -16,6 +16,7 @@ public class Store: NSObject, JSONDecodable, NSCoding {
     public var deliveryCharge: Decimal!
     public var deliveryMinOffsetTime: Int?
     public var discount: Decimal!
+    public var fulfillmentModes: [String]?
     public var hideStoreName: Bool
     public var itemTaxes: Decimal!
     public var lat: Double = 0
@@ -70,6 +71,8 @@ public class Store: NSObject, JSONDecodable, NSCoding {
         } else {
             discount = Decimal.zero
         }
+        
+        fulfillmentModes = dictionary["fulfillment_modes"] as? [String]
 
         hideStoreName = dictionary["hide_store_name"] as? Bool ?? false
         priceVal = dictionary["item_taxes"]
@@ -157,6 +160,11 @@ public class Store: NSObject, JSONDecodable, NSCoding {
         if let minOrderTotal = minOrderTotal {
             dictionary["min_order_total"] = minOrderTotal as AnyObject
         }
+        
+        if let fulfillmentModes = fulfillmentModes {
+            dictionary["fulfillment_modes"] = fulfillmentModes as AnyObject
+        }
+        
         if let name = name {
             dictionary["name"] = name as AnyObject
         }
@@ -225,6 +233,7 @@ public class Store: NSObject, JSONDecodable, NSCoding {
         lng = aDecoder.decodeObject(forKey: "lng") as? Double ?? 0
         minOrderTotal = aDecoder.decodeObject(forKey: "min_order_total") as? Decimal
         name = aDecoder.decodeObject(forKey: "name") as? String
+        fulfillmentModes = aDecoder.decodeObject(forKey: "fulfillment_modes") as? [String]
         onCloseMsg = aDecoder.decodeObject(forKey: "on_close_msg") as? String
         onSelectMsg = aDecoder.decodeObject(forKey: "on_select_msg") as? String
         openingTime = aDecoder.decodeObject(forKey: "opening_time") as? String
@@ -304,6 +313,7 @@ public class Store: NSObject, JSONDecodable, NSCoding {
         // if let phone = phone {
             aCoder.encode(phone, forKey: "phone")
         // }
+        aCoder.encode(fulfillmentModes, forKey: "fulfillment_modes")
         // if let pickupMinOffsetTime = pickupMinOffsetTime {
             aCoder.encode(pickupMinOffsetTime, forKey: "pickup_min_offset_time")
         // }
