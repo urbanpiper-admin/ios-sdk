@@ -9,7 +9,7 @@ import Foundation
 
 @objcMembers public class OptionGroup: NSObject, JSONDecodable {
     public let optionGroupDescription: String
-    public let displayInline: Bool
+    public let displayInline: Bool?
     public let id: Int
     public let isDefault: Bool
     public let maxSelectable, minSelectable: Int
@@ -29,7 +29,7 @@ import Foundation
         case title
     }
 
-    init(optionGroupDescription: String, displayInline: Bool, id: Int, isDefault: Bool, maxSelectable: Int, minSelectable: Int, options: [OptionGroupOption], sortOrder: Int, title: String) {
+    init(optionGroupDescription: String, displayInline: Bool?, id: Int, isDefault: Bool, maxSelectable: Int, minSelectable: Int, options: [OptionGroupOption], sortOrder: Int, title: String) {
         self.optionGroupDescription = optionGroupDescription
         self.displayInline = displayInline
         self.id = id
