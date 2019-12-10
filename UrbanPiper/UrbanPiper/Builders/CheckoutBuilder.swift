@@ -119,7 +119,7 @@ public class CheckoutBuilder: NSObject {
         } as APICompletion<PreProcessOrderResponse>, failure: failure)
     }
 
-    func validateCart(store: Store,
+    public func validateCart(store: Store,
                       useWalletCredits: Bool,
                       deliveryOption: DeliveryOption,
                       cartItems: [CartItem],
@@ -178,12 +178,12 @@ public class CheckoutBuilder: NSObject {
         } as APICompletion<Order>, failure: failure)
     }
 
-    func validateCoupon(code: String) -> Observable<Order>? {
+    public func validateCoupon(code: String) -> Observable<Order>? {
         assert(UrbanPiper.shared.getUser() != nil, "The user has to logged in to call this function")
         guard UrbanPiper.shared.getUser() != nil else { return nil }
 
-        assert(validateCartResponse != nil, "validateCartResponse is nil, call validateCart method first")
-        guard validateCartResponse != nil else { return nil }
+//        assert(validateCartResponse != nil, "validateCartResponse is nil, call validateCart method first")
+//        guard validateCartResponse != nil else { return nil }
 
         let upAPI = OffersAPI.applyCoupon(coupon: code, storeId: store.bizLocationid, deliveryOption: deliveryOption, cartItems: cartItems, applyWalletCredits: useWalletCredits)
         return APIManager.shared.apiObservable(upAPI: upAPI)
@@ -235,7 +235,7 @@ public class CheckoutBuilder: NSObject {
         } as APICompletion<PaymentInitResponse>, failure: failure)
     }
 
-    func initPayment(paymentOption: PaymentOption) -> Observable<PaymentInitResponse>? {
+    public func initPayment(paymentOption: PaymentOption) -> Observable<PaymentInitResponse>? {
         assert(UrbanPiper.shared.getUser() != nil, "The user has to logged in to call this function")
         guard UrbanPiper.shared.getUser() != nil else { return nil }
 
@@ -345,7 +345,7 @@ public class CheckoutBuilder: NSObject {
         } as APICompletion<OrderResponse>, failure: failure)
     }
 
-    func placeOrder(address: Address?,
+    public func placeOrder(address: Address?,
                     deliveryDate: Date,
                     deliveryTime: Date,
                     timeSlot: TimeSlot?,
@@ -426,7 +426,7 @@ public class CheckoutBuilder: NSObject {
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func verifyPayment(pid: String) -> Observable<OrderVerifyTxnResponse>? {
+    public func verifyPayment(pid: String) -> Observable<OrderVerifyTxnResponse>? {
         assert(UrbanPiper.shared.getUser() != nil, "The user has to logged in to call this function")
         guard UrbanPiper.shared.getUser() != nil else { return nil }
 
