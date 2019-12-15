@@ -94,11 +94,11 @@ public class CheckoutBuilder: NSObject {
         assert(cartItems.count > 0, "Provided cart items variable is empty")
         guard cartItems.count > 0 else { return nil }
 
-        self.store = nil
-        self.useWalletCredits = nil
-        self.deliveryOption = nil
-        self.cartItems = nil
-        self.orderTotal = nil
+        self.store = store
+        self.useWalletCredits = useWalletCredits
+        self.deliveryOption = deliveryOption
+        self.cartItems = cartItems
+        self.orderTotal = orderTotal
 
         validateCartResponse = nil
 
@@ -108,15 +108,16 @@ public class CheckoutBuilder: NSObject {
                                                 deliveryOption: deliveryOption, cartItems: cartItems, orderTotal: orderTotal)
 
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: { [weak self] preProcessOrderResponse in
-            self?.store = store
-            self?.useWalletCredits = useWalletCredits
-            self?.deliveryOption = deliveryOption
-            self?.cartItems = cartItems
-            self?.orderTotal = orderTotal
-
             self?.validateCartResponse = preProcessOrderResponse
             completion?(preProcessOrderResponse)
-        } as APICompletion<PreProcessOrderResponse>, failure: failure)
+            } as APICompletion<PreProcessOrderResponse>, failure: { [weak self] error in
+                self?.store = nil
+                self?.useWalletCredits = nil
+                self?.deliveryOption = nil
+                self?.cartItems = nil
+                self?.orderTotal = nil
+                failure?(error)
+        })
     }
 
     public func validateCart(store: Store,
@@ -127,11 +128,11 @@ public class CheckoutBuilder: NSObject {
         assert(cartItems.count > 0, "Provided cart items variable is empty")
         guard cartItems.count > 0 else { return nil }
 
-        self.store = nil
-        self.useWalletCredits = nil
-        self.deliveryOption = nil
-        self.cartItems = nil
-        self.orderTotal = nil
+        self.store = store
+        self.useWalletCredits = useWalletCredits
+        self.deliveryOption = deliveryOption
+        self.cartItems = cartItems
+        self.orderTotal = orderTotal
 
         validateCartResponse = nil
 
@@ -143,13 +144,13 @@ public class CheckoutBuilder: NSObject {
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
             .observeOn(MainScheduler.instance)
             .do(onNext: { [weak self] preProcessOrderResponse in
-                self?.store = store
-                self?.useWalletCredits = useWalletCredits
-                self?.deliveryOption = deliveryOption
-                self?.cartItems = cartItems
-                self?.orderTotal = orderTotal
-
                 self?.validateCartResponse = preProcessOrderResponse
+                }, onError: { [weak self] _ in
+                    self?.store = nil
+                    self?.useWalletCredits = nil
+                    self?.deliveryOption = nil
+                    self?.cartItems = nil
+                    self?.orderTotal = nil
             })
     }
 

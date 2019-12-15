@@ -200,8 +200,10 @@ extension ItemOptionBuilder {
             }
             return
         }
+        
+        let isValidOptionGroup = ItemOptionBuilder(itemOption: option).isValidOptionGroup
 
-        if (option.optionGroups?.count ?? 0) > 0 {
+        if (option.optionGroups?.count ?? 0) > 0, !isValidOptionGroup.0 {
             guard optionGroup.options.filter({ $0.id == option.id }).last != nil else {
 //                optionGroupHandler?(nil, UPError(type: .invalidOption))
                 return
