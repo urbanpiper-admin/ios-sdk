@@ -56,7 +56,7 @@ public enum SDKAnalyticsEvent {
     case cartInit
     case addToCart(item: CartItem, checkoutPageItemAdd: Bool, itemDetailsPageItemAdd: Bool)
     case removeFromCart(item: CartItem)
-    case purchaseCompleted(orderID: String, userWalletBalance: Double, checkoutBuilder: CheckoutBuilder, isReorder: Bool)
+    case purchaseCompleted(orderID: Int, userWalletBalance: Double, checkoutBuilder: CheckoutBuilder, isReorder: Bool)
     case profileUpdated(phone: String, pwdChanged: Bool)
     case socialAuthSignupStart(phone: String, platform: String)
     case socialAuthSignupComplete(phone: String, platform: String) // Unimplemented

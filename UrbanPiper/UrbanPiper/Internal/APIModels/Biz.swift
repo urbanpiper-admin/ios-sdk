@@ -26,7 +26,7 @@ import Foundation
     public let referralShareLbl, referraluiLbl: String?
     public let simplClientid: String?
     public let supportedLanguages: [String]
-    public let timeSlots: [TimeSlot]
+    public let timeSlots: [TimeSlot]?
     public let timezone: String
     public let tin: String?
     public let usePointOfDelivery: Bool
@@ -59,7 +59,7 @@ import Foundation
         case usePointOfDelivery = "use_point_of_delivery"
     }
 
-    init(contactPhone: String?, currency: String, deliveryMinOffsetTime: Int, feedbackConfig: [FeedbackConfig], gst: String?, isPickupEnabled: Bool, isdCode: String, minOrderTotal: Double, minimumWalletCreditThreshold: Double, msgNearestStoreClosed: String?, msgNoStoresNearby: String?, msgStoreClosedTemporary: String?, orderDeliveryRadius: Int, paymentOptions: [String], paypalClientToken: String?, pgProvider: String?, pickupMinOffsetTime: Int, preProcess: Bool, referralShareLbl: String?, referraluiLbl: String?, simplClientid: String?, supportedLanguages: [String], timeSlots: [TimeSlot], timezone: String, tin: String?, usePointOfDelivery: Bool) {
+    init(contactPhone: String?, currency: String, deliveryMinOffsetTime: Int, feedbackConfig: [FeedbackConfig], gst: String?, isPickupEnabled: Bool, isdCode: String, minOrderTotal: Double, minimumWalletCreditThreshold: Double, msgNearestStoreClosed: String?, msgNoStoresNearby: String?, msgStoreClosedTemporary: String?, orderDeliveryRadius: Int, paymentOptions: [String], paypalClientToken: String?, pgProvider: String?, pickupMinOffsetTime: Int, preProcess: Bool, referralShareLbl: String?, referraluiLbl: String?, simplClientid: String?, supportedLanguages: [String], timeSlots: [TimeSlot]?, timezone: String, tin: String?, usePointOfDelivery: Bool) {
         self.contactPhone = contactPhone
         self.currency = currency
         self.deliveryMinOffsetTime = deliveryMinOffsetTime

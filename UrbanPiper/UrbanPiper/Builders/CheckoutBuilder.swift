@@ -443,7 +443,7 @@ public class CheckoutBuilder: NSObject {
         return APIManager.shared.apiObservable(upAPI: upAPI)
     }
 
-    public func orderPlaced(orderId: String, phone _: String) {
+    public func orderPlaced(orderId: Int) {
         AnalyticsManager.shared.track(event: .purchaseCompleted(orderID: orderId,
                                                                 userWalletBalance: UserManager.shared.currentUser?.userBizInfoResponse?.userBizInfos.last?.balance ?? Double.zero,
                                                                 checkoutBuilder: self,

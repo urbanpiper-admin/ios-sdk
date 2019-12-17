@@ -8,7 +8,7 @@ import Foundation
 // MARK: - Item
 
 @objcMembers public class Item: NSObject, JSONDecodable {
-    public let category: ItemCategory
+    public let category: ItemCategory?
     public let currentStock: Int
     public let extras: [Extra]
     public let foodType: String
@@ -60,7 +60,7 @@ import Foundation
         case subCategory = "sub_category"
     }
 
-    init(category: ItemCategory, extras: [Extra], currentStock: Int, foodType: String, fulfillmentModes: [String]?, id: Int, imageLandscapeurl: String?, imageurl: String?, itemDesc: String, itemPrice: Double?, itemTitle: String, likes: Int, optionGroups: [OptionGroup]?, priceDescriptor: String?, serviceTaxRate: Float, slug: String?, sortOrder: Int, tags: [ItemTag], vatRate: Float, preOrderStartTime: Date?, preOrderEndTime: Date?, subCategory: SubCategory?) {
+    init(category: ItemCategory?, extras: [Extra], currentStock: Int, foodType: String, fulfillmentModes: [String]?, id: Int, imageLandscapeurl: String?, imageurl: String?, itemDesc: String, itemPrice: Double?, itemTitle: String, likes: Int, optionGroups: [OptionGroup]?, priceDescriptor: String?, serviceTaxRate: Float, slug: String?, sortOrder: Int, tags: [ItemTag], vatRate: Float, preOrderStartTime: Date?, preOrderEndTime: Date?, subCategory: SubCategory?) {
         self.category = category
         self.currentStock = currentStock
         self.extras = extras

@@ -131,7 +131,9 @@ public class GAObserver: AppAnalyticsEventObserver, SDKAnalyticsEventObserver {
             let product: GAIEcommerceProduct = GAIEcommerceProduct()
             product.setId("\(item.id)")
             product.setName(item.itemTitle)
-            product.setCategory(item.category.name)
+            if let name = item.category?.name {
+                product.setCategory(name)
+            }
 
             let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
             productAction.setAction(kGAIPADetail)
@@ -224,8 +226,9 @@ public class GAObserver: AppAnalyticsEventObserver, SDKAnalyticsEventObserver {
             product.setName(cartItem.itemTitle)
             product.setQuantity(cartItem.quantity as NSNumber)
             product.setPrice(cartItem.totalAmount as NSNumber)
-            product.setCategory(cartItem.category.name)
-
+            if let name = cartItem.category?.name {
+                product.setCategory(name)
+            }
             let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
             productAction.setAction(kGAIPAAdd)
 
@@ -241,8 +244,9 @@ public class GAObserver: AppAnalyticsEventObserver, SDKAnalyticsEventObserver {
             product.setName(cartItem.itemTitle)
             product.setQuantity(cartItem.quantity as NSNumber)
             product.setPrice(cartItem.totalAmount as NSNumber)
-            product.setCategory(cartItem.category.name)
-
+            if let name = cartItem.category?.name {
+                product.setCategory(name)
+            }
             let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
             productAction.setAction(kGAIPARemove)
 
@@ -265,7 +269,7 @@ public class GAObserver: AppAnalyticsEventObserver, SDKAnalyticsEventObserver {
 
             let productAction: GAIEcommerceProductAction = GAIEcommerceProductAction()
             productAction.setAction(kGAIPAPurchase)
-            productAction.setTransactionId(orderID)
+            productAction.setTransactionId(String(orderID))
             productAction.setAffiliation("UrbanPiper")
             productAction.setRevenue(payableAmount)
             productAction.setTax(NSDecimalNumber(value: checkoutBuilder.order?.itemTaxes ?? Double.zero))
@@ -282,8 +286,9 @@ public class GAObserver: AppAnalyticsEventObserver, SDKAnalyticsEventObserver {
                 product.setName(item.itemTitle)
                 product.setQuantity(NSNumber(value: item.quantity))
                 product.setPrice(NSDecimalNumber(value: item.itemPrice ?? 0))
-                product.setCategory(item.category.name)
-
+                if let name = item.category?.name {
+                    product.setCategory(name)
+                }
                 eventBuilder.add(product)
             }
 

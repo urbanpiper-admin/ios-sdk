@@ -18,7 +18,7 @@ import Foundation
     public let gst: String?
     public let hideStoreName: Bool
     public let itemTaxes: Double?
-    public let lat, lng: Double
+    public let lat, lng: Double?
     public let minOrderTotal: Double?
     public let name: String
     public let onCloseMsg: String?
@@ -31,7 +31,7 @@ import Foundation
     public let sortOrder: Int
     public let taxRate: Float
     public let temporarilyClosed: Bool
-    public let timeSlots: [TimeSlot]
+    public let timeSlots: [TimeSlot]?
     public let fulfillmentModes: [String]?
 
     public var storeId: NSNumber {
@@ -66,7 +66,7 @@ import Foundation
         case fulfillmentModes = "fulfillment_modes"
     }
 
-    init(address: String, bizLocationid: Int, city: String, closingDay: Bool, closingTime: String, deliveryCharge: Double, deliveryMinOffsetTime: Int?, gst: String?, hideStoreName: Bool, itemTaxes: Double?, lat: Double, lng: Double, minOrderTotal: Double?, name: String, onCloseMsg: String?, onSelectMsg: String?, openingTime: String, packagingCharge: Double, pgKey: String, phone: String?, pickupMinOffsetTime: Int?, sortOrder: Int, taxRate: Float, temporarilyClosed: Bool, timeSlots: [TimeSlot], fulfillmentModes: [String]?) {
+    init(address: String, bizLocationid: Int, city: String, closingDay: Bool, closingTime: String, deliveryCharge: Double, deliveryMinOffsetTime: Int?, gst: String?, hideStoreName: Bool, itemTaxes: Double?, lat: Double?, lng: Double?, minOrderTotal: Double?, name: String, onCloseMsg: String?, onSelectMsg: String?, openingTime: String, packagingCharge: Double, pgKey: String, phone: String?, pickupMinOffsetTime: Int?, sortOrder: Int, taxRate: Float, temporarilyClosed: Bool, timeSlots: [TimeSlot]?, fulfillmentModes: [String]?) {
         self.address = address
         self.bizLocationid = bizLocationid
         self.city = city

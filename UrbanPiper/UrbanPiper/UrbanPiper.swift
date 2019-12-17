@@ -232,11 +232,19 @@ public extension UrbanPiper {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 
-        let upAPI = UserAPI.deliverableAddresses(storeId: storeId)
+        let storeIdInt: Int?
+        
+        if let str = storeId {
+            storeIdInt = Int(str)
+        } else {
+            storeIdInt = nil
+        }
+        
+        let upAPI = UserAPI.deliverableAddresses(storeId: storeIdInt)
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: completion, failure: failure)
     }
 
-    func getDeliverableAddresses(storeId: String?) -> Observable<UserAddressesResponse>? {
+    func getDeliverableAddresses(storeId: Int?) -> Observable<UserAddressesResponse>? {
         assert(getUser() != nil, "The user has to logged in to call this function")
         guard getUser() != nil else { return nil }
 

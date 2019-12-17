@@ -13,7 +13,7 @@ enum UserAPI {
     case updateUserData(name: String, phone: String, email: String, gender: String?, aniversary: Date?, birthday: Date?)
     case changePassword(phone: String, oldPassword: String, newPassword: String)
     case savedAddresses
-    case deliverableAddresses(storeId: String?)
+    case deliverableAddresses(storeId: Int?)
     case addAddress(newAddressBody: NewAddressBody)
     case updateAddress(address: Address)
     case deleteAddress(addressId: Int)
