@@ -14,11 +14,12 @@ import Foundation
     public let overrideurl: Bool?
     public let channelID, industryTypeID, custID: String?
     public let callbackURL: String?
-    public let type, checksumhash, txnAmount: String?
+    public let type: String
+    public let checksumhash, txnAmount: String?
     public let key: String?
 
     public var paymentType: PaymentType {
-        PaymentType(rawValue: type!)!
+        PaymentType(rawValue: type)!
     }
 
     enum CodingKeys: String, CodingKey {
@@ -36,7 +37,7 @@ import Foundation
         case txnAmount = "TXN_AMOUNT"
     }
 
-    init(website: String?, paymenturl: String?, orderID: String?, mid: String?, overrideurl: Bool?, channelID: String?, industryTypeID: String?, custID: String?, callbackURL: String?, type: String?, checksumhash: String?, txnAmount: String?, key: String?) {
+    init(website: String?, paymenturl: String?, orderID: String?, mid: String?, overrideurl: Bool?, channelID: String?, industryTypeID: String?, custID: String?, callbackURL: String?, type: String, checksumhash: String?, txnAmount: String?, key: String?) {
         self.website = website
         self.paymenturl = paymenturl
         self.orderID = orderID

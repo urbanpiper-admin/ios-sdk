@@ -143,6 +143,7 @@ public enum OrderStatus: String {
 public enum PaymentType: String {
     case paytm
     case paytabs
+    case razorpay
 }
 
 public enum UserStatus: Int, RawRepresentable {
