@@ -185,9 +185,9 @@ import RxSwift
                     completion?(result)
                 }
             } catch (let parsingError) {
-                print("\nData type \(T.Type.self))\n")
                 print("\nAPI Response parsing failure for url \(String(describing: apiUrl?.absoluteString))\n")
                 print("\nresponse \(response.debugDescription)")
+                print("\nData type \(T.Type.self))\n")
                 print("\nparsing error \(parsingError)")
 
                 if let jsonObject = String(data: responseData, encoding: String.Encoding.utf8) {
@@ -298,9 +298,9 @@ import RxSwift
                     observer.onNext(result)
                     observer.onCompleted()
                 } catch (let parsingError) {
-                    print("\nData type \(T.Type.self))\n")
                     print("\nAPI Response parsing failure for url \(String(describing: apiUrl?.absoluteString))\n")
                     print("\nresponse \(response.debugDescription)")
+                    print("\nData type \(T.Type.self))\n")
                     print("\nparsing error \(parsingError)")
 
                     if let jsonObject = String(data: responseData, encoding: String.Encoding.utf8) {

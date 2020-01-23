@@ -9,7 +9,8 @@ import Foundation
 
 @objcMembers public class OptionGroupOption: NSObject, Codable {
     public let currentStock: Int
-    public let optionDescription, foodType: String
+    public let optionDescription: String?
+    public let foodType: String?
     public let id: Int
     public let imageurl: String?
     public let optionGroups: [OptionGroup]?
@@ -31,7 +32,7 @@ import Foundation
         case title
     }
 
-    init(currentStock: Int, optionDescription: String, foodType: String, id: Int, imageurl: String?, optionGroups: [OptionGroup]?, price: Double, recommended: Bool, sortOrder: Int, title: String) {
+    init(currentStock: Int, optionDescription: String?, foodType: String?, id: Int, imageurl: String?, optionGroups: [OptionGroup]?, price: Double, recommended: Bool, sortOrder: Int, title: String) {
         self.currentStock = currentStock
         self.optionDescription = optionDescription
         self.foodType = foodType
@@ -43,6 +44,21 @@ import Foundation
         self.sortOrder = sortOrder
         self.title = title
     }
+    
+        required public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+    
+            self.currentStock = try container.decodeIfPresent(Int.self, forKey: CodingKeys.currentStock) ?? 0
+            self.optionDescription = try container.decodeIfPresent(String.self, forKey: CodingKeys.optionDescription)
+            self.foodType = try container.decodeIfPresent(String.self, forKey: CodingKeys.foodType)
+            self.id = try container.decode(Int.self, forKey: CodingKeys.id)
+            self.imageurl = try container.decodeIfPresent(String.self, forKey: CodingKeys.imageurl)
+            self.optionGroups = try container.decodeIfPresent([OptionGroup].self, forKey: CodingKeys.optionGroups)
+            self.price = try container.decode(Double.self, forKey: CodingKeys.price)
+            self.recommended = try container.decodeIfPresent(Bool.self, forKey: CodingKeys.recommended) ?? false
+            self.sortOrder = try container.decodeIfPresent(Int.self, forKey: CodingKeys.sortOrder) ?? 0
+            self.title = try container.decode(String.self, forKey: CodingKeys.title)
+        }
 
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(OptionGroupOption.self, from: data)

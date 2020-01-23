@@ -10,7 +10,7 @@ import Foundation
 @objcMembers public class Address: NSObject, Codable {
     public let address1: String
     public let address2: String?
-    public let city: String
+    public let city: String?
     public let deliverable: Bool
     public let id: Int
     public let landmark: String
@@ -30,7 +30,7 @@ import Foundation
         case tag
     }
 
-    public init(address1: String, address2: String?, city: String, deliverable: Bool, id: Int, landmark: String, lat: Double, lng: Double, name: String?, phone: String?, pin: String, podid: Int?, subLocality: String, tag: String) {
+    public init(address1: String, address2: String?, city: String?, deliverable: Bool, id: Int, landmark: String, lat: Double, lng: Double, name: String?, phone: String?, pin: String, podid: Int?, subLocality: String, tag: String) {
         self.address1 = address1
         self.address2 = address2
         self.city = city
@@ -52,7 +52,7 @@ import Foundation
 
         address1 = try values.decode(String.self, forKey: .address1)
         address2 = try values.decodeIfPresent(String.self, forKey: .address2)
-        city = try values.decode(String.self, forKey: .city)
+        city = try values.decodeIfPresent(String.self, forKey: .city)
         deliverable = try values.decodeIfPresent(Bool.self, forKey: .deliverable) ?? false
         id = try values.decode(Int.self, forKey: .id)
         landmark = try values.decode(String.self, forKey: .landmark)
@@ -147,9 +147,9 @@ extension Address {
 //        if let string = subLocality {
             fullAddress = "\(fullAddress + subLocality)\n"
 //        }
-//        if let string = city {
-            fullAddress = "\(fullAddress + city)"
-//        }
+        if let string = city {
+            fullAddress = "\(fullAddress + string)"
+        }
 //        if let string = pin {
             fullAddress = "\(fullAddress) - \(pin)"
 //        }

@@ -105,6 +105,7 @@
 		18C60B9823249D94007CDFB4 /* RefreshTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C60B9723249D94007CDFB4 /* RefreshTokenResponse.swift */; };
 		18C60B9E2324B969007CDFB4 /* UPAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C60B9D2324B969007CDFB4 /* UPAPI.swift */; };
 		18C73B192372D04D009387E9 /* Date+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46CE3FBE208F655A0022475F /* Date+String.swift */; };
+		18DEC4BC23D97C7B00A42D82 /* NewAddressBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DEC4BB23D97C7B00A42D82 /* NewAddressBody.swift */; };
 		365FB9B7B8D3DEF81CB4BA7F /* Pods_UrbanPiperTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BF52EC10ABB2B45B98715E3 /* Pods_UrbanPiperTests.framework */; };
 		4607A99D208F1E2700128010 /* APIManager+Banners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A92A208F1E2600128010 /* APIManager+Banners.swift */; };
 		4607A99E208F1E2700128010 /* APIManager+Ordering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4607A92B208F1E2600128010 /* APIManager+Ordering.swift */; };
@@ -295,6 +296,7 @@
 		18C60B912323AB42007CDFB4 /* JSONDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDecodable.swift; sourceTree = "<group>"; };
 		18C60B9723249D94007CDFB4 /* RefreshTokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTokenResponse.swift; sourceTree = "<group>"; };
 		18C60B9D2324B969007CDFB4 /* UPAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPAPI.swift; sourceTree = "<group>"; };
+		18DEC4BB23D97C7B00A42D82 /* NewAddressBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAddressBody.swift; sourceTree = "<group>"; };
 		301F9BF87DB97ACCA90F3400 /* Pods-UrbanPiperTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UrbanPiperTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-UrbanPiperTests/Pods-UrbanPiperTests.release.xcconfig"; sourceTree = "<group>"; };
 		372786B27D3C7C1B9881DFD1 /* Pods-UrbanPiper-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UrbanPiper-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-UrbanPiper-Example/Pods-UrbanPiper-Example.release.xcconfig"; sourceTree = "<group>"; };
 		3805E7B614EE86F32F0B0B52 /* Pods_UrbanPiper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UrbanPiper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -546,6 +548,7 @@
 		4607A953208F1E2700128010 /* APIModels */ = {
 			isa = PBXGroup;
 			children = (
+				18DEC4BB23D97C7B00A42D82 /* NewAddressBody.swift */,
 				4607A95E208F1E2700128010 /* Address.swift */,
 				187042E42369C1A400D3304F /* Availability.swift */,
 				181F215B2105B76400878E6D /* BannerImage.swift */,
@@ -1041,6 +1044,7 @@
 				187042E52369C1A400D3304F /* Availability.swift in Sources */,
 				187042E32369B67500D3304F /* SubCategory.swift in Sources */,
 				4607A9CD208F1E2700128010 /* Category.swift in Sources */,
+				18DEC4BC23D97C7B00A42D82 /* NewAddressBody.swift in Sources */,
 				1875A1D6223F646A008E4F34 /* UserManager.swift in Sources */,
 				4607A9A5208F1E2700128010 /* APIManager+Payment.swift in Sources */,
 				4607A9DF208F1E2700128010 /* ItemOption.swift in Sources */,

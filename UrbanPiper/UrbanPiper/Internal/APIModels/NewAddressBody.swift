@@ -10,7 +10,7 @@ import Foundation
 @objcMembers public class NewAddressBody: NSObject, Codable {
     public let address1: String
     public let address2: String?
-    public let city: String
+    public let city: String?
     public let landmark: String
     public let lat, lng: Double
     public let name, phone: String?
@@ -26,7 +26,7 @@ import Foundation
         case tag
     }
 
-    public init(address1: String, address2: String?, city: String, landmark: String, lat: Double, lng: Double, name: String?, phone: String?, pin: String, subLocality: String, tag: String) {
+    public init(address1: String, address2: String?, city: String?, landmark: String, lat: Double, lng: Double, name: String?, phone: String?, pin: String, subLocality: String, tag: String) {
         self.address1 = address1
         self.address2 = address2
         self.city = city
