@@ -185,6 +185,7 @@ import RxSwift
                     completion?(result)
                 }
             } catch (let parsingError) {
+                AnalyticsManager.shared.track(event: SDKAnalyticsEvent.apiResponseParsing(error: parsingError, url: apiUrl?.absoluteString ?? "", response: response.debugDescription, dataType: "\(T.Type.self)"))
                 print("\nAPI Response parsing failure for url \(String(describing: apiUrl?.absoluteString))\n")
                 print("\nresponse \(response.debugDescription)")
                 print("\nData type \(T.Type.self))\n")
@@ -298,6 +299,7 @@ import RxSwift
                     observer.onNext(result)
                     observer.onCompleted()
                 } catch (let parsingError) {
+                    AnalyticsManager.shared.track(event: SDKAnalyticsEvent.apiResponseParsing(error: parsingError, url: apiUrl?.absoluteString ?? "", response: response.debugDescription, dataType: "\(T.Type.self)"))
                     print("\nAPI Response parsing failure for url \(String(describing: apiUrl?.absoluteString))\n")
                     print("\nresponse \(response.debugDescription)")
                     print("\nData type \(T.Type.self))\n")

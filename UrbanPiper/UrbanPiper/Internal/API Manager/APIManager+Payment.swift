@@ -16,7 +16,7 @@ enum PaymentsAPI {
     case placeOrder(address: Address?, cartItems: [CartItem], deliveryDate: Date, timeSlot: TimeSlot?, deliveryOption: DeliveryOption,
                     instructions: String, phone: String, storeId: Int, paymentOption: PaymentOption, taxRate: Float, couponCode: String?,
                     deliveryCharge: Double, discountApplied: Double, itemTaxes: Double, packagingCharge: Double, orderSubTotal: Double,
-                    orderTotal: Double, applyWalletCredit: Bool, walletCreditApplied: Double, payableAmount: Double, paymentInitResponse: PaymentInitResponse?)
+                    payableAmount: Double, applyWalletCredit: Bool, walletCreditApplied: Double, paymentInitResponse: PaymentInitResponse?)
     case verifyPayment(pid: String, orderId: String, transactionId: String)
 }
 
@@ -123,7 +123,7 @@ extension PaymentsAPI: UPAPI {
             return nil
         case .initiateWalletReload:
             return nil
-        case let .placeOrder(address, cartItems, deliveryDate, timeSlot, deliveryOption, instructions, phone, storeId, paymentOption, taxRate, couponCode, deliveryCharge, discountApplied, itemTaxes, packagingCharge, orderSubTotal, orderTotal, applyWalletCredit, walletCreditApplied, payableAmount, paymentInitResponse):
+        case let .placeOrder(address, cartItems, deliveryDate, timeSlot, deliveryOption, instructions, phone, storeId, paymentOption, taxRate, couponCode, deliveryCharge, discountApplied, itemTaxes, packagingCharge, orderSubTotal, payableAmount, applyWalletCredit, walletCreditApplied, paymentInitResponse):
 
             let itemWithInstructionsArray = cartItems.filter { $0.notes != nil && $0.notes!.count > 0 }
             var instructionsText: String
@@ -152,12 +152,12 @@ extension PaymentsAPI: UPAPI {
                           "item_taxes": itemTaxes,
                           "discount_applied": discountApplied,
                           "delivery_charge": deliveryOption == DeliveryOption.pickUp ? Double.zero : deliveryCharge,
-                          "order_total": orderTotal] as [String: AnyObject]
+                          "order_total": payableAmount,
+                          "payable_amount": payableAmount] as [String: AnyObject]
 
             if applyWalletCredit {
                 params["wallet_credit_applicable"] = true as AnyObject
                 params["wallet_credit_applied"] = walletCreditApplied as AnyObject
-                params["payable_amount"] = payableAmount as AnyObject
             }
 
             if let code = couponCode {

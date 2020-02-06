@@ -267,6 +267,12 @@ public class MixpanelObserver: AppAnalyticsEventObserver, SDKAnalyticsEventObser
             properties["days_since_last_order"] = userBizInfo.daysSinceLastOrder
 
             mixpanel.people.set(properties: properties)
+        case let .apiResponseParsing(error, url, response, dataType):
+            Mixpanel.mainInstance().track(event: "response_parse_error",
+                                          properties: ["error": error.localizedDescription,
+                                                       "url": url,
+                                                       "response": response,
+                                                       "dataType": dataType])
         default: break
         }
     }

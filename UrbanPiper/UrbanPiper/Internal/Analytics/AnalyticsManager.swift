@@ -63,6 +63,7 @@ public enum SDKAnalyticsEvent {
     case socialLoginSuccess(phone: String, platform: String) // Unimplemented
     case socialLoginFailed(phone: String, platform: String) // Unimplemented
     case bizInfoUpdated
+    case apiResponseParsing(error: Error, url: String, response: String, dataType: String)
 }
 
 public class AnalyticsManager: NSObject {

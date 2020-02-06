@@ -333,10 +333,9 @@ public class CheckoutBuilder: NSObject {
                                            itemTaxes: order?.itemTaxes ?? store.itemTaxes ?? 0,
                                            packagingCharge: order?.packagingCharge ?? 0,
                                            orderSubTotal: order?.orderSubtotal ?? orderTotal ?? 0,
-                                           orderTotal: order?.payableAmount ?? orderTotal ?? 0,
+                                           payableAmount: order?.payableAmount ?? orderTotal ?? 0,
                                            applyWalletCredit: useWalletCredits,
                                            walletCreditApplied: order?.walletCreditApplied ?? 0,
-                                           payableAmount: order?.payableAmount ?? orderTotal ?? 0,
                                            paymentInitResponse: paymentInitResponse)
 
         return APIManager.shared.apiDataTask(upAPI: upAPI, completion: { [weak self] orderResponse in
@@ -390,10 +389,9 @@ public class CheckoutBuilder: NSObject {
                                            itemTaxes: order?.itemTaxes ?? store.itemTaxes ?? 0,
                                            packagingCharge: order?.packagingCharge ?? 0,
                                            orderSubTotal: order?.orderSubtotal ?? orderTotal ?? 0,
-                                           orderTotal: order?.payableAmount ?? orderTotal ?? 0,
+                                           payableAmount: order?.payableAmount ?? orderTotal ?? 0,
                                            applyWalletCredit: useWalletCredits,
                                            walletCreditApplied: order?.walletCreditApplied ?? 0,
-                                           payableAmount: order?.payableAmount ?? orderTotal ?? 0,
                                            paymentInitResponse: paymentInitResponse)
         return APIManager.shared.apiObservable(upAPI: upAPI)
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
