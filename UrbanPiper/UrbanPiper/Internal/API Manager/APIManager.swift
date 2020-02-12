@@ -78,6 +78,24 @@ import RxSwift
             return bizAuth()
         }
     }
+    
+    func parseResponse<T: JSONDecodable>(apiUrl: URL?, response: URLResponse?, responseData: Data) -> (T?, Error?) {
+        do {
+            return try (T(data: responseData), nil)
+        } catch (let parsingError) {
+            AnalyticsManager.shared.track(event: SDKAnalyticsEvent.apiResponseParsing(error: parsingError, url: apiUrl?.absoluteString ?? "", response: response.debugDescription, dataType: "\(T.Type.self)"))
+            print("\nAPI Response parsing failure for url \(String(describing: apiUrl?.absoluteString))\n")
+            print("\nresponse \(response.debugDescription)")
+            print("\nData type \(T.Type.self)\n")
+            print("\nparsing error \(parsingError)")
+
+            if let jsonObject = String(data: responseData, encoding: String.Encoding.utf8) {
+                print("\njsonObject \(jsonObject as AnyObject)\n")
+            }
+
+            return (nil, parsingError)
+        }
+    }
 
     func apiDataTask<T: JSONDecodable>(upAPI: UPAPI,
                                        completion: APICompletion<T>?,
@@ -110,6 +128,16 @@ import RxSwift
                 return
             }
             
+            guard let self = self else {
+                let userInfo = [NSLocalizedDescriptionKey: "Class deinitialized" as Any]
+                let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: APIManager_deinit, userInfo: userInfo)
+
+                DispatchQueue.main.async {
+                    failure?(error)
+                }
+                return
+            }
+            
             guard let httpResponse = response as? HTTPURLResponse else {
                 DispatchQueue.main.async {
                     let userInfo = [NSLocalizedDescriptionKey: "Unknown error" as Any]
@@ -120,7 +148,7 @@ import RxSwift
             }
 
             guard 200 ... 204 ~= httpResponse.statusCode else {
-                if self?.jwt != nil, httpResponse.statusCode == 401 {
+                if self.jwt != nil, httpResponse.statusCode == 401 {
                     DispatchQueue.main.async {
                         NotificationCenter.default.post(name: .sessionExpired, object: nil)
                         UrbanPiper.sharedInstance().callback(.sessionExpired)
@@ -158,8 +186,23 @@ import RxSwift
                     let userInfo = [NSLocalizedDescriptionKey: msg as Any]
                     let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: UPAPIServerError, userInfo: userInfo)
                     
-                    DispatchQueue.main.async {
-                        failure?(error)
+                    let success = dictionary["success"] as? Bool ?? false
+                    if (success) {
+                        let result: (T?, Error?) = self.parseResponse(apiUrl: apiUrl, response: response, responseData: responseData)
+
+                        if let obj = result.0 {
+                            DispatchQueue.main.async {
+                                completion?(obj)
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                failure?(result.1)
+                            }
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            failure?(error)
+                        }
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -178,25 +221,16 @@ import RxSwift
                 }
                 return
             }
+            
+            let result: (T?, Error?) = self.parseResponse(apiUrl: apiUrl, response: response, responseData: responseData)
 
-            do {
-                let result = try T(data: responseData)
+            if let obj = result.0 {
                 DispatchQueue.main.async {
-                    completion?(result)
+                    completion?(obj)
                 }
-            } catch (let parsingError) {
-                AnalyticsManager.shared.track(event: SDKAnalyticsEvent.apiResponseParsing(error: parsingError, url: apiUrl?.absoluteString ?? "", response: response.debugDescription, dataType: "\(T.Type.self)"))
-                print("\nAPI Response parsing failure for url \(String(describing: apiUrl?.absoluteString))\n")
-                print("\nresponse \(response.debugDescription)")
-                print("\nData type \(T.Type.self))\n")
-                print("\nparsing error \(parsingError)")
-
-                if let jsonObject = String(data: responseData, encoding: String.Encoding.utf8) {
-                    print("\njsonObject \(jsonObject as AnyObject)\n")
-                }
-
+            } else {
                 DispatchQueue.main.async {
-                    failure?(parsingError)
+                    failure?(result.1)
                 }
             }
         }
@@ -235,6 +269,14 @@ import RxSwift
                     return
                 }
                 
+                guard let self = self else {
+                    let userInfo = [NSLocalizedDescriptionKey: "Class deinitialized" as Any]
+                    let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: APIManager_deinit, userInfo: userInfo)
+
+                    observer.onError(error)
+                    return
+                }
+                
                 guard let httpResponse = response as? HTTPURLResponse else {
                     let userInfo = [NSLocalizedDescriptionKey: "Unknown error" as Any]
                     let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: UPAPIError, userInfo: userInfo)
@@ -243,7 +285,7 @@ import RxSwift
                 }
 
                 guard (200 ..< 300) ~= httpResponse.statusCode else {
-                    if self?.jwt != nil, httpResponse.statusCode == 401 {
+                    if self.jwt != nil, httpResponse.statusCode == 401 {
                         DispatchQueue.main.async {
                             NotificationCenter.default.post(name: .sessionExpired, object: nil)
                             UrbanPiper.sharedInstance().callback(.sessionExpired)
@@ -278,7 +320,19 @@ import RxSwift
                         let userInfo = [NSLocalizedDescriptionKey: msg as Any]
                         let error = NSError(domain: "UrbanPiperAPIErrorDomain", code: UPAPIServerError, userInfo: userInfo)
                         
-                        observer.onError(error)
+                        let success = dictionary["success"] as? Bool ?? false
+                        if (success) {
+                            let result: (T?, Error?) = self.parseResponse(apiUrl: apiUrl, response: response, responseData: responseData)
+
+                            if let obj = result.0 {
+                                observer.onNext(obj)
+                                observer.onCompleted()
+                            } else {
+                                observer.onError(result.1!)
+                            }
+                        } else {
+                            observer.onError(error)
+                        }
                     } else {
                         observer.onNext(GenericResponse() as! T)
                         observer.onCompleted()
@@ -293,23 +347,14 @@ import RxSwift
                     observer.onError(error)
                     return
                 }
+                
+                let result: (T?, Error?) = self.parseResponse(apiUrl: apiUrl, response: response, responseData: responseData)
 
-                do {
-                    let result = try T(data: responseData)
-                    observer.onNext(result)
+                if let obj = result.0 {
+                    observer.onNext(obj)
                     observer.onCompleted()
-                } catch (let parsingError) {
-                    AnalyticsManager.shared.track(event: SDKAnalyticsEvent.apiResponseParsing(error: parsingError, url: apiUrl?.absoluteString ?? "", response: response.debugDescription, dataType: "\(T.Type.self)"))
-                    print("\nAPI Response parsing failure for url \(String(describing: apiUrl?.absoluteString))\n")
-                    print("\nresponse \(response.debugDescription)")
-                    print("\nData type \(T.Type.self))\n")
-                    print("\nparsing error \(parsingError)")
-
-                    if let jsonObject = String(data: responseData, encoding: String.Encoding.utf8) {
-                        print("\njsonObject \(jsonObject as AnyObject)\n")
-                    }
-
-                    observer.onError(parsingError)
+                } else {
+                    observer.onError(result.1!)
                 }
             }
 

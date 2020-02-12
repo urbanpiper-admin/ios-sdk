@@ -8,7 +8,8 @@ import Foundation
 // MARK: - RegistrationResponse
 
 @objcMembers public class RegistrationResponse: NSObject, JSONDecodable {
-    public let accessToken, activeOtp, approvalCode, authKey: String
+    public let accessToken, activeOtp, approvalCode: String?
+    public let authKey: String
     public let cardNumber, customerEmail, customerName, customerPhone: String
     public let message: String
     public let points: Int
@@ -37,7 +38,7 @@ import Foundation
         case user
     }
 
-    init(accessToken: String, activeOtp: String, approvalCode: String, authKey: String, cardNumber: String, customerEmail: String, customerName: String, customerPhone: String, message: String, points: Int, prepaidBalance: Double, result: String, success: Bool, timestamp: String, totalBalance: Double, token: String?, user: User?) {
+    init(accessToken: String?, activeOtp: String?, approvalCode: String?, authKey: String, cardNumber: String, customerEmail: String, customerName: String, customerPhone: String, message: String, points: Int, prepaidBalance: Double, result: String, success: Bool, timestamp: String, totalBalance: Double, token: String?, user: User?) {
         self.accessToken = accessToken
         self.activeOtp = activeOtp
         self.approvalCode = approvalCode
@@ -60,9 +61,9 @@ import Foundation
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.accessToken = try container.decode(String.self, forKey: CodingKeys.accessToken)
-        self.activeOtp = try container.decode(String.self, forKey: CodingKeys.activeOtp)
-        self.approvalCode = try container.decode(String.self, forKey: CodingKeys.approvalCode)
+        self.accessToken = try container.decodeIfPresent(String.self, forKey: CodingKeys.accessToken)
+        self.activeOtp = try container.decodeIfPresent(String.self, forKey: CodingKeys.activeOtp)
+        self.approvalCode = try container.decodeIfPresent(String.self, forKey: CodingKeys.approvalCode)
         self.authKey = try container.decode(String.self, forKey: CodingKeys.authKey)
         self.cardNumber = try container.decode(String.self, forKey: CodingKeys.cardNumber)
         self.customerEmail = try container.decode(String.self, forKey: CodingKeys.customerEmail)
@@ -75,9 +76,9 @@ import Foundation
         self.success = try container.decode(Bool.self, forKey: CodingKeys.success)
         self.timestamp = try container.decode(String.self, forKey: CodingKeys.timestamp)
         self.totalBalance = try container.decode(Double.self, forKey: CodingKeys.totalBalance)
-        self.token = try container.decode(String.self, forKey: CodingKeys.token)
+        self.token = try container.decodeIfPresent(String.self, forKey: CodingKeys.token)
         
-        if let token = token {
+        if let token = self.token {
             self.user = User(jwtToken: token)
         } else {
             self.user = nil

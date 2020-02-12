@@ -20,7 +20,7 @@ import Foundation
     public let taxPercentage: Float
     public let taxes: [Tax]
     public let totalCharge, totalTax: Double
-    public let weight: Int
+    public let weight: Float
 
     enum CodingKeys: String, CodingKey {
         case category, charges
@@ -39,7 +39,7 @@ import Foundation
         case weight
     }
 
-    init(category: ItemCategory, charges: [Charge], currentStock: Int, id: Int, imageLandscapeurl: String, imageurl: String, itemPrice: Double, itemTitle: String, price: Double, quantity: Int, sortOrder: Int?, taxPercentage: Float, taxes: [Tax], totalCharge: Double, totalTax: Double, weight: Int) {
+    init(category: ItemCategory, charges: [Charge], currentStock: Int, id: Int, imageLandscapeurl: String, imageurl: String, itemPrice: Double, itemTitle: String, price: Double, quantity: Int, sortOrder: Int?, taxPercentage: Float, taxes: [Tax], totalCharge: Double, totalTax: Double, weight: Float) {
         self.category = category
         self.charges = charges
         self.currentStock = currentStock
@@ -94,7 +94,7 @@ extension OrderItem {
         taxes: [Tax]? = nil,
         totalCharge: Double? = nil,
         totalTax: Double? = nil,
-        weight: Int? = nil
+        weight: Float? = nil
     ) -> OrderItem {
         OrderItem(
             category: category ?? self.category,

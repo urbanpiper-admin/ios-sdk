@@ -187,6 +187,7 @@ public enum UserStatus: Int, RawRepresentable {
     case eggtarian = 3
 }
 
+public let APIManager_deinit: Int = -40
 public let UPAPIError: Int = -50
 public let UPAPIServerError: Int = -60
 
