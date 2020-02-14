@@ -302,6 +302,13 @@ public class GAObserver: AppAnalyticsEventObserver, SDKAnalyticsEventObserver {
                                                                    label: "social-signup-start",
                                                                    value: platform == "google" ? 1 : 2).build() as! [AnyHashable: Any]
             tracker.send(eventDictionary)
+        case let .apiResponseParsing(error, url, response, dataType):
+            guard let tracker: GAITracker = GAI.sharedInstance().defaultTracker else { return }
+            let eventDictionary = GAIDictionaryBuilder.createEvent(withCategory: "response_parse_error",
+                                                                   action: dataType,
+                                                                   label: "\(url) \(response) \(error.localizedDescription)",
+                                                                   value: 0).build() as! [AnyHashable: Any]
+            tracker.send(eventDictionary)
         default: break
         }
     }
