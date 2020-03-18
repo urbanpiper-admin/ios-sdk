@@ -41,7 +41,7 @@ public class ItemOptionBuilder: NSObject {
             let itemOptionsCount = itemsToAdd[group.id]?.count ?? 0
 
             if group.isMultipleSelectionGroup {
-                isValidItem = (itemOptionsCount >= group.minSelectable && itemOptionsCount <= group.maxSelectable)
+                isValidItem = (itemOptionsCount >= group.minSelectable && (itemOptionsCount <= group.maxSelectable || group.maxSelectable == -1))
             } else if group.isSingleSelectionGroup {
                 isValidItem = itemOptionsCount == 1
             }
@@ -201,9 +201,7 @@ extension ItemOptionBuilder {
             return
         }
         
-        let isValidOptionGroup = ItemOptionBuilder(itemOption: option).isValidOptionGroup
-
-        if let options = option.nestedOptionGroups, options.count > 0, !isValidOptionGroup.0 {
+        if let options = option.nestedOptionGroups, options.count > 0 {
             guard optionGroup.options.filter({ $0.id == option.id }).last != nil else {
 //                optionGroupHandler?(nil, UPError(type: .invalidOption))
                 return
@@ -219,7 +217,6 @@ extension ItemOptionBuilder {
             selectedNestedOptions.removeValue(forKey: groupId)
 
             let nestedOptionBuilder = ItemOptionBuilder(itemOption: option)
-
             selectedNestedOptions[groupId] = nestedOptionBuilder
 
 //            optionGroupHandler?(nestedOptionBuilder, nil)
