@@ -63,9 +63,12 @@ public class ItemOptionBuilder: NSObject {
         for (_, itemOptions) in itemsToAdd {
             options.append(contentsOf: itemOptions)
         }
-
-        if let primaryOption = itemOption, options.count > 0 {
-            options.insert(primaryOption, at: 0)
+        
+        if let primaryOption = itemOption {
+            let builder = ItemOptionBuilder(itemOption: primaryOption)
+            if (options.count > 0 || builder.isValidOptionGroup.0) {
+                options.insert(primaryOption, at: 0)
+            }
         }
 
         return options
