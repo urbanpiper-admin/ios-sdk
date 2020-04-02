@@ -177,8 +177,16 @@ public enum AddressTag: String {
         }
         city = aDecoder.decodeObject(forKey: "city") as? String
         id = aDecoder.decodeObject(forKey: "id") as? Int
-        lat = aDecoder.decodeObject(forKey: "lat") as? Double ?? Double(0)
-        lng = aDecoder.decodeObject(forKey: "lng") as? Double ?? Double(0)
+        if let latitude = aDecoder.decodeObject(forKey: "lat") as? Double {
+            lat = latitude
+        } else {
+            lat = aDecoder.decodeDouble(forKey: "lat")
+        }
+        if let latitude = aDecoder.decodeObject(forKey: "lng") as? Double {
+            lng = latitude
+        } else {
+            lng = aDecoder.decodeDouble(forKey: "lng")
+        }
         pin = aDecoder.decodeObject(forKey: "pin") as? String
         podId = aDecoder.decodeObject(forKey: "pod_id") as? Int
         subLocality = aDecoder.decodeObject(forKey: "sub_locality") as? String
