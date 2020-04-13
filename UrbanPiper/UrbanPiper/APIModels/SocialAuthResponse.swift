@@ -8,15 +8,18 @@ import Foundation
 // MARK: - SocialLoginResponse
 
 @objcMembers public class SocialLoginResponse: NSObject, JSONDecodable {
-    public let authKey: String
+    public let authKey: String?
     public let biz: JSONNull?
-    public let email, message, name, phone: String
+    public let email: String?
+    public let message: String
+    public let name, phone: String?
     public let success: Bool
-    public let timestamp, username: String
+    public let timestamp: String
+    public let username: String?
     public let token: String?
     public let user: User?
 
-    init(authKey: String, biz: JSONNull?, email: String, message: String, name: String, phone: String, success: Bool, timestamp: String, token: String?, username: String, user: User?) {
+    init(authKey: String?, biz: JSONNull?, email: String?, message: String, name: String?, phone: String?, success: Bool, timestamp: String, token: String?, username: String?, user: User?) {
         self.authKey = authKey
         self.biz = biz
         self.email = email
@@ -33,16 +36,16 @@ import Foundation
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.authKey = try container.decode(String.self, forKey: CodingKeys.authKey)
+        self.authKey = try container.decodeIfPresent(String.self, forKey: CodingKeys.authKey)
         self.biz = try container.decodeIfPresent(JSONNull.self, forKey: CodingKeys.biz)
-        self.email = try container.decode(String.self, forKey: CodingKeys.email)
+        self.email = try container.decodeIfPresent(String.self, forKey: CodingKeys.email)
         self.message = try container.decode(String.self, forKey: CodingKeys.message)
-        self.name = try container.decode(String.self, forKey: CodingKeys.name)
-        self.phone = try container.decode(String.self, forKey: CodingKeys.phone)
+        self.name = try container.decodeIfPresent(String.self, forKey: CodingKeys.name)
+        self.phone = try container.decodeIfPresent(String.self, forKey: CodingKeys.phone)
         self.success = try container.decode(Bool.self, forKey: CodingKeys.success)
         self.timestamp = try container.decode(String.self, forKey: CodingKeys.timestamp)
-        self.username = try container.decode(String.self, forKey: CodingKeys.username)
-        self.token = try container.decode(String.self, forKey: CodingKeys.token)
+        self.username = try container.decodeIfPresent(String.self, forKey: CodingKeys.username)
+        self.token = try container.decodeIfPresent(String.self, forKey: CodingKeys.token)
         
         if let token = token {
             self.user = User(jwtToken: token)
