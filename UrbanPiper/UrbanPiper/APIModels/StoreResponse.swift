@@ -60,7 +60,7 @@ import Foundation
         biz = aDecoder.decodeObject(forKey: "biz") as? Biz
 
 //      Remove this code after next release
-        biz.supportedLanguages = ["en"]
+        biz?.supportedLanguages = ["en"]
 
         if biz != nil {
             Biz.shared = biz

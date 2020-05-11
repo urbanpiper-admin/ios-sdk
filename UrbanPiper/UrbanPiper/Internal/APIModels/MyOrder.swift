@@ -76,6 +76,7 @@ public enum OrderStatus: String {
     @objc public var orderState: String!
     @objc public var orderSubtotal: Decimal = 0
     @objc public var orderTotal: Decimal = 0
+    @objc public var payableAmount: Decimal = 0
     public var orderType: String!
     @objc public var paymentOption: String!
     @objc public var phone: String!
@@ -85,6 +86,8 @@ public enum OrderStatus: String {
     public var totalCharges: Float!
     public var totalTaxes: Decimal!
     public var myOrderDetailsResponse: PastOrderDetailsResponse?
+    @objc public var walletCreditApplied: Decimal = 0
+
 
 //    @objc public var orderSubTotalString: String {
 //        return "\(orderSubtotal.stringVal)"
@@ -98,7 +101,15 @@ public enum OrderStatus: String {
         var charge = charges.filter { $0.title == "Packaging charge" }.last?.value
 
         if charge == nil {
+            charge = charges.filter { $0.title == "Packaging Charge" }.last?.value
+        }
+        
+        if charge == nil {
             charge = charges.filter { $0.title == "Packaging charges" }.last?.value
+        }
+        
+        if charge == nil {
+            charge = charges.filter { $0.title == "Packaging Charges" }.last?.value
         }
 
         return charge
@@ -108,9 +119,17 @@ public enum OrderStatus: String {
         var charge = charges.filter { $0.title == "Delivery charge" }.last?.value
 
         if charge == nil {
+            charge = charges.filter { $0.title == "Delivery Charge" }.last?.value
+        }
+        
+        if charge == nil {
             charge = charges.filter { $0.title == "Delivery charges" }.last?.value
         }
 
+        if charge == nil {
+            charge = charges.filter { $0.title == "Delivery Charges" }.last?.value
+        }
+        
         return charge
     }
 
@@ -200,6 +219,15 @@ public enum OrderStatus: String {
         } else {
             orderTotal = Decimal.zero
         }
+        
+        priceVal = dictionary["payable_amount"] as Any
+        if let val: Decimal = priceVal as? Decimal {
+            payableAmount = val
+        } else if let val: Double = priceVal as? Double {
+            payableAmount = Decimal(val).rounded
+        } else {
+            payableAmount = Decimal.zero
+        }
 
         orderType = dictionary["order_type"] as? String
         paymentOption = dictionary["payment_option"] as? String
@@ -225,6 +253,15 @@ public enum OrderStatus: String {
             totalTaxes = Decimal(val).rounded
         } else {
             totalTaxes = Decimal.zero
+        }
+        
+        priceVal = dictionary["wallet_credit_applied"] as Any
+        if let val: Decimal = priceVal as? Decimal {
+            walletCreditApplied = val
+        } else if let val: Double = priceVal as? Double {
+            walletCreditApplied = Decimal(val).rounded
+        } else {
+            walletCreditApplied = Decimal.zero
         }
     }
 
@@ -287,6 +324,10 @@ public enum OrderStatus: String {
         dictionary["order_subtotal"] = orderSubtotal as AnyObject
 
         dictionary["order_total"] = orderTotal as AnyObject
+        
+        dictionary["payable_amount"] = payableAmount as AnyObject
+        
+        dictionary["wallet_credit_applied"] = walletCreditApplied as AnyObject
 
         if let orderType = orderType {
             dictionary["order_type"] = orderType as AnyObject
