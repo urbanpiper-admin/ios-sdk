@@ -8,7 +8,7 @@ import Foundation
 // MARK: - OrderPayment
 
 @objcMembers public class OrderPayment: NSObject, Codable {
-    public let amount: Int
+    public let amount: Double
     public let option: String
     public let srvrTrxid: String?
 
@@ -17,7 +17,7 @@ import Foundation
         case srvrTrxid = "srvr_trx_id"
     }
 
-    init(amount: Int, option: String, srvrTrxid: String?) {
+    init(amount: Double, option: String, srvrTrxid: String?) {
         self.amount = amount
         self.option = option
         self.srvrTrxid = srvrTrxid
@@ -44,7 +44,7 @@ extension OrderPayment {
     }
 
     public func with(
-        amount: Int? = nil,
+        amount: Double? = nil,
         option: String? = nil,
         srvrTrxid: String? = nil
     ) -> OrderPayment {

@@ -26,6 +26,7 @@ import Foundation
     public let orderLevelTotalCharges, orderLevelTotalTaxes: Double
     public let orderState: String
     public let orderSubtotal, orderTotal: Double
+    public let walletCreditApplied: Double?
     public let orderType, paymentOption, phone: String
     public let taxAmt: Double
     public let taxRate: Float
@@ -77,6 +78,7 @@ import Foundation
         case orderState = "order_state"
         case orderSubtotal = "order_subtotal"
         case orderTotal = "order_total"
+        case walletCreditApplied = "wallet_credit_applied"
         case orderType = "order_type"
         case paymentOption = "payment_option"
         case phone
@@ -89,7 +91,7 @@ import Foundation
         case timeSlotStart = "time_slot_start"
     }
 
-    init(address: String?, bizLocationid: Int, bizLocationName: String, channel: String, charges: [Charge], coupon: String?, created: Date, customerName: String, deliveryAddressRef: Int?, deliveryDatetime: Int, discount: Double?, extPlatformid: Int?, id: Int, instructions: String, itemLevelTotalCharges: Double, itemLevelTotalTaxes: Double, merchantRefid: Int?, orderLevelTotalCharges: Double, orderLevelTotalTaxes: Double, orderState: String, orderSubtotal: Double, orderTotal: Double, orderType: String, paymentOption: String, phone: String, taxAmt: Double, taxRate: Float, taxes: [JSONAny], totalCharges: Double, totalTaxes: Double, timeSlotEnd: String?, timeSlotStart: String?) {
+    init(address: String?, bizLocationid: Int, bizLocationName: String, channel: String, charges: [Charge], coupon: String?, created: Date, customerName: String, deliveryAddressRef: Int?, deliveryDatetime: Int, discount: Double?, extPlatformid: Int?, id: Int, instructions: String, itemLevelTotalCharges: Double, itemLevelTotalTaxes: Double, merchantRefid: Int?, orderLevelTotalCharges: Double, orderLevelTotalTaxes: Double, orderState: String, orderSubtotal: Double, orderTotal: Double, walletCreditApplied: Double?, orderType: String, paymentOption: String, phone: String, taxAmt: Double, taxRate: Float, taxes: [JSONAny], totalCharges: Double, totalTaxes: Double, timeSlotEnd: String?, timeSlotStart: String?) {
         self.address = address
         self.bizLocationid = bizLocationid
         self.bizLocationName = bizLocationName
@@ -112,6 +114,7 @@ import Foundation
         self.orderState = orderState
         self.orderSubtotal = orderSubtotal
         self.orderTotal = orderTotal
+        self.walletCreditApplied = walletCreditApplied
         self.orderType = orderType
         self.paymentOption = paymentOption
         self.phone = phone
@@ -126,7 +129,7 @@ import Foundation
 
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(PastOrder.self, from: data)
-        self.init(address: me.address, bizLocationid: me.bizLocationid, bizLocationName: me.bizLocationName, channel: me.channel, charges: me.charges, coupon: me.coupon, created: me.created, customerName: me.customerName, deliveryAddressRef: me.deliveryAddressRef, deliveryDatetime: me.deliveryDatetime, discount: me.discount, extPlatformid: me.extPlatformid, id: me.id, instructions: me.instructions, itemLevelTotalCharges: me.itemLevelTotalCharges, itemLevelTotalTaxes: me.itemLevelTotalTaxes, merchantRefid: me.merchantRefid, orderLevelTotalCharges: me.orderLevelTotalCharges, orderLevelTotalTaxes: me.orderLevelTotalTaxes, orderState: me.orderState, orderSubtotal: me.orderSubtotal, orderTotal: me.orderTotal, orderType: me.orderType, paymentOption: me.paymentOption, phone: me.phone, taxAmt: me.taxAmt, taxRate: me.taxRate, taxes: me.taxes, totalCharges: me.totalCharges, totalTaxes: me.totalTaxes, timeSlotEnd: me.timeSlotEnd, timeSlotStart: me.timeSlotStart)
+        self.init(address: me.address, bizLocationid: me.bizLocationid, bizLocationName: me.bizLocationName, channel: me.channel, charges: me.charges, coupon: me.coupon, created: me.created, customerName: me.customerName, deliveryAddressRef: me.deliveryAddressRef, deliveryDatetime: me.deliveryDatetime, discount: me.discount, extPlatformid: me.extPlatformid, id: me.id, instructions: me.instructions, itemLevelTotalCharges: me.itemLevelTotalCharges, itemLevelTotalTaxes: me.itemLevelTotalTaxes, merchantRefid: me.merchantRefid, orderLevelTotalCharges: me.orderLevelTotalCharges, orderLevelTotalTaxes: me.orderLevelTotalTaxes, orderState: me.orderState, orderSubtotal: me.orderSubtotal, orderTotal: me.orderTotal, walletCreditApplied: me.walletCreditApplied, orderType: me.orderType, paymentOption: me.paymentOption, phone: me.phone, taxAmt: me.taxAmt, taxRate: me.taxRate, taxes: me.taxes, totalCharges: me.totalCharges, totalTaxes: me.totalTaxes, timeSlotEnd: me.timeSlotEnd, timeSlotStart: me.timeSlotStart)
     }
 }
 
@@ -167,6 +170,7 @@ extension PastOrder {
         orderState: String? = nil,
         orderSubtotal: Double? = nil,
         orderTotal: Double? = nil,
+        walletCreditApplied: Double? = nil,
         orderType: String? = nil,
         paymentOption: String? = nil,
         phone: String? = nil,
@@ -201,6 +205,7 @@ extension PastOrder {
             orderState: orderState ?? self.orderState,
             orderSubtotal: orderSubtotal ?? self.orderSubtotal,
             orderTotal: orderTotal ?? self.orderTotal,
+            walletCreditApplied: walletCreditApplied ?? self.walletCreditApplied,
             orderType: orderType ?? self.orderType,
             paymentOption: paymentOption ?? self.paymentOption,
             phone: phone ?? self.phone,

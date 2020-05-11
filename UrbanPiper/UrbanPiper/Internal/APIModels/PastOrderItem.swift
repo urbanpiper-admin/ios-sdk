@@ -9,7 +9,7 @@ import Foundation
 
 @objcMembers public class PastOrderItem: NSObject, Codable {
     public let charges: [Charge]
-    public let discount: Int
+    public let discount: Double
     public let foodType: String
     public let id: Int
     public let imageLandscapeurl, imageurl: String?
@@ -36,7 +36,7 @@ import Foundation
         case unitWeight = "unit_weight"
     }
 
-    init(charges: [Charge], discount: Int, foodType: String, id: Int, imageLandscapeurl: String?, imageurl: String?, merchantid: String, optionsToAdd: [OptionGroupOption], optionsToRemove: [OptionGroupOption], price: Int, quantity: Int, taxes: [Tax], title: String, total: Double, totalWithTax: Double, unitWeight: Int) {
+    init(charges: [Charge], discount: Double, foodType: String, id: Int, imageLandscapeurl: String?, imageurl: String?, merchantid: String, optionsToAdd: [OptionGroupOption], optionsToRemove: [OptionGroupOption], price: Int, quantity: Int, taxes: [Tax], title: String, total: Double, totalWithTax: Double, unitWeight: Int) {
         self.charges = charges
         self.discount = discount
         self.foodType = foodType
@@ -77,7 +77,7 @@ extension PastOrderItem {
 
     public func with(
         charges: [Charge]? = nil,
-        discount: Int? = nil,
+        discount: Double? = nil,
         foodType: String? = nil,
         id: Int? = nil,
         imageLandscapeurl: String? = nil,

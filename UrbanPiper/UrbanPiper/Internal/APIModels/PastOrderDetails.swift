@@ -27,13 +27,21 @@ import Foundation
     public let taxes: [JSONAny]
     public let taxAmt: Double?
     public let timeSlotEnd, timeSlotStart: String?
-    public let totalCharges, totalExternalDiscount, totalTaxes: Double
+    public let totalCharges, totalExternalDiscount, totalTaxes, payableAmount: Double
 
     public var packagingCharge: Double? {
         var charge = charges.filter { $0.title == "Packaging charge" }.last?.value
 
         if charge == nil {
+            charge = charges.filter { $0.title == "Packaging Charge" }.last?.value
+        }
+        
+        if charge == nil {
             charge = charges.filter { $0.title == "Packaging charges" }.last?.value
+        }
+        
+        if charge == nil {
+            charge = charges.filter { $0.title == "Packaging Charges" }.last?.value
         }
 
         return charge
@@ -43,7 +51,15 @@ import Foundation
         var charge = charges.filter { $0.title == "Delivery charge" }.last?.value
 
         if charge == nil {
+            charge = charges.filter { $0.title == "Delivery Charge" }.last?.value
+        }
+        
+        if charge == nil {
             charge = charges.filter { $0.title == "Delivery charges" }.last?.value
+        }
+        
+        if charge == nil {
+            charge = charges.filter { $0.title == "Delivery Charges" }.last?.value
         }
 
         return charge
@@ -101,6 +117,7 @@ import Foundation
         case taxAmt = "tax_amt"
         case totalExternalDiscount = "total_external_discount"
         case totalTaxes = "total_taxes"
+        case payableAmount = "payable_amount"
     }
 
 //    required init(from decoder: Decoder) throws {
@@ -139,7 +156,7 @@ import Foundation
 //        self.taxAmt = try values.decodeIfPresent(Double.self, forKey: CodingKeys.taxAmt)
 //    }
 
-    init(channel: String, charges: [Charge], coupon: String?, created: Date, deliveryDatetime: Date, discount: Double?, extPlatforms: [String], id: Int, instructions: String, itemLevelTotalCharges: Double, itemLevelTotalTaxes: Double, itemTaxes: Double, merchantRefid: Int?, orderLevelTotalCharges: Double, orderLevelTotalTaxes: Double, orderState: String, orderSubtotal: Double, orderTotal: Double, orderType: String, state: String, taxes: [JSONAny], timeSlotEnd: String?, timeSlotStart: String?, totalCharges: Double, totalExternalDiscount: Double, totalTaxes: Double, taxAmt: Double?) {
+    init(channel: String, charges: [Charge], coupon: String?, created: Date, deliveryDatetime: Date, discount: Double?, extPlatforms: [String], id: Int, instructions: String, itemLevelTotalCharges: Double, itemLevelTotalTaxes: Double, itemTaxes: Double, merchantRefid: Int?, orderLevelTotalCharges: Double, orderLevelTotalTaxes: Double, orderState: String, orderSubtotal: Double, orderTotal: Double, orderType: String, state: String, taxes: [JSONAny], timeSlotEnd: String?, timeSlotStart: String?, totalCharges: Double, totalExternalDiscount: Double, totalTaxes: Double, taxAmt: Double?, payableAmount: Double) {
         self.channel = channel
         self.charges = charges
         self.coupon = coupon
@@ -167,11 +184,12 @@ import Foundation
         self.totalExternalDiscount = totalExternalDiscount
         self.totalTaxes = totalTaxes
         self.taxAmt = taxAmt
+        self.payableAmount = payableAmount
     }
 
     required convenience init(data: Data) throws {
         let me = try newJSONDecoder().decode(PastOrderDetails.self, from: data)
-        self.init(channel: me.channel, charges: me.charges, coupon: me.coupon, created: me.created, deliveryDatetime: me.deliveryDatetime, discount: me.discount, extPlatforms: me.extPlatforms, id: me.id, instructions: me.instructions, itemLevelTotalCharges: me.itemLevelTotalCharges, itemLevelTotalTaxes: me.itemLevelTotalTaxes, itemTaxes: me.itemTaxes, merchantRefid: me.merchantRefid, orderLevelTotalCharges: me.orderLevelTotalCharges, orderLevelTotalTaxes: me.orderLevelTotalTaxes, orderState: me.orderState, orderSubtotal: me.orderSubtotal, orderTotal: me.orderTotal, orderType: me.orderType, state: me.state, taxes: me.taxes, timeSlotEnd: me.timeSlotEnd, timeSlotStart: me.timeSlotStart, totalCharges: me.totalCharges, totalExternalDiscount: me.totalExternalDiscount, totalTaxes: me.totalTaxes, taxAmt: me.taxAmt)
+        self.init(channel: me.channel, charges: me.charges, coupon: me.coupon, created: me.created, deliveryDatetime: me.deliveryDatetime, discount: me.discount, extPlatforms: me.extPlatforms, id: me.id, instructions: me.instructions, itemLevelTotalCharges: me.itemLevelTotalCharges, itemLevelTotalTaxes: me.itemLevelTotalTaxes, itemTaxes: me.itemTaxes, merchantRefid: me.merchantRefid, orderLevelTotalCharges: me.orderLevelTotalCharges, orderLevelTotalTaxes: me.orderLevelTotalTaxes, orderState: me.orderState, orderSubtotal: me.orderSubtotal, orderTotal: me.orderTotal, orderType: me.orderType, state: me.state, taxes: me.taxes, timeSlotEnd: me.timeSlotEnd, timeSlotStart: me.timeSlotStart, totalCharges: me.totalCharges, totalExternalDiscount: me.totalExternalDiscount, totalTaxes: me.totalTaxes, taxAmt: me.taxAmt, payableAmount: me.payableAmount)
     }
 }
 
@@ -216,7 +234,8 @@ extension PastOrderDetails {
         totalCharges: Double? = nil,
         totalExternalDiscount: Double? = nil,
         totalTaxes: Double? = nil,
-        taxAmt: Double?
+        taxAmt: Double?,
+        payableAmount: Double?
     ) -> PastOrderDetails {
         PastOrderDetails(
             channel: channel ?? self.channel,
@@ -245,7 +264,8 @@ extension PastOrderDetails {
             totalCharges: totalCharges ?? self.totalCharges,
             totalExternalDiscount: totalExternalDiscount ?? self.totalExternalDiscount,
             totalTaxes: totalTaxes ?? self.totalTaxes,
-            taxAmt: taxAmt ?? self.taxAmt
+            taxAmt: taxAmt ?? self.taxAmt,
+            payableAmount: payableAmount ?? self.payableAmount
         )
     }
 
